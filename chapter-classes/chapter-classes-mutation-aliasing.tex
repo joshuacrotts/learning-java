@@ -111,3 +111,203 @@ class PointTester {
 }
 \end{lstlisting}
 \end{cl}
+
+\example Now that we have classes, mutation, and accessibility, we can finally implement generic data structures such as an \ttt{ArrayList}. In this example we will implement the behavior of the \ttt{ArrayList} data structure, which means we finally understand what is going on under the hood in the Collections API. We will create a class \ttt{MiniArrayList}, which operates over any type using generics. Like generic static methods, we must quantify the generic type. Unlike static methods, however, we quantify the type in the class declaration, meaning that all instance and static methods inside the generic class do not need to be separately quantified.
+
+In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements, is stored in \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is stored in \ttt{capacity}. Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class; this idea is called \textit{constructor chaining}. 
+
+\begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Class}
+\begin{lstlisting}[language=MyJava]
+class MiniArrayList<T> {
+
+  private T[] elements;
+  private int size;
+  private int capacity;
+
+  public MiniArrayList() { this(10); }
+
+  public MiniArrayList(int capacity) {
+    this.size = 0;
+    this.capacity = capacity;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type. Recall that generics are a compile-time feature, and arrays are a runtime feature. Therefore, we cannot instantiate an array of a generic type. Instead, we must instantiate an array containing type \ttt{Object}, followed by a cast to contain type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \textit{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays. Doing so means the program typechecks and successfully compiles.
+
+\begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Class Instantiating the Backing Array}
+\begin{lstlisting}[language=MyJava]
+class MiniArrayList<T> {
+
+  private T[] elements;
+  private int size;
+  private int capacity;
+
+  public MiniArrayList() { this(10); }
+
+  public MiniArrayList(int capacity) {
+    this.size = 0;
+    this.capacity = capacity;
+    this.array = (T[]) new Object[capacity];
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+We now need to implement the \ttt{add} method, which adds an element to the end of the array list. We first check if the array is full, and if so, we resize the array. We then add the element to the end of the array and increment the size. Resizing the array is, fortunately, not complicated; all we need to do is instantiate a new, larger array, copy the existing elements over, then reassign the instance variable. The question now is, by what factor should the array capacity increase? This decision is implementation-dependent, but we will use a doubling factor out of convenience. We make \ttt{resize} private because it is an implementation detail that the user does not need to know about. To write coherent tests, we should also write the \ttt{get} method, which returns the element at a given index, as well as \ttt{size}, which returns the number of logical elements in the list. For now, we will not worry about bounds checking, but we will return to this in a later chapter on exceptions.
+
+\begin{cl}[MiniArrayListTester.java]{Testing \ttt{MiniArrayList} \ttt{add} Method}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class MiniArrayListTester {
+
+  @Test
+  void testAdd() {
+    MiniArrayList<Integer> list = new MiniArrayList<>();
+    list.add(100);
+    list.add(200);
+    list.add(300);
+    assertEquals(3, list.size());
+    assertEquals(100, list.get(0));
+    assertEquals(200, list.get(1));
+    assertEquals(300, list.get(2));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Adding Elements}
+\begin{lstlisting}[language=MyJava]
+class MiniArrayList<T> {
+
+  private static final int RESIZE_FACTOR = 2;
+
+  // ... other details not shown.
+
+  /**
+   * Adds an element to the end of the list.
+   * 
+   * @param element the element to add.
+   */
+  public void add(T element) {
+    if (this.size == this.capacity) { this.resize(); }
+    this.elements[this.size] = element;
+    this.size++;
+  }
+
+  /**
+   * Resizes the backing array by a factor specified by the class.
+   */
+  private void resize() {
+    this.capacity *= RESIZE_FACTOR;
+    T[] newArray = (T[]) new Object[this.capacity];
+    for (int i = 0; i < this.size; i++) {
+      newArray[i] = this.elements[i];
+    }
+    this.elements = newArray;
+  }
+
+  public T get(int index) { return this.elements[index]; }
+
+  public int size() { return this.size; }
+}
+\end{lstlisting}
+\end{cl}
+
+We will write two more methods: \ttt{insert}, which inserts an element $e$ at a given index, and \ttt{remove}, which removes an element at a given index. These two methods are similar in that they alter the backing array by adding/removing an element, and shifting right and left respectively. Accordingly, our implementation will contain the private helper methods \ttt{shiftRight} and \ttt{shiftLeft}. If we attempt to insert an element into a list that must be resized, we can call \ttt{resize}. Both \ttt{insert} and \ttt{remove} warrant test cases! Neither of these new methods will perform bounds checking, much like \ttt{get}, so testing out-of-bounds behavior, for the time being, is not pertinent.
+
+\begin{cl}[MiniArrayListTester.java]{Testing \ttt{MiniArrayList} \ttt{insert} and \ttt{remove} Methods}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class MiniArrayListTester {
+
+  @Test
+  void testInsert() {
+    MiniArrayList<Integer> list = new MiniArrayList<>();
+    list.add(100);
+    list.add(200);
+    list.add(300);
+    list.insert(1, 150);
+    assertEquals(4, list.size());
+    assertEquals(100, list.get(0));
+    assertEquals(150, list.get(1));
+    assertEquals(200, list.get(2));
+    assertEquals(300, list.get(3));
+  }
+
+  @Test
+  void testRemove() {
+    MiniArrayList<Integer> list = new MiniArrayList<>();
+    list.add(100);
+    list.add(200);
+    list.add(300);
+    list.remove(1);
+    assertEquals(2, list.size());
+    assertEquals(100, list.get(0));
+    assertEquals(300, list.get(1));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Inserting and Removing Elements}
+\begin{lstlisting}[language=MyJava]
+class MiniArrayList<T> {
+
+  // ... other details not shown.
+
+  /**
+   * Inserts an element at the given index.
+   *
+   * @param e the element to insert.
+   * @param idx the index to insert at.
+   */
+  public void insert(T e, int idx) {
+    if (this.size == capacity) { this.resize(); }
+    this.shiftRight();
+    this.elements[idx] = e;
+  }
+
+  /**
+   * Removes the element at the given index.
+   *
+   * @param idx the index to remove.
+   * @return the element removed.
+   */
+  public T remove(int idx) {
+    int e = this.get(idx);
+    this.shiftLeft(idx);
+    this.size--;
+    return e;
+  }
+
+  /**
+   * Shifts all elements to the left of the given index one position to the left.
+   * Note that this method overwrites the element at the given index.
+   *
+   * @param idx the index to shift left of.
+   */
+  private void shiftLeft(int idx) {
+    for (int i = idx; i < this.size - 1; i++) {
+      this.elements[i] = this.elements[i + 1];
+    }
+  }
+
+  /**
+   * Shifts all elements to the right of the given index one position to the right.
+   *
+   * @param idx the index to shift right of.
+   */
+  private void shiftRight(int idx) {
+    for (int i = size - 1; i > idx; i--) {
+      this.elements[i] = this.elements[i - 1];
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}

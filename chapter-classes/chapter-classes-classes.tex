@@ -101,7 +101,7 @@ class Point {
 
   @Override
   public String toString() {
-    return String.format("(x=%d, y=%d)", this.x, this.y);
+    return String.format("(x=%d, y=%d)", this.X, this.Y);
   }
 }
 \end{lstlisting}
@@ -178,8 +178,8 @@ class Point {
    * @return the distance between this point and p.
    */
   public double distance(Point p) {
-    int dx = this.x - p.x;
-    int dy = this.y - p.y;
+    int dx = this.X - p.Y;
+    int dy = this.Y - p.Y;
     return Math.sqrt(dx * dx + dy * dy);
   }
 }
@@ -672,5 +672,3 @@ class Rational {
 }
 \end{lstlisting}
 \end{cl}
-
-\example Now that we have classes, we can finally implement generic data structures such as an \ttt{ArrayList}. In this example we will implement the behavior of the \ttt{ArrayList} data structure, which means we finally understand what is going on under the hood in the Collections API.
