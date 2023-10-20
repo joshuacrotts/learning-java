@@ -1,0 +1,718 @@
+\documentclass[10pt, twoside, openright]{extbook}
+% \documentclass[9pt, twoside, openright]{book}
+% \documentclass[9pt, twoside, openright]{memoir}
+\input{common}
+\input{res/fitch.sty}
+\nddim{3.5ex}{3.5ex}{1.5ex}{0.5em}{1.6em}{.5em}{2.5em}{.2mm}
+
+% \makeatother
+\geometry {
+  %     % HEIN MARGINS:
+  %     % 7.25" x 9.125"
+  paperheight=10in, paperwidth=7in,
+  top=1in, bottom=1in, left=1in, right=1in,
+  % bottom=1.5em,
+  % nohead
+  % paperheight=9.125in, paperwidth=7.25in,
+  % top=.875in,bottom=.875in,right=.875in,left=1.25in
+}
+
+
+%  \geometry {
+%     % HEIN MARGINS:
+%     % 7.25" x 9.125"
+%     % paperheight=9.125in, paperwidth=7.25in,
+%     % top=.875in,bottom=.875in,right=.875in,left=1.25in
+
+%     % Largest margins and well-tested
+%         % paperheight=12in,paperwidth=12in,
+%     % top=1in, bottom=1in, right=2.5in,left=2.5in
+%     % top=1in,bottom=1in,right=2.5in,left=2.5in
+%     % paperheight=10.31in,paperwidth=10.25in,
+%     % top=1in,bottom=1in,right=2.5in,left=2.5in
+%     paperheight=11.0in,paperwidth=8.5in,
+%     top=1in,
+%     bottom=1in,
+%     right=1in,
+%     left=1in,
+%     % paperheight=9.04in,paperwidth=6.94in,
+%     % top=1in,bottom=1in,right=0.5in,left=0.5in
+%     % paperheight=11in,paperwidth=8.5in,
+%     % top=1in,bottom=1in,right=1.0in,left=1.0in
+% }
+% to be loaded first in order to avoid conflicts
+
+% end import
+
+% fix \widering (remove \smash and add \vss)
+% \renewcommand{\widering}[1]{%
+%   \overset{%
+%     \vbox to .2ex{%
+%       \hbox{$\mathring{}$}%
+%       \vss
+%     }
+%   }{\overgroup{#1}}}
+% end fix
+
+\usetikzlibrary{automata, positioning, arrows, arrows.meta, chains, bending}
+\let\euscr\mathscr \let\mathscr\relax% just so we can load this and rsfs
+%\usepackage[bitstream-charter]{mathdesign}
+\tcbuselibrary{listings, skins, breakable}
+% \pagestyle{fancy}
+
+\definecolor{darkgreen}{RGB}{0,100,0}
+\definecolor{darkyellow}{RGB}{239,155,15}
+\definecolor{theorems}{RGB}{236,238,251}
+\definecolor{definitions}{RGB}{246,244,231}
+
+% % The following loads mtpro2 lite and defines some common options
+% %\usepackage[lite,subscriptcorrection,slantedGreek,nofontinfo]{mtpro2}
+
+% \lstdefinelanguage {assemblerx64}     
+%    % add a "x64" dialect of Assembler
+%    [x86masm]{Assembler} % based on the "x86masm" dialect
+%    % with these extra keywords:
+%    {keywords={CDQE,CQO,CMPSQ,CMPXCHG16B,JRCXZ,LODSQ,MOVSXD, %
+%                   POPFQ,PUSHFQ,SCASQ,STOSQ,IRETQ,RDTSCP,SWAPGS, movq},
+%     alsodigit=!\$\%&*+-./:<=>?@^_~,
+%   register = [1]{\%rax, \%rbx, rcx, rdx},
+%   sensitive=true,
+%   basewidth=0.5em,
+%   morecomment=[l]{\#},
+%   morecomment=[s]{\#|}{|\#},
+%   morestring=[b]",
+%   escapeinside={(*;}{;*)},
+%   % basicstyle=\scriptsize\ttfamily,
+%   basicstyle=\small\ttfamily,
+%   registerstyle=[2]\color[rgb]{ .678, .847, .902},
+%   keywordstyle=\bf\ttfamily\color[rgb]{0,.3,.7},
+%   commentstyle=\color[rgb]{0.133,0.545,0.133},
+%   stringstyle={\color[rgb]{0.75,0.49,0.07}},
+%   upquote=true,
+%   breaklines=true,
+%   breakatwhitespace=true,
+%   literate=*{`}{{`}}{1},
+%   showstringspaces=false} % etc.
+\definecolor{codegreen}{rgb}{0.1,0.5,0.1}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{commentgreen}{RGB}{2,112,10}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{eminence}{RGB}{108,48,130}
+\lstdefinelanguage{MyOutput}{
+  % basewidth=0.5em,
+  columns=fullflexible,
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*;}{;*)},
+  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+}
+
+\lstdefinelanguage{MyNLNSOutput}{
+  basewidth=0.5em,
+  columns=fullflexible,
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*;}{;*)},
+  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+}
+
+\lstdefinelanguage{MySOutput}{
+  basewidth=0.5em,
+  % numbers=left,
+  % numberstyle=\ttfamily,
+  columns=fullflexible,
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*;}{;*)},
+  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+}
+
+% My Verbatim Output
+\lstdefinelanguage{MyVOutput}{
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  % literate={'}{\textquotesingle}{1}{`}{\textasciitilde}{1},
+  escapeinside={(*;}{;*)},
+}
+
+%No Line Numbers
+\lstdefinelanguage{MyNLNC}{
+  basewidth=0.5em,
+  columns=fullflexible,
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  language=C,
+  morekeywords={NULL, size\_t, bool, ssize\_t, intptr\_t},
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*;}{;*)},
+  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+}
+
+\lstdefinelanguage{MyC}{
+  basewidth=0.5em,
+  columns=fullflexible,
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  language=C,
+  morekeywords={NULL, size\_t, bool, ssize\_t, intptr\_t},
+  numbers=left,
+  numberstyle=\ttfamily,
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*;}{;*)},
+  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+}
+
+\lstdefinelanguage{MyVC}{
+  % columns=fullflexible,
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  language=C,
+  numbers=left,
+  numberstyle=\ttfamily,
+  morekeywords={NULL, size\_t, bool, ssize\_t, intptr\_t},
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*;}{;*)},
+  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+}
+
+\lstdefinelanguage{MyJava}{
+  texcl=true,
+  basewidth=0.5em,
+  columns=fullflexible,
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  language=Java,
+    numbers=left,
+  numberstyle=\ttfamily,
+  morekeywords={NULL},
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*;}{;*)}
+  % literate={~}{{\fontfamily{ptm}\selectfont \textasciitilde}}{1}{\ \ \ \ }{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+}
+
+\lstdefinelanguage{MyJavaNLN}{
+  basewidth=0.5em,
+  columns=fullflexible,
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  language=Java,
+  morekeywords={NULL},
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*;}{;*)}
+  % literate={~}{{\fontfamily{ptm}\selectfont \textasciitilde}}{1}{\ \ \ \ }{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+}
+
+\lstdefinelanguage{MyPython}{
+  columns=fullflexible,
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  language=Python,
+    numbers=left,
+  numberstyle=\ttfamily,
+  morekeywords={NULL},
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  escapeinside={(*;}{;*)},
+  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+}
+
+\lstdefinelanguage{MyNLNAssembly}{
+  basewidth=0.5em,
+  columns=flexible,
+  morekeywords={leaq, movq, callq, retq, cmpq, .extern, .data, .section, .global, .text, pushq, popq, subq, addq, .quad, .asciz, .ascii, negq, jmp, jz, syscall, .bss, .space, je, jne, imulq, movsd, .double, cvtsi2sd, cvtsi2sd, divsd, mulsd, sqrtsd, fldl, fsin, fstl, ffree, fldl, fmulp, fldpi, fxch, fdivp, popa, addsd},
+  alsodigit=!\$\%&*+-/:<=>?@^_~,
+  alsoletter={.},
+  % sensitive=true,
+  morecomment=[l]{\#},
+  morecomment=[s]{\#|}{|\#},
+  morestring=[b]",
+  escapeinside={(*;}{;*)},
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  stringstyle=\itshape,
+  upquote=true,
+  breaklines=true,
+  % breakatwhitespace=true,
+  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1},
+  showstringspaces=false,
+}
+
+\lstdefinelanguage{MyAssembly}{
+  basewidth=0.5em,
+  columns=flexible,
+    % numbers=left,
+  % numberstyle=\ttfamily,
+  morekeywords={leaq, movq, callq, retq, cmpq, .extern, .data, .section, .global, .text, pushq, popq, subq, addq, .quad, .asciz, .ascii, negq, jmp, jz, syscall, .bss, .space, je, jne, imulq, movsd, .double, cvtsi2sd, cvtsi2sd, divsd, mulsd, sqrtsd, fldl, fsin, fstl, ffree, fldl, fmulp, fldpi, fxch, fdivp, popa, addsd},
+  alsodigit=!\$\%&*+-/:<=>?@^_~,
+  alsoletter={.},
+  % sensitive=true,
+  morecomment=[l]{\#},
+  morecomment=[s]{\#|}{|\#},
+  morestring=[b]",
+  escapeinside={(*;}{;*)},
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  stringstyle=\itshape,
+  upquote=true,
+  breaklines=true,
+  % breakatwhitespace=true,
+  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1},
+  showstringspaces=false,
+}
+
+\lstdefinelanguage{MyScheme}{
+  basewidth=0.5em,
+  columns=fullflexible,
+    % numbers=left,
+  % numberstyle=\ttfamily,
+  morekeywords=[1]{define, define-macro, lambda},
+  morekeywords=[2]{begin, call-with-current-continuation, call/cc, case, cond,
+      do, else, if, let/cc, set, set-car, set-cdr,
+      let*, let, letrec,
+      and, or, not, eqv, eq, cons, null,
+      quasiquote, quote, unquote, unquote-splice},
+  morekeywords=[3]{import, export},
+  alsodigit=!\$\%&*+-./:<=>?@^_~,
+  sensitive=true,
+  alsoletter={'\textquotesingle?},
+  morecomment=[l]{;},
+  morecomment=[s]{\#|}{|\#},
+  morestring=[b]",
+  escapeinside={(*;}{;*)},
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  basicstyle=\footnotesize\ttfamily,
+  upquote=true,
+  breaklines=true,
+  breakatwhitespace=true,
+  literate=~{$\sim$}2,
+  % literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1},
+  showstringspaces=false,
+}
+
+
+\lstdefinelanguage{MyNLNScheme}{
+  basewidth=0.5em,
+  columns=fullflexible,
+  morekeywords=[1]{define, define-macro, lambda},
+  morekeywords=[2]{begin, call-with-current-continuation, call/cc, case, cond,
+      do, else, if, let/cc, set, set-car, set-cdr,
+      let*, let, letrec,
+      and, or, not, eqv, eq, cons, null,
+      quasiquote, quote, unquote, unquote-splice},
+  morekeywords=[3]{import, export},
+  alsodigit=!\$\%&*+-./:<=>?@^_~,
+  sensitive=true,
+  alsoletter={'\textquotesingle?},
+  morecomment=[l]{;},
+  morecomment=[s]{\#|}{|\#},
+  morestring=[b]",
+  escapeinside={(*;}{;*)},
+  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+  basicstyle=\footnotesize\ttfamily,
+  upquote=true,
+  breaklines=true,
+  breakatwhitespace=true,
+  % literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1},
+  showstringspaces=false,
+}
+
+
+\newtcolorbox[auto counter,number within=chapter]{clo}[2][]{
+  enhanced,
+  colback=white,
+  colframe=gray!80!white,
+  arc=0mm,
+  boxsep=1pt,
+    sidebyside,
+  % toprule=.5pt,
+  % rightrule=-0.2pt,
+  % bottomrule=1pt,
+  % leftrule=-0.2pt,
+  sidebyside align=top,
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  frame hidden,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  lefthand width={0.60\textwidth},
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+\newtcolorbox[use counter from=clo, number within=chapter]{clohalfast}[2][]{
+  enhanced,
+  colback=white,
+  colframe=gray!80!white,
+  arc=0mm,
+  boxsep=1pt,
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  frame hidden,
+    sidebyside,
+  % toprule=.5pt,
+  % rightrule=-0.2pt,
+  % bottomrule=1pt,
+  % leftrule=-0.2pt,
+  sidebyside align=top,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  lefthand width={0.525\textwidth},
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+\newtcolorbox[use counter from=clo, number within=chapter]{clonarrow}[2][]{
+  enhanced,
+  colback=white,
+  colframe=gray!80!white,
+  arc=0mm,
+  boxsep=1pt,
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  % toprule=.5pt,
+  % rightrule=-0.2pt,
+  % bottomrule=1pt,
+  % leftrule=-0.2pt,
+  sidebyside,
+  sidebyside align=top,
+  frame hidden,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  lefthand width={0.65\textwidth},
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+\newtcolorbox[use counter from=clo, number within=chapter]{cloverynarrow}[2][]{
+  enhanced,
+  colback=white,
+  colframe=gray!80!white,
+  arc=0mm,
+  boxsep=1pt,
+  sidebyside,
+  sidebyside align=top,
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  frame hidden,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  lefthand width={0.80\textwidth},
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+\newtcolorbox[use counter from=clo,number within=chapter]{cloast}[2][]{
+  enhanced,
+  colback=white,
+  colframe=gray!80!white,
+  arc=0mm,
+  boxsep=1pt,
+  sidebyside,
+  sidebyside align=top,
+  sidebyside gap=14pt,
+  lefthand width={0.46\textwidth},
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  frame hidden,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+\newtcolorbox[use counter from=clo,number within=chapter]{clobigast}[2][]{
+  enhanced,
+  colback=white,
+  colframe=gray!80!white,
+  arc=0mm,
+  boxsep=1pt,
+  sidebyside,
+  sidebyside align=top,
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  frame hidden,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  lefthand width={0.35\textwidth},
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+\newtcolorbox[use counter from=clo,number within=chapter]{cloverywide}[2][]{
+  enhanced,
+  colback=white,
+  colframe=gray!80!white,
+  arc=0mm,
+  boxsep=1pt,
+  sidebyside,
+  sidebyside align=top,
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  frame hidden,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  lefthand width={0.20\textwidth},
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+% recognizer-reducer pair
+\newtcolorbox[use counter from=clo, number within=chapter]{clrr}[2][]{
+  enhanced,
+  colback=white,
+  colframe=black,
+  arc=0mm,
+  boxsep=1pt,
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  frame hidden,
+  sidebyside,
+  sidebyside gap=14pt,
+  segmentation style=solid,
+  sidebyside align=top,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  lefthand width={0.46\textwidth},
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+% Code Listing (JUST a code listing; no output or anything).
+\newtcolorbox[use counter from=cloast,number within=chapter]{cl}[2][]{
+  enhanced,
+  colback=white,
+  colframe=gray!10!white,
+  arc=0mm,
+  boxsep=1pt,
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  frame hidden,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+% BREAKABLE code listing - usually only for very, VERY long listings.
+\newtcolorbox[use counter from=cloast,number within=chapter]{clbreakable}[2][]{
+  enhanced,
+  breakable,
+  colback=white,
+  colframe=gray!10!white,
+  arc=0mm,
+  boxsep=1pt,
+  left=5pt,%      left skip
+  right=5pt,%     right skip
+  frame hidden,
+  attach boxed title to top left,
+  boxed title style={
+    sharp corners=all,
+    colback=white,
+    frame hidden,
+    leftrule=0pt,
+    rightrule=0pt,
+    bottomrule=0pt,
+    boxsep=0pt,
+    top=4pt,
+    bottom=4pt,
+  },
+  borderline north = {0.5pt}{0pt}{black,solid},
+  borderline south = {0.5pt}{0pt}{black,solid},
+  top=-5pt,
+  bottom=-5pt,
+  toptitle=1mm,
+  bottomtitle=0.7mm,
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+}
+
+\tikzset{%
+  /forest,
+  forest node/.style={circle, inner sep=0pt, text centered},
+  arn n/.append style={text=white, font=\sffamily, draw=black, fill=black, text width=1em},
+  arn r/.append style={text=red, draw=red, text width=1em, very thick},
+  arn c/.append style={text=black, font=\sffamily, draw=black, fill=green, text width=1em},
+}
+
+\raggedbottom % Avoids stretching the vertical space between paragraphs
+
+\clubpenalty=10000 % Discourages page breaks after the first line of a paragraph
+\widowpenalty=10000 % Discourages page breaks before the last line of a paragraph
+\interlinepenalty=10000 % Discourages page breaks within a paragraph
+
+\renewcommand{\cftchapfont}{\normalsize\bfseries\sffamily}
+\advance\cftsecnumwidth 0.5em\relax
+\advance\cftsubsecindent 0.5em\relax
+\advance\cftsubsecnumwidth 0.5em\relax
+% \renewcommand{\cftsubsecfont}{\rmdefault}
+
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside%
+  \ifodd\c@page\else
+    \vspace*{\fill}
+    \hfill
+    \begin{center}
+      % \textit{This page intentionally left blank.}
+    \end{center}
+    \vspace{\fill}
+    \thispagestyle{empty}
+    \newpage
+    \if@twocolumn\hbox{}\newpage\fi\fi\fi
+}
+\makeatother
+
+
+ \pgfplotsset{compat=1.18}

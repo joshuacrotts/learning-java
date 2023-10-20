@@ -1,0 +1,48 @@
+\newcommand{\for}{\texttt{for}\xspace}
+\newcommand{\while}{\texttt{while}\xspace}
+\newcommand{\ttt}[1]{\texttt{#1}\xspace}
+
+% Gray horizontal dots
+\newcommand{\ghd}{\textcolor{lightgray}{$\ldots$}}
+
+\newcommand{\q}{\textquotesingle}
+\newcommand{\qq}{\textasciigrave}
+% Better tilde
+\newcommand{\bt}{\raise.17ex\hbox{$\scriptstyle\sim$}}
+\newcommand{\smc}[1]{\textsc{#1}}
+
+% Better plus/minus.
+\let\oldpm\pm
+\renewcommand{\pm}[0]{%
+  \mathrel{\raisebox{0.5pt}{$\oldpm$}}%
+}
+
+% Better times
+\let\oldtimes\times
+\renewcommand{\times}[0]{%
+  \mathrel{\raisebox{0.6pt}{$\oldtimes$}}%
+}
+
+% Better in
+\let\oldin\in
+\renewcommand{\in}[0]{%
+  \mathrel{\raisebox{0.3pt}{$\oldin$}}%
+}
+
+% Better not in
+\let\oldnotin\notin
+\renewcommand{\notin}[0]{%
+  \mathrel{\raisebox{0.3pt}{$\oldnotin$}}%
+}
+
+% Better \mid
+\let\oldmid\mid
+\renewcommand{\mid}[0]{%
+  \mathrel{\raisebox{1pt}{$\oldmid$}}%
+}
+
+% Better \nmid
+\let\oldnmid\nmid
+\renewcommand{\nmid}[0]{%
+  \mathrel{\raisebox{1pt}{$\oldnotin$}}%
+}

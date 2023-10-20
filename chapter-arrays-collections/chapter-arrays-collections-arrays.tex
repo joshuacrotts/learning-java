@@ -1,0 +1,331 @@
+\section{Arrays}
+
+Thus far all of our work has been with data available as it is received by a method. That is, when we invoke a method with some data values, we have access to them at that point in time. \textit{Arrays} allow us to store values, similar to how we use variables, but for an arbitrary/indeterminate number of values.
+
+Arrays store \textit{elements} and \textit{indices} of some type. An element is just a value in an array. The \textit{index} of an element is its location in the array. Indices of an array are indexed from zero, much like strings. Thus, the first element of an array is located at index zero, whereas the last element is located at the index $|A| - 1$, where $|A|$ denotes the number of elements, or \textit{cardinality}, of some array $A$.
+
+We store contiguous elements in arrays, all of the same type. This means that, if we declare an array of type \ttt{int}, we cannot store, say, a \ttt{String} in the array. We can declare an array variable using initializer lists:
+\begin{verbatim}
+int[] array = {5, 10, 15, 20, 100, 50};
+\end{verbatim}
+To retrieve the size of an array, i.e., the number of elements it stores, we access the \textit{.length} field of the array; e.g., \ttt{array.length}. For our example array, we see that its size is six. Moreover, \ttt{array[0]} stores \ttt{5}, and \ttt{array[5]} stores \ttt{50}. Accessing a negative index or beyond the bounds of the length results in an array index out of bounds exception. That is, accessing \ttt{array[-1]} or \ttt{array[6]} crashes the program. A common mistake is to access the index at the length of the array to retrieve the last element. Doing so represents a misunderstanding of how arrays compute indices of elements.
+
+To declare an array of some type $T$, called $A$, that stores $N$ elements, we write the following:
+\begin{verbatim}
+T[] A = new T[N];
+\end{verbatim}
+We can store a value $e$ at some arbitrary index $i$ of array $A$, in addition to accessing the value at some index.
+\begin{verbatim}
+// Store "e" at index i of A.
+A[i] = e;
+// Print out the value at A[i].
+System.out.println(A[i]);
+\end{verbatim}
+
+\example Let us declare an array $A$ that stores the integers from zero to one hundred, in increments of ten.
+\begin{verbatim}
+int[] A = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+\end{verbatim}
+The thing is, this is verbose and requires us to explicitly specify each individual constant. A better solution is to initialize the array to a size and populate its elements using a loop.
+\begin{verbatim}
+final int SIZE = 11;
+int[] A = new int[SIZE];
+for (int i = 0; i < A.length; i++) {
+  A[i] = i * 10;
+}
+\end{verbatim}
+We use $i$ to iterate over the possible indices of our array. Before we explained that $i$ is used out of standard convention, but we now say that $i$, in general, stands for either ``iteration'' or ``index''. We assign, to $A$, the value of $i$ multiplied by ten. We can convert the array to a \ttt{String} using a utility method from the \ttt{Arrays} class (note the plural!); a ``string-ified'' array separates each element by commas and surrounds them with braces.
+\begin{verbatim}
+String s1 = Arrays.toString(A);
+s1 => {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
+\end{verbatim}
+
+\begin{figure}[tp]
+%\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
+  \small
+  \begin{tcolorbox}[title=Java Arrays]
+    An \textit{array}\index{array} stores a fixed-size collection of elements of some type.
+    \vspace{2ex}
+    % \hrule
+    % \vspace{2ex}
+  \begin{description}
+    \item [\ttt{$T[]\;A =$ new $T[n]$}] creates an array of type $T$, named $A$, that stores $n$ elements.
+    \item [\ttt{$A[i]$}] retrieves the element at index $i^{\text{th}}$ of $A$. We refer to this as position $i + 1$.
+    \item [\ttt{$A[i] = v$}] assigns $v$ to index $i$ of $A$.
+    \item [\ttt{$A$.length}] returns the number of elements that the array can store.
+    \item [\ttt{Arrays.equals}($A_1, A_2$)] returns whether or not the elements of $A_1$ are equal to the elements of $A_2$.
+    \item [\ttt{Arrays.toString}$(A)$] returns a string representation of the elements in $A$, separated by commas and enclosed by brackets.
+    \item [\ttt{Arrays.fill}$(A, v)$] populates $A$ with $v$ in every index.
+    \item [\ttt{Arrays.copyOf}$(A, n)$] returns a new array $A'$ of the same type with the new size, padding with the necessary default elements or truncating.
+    \item [\ttt{Arrays.sort}$(A)$] performs an in-place sort of $A$, meaning the contents of $A$ are modified.
+  \end{description}
+\end{tcolorbox}
+  \caption{Useful Array Methods.}
+  \label{fig:arrays}
+\end{figure}
+
+\example Let us write a method that receives an array of \ttt{double} values and returns the sum of the elements. Of course, let us write tests!
+
+\begin{cl}[SumOfDoubleArrayTester.java]{Sum of Double Array Tests}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static SumOfDoubleArray.sumOfDoubles;
+
+class SumOfDoubleArrayTester {
+
+  @Test
+  void sumOfDoubleArrayTest() {
+    assertAll(
+      () -> assertEquals(0.0, sumOfDoubles(new double[]{})),
+      () -> assertEquals(50.0, sumOfDoubles(new double[]{50.0})),
+      () -> assertEquals(100.0, 
+              sumOfDoubles(new double[]{25.0, 50.0, 25.0}))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Our method uses a local variable to accumulate the ``running sum'', so to speak, of the values seen so far from the given array.
+
+\begin{cl}[SumOfDoubleArray.java]{Sum of Double Array Implementation}
+\begin{lstlisting}[language=MyJava]
+class SumOfDoubleArray {
+
+  /**
+   * Computes the sum of the values in a double array.
+   *
+   * @param double [] array of double values.
+   * @return sum of those values.
+   */
+  static double sumOfDoubles(double[] arr) {
+    double sum = 0;
+    for (int i = 0; i < arr.length; i++) {
+      sum += arr[i];
+    }
+    return sum;
+  }
+}
+\end{lstlisting}
+\end{cl}
+While our code works and the tests that we wrote pass without question, there is a bit of verbosity with our loop; all we ever use the iteration variable, $i$, is for accessing a variable. In such circumstances, we may prefer using the enhanced \ttt{for} loop, which abstracts away the index and provides an iteration construct for accessing elements sequentially.
+\begin{cl}[SumOfDoubleArray.java]{Sum of Double Array Enhanced \ttt{for} Loop}
+\begin{lstlisting}[language=MyJava]
+class SumOfDoubleArray {
+
+  static double sumOfDoubles(double arr) {
+    double sum = 0;
+    for (double e : arr) {
+      sum += e;
+    }
+    return sum;
+  }
+}
+\end{lstlisting}
+\end{cl}
+Why might someone want to use the enhanced \ttt{for} loop over a standard \ttt{for}? In general, when we only want to access the elements themselves and not care about their position, the enhanced counterpart is favored; not having to concern ourselves with indices completely removes the possibility of accessing an out-of-bounds index. 
+
+\example Let us write a method that returns the largest integer in an array of integers. This is straightforward, but can be a little tricky to get right due to how we determine the ``largest''. Some programmers may choose to declare a value \ttt{largest} and assign it, say, $-1$, then if we encounter a larger value, overwrite its value. This works well when the provided array contains only positive values, but what if our array contains only negative numbers? This approach falls apart in such instances. To simplify the implementation, we will assume that the given array contains at least one value.
+
+\begin{cl}[LargestIntTester.java]{Largest Integer in Array Tests}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static LargestInt.largestInt;
+
+class LargestIntTester {
+
+  @Test
+  void largestIntTester() {
+    assertAll(
+      assertEquals(4, largestInt(new int[]{4})), 
+      assertEquals(13, largestInt(new int[]{12, 13, 10, 9})), 
+      assertEquals(-5, largestInt(new int[]{-5, -7, -1932, -6, -6})), 
+      assertEquals(9, largestInt(new int[]{9, 9, 9, 9, 9, 9, 9, 9})), 
+      assertEquals(0, largestInt(new int[]{-321, -43, 0, -43, -321})), 
+      assertEquals(0, largestInt(new int[]{-9, 0, -8, -7, -1234})) 
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[LargestInt.java]{Largest Integer in Array Implementation}
+\begin{lstlisting}[language=MyJava]
+class LargestInt {
+
+  static int largestInt(int[] arr) {
+    int max = arr[0];
+    for (int i = 1; i < arr.length; i++) {
+      if (arr[i] > max) {
+        arr[i] = max;
+      }
+    }
+    return max;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+A slightly more efficient and compact solution would be to wrap the conditional inside a call to \ttt{Math.max}, since the logic located within is effectively identical: \ttt{max = Math.max(arr[i], max)}.
+
+Java arrays are rather primitive compared to other more-complex data structures.\footnote{Do not conflate this use of the ``primitive'' term with its use in describing ``primitive datatypes''.} The \ttt{Arrays} class provides a few convenient methods for working with arrays directly, but for the most part, arrays are used as the backbone of other data structures. In general, we use arrays when we want constant access times for elements. That is, if we know the index of an element $e$, we retrieve it using the aforementioned array bracket syntax. This idea holds true for modifying elements. If we want to know whether an array contains a value, we need to write our own method to check. 
+
+\example Suppose we want to write a method that returns the index of an element $e$ of an array of \ttt{String} values $S$. Doing so is straightforward: check each element, one by one, until we find the desired element, or return $-1$. Note the similarity to the \ttt{indexOf} method, which is part of the \ttt{String} class. To gain practice using both recursion and iteration, we will write three versions of this method: one using standard recursion, the second using tail recursion, and the third using a loop. Our standard recursive method will recurse on the length of the array minus one until it is a negative number. The tail recursive method is almost identical to the former, with the exception that upon finding the element, we return the index itself rather than relying on the recursion to unwind. The tests for these two are both trivial to design.
+
+\begin{cl}[ArrayFinderTester.java]{Tests for the Recursive \ttt{indexOf} Method}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static ArrayFinder.indexOf;
+import static ArrayFinder.indexOfTR;
+
+class ArrayFinderTester {
+
+  @Test
+  void arrayFinderRecursiveTest() {
+    String[] arrS = new String[]{"Hello", "hi", "hiya", "howdy", "hello"};
+    assertAll(
+      () -> assertEquals(2, indexOf(arrS, "hiya")),
+      () -> assertEquals(0, indexOf(arrS, "Hello")),
+      () -> assertEquals(4, indexOf(arrS, "hello")),
+      () -> assertEquals(-1, indexOf(arrS, "ahoy"))
+    );
+  }
+
+  @Test
+  void arrayFinderTailRecursiveTest() {
+    String[] arrS = new String[]{"Hello", "hi", "hiya", "howdy", "hello"};
+    assertAll(
+      () -> assertEquals(2, indexOfTR(arrS, "hiya")),
+      () -> assertEquals(0, indexOfTR(arrS, "Hello")),
+      () -> assertEquals(4, indexOfTR(arrS, "hello")),
+      () -> assertEquals(-1, indexOfTR(arrS, "ahoy"))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Funnily enough, the standard recursive solution uses an accumulator like its tail recursive counterpart. Unfortunately, the standard recursive method is unnecessarily complicated and we would not recommend using it for searching through an array. Its implementation is here only for pedagogical purposes. On the other hand, the tail recursive method recurses over the accumulator, which serves as the current index to investigate. If this value exceeds the bounds of the array, we return $-1$. If $S[i]$ is equal to $k$, we return $i$. Otherwise, we recurse and increment $i$ by one.
+
+\begin{cl}[ArrayFinder.java]{Searches an Array using Standard Recursion}
+\begin{lstlisting}[language=MyJava]
+class ArrayFinder {
+  static String indexOf(String[] arrS, String k) {
+    return indexOf(arrS, k, 0);
+  }
+
+  private static String indexOfHelper(String[] arrS, String k, int i) {
+    if (i >= arrS.length) { return -arrS.length; } 
+    else if (arrS[i].equals(k)) { return 0; } 
+    else { return 1 + indexOfHelper(arrS, k, i + 1); }
+  } 
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[ArrayFinder.java]{Searches an Array using Tail Recursion}
+\begin{lstlisting}[language=MyJava]
+class ArrayFinder {
+  static String indexOfTR(String[] arrS, String k) {
+    return indexOf(arrS, k, 0);
+  }
+
+  private static String indexOfTRHelper(String[] arrS, String k, int i) {
+    if (i >= arrS.length) { return -1; } 
+    else if (arrS[i].equals(k)) { return i; } 
+    else { return indexOfHelper(arrS, k, i + 1); }
+  } 
+}
+\end{lstlisting}
+\end{cl}
+
+In converting the tail recursive solution to use iteration, we will make use of the translation pipeline. Our base case is when $i$ equals or exceeds the length of the array, so the negated expression is our loop condition. Moreover, we can place a conditional statement inside the loop, which returns whether $S[i]$ equals $k$ for that value of $i$ and, if so, we return $i$. We might also form a conjunction between the two conditions, whose exit condition is when one of those conditions is falsified. Because we have two different atomic return values, though, we will use the former approach. Because the test cases are, verbatim, those that we wrote for the recursive solutions, we omit them out of a desire for conciseness.
+
+\begin{cl}[ArrayFinder.java]{Searches an Array using a \ttt{while} Loop}
+\begin{lstlisting}[language=MyJava]
+class ArrayFinder {
+  static String indexOfLoop(String[] arrS, String k) {
+    int i = 0;
+    while (!(i >= arrS.length)) {
+      if (arrS[i].equals(k)) { return i; }
+    }
+    return -1;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Of course, the conventional solution to this problem, especially since we know the upper bound on the number of iterations, would be to use a \ttt{for} loop. Doing so localizes the accumulator variable. Moreover, we \textit{could} use the translation pipeline conditional expression, but it is idiomatic to loop while the index is less than the length of the array and use an expression describing this relationship.
+
+\begin{cl}[ArrayFinder.java]{Searches an Array using a \ttt{for} Loop}
+\begin{lstlisting}[language=MyJava]
+class ArrayFinder {
+  static String indexOfLoop(String[] arrS, String k) {
+    for (int i = 0; i < arrS.length; i++) {
+      if (arrS[i].equals(k)) { return i; }
+    }
+    return -1;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+We are on our way to understanding the full signature of the \ttt{main} method. Now that we have covered arrays, we know what the \ttt{String[] args} parameter represents, but \textit{why} it receives that array of strings remains a mystery. We can compile Java files using the terminal and the \ttt{javac} command. Moreover, when executing a Java file, we may pass to it \textit{terminal arguments}, which are values that the program might use to configure settings or other miscellaneous information.
+
+\example Suppose we want to write a program, using the \ttt{main} method and terminal arguments, that performs an arithmatic operation on a collection of integers values, e.g., $5 + 3 + 17$. Additionally, we might want to let the user pass \textit{flags} to denote these different operations, such as \ttt{--add} for addition, \ttt{--sub} for subtraction, and so on. So the user is not confused, we might also provide a ``help'' option that is displayed either upon request or when incorrect arguments are supplied. Let us see how to accomplish this task.
+
+First, we must explain how terminal arguments work. Terminal arguments are specified after the executable (name) and are separated by spaces. For instance, if our program name is \ttt{calculator}, we might use \ttt{./calculator --add 5 4 17}. Thus, \ttt{args[0]} is \ttt{--add}, \ttt{args[1]} is \ttt{"5"}, \ttt{args[2]} is \ttt{"4"}, and \ttt{args[3]} is \ttt{"17"}. For simplification purposes, we will assume that the first argument is always the operation/help flag, and the remaining values are operands. This means that the program should output \ttt{26}. Let us write a method that parses the operation/help flag. Upon success, it returns \ttt{true} and upon failure, it returns \ttt{false}. This prevents the program from further interpreting bad terminal arguments, e.g., \ttt{./calculator --wrong 5 12}. We will also use \ttt{false} as an indication that the \ttt{help} menu was requested or prompted. Thus, to not duplicate code, we should write another method that displays the relevant program usage information.
+
+\begin{cl}[Calculator.java]{}
+\begin{lstlisting}[language=MyJava]
+class Calculator {
+
+  public static void main(String[] args) {
+    if (parseCommand(argv[0])) {
+      // Continue.
+    }
+    // Otherwise, stop.
+  }
+
+  public static boolean parseCommand(String cmd) {
+    if (cmd.equals("--add") || cmd.equals("--sub")) 
+      return true;
+    } else {
+      displayHelp();
+      return false;
+    }
+  }
+
+  public static void displayHelp() {
+    System.out.println("usage: ./calculator --(help | add | sub) <n1> [n...]");
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Up next is the process of interpreting each valid operation, i.e., \ttt{--add} and \ttt{--sub}. The former will add each successive argument one-by-one while the latter subtracts them from left-to-right. Of course, because we receive the terminal arguments as strings, we will need to convert their values from strings to double values using \ttt{Double.parseDouble}. For the time being, we will assume that these \textit{are}, in fact, double values, rather than working through the painstaking process of parsing a string for the existence of a proper \ttt{double} datatype value. We encourage the readers to implement this method themselves, along with the appropriate tests.
+
+Note that in the code below, we utilize an \ttt{if/else if} combination without an accompanying \ttt{else}, which we would normally discourage. Because we exhaust the possibilities with \ttt{parseCommand}, however, we will allow its usage. The \ttt{parseAdd} and \ttt{parseSub} methods are trivial and we have shown an example of their implementation previously, so we will also omit these to preserve space and avoid unnecessary repetition.
+
+\begin{cl}[Calculator.java]{}
+\begin{lstlisting}[language=MyJava]
+class Calculator {
+
+  public static void main(String[] args) {
+    if (parseCommand(args[0])) {
+      String cmd = args[0];
+      double[] operands = convertToDoubleArray(args);
+      if (cmd.equals("--add")) {
+        System.out.println(parseAdd(operands));
+      } else if (cmd.equals("--sub")) {
+        System.out.println(parseSub(operands));
+      }
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+

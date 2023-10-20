@@ -1,0 +1,113 @@
+\section{Object Mutation and Aliasing}
+\label{sec:object-mutation-and-aliasing}
+A limitation that we have purposefully imposed on our object/class design is the inability to modify the values of instance variables. Value mutation is a foreign concept in some programming languages, but we have made extensive use of it throughout our time in the land of Java. In this section, we will discuss the implications of allowing instance variable mutation and how it can lead to some unexpected behavior.
+
+To access a \ttt{private} instance variable, we design a \ttt{public} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a \ttt{public} mutator method, which takes in a parameter and assigns the instance variable to the parameter. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a point $p$ to $(7, 4)$, but we then want to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which we confirm through the accessor method. Because we want to be able to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove this keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we should use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
+
+\begin{cl}[PointTester.java]{Testing \ttt{Point} Setter Methods}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class PointTester {
+
+  @Test
+  void testSetX() {
+    Point p = new Point(7, 4);
+    p.setX(3);
+    assertEquals(3, p.getX());
+  }
+
+  @Test
+  void testSetY() {
+    Point p = new Point(7, 4);
+    p.setY(2);
+    assertEquals(2, p.getY());
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Point.java]{\ttt{Point} Class with Accessor and Mutator Methods}
+\begin{lstlisting}[language=MyJava]
+class Point {
+
+  private int x;
+  private int y;
+
+  public Point(int x, int y) { this.x = x; this.y = y; }
+
+  public int getX() { return this.x; }
+
+  public int getY() { return this.y; }
+
+  public void setX(int x) { this.x = x; }
+
+  public void setY(int y) { this.y = y; }
+}
+\end{lstlisting}
+\end{cl}
+
+What are some consequences to mutating an object? One comes through the notion of \textit{object aliasing}. Recall that objects point to references in memory. Therefore if we instantiate a \ttt{Point} $p_1$, then initialize another \ttt{Point} $p_2$ to reference $p_1$, then both objects refer to the same \ttt{Point} instance in memory. If we modify $p_1$ through a setter method, then $p_2$ will reflect the change.
+
+\begin{cl}[PointTester.java]{Object Aliasing}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class PointTester {
+
+  @Test
+  void pointAliasing() {
+    Point p1 = new Point(7, 4);
+    Point p2 = p1;
+    p1.setX(3);
+    assertEquals(3, p1.getX());
+    assertEquals(3, p2.getX());
+  }
+
+  @Test
+  void testSetY() {
+    Point p1 = new Point(7, 4);
+    Point p2 = p1;
+    p1.setY(2);
+    assertEquals(2, p1.getY());
+    assertEquals(2, p2.getY());
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+This idea carries over to other, more complex classes as well. For example, strings, arrays, lists, and others are all objects, and therefore, they are all subject to object aliasing. Modifying one \ttt{ArrayList} instance will modify all other \ttt{ArrayList} instances that reference the same object. This is a common source of bugs in Java programs, and it is important to be aware of this behavior. In the following example, we will demonstrate aliasing through the \ttt{ArrayList} data structure containing \ttt{Point} objects. We add a series of \ttt{Point} instances to an \ttt{ArrayList}, which is then aliased by another \ttt{ArrayList}. We then add another \ttt{Point} instance to the first \ttt{ArrayList}, followed by a verification that the lists are the same size. Additionally, we traverse over the lists and verify that the elements are the same through the \ttt{==} operator. Remember that \ttt{==} returns whether or not two objects reference the same instance in memory. Because these lists are merely aliases of each other, they will contain references to the same \ttt{Point} instances.
+
+\begin{cl}[PointTester.java]{Testing \ttt{ArrayList} Aliasing}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class PointTester {
+
+  private final Point P1 = new Point(7, 4);
+  private final Point P2 = new Point(3, 2);
+  private final Point P3 = new Point(1, 8);
+
+  @Test
+  void pointArrayListAliasingTest() {
+    ArrayList<Point> list1 = new ArrayList<>(List.of(P1, P2, P3));
+    ArrayList<Point> list2 = list1;
+    list1.add(new Point(5, 6));
+
+    // First we can verify that the lists are actually the same.
+    assertTrue(list1 == list2);
+
+    // Size testing.
+    assertTrue(list1.size() == list2.size());
+
+    // Make sure both lists contain the same elements.
+    for (int i = 0; i < list1.size(); i++) {
+      assertTrue(list1.get(i) == list2.get(i));
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
