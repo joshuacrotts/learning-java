@@ -80,3 +80,12 @@ boolean play(Deck d) {
 The method returns whether or not the AI drew a card. If they did not draw a card, then their turn is over. When playing the game, the player can see the first two cards dealt to an AI, but nothing more. You might want to add a static variable to the \ttt{Card} class representing the ``covered card''. Note that the AI knows only the context of its deck of cards; it is not aware of any other \ttt{Player} or \ttt{AI}.
 \item After designing the \ttt{AI} class and adding one to your game, create an \ttt{ArrayList<AI>} simulating multiple computer players in the game.
 \end{enumerate}
+
+\exercise{1}{chapter-classes}{Add the \ttt{public void set(T e, int idx)} method to the \ttt{MiniArrayList} class, which sets the element at $\textit{idx}$ to the given $e$ element.}
+
+\exercise{1}{chapter-classes}{Add the \ttt{public void isEmpty()} method to the \ttt{MiniArrayList} class, which returns whether or not the list is empty.}
+
+\exercise{2}{chapter-classes}{Add the \ttt{public void clear()} method to the \ttt{MiniArrayList} class, which ``removes'' all elements from the list. This should not change the capacity of the list. Note that there's a reason why ``removes'' is in quotes. We rank this exercise as a two-star not because of its length, but because it is a little tricky.}
+
+\exercise{2}{chapter-classes}{Override the \ttt{equals} method (from \ttt{Object}) in the \ttt{MiniArrayList} class to compare two lists by their elements. Return \ttt{true} if all elements in the two lists are \ttt{.equals} to one another, and \ttt{false} otherwise.}
+

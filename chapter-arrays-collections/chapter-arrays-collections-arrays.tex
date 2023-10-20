@@ -218,7 +218,7 @@ class ArrayFinder {
   }
 
   private static String indexOfHelper(String[] arrS, String k, int i) {
-    if (i >= arrS.length) { return -arrS.length; } 
+    if (i >= arrS.length) { return -1; } 
     else if (arrS[i].equals(k)) { return 0; } 
     else { return 1 + indexOfHelper(arrS, k, i + 1); }
   } 

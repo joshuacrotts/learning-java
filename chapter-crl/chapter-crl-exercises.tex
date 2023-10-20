@@ -143,7 +143,7 @@ isValidIpv4("192.168.1A6.201") -> false
 
 \exercise{1}{chapter-crl}{Write a method that receives three strings and sorts them lexicographically. Return the sorted set of strings as a string itself, separated by commas. For example, if the input is \ttt{Charlie}, \ttt{Able}, \ttt{Baker}, you should return \ttt{Able,Baker,Charlie}.}
 
-\exercise{1}{chapter-crl}{A year with 366 days is called a leap year. Leap years are necessary to keep the calendar synchronized with the sun because the earth revolves around the sun once every 365.25 days. Actually, that figure is not entirely precise, and for all dates after 1582 the Gregorian correction applies. Usually years that are divisible by 4 are leap years, for example 1996. However, years that are divisible by 100 (for example, 1900) are not leap years, but years that are divisible by 400 are leap years (for example, 2000). Write a method that receives a year and computes whether that year is a leap year. Use a single \ttt{if} statement and Boolean operators.}
+\exercise{1}{chapter-crl}{A year with $366$ days is called a leap year. Leap years are necessary to keep the calendar synchronized with the sun because the earth revolves around the sun once every $365.25$ days. Actually, that figure is not entirely precise, and for all dates after $1582$ the Gregorian correction applies. Usually years that are divisible by 4 are leap years, for example $1996$. However, years that are divisible by $100$ (for example, $1900$) are not leap years, but years that are divisible by $400$ are leap years (for example, $2000$). Write a method that receives a year and computes whether that year is a leap year. Use a single \ttt{if} statement and Boolean operators.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{computeDiscount(double itemCost, int age, boolean isStudent)} method that computes a discount for some item based on their age and student status according to the following criteria:}
 \begin{itemize}
@@ -153,6 +153,17 @@ isValidIpv4("192.168.1A6.201") -> false
     \item All other cases should not have a discount applied.
 \end{itemize}
 Your method should return the total cost of the item after applying the discount.
+
+\exercise{1}{chapter-crl}{Design the \ttt{computeTaxCost(double itemCost, String state)} method that computes the tax for some item based on the state in which it is purchased. The method should return the total cost of the item, which includes the taxed amount. The tax rates are as follows:}
+\begin{itemize}
+    \item \ttt{"CA"}: $9.25\%$
+    \item \ttt{"NY"}: $4.0\%$
+    \item \ttt{"NC"}: $6.625\%$
+    \item \ttt{"SC"}: $6.0\%$
+    \item \ttt{"VA"}: $6.25\%$
+    \item \ttt{"WA"}: $6.5\%$
+    \item \ttt{"IN"}: $8.0\%$
+\end{itemize}
 
 \exercise{1}{chapter-crl}{Write the recursive method \ttt{countStr} that counts the number of times the substring \ttt{"str"} appears in a given string.}
 
@@ -220,7 +231,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 \begin{align*}
     \ttt{collatz(1)} &= \ttt{1}\\
     \ttt{collatz(n)} &= \ttt{collatz(3 * n + 1)} \text{ if \ttt{n} is odd.}\\
-    \ttt{collatz(n)} &= \ttt{collatz(n / 2)} \text{ if \ttt{n} is even.}\\
+    \ttt{collatz(n)} &= \ttt{collatz(n / 2)} \text{ if \ttt{n} is even.}
 \end{align*}
 The sequence generated is the numbers received by the method until the sequence reaches one (note that it is an open research question as to whether this sequence converges to one for every positive integer). So, \ttt{collatz(5)} returns the following \ttt{String} of comma-separated integers: \ttt{"5,16,8,4,2,1"}. \textbf{The last number cannot have a comma afterwards}.
 
@@ -253,15 +264,15 @@ If you write tests for one of these methods, you should be able to propagate it 
 If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
 \end{enumerate}
 
-\exercise{1}{chapter-crl}{Design the static \ttt{indexOf} method, which receives two \ttt{String}s \ttt{s}, \ttt{key}, and returns the first index of \ttt{key} in \ttt{s}. Note that \ttt{key} may be any arbitrary string and not just a a single character. If \ttt{key} is not in \ttt{s}, return \ttt{-1}.}
+\exercise{2}{chapter-crl}{Design the static \ttt{indexOf} method, which receives two \ttt{String}s \ttt{s}, \ttt{key}, and returns the first index of \ttt{key} in \ttt{s}. Note that \ttt{key} may be any arbitrary string and not just a a single character. If \ttt{key} is not in \ttt{s}, return \ttt{-1}.}
 
-\exercise{1}{chapter-crl}{Design the static \ttt{substring} method, which receives a \ttt{String} and two integers \ttt{low}, \ttt{high}, and returns the substring between these indices. If either are out of bounds of the string, return \ttt{null}.}
+\exercise{2}{chapter-crl}{Design the static \ttt{substring} method, which receives a \ttt{String} and two integers \ttt{low}, \ttt{high}, and returns the substring between these indices. If either are out of bounds of the string, return \ttt{null}.}
 
 \exercise{1}{chapter-crl}{Design the static \ttt{isEqualTo} method, which receives two strings $s_1$ and $s_2$, and determines whether they are lexicographically equal. You cannot use the built-in \ttt{equals} or \ttt{compareTo} methods.}
 
-\exercise{1}{chapter-crl}{Design the static \ttt{compareTo} method, which receives two \ttt{String}s \ttt{s1}, \ttt{s2}, and compares their contents lexicographically. If \ttt{s1} is less than \ttt{s2}, return \ttt{-1}. If \ttt{s1} is greater than \ttt{s2}, return \ttt{1}. Otherwise, return \ttt{0}. Note that our implementation of \ttt{compareTo} will differ from Java's in that, if \ttt{s1} has less characters than \ttt{s2}, we return \ttt{-1}; if \ttt{s2} has less characters than \ttt{s1}, we return \ttt{1}. Otherwise, we do the character-by-character comparison.}
+\exercise{2}{chapter-crl}{Design the static \ttt{compareTo} method, which receives two \ttt{String}s \ttt{s1}, \ttt{s2}, and compares their contents lexicographically. If \ttt{s1} is less than \ttt{s2}, return \ttt{-1}. If \ttt{s1} is greater than \ttt{s2}, return \ttt{1}. Otherwise, return \ttt{0}. Note that our implementation of \ttt{compareTo} will differ from Java's in that, if \ttt{s1} has less characters than \ttt{s2}, we return \ttt{-1}; if \ttt{s2} has less characters than \ttt{s1}, we return \ttt{1}. Otherwise, we do the character-by-character comparison.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{trim} method, which receives a \ttt{String} \ttt{s} and a character \ttt{ch}, and returns a string with all leading and trailing occurrences of \ttt{ch} removed. For instance, \ttt{trim("aaHelloa", \textquotesingle{}a\textquotesingle)} returns \ttt{"Hello"}. Hint: while you cannot use Java's \ttt{substring} method, you can certainly use the one you wrote previously to solve this problem!}
+\exercise{2}{chapter-crl}{Design the \ttt{trim} method, which receives a \ttt{String} \ttt{s} and a character \ttt{ch}, and returns a string with all leading and trailing occurrences of \ttt{ch} removed. For instance, \ttt{trim("aaHelloa", \textquotesingle{}a\textquotesingle)} returns \ttt{"Hello"}. Hint: while you cannot use Java's \ttt{substring} method, you can certainly use the one you wrote previously to solve this problem!}
 
 \exercise{1}{chapter-crl}{Design the \ttt{trimSpace} method, which receives a \ttt{String} \ttt{s} and returns a new string with all leading and trailing spaces removed.}
 
@@ -288,7 +299,7 @@ assertEquals(0, strSumNums("still 0 just 0 zero0!"));
 assertEquals(500000, strSumNums("500000"));
 \end{verbatim}
 
-\exercise{1}{chapter-crl}{Design the \ttt{stripComments} method that, when given a \ttt{String} containing a (valid) Java program, returns a string where all comments (single-line, multi-line, and Java documentation) have been removed. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
+\exercise{2}{chapter-crl}{Design the \ttt{stripComments} method that, when given a \ttt{String} containing a (valid) Java program, returns a string where all comments (single-line, multi-line, and Java documentation) have been removed. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
 \exercise{1}{chapter-crl}{Write a method that approximates $\pi$ using the following formula:}
 \[
@@ -313,7 +324,7 @@ mirrorEnds("abca")    => a
 mirrorEnds("aba")     => aba
 \end{verbatim}
 
-\exercise{1}{chapter-crl}{Write the \ttt{multTable} method that, when given two integers $a$ and $b$ such that $a < b$, computes the ``multiplication table'' from $a$ to $b$. We provide some test cases below. Note that the newline is just for formatting purposes.}
+\exercise{2}{chapter-crl}{Write the \ttt{multTable} method that, when given two integers $a$ and $b$ such that $a < b$, computes the ``multiplication table'' from $a$ to $b$. We provide some test cases below. Note that the newline is just for formatting purposes.}
 \begin{verbatim}
 multTable(3, 3) => "1*1=1,1*2=2,1*3=3,2*1=2,2*2=4,
                     2*3=6,3*1=3,3*2=6,3*3=9"
@@ -321,3 +332,87 @@ multTable(2, 6) => "1*1=1,1*2=2,1*3=3,1*4=4,1*5=5,
                     1*6=6,2*1=2,2*2=4,2*3=6,2*4=8,
                     2*5=10,2*6=12"
 \end{verbatim}
+
+\exercise{3}{chapter-crl}{The \textit{definite integral} of a function $f$, defined as $\int_{a}^{b} f(x)\;\text{d}x$, produces the area under the curve of $f$ on the interval $[a, b]$. The thing is, though, integrals are defined in terms of \textit{Riemann summations}, which provide estimations on the area under a curve.} Riemann sums approximate the area by creating rectangles of a fixed width $\Delta$, as shown in ~\ref{fig:riemannf} for an arbitrary function $f$. Left-Riemann, right-Riemann, and midpoint-Riemann approximations define the focal point, i.e., the height, of the rectangle. Notice that, in Figure ~\ref{fig:riemannf}, we use a midpoint-Riemann sum with $\Delta = 0.2$, in which the collective sum of all the rectangle areas is the Riemann approximation. Your job is to use this idea to approximate the area of a circle.
+
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}[scale=0.9,
+    declare function={
+    % f(\x)=(\x^2)+9*\x+7;
+        f(\x)=2+cos(deg(\x-2))+cos(deg(3*\x))/2+sin(cos(5*\x))/8 + cos(deg(7*\x))/28;
+    }
+]
+\begin{axis}[
+    axis lines = middle,
+    xtick ={0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5},
+    ytick ={0, 0.5, 1, 1.5, 2.0, 2.5, 3, 3.5, 4, 4.5, 5, 5.5},
+    % xticklabels = {$a=x_0$,$x_1$,$x_2$,$x_3$, $\ldots$, $x_{n-1}$,$x_n=b$},
+    ymin = 0,
+    ymax = 4,
+    xmin = 0,
+    xmax = 2.5,
+    x=3cm,y=1.5cm,
+    axis line style = thick,
+    xlabel style={at={(.5,0)},above right,yshift=-30pt},
+    ylabel style={at={(0,.5)},above right,xshift=-40pt},
+    xlabel={$\textit{\textbf{x}}$},
+    ylabel={$\textit{\textbf{y}}$},
+    % extra x ticks={1.3,1.85,2.2,2.7,3.2,3.75}
+]
+
+\addplot [
+    % domain=1:4,
+    samples=300,
+    % line width=1pt,
+    % fill=red, draw=none,
+    % fill opacity=0.1
+] {f(x)} \closedcycle;
+
+\addplot [
+    domain=0:5,
+    samples=300,
+    line width = 1pt, black] {f(x)};
+
+\addplot[ybar, bar width=10pt, domain=1:4,samples at={0, 0.12, 0.24, 0.36, 0.48, 0.60, 0.72, 0.84, 0.96, 1.08, 1.20, 1.32, 1.44, 1.56, 1.68, 1.80, 1.92, 2.04, 2.16, 2.28, 2.40, 2.52, 2.64, 2.76, 2.88, 3.00, 3.12, 3.24, 3.36, 3.48}, fill=blue!50!cyan,fill opacity=0.3, draw=cyan]
+  {f(x)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\caption{Midpoint-Riemann Approximation of a Function}
+\label{fig:riemannf}
+\end{figure}
+
+Design the \ttt{circleArea} method, which receives a radius $r$ and a delta $\Delta$. It computes (and returns) a left/right-Riemann approximation of the area of a circle. Hint: if you compute the left/right-Riemann approximation of one quadrant, you can very easily obtain an approximation of the total circle area. We illustrate this hint in Figure ~\ref{fig:circlearea} where $\Delta=0.5$ and its radius $r=2$. Note that the approximated area will vary based on the chosen Riemann approximation.\footnote{A left-Riemann sum under-approximates the area, whereas a right-Riemann sum provides an over-approximation. A midpoint approximation uses the average between the left and right approximations. It should be noted that, in the general case, these statements do not hold as they depend on the interval we integrate our function over.} Further note that no calculus knowledge is necessary to solve this exercise.
+
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = middle,
+    xtick ={-3,-2,-1,0,1,2,3},
+    ytick ={-3,-2,-1,0,1,2,3},
+    % xticklabels = {$a=x_0$,$x_1$,$x_2$,$x_3$, $\ldots$, $x_{n-1}$,$x_n=b$},
+    ymin = -2.5,
+    ymax = 2.5,
+    xmin = -2.5,
+    xmax = 2.5,
+    x=1cm,y=1cm,
+    axis line style = thick,
+    xlabel={$\textit{\textbf{x}}$},
+    ylabel={$\textit{\textbf{y}}$},
+    % extra x ticks={1.3,1.85,2.2,2.7,3.2,3.75}
+]
+\end{axis}
+
+  \draw[fill=blue!50!cyan,fill opacity=0.3] (2.5,2.5) rectangle (3,4.5);
+  \draw[fill=blue!50!cyan,fill opacity=0.3] (3.0,2.5) rectangle (3.5,4.44);
+  \draw[fill=blue!50!cyan,fill opacity=0.3] (3.5,2.5) rectangle (4.0,4.23);
+  \draw[fill=blue!50!cyan,fill opacity=0.3] (4,2.5) rectangle (4.5,3.80);
+\draw[thick] (2.5,2.5) circle (2);
+\end{tikzpicture}
+
+\end{center}
+\caption{Right-Riemann Approximation of a Function}
+\label{fig:circlearea}
+\end{figure}
