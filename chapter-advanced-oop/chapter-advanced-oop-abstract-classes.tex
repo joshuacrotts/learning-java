@@ -1,1 +1,168 @@
 \section{Abstract Classes}
+
+\example Inheritance is a truly powerful programming language construct, and we will now attempt to describe its beauty through the design of a mini-project. Said mini-project will encompass writing a small programming language. Programming languages, as a whole, require a lot of knowledge outside the domain of this text, but we will make do with our current toolset.
+
+Programming language syntax is often broken up into the nodes of an \textit{abstract syntax tree}, which at a quick glance is nothing more than a description of the operations of a language. To begin, we need to describe our programming language capabilities. To keep things simple, our language will contain integers, variables, a few arithmetic operators, and conditionals. It’s important to note that, because we are glossing over the innards of lexing and  parsing, all of our tests will exist in the form of abstract syntax trees. We want an abstract AST node class from which every other AST node inherits. Then, we can design purpose-specific nodes that do what we wish. Every abstract syntax tree has two values: a tag and a list of children. The tag is an enumeration that describes the type of node, and the list of children is a list of other abstract syntax tree nodes. We will use the \texttt{enum} construct to define our tags, and we will use a list to store our children. We will also define a \texttt{toString} method that will print out the abstract syntax tree in a readable format. We will use the \texttt{toString} method to test our abstract syntax tree nodes. The \texttt{toString} method will be defined in the abstract syntax tree node class, and it will be overridden in the subclasses.
+
+\begin{cl}[AstN ode.java]{Abstract Syntax Tree Class}
+\begin{lstlisting}[language=MyJava]
+public abstract class AstNode {
+  public enum Tag {
+    VAR, NUMBER, BOOL, PRIM, LET, IF
+  }
+
+  private final List<AstNode> CHILDREN;  
+  private final Tag TAG;
+ 
+  public AstNode(Tag tag, List<AstNode> children) {
+    this.TAG = tag;
+    this.CHILDREN = children;
+  }
+
+  public Tag getTag() { return this.TAG; }
+
+  public List<AstNode> getChildren() { return this.CHILDREN; }
+
+  public abstract String toString();
+}
+\end{lstlisting}
+\end{cl}
+
+From here, the simplest three abstract syntax tree nodes are \ttt{VarNode}, \ttt{NumberNode}, and \ttt{BoolNode}, corresponding to variables, numbers, and booleans, respectively. Each of these nodes will have a single value, that being the variable name, number, or boolean. The \ttt{toString} method for the \ttt{VarNode} will simply return the variable name. The \ttt{toString} method for the \ttt{NumberNode} will return the number. The \ttt{toString} method for the \ttt{BoolNode} will return the boolean value. Testing each method will be as simple as creating a new node and calling the \ttt{toString} method on it, for the time being.
+
+\begin{cl}[AstTest.java]{Testing Abstract Syntax Tree Tests}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertEquals;
+import static Assertions.assertAll;
+
+class AstTest {
+
+  @Test
+  void testVarNode() {
+    assertEquals("x", new VarNode("x").toString());
+  }
+
+  @Test
+  void testNumberNode() {
+    assertEquals("42", new NumberNode("42").toString());
+  }
+
+  @Test
+  void testBoolNode() {
+    assertEquals("true", new BoolNode("true").toString());
+    assertEquals("false", new BoolNode("false").toString());
+  }  
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[VarNode.java]{Variable Node}
+\begin{lstlisting}[language=MyJava]
+class VarNode extends AstNode {
+
+  private final String NAME;
+
+  public VarNode(String name) {
+    super(Tag.VAR, List.of());
+    this.NAME = name;
+  }
+
+  public String getName() { return this.NAME; }
+
+  @Override
+  public String toString() { return this.NAME; }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[NumberNode.java]{Number Node}
+\begin{lstlisting}[language=MyJava]
+class NumberNode extends AstNode {
+
+  private final double VALUE;
+
+  public NumberNode(String value) {
+    super(Tag.NUMBER, List.of());
+    this.VALUE = Double.parseDouble(value);
+  }
+
+  public double getValue() { return this.VALUE; }
+
+  @Override
+  public String toString() { return Double.toString(this.VALUE); }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[BoolNode.java]{Boolean Node}
+\begin{lstlisting}[language=MyJava]
+class BoolNode extends AstNode {
+
+  private final boolean VALUE;
+
+  public BoolNode(String value) {
+    super(Tag.BOOL, List.of());
+    this.VALUE = Boolean.parseBoolean(value);
+  }
+
+  public boolean getValue() { return this.VALUE; }
+
+  @Override
+  public String toString() { return Boolean.toString(this.VALUE); }
+}
+\end{lstlisting}
+\end{cl}
+
+From here, we arrive at primitive operators via \ttt{PrimNode}. A primitive operator is one akin to addition, subtraction, and so forth. Two additional primitives that we will support are reading an integer from standard input, and printing one to standard output. Primitive operators receive any number of arguments and are handled by an outside source, e.g., an interpreter. For now, because primitive operations have no semantic significance, we will omit a tester.
+
+\begin{cl}[PrimNode.java]{Primitive Operator Node}
+\begin{lstlisting}[language=MyJava]
+class PrimNode extends AstNode {
+
+  private final String OP;
+
+  public PrimNode(String op, List<AstNode> children) {
+    super(Tag.PRIM, children);
+    this.OP = op;
+  }
+
+  public String getOp() { return this.OP; }
+
+  @Override
+  public String toString() {
+    return "(" + this.OP + " " + this.getChildren().toString() + ")";
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+We need a way of binding variables, so we shall take a hint from functional programming languages with the \ttt{LetNode} class. The \ttt{LetNode} class has three children: a variable name, a value, and a body. The variable name will be a string, the value will be an abstract syntax tree node, and the body will be an abstract syntax tree node. The LetNode class will have a \ttt{toString} method that will return a string in the form of \ttt{(let ([<var> <exp>]) <body>)}. Again, because variable assignments have no significance without an interpreter, we will omit a tester.
+
+\begin{cl}[LetNode.java]{Let Node}
+\begin{lstlisting}[language=MyJava]
+class LetNode extends AstNode {
+
+  public LetNode(String var, AstNode exp, AstNode body) {
+    super(Tag.LET, List.of(new VarNode(var), exp, body));
+  }
+
+  public String getVar() { return this.getChildren().get(0).toString(); }
+
+  public AstNode getExp() { return this.getChildren().get(1); }
+
+  public AstNode getBody() { return this.getChildren().get(2); }
+
+  @Override
+  public String toString() {
+    return "(let ([" + this.getVar() + " " + this.getExp().toString() + "]) " 
+            + this.getBody().toString() + ")";
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Finally we arrive at decision-based nodes... TODO.
+
+$\ldots$
+
+We can, of course, test each and every one of these classes and instances thereof, as well as bundling them together to create a coherent program represented as an abstract syntax tree. What would be cooler, though, is to write an interpreter for the abstract syntax tree! Let's design the \ttt{Interp} class, which stores an abstract syntax tree to interpret, as well as an environment for bindings. What is an environment, you might ask? Environments bind variable identifiers to their values. For example, if we declare a variable x to be 5, then whenever we reference x in the program in an expression, we want it to resolve to the literal 5. A perfect data structure for an environment is a \ttt{HashMap}, which maps string identifiers to their abstract syntax tree values.
