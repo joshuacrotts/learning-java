@@ -1,1 +1,326 @@
 \section{Interfaces}
+
+Interfaces are a way of grouping classes together by a ubiquitous behavior. We have worked with interfaces before without acknowledging their properties as an interface. For example, the \ttt{Comparable} interface is implemented by classes that can be compared against each other. In particular, there is a single method that must be implemented by any class that implements the \ttt{Comparable} interface: the \ttt{compareTo} method. The \ttt{compareTo} method takes in a single argument of the same type as the class that implements the \ttt{Comparable} interface and returns an integer. The integer returned by the \ttt{compareTo} method is used to determine the ordering of the two objects. If the integer returned is negative, then the object that called the \ttt{compareTo} method is less than the object passed in as an argument. If the integer returned is positive, then the object that called the \ttt{compareTo} method is greater than the object passed in as an argument. If the integer returned is zero, then the two objects are equal.
+
+So, by having a class implement the \ttt{Comparable} interface, we group it into that subset of classes that are, indeed, comparable. Doing so means that these classes are sortable in, for example, a Java collection. 
+
+In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List}, \ttt{Queue}, and \ttt{Map} interfaces, which all have a set of methods that must be implemented by any class that implements the interface. Recall that \ttt{ArrayList} and \ttt{LinkedList} are both types of \ttt{List} objects, and this interface describes several methods that all lists, by definition, must override. To \textit{override} a method means that we provide a new implementation of the method that is different from the default implementation provided by the interface.
+
+\subsection*{Defining an Interface}
+\example Imagine that we want to design an interface that describes a shape. All (two-dimensional) shapes have an area and a perimeter, so we can define an interface that, when implemented by a class, requires that the class provide an implementation of the \ttt{area} and \ttt{perimeter} methods. A common convention for user-defined interfaces is to prefix the names with \ttt{I} to distinguish them from classes. Moreover, the names of interfaces are either nouns or, more traditionally, verbs, since they describe behaviors or characteristics of a class.\footnote{We do not add the \ttt{public} keyword to the interface definition because all interface methods are implicitly public.}
+
+\begin{cl}[IShape.java]{Shape Interface}
+\begin{lstlisting}[language=MyJava]
+interface IShape {
+
+  /**
+    * Returns the area of the shape.
+    */
+  double area();
+
+  /**
+    * Returns the perimeter of the shape.
+    */
+  double perimeter();
+}
+\end{lstlisting}
+\end{cl}
+We cannot write any tests for the \ttt{IShape} interface directly, since it is impossible to instantiate an interface. We can, however, write two different classes that implement \ttt{IShape}, and test those. To demonstrate, we will write and test the \ttt{Pentagon} and \ttt{Octagon} classes whose constructors receive (and then store as instance variables) the side length of the shape. Fortunately, the definitions thereof are trivial because they are nothing more than regurgitations of the mathematical formulae. Notice that, when testing, we initialize the object instance to be of type \ttt{IShape}, not \ttt{Pentagon} or \ttt{Octagon}. This is because we want to be able to categorize these classes as types of \ttt{IShape} instances rather than solely instances of \ttt{Pentagon} or \ttt{Octagon} respectively. This is a common practice in object-oriented programming, and it is called \textit{polymorphism}. Polymorphism is the ability of an object to take on many forms. In this case, the \ttt{IShape} interface is the form that the \ttt{Pentagon} and \ttt{Octagon} classes use to take on the form of a shape as we described.
+
+\begin{cl}[IShapeTester.java]{Shape Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class IShapeTester {
+
+  private static final DELTA = 0.01;
+  
+  @Test
+  void testPentagon() {
+    IShape p1 = new Pentagon(1);
+    IShape p2 = new Pentagon(7.25);
+    assertAll(
+      () -> assertEquals(1.72, p1.area(), DELTA),
+      () -> assertEquals(90.43, p2.area(), DELTA),
+      () -> assertEquals(5, p1.perimeter(), DELTA),
+      () -> assertEquals(36.25, p2.perimeter(), DELTA), 
+    );
+  }
+
+  @Test
+  void testOctagon() {
+    IShape o1 = new Octagon(1);
+    IShape o2 = new Octagon(7.25);
+    assertAll(
+      () -> assertEquals(4.83, o1.area(), DELTA),
+      () -> assertEquals(253.79, o2.area(), DELTA),
+      () -> assertEquals(8, o1.perimeter(), DELTA),
+      () -> assertEquals(58, o2.perimeter(), DELTA), 
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Pentagon.java]{Pentagon Class}
+\begin{lstlisting}[language=MyJava]
+class Pentagon implements IShape {
+  
+  private final double SIDE_LENGTH;
+
+  public Pentagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
+
+  @Override
+  public double area() {
+    return 0.25 * Math.sqrt(5 * (5 + 2 * Math.sqrt(5))) 
+                * Math.pow(this.SIDE_LENGTH, 2);
+  }
+
+  @Override
+  public double perimeter() {
+    return 5 * this.SIDE_LENGTH;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Octagon.java]{Octagon Class}
+\begin{lstlisting}[language=MyJava]
+class Octagon implements IShape {
+
+  private final double SIDE_LENGTH;
+
+  public Octagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
+
+  @Override
+  public double area() {
+    return 2 * (1 + Math.sqrt(2)) * Math.pow(this.SIDE_LENGTH, 2);
+  }
+
+  @Override
+  public double perimeter() {
+    return 8 * this.SIDE_LENGTH;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example Animals are a common example of an interface. Imagine that, in our domain of animals, every animal can speak one way or another. Speaking involves returning a string representing the sound that the animal makes. By designing the \ttt{IAnimal} interface, we can group all animals that can speak together. We can then design classes that implement the \ttt{IAnimal} interface and provide an implementation of the \ttt{speak} method. When testing the latter, we can write tests that instantiate a collection of \ttt{IAnimal} instances, and invoke \ttt{speak} on each of them polymorphically. In doing so we get a refresher of the Java stream API.
+
+\begin{cl}[IAnimal.java]{Animal Interface}
+\begin{lstlisting}[language=MyJava]
+interface IAnimal {
+
+  /**
+   * Returns the sound that the animal makes.
+   */
+  String speak();
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[IAnimalTester.java]{Animal Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class IAnimalTester {
+  
+  @Test
+  void testCat() {
+    IAnimal cat = new Cat();
+    assertEquals("Meow!", cat.speak());
+  }
+
+  @Test
+  void testDog() {
+    IAnimal dog = new Dog();
+    assertEquals("Woof!", dog.speak());
+  }
+
+  @Test
+  void testListOfAnimals() {
+    List<IAnimal> animals = new ArrayList<>();
+    animals.add(new Cat());
+    animals.add(new Dog());
+    animals.add(new Cat());
+    assertEquals("[Meow!, Wolf! Meow!]", 
+                 animals.stream()
+                        .map(IAnimal::speak)
+                        .collect(Collectors.toList()));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Cat.java]{Cat Class}
+\begin{lstlisting}[language=MyJava]
+class Cat implements IAnimal {
+
+  @Override
+  public String speak() {
+    return "Meow!";
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Dog.java]{Dog Class}
+\begin{lstlisting}[language=MyJava]
+class Dog implements IAnimal {
+
+  @Override
+  public String speak() {
+    return "Woof!";
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+
+
+\example Suppose we want an interface that acts as a CRUD operation. In web-based applications and database systems, CRUD refers to ``create, read, update, and destroy''. In other words, we want to be able to create a new object, read the contents of an object, update the contents of an object, and destroy an object. We can define an interface that requires that any class that implements it provide an implementation of these four methods. 
+
+\begin{cl}[ICrud.java]{CRUD Interface}
+\begin{lstlisting}[language=MyJava]
+interface ICrud<T> {
+
+  /**
+    * Creates a new object of type T.
+    */
+  T create();
+
+  /**
+    * Reads the contents of an object of type T.
+    */
+  void read(T t);
+
+  /**
+    * Updates the contents of an object of type T.
+    */
+  void update(T t);
+
+  /**
+    * Destroys an object of type T.
+    */
+  void destroy(T t);
+}
+\end{lstlisting}
+\end{cl}
+What are some examples of classes that we might design that implement the \ttt{ICrud} interface? A coupled example might come from a database system. Suppose we have a database that stores information about students. We might design a \ttt{Student} class that stores the name, ID, and GPA of a student. We can then design a \ttt{Student} class that implements the \ttt{ICrud} interface and provides an implementation of the four methods. The \ttt{Student} class would then be responsible for creating, reading, updating, and destroying \ttt{Student} objects in the database. Along those lines, if we wanted to be able to perform operations on an administrator role, we might design the \ttt{Admin} class that implements \ttt{ICrud}. What these operations do in our toy example is unimportant since we are only concerned with the interface definition. Moreover, we created \ttt{ICrud} as a generic interface, meaning that when we substitute the type into the interface, we propagate the type through the class definition.
+
+\begin{cl}[Student.java]{Student Class}
+\begin{lstlisting}[language=MyJava]
+class Student implements ICrud<Student> {
+  
+  // Instance variables not shown.
+  
+  private Student(...) {
+    // Implementation not shown.
+  }
+  
+  @Override
+  public Student create() {
+    return new Student(...);
+  }
+  
+  @Override
+  public void read(Student s) {
+    System.out.println(s);
+  }
+  
+  @Override
+  public void update(Student s) {
+    this.name = s.name;
+    this.id = s.id;
+    this.gpa = s.gpa;
+  }
+  
+  @Override
+  public void destroy(Student s) {
+    s = null;
+  }
+  
+  @Override
+  public String toString() {
+    return String.format("Name: %s\nID: %d\nGPA: %.2f", 
+                          this.name, this.id, this.gpa);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example Suppose we want to design an interface that boxes an arbitrary value. We have seen this idea through autoboxing and autounboxing of the primitive datatypes and the wrapper classes, but our interface extends the concept to any type. We can define an interface that requires that any class that implements it provide an implementation of the \ttt{box}, \ttt{get}, and \ttt{set} methods. Boxing a value means that we can pass it around as a reference rather than as a raw value. Recall that passing primitives to methods is by value and, therefore, the method cannot change the value of the primitive. If, however, we box the primitive, then we can pass the boxed value to a method and change the value of the boxed value. We will first design the generic \ttt{IBox} interface, and then we will design a class that implements the methods. 
+
+Interestingly, interfaces may have static methods. Our \ttt{IBox} interface has a static \ttt{box} method that returns a box of the type passed in as an argument. This is useful because we can call the \ttt{box} method without having to instantiate a class that implements the \ttt{IBox} interface. We can then use the \ttt{get} and \ttt{set} methods to retrieve and change the value of the box.
+
+\begin{cl}[IBox.java]{Box Interface}
+class IBox<T> {
+  
+    /**
+     * Boxes the value of type T.
+     */
+    static IBox<T> box(T t);
+  
+    /**
+     * Returns the boxed value of type T.
+     */
+    T get();
+  
+    /**
+      * Sets the boxed value of type T.
+      */
+    void set(T t);
+}
+\end{cl}
+
+\begin{cl}[IBoxTester.java]{Box Tester} 
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class IBoxTester {
+
+  private static <T> void modifyBox(IBox<T> box, T t) {
+    box.set(t);
+  }
+  
+  @Test
+  void testIntegerBox() {
+    IBox<Integer> box = IntegerBox.box(5);
+    assertAll(
+      () -> assertEquals(5, box.get()),
+      () -> modifyBox(box, 10),
+      () -> assertEquals(10, box.get())
+    );
+  }
+}
+
+\begin{cl}[IntegerBox.java]{Integer Box Class}
+\begin{lstlisting}[language=MyJava]
+class IntegerBox implements IBox<Integer> {
+  
+  private Integer value;
+  
+  private IntegerBox(Integer value) {
+    this.value = value;
+  }
+  
+  @Override
+  public static IBox<Integer> box(Integer value) {
+    return new IntegerBox(value);
+  }
+  
+  @Override
+  public Integer get() {
+    return this.value;
+  }
+  
+  @Override
+  public void set(Integer value) {
+    this.value = value;
+  }
+}
+\end{lstlisting}
+\end{cl}
