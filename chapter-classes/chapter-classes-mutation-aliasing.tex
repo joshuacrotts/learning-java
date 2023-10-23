@@ -311,3 +311,92 @@ class MiniArrayList<T> {
 }
 \end{lstlisting}
 \end{cl}
+
+\example Let's see a few more examples of object aliasing and mutation. These examples will not be meaningful in what they represent, but are great exercises in testing your understanding. We will create five classes: \ttt{A}, \ttt{B}, \ttt{C}, \ttt{D}, and \ttt{E}. Class \ttt{A} contains one mutable string instance variable; its constructor assigns the instance variable to the parameter thereof. Classes \ttt{B} and \ttt{C} are identical aside from the name: they contain an immutable object of type \ttt{A} as an instance variable. Class \ttt{D} stores an integer array of ten elements. Finally, class \ttt{E} stores a mutable integer as an instance variable. 
+
+We present several test cases that assert different pieces of these classes. We will analyze each one and determine why it uses either \ttt{assertEquals} or \ttt{assertNotEquals} in its comparison. Our first series of tests only focuses on classes \ttt{A}, \ttt{B}, and \ttt{C} to keep things simple. We insert blanks in the assertion statements for you to fill in as exercise before checking your answers.
+
+\begin{cl}[ClassTester.java]{Testing Object Mutation and Aliasing}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class ClassTester {
+
+  @Test
+  void testOne() {
+    final A a = new A("Hello!");
+    B b = new B(a);
+    C c = new C(a);
+
+    // What do each of these output?
+    assert______(b.getA(), c.getA());
+    assert______(b.getA().getS(), c.getA().getS());
+    a.setS("Hi!");
+    assert______(b.getA().getS(), c.getA().getS());
+    b.getA().setS("howdy!");
+    assert______(b.getA().getS(), c.getA().getS());
+
+    B b2 = new B(a);
+    assert______(a, b2.getA());
+    assert______(b, b2);
+    b = b2;
+    assert______(a, b.getA());
+    assert______(b, b2);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+To set the scene, we first declare \ttt{a} as an immutable instance of \ttt{A} with the string literal \ttt{"Hello!"}. Then, we instantiate objects \ttt{b} and \ttt{c} of types \ttt{B} and \ttt{C} respectively, each receiving \ttt{a} as an argument to their constructors. 
+
+Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two references to the same object. Because \ttt{a} is immutable, we cannot change its value, so both \ttt{b} and \ttt{c} will always refer to the same object. Therefore, we use \ttt{assertEquals} to compare the two references. In particular, passing \ttt{a} to both constructors passes a reference to the same object.
+%% Perhaps draw a diagram?
+
+Comparing \ttt{b.getA().getS()} against \ttt{c.getA().getS()} is a comparison of two references to the same object, similar to the previous problem. The only difference is that we retrieve the string object encapsulated by the \ttt{A} class. Because both \ttt{b} and \ttt{c} point to the same reference of \ttt{a}, we know that the strings are identical references.
+
+In the third line we change the value of the string inside \ttt{a} to be \ttt{"Hi!"}, which updates across all instances that point to \ttt{a}. Therefore, rerunning the same comparison as before still results in a true equality.
+
+In the fifth line, we retrieve the \ttt{A} object instance pointed to by \ttt{B} and change its underlying string to be \ttt{"Howdy!"}. Rerunning the same test as before yet again results in a true equality. Because \ttt{b} points to the same \ttt{a} that \ttt{c} references, this change propagates across all references to \ttt{a}, even if we do not directly modify \ttt{a}.
+
+We then declare a new instance of \ttt{B} named \ttt{b2}, which references the same \ttt{a} as before. If we check the value of \ttt{a} against the value of \ttt{a} inside \ttt{b2}, we of course get a true equality.
+
+We immediately follow this comparison with one in which we compare \ttt{b} to \ttt{b2}. Because these are completely distinct object instantiations, the equality does not hold true.
+
+Up next we reassign \ttt{b} to point to \ttt{b2}. This is a reassignment of a reference, not a reassignment of an object. Therefore if we check \ttt{b} against \ttt{b2} for equality, it is now trivially true.
+
+Let's now test the \ttt{D} and \ttt{E} classes, which use arrays as instance variables.
+
+\begin{cl}[ClassTester.java]{Testing Object Mutation and Aliasing}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class ClassTester {
+
+  @Test
+  void testTwo() {
+    D d = new D();
+    E e = new E(42);
+    E[] arrOfE = new E[10];
+    for (int i = 0; i < arrOfE.length; i++) { arrOfE[i] = new E(i); }
+    assert______(arrOfE[2], arrOfE[5]);
+    assert______(arrOfE[2].getNumber(), arrOfE[5].getNumber());
+
+    for (int i = 0; i < arrOfE.length; i++) { arrOfE[i] = e; }
+    assert______(arrOfE[0], arrOfE[2]);
+    assert______(arrOfE[0].getNumber(), arrOfE[2].getNumber());
+    arrOfE[7].setNumber(102);
+    assert______(arrOfE[0].getNumber(), arrOfE[2].getNumber());
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+The objects \ttt{d} and \ttt{e} are instantiated to types \ttt{D} and \ttt{E} respectively, the latter of which receives the integer \ttt{42} as an argument to the constructor. We follow this up with an array of ten \ttt{E} objects. The loop after instantiates each element of the array to a new \ttt{E} object with the integer \ttt{i} as an argument to the constructor.
+
+So, what happens if we compare any arbitrary element $e$ against any other arbitrary element $e'$ such that $e \neq e'$? Because they are all instantiated to distinct instances of \ttt{E}, any equality comparison is false. We can extend this to retrieving the number inside each \ttt{E} object and comparing them. Because they are all distinct objects, and each \ttt{E} instance receives a different number, the equality is false.
+
+The second for loop assigns each element of the array to the \ttt{e} object. Then, we can compare any arbitrary element against any other arbitrary element, and they will always be equal, since every element is a reference to the same memory reference. 
+
+Thus, if we set the number of one arbitrary element, this change propagates to every other element in the list, because again, all references point to the same object.

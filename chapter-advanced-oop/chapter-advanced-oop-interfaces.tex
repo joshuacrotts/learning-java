@@ -1,8 +1,8 @@
 \section{Interfaces}
 
-Interfaces are a way of grouping classes together by a ubiquitous behavior. We have worked with interfaces before without acknowledging their properties as an interface. For example, the \ttt{Comparable} interface is implemented by classes that can be compared against each other. In particular, there is a single method that must be implemented by any class that implements the \ttt{Comparable} interface: the \ttt{compareTo} method. The \ttt{compareTo} method takes in a single argument of the same type as the class that implements the \ttt{Comparable} interface and returns an integer. The integer returned by the \ttt{compareTo} method is used to determine the ordering of the two objects. If the integer returned is negative, then the object that called the \ttt{compareTo} method is less than the object passed in as an argument. If the integer returned is positive, then the object that called the \ttt{compareTo} method is greater than the object passed in as an argument. If the integer returned is zero, then the two objects are equal.
+Interfaces are a way of grouping classes together by a ubiquitous behavior. We have worked with interfaces before without acknowledging their properties as an interface. For example, the \ttt{Comparable} interface is implemented by classes that can be compared against each other. In particular, there is a single method that must be implemented by any class that implements the \ttt{Comparable} interface: the \ttt{compareTo} method. The \ttt{compareTo} method takes in a single argument of the same type as the class that implements the \ttt{Comparable} interface and returns an integer. Said integer is negative if the object instance is less than the argument, zero if the object instance is equal to the argument, and positive if the object instance is greater than the argument.
 
-So, by having a class implement the \ttt{Comparable} interface, we group it into that subset of classes that are, indeed, comparable. Doing so means that these classes are sortable in, for example, a Java collection. 
+So, by having a class implement the \ttt{Comparable} interface, we group it into that subset of classes that are, indeed, comparable. Doing so implies that these classes have an ordering and are sortable in, for example, a Java collection. 
 
 In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List}, \ttt{Queue}, and \ttt{Map} interfaces, which all have a set of methods that must be implemented by any class that implements the interface. Recall that \ttt{ArrayList} and \ttt{LinkedList} are both types of \ttt{List} objects, and this interface describes several methods that all lists, by definition, must override. To \textit{override} a method means that we provide a new implementation of the method that is different from the default implementation provided by the interface.
 
@@ -178,8 +178,6 @@ class Dog implements IAnimal {
 \end{lstlisting}
 \end{cl}
 
-
-
 \example Suppose we want an interface that acts as a CRUD operation. In web-based applications and database systems, CRUD refers to ``create, read, update, and destroy''. In other words, we want to be able to create a new object, read the contents of an object, update the contents of an object, and destroy an object. We can define an interface that requires that any class that implements it provide an implementation of these four methods. 
 
 \begin{cl}[ICrud.java]{CRUD Interface}
@@ -208,6 +206,7 @@ interface ICrud<T> {
 }
 \end{lstlisting}
 \end{cl}
+
 What are some examples of classes that we might design that implement the \ttt{ICrud} interface? A coupled example might come from a database system. Suppose we have a database that stores information about students. We might design a \ttt{Student} class that stores the name, ID, and GPA of a student. We can then design a \ttt{Student} class that implements the \ttt{ICrud} interface and provides an implementation of the four methods. The \ttt{Student} class would then be responsible for creating, reading, updating, and destroying \ttt{Student} objects in the database. Along those lines, if we wanted to be able to perform operations on an administrator role, we might design the \ttt{Admin} class that implements \ttt{ICrud}. What these operations do in our toy example is unimportant since we are only concerned with the interface definition. Moreover, we created \ttt{ICrud} as a generic interface, meaning that when we substitute the type into the interface, we propagate the type through the class definition.
 
 \begin{cl}[Student.java]{Student Class}
@@ -256,23 +255,25 @@ class Student implements ICrud<Student> {
 Interestingly, interfaces may have static methods. Our \ttt{IBox} interface has a static \ttt{box} method that returns a box of the type passed in as an argument. This is useful because we can call the \ttt{box} method without having to instantiate a class that implements the \ttt{IBox} interface. We can then use the \ttt{get} and \ttt{set} methods to retrieve and change the value of the box.
 
 \begin{cl}[IBox.java]{Box Interface}
+\begin{lstlisting}[language=MyJava]
 class IBox<T> {
   
-    /**
-     * Boxes the value of type T.
-     */
-    static IBox<T> box(T t);
-  
-    /**
-     * Returns the boxed value of type T.
-     */
-    T get();
-  
-    /**
-      * Sets the boxed value of type T.
-      */
-    void set(T t);
+  /**
+    * Boxes the value of type T.
+    */
+  static IBox<T> box(T t);
+
+  /**
+    * Returns the boxed value of type T.
+    */
+  T get();
+
+  /**
+    * Sets the boxed value of type T.
+    */
+  void set(T t);
 }
+\end{lstlisting}
 \end{cl}
 
 \begin{cl}[IBoxTester.java]{Box Tester} 
@@ -296,6 +297,8 @@ class IBoxTester {
     );
   }
 }
+\end{lstlisting}
+\end{cl}
 
 \begin{cl}[IntegerBox.java]{Integer Box Class}
 \begin{lstlisting}[language=MyJava]
@@ -324,3 +327,5 @@ class IntegerBox implements IBox<Integer> {
 }
 \end{lstlisting}
 \end{cl}
+
+The Java Swing API is a graphics framework for designing graphical interfaces and drawing shapes/images. In addition to these capabilities, it also supports user input through the keyboard, mouse, and other means. Compared to a class like \ttt{Scanner}, which waits for the user to press ``Enter'' when they are finished typing input, the Swing API allows for dynamic input and is constantly monitored by the program. We call the part of the program that listens and processes events an \textit{event listener}. A popular example is the \ttt{ActionListener} interface, which is used to listen for a broad classification of events. The \ttt{ActionListener} interface has a single method, \ttt{actionPerformed}, that is invoked when an event occurs. The \ttt{actionPerformed} method receives an \ttt{ActionEvent} object that contains information about the event that occurred, which is then usable by the method to determine what to do in response to the event. Because graphical interface design goes beyond the scope of this textbook, we will omit a code example, but we mention action listeners to demonstrate that interfaces are not limited to the examples we have seen thus far. Moreover, the Swing API provides more specific listeners for processing keyboard and mouse events, e.g., \ttt{KeyListener}, \ttt{MouseListener}, \ttt{MouseMotionListener}, and so forth. We could, for instance, design a class that implements the \ttt{MouseListener} interface and provides an overriding implementation of the \ttt{mouseClicked} method. Then, inside a Java Swing graphical component, we might hook the class as a mouse listener and, when the user clicks the mouse, the \ttt{mouseClicked} method is invoked.

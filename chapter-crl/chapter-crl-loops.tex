@@ -57,7 +57,7 @@ static int fact(n) {
 \end{lstlisting}
 \end{cl}
 
-Finally, we come to the heart of the loop. Within, we update variables according to how they are updated in the tail recursive call. Namely, as we saw, $n$ is decremented by $1$, and $acc$ is multiplied by $n$. We must be careful, however, because the order of these statements is significant! In the tail recursive method call to \texttt{fact}, the $n$ that is decremented is passed to the method, whereas the original value of $n$ is used when multiplying by $acc$. As a result, the accumulator update should come first.
+Finally, we come to the heart of the loop. Within, we update variables according to how they are updated in the tail recursive call. Namely, as we saw, $n$ is decremented by $1$, and $\textit{acc}$ is multiplied by $n$. We must be careful, however, because the order of these statements is significant! In the tail recursive method call to \texttt{fact}, the $n$ that is decremented is passed to the method, whereas the original value of $n$ is used when multiplying by $\textit{acc}$. As a result, the accumulator update should come first.
 
 \begin{cl}[]{Loop Body Becomes Tail Recursive Updates}
 \begin{lstlisting}[language=MyJava]
@@ -174,7 +174,7 @@ static int fact(int n, int acc) {
 \end{lstlisting}
 \end{cl}
 
-To coincide with the base case(s), we also want to highlight the returned values that are not recursive calls. Only one exists, namely $acc$. Let us highlight this in \textcolor{darkgreen}{green}.
+To coincide with the base case(s), we also want to highlight the returned values that are not recursive calls. Only one exists, namely $\textit{acc}$. Let us highlight this in \textcolor{darkgreen}{green}.
 
 \begin{cl}[]{Highlighting Factorial Returned Values}
 \begin{lstlisting}[language=MyJava]
@@ -188,7 +188,7 @@ static int fact(int n, int acc) {
 \end{lstlisting}
 \end{cl}
 
-We are almost done. Now, we want to highlight variables passed to the (tail) recursive call that are updated. When we say updated, we mean ``modified'' insofar as they are not simply copied verbatim, e.g., $f(n) = f(n)$, in which we see $n$ remains unaltered. Fortunately, both $n$ and $acc$ are updated ($n$ is decremented by one; $acc$ is multiplied by $n$). Let us highlight these changes in \textcolor{darkyellow}{yellow}. 
+We are almost done. Now, we want to highlight variables passed to the (tail) recursive call that are updated. When we say updated, we mean ``modified'' insofar as they are not simply copied verbatim, e.g., $f(n) = f(n)$, in which we see $n$ remains unaltered. Fortunately, both $n$ and $\textit{acc}$ are updated ($n$ is decremented by one; $\textit{acc}$ is multiplied by $n$). Let us highlight these changes in \textcolor{darkyellow}{yellow}. 
 
 \begin{cl}[]{Highlighting Factorial Updated Arguments}
 \begin{lstlisting}[language=MyJava]
@@ -202,7 +202,7 @@ static int fact(int n, int acc) {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{\textbf{$TR_{\textit{IVP}}$:}} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $acc$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
+\subsection*{\textbf{$TR_{\textit{IVP}}$:}} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $\textit{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
 
 \begin{cl}[]{Accumulator Statement for Factorial}
 \begin{lstlisting}[language=MyJava]
@@ -219,7 +219,7 @@ static int fact(int n, int acc) {
 \end{lstlisting}
 \end{cl}
 
-In the translation to a loop, we move $acc$ to the body of the method, and write a similar iterative variable purpose.\footnote{By ``move'', we mean ``remove'' but not ``delete''.} Note that the value the initialized variable receives depends on the problem/context, but it always matches whatever value is passed to a tail recursive helper method.
+In the translation to a loop, we move $\textit{acc}$ to the body of the method, and write a similar iterative variable purpose.\footnote{By ``move'', we mean ``remove'' but not ``delete''.} Note that the value the initialized variable receives depends on the problem/context, but it always matches whatever value is passed to a tail recursive helper method.
 
 \begin{cl}[]{Iterative Variable Purpose Statement}
 \begin{lstlisting}[language=MyJava]
@@ -254,7 +254,7 @@ static int fact(int n) {
 
 The rule of reassignment is straightforward: we have an expression that resolves to some value, which corresponds precisely to those highlighted arguments. This expression is converted into an assignment statement to the locally-declared variable. 
 
-The rule of update, on the other hand, is not as straightforward. Essentially, we use this rule to ensure that variables whose value depends on another are not prematurely updated. Consider the following incorrect update of $n$ before updating $acc$:
+The rule of update, on the other hand, is not as straightforward. Essentially, we use this rule to ensure that variables whose value depends on another are not prematurely updated. Consider the following incorrect update of $n$ before updating $\textit{acc}$:
 \begin{figure}[H]
 \centering
 \begin{minipage}{.4\textwidth}
@@ -282,7 +282,7 @@ Iteration \# & \texttt{n} & \texttt{acc}\\
 \end{tabular}
 \end{minipage}
 \end{figure}
-We see that this variable update ordering produces $0$, which does not match our recursive trace! We get zero thanks in part due to the final multiplication before our loop condition is falsified. Let us now try the other possible ordering, in which $acc$ is updated before $n$. Hence, we are now in the second attempt of completing $TR_\textit{B}$:
+We see that this variable update ordering produces $0$, which does not match our recursive trace! We get zero thanks in part due to the final multiplication before our loop condition is falsified. Let us now try the other possible ordering, in which $\textit{acc}$ is updated before $n$. Hence, we are now in the second attempt of completing $TR_\textit{B}$:
 \begin{figure}[H]
 \centering
 \begin{minipage}{.4\textwidth}
