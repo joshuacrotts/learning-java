@@ -1,0 +1,172 @@
+\section*{Chapter Exercises}
+
+\exercise{3}{chapter-advanced-oop}{A \textit{lazy list} is one that, in theory, produces infinite results! Consider the \ttt{LazyList} interface below:}
+
+\begin{cl}[LazyList.java]{Lazy List Interface}
+\begin{lstlisting}[language=MyJava]
+interface LazyList {
+ double next();
+}
+\end{lstlisting}
+\end{cl}
+
+When calling \ttt{next} on a lazy list, we update the contents of the lazy list and return the next result. For instance, below is a lazy list that produces factorial values:\footnote{We will ignore the intricacies that come with Java's implementation of the \ttt{int} datatype. To make this truly ``infinite'', we could use the \ttt{BigInteger} class. By truly infinite, we of course mean until the program runs out of memory.}
+
+\begin{cl}[FactorialLazyList.java]{Lazy List of Factorial Values}
+\begin{lstlisting}[language=MyJava]
+class FactorialLazyList implements LazyList {
+
+ private int n;
+ private int fact;
+ 
+ public FactorialLazyList() {
+  this.n = 1;
+  this.fact = 1;
+ }
+
+ @Override
+ public double next() {
+  this.fact *= this.n;
+  this.n++;
+  return this.fact;
+ }
+}
+\end{lstlisting}
+\end{cl}
+
+Testing it with ten calls to \ttt{next} yields predictable results.
+
+\begin{cl}[FactorialLazyListTester.java]{Testing Fact Lazy List}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class FactorialLazyListTester {
+
+  private final FactorialLazyList FS = new FactorialLazyList();
+
+  @Test
+  void factorialLazyListTest() {
+    assertAll(
+      () -> assertEquals(1.0, FS.next()),
+      () -> assertEquals(2.0, FS.next()),
+      () -> assertEquals(6.0, FS.next()),
+      () -> assertEquals(24.0, FS.next()),
+      () -> assertEquals(120.0, FS.next()),
+      () -> assertEquals(720.0, FS.next()),
+      () -> assertEquals(5040.0, FS.next()),
+      () -> assertEquals(40320.0, FS.next()),
+      () -> assertEquals(362880.0, FS.next()),
+      () -> assertEquals(3628800.0, FS.next())
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Design the \ttt{FibonacciLazyList} class, which implements \ttt{LazyList} and correctly overrides \ttt{next} to produce Fibonacci sequence values. You code should \textit{not} use any loops or recursion. Recall that the Fibonacci sequence is defined as $f(n) = f(n-1)+f(n-2)$ for all $n\geq{2}$. The base cases are $f(0)=0$ and $f(1)=1$.
+
+\begin{cl}[FibonacciLazyListTester.java]{Testing Fib Lazy List}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class FibonacciLazyListTester {
+
+  private final FibonacciLazyListTester FS = new FibonacciLazyListTester();
+
+  @Test
+  void fibonacciLazyListTest() {
+    assertAll(
+      () -> assertEquals(0.0, FS.next()),
+      () -> assertEquals(1.0, FS.next()),
+      () -> assertEquals(1.0, FS.next()),
+      () -> assertEquals(2.0, FS.next()),
+      () -> assertEquals(3.0, FS.next()),
+      () -> assertEquals(5.0, FS.next()),
+      () -> assertEquals(8.0, FS.next()),
+      () -> assertEquals(13.0, FS.next()),
+      () -> assertEquals(21.0, FS.next()),
+      () -> assertEquals(34.0, FS.next())
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\exercise{2}{chapter-advanced-oop}{Design the \ttt{LazyListTake} class. It should receive a \ttt{LazyList} as an object and an integer $n$ denoting how many elements to take. Then, write a \ttt{getList} method, which returns an \ttt{ArrayList} of $n$ elements from the given lazy list.\footnote{If this and the previous two exercises remind you of streams, you're an astute thinker! Streams are a more general version of lazy lists.}}
+
+\begin{cl}[LazyListTakeTester.java]{Testing Lazy List Take}
+\begin{lstlisting}[language=MyJava]
+class LazyListTakeTester {
+
+  private final FibonacciLazyList fibLL = new FibonacciLazyList();
+  private final FactorialLazyList factLL = new FactorialLazyList();
+
+  @Test
+  void factLazyListTakeTest() {
+    LazyListTake llt1 = new LazyListTake(factLL, 10);
+    assertEquals(List.of(1.0, 2.0, 6.0, 24.0, 120.0, 720.0,
+                         5040.0, 40320.0, 362880.0, 3628800.0),
+                  llt1.getList());
+  }
+
+  @Test
+  void factLazyListTakeTest() {
+    LazyListTake llt2 = new LazyListTake(fibLL, 10);
+    assertEquals(List.of(0.0, 1.0, 1.0, 2.0, 3.0, 5.0,
+                         8.0, 13.0, 21.0, 34.0),
+                  llt2.getList());
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\exercise{1}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
+Add the \ttt{"read-number"} and \ttt{"print"} primitive operations to the language. The latter is polymorphic, meaning it can print both numbers and booleans.
+
+\exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
+Functional programming languages, in general, are a composition of expressions, wherein statements are more of an afterthought. To this end, design the \ttt{BeginNode} abstract syntax tree node, which receives a list of abstract syntax trees. At the interpreter level, the \ttt{BeginNode} should evaluate each of the abstract syntax trees in the list, and return the result of the last one.
+
+\exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
+Variables, in our language, are defined and bound exactly once, namely when they are defined within a let node. Though, in imperative programming, it is often crucial to allow variable reassignments. Design the \ttt{SetNode} class, which receives a variable and an abstract syntax tree, and reassigns the variable to the result of the abstract syntax tree. At the interpreter level, the \ttt{SetNode} should evaluate the abstract syntax tree, and reassign the variable to the result in the current environment (and only the current environment). This means that you'll need to modify the \ttt{Environment} class to allow for variable reassignments. Hint: override the \ttt{set} method in the \ttt{Environment} class.
+
+\exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
+Recursion is nice and intuitive, for the most part. Unfortunately, it is not always the most efficient way to solve a problem. For example, the Fibonacci sequence, as we saw in Chapter~\ref{chapter-crl}, is often defined recursively, but it is much more efficient to define it iteratively (or even with tail recursion). Design the \ttt{WhileNode} class, which receives a condition and an abstract syntax tree, and evaluates the abstract syntax tree until the condition is false. At the interpreter level, the \ttt{WhileNode} should evaluate the condition, and if it is true, evaluate the abstract syntax tree, and repeat until the condition is false. To test your implementation, you will need to combine the \ttt{WhileNode} with both the \ttt{SetNode} and \ttt{BeginNode} classes.
+
+\exercise{4}{chapter-advanced-oop}{This exercise is multi-part and involves the interpreter we wrote in the chapter.}
+\begin{enumerate}[label=(\alph*)]
+  \item Add the \ttt{ProgramNode} class, which allows the user to define a program as a sequence of statements, rather than a single expression. This is similar to the \ttt{BeginNode}, but encompasses the entire program, rather than a single expression.
+  \item Add the \ttt{DefNode} class, which allows for a global definition of a variable, or a function definition. At the interpreter level, a \ttt{DefNode} should evaluate the abstract syntax tree and bind the result to the identifier in the current environment. Do not extend the environment.
+  \item Add the \ttt{FuncNode} class, which represents a function definition. This node has two parameters to its constructor: a list of parameter (string) identifiers, and a single abstract syntax tree node representing the body of the function. We will only consider functions that return values; void functions do not exist in this language. 
+  \item Add the \ttt{ApplyNode} class, which applies a function to its arguments. You do not need to consider applications in which the first argument is a non-function. Calling/Invoking a function is perhaps the hardest part of this exercise. Here's the idea, which is synonymous and shared with almost all programming languages:
+  \begin{enumerate}[label=(\roman*)] 
+    \item First, evaluate each argument of the function call. This will result in several l-values, which should be stored in a list. 
+    \item Convert these to their abstract syntax tree counterparts. 
+    \item We then want to create an environment in which the formal parameters are bound to their arguments. Overload the extend method in Environment to now receive a list of string identifiers and a list of (evaluated) abstract syntax tree arguments. Bind each formal to its corresponding abstract syntax tree, and return the extended environment. 
+    \item Interpret the function identifier to get its function definition and convert it to an abstract syntax tree.
+    \item Call \ttt{interpret} on the function body and the new environment.
+  \end{enumerate}
+  This seems like a lot of work (because it is), but it means you can write really cool programs, including those that use recursion!
+  \begin{verbatim}
+new ProgramNode(
+  new DefNode("!", 
+    new FuncNode(
+      List.of("n"),
+      new IfNode(
+        new PrimNode("eq?", 
+          new VarNode("n"), 
+          new NumberNode(0)),
+        new NumberNode(1),
+        new PrimNode("*", 
+          new VarNode("n"), 
+          new ApplyNode("!", 
+            new PrimNode("-", 
+            new VarNode("n"), 
+            new NumberNode(1))))
+      )
+    )),
+  new PrimNode("print", new ApplyNode("!", new NumberNode(5)))
+)
+\end{verbatim}
+\end{enumerate}
