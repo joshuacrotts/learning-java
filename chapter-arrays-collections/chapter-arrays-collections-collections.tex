@@ -974,3 +974,36 @@ class RemoveVowelsStream {
 }
 \end{lstlisting}
 \end{cl}
+
+\subsubsection*{Optional Type}
+The primary benefit of streams is their compositionality. We can chain together multiple operations, sequentially, to compute a result. Though, there are instances in which a value may not exist, and the stream has to account for these somehow.
+
+\example Consider a series of stream operations to find the maximum integer of a list. For the general case, this is straightforward, but what about when the list is empty? It does not make sense to return zero, since the maximum integer in a list may very well be zero, which leads to a false conclusion. The solution, in this case, is the \ttt{Optional} class. An \ttt{Optional} is a container that may or may not contain a value. If so, we may access the value directly via \ttt{.get}. If we do not know whether or not it contains a value, we may use \ttt{.orElse($t$)}, which returns the encapsulated value if it exists, or $t$ otherwise. We can also check, prior to a retrieval, if the \ttt{Optional} contains a value via the \ttt{.isPresent} method. \ttt{Optional} is generic and works over any class type, like almost all other classes from the collections API. To test the return value of a stream operation that returns an \ttt{Optional}, e.g., \ttt{max}, we instantiate an \ttt{Optional} that wraps the resulting value if it exists, or \ttt{Optional.empty()} otherwise.
+
+\begin{cl}[OptionalTester.java]{Using the Optional Wrapper Class}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import java.util.Optional;
+
+class OptionalTester {
+
+  private static final List<Integer> LS1 = List.of(10, 20, 42, 12, 5);
+  private static final List<Integer> LS2 = List.of();
+
+  @Test
+  void testMaxValue() {
+    Optional<Integer> op1 = new Optional<>(42);
+    Optional<Integer> op2 = Optional.empty();
+    assertAll(
+      () -> assertEquals(op1, LS1.stream().max((a, b) -> a - b)),
+      () -> assertEquals(op2, LS2.stream().max((a, b) -> a - b)),
+      () -> assertEquals(42, LS1.stream().max((a, b) -> a - b).orElse(null));
+      () -> assertNull(LS2.stream().max((a, b) -> a - b).orElse(null))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Optional values, like we stated, work wonders with the compositionality of streams; if a value does not exist, the stream API will propagate an \ttt{empty} instance of \ttt{Optional} up the chain rather than displaying an error or crashing the program. As part of the design philosophy of the class, those decisions, i.e., whether to crash the program or not, remain a choice left for the implementing programmer.

@@ -329,3 +329,88 @@ class IntegerBox implements IBox<Integer> {
 \end{cl}
 
 The Java Swing API is a graphics framework for designing graphical interfaces and drawing shapes/images. In addition to these capabilities, it also supports user input through the keyboard, mouse, and other means. Compared to a class like \ttt{Scanner}, which waits for the user to press ``Enter'' when they are finished typing input, the Swing API allows for dynamic input and is constantly monitored by the program. We call the part of the program that listens and processes events an \textit{event listener}. A popular example is the \ttt{ActionListener} interface, which is used to listen for a broad classification of events. The \ttt{ActionListener} interface has a single method, \ttt{actionPerformed}, that is invoked when an event occurs. The \ttt{actionPerformed} method receives an \ttt{ActionEvent} object that contains information about the event that occurred, which is then usable by the method to determine what to do in response to the event. Because graphical interface design goes beyond the scope of this textbook, we will omit a code example, but we mention action listeners to demonstrate that interfaces are not limited to the examples we have seen thus far. Moreover, the Swing API provides more specific listeners for processing keyboard and mouse events, e.g., \ttt{KeyListener}, \ttt{MouseListener}, \ttt{MouseMotionListener}, and so forth. We could, for instance, design a class that implements the \ttt{MouseListener} interface and provides an overriding implementation of the \ttt{mouseClicked} method. Then, inside a Java Swing graphical component, we might hook the class as a mouse listener and, when the user clicks the mouse, the \ttt{mouseClicked} method is invoked.
+
+\example An amazing insight into the power of interfaces is already present in Java, but deriving it ourselves is useful. Consider the notion of first-class functions: the concept in which functions and data are equivalent, and we can pass functions around as arguments and return them from other functions. In Java, we can pass functions around as arguments, mimicing first-class functions, by designing a \textit{functional interface}.
+
+Let's design the generic \ttt{Function<T, V>} interface, which quantifies over two types \ttt{T}, representing the input type, and \ttt{V}, representing the output type. The \ttt{Function<T, V>} interface has a single static method, \ttt{apply}, that receives an argument of type \ttt{T} and returns a value of type \ttt{V}. We can then design a class that implements the \ttt{Function<T, V>} interface and provides an implementation of the \ttt{apply} method. We can then pass the class around as an argument to other methods, and invoke the \ttt{apply} method on the class to get the result of the function. An incredibly simple example is \ttt{AddOne}, which implements the \ttt{Function<Integer, Integer>} interface and adds one to its input. We make the constructor of the implementing class private to prevent any unnecessary instantiations; we only want to use the class as a first-class function rather than an object.
+
+\begin{cl}[Function.java]{Functional Interface}
+\begin{lstlisting}[language=MyJava]
+interface Function<T, V> {
+
+  static V apply(T t); 
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[AddOneTester.java]{Add One Functional Interface Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AddOneTester {
+
+  @Test
+  void addOneTester() {
+    assertAll(
+      () -> assertEquals(0, AddOne.apply(1)),
+      () -> assertEquals(3, AddOne.apply(2)),
+      () -> assertEquals(30001, AddOne.apply(30000)),
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+\begin{cl}[AddOne.java]{Add One Functional Interface Implementation}
+\begin{lstlisting}[language=MyJava]
+class AddOne implements Function<Integer, Integer> {
+
+  private AddOne() {}
+
+  @Override
+  public static Integer apply(Integer i) { return i + 1; }
+}
+\end{lstlisting}
+\end{cl}
+
+So far, we have not demonstrated the potential of first-class functions in Java with our design. Suppose we have a list of \ttt{Integer} values $l=v_1, v_2, ..., v_n$ and a function $f$, and we want to apply $f$ to each element thereof. That is, we will create a new list $l'=f(v_1), f(v_2), ..., f(v_n)$. Normally, we would need to write a specific function for each function $f$, but by passing a functional interface, we can write a single method that receives this list and a function $f$ and applies $f$ to each element of the list. This operation, in general, is called \ttt{map}, which we saw during our discussion on streams!\footnote{Do not confuse this with the concept of a map/dictionary from our data structures/collections discussion.}
+
+\begin{cl}[MapTester.java]{Map Function Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class FunctionMapTester {
+
+  @Test
+  void testMap() {
+    List<Integer> l = List.of(1, 2, 3, 4, 5);
+    Function<Integer, Integer> addOne = new AddOne();
+    assertAll(
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), FunctionMap.map(l, addOne)),
+      () -> assertEquals(List.of(), FunctionMap.map(List.of(), addOne))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[FunctionMap.java]{Map Function Implementation}
+\begin{lstlisting}[language=MyJava]
+class FunctionMap {
+
+  /**
+   * Applies the function f to each element of the list l.
+   * 
+   * @param l the list of elements.
+   * @param f the function to apply to each element.
+   * @return the list of elements after applying f to each element.
+   */
+  public static <T, V> List<V> map(List<T> l, Function<T, V> f) {
+    List<V> result = new ArrayList<>();
+    for (T t : l) { result.add(f.apply(t)); }
+    return result;
+  }
+}
+\end{lstlisting}
+\end{cl}
