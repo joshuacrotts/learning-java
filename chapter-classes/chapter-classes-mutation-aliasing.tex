@@ -353,7 +353,7 @@ To set the scene, we first declare \ttt{a} as an immutable instance of \ttt{A} w
 Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two references to the same object. Because \ttt{a} is immutable, we cannot change its value, so both \ttt{b} and \ttt{c} will always refer to the same object. Therefore, we use \ttt{assertEquals} to compare the two references. In particular, passing \ttt{a} to both constructors passes a reference to the same object.
 %% Perhaps draw a diagram?
 
-Comparing \ttt{b.getA().getS()} against \ttt{c.getA().getS()} is a comparison of two references to the same object, similar to the previous problem. The only difference is that we retrieve the string object encapsulated by the \ttt{A} class. Because both \ttt{b} and \ttt{c} point to the same reference of \ttt{a}, we know that the strings are identical references.
+Comparing \ttt{b.getA().getS()} against \ttt{c.getA().getS()} is a comparison of two references to the same object, similar to the previous problem... right? Wrong! Recall that the \ttt{String} class overrides the \ttt{.equals} method implementation to compare strings for their content rather than their reference. Should we choose to compare the two strings for referential equality, we must use the \ttt{==} operator. In this case, we use \ttt{assertEquals} since the two strings are equal in content, but using \ttt{==} would also work because the strings are also equal in reference.
 
 In the third line we change the value of the string inside \ttt{a} to be \ttt{"Hi!"}, which updates across all instances that point to \ttt{a}. Therefore, rerunning the same comparison as before still results in a true equality.
 
@@ -400,3 +400,40 @@ So, what happens if we compare any arbitrary element $e$ against any other arbit
 The second for loop assigns each element of the array to the \ttt{e} object. Then, we can compare any arbitrary element against any other arbitrary element, and they will always be equal, since every element is a reference to the same memory reference. 
 
 Thus, if we set the number of one arbitrary element, this change propagates to every other element in the list, because again, all references point to the same object.
+
+\example Some may question why we emphasize aliasing and mutation. When working with the collections API and designing data structures, proper care must be taken to avoid undesired behavior. Consider what happens if we design a class \ttt{F} that stores a reference to a \ttt{List<Integer>} as an instance variable. Then, suppose we instantiate two distinct instances of \ttt{F}, namely $f_1$ and $f_2$, each of which receive the same list of numbers. If we then mutate the list somewhere inside of $f_1$, then the list inside of $f_2$ will also be mutated.
+
+\begin{cl}[ClassTester.java]{Testing List Mutation and Aliasing}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class ClassTester {
+
+  @Test
+  void testListAliasing() {
+    List<Integer> ls = new ArrayList<>(List.of(1, 2, 3, 4, 5));
+    F f1 = new F(ls);
+    F f2 = new F(ls);
+    f1.getList().set(2, 100);
+    assertEquals(100, f1.getList().get(2));
+    assertEquals(100, f2.getList().get(2));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[F.java]{Class Storing a List of Integers}
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+
+class F {
+  
+    private final List<Integer> LS;
+  
+    public F(List<Integer> ls) { this.KS = ls; }
+  
+    public List<Integer> getList() { return this.LS; }
+}
+\end{lstlisting}
+\end{cl}
