@@ -537,7 +537,7 @@ class TwentyOne {
   }
 
   public static void main(String[] args) {
-      new TwentyOne().playGame();
+    new TwentyOne().playGame();
   }
 }
 \end{lstlisting}
@@ -615,6 +615,7 @@ class RationalTest {
 \end{cl}
 
 \begin{cl}[Rational.java]{Adding Two Rational Numbers}
+\begin{lstlisting}[language=MyJava]
 class Rational {
   // Other details not shown.
 
@@ -630,6 +631,7 @@ class Rational {
     return new Rational(newNumerator, commonDenominator);
   }
 }
+\end{lstlisting}
 \end{cl}
 
 Due to the correspondence to addition, we will leave \ttt{subtraction} as an exercise to the reader. We can now do multiplication, which is even simpler than addition; all that is needed is to multiply the numerators and denominators together. We will also leave \ttt{division} as an exercise to the reader.
