@@ -19,7 +19,7 @@ int x = in.nextInt();
 System.out.println(x);
 \end{verbatim}
 
-Running the program and typing in any 32-bit integer feeds it into standard input, then echos it to standard output. Entering any other non-integer value crashes the program with a XXXX exception. So, what if we want to read in a \ttt{String} from the scannee; would we use \ttt{nextString}? Unfortunately, this is not correct. We need to instead use \ttt{nextLine}. The \ttt{nextLine} method reads a ``line'' of text, as a string, from the scannee. We define a ``line'' as all characters until the first occurrence of a new-line. Invoking \ttt{nextLine} consumes these characters, including the newline, from the input stream, and stores them into a variable, if requested. It does not, however, store the newline in the variable. 
+Running the program and typing in any 32-bit integer feeds it into standard input, then echos it to standard output. Entering any other non-integer value crashes the program with an \ttt{InputMismatchException} exception. So, what if we want to read in a \ttt{String} from the scannee; would we use \ttt{nextString}? Unfortunately, this is not correct. We need to instead use \ttt{nextLine}. The \ttt{nextLine} method reads a ``line'' of text, as a string, from the scannee. We define a ``line'' as all characters until the first occurrence of a new-line. Invoking \ttt{nextLine} consumes these characters, including the newline, from the input stream, and stores them into a variable, if requested. It does not, however, store the newline in the variable. 
 
 \begin{verbatim}
 Scanner in = new Scanner(System.in);
