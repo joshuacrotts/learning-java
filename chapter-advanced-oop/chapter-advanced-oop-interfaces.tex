@@ -7,7 +7,7 @@ So, by having a class implement the \ttt{Comparable} interface, we group it into
 In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List}, \ttt{Queue}, and \ttt{Map} interfaces, which all have a set of methods that must be implemented by any class that implements the interface. Recall that \ttt{ArrayList} and \ttt{LinkedList} are both types of \ttt{List} objects, and this interface describes several methods that all lists, by definition, must override. To \textit{override} a method means that we provide a new implementation of the method that is different from the default implementation provided by the interface.
 
 \subsection*{Defining an Interface}
-\example Suit class example..., show how instantiating a type \ttt{Interface i = new Class()} is DIFFERENT from \ttt{Class c = new Class()}. The former is polymorphic, the latter is not, but the latter allows you to use methods defined ONLY in the class, whereas the former only allows you to use methods defined in the interface.
+% Suit class example..., show how instantiating a type \ttt{Interface i = new Class()} is DIFFERENT from \ttt{Class c = new Class()}. The former is polymorphic, the latter is not, but the latter allows you to use methods defined ONLY in the class, whereas the former only allows you to use methods defined in the interface.
 
 \example Imagine that we want to design an interface that describes a shape. All (two-dimensional) shapes have an area and a perimeter, so we can define an interface that, when implemented by a class, requires that the class provide an implementation of the \ttt{area} and \ttt{perimeter} methods. A common convention for user-defined interfaces is to prefix the names with \ttt{I} to distinguish them from classes. Moreover, the names of interfaces are either nouns or, more traditionally, verbs, since they describe behaviors or characteristics of a class.\footnote{We do not add the \ttt{public} keyword to the interface definition because all interface methods are implicitly public.}
 
@@ -107,6 +107,84 @@ class Octagon implements IShape {
 }
 \end{lstlisting}
 \end{cl}
+
+\example Recall from the previous chapter our ``Twenty-one'' card game example. In that, we designed the \ttt{Suit} class, which contained four public and static instances of \ttt{Suit}, where each represented one of the four valid card suits. While this works as intended, it fails to be elegant and demonstrate how the suits are all the same, but differ only in their string representation. Let's design the \ttt{ISuit} interface, which requires any implementing class to override the \ttt{stringify} method.
+
+\begin{cl}[ISuit.java]{Suit Interface Example}
+\begin{lstlisting}[language=MyJava]
+interface ISuit {
+
+  /**
+   * Returns the string representation of the suit.
+   */
+  String stringify();
+}
+\end{lstlisting}
+\end{cl}
+
+From here, we can define four separate classes, all of which implement \ttt{ISuit} and override the \ttt{stringify} method. These classes are incredibly simple, and as such, we will show only the \ttt{Diamond} and \ttt{Heart} classes.
+
+\begin{cl}[Diamond.java]{Diamond Suit Class}
+\begin{lstlisting}[language=MyJava]
+class Diamond implements ISuit {
+  
+  public Diamond() {}
+
+  @Override
+  public String stringify() { return "(*;$\diamondsuit$;*)"; }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Heart.java]{Heart Suit Class}
+\begin{lstlisting}[language=MyJava]
+class Heart implements ISuit {
+    
+  public Heart() {}
+
+  @Override
+  public String stringify() { return "(*;$\heartsuit$;*)"; }
+}
+\end{lstlisting}
+\end{cl}
+
+As we see, both \ttt{Diamond} and \ttt{Heart} implement \ttt{ISuit} and handle ``stringification'' differently. We can test these definitions by storing a list of \ttt{ISuit} instances and ensuring that the correct character is returned.
+
+\begin{cl}[ISuitTester.java]{Suit Interface Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class ISuitTester {
+
+  @Test
+  void suitTester() {
+    List<ISuit> suit = new ArrayList<>();
+    // Add diamonds at even indices, hearts at odd indices.
+    for (int i = 0; i < 100; i++) {
+      if (i % 2 == 0) { suit.add(new Diamond()); }
+      else { suit.add(new Heart()); }
+    }
+
+    // Now check to verify that the stringification works.
+    for (int i = 0; i < suit.size(); i++) {
+      if (i % 2 == 0) { assertEquals("(*;$\diamondsuit$;*)", suit.get(i).stringify()); }
+      else { assertEquals("(*;$\heartsuit$;*)", suit.get(i).stringify()); }
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+One extra piece of information that we should share is that we can instantiate objects in different ways. To demonstrate why this matters, suppose we initialize an object $s_1$ to type \ttt{ISuit}, but instantiate it as type \ttt{Diamond}. Then, we initialize another object $s_2$ to type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. We would expect that $s_1$ and $s_2$ are equivalent, but this is not the case. Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. Because $s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. Should we want to be able to invoke \ttt{diamondCount} on $s_1$, we need to cast $s_1$ to type \ttt{Diamond}. This is called \textit{downcasting}, and it is a common practice in object-oriented programming.
+
+\begin{verbatim}
+ISuit s1 = new Diamond();
+s1.diamondCount();             // Compile-time error!
+Diamond s2 = new Diamond();
+s2.diamondCount();             // Works but not polymorphic.
+((Diamond) s1).diamondCount(); // Works but downcasts.
+\end{verbatim}
 
 \example Animals are a common example of an interface. Imagine that, in our domain of animals, every animal can speak one way or another. Speaking involves returning a string representing the sound that the animal makes. By designing the \ttt{IAnimal} interface, we can group all animals that can speak together. We can then design classes that implement the \ttt{IAnimal} interface and provide an implementation of the \ttt{speak} method. When testing the latter, we can write tests that instantiate a collection of \ttt{IAnimal} instances, and invoke \ttt{speak} on each of them polymorphically. In doing so we get a refresher of the Java stream API.
 
@@ -408,6 +486,91 @@ class FunctionMap {
 \end{lstlisting}
 \end{cl}
 
-\example Interpreter example...
+\example Now that we have interfaces, we can write a very simple expression tree interpreter! What do we mean by this? Consider the arithmatic expression $5 + (3 + 4)$. According to the standard order-of-operations, we evaluate the parenthesized sub-expressions first, then reduce outer expressions. So, in our case, we add $3$ and $4$ to get $7$, followed by an addition of $5$. We can represent this idea as an evaluation tree, where we travel from bottom-up, evaluating sub-expressions as they are encountered. How does this relate to interfaces? Suppose we create the \ttt{IExpr} interface, which contains a single method: \ttt{int value}, which returns the value of an expression. 
 
+\begin{cl}[IExpr.java]{Expression Interface}
+\begin{lstlisting}[language=MyJava]
+interface IExpr {
+
+  /**
+   * Returns the value of the expression.
+   */
+  int value();
+}
+\end{lstlisting}
+\end{cl}
+
+The simplest (atomic) values in our language are numbers, or literals as they are called. A \ttt{Lit} stores a single integer as an instance variable, and returns this instance variable upon a \ttt{value} invocation, which means \ttt{Lit} must implement the \ttt{IExpr} interface. Testing this class is trivial, so we will only write two tests.
+
+\begin{cl}[LitTester.java]{Literal Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class LitTester {
+
+  @Test
+  void testLit() {
+    assertAll(
+      () -> assertEquals(0, new Lit(0).value()),      
+      () -> assertEquals(42, new Lit(42).value())
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Lit.java]{Lit Class Implementation}
+\begin{lstlisting}[language=MyJava]
+class Lit implements IExpr {
+
+  private final int N;
+
+  public Lit(int n) { this.N = n; }
+
+  public int value() { return this.N; }
+}
+\end{lstlisting}
+\end{cl}
+
+How do we add two numbers? Or, rather, how do we represent the addition of two numbers? This question comes through the answer to our question of representing literal values. Addition expressions store two \ttt{IExpr} expressions as instance variables, and (mutually) recursively calls their \ttt{value} methods, followed by a summation. Note the parallelism to how we do this when evaluating expressions either on paper or in our heads.
+
+\begin{cl}[AddTester.java]{Addition Expression Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AddTester {
+
+  @Test
+  void testAdd() {
+    assertAll(
+      () -> assertEquals(12, new Add(new Lit(5), new Add(new Lit(3), new Lit(4)))),
+      () -> assertEquals(42, new Add(new Lit(41), new Lit(1)))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Add.java]{Addition Expression Implementation}
+\begin{lstlisting}[language=MyJava]
+class Add implements IExpr {
+
+  private final IExpr LHS;
+  private final IExpr RHS;
+
+  public Add(IExpr lhs, IExpr rhs) {
+    this.LHS = lhs;
+    this.RHS = rhs;
+  }
+
+  @Override
+  public int value() { return this.LHS.value() + this.RHS.value(); }
+}
+\end{lstlisting}
+\end{cl}
+
+Thus we have a programming language that interprets numbers and addition expressions! We could add more elements/operators to this language, and we encourage the readers to get creative.
+  
 \example Player example...
