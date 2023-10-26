@@ -7,6 +7,8 @@ So, by having a class implement the \ttt{Comparable} interface, we group it into
 In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List}, \ttt{Queue}, and \ttt{Map} interfaces, which all have a set of methods that must be implemented by any class that implements the interface. Recall that \ttt{ArrayList} and \ttt{LinkedList} are both types of \ttt{List} objects, and this interface describes several methods that all lists, by definition, must override. To \textit{override} a method means that we provide a new implementation of the method that is different from the default implementation provided by the interface.
 
 \subsection*{Defining an Interface}
+\example Suit class example..., show how instantiating a type \ttt{Interface i = new Class()} is DIFFERENT from \ttt{Class c = new Class()}. The former is polymorphic, the latter is not, but the latter allows you to use methods defined ONLY in the class, whereas the former only allows you to use methods defined in the interface.
+
 \example Imagine that we want to design an interface that describes a shape. All (two-dimensional) shapes have an area and a perimeter, so we can define an interface that, when implemented by a class, requires that the class provide an implementation of the \ttt{area} and \ttt{perimeter} methods. A common convention for user-defined interfaces is to prefix the names with \ttt{I} to distinguish them from classes. Moreover, the names of interfaces are either nouns or, more traditionally, verbs, since they describe behaviors or characteristics of a class.\footnote{We do not add the \ttt{public} keyword to the interface definition because all interface methods are implicitly public.}
 
 \begin{cl}[IShape.java]{Shape Interface}
@@ -178,77 +180,76 @@ class Dog implements IAnimal {
 \end{lstlisting}
 \end{cl}
 
-\example Suppose we want an interface that acts as a CRUD operation. In web-based applications and database systems, CRUD refers to ``create, read, update, and destroy''. In other words, we want to be able to create a new object, read the contents of an object, update the contents of an object, and destroy an object. We can define an interface that requires that any class that implements it provide an implementation of these four methods. 
+% \example Suppose we want an interface that acts as a CRUD operation. In web-based applications and database systems, CRUD refers to ``create, read, update, and destroy''. In other words, we want to be able to create a new object, read the contents of an object, update the contents of an object, and destroy an object. We can define an interface that requires that any class that implements it provide an implementation of these four methods. 
 
-\begin{cl}[ICrud.java]{CRUD Interface}
-\begin{lstlisting}[language=MyJava]
-interface ICrud<T> {
+% \begin{cl}[ICrud.java]{CRUD Interface}
+% \begin{lstlisting}[language=MyJava]
+% interface ICrud<T> {
 
-  /**
-    * Creates a new object of type T.
-    */
-  T create();
+%   /**
+%     * Creates a new object of type T.
+%     */
+%   T create();
 
-  /**
-    * Reads the contents of an object of type T.
-    */
-  void read(T t);
+%   /**
+%     * Reads the contents of an object of type T.
+%     */
+%   void read(T t);
 
-  /**
-    * Updates the contents of an object of type T.
-    */
-  void update(T t);
+%   /**
+%     * Updates the contents of an object of type T.
+%     */
+%   void update(T t);
 
-  /**
-    * Destroys an object of type T.
-    */
-  void destroy(T t);
-}
-\end{lstlisting}
-\end{cl}
+%   /**
+%     * Destroys an object of type T.
+%     */
+%   void destroy(T t);
+% }
+% \end{lstlisting}
+% \end{cl}
 
-What are some examples of classes that we might design that implement the \ttt{ICrud} interface? A coupled example might come from a database system. Suppose we have a database that stores information about students. We might design a \ttt{Student} class that stores the name, ID, and GPA of a student. We can then design a \ttt{Student} class that implements the \ttt{ICrud} interface and provides an implementation of the four methods. The \ttt{Student} class would then be responsible for creating, reading, updating, and destroying \ttt{Student} objects in the database. Along those lines, if we wanted to be able to perform operations on an administrator role, we might design the \ttt{Admin} class that implements \ttt{ICrud}. What these operations do in our toy example is unimportant since we are only concerned with the interface definition. Moreover, we created \ttt{ICrud} as a generic interface, meaning that when we substitute the type into the interface, we propagate the type through the class definition.
+% What are some examples of classes that we might design that implement the \ttt{ICrud} interface? A coupled example might come from a database system. Suppose we have a database that stores information about students. We might design a \ttt{Student} class that stores the name, ID, and GPA of a student. We can then design a \ttt{Student} class that implements the \ttt{ICrud} interface and provides an implementation of the four methods. The \ttt{Student} class would then be responsible for creating, reading, updating, and destroying \ttt{Student} objects in the database. Along those lines, if we wanted to be able to perform operations on an administrator role, we might design the \ttt{Admin} class that implements \ttt{ICrud}. What these operations do in our toy example is unimportant since we are only concerned with the interface definition. Moreover, we created \ttt{ICrud} as a generic interface, meaning that when we substitute the type into the interface, we propagate the type through the class definition.
 
-\begin{cl}[Student.java]{Student Class}
-\begin{lstlisting}[language=MyJava]
-class Student implements ICrud<Student> {
+% \begin{cl}[Student.java]{Student Class}
+% \begin{lstlisting}[language=MyJava]
+% class Student implements ICrud<Student> {
   
-  // Instance variables not shown.
+%   // Instance variables not shown.
   
-  private Student(...) {
-    // Implementation not shown.
-  }
+%   private Student(...) {
+%     // Implementation not shown.
+%   }
   
-  @Override
-  public Student create() {
-    return new Student(...);
-  }
+%   @Override
+%   public Student create() {
+%     return new Student(...);
+%   }
   
-  @Override
-  public void read(Student s) {
-    System.out.println(s);
-  }
+%   @Override
+%   public void read(Student s) {
+%     System.out.println(s);
+%   }
   
-  @Override
-  public void update(Student s) {
-    this.name = s.name;
-    this.id = s.id;
-    this.gpa = s.gpa;
-  }
+%   @Override
+%   public void update(Student s) {
+%     this.name = s.name;
+%     this.id = s.id;
+%     this.gpa = s.gpa;
+%   }
   
-  @Override
-  public void destroy(Student s) {
-    s = null;
-  }
+%   @Override
+%   public void destroy(Student s) {  s = null;
+%   }
   
-  @Override
-  public String toString() {
-    return String.format("Name: %s\nID: %d\nGPA: %.2f", 
-                          this.name, this.id, this.gpa);
-  }
-}
-\end{lstlisting}
-\end{cl}
+%   @Override
+%   public String toString() {
+%     return String.format("Name: %s\nID: %d\nGPA: %.2f", 
+%                           this.name, this.id, this.gpa);
+%   }
+% }
+% \end{lstlisting}
+% \end{cl}
 
 \example Suppose we want to design an interface that boxes an arbitrary value. We have seen this idea through autoboxing and autounboxing of the primitive datatypes and the wrapper classes, but our interface extends the concept to any type. We can define an interface that requires that any class that implements it provide an implementation of the \ttt{box}, \ttt{get}, and \ttt{set} methods. Boxing a value means that we can pass it around as a reference rather than as a raw value. Recall that passing primitives to methods is by value and, therefore, the method cannot change the value of the primitive. If, however, we box the primitive, then we can pass the boxed value to a method and change the value of the boxed value. We will first design the generic \ttt{IBox} interface, and then we will design a class that implements the methods. 
 
@@ -306,24 +307,16 @@ class IntegerBox implements IBox<Integer> {
   
   private Integer value;
   
-  private IntegerBox(Integer value) {
-    this.value = value;
-  }
+  private IntegerBox(Integer value) { this.value = value; }
   
   @Override
-  public static IBox<Integer> box(Integer value) {
-    return new IntegerBox(value);
-  }
+  public static IBox<Integer> box(Integer value) { return new IntegerBox(value); }
   
   @Override
-  public Integer get() {
-    return this.value;
-  }
+  public Integer get() { return this.value; }
   
   @Override
-  public void set(Integer value) {
-    this.value = value;
-  }
+  public void set(Integer value) { this.value = value; }
 }
 \end{lstlisting}
 \end{cl}
@@ -414,3 +407,7 @@ class FunctionMap {
 }
 \end{lstlisting}
 \end{cl}
+
+\example Interpreter example...
+
+\example Player example...
