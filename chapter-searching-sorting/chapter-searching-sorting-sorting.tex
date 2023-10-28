@@ -12,7 +12,7 @@ AbstractList<Integer> LS3 =
   new ArrayList<>(List.of(10, 8, 6, 7, 2, 10, 3, 3, 3, 10));
 \end{verbatim}
 
-\subsection{Insertion Sort}
+\subsection*{Insertion Sort}
 \begin{cl}[InsertionSortTester.java]{Insertion Sort Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -64,7 +64,7 @@ import java.util.ArrayList;
 
 class FunctionalInsertionSort<V extends Comparable<V>> implements IInsertionSort<V> {
   
-@Override
+  @Override
   public AbstractList<V> insertionSort(AbstractList<V> ls) {
     if (ls.isEmpty()) { return new ArrayList<>(); }
     else { 
@@ -127,7 +127,7 @@ class InPlaceInsertionSort<V extends Comparable<V>> implements IInsertionSort<V>
 \end{cl}
 
 
-\subsection{Selection Sort}
+\subsection*{Selection Sort}
 \begin{cl}[SelectionSortTester.java]{Selection Sort Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -241,17 +241,188 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
 \end{cl}
 
 
-\subsection{Bubble Sort}
+\subsection*{Bubble Sort}
 \subsubsection*{Functional Bubble Sort}
 \subsubsection*{In-place Bubble Sort}
 
 
-\subsection{Merge Sort}
+\subsection*{Merge Sort}
+\begin{cl}[MergeSortTester.java]{Merge Sort Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class MergeSortTester {
+
+  @Test
+  void fmsTester() {
+    IMergeSort<Integer> ms = new FunctionalMergeSort<>();
+    assertAll(
+      () -> assertEquals(List.of(1, 2, 3, 4, 5), ms.mergeSort(LS1)),
+      () -> assertEquals(List.of(), ms.mergeSort(LS2)),
+      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), ms.mergeSort(LS3))
+    );
+  }
+
+  @Test
+  void ipmsTester() {
+    IMergeSort<Integer> ms = new FunctionalMergeSort<>();
+    assertAll(
+      () -> ms.mergeSort(LS1),
+      () -> assertEquals(List.of(1, 2, 3, 4, 5), LS1),
+      () -> ms.mergeSort(LS2),
+      () -> assertEquals(List.of(), LS2),
+      () -> ms.mergeSort(LS3),
+      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), LS3)
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+  
+\begin{cl}[IMergeSort.java]{Merge Sort Generic Interface}
+\begin{lstlisting}[language=MyJava]
+import java.util.AbstractList;
+
+interface IMergeSort<V extends Comparable<V>> {
+  AbstractList<V> mergeSort(AbstractList<V> ls);
+}
+\end{lstlisting}
+\end{cl}
+
 \subsubsection*{Functional Merge Sort}
+\begin{cl}[FunctionalMergeSort.java]{Functional Merge Sort Implementation}
+\begin{lstlisting}[language=MyJava]
+import java.util.AbstractList;
+import java.util.ArrayList;
+  
+class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
+  
+  @Override
+  public AbstractList<V> mergeSort(AbstractList<V> ls) {
+    return this.mergeSortHelper(ls);
+  }
+  
+  /**
+   * Recursive helper method for merge sort. Splits the list in half and merges
+   * the two halves after recursively sorting them.
+   * 
+   * @param ls the list to sort.
+   * @return the sorted list.
+   */
+  private AbstractList<V> mergeSortHelper(AbstractList<V> ls) {
+    if (ls.isEmpty()) { return new ArrayList<>(); }
+    else if (ls.size() == 1) {
+      AbstractList<V> newLs = new ArrayList<>();
+      newLs.add(ls.get(0));
+      return newLs;
+    } else {
+      int mid = (ls.size() - 1) / 2;
+      AbstractList<V> leftHalf = mergeSortHelper((AbstractList<V>) ls.subList(0, mid + 1));
+      AbstractList<V> rightHalf = mergeSortHelper((AbstractList<V>) ls.subList(mid + 1, ls.size()));
+      return merge(leftHalf, rightHalf);
+    }
+  }
+  
+  /**
+   * Merges two sorted lists into one sorted list. Compares each element one-by-one
+   * and adds the smaller element to the new list. If one list is exhausted, then
+   * the remaining elements of the other list are added to the new list.
+   *
+   * @param ls1 the first sorted list.
+   * @param ls2 the second sorted list.
+   * @return the merged sorted list.
+   */
+  private AbstractList<V> merge(AbstractList<V> ls1, AbstractList<V> ls2) {
+    int i = 0;
+    int j = 0;
+    AbstractList<V> newLs = new ArrayList<>();
+          
+    // Merge the lists, comparing the elements.
+    while (i < ls1.size() && j < ls2.size()) {
+      if (ls1.get(i).compareTo(ls2.get(j)) < 0) { newLs.add(ls1.get(i++)); }
+      else { newLs.add(ls2.get(j++)); }
+    }
+  
+    // Finish copying ls1.
+    while (i < ls1.size()) { newLs.add(ls1.get(i++)); }
+  
+    // Finish copying ls2.
+    while (j < ls2.size()) { newLs.add(ls2.get(j++)); }
+  
+    return newLs;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
 \subsubsection*{In-place Merge Sort}
+\begin{cl}[InPlaceMergeSort.java]{In Place Merge Sort}
+\begin{lstlisting}[language=MyJava]
+import java.util.AbstractList;
+import java.util.ArrayList;
+
+class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
+
+  @Override
+  public AbstractList<V> mergeSort(AbstractList<V> ls) {
+    this.mergeSortHelper(ls, 0, ls.size() - 1);
+    return ls;
+  }
+
+  /**
+   * Recursively sorts the list by splitting it in half and merging the two halves.
+   * 
+   * @param ls the list to sort.
+   * @param low the lower bound of the sublist. 
+   * @param high the upper bound of the sublist.
+   */
+  private void mergeSortHelper(AbstractList<V> ls, int low, int high) {
+    if (low < high) {
+      int mid = low + (high - low) / 2;
+      mergeSortHelper(ls, low, mid);
+      mergeSortHelper(ls, mid + 1, high);
+      merge(ls, low, mid, high);
+    }
+  }
+
+  /**
+   * Merges two sorted sublists into one sorted list. 
+   * 
+   * @param ls the list to sort.
+   * @param low the lower bound of the sublist.
+   * @param mid the middle index of the sublist.
+   * @param high the upper bound of the sublist.
+   */
+  private void merge(AbstractList<V> ls, int low, int mid, int high) {
+    // Create two auxiliary arrays.
+    AbstractList<V> left = new ArrayList<>();
+    AbstractList<V> right = new ArrayList<>();
+
+    // Copy the elements over into the auxiliary lists.
+    for (int i = low; i <= mid; i++) { left.add(ls.get(i)); }
+    for (int j = mid + 1; j <= high; j++) { right.add(ls.get(j)); }
+
+    int mergedIdx = low;
+    int i = 0;
+    int j = 0;
+        
+    // Merge the elements into the existing list.
+    while (i < left.size() && j < right.size()) {
+      if (left.get(i).compareTo(right.get(j)) < 0) { ls.set(mergedIdx++, left.get(i++)); }
+      else { ls.set(mergedIdx++, right.get(j++)); }
+    }
+
+    // Copy the rest of the elements over.
+    while (i < left.size()) { ls.set(mergedIdx++, left.get(i++)); }
+    while (j < right.size()) { ls.set(mergedIdx++, right.get(j++)); }
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 
-\subsection{Quick Sort}
+\subsection*{Quick Sort}
 
 \begin{cl}[QuickSortTester.java]{Quick Sort Tester}
 \begin{lstlisting}[language=MyJava]
@@ -398,3 +569,7 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 }
 \end{lstlisting}
 \end{cl}
+
+\subsection*{Randomized Quick Sort Asymptotic Analysis}
+
+\subsection*{Lower-Bound for Comparison-Based Sorting Algorithms}

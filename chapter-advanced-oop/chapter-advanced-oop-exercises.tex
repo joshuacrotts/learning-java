@@ -1,41 +1,37 @@
 \section*{Chapter Exercises}
 
-\exercise{3}{chapter-advanced-oop}{A \textit{lazy list} is one that, in theory, produces infinite results! Consider the \ttt{LazyList} interface below:}
-
-\begin{cl}[LazyList.java]{Lazy List Interface}
+\exercise{3}{chapter-advanced-oop}{A \textit{lazy list} is one that, in theory, produces infinite results! Consider the \ttt{ILazyList} interface below:}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
-interface LazyList {
- double next();
+public interface ILazyList {
+  double next();
 }
 \end{lstlisting}
 \end{cl}
 
-When calling \ttt{next} on a lazy list, we update the contents of the lazy list and return the next result. For instance, below is a lazy list that produces factorial values:\footnote{We will ignore the intricacies that come with Java's implementation of the \ttt{int} datatype. To make this truly ``infinite'', we could use the \ttt{BigInteger} class. By truly infinite, we of course mean until the program runs out of memory.}
-
-\begin{cl}[FactorialLazyList.java]{Lazy List of Factorial Values}
+When calling \ttt{next} on a lazy list, we update the contents of the lazy list and return the next result. For instance, below is a lazy list that produces factorial values:\footnote{We will ignore the intricacies that come with Java's implementation of the \ttt{int} datatype. To make this truly infinite, we could use \ttt{BigInteger}.}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
-class FactorialLazyList implements LazyList {
+class FactorialLazyList implements ILazyList {
 
- private int n;
- private int fact;
+  private int n;
+  private int fact;
  
- public FactorialLazyList() {
-  this.n = 1;
-  this.fact = 1;
- }
+  public FactorialLazyList() {
+    this.n = 1;
+    this.fact = 1;
+  }
 
- @Override
- public double next() {
-  this.fact *= this.n;
-  this.n++;
-  return this.fact;
- }
+  @Override
+  public double next() {
+    this.fact *= this.n;
+    this.n++;
+    return this.fact;
+  }
 }
 \end{lstlisting}
 \end{cl}
-
 Testing it with ten calls to \ttt{next} yields predictable results.
-
 \begin{cl}[FactorialLazyListTester.java]{Testing Fact Lazy List}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -43,7 +39,7 @@ import static Assertions.assertEquals;
 
 class FactorialLazyListTester {
 
-  private final FactorialLazyList FS = new FactorialLazyList();
+  private final ILazyList FS = new FactorialLazyList();
 
   @Test
   void factorialLazyListTest() {
@@ -64,8 +60,7 @@ class FactorialLazyListTester {
 \end{lstlisting}
 \end{cl}
 
-Design the \ttt{FibonacciLazyList} class, which implements \ttt{LazyList} and correctly overrides \ttt{next} to produce Fibonacci sequence values. You code should \textit{not} use any loops or recursion. Recall that the Fibonacci sequence is defined as $f(n) = f(n-1)+f(n-2)$ for all $n\geq{2}$. The base cases are $f(0)=0$ and $f(1)=1$.
-
+Design the \ttt{FibonacciLazyList} class, which implements \ttt{ILazyList} and correctly overrides \ttt{next} to produce Fibonacci sequence values. You code should \textit{not} use any loops or recursion. Recall that the Fibonacci sequence is defined as $f(n) = f(n - 1) + f(n - 2)$ for all $n\geq{2}$. The base cases are $f(0) = 0$ and $f(1) = 1$.
 \begin{cl}[FibonacciLazyListTester.java]{Testing Fib Lazy List}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -73,7 +68,7 @@ import static Assertions.assertEquals;
 
 class FibonacciLazyListTester {
 
-  private final FibonacciLazyListTester FS = new FibonacciLazyListTester();
+  private final ILazyList FS = new FibonacciLazyList();
 
   @Test
   void fibonacciLazyListTest() {
@@ -89,34 +84,6 @@ class FibonacciLazyListTester {
       () -> assertEquals(21.0, FS.next()),
       () -> assertEquals(34.0, FS.next())
     );
-  }
-}
-\end{lstlisting}
-\end{cl}
-
-\exercise{2}{chapter-advanced-oop}{Design the \ttt{LazyListTake} class. It should receive a \ttt{LazyList} as an object and an integer $n$ denoting how many elements to take. Then, write a \ttt{getList} method, which returns an \ttt{ArrayList} of $n$ elements from the given lazy list.\footnote{If this and the previous two exercises remind you of streams, you're an astute thinker! Streams are a more general version of lazy lists.}}
-
-\begin{cl}[LazyListTakeTester.java]{Testing Lazy List Take}
-\begin{lstlisting}[language=MyJava]
-class LazyListTakeTester {
-
-  private final FibonacciLazyList fibLL = new FibonacciLazyList();
-  private final FactorialLazyList factLL = new FactorialLazyList();
-
-  @Test
-  void factLazyListTakeTest() {
-    LazyListTake llt1 = new LazyListTake(factLL, 10);
-    assertEquals(List.of(1.0, 2.0, 6.0, 24.0, 120.0, 720.0,
-                         5040.0, 40320.0, 362880.0, 3628800.0),
-                  llt1.getList());
-  }
-
-  @Test
-  void factLazyListTakeTest() {
-    LazyListTake llt2 = new LazyListTake(fibLL, 10);
-    assertEquals(List.of(0.0, 1.0, 1.0, 2.0, 3.0, 5.0,
-                         8.0, 13.0, 21.0, 34.0),
-                  llt2.getList());
   }
 }
 \end{lstlisting}

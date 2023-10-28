@@ -1,4 +1,169 @@
 \section{Inheritance}
 
-\dots
+Classes may relate to other classes by a hierarchy. In particular, one class, called the \textit{subclass}, can extend another class, called the \textit{superclass}. A subclass inherits all the public methods and fields from its superclass. Classes can only extend one class at a time, unlike other programming languages such as C++. 
 
+\example Suppose we have a \ttt{Robot} class defined as follows, which can move forward by one unit and turn left by 90 degrees.
+
+\begin{cl}[RobotTester.java]{Robot Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class RobotTester {
+
+  @Test
+  void testRobot() {
+    Robot r1 = new Robot();
+    assertAll(
+      () -> r1.moveForward(),
+      () -> assertEquals(1, r1.getX()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(Robot.Direction.NORTH, r1.getDir()),
+      () -> r1.moveForward(),
+      () -> assertEquals(1, r1.getY()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(Robot.Direction.WEST, r1.getDir()),
+      () -> r1.moveForward(),
+      () -> assertEquals(0, r1.getX()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(Robot.Direction.SOUTH, r1.getDir()),
+      () -> r1.moveForward(),
+      () -> assertEquals(0, r1.getY()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(Robot.Direction.EAST, r1.getDir()),
+      () -> r1.moveForward(),
+      () -> assertEquals(1, r1.getX())
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Robot.java]{Robot Class Definition}
+\begin{lstlisting}[language=MyJava]
+class Robot {
+
+  public enum Direction { NORTH, SOUTH, EAST, WEST };
+
+  private int x;
+  private int y;
+
+  private Direction dir;
+
+  public Robot() {
+    this.x = 0;
+    this.y = 0;
+    this.dir = Direction.EAST;
+  }
+
+  /**
+   * Moves the robot forward by one unit in the direction it is facing.
+   */
+  public void moveForward() {
+    switch (this.dir) {
+      NORTH -> this.y++;
+      SOUTH -> this.y--;
+      EAST -> this.x++;
+      WEST -> this.x--;
+    }
+  }
+
+  /**
+   * Turns the robot left by 90 degrees.
+   */
+  public void turnLeft() {
+    switch (this.dir) {
+      NORTH -> this.dir = Direction.WEST;
+      SOUTH -> this.dir = Direction.EAST;
+      EAST -> this.dir = Direction.NORTH;
+      WEST -> this.dir = Direction.SOUTH;
+    }
+  }
+
+  // Accessors and mutators omitted for brevity.
+}
+\end{lstlisting}
+\end{cl}
+What we have defined is an incredibly primitive robot class that stores its position and direction in a two-dimensional plane. Testing the robot, as we have done, is straightforward, but even such a simple robot definition must turn left three times to mimic the behavior of turning right once. We should extend the \ttt{Robot} class to add a \ttt{turnRight} method. We will call this class \ttt{RightRobot}, which adds a single method: \ttt{turnRight}. The other methods remain the same, since we do not want to overwrite their behavior. One important thing to note is that we invoke the superclass constructor via the \ttt{super()} invocation. We do so because we want the direction, $x$ and $y$ variables to be correctly initialized when instantiating an instance of \ttt{RightRobot}. As we will demonstrate with future examples, invoking the superclass constructor can be done with arguments.
+
+\begin{cl}[RightRobotTester.java]{Right Robot Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class RightRobotTester {
+
+  @Test
+  void testMoverRobot() {
+    RightRobot r1 = new RightRobot();
+    assertAll(
+      () -> r1.turnRight(),
+      () -> assertEquals(RightRobot.Direction.SOUTH, r1.getDir()),
+      () -> r1.turnRight(),
+      () -> assertEquals(RightRobot.Direction.WEST, r1.getDir()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(RightRobot.Direction.SOUTH, r1.getDir())
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[RightRobot.java]{Right Robot Class Definition}
+\begin{lstlisting}[language=MyJava]
+class RightRobot extends Robot {
+
+  public RightRobot() { super(); }
+
+  /**
+   * Turns the robot right by 90 degrees.
+   */
+  public void turnRight() {
+    switch (this.getDir()) {
+      NORTH -> this.setDir(Direction.EAST);
+      SOUTH -> this.setDir(Direction.WEST);
+      EAST -> this.setDir(Direction.SOUTH);
+      WEST -> this.setDir(Direction.NORTH);
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Great, we can turn right with this flavor of the robot! Though, moving forward by one unit is absurdly slow, so let's now design the \ttt{MileMoverRobot} class, which moves ten units for every \ttt{moveForward} call. A mile, in this two-dimensional world, is equal to ten units. Because we want to override the functionality of \ttt{moveForward} from \ttt{Robot}, we must redefine the method in the subclass, and add the \ttt{@Override} annotation. Moreover, we define this particular version of \ttt{moveForward} in terms of \ttt{moveForward} from the superclass. This is a common pattern when overriding methods: we want to reuse the functionality of the superclass, but add some additional behavior. In this case, we want to move ten units forward, instead of one. In order to invoke the superclass definition of \ttt{moveForward}, we prefix the method call with \ttt{super.}, rather than \ttt{this.}. Should we accidentally prefix the method call with \ttt{this.}, we would be invoking the subclass definition of \ttt{moveForward}, resulting in an infinite loop!
+
+\begin{cl}[MileMoverRobotTester.java]{Mile Mover Robot Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class MileMoverRobotTester {
+
+  @Test
+  void testMileMoverRobot() {
+    Robot r1 = new MileMoverRobot();
+    assertAll(
+      () -> r1.moveForward(),
+      () -> assertEquals(10, r1.getX()),
+      () -> r1.turnLeft(),
+      () -> r1.moveForward(),
+      () -> assertEquals(10, r1.getY()),
+    )
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[MileMoverRobot.java]{Mile Mover Robot Class Definition}
+\begin{lstlisting}[language=MyJava]
+class MileMoverRobot extends Robot {
+
+  public MileMoverRobot() { super(); }
+
+  @Override
+  public void moveForward() {
+    for (int i = 0; i < 10; i++) { super.moveForward(); }
+  }
+}
+\end{lstlisting}
+\end{cl}
