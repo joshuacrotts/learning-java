@@ -242,8 +242,117 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
 
 
 \subsection*{Bubble Sort}
+\begin{cl}[BubbleSortTester.java]{Bubble Sort Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class BubbleSortTester {
+
+  @Test
+  void fbs() {
+    IBubbleSort<Integer> fbs = new FunctionalBubbleSort<>();
+    assertAll(
+      () -> assertEquals(List.of(1, 2, 3, 4, 5), fbs.bubbleSort(LS1)),
+      () -> assertEquals(List.of(), fbs.bubbleSort(LS2)),
+      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), fbs.bubbleSort(LS3))
+    );
+  }
+
+  @Test
+  void ipbs() {
+    IBubbleSort<Integer> ipbs = new InPlaceBubbleSort<>();
+    assertAll(
+      () -> ipbs.bubbleSort(LS1),
+      () -> assertEquals(List.of(1, 2, 3, 4, 5), LS1),
+      () -> ipbs.bubbleSort(LS2),
+      () -> assertEquals(List.of(), LS2),
+      () -> ipbs.bubbleSort(LS3),
+      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), LS3)
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[IBubbleSort.java]{Bubble Sort Generic Interface}
+\begin{lstlisting}[language=MyJava]
+import java.util.AbstractList;
+
+interface IBubbleSort<V extends Comparable<V>> {
+  AbstractList<V> bubbleSort(AbstractList<V> ls);
+}
+\end{lstlisting}
+\end{cl}
+
 \subsubsection*{Functional Bubble Sort}
+\begin{cl}[FunctionalBubbleSort.java]{Functional Bubble Sort Implementation}
+\begin{lstlisting}[language=MyJava]
+import java.util.AbstractList;
+import java.util.ArrayList;
+
+class FunctionalBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
+
+  @Override
+  public AbstractList<V> bubbleSort(AbstractList<V> ls) {
+    if (ls.size() <= 1) { return ls; }
+    else {
+      // Find the largest element.
+      V largest = getLargest(ls);
+      boolean removed = false;
+
+      // Get all elements but the largest. Removes only
+      // one occurrence of the largest element.
+      AbstractList<V> rest = new ArrayList<>();
+      for (V v : ls) {
+        if (v.equals(largest) && !removed) { removed = true; }
+        else { rest.add(v); }
+      }
+
+      // Bubble sort the rest, then add the largest as the last element.
+      AbstractList<V> newLs = bubbleSort(rest);
+      newLs.add(largest);
+      return newLs;
+    }
+  }
+
+  /**
+    * Get the largest element in the list.
+    *
+    * @param ls the list to search.
+    * @return the largest element in the list.
+    */
+  private V getLargest(AbstractList<V> ls) {
+    return ls.stream()
+              .max(Comparable::compareTo)
+              .orElse(null);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
 \subsubsection*{In-place Bubble Sort}
+\begin{cl}[InPlaceBubbleSort.java]{In-place Bubble Sort Implementation}
+\begin{lstlisting}[language=MyJava]
+import java.util.AbstractList;
+import java.util.Collections;
+
+class InPlaceBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
+
+  @Override
+  public AbstractList<V> bubbleSort(AbstractList<V> ls) {
+    for (int i = 0; i < ls.size(); i++) {
+      for (int j = 0; j < ls.size() - i - 1; j++) {
+        if (ls.get(j).compareTo(ls.get(j + 1)) > 0) {
+          Collections.swap(ls, j, j + 1);
+        }
+      }
+    }
+    return ls;
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 
 \subsection*{Merge Sort}
@@ -570,6 +679,6 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{Randomized Quick Sort Asymptotic Analysis}
+\subsubsection*{Randomized Quick Sort Asymptotic Analysis}
 
 \subsection*{Lower-Bound for Comparison-Based Sorting Algorithms}
