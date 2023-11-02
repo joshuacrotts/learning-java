@@ -73,7 +73,7 @@ public abstract class AstNode implements Evaluable {
 
 \begin{cl}[Lvalue.java]{L-value Class}
 \begin{lstlisting}[language=MyJava]
-class Lvalue {
+final class Lvalue {
 
   private final AstNode VALUE;
 
@@ -100,7 +100,7 @@ From here, the simplest three abstract syntax tree nodes are \ttt{VarNode}, \ttt
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 
-class Environment extends HashMap<String, AstNode> {
+final class Environment extends HashMap<String, AstNode> {
   
   public Environment() { super(); }
 }
@@ -135,7 +135,7 @@ class AstTest {
 
 \begin{cl}[VarNode.java]{Variable Node}
 \begin{lstlisting}[language=MyJava]
-class VarNode extends AstNode {
+final class VarNode extends AstNode {
 
   private final String NAME;
 
@@ -166,7 +166,7 @@ class VarNode extends AstNode {
 
 \begin{cl}[NumberNode.java]{Number Node}
 \begin{lstlisting}[language=MyJava]
-class NumberNode extends AstNode {
+final class NumberNode extends AstNode {
 
   private final double VALUE;
 
@@ -188,7 +188,7 @@ class NumberNode extends AstNode {
 
 \begin{cl}[BoolNode.java]{Boolean Node}
 \begin{lstlisting}[language=MyJava]
-class BoolNode extends AstNode {
+final class BoolNode extends AstNode {
 
   private final boolean VALUE;
 
@@ -212,7 +212,7 @@ From here, we arrive at primitive operators via \ttt{PrimNode}. A primitive oper
 
 \begin{cl}[PrimNode.java]{Primitive Operator Node}
 \begin{lstlisting}[language=MyJava]
-class PrimNode extends AstNode {
+final class PrimNode extends AstNode {
 
   private final String OP;
 
@@ -263,10 +263,10 @@ class PrimNode extends AstNode {
 We need a way of binding variables, so we shall take a hint from functional programming languages via the \ttt{LetNode} class. The \ttt{LetNode} class has three children: a variable name, a value, and a body. The variable name will be a string, with the value and body both being abstract syntax tree nodes. The \ttt{LetNode} class will have a \ttt{toString} method that will return a string in the form of \ttt{(let ([<var> <exp>]) <body>)}. The \ttt{eval} method will evaluate the value, extend the environment with the new binding, and then evaluate the body with the extended environment. To do this, we need to understand what environment extension entails. Reconsidering our \ttt{Environment} class, we know that it extends the \ttt{HashMap} class to designate that environments \textit{are} maps by design. We may be tempted to override the \ttt{set} method in our \ttt{Environment} class to add an identifier binding to the current environment. While this works (and will be a necessity in due time), it means that we can only \textit{modify}, or \textit{change}, the environment, which isn't desired. The alternative approach would be to utilize \textit{environment extension}. That is, create a new environment with the old bindings, followed by an insertion of the new binding. Environment extension brings up the issue of variable scope, because different variables are live at different locations in the program. Consider the following program described by the abstract syntax tree:
 
 \begin{verbatim}
-  new LetNode("x", new NumberNode(5), 
-   new LetNode("y", new PrimNode("+", new NumberNode(6), new VarNode("x")), 
-    new VarNode("y")))
-  \end{verbatim}
+new LetNode("x", new NumberNode(5), 
+ new LetNode("y", new PrimNode("+", new NumberNode(6), new VarNode("x")), 
+  new VarNode("y")))
+\end{verbatim}
   
 Within the inner-most \ttt{PrimNode} expression, $x$ does not exist in its environment, but it does exist in an environment defined above its scope. So, each environment is itself a store a map of identifiers to abstract syntax trees, but they also contain another \ttt{Environment}. If we are at the ``root level'' of the program, this environment is set to \ttt{null}. Correspondingly, Environment contains two constructors: one that receives a parent environment and another without. As such, we also must override the \ttt{get} method, which looks up a variable in the current list of bindings and, if it does not exist, recursively looks it up in the parent environment. If we reach the root level environment and the variable does not exist, we return a \ttt{null} value. We also override the \ttt{toString} method to print out the environment in a readable format.
 
@@ -297,7 +297,7 @@ class EnvironmentTester {
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 
-class Environment extends HashMap<String, AstNode> {
+final class Environment extends HashMap<String, AstNode> {
 
   private final Environment PARENT;
 
@@ -338,7 +338,7 @@ Our modified version of the environment allows us to implement local/let binding
 
 \begin{cl}[LetNode.java]{Let Node}
 \begin{lstlisting}[language=MyJava]
-class LetNode extends AstNode {
+final class LetNode extends AstNode {
 
   private final String VAR;
 
@@ -380,7 +380,7 @@ Finally we arrive at decision-based nodes. The \ttt{IfNode} class represents a c
 
 \begin{cl}[IfNode.java]{If Node}
 \begin{lstlisting}[language=MyJava]
-class IfNode extends AstNode {
+final class IfNode extends AstNode {
   
   public IfNode(AstNode predicate, AstNode consequent, AstNode alternative) {
     super(predicate, consequent, alternative);
@@ -408,13 +408,13 @@ class IfNode extends AstNode {
     AstNode pred = this.getChildren().get(0);
     AstNode cons = this.getChildren().get(1);
     AstNode alt = this.getChildren().get(2);
-    return String.format("(if %s %s %s"), pred.toString(), cons.toString(), alt.toString());
+    return String.format("(if %s %s %s)", pred.toString(), cons.toString(), alt.toString());
   }
 }
 \end{lstlisting}
 \end{cl}
 
-Finally, at long last, we can write some tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment. Unfortunately we still have to write the programs as an abstract syntax tree rather than as a program, but the problems of lexing and parsing are reserved for some other time (or perhaps a separate course altogether).
+Finally, at long last, we can write some tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment. Unfortunately, we still have to write the programs as an abstract syntax tree rather than as a program, but the problems of lexing and parsing are reserved for some other time (or perhaps a separate course altogether).
 
 \begin{cl}[InterpTester.java]{Interpreter Tester}
 \begin{lstlisting}[language=MyJava]
@@ -441,56 +441,144 @@ class InterpTest {
                             new NumberNode("41"),
                              new PrimNode("+", new VarNode("x"), new VarNode("y"))))
                          .eval(new Environment())),
-      () -> assertEquals(new Lvalue(new NumberNode("42")),
-                         new ProgramNode(new DefNode("x", new NumberNode("42")),
-                                         new VarNode("x")).eval(new Environment())),
-      () -> assertEquals(new Lvalue(new NumberNode("42")),
-                         new ProgramNode(new DefNode("x", new NumberNode("1")),
-                          new DefNode("y", new NumberNode("41")),
-                           new PrimNode("+", new VarNode("x"),
-                                             new VarNode("y"))).eval(new Environment())),
-      () -> assertEquals(new Lvalue(new NumberNode("42")),
-                         new ProgramNode(new DefNode("add1",
-                          new FuncNode(List.of("n"),
-                           new PrimNode("+",
-                            new VarNode("n"),
-                            new NumberNode("1")))),
-                           new ApplyNode(new VarNode("add1"),
-                            new NumberNode("41")))
-                         .eval(new Environment())),
-      () -> assertEquals(new Lvalue(new NumberNode("42")),
-                         new ProgramNode(new DefNode("sub1",
-                          new FuncNode(List.of("n"),
-                           new PrimNode("-",
-                            new VarNode("n"),
-                            new NumberNode("1")))),
-                           new ApplyNode(new VarNode("sub1"),
-                            new NumberNode("43")))
-                         .eval(new Environment())),
-      () -> assertEquals(new Lvalue(new NumberNode("42")),
-                         new ProgramNode(new LetNode("x",
-                          new BoolNode(true),
-                           new IfNode(new VarNode("x"),
-                                      new NumberNode("42"),
-                                      new NumberNode("0"))))
-                         .eval(new Environment())),
-      () -> assertEquals(new Lvalue(new NumberNode("120")),
-                         new ProgramNode(
-                          new DefNode("!",
-                           new FuncNode(List.of("n"),
-                            new IfNode(new PrimNode("eq?", new VarNode("n"), 
-                                                           new NumberNode("0")),
-                             new NumberNode("1"),
-                             new PrimNode("*", new VarNode("n"),
-                             new ApplyNode(new VarNode("!"),
-                              (new PrimNode("-",
-                                new VarNode("n"),
-                                new NumberNode("1")))))))),
-                             new ApplyNode(new VarNode("!"),
-                              new NumberNode("5")))
-                         .eval(new Environment()))
       );
   }
 }
 \end{lstlisting}
 \end{cl}
+
+In general, object-oriented programs with inheritance should be structured as a sequence of specific subclasses that extend an abstract class, as we have done with the different abstract syntax tree node types and the root \ttt{AstNode} abstract class. 
+
+\example Suppose we're writing a two-dimensional game that has different types of interactable objects in the world. The core game object stores the $(x, y)$ location, with nothing more. Again, we want to design a class that specific types of game objects can extend. For instance, our game might contain circular and rectangular objects. Of course, circles and rectangles have different dimension units, namely radius versus width and height respectively. We plan for each object to be interactable with one another. Unfortunately, collision detection is a complicated set of algorithms whose discussion far exceeds the scope of this text. Conversely, there is an extremely straightforward solution that involves treating all objects as rectangles. We call this technique \textit{axis-aligned bounding box}. Because not every object may be collidable, we will design a class \ttt{AxisAlignedBoundingBoxObject} that separately stores the object width and height as the dimensions of the bounding box. This class defines a method for colliding with another \ttt{AxisAlignedBoundingBoxObject}, which determines whether some point of $o_1$ is inside the bounding box of the $o_2$ object. This logic is not the focal point of the discussion, so we will only illustrate the example via an image and not explain the code itself. The purpose for this example is to demonstrate object hierarchy; not recreate the next best-selling two-dimensional side-scroller.
+
+\begin{cl}[GameObject.java]{Game Object Class Definition}
+\begin{lstlisting}[language=MyJava]
+abstract class GameObject {
+  
+  private int x;
+  private int y;
+
+  public GameObject(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  // Getters and setters omitted.
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[AxisAlignedBoundingBoxObject.java]{Axis-Aligned Bounding Box Class}
+\begin{lstlisting}[language=Myjava]
+abstract class AxisAlignedBoundingBoxObject extends GameObject {
+  
+  private int width;
+  private int height;
+
+  public AxisAlignedBoundingBoxObject(int x, int y, int width, int height) {
+    super(x, y);
+    this.width = width;
+    this.height = height;
+  }
+
+  /**
+   * Determines whether this object collides with another AxisAlignedBoundingBoxObject.
+   *
+   * @param obj instance of AxisAlignedBoundingBoxObject.
+   * @return true if the objects overlap and false otherwise.
+   */
+  public boolean collidesWith(AxisAlignedBoundingBoxObject obj) {
+    
+  }
+  
+  // Getters and setters omitted.
+}
+\end{lstlisting}
+\end{cl}
+
+We declared an abstract class to extend another abstract class; which is perfectly acceptable. Because it makes no sense to have an entity called \ttt{AxisAlignedBoundingBoxObject}, we declare it as abstract, but we need it to contain the functionality of \ttt{GameObject}, which calls for the inheritance. Normally, we would immediately write an extensive test suite for \ttt{collidesWith}, but because we cannot instantiate an \ttt{AxisAlignedBoundingBox} directly, we cannot test \ttt{collidesWith} at the moment. In a couple of paragraphs, however, this will be possible, with the additions of \ttt{CircleObject} and \ttt{RectangleObject}.
+
+\begin{cl}[AxisAlignedBoundingBoxObject.java]{Testing AABB Collision Detection}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AxisAlignedBoundingBoxObjectTester {
+
+  @Test
+  void testCollidesWith() {
+    AxisAlignedBoundingBoxObject o1 = new RectangleObject(..., ..., ..., ...);
+    AxisAlignedBoundingBoxObject o2 = new RectangleObject(..., ..., ..., ...);
+    AxisAlignedBoundingBoxObject o3 = new RectangleObject(..., ..., ..., ...);
+    AxisAlignedBoundingBoxObject o4 = new RectangleObject(..., ..., ..., ...);
+    AxisAlignedBoundingBoxObject o5 = new CircleObject(..., ..., ...);
+    AxisAlignedBoundingBoxObject o6 = new CircleObject(..., ..., ...);
+    AxisAlignedBoundingBoxObject o7 = new CircleObject(..., ..., ...);
+    AxisAlignedBoundingBoxObject o8 = new CircleObject(..., ..., ...);
+    assertAll(
+      () -> assertTrue(...),
+      () -> assertTrue(...),
+      () -> assertTrue(...),
+      () -> assertTrue(...),
+      () -> assertTrue(...),
+      () -> assertTrue(...),
+      () -> assertTrue(...),
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+We need to translate our circles into axis-aligned bounding box, but what does that mean? In short, we convert the given radius into the corresponding diameter, and designate this diameter as the width and height of the bounding box. Rectangular objects, on other hand, need no such fancy translation, since a bounding box is a rectangle. Neither subclasses storetheir dimensions as instance variables, due to the fact that the superclass takes care of this for us.
+
+The question that we anticipate many readers are thinking of is, why do we even distinguish objects of differing ``types'' if they both implement collision detection in the same fashion? Since we are working in the context of a game, the way we draw these objects will almost certainly be different! Let's, for the sake of emphasizing the distinctions, design a \ttt{IDrawable} interface, which provides one method: \ttt{draw(Graphics2D g2d)}, which gives us a \ttt{Graphics2D} object. We will not discuss, nor do we really care about the innards of a graphics library aside from the fact that it contains two primitive methods: \ttt{drawOval(int x, int y, int w, int h)} and \ttt{drawRect(int x, int y, int w, int h)}. Therefore our two object subclasses will implement \ttt{IDrawable} and override the method differently.
+
+\begin{cl}[IDrawable.java]{Drawable Interface Definition}
+\begin{lstlisting}[language=MyJava]
+interface IDrawable {
+  
+  /**
+   * Provides a means of drawing primitive graphics.
+   * The inner details of "Graphics2D" are not important to us, but what is important is
+   * the fact that we can use the following methods:
+   * 
+   * - drawOval(int x, int y, int w, int h);
+   * - drawRect(int x, int y, int w, int h);
+   */
+  void draw(Graphics2D g2d); 
+}
+\end{lstlisting}
+\end{cl} 
+
+\begin{cl}[CircleObject.java]{Circle Object Class Definition}
+\begin{lstlisting}[language=MyJava]
+class CircleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
+  
+  public CircleObject(int x, int y, int r) {
+    super(x, y, r * 2, r * 2);
+  }
+
+  @Override
+  public void draw(Graphics2D g2d) {
+    g2d.drawOval(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[RectangleObject.java]{Rectangle Object Class Definition}
+\begin{lstlisting}[language=MyJava]
+class RectangleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
+  
+  public RectangleObject(int x, int y, int w, int h) {
+    super(x, y, w, h);
+  }
+  
+  @Override
+  public void draw(Graphics2D g2d) {
+    g2d.drawRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+  }
+}
+\end{lstlisting}
+\end{cl}
+

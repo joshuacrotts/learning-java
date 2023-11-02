@@ -20,6 +20,7 @@ class Point {
 }
 \end{lstlisting}
 \end{cl}
+
 We now want a way to create an instance of a \ttt{Point}. We declare instances of objects using the \ttt{new} keyword followed by the class constructor. \textit{Constructors} are special methods that are called when we wish to create a new object of that class. Our \ttt{Point} class constructor can receive parameters, which we can use to initialize the relevant $x$ and $y$ instance variables. So, let's declare the constructor for our \ttt{Point} class. Constructors, in general, should be \ttt{public}, as we will need to call them from outside the class definition. Constructors are also special in that they do not have a return type.\footnote{It is a bit of a misnomer to say that constructors do not have a return type. Indeed, they do have a return type, but it is the type of the class itself.} We create a constructor by specifying the class name alongside any desired parameters.
 
 \begin{cl}[Point.java]{\ttt{Point} Class Constructor}
@@ -188,6 +189,31 @@ class Point {
 
 The \ttt{distance} method is called an \textit{instance method} because it is associated with an instance of the class. We can also write \textit{static methods}, which are not associated with an object, but rather the class as a whole. Static methods are declared using the \ttt{static} keyword. Static methods are useful for utility methods that are not associated with a particular instance of the class. All methods designed up until this chapter were static methods, which were not associated with the class in which they resided.
 
+\subsubsection{Method Overloading}
+A method is identified by two attributes: its name, and its signature. Java allows us to \textit{overload} a method or constructor by using the same identifier but different parameters.
+
+\example Let's overload the \ttt{distance} method by writing a version that does not receive a parameter at all, and instead returns the magnitude/distance from the point to the origin. Fortunately this is extremely easy, because we can make use of the existing \ttt{distance} method that does receive a \ttt{Point}; we can pass it the origin point, namely \ttt{new Point(0, 0)}, and everything works out wonderfully! Because this version of \ttt{distance} simply refers to the existing definition, which we have thoroughly tested, we will omit a separate tester.
+
+\begin{cl}[Point.java]{Distance Method Overloading}
+\begin{lstlisting}[language=MyJava]
+class Point {
+  // Previous code not shown.
+  
+  /**
+   * Computes the distance from this point to the origin,
+   * i.e., (0, 0).
+   *
+   * @return returns the magnitude of this distance.
+   */
+   public double distance() {
+     return this.distance(new Point(0, 0));
+   }
+}
+\end{lstlisting}
+\end{cl} 
+
+We could, if desired, overload the \ttt{Point} constructor as well. Though, it makes little sense to do so in this specific instance, since a point is defined by its two coordinate members. In subsequent sections, however, we will overload the constructor and demonstrate its utility/practicality.
+
 \example Let's create the static method \ttt{random}, which returns a random \ttt{Point} object. We will use the \ttt{Random} class to generate a random radius and angle as a polar coordinate. Then, we will convert the polar coordinate to Cartesian coordinates. Let's also add a parameter that specifies the maximum radius.
 
 Because the \ttt{random} method generates a random point, we cannot reasonably write a test that asserts the exact location of the point without prior knowledge of the random seed. Instead, we can write a test that asserts that the point is within a certain radius of the origin. 
@@ -201,14 +227,12 @@ class PointTester {
 
   private static final double DELTA = 0.01;
 
-  private final Point ORIGIN = new Point(0, 0);
-
   @Test
   void testPointRandom() {
-    assertTrue(Point.random(10).distance(ORIGIN) <= 10);
-    assertTrue(Point.random(1).distance(ORIGIN) <= 1);
-    assertTrue(Point.random(5).distance(ORIGIN) <= 5);
-    assertTrue(Point.random(5000000).distance(ORIGIN) <= 5000000);
+    assertTrue(Point.random(10).distance() <= 10);
+    assertTrue(Point.random(1).distance() <= 1);
+    assertTrue(Point.random(5).distance() <= 5);
+    assertTrue(Point.random(5000000).distance() <= 5000000);
   }
 }
 \end{lstlisting}
