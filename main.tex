@@ -3,22 +3,35 @@
 \indexsetup{level=\chapter}
 \makeindex[columns=3, title=Index]
 
+\title{Teaching Java\\A Test-Driven Approach}
+\author{Joshua Crotts}
+\date{\today}
+\newcommand\institute{%
+Department of Computer Science\par
+Indiana University Bloomington} 
+
 \begin{document}
-\frontmatter
+
+
 % \fontsize{10}{12.2}\selectfont
 % \renewcommand{\footnotesize}{\fontsize{7.5pt}{9pt}\selectfont}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}\textit{}
 
-Title Page
+% Include prevents a page break before
+\input{intro/titlepage.tex}
+
+Teaching Java: A Test-Driven Approach\\
+
+Joshua Crotts
 
 \newpage
 Disclaimer Page
-
-% \label{dedications}
+\frontmatter
+\label{dedications}
 % \input{intro/dedications.tex}
 % \input{intro/intentional-blank}
 
-% \label{acknowledgments}
+\label{acknowledgments}
 % \input{intro/acknowledgments.tex}
 
 \begingroup
