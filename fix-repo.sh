@@ -6,4 +6,5 @@ cd .. \
 && cd .. \
 && cd testing-java \
 && rm -rf *.git \
-&& cp -r ../new-java/testing-java/.git .
+&& cp -r ../new-java/testing-java/.git . \
+&& rm -rf ../new-java/

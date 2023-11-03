@@ -441,7 +441,7 @@ class InterpTest {
                             new NumberNode("41"),
                              new PrimNode("+", new VarNode("x"), new VarNode("y"))))
                          .eval(new Environment())),
-      );
+    );
   }
 }
 \end{lstlisting}
@@ -450,6 +450,71 @@ class InterpTest {
 In general, object-oriented programs with inheritance should be structured as a sequence of specific subclasses that extend an abstract class, as we have done with the different abstract syntax tree node types and the root \ttt{AstNode} abstract class. 
 
 \example Suppose we're writing a two-dimensional game that has different types of interactable objects in the world. The core game object stores the $(x, y)$ location, with nothing more. Again, we want to design a class that specific types of game objects can extend. For instance, our game might contain circular and rectangular objects. Of course, circles and rectangles have different dimension units, namely radius versus width and height respectively. We plan for each object to be interactable with one another. Unfortunately, collision detection is a complicated set of algorithms whose discussion far exceeds the scope of this text. Conversely, there is an extremely straightforward solution that involves treating all objects as rectangles. We call this technique \textit{axis-aligned bounding box}. Because not every object may be collidable, we will design a class \ttt{AxisAlignedBoundingBoxObject} that separately stores the object width and height as the dimensions of the bounding box. This class defines a method for colliding with another \ttt{AxisAlignedBoundingBoxObject}, which determines whether some point of $o_1$ is inside the bounding box of the $o_2$ object. This logic is not the focal point of the discussion, so we will only illustrate the example via an image and not explain the code itself. The purpose for this example is to demonstrate object hierarchy; not recreate the next best-selling two-dimensional side-scroller.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1]
+
+% Coordinates of Rectangle 1
+\coordinate (A) at (1, .5);
+\coordinate (B) at (3, .5);
+\coordinate (C) at (3, 2.5);
+\coordinate (D) at (1, 2.5);
+
+% Coordinates of Rectangle 2
+\coordinate (E) at (2.5, 1.5);
+\coordinate (F) at (4.5, 1.5);
+\coordinate (G) at (4.5, 3);
+\coordinate (H) at (2.5, 3);
+
+% Draw x/y axis
+\draw[->] (-.5,0) -- (11,0) node[right] {\textbf{$x$}};
+\draw[->] (0,-.5) -- (0,3) node[above] {\textbf{$y$}};
+\draw[dotted] (5.5, 3) -- (5.5,-.5) node[above] {};
+
+% Draw Rectangle 1 in transparent red
+\fill[red, opacity=0.3] (A) -- (B) -- (C) -- (D) -- cycle;
+
+% Draw Rectangle 2 in transparent blue
+\fill[blue, opacity=0.3] (E) -- (F) -- (G) -- (H) -- cycle;
+
+% Width labels for Rectangle 1
+\draw[decorate, decoration={brace, amplitude=5pt, mirror, raise=2pt}] (A) -- (B) node[midway, below=5pt] {\footnotesize{}$w_1$};
+\draw[decorate, decoration={brace, amplitude=5pt, raise=2pt}] (A) -- (D) node[midway, left=5pt] {\footnotesize{}$h_1$};
+
+% Width labels for Rectangle 2
+\draw[decorate, decoration={brace, amplitude=5pt, raise=2pt, mirror}] (G) -- (H) node[midway, above=5pt] {\footnotesize{}$w_2$};
+\draw[decorate, decoration={brace, amplitude=5pt, raise=2pt, mirror}] (F) -- (G) node[midway, right=5pt] {\footnotesize{}$h_2$};
+
+% Coordinates of Rectangle 3
+\coordinate (I) at (6.5, .5);
+\coordinate (J) at (7.5, .5);
+\coordinate (K) at (7.5, 2.5);
+\coordinate (L) at (6.5, 2.5);
+
+% Coordinates of Rectangle 4
+\coordinate (M) at (8.15, 1);
+\coordinate (N) at (10.15, 1);
+\coordinate (O) at (10.15, 2);
+\coordinate (P) at (8.15, 2);
+
+% Draw Rectangle 3 in transparent red
+\fill[red, opacity=0.3] (I) -- (J) -- (K) -- (L) -- cycle;
+
+% Draw Rectangle 4 in transparent blue
+\fill[blue, opacity=0.3] (M) -- (N) -- (O) -- (P) -- cycle;
+
+% Width labels for Rectangle 3
+\draw[decorate, decoration={brace, amplitude=5pt, mirror, raise=2pt}] (I) -- (J) node[midway, below=5pt] {\footnotesize{}$w_3$};
+\draw[decorate, decoration={brace, amplitude=5pt, raise=2pt}] (I) -- (L) node[midway, left=5pt] {\footnotesize{}$h_3$};
+
+% Width labels for Rectangle 4
+\draw[decorate, decoration={brace, amplitude=5pt, raise=2pt, mirror}] (O) -- (P) node[midway, above=5pt] {\footnotesize{}$w_4$};
+\draw[decorate, decoration={brace, amplitude=5pt, raise=2pt, mirror}] (N) -- (O) node[midway, right=5pt] {\footnotesize{}$h_4$};
+\end{tikzpicture}
+\caption{Collision Detection Between Rectangles.}
+\label{fig:collisiondetection}
+\end{figure}
 
 \begin{cl}[GameObject.java]{Game Object Class Definition}
 \begin{lstlisting}[language=MyJava]
@@ -488,7 +553,10 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
    * @return true if the objects overlap and false otherwise.
    */
   public boolean collidesWith(AxisAlignedBoundingBoxObject obj) {
-    
+    return (this.getX() < obj.getX() + obj.width)   &&
+	   (this.getX() + this.width >= obj.getX()) &&
+ 	   (this.getY() < obj.getY() + obj.height)  &&
+	   (this.getY() + this.height >= obj.height); 
   }
   
   // Getters and setters omitted.
@@ -505,24 +573,25 @@ import static Assertions.assertEquals;
 
 class AxisAlignedBoundingBoxObjectTester {
 
-  @Test
+    @Test
   void testCollidesWith() {
-    AxisAlignedBoundingBoxObject o1 = new RectangleObject(..., ..., ..., ...);
-    AxisAlignedBoundingBoxObject o2 = new RectangleObject(..., ..., ..., ...);
-    AxisAlignedBoundingBoxObject o3 = new RectangleObject(..., ..., ..., ...);
-    AxisAlignedBoundingBoxObject o4 = new RectangleObject(..., ..., ..., ...);
-    AxisAlignedBoundingBoxObject o5 = new CircleObject(..., ..., ...);
-    AxisAlignedBoundingBoxObject o6 = new CircleObject(..., ..., ...);
-    AxisAlignedBoundingBoxObject o7 = new CircleObject(..., ..., ...);
-    AxisAlignedBoundingBoxObject o8 = new CircleObject(..., ..., ...);
-    assertAll(
-      () -> assertTrue(...),
-      () -> assertTrue(...),
-      () -> assertTrue(...),
-      () -> assertTrue(...),
-      () -> assertTrue(...),
-      () -> assertTrue(...),
-      () -> assertTrue(...),
+    AxisAlignedBoundingBoxObject o1 = new RectangleObject(30, 30, 1000, 2000);
+    AxisAlignedBoundingBoxObject o2 = new RectangleObject(0, 0, 5, 5);
+    AxisAlignedBoundingBoxObject o3 = new RectangleObject(400, 200, 750, 250);
+    AxisAlignedBoundingBoxObject o4 = new RectangleObject(300, 100, 300, 200);
+    AxisAlignedBoundingBoxObject o5 = new CircleObject(20, 30, 1000);
+    AxisAlignedBoundingBoxObject o6 = new CircleObject(200, 250, 500);
+    AxisAlignedBoundingBoxObject o7 = new CircleObject(30, 300, 1500);
+    AxisAlignedBoundingBoxObject o8 = new CircleObject(90, 85, 200);
+      assertAll(
+        () -> assertTrue(o1.collidesWith(o2)),
+        () -> assertTrue(o1.collidesWith(o4)),
+        () -> assertTrue(o2.collidesWith(o3)),
+        () -> assertTrue(o2.collidesWith(o8)),
+        () -> assertTrue(o3.collidesWith(o5)),
+        () -> assertTrue(o5.collidesWith(o4 )),
+        () -> assertTrue(o6.collidesWith(o7)),
+        () -> assertTrue(o7.collidesWith(o3))
     );
   }
 }
@@ -554,9 +623,7 @@ interface IDrawable {
 \begin{lstlisting}[language=MyJava]
 class CircleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
   
-  public CircleObject(int x, int y, int r) {
-    super(x, y, r * 2, r * 2);
-  }
+  public CircleObject(int x, int y, int r) { super(x, y, r * 2, r * 2); }
 
   @Override
   public void draw(Graphics2D g2d) {
@@ -570,9 +637,7 @@ class CircleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
 \begin{lstlisting}[language=MyJava]
 class RectangleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
   
-  public RectangleObject(int x, int y, int w, int h) {
-    super(x, y, w, h);
-  }
+  public RectangleObject(int x, int y, int w, int h) { super(x, y, w, h); }
   
   @Override
   public void draw(Graphics2D g2d) {

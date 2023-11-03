@@ -98,8 +98,52 @@ Functional programming languages, in general, are a composition of expressions, 
 \exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
 Variables, in our language, are defined and bound exactly once, namely when they are defined within a let node. Though, in imperative programming, it is often crucial to allow variable reassignments. Design the \ttt{SetNode} class, which receives a variable and an abstract syntax tree, and reassigns the variable to the result of the abstract syntax tree. At the interpreter level, the \ttt{SetNode} should evaluate the abstract syntax tree, and reassign the variable to the result in the current environment (and only the current environment). This means that you'll need to modify the \ttt{Environment} class to allow for variable reassignments. Hint: override the \ttt{set} method in the \ttt{Environment} class.
 
-\exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
-Recursion is nice and intuitive, for the most part. Unfortunately, it is not always the most efficient way to solve a problem. For example, the Fibonacci sequence, as we saw in Chapter~\ref{chapter-crl}, is often defined recursively, but it is much more efficient to define it iteratively (or even with tail recursion). Design the \ttt{WhileNode} class, which receives a condition and an abstract syntax tree, and evaluates the abstract syntax tree until the condition is false. At the interpreter level, the \ttt{WhileNode} should evaluate the condition, and if it is true, evaluate the abstract syntax tree, and repeat until the condition is false. To test your implementation, you will need to combine the \ttt{WhileNode} with both the \ttt{SetNode} and \ttt{BeginNode} classes.
+\exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.} Recursion is nice and intuitive, for the most part. Unfortunately, it is not always the most efficient way to solve a problem. For example, the Fibonacci sequence, as we saw in Chapter~\ref{chapter-crl}, is often defined recursively, but it is much more efficient to define it iteratively (or even with tail recursion). Design the \ttt{WhileNode} class, which receives a condition and an abstract syntax tree, and evaluates the abstract syntax tree until the condition is false. At the interpreter level, the \ttt{WhileNode} should evaluate the condition, and if it is true, evaluate the abstract syntax tree, and repeat until the condition is false. To test your implementation, you will need to combine the \ttt{WhileNode} with both the \ttt{SetNode} and \ttt{BeginNode} classes.
+
+\exercise{3}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.} Having to manually update our case analysis on the primitive operator type is cumbersome and prone to mistakes. A better solution would be to store the operator and its corresponding ``handler'' method, i.e., the method that receives the operands and does the logic of the operator. We can do this via a map where the keys are the string operators and the values are functional references to the handlers. Unfortunately, Java does not directly support passing methods as parameters, meaning they are not first-class. Conversely, we can make use of Java's functional interfaces to achieve our goal. Namely, the interface will contain one method: \ttt{Lvalue apply(List<Lvalue> args, Environment env)}, where \ttt{args} is the list of evaluated arguments. We will call the interface \ttt{IFunction} and make it generic, with the first type quantified to a list of \ttt{Lvalue} instances, and the second type quantified to \ttt{Lvalue}. Hopefully, the connection between these quantified types and the signature of \ttt{apply} is apparent. Using the below definition of \ttt{IFunction}, update \ttt{PrimNode} to no longer perform a case analysis in favor of the map. We provide an example of populating the map with the initial operators in a \ttt{static} block.
+
+\begin{cl}[IFunction.java]{Functional Interface for Primitive Operators}
+\begin{lstlisting}[language=MyJava]
+@FunctionalInterface
+interface IFunction<T, R> {
+  
+  R apply(T t);
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[PrimNode.java]{Primitive Node Class with Function Map}
+\begin{lstlisting}[language=MyJava]
+class PrimNode extends AstNode {
+  
+  private static final Map<String, IFunction<List<Lvalue>, Lvalue>> OPERATORS;
+  
+  static {
+    OPERATORS = new HashMap<>();
+    // Store the primPlus operator in the map.
+    OPERATORS.put("+", this.primPlus);
+  }
+
+  // Other details omitted.
+
+  @Override
+  public Lvalue eval(Environment env) {
+    // TODO.
+  }
+
+  /**
+   * Evaluates a plus operator.
+   */
+  private Lvalue primPlus(List<Lvalue> args, Environment env) {
+    int result = 0;
+    for (Lvalue lv : args) {
+      result += lv.getNumberValue();
+    }
+    return result;
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 \exercise{4}{chapter-advanced-oop}{This exercise is multi-part and involves the interpreter we wrote in the chapter.}
 \begin{enumerate}[label=(\alph*)]
