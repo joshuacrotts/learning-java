@@ -189,8 +189,8 @@ class Point {
 
 The \ttt{distance} method is called an \textit{instance method} because it is associated with an instance of the class. We can also write \textit{static methods}, which are not associated with an object, but rather the class as a whole. Static methods are declared using the \ttt{static} keyword. Static methods are useful for utility methods that are not associated with a particular instance of the class. All methods designed up until this chapter were static methods, which were not associated with the class in which they resided.
 
-\subsubsection{Method Overloading}
-A method is identified by two attributes: its name, and its signature. Java allows us to \textit{overload} a method or constructor by using the same identifier but different parameters.
+\subsubsection*{Method Overloading}
+A method is identified by two attributes: its name, and its signature. Java allows us to \textit{overload}\index{method overloading} a method or constructor by using the same identifier but different parameters.
 
 \example Let's overload the \ttt{distance} method by writing a version that does not receive a parameter at all, and instead returns the magnitude/distance from the point to the origin. Fortunately this is extremely easy, because we can make use of the existing \ttt{distance} method that does receive a \ttt{Point}; we can pass it the origin point, namely \ttt{new Point(0, 0)}, and everything works out wonderfully! Because this version of \ttt{distance} simply refers to the existing definition, which we have thoroughly tested, we will omit a separate tester.
 

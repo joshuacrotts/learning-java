@@ -3,7 +3,7 @@
 Exceptions, at their code, are effect handlers. We use exceptions to identify and respond to events that occur at runtime. Java uses objects to implement an exception type hierarchy, with \ttt{Throwable} being the highest class in the chain. Any subclass or instance of \ttt{Throwable} can be thrown by Java. We will discuss several different exception types by categorizing them into one of two categories: unchecked versus checked checked exceptions.
 
 \subsection*{Unchecked Exceptions}
-In general, we handle exceptions at either compile time or runtime. The exceptions, themselves, are thrown at runtime, but certain exceptions must be explicitly handled and referenced by the program. An \textit{unchecked exception} is a form of exception whose behavior is dictated by the runtime system, or is caught by the programmer manually. A convenience factor of unchecked exceptions is that we do not \textit{have} to explicitly state what happens when one is thrown.
+In general, we handle exceptions at either compile time or runtime. The exceptions, themselves, are thrown at runtime, but certain exceptions must be explicitly handled and referenced by the program. An \textit{unchecked exception} is a form of exception whose behavior is dictated by the runtime system, or is caught by the programmer manually. A convenience factor of unchecked exceptions is that we do not \textit{have} to explicitly state what happens when one is thrown. It should also note that the \ttt{RuntimeException} class serves as the superclass of all unchecked exceptions.
 
 \example Consider what happens when a program contains code that may or may not invoke a division-by-zero. If the divide-by-zero operation occurs, Java automatically throws an \ttt{ArithmeticException} with a relevant explanation of the problem. The exception halts the program at the point thereof, but what's interesting is that we can control the behavior of an unchecked exception via the \ttt{try/catch} combination. Inside a \ttt{try} block we place the code that might throw the exception. Inside the corresponding \ttt{catch} block, we initialize an exception variable to whatever the desired caught exception is, e.g., \ttt{ArithmeticException}, and we handle it inside of the block. Let's write a method that does nothing more than divides the sum of two numbers by the third. 
 
@@ -113,7 +113,53 @@ class IndexOutOfBoundsExceptionExampleTester {
 }
 \end{lstlisting}
 \end{cl} 
-        
+
+Another uncomfortably common unchecked exception that many Java programmers encounter is the \ttt{NullPointerException}, most often discovered when referencing an object that has yet to be instantiated. 
+
+\example Casting an object to a type that it is not results in an unchecked \ttt{ClassCastException}. By ``to a type that it is not'', we mean to say that the object is either not an instance of the type or is not a subtype of the type. Primitive datatypes are not subject to this exception, as they are not objects.\footnote{No pun intended.} All primitive datatypes, except for booleans, can be cast into one another. E.g., \ttt{int x = (int) 'A';} is valid, as is \ttt{char c = (char) 65;}. On the other hand, \ttt{String x = (String) new Integer(5);} is not valid, as \ttt{Integer} is not a subclass of \ttt{String}. We can treat \ttt{List<T>} as an \ttt{AbstractList<T>} by performing a runtime cast, e.g., \ttt{AbstractList<T> x = (AbstractList<T>) ls;}, where \ttt{ls} is defined as being of type \ttt{List<T>}.
+
+\example Sometimes, a program can encounter a state in which it cannot continue. In this case, we can throw an \ttt{IllegalStateException}, designating that the program has reached a point that it should not normally. An example might be attempting to access a closed \ttt{Scanner} instance.
+
+\begin{verbatim}
+Scanner in = new Scanner(System.in);
+in.close();
+String s = in.nextLine(); // Throws IllegalStateException!
+\end{verbatim}
+
 \subsection*{Checked Exceptions}
 
+A checked exception is one that the programmer must explicitly handle. The compiler will not allow the program to compile if the code that may throw the exception is not wrapped in either a \ttt{try/catch} block, or the method signature does not specify that it throws the exception. Many checked exceptions arise from I/O operations, such as reading from or to a data source. Considering this, we will discuss checked exceptions in the context of I/O operations in the following (non-sub)section.
+
 \subsection*{User-Defined Exceptions}
+The programmer can define their own exceptions in terms of other exceptions. Exceptions are nothing more than class definitions, which may be extended and inherited. 
+
+\example Consider defining the \ttt{BadStringInputException} class, which inherits from \ttt{RuntimeException}. We might define this as an exception that is thrown when, after reading the user's input, we find that the input is not a ``alpha string'', i.e., a string that contains only letters. We can define a constructor that takes a string as an argument, which serves as the message that is passed to the exception.\footnote{We note that, in general, creating new exceptions is rarely beneficial, since Java provides a plethora of exception definitions that cover most use cases.}
+
+\begin{cl}[BadStringInputException.java]{Bad String Input Exception}
+\begin{lstlisting}[language=MyJava]
+class BadStringInputException extends RuntimeException {
+  
+  public BadStringInputException(String msg) {
+    super(String.format("BadStringInputException: %s", msg));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Then, if we write code that reads a string from the user, we can throw a \ttt{BadStringInputException} if the input is a non-alphabetic string.
+
+\begin{cl}[BadStringInputExceptionExample.java]{Bad String Input Running Example}
+\begin{lstlisting}[language=MyJava]
+import java.util.Scanner;
+
+class BadStringInputExceptionExample {
+  
+  public static void main(String[] args) {
+    Scanner in = new Scanner(System.in);
+    String s = in.nextLine();
+    if (!s.matches("[a-zA-Z]+")) { throw new BadStringInputException(s); }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
