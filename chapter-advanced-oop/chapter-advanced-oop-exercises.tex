@@ -185,3 +185,12 @@ new ProgramNode(
 )
 \end{verbatim}
 \end{enumerate}
+
+\exercise{3}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
+Data structures are a core and fundamental feature of programming languages. A language without them, or at least one to build others on top of, suffers severely in terms of usability. We will implement a \textit{cons}-like data structure for our interpreter. In functional programming, we often use three operations to act on data structures akin to linked lists: \textit{cons}, \textit{first}, and \textit{rest}, to construct a new list, retrieve the first element, and retrieve the rest of the list respectively. We can inductively define a cons list as follows:
+\begin{verbatim}
+A ConsList is one of:
+ - new ConsList()
+ - new ConsList(x, ConsList)
+\end{verbatim}
+Implement the cons data structure into your interpreter. This should involve designing the \ttt{ConsNode} class that conforms to the aforementioned data definition. Moreover, you will need to update \ttt{PrimNode} to account for the \ttt{first} and \ttt{rest} primitive operations, as well as an \ttt{empty?} predicate, which returns whether or not the cons list is empty. Finally, update the \ttt{Lvalue} class to print a stringified representation of a \ttt{ConsNode}, which amounts to printing each element, separated by spaces, inside of brackets, e.g., \ttt{[$l_0, l_1, ..., l_{n-1}]$}.

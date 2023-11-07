@@ -5,7 +5,7 @@ Exceptions, at their code, are effect handlers. We use exceptions to identify an
 \subsection*{Unchecked Exceptions}
 In general, we handle exceptions at either compile time or runtime. The exceptions, themselves, are thrown at runtime, but certain exceptions must be explicitly handled and referenced by the program. An \textit{unchecked exception} is a form of exception whose behavior is dictated by the runtime system, or is caught by the programmer manually. A convenience factor of unchecked exceptions is that we do not \textit{have} to explicitly state what happens when one is thrown. It should also note that the \ttt{RuntimeException} class serves as the superclass of all unchecked exceptions.
 
-\example Consider what happens when a program contains code that may or may not invoke a division-by-zero. If the divide-by-zero operation occurs, Java automatically throws an \ttt{ArithmeticException} with a relevant explanation of the problem. The exception halts the program at the point thereof, but what's interesting is that we can control the behavior of an unchecked exception via the \ttt{try/catch} combination. Inside a \ttt{try} block we place the code that might throw the exception. Inside the corresponding \ttt{catch} block, we initialize an exception variable to whatever the desired caught exception is, e.g., \ttt{ArithmeticException}, and we handle it inside of the block. Let's write a method that does nothing more than divides the sum of two numbers by the third. 
+\example Consider what happens when a program contains code that may or may not invoke a division-by-zero. If the divide-by-zero operation occurs, Java automatically throws an \ttt{ArithmeticEx\\ception} with a relevant explanation of the problem. The exception halts the program at the point thereof, but what's interesting is that we can control the behavior of an unchecked exception via the \ttt{try/catch} combination. Inside a \ttt{try} block we place the code that might throw the exception. Inside the corresponding \ttt{catch} block, we initialize an exception variable to whatever the desired caught exception is, e.g., \ttt{ArithmeticException}, and we handle it inside of the block. Let's write a method that does nothing more than divides the sum of two numbers by the third. 
 
 \begin{cl}[ArithmeticExceptionExample.java]{}
 \begin{lstlisting}[language=MyJava]
@@ -86,7 +86,7 @@ class IllegalArgumentExceptionExample {
 \end{lstlisting}
 \end{cl}
 
-\example Arrays and strings both produce unchecked exceptions via \ttt{ArrayIndexOutOfBoundsException} and \ttt{StringIndexOutOfBoundsException} respectively, both of which inherit from the \ttt{IndexOutOfBoundsException} class. We imagine that these have both been received, with great frustration, from the readers a indeterminate number of times. Of course, an index out of bounds exception stems from accessing data beyond the permissible bounds of some collection or structure. 
+\example Arrays and strings both produce unchecked exceptions via \ttt{ArrayIndexOutOfBoundsExce\\ption} and \ttt{StringIndexOutOfBoundsException} respectively, both of which inherit from the \ttt{IndexOutOfBoundsException} class. We imagine that these have both been received, with great frustration, from the readers a indeterminate number of times. Of course, an index out of bounds exception stems from accessing data beyond the permissible bounds of some collection or structure. 
 
 \begin{cl}[IndexOutOfBoundsExceptionExampleTester.java]{Out-of-bounds Access Examples}
 \begin{lstlisting}[language=MyJava]
@@ -133,7 +133,7 @@ A checked exception is one that the programmer must explicitly handle. The compi
 \subsection*{User-Defined Exceptions}
 The programmer can define their own exceptions in terms of other exceptions. Exceptions are nothing more than class definitions, which may be extended and inherited. 
 
-\example Consider defining the \ttt{BadStringInputException} class, which inherits from \ttt{RuntimeException}. We might define this as an exception that is thrown when, after reading the user's input, we find that the input is not a ``alpha string'', i.e., a string that contains only letters. We can define a constructor that takes a string as an argument, which serves as the message that is passed to the exception.\footnote{We note that, in general, creating new exceptions is rarely beneficial, since Java provides a plethora of exception definitions that cover most use cases.}
+\example Consider defining the \ttt{BadStringInputException} class, which inherits from \ttt{RuntimeEx\\ception}. We might define this as an exception that is thrown when, after reading the user's input, we find that the input is not a ``alpha string'', i.e., a string that contains only letters. We can define a constructor that takes a string as an argument, which serves as the message that is passed to the exception.\footnote{We note that, in general, creating new exceptions is rarely beneficial, since Java provides a plethora of exception definitions that cover most use cases.}
 
 \begin{cl}[BadStringInputException.java]{Bad String Input Exception}
 \begin{lstlisting}[language=MyJava]
