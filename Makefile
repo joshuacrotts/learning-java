@@ -6,7 +6,8 @@ TIMESTAMP = $(shell date +%Y%m%d_%H%M%S)
 java: $(OUTPUT)
 
 $(OUTPUT):
-	latexmk -halt-on-error -pdf -shell-escape -jobname=java main
+	latexmk -halt-on-error -pdf -shell-escape -jobname=java main && pdftk java.pdf cat 3-end output java-book.pdf
+
 
 clean:
 	latexmk -C
