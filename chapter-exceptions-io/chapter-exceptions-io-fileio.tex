@@ -79,13 +79,123 @@ class FileReaderWriterExamples {
 
 If we open the \ttt{file2.out}, we see that it outputs \ttt{"Here is a string"} on one line, followed by \ttt{"Here is another string"} on the next line. Then, we might expect it to output the numeric strings \ttt{"9"}, \ttt{"71"}, and \ttt{"33"} all on the same line. The \ttt{write} method will coerce (valid) numbers into their ASCII character counterparts, meaning that the file contains the tab character, an uppercase \ttt{'G'}, and the exclamation point \ttt{'!'}. As we will soon demonstrate, working directly with \ttt{FileReader} and \ttt{FileWriter} is rarely advantageous. 
 
-The problem with the file input and output stream classes, as well as the file reader and writer classes, is that they interact directly with the operating system using low-level operations. Constantly invoking these low-level operations is expensive on the CPU for various reasons, and these classes read/write byte-after-byte of data, which is horribly inefficient. The \ttt{BufferedReader} and \ttt{BufferedWriter} classes aim to alleviate this problem by instantiating buffers for data. Then, when the buffer is full, the data is flushed to either the source or destination. This way, the program makes fewer operating system-level calls, improving overall program performance. To read from a stream, as suggested, we use \ttt{BufferedReader}. Its constructor receives an instance of the \ttt{Reader} class, which may be one of several classes. For instance, to read from a file, we wrap a \ttt{FileReader}  
+The problem with the file input and output stream classes, as well as the file reader and writer classes, is that they interact directly with the operating system using low-level operations. Constantly invoking these low-level operations is expensive on the CPU for various reasons, and these classes read/write byte-after-byte of data, which is horribly inefficient. The \ttt{BufferedReader} and \ttt{BufferedWriter} classes aim to alleviate this problem by instantiating buffers for data. Then, when the buffer is full, the data is flushed to either the source or destination. This way, the program makes fewer operating system-level calls, improving overall program performance. To read from a stream, as suggested, we use \ttt{BufferedReader}. Its constructor receives an instance of the \ttt{Reader} class, which may be one of several classes. For example, to read from a file, we wrap a \ttt{FileReader} inside the constructor of \ttt{BufferedReader}. Wrapping a \ttt{FileReader} inside a \ttt{BufferedReader} allows the buffered reader to interplay (using its optimization techniques) with the file reader, which in turn interacts with the operating system. To output data using buffered I/O, we use the analogous \ttt{BufferedWriter} class, which receives a \ttt{Writer} instance. 
 
-\example Using \ttt{BufferedReader} and \ttt{BufferedWriter}...
+\example Using \ttt{BufferedReader} and \ttt{BufferedWriter}, we will write a program that reads data from a file and outputs it to another file.
 
-\example Using \ttt{PrintWriter}...
+\begin{cl}[BufferedReaderWriterExample.java]{Buffered Reader and Writer Example}
+\begin{lstlisting}[language=MyJava]
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 
-\example uhhhh \ttt{ObjectInputOutputStream}...
+class BufferedReaderWriterExample {
+
+  public static void main(String[] args) {
+    try (BufferedReader br = new BufferedReader(new FileReader("file1.in"));
+         BufferedWriter bw = new BufferedWriter(new FileWriter("file1.out"))) {
+      String line = null;
+      while ((line = br.readLine()) != null) { bw.write(line + "\n"); }
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+The benefits of buffered I/O are not obvious to us as the programmers who use these classes. We can, however, directly compare the timed performance of buffered I/O to non-buffered I/O. The following code shows two implementations of reading the contents of a very large file and echoing them to another. We have two defined methods: \ttt{buffered} and \ttt{nonbuffered}, which utilize the \ttt{BufferedReader/Writer} and \ttt{FileInput/OutputStream} classes respectively. Upon testing, we see that the buffered variant takes around three seconds to finish, whereas the nonbuffered version took over four minutes!
+
+\begin{cl}[PerformanceExamples.java]{Buffered versus Non-Buffered I/O Performance}
+\begin{lstlisting}[language=MyJava]
+import java.io.*;
+
+class PerformanceExamples {
+  
+  private static void buffered() {
+    try (BufferedReader br = new BufferedReader(new FileReader("huge-2m-file.txt"));
+         BufferedWriter bw = new BufferedWriter(new FileWriter("bigfile.out"))) {
+      int c = -1;
+      while ((c = br.read()) != -1) { bw.write(c); }
+    } catch (IOException ex) { ex.printStackTrace(); }
+  }
+  
+  private static void nonbuffered() {
+    try (FileInputStream br = (new FileInputStream("huge-2m-file.txt"));
+         FileOutputStream bw = (new FileOutputStream("bigfile.out"))) {
+      int c = -1;
+      while ((c = br.read()) != -1) { bw.write(c); }
+    } catch (IOException ex) { ex.printStackTrace(); }
+  }
+}
+\end{lstlisting}
+\end{cl}  
+
+The classes that we have explored thus far are primarily for reading/writing either binary or text data. Perhaps we want to output values that are not strictly strings or raw bytes, e.g., integers, doubles, floats, and other primitives datatypes. To do so, we can instantiate a \ttt{PrintWriter} instance, which itself receives an instance of the \ttt{Writer} class. A concern for some programmers may be that we lose the benefits of buffered I/O, but this is not the case; the constructor for \ttt{PrintWriter} wraps the writer object that it receives in an instantiation of a \ttt{BufferedWriter} object. Therefore, we do not forgo any performance gains from buffered writing, while gaining the ability to write non-strictly-text data.
+
+\example Using \ttt{PrintWriter}, let's output some arbitrary constants and formatted strings to a file.
+
+\begin{cl}[PrintWriterExample.java]{Using the \ttt{PrintWriter} Class}
+\begin{lstlisting}[language=MyJava]
+import java.io.PrintWriter;
+
+class PrintWriterExample {
+  
+  public static void main(String[] args) {
+    try (PrintWriter pw = new PrintWriter(new FileWriter("file4.out"))) {
+      pw.println(Math.PI);
+      pw.println(false);
+      pw.printf("This is a %s string with %c and %d and %f and %b\n", "formatted", '&', 42, Math.E, true);
+    } catch (IOException ex) { ex.printStackTrace(); }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+And thus the contents of \ttt{file4.out} are, as we might expect:
+
+\begin{verbatim}
+3.141592653589793
+false
+This is a formatted string with & and 42 and 2.718282 and true
+\end{verbatim}
+
+We now have methods for reading strings and raw bytes, as well as methods for outputting all primitives and formatted strings to data destinations. We still have one problem: how can we output the representation of an object? For example, take the \ttt{BigInteger} class; it has associated instance variables and fields that we also need to store. For this particular class, it might be tempting to store a stringified representation, but this is not an optimal solution because, what if a class has a field that itself is an object? We would need to recursively stringify the object, which is not a good idea. Instead, we can use the \ttt{ObjectOutputStream} and \ttt{ObjectInputStream} classes, which allow us to \textit{serialize} and \textit{deserialize} objects. Serialization is the process of converting an object into a stream of (transmittable) bytes, whereas deserialization is the opposite process. In summary, when we serialize objects, we save the object itself, alongside any relevant information about the object, e.g., its fields, instance variables, and so forth. Upon deserializing said object, we can restore the object to its original state, initializing its fields. Suppose, on the contrary,
+
+\example Let's use \ttt{ObjectInput/OutputStream} classes to serialize an object of type \ttt{Player}, which has a name, score, health, and array of top scores. To designate that an object can be serialized, it must implement the \ttt{Serializable} interface. This interface is a \textit{marker interface}\index{marker interface}, meaning that it has no methods to implement. Instead, it is a flag that tells the compiler that the class can be serialized. Our example will also demonstrate the idea that classes can contain other class definitions, which is useful for grouping related classes together. The \ttt{ObjectStreamExample} class defines the private and static \ttt{Player} class as described above. Should we open the \ttt{player.out} file, we see that it contains incomprehensible data; this is because the data is intended to be read only by a program. 
+
+\begin{cl}[ObjectStreamExample.java]{(De-)Serializing the \ttt{Player} Class}
+\begin{lstlisting}[language=MyJava]
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Arrays;
+
+class ObjectStreamExample {
+
+  private static class Player {
+
+    private String name;
+    private int score;
+    private int health;
+    private double[] topScores;
+    
+    public Player(String name, int score, int health, double[] topScores) {
+      this.name = name;
+      this.score = score;
+      this.health = health;
+      this.topScores = topScores;
+    }
+    
+    @Override
+    public String toString() {
+      return String.format("Player[name=%s, score=%d, health=%d, topScores=%s]", 
+                           name, score, health, Arrays.toString(topScores));
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Suppose, on the contrary, that we store objects as strings in a file. This has two problems: first, as we said before, we would need to recursively serialize all compositional objects of the object that we are serializing. Second, we would need to write a parser to read the stringified object and reinitialize its fields. In essence, we have to reinvent worse versions of preexisting classes.
 
 \example uhhhh \ttt{Scanner} examples...
 
