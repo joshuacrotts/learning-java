@@ -1,1 +1,112 @@
 \section{Concurrent Programming}
+
+\subsection*{Threads}
+
+\subsubsection*{Synchronization}
+
+\subsubsection*{Condition Variables}
+
+\subsection*{Networking}
+
+\example Let's use what we have learned to write a multithreaded chat server. That is, we will write a program that acts as server for a chat room. Clients can connect to the server and send messages to each other. The server will be multithreaded so that it can handle multiple clients at once. First, we need to decide on a protocol for communication between the server and the clients. We will use a simple text-based protocol. The server will listen for connections on a port and, when a client connects, the server broadcasts a message to all users stating that the user connected. For this example, to minimize the number of features necessary to convey the important ideas, we will only allow the user to type messages to all users in the room, or the \ttt{\textbackslash{quit}} command to disconnect. The server houses a thread pool that spins up a thread to control a user. Fortunately for us, because we are in Java, we have access to synchronized data structures such as \ttt{Vector}. Therefore, we do not need to manually insert locks into a data structure for storing connected clients. After a server receives a client, as we stated, we dedicate a thread to that user, broadcast a message to all existing users, then resume listening. We will also have a server thread that actively listens for messages that are then relayed to every other user. The notion of the server having a thread to listen for messages is known as a \textit{task-handler}, whose tasks are queued away in a synchronized \ttt{LinkedBlockingQueue} data structure. When reading a command from the user, we enqueue it into the server's queue of tasks, which blocks until a task is available. The task-handler then dequeues the task and broadcasts it to all users.
+
+\begin{cl}[Server.java]{Server Implementation}
+\begin{lstlisting}[language=Java]
+class Server {
+
+  private final Executor THREAD_POOL;
+  private final Vector<Client> CLIENTS;
+  private final BlockingQueue<Task> TASKS;
+  private final int PORT;
+  private boolean running;
+
+  public Server(int port) {
+    this.running = true;
+    this.PORT = port;
+    this.THREAD_POOL = Executors.newCachedThreadPool();
+    this.CLIENTS = new Vector<Client>();
+    this.TASKS = new LinkedBlockingQueue<Task>();
+    this.THREAD_POOL.execute(new TaskHandler(this));
+  }
+
+  public void start() {
+    try {
+      ServerSocket server = new ServerSocket(port);
+      while (this.running) {
+        Socket client = server.accept();
+        Client c = new Client(client);
+        CLIENTS.add(c);
+        THREAD_POOL.execute(c);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private static class TaskHandler implements Runnable {
+
+    private final Server SERVER;
+
+    public TaskHandler(Server server) {
+      this.SERVER = server;
+    }
+
+    public void run() {
+      while (this.SERVER.running) {
+        try {
+          Task task = SERVER.TASKS.take();
+          this.SERVER.CLIENTS.forEach(c -> c.send(task));
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
+    public void addTask(Task t) {
+      this.SERVER.TASKS.add(t);
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Clients contain an output and input stream, which are used to send and receive messages to and from the server. The client thread is responsible for reading messages from the server and printing them to the user's console, as well as receiving messages from the clients' standard input stream, and feeding those lines to the server. 
+
+\begin{cl}[Client.java]{Client Implementation}
+\begin{lstlisting}[language=Java]
+class Client implements Runnable {
+
+  private final Socket SOCKET;
+  private final Server SERVER;
+  private final BufferedReader IN;
+  private final PrintWriter OUT;
+
+  public Client(Socket socket) {
+    this.SOCKET = socket;
+    this.SERVER = server;
+    this.IN = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    this.OUT = new PrintWriter(socket.getOutputStream(), true);
+  }
+
+  @Override
+  public void run() {
+    try {
+      String line;
+      while ((line = this.IN.readLine()) != null) {
+        this.SERVER.addTask(new Task(this, line));
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void send(Task task) {
+    switch (task.getType()) {
+      case BROADCAST -> this.OUT.println(task.getResponse());
+      default -> throw new IllegalArgumentException("send: invalid task type " + task);
+    }
+    this.OUT.println(task);
+  }
+}
+\end{lstlisting}
+\end{cl}
