@@ -2,75 +2,105 @@
 
 \subsection*{Threads}
 
-\subsubsection*{Synchronization}
+\example Race condition...
 
-\subsubsection*{Condition Variables}
+\begin{cl}[RaceConditionExample.java]{Example of a Race Condition}
+\begin{lstlisting}[language=MyJava]
+class RaceConditionExample {
 
-\subsection*{Networking}
+  private static int counter = 0;
+  private static Thread t1;
+  private static Thread t2;
 
-\example Let's use what we have learned to write a multithreaded chat server. That is, we will write a program that acts as server for a chat room. Clients can connect to the server and send messages to each other. The server will be multithreaded so that it can handle multiple clients at once. First, we need to decide on a protocol for communication between the server and the clients. We will use a simple text-based protocol. The server will listen for connections on a port and, when a client connects, the server broadcasts a message to all users stating that the user connected. For this example, to minimize the number of features necessary to convey the important ideas, we will only allow the user to type messages to all users in the room, or the \ttt{\textbackslash{quit}} command to disconnect. The server houses a thread pool that spins up a thread to control a user. Fortunately for us, because we are in Java, we have access to synchronized data structures such as \ttt{Vector}. Therefore, we do not need to manually insert locks into a data structure for storing connected clients. After a server receives a client, as we stated, we dedicate a thread to that user, broadcast a message to all existing users, then resume listening. We will also have a server thread that actively listens for messages that are then relayed to every other user. The notion of the server having a thread to listen for messages is known as a \textit{task-handler}, whose tasks are queued away in a synchronized \ttt{LinkedBlockingQueue} data structure. When reading a command from the user, we enqueue it into the server's queue of tasks, which blocks until a task is available. The task-handler then dequeues the task and broadcasts it to all users.
+  public static void main(String[] args) {
+    t1 = new Thread(() -> { for (int i = 0; i < 1_000_000_000; i++) { counter += i; }});
+    t2 = new Thread(() -> { for (int i = 0; i < 1_000_000_000; i++) { counter += i; }});
 
-\begin{cl}[Server.java]{Server Implementation}
-\begin{lstlisting}[language=Java]
-class Server {
-
-  private final Executor THREAD_POOL;
-  private final Vector<Client> CLIENTS;
-  private final BlockingQueue<Task> TASKS;
-  private final int PORT;
-  private boolean running;
-
-  public Server(int port) {
-    this.running = true;
-    this.PORT = port;
-    this.THREAD_POOL = Executors.newCachedThreadPool();
-    this.CLIENTS = new Vector<Client>();
-    this.TASKS = new LinkedBlockingQueue<Task>();
-    this.THREAD_POOL.execute(new TaskHandler(this));
-  }
-
-  public void start() {
-    try {
-      ServerSocket server = new ServerSocket(port);
-      while (this.running) {
-        Socket client = server.accept();
-        Client c = new Client(client);
-        CLIENTS.add(c);
-        THREAD_POOL.execute(c);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private static class TaskHandler implements Runnable {
-
-    private final Server SERVER;
-
-    public TaskHandler(Server server) {
-      this.SERVER = server;
-    }
-
-    public void run() {
-      while (this.SERVER.running) {
-        try {
-          Task task = SERVER.TASKS.take();
-          this.SERVER.CLIENTS.forEach(c -> c.send(task));
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-      }
-    }
-
-    public void addTask(Task t) {
-      this.SERVER.TASKS.add(t);
-    }
+    t1.start();
+    t2.start();
+    System.out.println(counter);
   }
 }
 \end{lstlisting}
 \end{cl}
 
-Clients contain an output and input stream, which are used to send and receive messages to and from the server. The client thread is responsible for reading messages from the server and printing them to the user's console, as well as receiving messages from the clients' standard input stream, and feeding those lines to the server. 
+
+\subsubsection*{Synchronization}
+
+\example Mutexes...
+
+\example Busy loop
+
+\subsubsection*{Condition Variables}
+
+\example Condition variables...
+
+\subsection*{Networking}
+
+\example Let's use what we have learned to write a multithreaded chat server. That is, we will write a program that acts as server for a chat room. Clients can connect to the server and send messages to each other. The server will be multithreaded so that it can handle multiple clients at once. First, we need to decide on a protocol for communication between the server and the clients. We will use a simple text-based protocol. The server will listen for connections on a port and, when a client connects, the server broadcasts a message to all users stating that the user connected. For this example, to minimize the number of features necessary to convey the important ideas, we will only allow the user to log into the ``room'', type messages to all users in the room, or to disconnect via the \ttt{\textbackslash{quit}} command. The server houses a thread pool that spins up a thread to control a user. Fortunately for us, because we are in Java, we have access to synchronized data structures such as \ttt{Vector}. Therefore, we do not need to manually insert locks into a data structure for storing connected clients. After a server receives a client, as we stated, we dedicate a thread to that user, broadcast a message to all existing users, then resume listening. We will also have a server thread that actively listens for messages that are then relayed to every other user. The notion of the server having a thread to listen for messages is known as a \textit{task-handler}, whose tasks are queued away in a synchronized \ttt{LinkedBlockingQueue} data structure. When reading a command from the user, we enqueue it into the server's queue of tasks, which blocks until a task is available. The task-handler then dequeues the task and broadcasts it to all users. It will be up to the client to determine whether or not they are the intended recipient.
+
+\begin{cl}[Server.java]{Server Implementation}
+\begin{lstlisting}[language=Java]
+  class Server {
+  
+    private final ExecutorService THREAD_POOL;
+    private final Vector <Client> CLIENTS;
+    private final BlockingQueue <Task> TASKS;
+    private final int PORT;
+    private boolean running;
+  
+    public Server(int port) {
+      this.running = true;
+      this.PORT = port;
+      this.THREAD_POOL = Executors.newCachedThreadPool();
+      this.CLIENTS = new Vector<>();
+      this.TASKS = new LinkedBlockingQueue<>();
+      this.THREAD_POOL.execute(new TaskHandler(this));
+    }
+  
+    public void start() {
+      try {
+        ServerSocket server = new ServerSocket(this.PORT);
+        System.out.printf("Server connected on port %d...\n", this.PORT);
+        while (this.running) {
+          Socket client = server.accept();
+          System.out.printf("Client %s connected!\n", client.getInetAddress());
+          Client c = new Client(client, this);
+          this.CLIENTS.add(c);
+          this.THREAD_POOL.execute(c);
+        }
+      } catch (IOException e) { e.printStackTrace(); }
+    }
+  
+    public void addTask(Task t) {
+      if (t != null) { this.TASKS.add(t); }
+    }
+  
+    private static class TaskHandler implements Runnable {
+  
+      private final Server SERVER;
+  
+      public TaskHandler(Server server) { this.SERVER = server; }
+  
+      @Override
+      public void run() {
+        while (this.SERVER.running) {
+          try {
+            Task task = this.SERVER.TASKS.take();
+            this.SERVER.CLIENTS.forEach(c -> c.send(task));
+          } catch (InterruptedException e) { e.printStackTrace(); }
+        }
+      }
+    }
+  
+    public static void main(String[] args) {
+      new Server(8080).start();
+    }
+  }
+\end{lstlisting}
+\end{cl}
+
+Clients contain an output and input stream, which are used to send and receive messages to and from the server. The client thread is responsible for reading messages from the server and printing them to the user's console, as well as receiving messages from the clients' standard input stream, and feeding those lines to the server. We will also designate that a client has a user identifier and stores a flag indicating whether or not the client is "logged in", which simply represents if they can receive any broadcast messages. By default, the user identifier will be the IP address of the connected socket, which is replaceable/alterable via the \ttt{"login"} command.
 
 \begin{cl}[Client.java]{Client Implementation}
 \begin{lstlisting}[language=Java]
@@ -81,32 +111,144 @@ class Client implements Runnable {
   private final BufferedReader IN;
   private final PrintWriter OUT;
 
+  private boolean loggedIn;
+  private String userId;
+
   public Client(Socket socket) {
     this.SOCKET = socket;
     this.SERVER = server;
     this.IN = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     this.OUT = new PrintWriter(socket.getOutputStream(), true);
+    this.loggedIn = false;
+    this.userId = socket.getInetAddress().toString();
   }
 
   @Override
   public void run() {
     try {
       String line;
-      while ((line = this.IN.readLine()) != null) {
-        this.SERVER.addTask(new Task(this, line));
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void send(Task task) {
-    switch (task.getType()) {
-      case BROADCAST -> this.OUT.println(task.getResponse());
-      default -> throw new IllegalArgumentException("send: invalid task type " + task);
-    }
-    this.OUT.println(task);
+      while ((line = this.IN.readLine()) != null) { this.SERVER.addTask(parseCmd(line)); }
+    } catch (IOException e) { e.printStackTrace(); }
   }
 }
 \end{lstlisting}
 \end{cl}
+
+We now need to write the \ttt{parseCmd} message, which receives an unparsed string from the client and returns a \ttt{Task} object, which we will design momentarily. Commands, in our system, will be prefixed via a forward slash \ttt{/}, followed by the arguments thereof. As an example, \ttt{/login joshua} will set the user's identifier to \ttt{joshua}. We will also allow the user to send messages to all other users via the \ttt{/send} command, which is followed by the message broadcast. Finally, the \ttt{/quit} command disconnects the user from the server.
+
+\begin{cl}[Client.java]{Parsing the Input Command}
+\begin{lstlisting}[language=MyJava]
+class Client {
+  // ... other information not shown.
+
+  public Task parseCmd(String line) {
+    String cmd = line.substring(0, line.indexOf(' '));
+    String msg = line.substring(line.indexOf(' ') + 1);
+    switch (cmd) {
+      case "/login" -> { return this.handleLoginCmd(msg); }
+      case "/send"  -> { return this.handleSendCmd(msg); }
+      case "/quit"  -> { return this.handleQuitCmd(); }
+      default -> throw new IllegalArgumentException("parseCmd: invalid command " + cmd);
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Our tasks will consist of a hierarchy of objects. Namely, a \ttt{Task} contains an enumeration of its type, as well as the raw data. A \ttt{SenderTask} is a task that contains a sender information, which stores an instance variable denoting the \ttt{Client} who the message originated from. Finally, a \ttt{BroadcastTask} is a task that contains a message to be broadcast to all users, which is itself a subclass of \ttt{SenderTask}. Tasks are operations that must be sent to the server and handled by one of its threads. Certain commands may remain local to the server due to their simplicity, e.g., \ttt{"/login"} and \ttt{"/quit"} do not need to be relayed to other users (and therefore are not wrapped as \ttt{Task} instances). 
+
+\begin{cl}[TaskType.java]{Task Type Enumeration}
+\begin{lstlisting}[language=Java]
+enum TaskType {
+  BROADCAST
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Task.java]{Task Class}
+\begin{lstlisting}[language=Java]
+abstract class Task {
+
+  private final TaskType TYPE;
+  private final String RESPONSE;
+
+  public Task(TaskType type, String response) {
+    this.TYPE = type;
+    this.RESPONSE = response;
+  }
+
+  public TaskType getType() { return this.TYPE; }
+
+  public String getResponse() { return this.RESPONSE; }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[SenderTask.java]{SenderTask Class}
+\begin{lstlisting}[language=Java]
+abstract class SenderTask extends Task {
+
+  private final Client SENDER;
+
+  public SenderTask(TaskType type, String response, Client sender) {
+    super(type, response);
+    this.SENDER = sender;
+  }
+
+  public Client getSender() { return this.SENDER; }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[BroadcastTask.java]{BroadcastTask Class}
+\begin{lstlisting}[language=Java]
+class BroadcastTask extends SenderTask {
+
+  public BroadcastTask(Client sender, String response) {
+    super(TaskType.BROADCAST, response, sender);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+We now must write the \ttt{Client} \ttt{send} method, which receives a \ttt{Task} from the server and interprets it accordingly. The only task that our server can send is \ttt{BROADCAST}, so we simply need to check whether the client is logged in and, if so, print the message to their output stream. At the same time, we can also take care of privatized parsing command methods. Only one of these three should return a non-\ttt{null} object. It is also a design decision to make \ttt{handleQuitCmd} and \ttt{handleLoginCmd} return \ttt{null} because they do not need to be broadcast to other users. We do so to ensure consistency among the methods.
+
+\begin{cl}[Client.java]{Client \ttt{send} Method}
+\begin{lstlisting}[language=Java]
+class Client {
+  // ... other information not shown.
+
+  public void send(Task task) {
+    if (task.getType() == TaskType.BROADCAST && this.loggedIn) {
+      BroadcastTask bTask = (BroadcastTask) task;
+      this.OUT.println(bTask.getResponse());
+    } else { throw new IllegalArgumentException("send: invalid task type " + task.getType()); }
+  }
+
+  private Task handleLoginCmd(String msg) {
+    this.userId = msg;
+    this.loggedIn = true;
+    return null;
+  }
+
+  private Task handleSendCmd(String msg) {
+    return new BroadcastTask(this, msg);
+  }
+
+  private Task handleQuitCmd() {
+    this.loggedIn = false;
+    try {
+      this.SOCKET.close();
+      this.IN.close();
+      this.OUT.close();
+    } catch (IOException e) { 
+      e.printStackTrace(); 
+    } finally {
+      return null;
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Now we can run the server! Clients connect via the ``netcat'' command \ttt{nc}, which is a utility for reading and writing to network connections. We can connect to the server, using multiple terminals, via \ttt{nc localhost 8080}. Below is a demo of the server running with three clients connected.
