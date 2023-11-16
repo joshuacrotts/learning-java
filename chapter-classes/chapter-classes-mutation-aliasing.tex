@@ -149,7 +149,7 @@ class MiniArrayList<T> {
   public MiniArrayList(int capacity) {
     this.size = 0;
     this.capacity = capacity;
-    this.array = (T[]) new Object[capacity];
+    this.elements = (T[]) new Object[capacity];
   }
 }
 \end{lstlisting}
@@ -269,7 +269,7 @@ class MiniArrayList<T> {
    */
   public void insert(T e, int idx) {
     if (this.size == capacity) { this.resize(); }
-    this.shiftRight();
+    this.shiftRight(idx);
     this.elements[idx] = e;
   }
 
@@ -280,7 +280,7 @@ class MiniArrayList<T> {
    * @return the element removed.
    */
   public T remove(int idx) {
-    int e = this.get(idx);
+    T e = this.get(idx);
     this.shiftLeft(idx);
     this.size--;
     return e;

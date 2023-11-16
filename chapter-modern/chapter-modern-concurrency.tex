@@ -2,108 +2,421 @@
 
 \subsection*{Threads}
 
-\example Race condition...
+\example Multiple threads can access data simultaneously, which is convenient. The problem is the fact that threads can \textit{context switch} at arbitrary points, which may include during an \textit{atomic operation}. Atomic operations are operations that must be executed in their entirety, without interruption. For example, suppose that we have a variable \ttt{counter} that we want to increment. We might write the following code:
 
 \begin{cl}[RaceConditionExample.java]{Example of a Race Condition}
 \begin{lstlisting}[language=MyJava]
 class RaceConditionExample {
 
   private static int counter = 0;
-  private static Thread t1;
-  private static Thread t2;
 
   public static void main(String[] args) {
-    t1 = new Thread(() -> { for (int i = 0; i < 1_000_000_000; i++) { counter += i; }});
-    t2 = new Thread(() -> { for (int i = 0; i < 1_000_000_000; i++) { counter += i; }});
+    Thread t1 = new Thread(new Incrementer());
+    Thread t2 = new Thread(new Incrementer());
 
     t1.start();
     t2.start();
+
+    try {
+      t1.join();
+      t2.join();
+    } catch (InterruptedException ex) {
+      ex.printStackTrace();
+    }
+    
     System.out.println(counter);
+  }
+
+  private static class Incrementer implements Runnable {
+
+    @Override
+    public void run() {
+      for (int i = 0; i < 1_000_000; i++) { counter += 1; }
+    }
   }
 }
 \end{lstlisting}
 \end{cl}
 
+Upon running the program, we might expect the output to be \ttt{2_000_000}, but this is not the case. The output is nondeterministic, meaning that it is not guaranteed to be the same every time we run the program. This is because the \ttt{counter += 1} operation is not atomic. That is, the following sequence of events can occur:
+
+\begin{enumerate}
+  \item Thread $t_1$ reads the value of \ttt{counter} as \ttt{0}.
+  \item Thread $t_2$ reads the value of \ttt{counter} as \ttt{0}.
+  \item Thread $t_1$ increments the value of \ttt{counter} to \ttt{1}.
+  \item Thread $t_2$ increments the value of \ttt{counter} to \ttt{1}.
+  \item Thread $t_1$ writes the value of \ttt{counter} as \ttt{1}.
+  \item Thread $t_2$ writes the value of \ttt{counter} as \ttt{1}.
+\end{enumerate}
+
+Thus, we need a way of synchronizing access to the \ttt{counter} variable. We will discuss this in the next section.
 
 \subsubsection*{Synchronization}
 
 \example Mutexes...
 
-\example Busy loop
+\example A \textit{thread-safe data structure} is one that supports reentrancy, i.e., multiple threads working over it at the same time. Java's \ttt{ArrayList} class is not thread-safe, so we will implement our own thread-safe array list using locks. The idea is to wrap all pieces of the code that multiple threads may access with a lock. Recalling our \ttt{MiniArrayList} class from Chapter~\ref{chapter:classes}, we see that \ttt{add}, \ttt{remove}, \ttt{insert}, \ttt{get}, and \ttt{size} all either access or modify the state of the list, which could conflict with another thread and cause a dangerous race condition. Thus we will surround the code within a lock. Note that some methods do not, themselves, need to be synchronized, e.g., \ttt{shiftLeft}/\ttt{shiftRight}/\ttt{resize}, because they are only ever called from within a synchronized context. Should we wrap those methods in the same lock, then the thread who owns the lock would be unable to call those methods, causing a \textit{deadlock}.\footnote{Java's \ttt{ReentrantLock} class is a reentrant lock, meaning that a thread can acquire the lock multiple times. So, this problem is not as big of an issue, but we will still avoid it for the sake of clarity and adaptability to other languages that may not have reentrant locks.} Moreover, because the \ttt{remove} method calls \ttt{get}, acquiring the lock immediately in \ttt{remove} is a bad idea. So, we acquire the lock in \ttt{get}, then release it, then acquire it again in \ttt{remove}. Certain methods, e.g., \ttt{size} and \ttt{get}, need to be updated to account for releasing the lock before the return statement; in these cases we store the result in a (local) temporary variable, release the lock, then return. In the code segment, we omit the comments for the sake of brevity.
+
+\begin{cl}[ThreadSafeArrayList.java]{Thread-Safe Array List Implementation}
+\begin{lstlisting}[language=MyJava]
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+class ThreadSafeArrayList<T> {
+
+  // ... other instance variables not shown.
+  private Lock lock;
+
+  public ThreadSafeArrayList(int capacity) {
+    this.size = 0;
+    this.capacity = capacity;
+    this.elements = (T[]) new Object[capacity];
+    this.lock = new ReentrantLock();
+  }
+
+  public void add(T element) {
+    this.lock.lock();
+    if (this.size == this.capacity) { this.resize(); }
+    this.elements[this.size] = element;
+    this.size++;
+    this.lock.unlock();
+  }
+
+  public void insert(T e, int idx) {
+    this.lock.lock();
+    if (this.size == capacity) { this.resize(); }
+    this.shiftRight(idx);
+    this.elements[idx] = e;
+    this.lock.unlock();
+  }
+
+  public T remove(int idx) {
+    T e = this.get(idx);
+    this.lock.lock();
+    this.shiftLeft(idx);
+    this.size--;
+    this.lock.unlock();
+    return e;
+  }
+
+  public T get(int index) {
+    this.lock.lock();
+    T e = this.elements[index];
+    this.lock.unlock();
+    return e;
+  }
+
+  public int size() {
+    this.lock.lock();
+    int sz = this.size;
+    this.lock.unlock();
+    return sz;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Java, in fact, does have a data structure in the Collections API that supports multithreading and is therefore thread-safe: the \ttt{Vector} class serves this purpose. Though, should we not want to use \ttt{Vector}, since some Java programmers consider it ``deprecated'', we can invoke the static \ttt{synchronizedList} method on \ttt{Collections} to return a synchronized/thread-safe version of the input list. There are also other data structures in the Collections API that are thread-safe, such as \ttt{ConcurrentHashMap} and \ttt{ConcurrentLinkedQueue}, as well as methods to convert a non-thread-safe data structure into one that is thread-safe, e.g., \ttt{synchronizedMap} and \ttt{synchronizedSet}.
+
+\example In the event that we want to block concurrent access to a variable, we can mark the method as \ttt{synchronized}, which means that only one thread can access the method at a time. Moreover, if we want to not deal with locks but still need atomic operations, we can use, for example, \ttt{AtomicInteger}. Let's revisit the \ttt{counter} example from earlier, but this time we will use an \ttt{AtomicInteger} to ensure that the increment operation is atomic.
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.util.concurrent.atomic.AtomicInteger;
+
+class VolatileVariableExample {
+
+  private static AtomicInteger counter = new AtomicInteger(0);
+
+  public static void main(String[] args) {
+    Thread t1 = new Thread(new Incrementer());
+    Thread t2 = new Thread(new Incrementer());
+
+    t1.start();
+    t2.start();
+
+    try {
+      t1.join();
+      t2.join();
+    } catch (InterruptedException ex) { ex.printStackTrace(); }
+
+    System.out.println(counter);
+  }
+
+  private static class Incrementer implements Runnable {
+
+    @Override
+    public void run() {
+      for (int i = 0; i < 1_000_000; i++) { inc(); }
+    }
+
+    public static synchronized void inc() {
+      counter.incrementAndGet();
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+% \example In the event that we only want to block concurrent access to a variable, we can wrap the operation that we want to be atomic inside a \ttt{synchronized} block. A method that is synchronized can only be accessed by one thread at a time, and all other threads that attempt to access the method will block until the lock is released. We can also synchronize on a specific object, which is useful when we want to synchronize on a variable that is not a method. In the following example, we synchronize on the \ttt{counter} variable, which is not a method. We can also synchronize on the class itself, which is useful when we want to synchronize on a static method.
+
 
 \subsubsection*{Condition Variables}
 
-\example Condition variables...
+\example Imagine that we are writing a multithreaded program, where thread $t_1$ is a ``consumer'', and there are multiple ``producer'' threads $t_2, ..., t_n$. The producer threads add data to a list, and the consumer polls them when available. We want to ensure that the consumer only polls the list when it is non-empty. So, one might think to write the following code for the consumer:
+
+\begin{cl}[Consumer.java]{Consumer Thread Behavior}
+\begin{lstlisting}[language=MyJava]
+class Consumer<T> implements Runnable {
+
+  private final Vector<T> LIST;
+
+  public Consumer(Vector<T> ls) { this.LIST = ls; }
+
+  @Override
+  public void run() {
+    while (true) {
+      while (this.LIST.isEmpty()) { /* do nothing */ }
+      T e = this.LIST.remove(0);
+      System.out.printf("Consumed: %s\n", e);
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+The consumer thread will ``busy-wait'' until the list is non-empty. A busy-wait loop is not recommended because the thread has to continuously check the list to determine if an element exists, which is wasteful. The better solution is to use a \textit{condition variable}, which serves as a signal between threads. While the list is empty, our consumer thread awaits on the condition variable, thereby putting it to sleep. Then, the producer thread(s) will issue a signal to the condition variable when inserting data into the list. Condition variables are always associated with a lock, so we need to define one in our main program and pass it around to both the producer(s) and consumer. 
+
+When the consumer acquires the lock, it checks if the list is empty. If so, it awaits on the condition variable, which releases the held lock and puts the thread to sleep. When the producer acquires the lock, it adds an element to the list, then issues a signal to the condition variable, which wakes up the consumer thread. The signal causes the consumer to reacquire the lock, check if the list is empty, and, if not, remove (and process) the head element from the list, followed by releasing the lock.
+
+For the sake of our example, suppose that a producer adds data to the list using a random number generator.\footnote{The \ttt{Random} class is thread-safe.} That is, we generate a random number, determine if it is within a specific range and, if so, add data to the list. This then means that the producer thread signals on the condition variable, awaking the consumer.
+
+\begin{cl}[Producer.java]{Producer Thread Behavior}
+\begin{lstlisting}[language=MyJava]
+import java.util.Random;
+import java.util.Vector;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+
+class Producer implements Runnable {
+
+  private static final Random RAND = new Random();
+
+  private final Vector<Integer> LIST;
+  private final Lock LOCK;
+  private final Condition COND_VAR;
+
+  public Producer(Vector<Integer> ls, Lock lock, Condition condVar) {
+    this.LIST = ls;
+    this.LOCK = lock;
+    this.COND_VAR = condVar;
+  }
+
+  @Override
+  public void run() {
+    while (true) {
+      this.LOCK.lock();
+      int n = this.RAND.nextInt(100);
+      if (n < 10) {
+        this.LIST.add(n);
+        this.COND_VAR.signal();
+      }
+      this.LOCK.unlock();
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Further note that awaiting on a condition variable potentially throws an \ttt{InterruptedException}, meaning we must surround the call with a \ttt{try/catch} block.\footnote{Should we not want to do this, we can instead invoke the \ttt{awaitUninterruptibly} method.} An important fact to consider is that, if a thread that issues a signal on a condition variable does not own the respective lock, Java will throw an \ttt{IllegalMonitorStateException}.
+
+\begin{cl}[ConditionVariableExample.java]{Producer/Consumer Thread Behavior}
+\begin{lstlisting}[language=MyJava]
+class ConditionVariableExample {
+
+  private static final Lock LOCK = new ReentrantLock();
+  private static final Condition COND_VAR = LOCK.newCondition();
+  private static final Vector<Integer> LIST = new Vector<>();
+
+  public static void main(String[] args) {
+    Thread t1 = new Thread(new Consumer<>(LIST, LOCK, COND_VAR));
+    Thread t2 = new Thread(new Producer<>(LIST, LOCK, COND_VAR));
+    Thread t3 = new Thread(new Producer<>(LIST, LOCK, COND_VAR));
+
+    t1.start();
+    t2.start();
+    t3.start();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+If we fix our input seed to \ttt{212}, the output is deterministically as follows:
+
+\begin{verbatim}
+Consumed: 1
+Consumed: 6
+Consumed: 1
+Consumed: 7
+Consumed: 7
+Consumed: 8
+Consumed: 1
+Consumed: 4
+Consumed: 5
+\end{verbatim}
 
 \subsection*{Networking}
+
+\example Server time echoer... 
+
+\begin{cl}[TimeEchoServer.java]{Time Echo Server}
+\begin{lstlisting}[language=MyJava]
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+class TimeEchoServer {
+
+  private static final int PORT = 8080;
+
+  public static void main(String[] args) {
+    try (ServerSocket ss = new ServerSocket(PORT)) {
+      System.out.printf("Server listening on port %d...\n", PORT);
+      // Continuously listen for clients.
+      while (true) {
+        // Accept the incoming client, block until we receive one.
+        Socket client = ss.accept();
+        System.out.printf("Client connected: %s\n", client.getInetAddress().toString());
+        // DO NOT FORGET TO AUTOFLUSH THE WRITER!
+        PrintWriter pw = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
+        // Echo the server time to the client.
+        pw.println("The server time is " + java.time.LocalDateTime.now());
+        // Echo that the client has disconnected, then close their connection.
+        System.out.printf("Client disconnected: %s\n", client.getInetAddress().toString());
+        client.close();
+      }
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example country ranking...
+\begin{cl}[CountryPopulationRankServer.java]{Country Rank Server}
+\begin{lstlisting}[language=MyJava]
+class CountryPopulationRankServer {
+
+  private final int PORT;
+  private final ExecutorService THREAD_POOL;
+  private final List<String> COUNTRIES;
+
+  public CountryPopulationRankServer(int port) {
+    this.THREAD_POOL = Executors.newCachedThreadPool();
+    this.PORT = port;
+    this.COUNTRIES = new ArrayList<>();
+
+    // Read in the words from the text file.
+    try (BufferedReader br = new BufferedReader(new FileReader("countries.txt"))) {
+      String line = null;
+      while ((line = br.readLine()) != null) { this.COUNTRIES.add(line); }
+    } catch (IOException ex) { ex.printStackTrace(); }
+  }
+
+  public void start() {
+    // Set up the thread pool.
+    try (ServerSocket ss = new ServerSocket(this.PORT)) {
+      while (true) {
+        Socket socket = ss.accept();
+        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        // Read in the country from the user.
+        String line = br.readLine();
+        int country = Integer.parseInt(line) - 1;
+        PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+        // Output the nth most populous country.
+        pw.printf("%d country: %s\n", country + 1, this.COUNTRIES.get(country));
+        socket.close();
+      }
+    } catch (IOException ex) { ex.printStackTrace(); }
+  }
+
+  public static void main(String[] args) {
+    new CountryPopulationRankServer(8080).start();
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 \example Let's use what we have learned to write a multithreaded chat server. That is, we will write a program that acts as server for a chat room. Clients can connect to the server and send messages to each other. The server will be multithreaded so that it can handle multiple clients at once. First, we need to decide on a protocol for communication between the server and the clients. We will use a simple text-based protocol. The server will listen for connections on a port and, when a client connects, the server broadcasts a message to all users stating that the user connected. For this example, to minimize the number of features necessary to convey the important ideas, we will only allow the user to log into the ``room'', type messages to all users in the room, or to disconnect via the \ttt{\textbackslash{quit}} command. The server houses a thread pool that spins up a thread to control a user. Fortunately for us, because we are in Java, we have access to synchronized data structures such as \ttt{Vector}. Therefore, we do not need to manually insert locks into a data structure for storing connected clients. After a server receives a client, as we stated, we dedicate a thread to that user, broadcast a message to all existing users, then resume listening. We will also have a server thread that actively listens for messages that are then relayed to every other user. The notion of the server having a thread to listen for messages is known as a \textit{task-handler}, whose tasks are queued away in a synchronized \ttt{LinkedBlockingQueue} data structure. When reading a command from the user, we enqueue it into the server's queue of tasks, which blocks until a task is available. The task-handler then dequeues the task and broadcasts it to all users. It will be up to the client to determine whether or not they are the intended recipient.
 
 \begin{cl}[Server.java]{Server Implementation}
-\begin{lstlisting}[language=Java]
-  class Server {
-  
-    private final ExecutorService THREAD_POOL;
-    private final Vector <Client> CLIENTS;
-    private final BlockingQueue <Task> TASKS;
-    private final int PORT;
-    private boolean running;
-  
-    public Server(int port) {
-      this.running = true;
-      this.PORT = port;
-      this.THREAD_POOL = Executors.newCachedThreadPool();
-      this.CLIENTS = new Vector<>();
-      this.TASKS = new LinkedBlockingQueue<>();
-      this.THREAD_POOL.execute(new TaskHandler(this));
-    }
-  
-    public void start() {
-      try {
-        ServerSocket server = new ServerSocket(this.PORT);
-        System.out.printf("Server connected on port %d...\n", this.PORT);
-        while (this.running) {
-          Socket client = server.accept();
-          System.out.printf("Client %s connected!\n", client.getInetAddress());
-          Client c = new Client(client, this);
-          this.CLIENTS.add(c);
-          this.THREAD_POOL.execute(c);
-        }
-      } catch (IOException e) { e.printStackTrace(); }
-    }
-  
-    public void addTask(Task t) {
-      if (t != null) { this.TASKS.add(t); }
-    }
-  
-    private static class TaskHandler implements Runnable {
-  
-      private final Server SERVER;
-  
-      public TaskHandler(Server server) { this.SERVER = server; }
-  
-      @Override
-      public void run() {
-        while (this.SERVER.running) {
-          try {
-            Task task = this.SERVER.TASKS.take();
-            this.SERVER.CLIENTS.forEach(c -> c.send(task));
-          } catch (InterruptedException e) { e.printStackTrace(); }
-        }
+\begin{lstlisting}[language=MyJava]
+class Server {
+
+  private final ExecutorService THREAD_POOL;
+  private final Vector <Client> CLIENTS;
+  private final BlockingQueue <Task> TASKS;
+  private final int PORT;
+  private boolean running;
+
+  public Server(int port) {
+    this.running = true;
+    this.PORT = port;
+    this.THREAD_POOL = Executors.newCachedThreadPool();
+    this.CLIENTS = new Vector<>();
+    this.TASKS = new LinkedBlockingQueue<>();
+    this.THREAD_POOL.execute(new TaskHandler(this));
+  }
+
+  public void start() {
+    try {
+      ServerSocket server = new ServerSocket(this.PORT);
+      System.out.printf("Server connected on port %d...\n", this.PORT);
+      while (this.running) {
+        Socket client = server.accept();
+        System.out.printf("Client %s connected!\n", client.getInetAddress());
+        Client c = new Client(client, this);
+        this.CLIENTS.add(c);
+        this.THREAD_POOL.execute(c);
+      }
+    } catch (IOException e) { e.printStackTrace(); }
+  }
+
+  public void addTask(Task t) {
+    if (t != null) { this.TASKS.add(t); }
+  }
+
+  private static class TaskHandler implements Runnable {
+
+    private final Server SERVER;
+
+    public TaskHandler(Server server) { this.SERVER = server; }
+
+    @Override
+    public void run() {
+      while (this.SERVER.running) {
+        try {
+          Task task = this.SERVER.TASKS.take();
+          this.SERVER.CLIENTS.forEach(c -> c.send(task));
+        } catch (InterruptedException e) { e.printStackTrace(); }
       }
     }
-  
-    public static void main(String[] args) {
-      new Server(8080).start();
-    }
   }
+
+  public static void main(String[] args) {
+    new Server(8080).start();
+  }
+}
 \end{lstlisting}
 \end{cl}
 
-Clients contain an output and input stream, which are used to send and receive messages to and from the server. The client thread is responsible for reading messages from the server and printing them to the user's console, as well as receiving messages from the clients' standard input stream, and feeding those lines to the server. We will also designate that a client has a user identifier and stores a flag indicating whether or not the client is "logged in", which simply represents if they can receive any broadcast messages. By default, the user identifier will be the IP address of the connected socket, which is replaceable/alterable via the \ttt{"login"} command.
+Clients contain an output and input stream, which are used to send and receive messages to and from the server. The client thread is responsible for reading messages from the server and printing them to the user's console, as well as receiving messages from the clients' standard input stream, and feeding those lines to the server. We will also designate that a client has a user identifier and stores a flag indicating whether or not the client is "logged in", which simply represents if they can receive any broadcast messages. By default, the user identifier will be the IP address of the connected socket, which is replaceable/alterable via the \ttt{"login"} command. Note the similarity between this and the previous client implementation for the ``country rank'' server.
 
 \begin{cl}[Client.java]{Client Implementation}
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=MyJava]
 class Client implements Runnable {
 
   private final Socket SOCKET;
@@ -158,7 +471,7 @@ class Client {
 Our tasks will consist of a hierarchy of objects. Namely, a \ttt{Task} contains an enumeration of its type, as well as the raw data. A \ttt{SenderTask} is a task that contains a sender information, which stores an instance variable denoting the \ttt{Client} who the message originated from. Finally, a \ttt{BroadcastTask} is a task that contains a message to be broadcast to all users, which is itself a subclass of \ttt{SenderTask}. Tasks are operations that must be sent to the server and handled by one of its threads. Certain commands may remain local to the server due to their simplicity, e.g., \ttt{"/login"} and \ttt{"/quit"} do not need to be relayed to other users (and therefore are not wrapped as \ttt{Task} instances). 
 
 \begin{cl}[TaskType.java]{Task Type Enumeration}
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=MyJava]
 enum TaskType {
   BROADCAST
 }
@@ -166,7 +479,7 @@ enum TaskType {
 \end{cl}
 
 \begin{cl}[Task.java]{Task Class}
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=MyJava]
 abstract class Task {
 
   private final TaskType TYPE;
@@ -185,7 +498,7 @@ abstract class Task {
 \end{cl}
 
 \begin{cl}[SenderTask.java]{SenderTask Class}
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=MyJava]
 abstract class SenderTask extends Task {
 
   private final Client SENDER;
@@ -201,7 +514,7 @@ abstract class SenderTask extends Task {
 \end{cl}
 
 \begin{cl}[BroadcastTask.java]{BroadcastTask Class}
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=MyJava]
 class BroadcastTask extends SenderTask {
 
   public BroadcastTask(Client sender, String response) {
@@ -214,7 +527,7 @@ class BroadcastTask extends SenderTask {
 We now must write the \ttt{Client} \ttt{send} method, which receives a \ttt{Task} from the server and interprets it accordingly. The only task that our server can send is \ttt{BROADCAST}, so we simply need to check whether the client is logged in and, if so, print the message to their output stream. At the same time, we can also take care of privatized parsing command methods. Only one of these three should return a non-\ttt{null} object. It is also a design decision to make \ttt{handleQuitCmd} and \ttt{handleLoginCmd} return \ttt{null} because they do not need to be broadcast to other users. We do so to ensure consistency among the methods.
 
 \begin{cl}[Client.java]{Client \ttt{send} Method}
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=MyJava]
 class Client {
   // ... other information not shown.
 

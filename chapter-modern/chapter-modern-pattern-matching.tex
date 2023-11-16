@@ -1,1 +1,47 @@
 \section{Pattern Matching}
+
+Pattern matching is a powerful tool for working with data. It allows the programmer to create temporary bindings for identifiers that match a given pattern. This is useful for extracting data from a data structure, or for testing whether a data structure matches a given pattern. Java added support for pattern matching inside \ttt{switch} expressions in Java 21. Prior to this version, the best that could be done was to use \ttt{instanceof} to test whether an object was an instance of a given class or interface, and then cast the object to that type. Pattern matching is significantly more concise.
+
+\example Suppose we want to write a method that uses pattern matching to compute the perimeter of an \ttt{IShape}. We can do this by matching on the shape and then computing the perimeter for each type of shape.
+
+\begin{cl}[PatternMatchingTester.java]{Example of Pattern Matching}
+\begin{lstlisting}[language=MyJava]
+class PatternMatchingTester {
+
+  @Test
+  void patternMatchingTest() {
+    IShape circle = new Circle(5);
+    IShape rectangle = new Rectangle(5, 10);
+    IShape triangle = new Triangle(5);
+
+    assertAll() {
+      () -> assertEquals(31.41592653589793, perimeter(circle)),
+      () -> assertEquals(30, perimeter(rectangle)),
+      () -> assertEquals(15, perimeter(triangle))
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+The definitions of \ttt{Rectangle}, \ttt{Circle}, \ttt{Triangle}, and \ttt{IShape} are trivial and have been shown in previous chapters. The \ttt{perimeter} method, which is static inside \ttt{PatternMatching}, is shown below. We return the result of a \ttt{switch} expression, which matches against the possible subtypes of \ttt{IShape}. We create a temporary binding for the identifier \ttt{shape} that is bound to the \ttt{IShape} object passed into the method. This, in effect, casts the \ttt{IShape} to the subtype that is pattern matched, and we can then access the respective public methods and fields of the specific subtype rather than being restricted to only members of the \ttt{IShape} interface.
+
+\begin{cl}[PatternMatching.java]{Pattern Matching}
+\begin{lstlisting}[language=MyJava]
+class PatternMatching {
+
+  public static double perimeter(IShape shape) {
+    return switch (shape) {
+      case Rectangle r -> 2 * r.getWidth() + 2 * r.getHeight();
+      case Circle c    -> 2 * Math.PI * c.getRadius();
+      case Triangle t  -> 3 * t.getSideLength();
+      default -> throw new IllegalArgumentException("perimeter: unknown shape " + shape);
+    };
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+We can also use ``guard expressions'' when constructing patterns to only match a pattern if a condition holds for that pattern.
+
+\example Suppose we want to write a method that... need a good example...

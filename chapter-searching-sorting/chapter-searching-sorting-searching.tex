@@ -1,7 +1,7 @@
 \section{Searching}
 
 \subsection*{Linear Search}
-The \textit{linear search} algorithm is a sequential searching algorithm. That is, we check element-by-element to determine if the element we are looking for is in the list. If the element is in the list, we return the index of the element. If the element is not in the list, we (generally) return $-1$. Linear search is nonsensical for non-constant-time access data structures, such as linked lists, because the whole point of linear search is to retrieve an element at its index quickly, then determine if it is the element we are searching.
+The \textit{linear search} algorithm is a sequential searching algorithm. That is, we check element-by-element to determine if the element we are looking for is in the list. If the element is in the list, we return the index of the element. If the element is not in the list, we (generally) return $-1$. Linear search is nonsensical for non-constant-time access data structures, such as linked lists, because the whole point of linear search is to retrieve an element at its index quickly, then determine if it is the element we are searching. 
 
 \subsubsection*{Standard Recursive Linear Search}
 We might think that a standard recursive linear search works, and indeed it is possible to write such an algorithm, but in Java it is almost nonsensical to do so. Consider the possible base cases: if the list is empty, what do we return? As described earlier, we might return $-1$, but think about what happens when the recursive calls unwind. If we add one to the result of the recursive calls when searching, then if the element is not in the list, the returned value will always be the length of the list minus one. Should we find the desired element, we might return zero, which works as expected. It's only in the cases when we do not find the element that we run into trouble. There are two possible solutions: throw an exception if the element is not present, or simply do not use a standard recursive linear search.\footnote{Some languages, e.g., Scheme, use \textit{continuations} to represent ``jump-out'' states; allowing the program to forgo unwinding the call stack when returning $-1$. Since Java does not support continuations by defauilt, we cannot use this methodology.} We might also think to use \ttt{Optional}, but this is not a good idea either, since we would need to check the result of the recursive calls, which detracts from the simplicity of the algorithm.
@@ -39,7 +39,6 @@ class StandardRecursiveLinearSearch<V extends Comparable<V>> implements ILinearS
 \end{cl}
 
 \subsubsection*{Tail Recursive Linear Search}
-
 
 \begin{cl}[TailRecursiveLinearSearch.java]{Tail-Recursive Linear Search}
 \begin{lstlisting}[language=MyJava]
