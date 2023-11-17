@@ -720,7 +720,7 @@ Therefore $S$ is a set containing countably-infinite values. Implementing $S$ in
 To create a stream of infinite data is to recreate our inductive set definition inside a \ttt{IntStream} instance and the \ttt{iterate} static method.
 
 \begin{verbatim}
--=p[;'/IntStream is = IntStream.iterate(0, x -> x + 2);
+IntStream is = IntStream.iterate(0, x -> x + 2);
 \end{verbatim}
 
 Let us explain this method, but to do so we must introduce \textit{lambda expressions}. A lambda expression is an anonymous function, i.e., a function definition without a name. In the above code snippet, we define a function that receives a value $x$ and returns $x$ plus two. It would be identical to defining a \ttt{private static} method to add two to some integer, but we like lambda expressions due to their locality; it seems superfluous to design a method that is used in only one context. Should we want to pass a method reference rather than a lambda expression, this is easily achievable.
@@ -738,6 +738,7 @@ class PositiveEvens {
 }   
 \end{lstlisting}
 \end{cl}
+
 The \ttt{IntStream} instance declares a stream that, when requested/prompted, invokes and populates the stream. Because it is impossible to represent an infinite data structure in Java with modern computers, we should limit how many values we want from this stream. Indeed, the \ttt{.limit} method computes exactly $n$ elements from the stream. So, to compute the first ten elements of our $\textit{is}$ \ttt{IntStream}, we invoke \ttt{.limit(10)} on our $\textit{is}$ stream. 
 
 \begin{cl}[]{}
@@ -776,97 +777,119 @@ Here's what we need to do: we will use \ttt{iterate} to generate new values in t
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
-import java.util.BigInteger;
-import java.util.Stream;
-import java.util.ArrayList;
 
 class BigIntFibStreamTester {
 
-    @Test
-    void bigIntFibStreamTest() {
-        // Get the stream, test ten values, make sure the lists are the same
-        // length, then test each subarray.
-        Stream<BigInteger[]> s = StreamExample.fibonacciStream();
-        List<BigInteger[]> actualLs = s.limit(10).toList();
-        List<BigInteger[]> expectedLs 
-          = new ArrayList<>(
-            List.of(new BigInteger[]{new BigInteger("0"), new BigInteger("1")},
-                    new BigInteger[]{new BigInteger("1"), new BigInteger("1")},
-                    ...));
-        assertTrue(expectedLs.size() == actualLs.size());
-        for (int i = 0; i < expectedLs.size(); i++) {
-            assertArrayEquals(expectedLs.get(i), actualLs.get(i));
-        }
+  @Test
+  void bigIntFibStreamTest() {
+    // Get the stream, test ten values, make sure the lists are the same
+    // length, then test each subarray.
+    Stream<BigInteger[]> s = StreamExample.fibonacciStream();
+    List<BigInteger[]> actualLs = s.limit(10).toList();
+    List<BigInteger[]> expectedLs 
+      = new ArrayList<>(
+        List.of(new BigInteger[]{new BigInteger("0"), new BigInteger("1")},
+                new BigInteger[]{new BigInteger("1"), new BigInteger("1")},
+                ...));
+    assertTrue(expectedLs.size() == actualLs.size());
+    for (int i = 0; i < expectedLs.size(); i++) {
+      assertArrayEquals(expectedLs.get(i), actualLs.get(i));
     }
+  }
 }
 \end{lstlisting}
 \end{cl}
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
-import java.util.BigInteger;
-import java.util.Stream;
-
 class BigIntFibStream {
 
-    /**
-     * Returns a stream of BigInteger values computing the nth Fibonacci value.
-     *
-     * @return stream.
-     */
-    public static Stream<BigInteger[]> fibonacciStream() {
-        BigInteger[] vals = new BigInteger[]{new BigInteger("0"), 
-                                             new BigInteger("1")};
-        return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])});
-    }
+  /**
+   * Returns a stream of BigInteger values computing the nth Fibonacci value.
+   */
+  public static Stream<BigInteger[]> fibonacciStream() {
+    BigInteger[] vals = new BigInteger[]{new BigInteger("0"), 
+                                         new BigInteger("1")};
+    return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])});
+  }
 }
 \end{lstlisting}
 \end{cl}
+
+\begin{figure}[tp]
+  \small
+  \begin{tcolorbox}[title=Java Streams]
+    A \textit{stream} is a lazy collection of elements that are computed only when requested.
+    \vspace{2ex}
+  \begin{description}
+    \item [\ttt{$S$.count$()$}] returns the number of elements in the stream.
+    \item [\ttt{$S$.map($f$)}] returns a new stream whose elements are the result of applying $f$ to each element of $S$.
+    \item [\ttt{$S$.filter($p$)}] returns a new stream whose elements are those of $S$ that satisfy the predicate $p$.
+    \item [\ttt{$S$.reduce($a$, $f$)}] returns the result of applying the binary function $f$ to each element of $S$ and the accumulator $a$. The value of $a$ serves as the accumulator's initial value.
+    \item [\ttt{$S$.limit($n$)}] returns a new stream whose elements are the first $n$ elements of $S$.
+    \item [\ttt{$S$.skip($n$)}] returns a new stream whose elements are those of $S$ after the first $n$ elements.
+    % \item [\ttt{$S$.anyMatch($p$)}] returns \ttt{true} if \textbf{at least one} element of $S$ satisfies the predicate $p$; otherwise, returns \ttt{false}.
+    % \item [\ttt{$S$.allMatch($p$)}] returns \ttt{true} if \textbf{all} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
+    % \item [\ttt{$S$.noneMatch($p$)}] returns \ttt{true} if \textbf{no} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
+    \item [\ttt{$S$.min/max($c$)}] returns the minimum/maximum element of $S$ according to the comparator $c$. If $S$ is empty, returns \ttt{Optional.empty()}.
+  \end{description}
+\end{tcolorbox}
+  \caption{Useful \ttt{Stream}-based Methods.}
+  \label{fig:streams}
+\end{figure}
+
+\begin{figure}[tp]
+  \small
+  \begin{tcolorbox}[title=Java Stream--Searching Methods]
+    We can search for the existence of types of elements in a stream.
+    \vspace{2ex}
+  \begin{description}
+    \item [\ttt{$S$.anyMatch($p$)}] returns \ttt{true} if \textbf{at least one} element of $S$ satisfies the predicate $p$; otherwise, returns \ttt{false}.
+    \item [\ttt{$S$.allMatch($p$)}] returns \ttt{true} if \textbf{all} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
+    \item [\ttt{$S$.noneMatch($p$)}] returns \ttt{true} if \textbf{no} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
+  \end{description}
+\end{tcolorbox}
+  \caption{Useful \ttt{Stream}-Searching Methods.}
+  \label{fig:streams-searching}
+\end{figure}
 
 So our code now produces a list of \ttt{BigInteger} arrays containing the current Fibonacci value and its successor. Though, is this really what we want? A better solution would be to simply return the first element of the tuple/two-element array. We can achieve this via the \ttt{map} function. \ttt{map} receives a lambda expression as an argument and applies it to every element of the acting stream. Let's modify the code a bit to see an improved output. Excellently, this change means we do not need to loop over our expected/actual lists in the unit testing method, as \ttt{assertEquals} works as intended over \ttt{List} objects.
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
-import java.util.BigInteger;
-import java.util.Stream;
-import java.util.ArrayList;
 
 class BigIntFibStreamTester {
 
-    @Test
-    void bigIntFibStreamTest() {
-        Stream<BigInteger> s = StreamExample.fibonacciStream();
-        List<BigInteger> actualLs = s.limit(10).toList();
-        List<BigInteger[]> expectedLs 
-          = new ArrayList<>(
-            List.of(new BigInteger[]{new BigInteger("0"), new BigInteger("1")},
-                    new BigInteger[]{new BigInteger("1"), new BigInteger("1")},
-                    ...));
-        assertEquals(expectedLs, actualLs);
-    }
+  @Test
+  void bigIntFibStreamTest() {
+    Stream<BigInteger> s = StreamExample.fibonacciStream();
+    List<BigInteger> actualLs = s.limit(10).toList();
+    List<BigInteger[]> expectedLs 
+      = new ArrayList<>(
+        List.of(new BigInteger[]{new BigInteger("0"), new BigInteger("1")},
+                new BigInteger[]{new BigInteger("1"), new BigInteger("1")},
+                ...));
+    assertEquals(expectedLs, actualLs);
+  }
 }
 \end{lstlisting}
 \end{cl}
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
-import java.util.BigInteger;
-import java.util.Stream;
-
 class BigIntFibStream {
 
-    /**
-     * Returns a stream of BigInteger values computing the nth Fibonacci value.
-     *
-     * @return stream.
-     */
-    public static Stream<BigInteger> fibonacciStream() {
-        BigInteger[] vals = new BigInteger[]{new BigInteger("0"), 
-                                             new BigInteger("1")};
-        return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])})
-                     .map(v -> v[0]);
-    }
+  /**
+   * Returns a stream of BigInteger values computing the nth Fibonacci value.
+   *
+   * @return stream.
+   */
+  public static Stream<BigInteger> fibonacciStream() {
+    BigInteger[] vals = new BigInteger[]{new BigInteger("0"), new BigInteger("1")};
+    return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])})
+                 .map(v -> v[0]);
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -880,21 +903,20 @@ A \textit{higher-order function} is a function that takes functions as parameter
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
+import static Assertions.assertEquals;
 import static SquareList.squareList;
-import java.util.List;
-import java.util.ArrayList;
 
 class SquareListTester {
 
   @Test
   void squareListTest() {
     List<Integer> ls1 = new ArrayList<>(List.of(1, 4, 9, 16, 25));
-    List<Integer> ls2 = new ArrayList<>();
-    List<Integer> ls3 = new ArrayList<>(0, 100, 81, 81);
+    List<Integer> ls2 = new ArrayList<>(List.of(0, 100, 81, 81));
+    List<Integer> ls3 = new ArrayList<>();
     assertAll(
-      () -> assertEquals(ls1, squareList(ls1)),
-      () -> assertEquals(ls2, squareList(ls2)),
-      () -> assertEquals(ls3, squareList(ls3))
+      () -> assertEquals(ls1, squareList(new ArrayList<>(List.of(1, 2, 3, 4, 5)))),
+      () -> assertEquals(ls2, squareList(new ArrayList<>(List.of(0, 10, 9, 9)))),
+      () -> assertEquals(ls3, squareList(new ArrayList<>()))
     );
   }
 }
@@ -941,6 +963,8 @@ import static Assertions.assertAll;
 import static RemoveVowelsStream.removeVowels;
 
 class RemoveVowelsStreamTester {
+  
+  @Test
   void removeVowels() {
     assertAll(
       () -> assertEquals("hll", StreamTests.removeVowels("hello")),
@@ -954,7 +978,8 @@ class RemoveVowelsStreamTester {
 }
 \end{lstlisting}
 \end{cl}
-Onto the definition; we start by writing the method signature and purpose. Then, we need to complete step one: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. Step two involves us converting each integer into a ``one-string'', which we can do via the constructor for a \ttt{String} object. Step three requires the use of \ttt{filter}, which is another higher-order function. It receives a lambda expression and returns those objects from the stream that satisfy the filter. Since we want to filter \textit{out} the vowels, we should write a method that determines if a character is vowel, then negate the expression as part of the lambda definition. Lastly we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. The reduce function receives an initial value, i.e., an accumulator $a$ and a binary function $B$. It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly what reduce does! It folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} Due to the simplicity of the \ttt{isVowel} predicate, we omit its definition.
+
+Onto the definition; we start by writing the method signature and purpose. Then, we need to complete step one: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. Step two involves us converting each integer into a ``one-string'', which we can do via the constructor for a \ttt{String} object. Step three requires the use of \ttt{filter}, which is another higher-order function. It receives a lambda expression and returns those objects from the stream that satisfy the filter. Since we want to filter \textit{out} the vowels, we should write a method that determines if a character is vowel, then negate the expression as part of the lambda definition. Lastly we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. The reduce function receives an initial value, i.e., an accumulator $a$ and a binary function $f$. It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly how reduce works; It folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} Due to the simplicity of the \ttt{isVowel} predicate, we omit its definition.
 
 \begin{cl}[]{Definition of \ttt{removeVowels} Using Streams}
 \begin{lstlisting}[language=MyJava]

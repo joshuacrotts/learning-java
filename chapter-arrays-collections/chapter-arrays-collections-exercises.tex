@@ -172,6 +172,21 @@ G4 = {{q, x}, {q, 10}}
 unifiesAll(M4, G4) => false
 \end{verbatim}
 
+\exercise{3}{chapter-arrays-collections}{Two strings $s_1$ and $s_2$ are isomorphic if we can create a mapping from $s_1$ from $s_2$. For example, the strings \ttt{"DCBA"} and \ttt{"ZYXW"} are isomorphic because we can map $D$ to $Z$, $C$ to $Y$, and so forth. Another example is \ttt{"ABACAB"} and \ttt{"XYXZXY"} for similar reasons. A non-example is \ttt{"PROXY"} and \ttt{"ALPHA"}, because once we map \ttt{"A"} to \ttt{"P"}, we cannot create a map between \ttt{"A"} and \ttt{"Y"}. Write the \ttt{isIsomorphic} method, which determines whether or not two strings are isomorphic. }
+
+\exercise{2}{chapter-arrays-collections}{We consider a \textit{key string} to be the string obtained after alphabetizing the letters of a string. For example, the string \ttt{"deloop"} is a key string of the strings \ttt{"poodle"} and \ttt{"looped"}. Write the \ttt{static HashMap<String, List<String>> keyStringGroups(List<String> ls)} method, which maps all key strings to the strings in $\textit{ls}$ using the above criteria}
+
+\begin{verbatim}
+ls = ["ant", "introduces", "poodle", "tan", "looped", "discounter", "nastier", 
+      "polled", "retains", "retinas", "reductions"]
+      
+keyStringGroups(ls) => {{"ant", ["tan", "ant"]}, 
+                        {"deloop", ["poodle", "looped"]}, 
+                        {"dellop", ["polled"]}, 
+                        {"cdeinorsu", ["discounter", "introduces", "reductions"]}, 
+                        {"aeinrst", ["retains", "retinas", "nastier"]}}
+\end{verbatim}
+
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that takes a \ttt{List<Integer>} and filters out even numbers and then calculates the sum of the remaining odd numbers.}
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that, given a \ttt{List<String>}, concatenates all the strings together into a single string, separated by a comma.}

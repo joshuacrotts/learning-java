@@ -26,13 +26,11 @@ System.out.println(A[i]);
 \begin{verbatim}
 int[] A = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 \end{verbatim}
-The thing is, this is verbose and requires us to explicitly specify each individual constant. A better solution is to initialize the array to a size and populate its elements using a loop.
+This is verbose and requires us to explicitly specify each individual constant. A better solution is to initialize the array to a size and populate its elements using a loop.
 \begin{verbatim}
 final int SIZE = 11;
 int[] A = new int[SIZE];
-for (int i = 0; i < A.length; i++) {
-  A[i] = i * 10;
-}
+for (int i = 0; i < A.length; i++) { A[i] = i * 10; }
 \end{verbatim}
 We use $i$ to iterate over the possible indices of our array. Before we explained that $i$ is used out of standard convention, but we now say that $i$, in general, stands for either ``iteration'' or ``index''. We assign, to $A$, the value of $i$ multiplied by ten. We can convert the array to a \ttt{String} using a utility method from the \ttt{Arrays} class (note the plural!); a ``string-ified'' array separates each element by commas and surrounds them with braces.
 \begin{verbatim}
@@ -64,7 +62,7 @@ s1 => {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
   \label{fig:arrays}
 \end{figure}
 
-\example Let us write a method that receives an array of \ttt{double} values and returns the sum of the elements. Of course, let us write tests!
+\example Let us write a method that receives an array of \ttt{double} values and returns the sum of the elements. Of course, we need tests!
 
 \begin{cl}[SumOfDoubleArrayTester.java]{Sum of Double Array Tests}
 \begin{lstlisting}[language=MyJava]
@@ -108,21 +106,22 @@ class SumOfDoubleArray {
 }
 \end{lstlisting}
 \end{cl}
+
 While our code works and the tests that we wrote pass without question, there is a bit of verbosity with our loop; all we ever use the iteration variable, $i$, is for accessing a variable. In such circumstances, we may prefer using the enhanced \ttt{for} loop, which abstracts away the index and provides an iteration construct for accessing elements sequentially.
+
 \begin{cl}[SumOfDoubleArray.java]{Sum of Double Array Enhanced \ttt{for} Loop}
 \begin{lstlisting}[language=MyJava]
 class SumOfDoubleArray {
 
   static double sumOfDoubles(double arr) {
     double sum = 0;
-    for (double e : arr) {
-      sum += e;
-    }
+    for (double e : arr) { sum += e; }
     return sum;
   }
 }
 \end{lstlisting}
 \end{cl}
+
 Why might someone want to use the enhanced \ttt{for} loop over a standard \ttt{for}? In general, when we only want to access the elements themselves and not care about their position, the enhanced counterpart is favored; not having to concern ourselves with indices completely removes the possibility of accessing an out-of-bounds index. 
 
 \example Let us write a method that returns the largest integer in an array of integers. This is straightforward, but can be a little tricky to get right due to how we determine the ``largest''. Some programmers may choose to declare a value \ttt{largest} and assign it, say, $-1$, then if we encounter a larger value, overwrite its value. This works well when the provided array contains only positive values, but what if our array contains only negative numbers? This approach falls apart in such instances. To simplify the implementation, we will assume that the given array contains at least one value.
@@ -157,9 +156,7 @@ class LargestInt {
   static int largestInt(int[] arr) {
     int max = arr[0];
     for (int i = 1; i < arr.length; i++) {
-      if (arr[i] > max) {
-        arr[i] = max;
-      }
+      if (arr[i] > max) { arr[i] = max; }
     }
     return max;
   }

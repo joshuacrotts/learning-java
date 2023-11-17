@@ -99,7 +99,7 @@ foo(ls) {
   // v is a random integer between 0 and 100, with equal probability.
   v := RNG()
   n := len(ls)
-  if v == 100z
+  if v == 100
     return 42
   else if v == 0
     for i := 0 to n do
@@ -201,14 +201,24 @@ For $n_0 = 1$, we have $c \geq 12$. Therefore we can conclude that $(2n^2 + n)(4
   &= 8 < \infty
 \end{align*}
 
-\example Prove that $(4n)^n \neq \mathcal{O}(n^n)$. Assume to the contrary that $(4n)^n = \mathcal{O}(n^n)$. Then there exists a constant $c > 0$ and a point $n_0$ such that $(4n)^n \leq cn^n$ for every $n \geq n_0$. Expanding the left-hand side, then dividing both sides by $n^n$ gets us3
+\example Prove that $(4n)^n \neq \mathcal{O}(n^n)$. Assume to the contrary that $(4n)^n = \mathcal{O}(n^n)$. Then there exists a constant $c > 0$ and a point $n_0$ such that $(4n)^n \leq cn^n$ for every $n \geq n_0$. Expanding the left-hand side, then dividing both sides by $n^n$ gets us:
 
 \begin{align*}
-  3^n \cdot n^n \leq cn^n\\
-  3^n \leq c
+  4^n \cdot n^n &\leq cn^n\\
+  4^n &\leq c
 \end{align*}
 
 The problem is that we cannot pick a constant $c$ without finding an $n$ that falsifies the inequality. Therefore, by contradiction, $(4n)^n \neq \mathcal{O}(n^n)$.
+
+\example Prove that $3n + n\lg{n} = \mathcal{O}(n^2)$. Dividing both sides of the equation by $n$ gets us:
+
+\begin{align*}
+  3n + n\lg{n} &\leq cn^2\\
+  3 + \lg{n} &\leq cn\\
+  \lg{n} \leq cn - 3
+\end{align*}
+
+Suppose $c = 3$. Then, $\lg{n} \leq n$ for any $n$ greater than 2, so we can set $n_0 = 3$. Thus, $3n + n\lg{n} = \mathcal{O}(n^2)$.
 
 \subsubsection*{Big-Omega}
 A function $f(n) = \Omega(g(n))$ if there exists a constant $c > 0$ and a point $n_0$ such that $f(n) \geq cg(n)$ for every $n$ greater than or equal to $n_0$. We can describe this in terms of limits as well. We can say that $f(n) = \Omega(g(n))$ if $\lim_{n \to \infty} \frac{f(n)}{g(n)} > 0$.
