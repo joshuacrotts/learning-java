@@ -1,1 +1,125 @@
 \section{Generics}
+
+Generics as a concept go far back in programming history, generally reknown as type parameterization. Recall the \ttt{ArrayList} data structure from the previous chapter on the Collections API. Imagine, for a moment, if the Java programmers had to write a differing implementation of \ttt{ArrayList} for \ttt{Integer}, \ttt{String}, \ttt{Double}, and so on ad infinitum. Not only is this impossible, it would also be extremely cumbersome and redundant, since the only altering parameter is the underlying element type in the data structure. Before Java 5, we could only use ``generics'' via collections of type \ttt{Object}, since it is the root class object type, meaning any element could be stored in any type of collection.
+
+\begin{verbatim}
+ArrayList al1 = new ArrayList();
+al1.add(new Integer(42));
+al1.add(new Integer(43));
+Integer x = (Integer) al1.get(0);
+\end{verbatim}
+
+Performing casts like this is prone to errors, not to mention the possibility of adding disjoint types into a collection. For example, there is nothing preventing us from adding objects of type \ttt{String} or \ttt{Integer} into an \ttt{ArrayList} at this time. Generics were introduced to convert the problem from one encountered at runtime to one encountered moreso at compile-time. 
+
+Since we have yet to discuss objects in detail, we will hold off on a significant discussion of generic class implementations. To keep it to the point, we can write any class to be generic and store objects of an arbitrary type. Fortunately we can also do the same with static methods. 
+
+To declare a static method as generic, we must specify the type variable(s) necessary to use the method. These come after the \ttt{static} keyword but before the return type. For instance, if we want to say that an object of type \ttt{T} is used in the static method \ttt{foo}, we declare it as \ttt{static <T> void foo(...){...}}. Then, if we want to say that the method returns or receives an object of type \ttt{T}, we substitute the return/parameter type with \ttt{T}, e.g., \ttt{static <T> T foo(T arg){...}}. At compile-time, Java will look for method invocations of \ttt{foo} and substitute the \ttt{T} for whatever type \ttt{foo} is invoked. 
+
+\example Let's design the \ttt{int search(List<T> t, T k)} method, which receives a list $t$ and an object $k$, where the elements of $t$ are of type \ttt{T} and $k$ is also of type \ttt{T}. Its purpose is to return the index of the first occurrence of $k$ in $t$, and $-1$ if it does not exist. Because all objects have \ttt{.equals}, we can take advantage of this fact when comparing objects in the list against the search parameter. When testing, we will instantiate the type parameter to several different types to demonstrate.
+
+\begin{cl}[GenericSearchTester.java]{Testing the Generic Search Method}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class GenericSearchTester {
+
+  @Test 
+  void genericSearchTest() {
+    List<Integer> l1 = new ArrayList<>(List.of(1, 2, 3, 4, 5));
+    List<String> l2 = new ArrayList<>(List.of("a", "b", "c", "d", "e"));
+    List<Double> l3 = new ArrayList<>(List.of(1.0, 2.0, 3.0, 4.0, 5.0));
+    List<Character> l4 = new ArrayList<>(List.of('a', 'b', 'c', 'd', 'e'));
+    List<List<Integer>> l5 = new ArrayList<>();
+
+    assertAll (
+      () -> assertEquals(1, genericSearch(l1, 2)),
+      () -> assertEquals(-1, genericSearch(l1, 6)),
+      () -> assertEquals(1, genericSearch(l2, "b")),
+      () -> assertEquals(-1, genericSearch(l2, "f")),
+      () -> assertEquals(1, genericSearch(l3, 2.0)),
+      () -> assertEquals(-1, genericSearch(l3, 6.0)),
+      () -> assertEquals(1, genericSearch(l4, 'b')),
+      () -> assertEquals(-1, genericSearch(l4, 'f')),
+      () -> assertEquals(-1, genericSearch(l5, List.of(1, 2, 3)))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[GenericSearch.java]{Generic Search Method}
+\begin{lstlisting}[language=MyJava]
+class GenericSearch {
+
+  /**
+   * Returns the index of the first occurrence of k in t, or -1 if it does not exist.
+   *
+   * @param t the list of type T.
+   * @param k the object of type T to search for.
+   * @return the index of k or -1.
+   */
+  static <T> int genericSearch(List<T> t, T k) {
+    for (int i = 0; i < t.size(); i++) {
+      if (t.get(i).equals(k)) { return i; }
+    }
+    return -1;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\subsection*{Bounded Type Parameters}
+To restrict the type parameter to a certain subset of types, we can use \textit{bounded type parameters}\index{bounded type parameters}\index{type parameters}. As an example, we might wish to restrict a type parameter for a method to only types that implement the \ttt{Comparable} interface. Doing so means that the type parameter has access to any methods defined by the interface, in this case, \ttt{compareTo} being the only available method. To specify a bounded type parameter, we use the \ttt{extends} keyword, e.g., \ttt{<T extends Comparable>}. We denote this as an upper-bound on the type parameter, since we are restricting the type parameter to a subset of types that are ``above'' the specified type. We might also wish to use a lower-bound, which restricts the type parameter to a subset of types that are ``below'' the specified type. For example, if we want to restrict the type parameter to only types that are superclasses of \ttt{Integer}, we can do so by specifying \ttt{<T super Integer>}.
+
+\example Let's design the \ttt{static <T extends Comparable<T>> T max(List<T> t)} method, which receives a list $t$ of type \ttt{T} and returns the maximum element in the list. Because determining the max element of a list involves comparison-based checking, we must restrict the type parameter to only types that implement an interface for comparing objects, e.g., \ttt{Comparable}. In the previous chapter we discussed that \ttt{Optional} is a container class that can either hold a value or be empty. An exercise at the end of this section will ask you to use \ttt{Optional} in designing a similar method, rather than returning \ttt{null} as we will show here.
+
+\begin{cl}[GenericMaxTester.java]{Testing the Generic Max Method}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class GenericMaxTester {
+  
+  @Test 
+  void genericMaxTest() {
+    List<Integer> l1 = new ArrayList<>(List.of(5, 10, 20, 7, 2));
+    List<String> l2 = new ArrayList<>(List.of("A", "e", "x", "Z", "3", "N"));
+    List<Double> l3 = new ArrayList<>(List.of(500.0, 400.0, 300.0, Math.PI, 200.0));
+    List<Character> l4 = new ArrayList<>(List.of('?','@','A','a','Z'));
+    List<List<Integer>> l5 = new ArrayList<>();
+
+    assertAll (
+      () -> assertEquals(20, genericMax(l1)),
+      () -> assertEquals("x", genericMax(l2)),
+      () -> assertEquals(500.0, genericMax(l3)),
+      () -> assertEquals('a', genericMax(l4)),
+      () -> assertEquals(null, genericMax(l5))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[GenericMax.java]{Generic Max Method}
+\begin{lstlisting}[language=MyJava]
+class GenericMax {
+  
+  /**
+   * Returns the maximum element in the list according to the compareTo implementation
+   * of the type parameter.
+   *
+   * @param t the list of type T, where T is a type that implements Comparable.
+   * @return the maximum element in the list.
+   */
+  static <T extends Comparable<T>> T genericMax(List<T> t) {
+    if (t.isEmpty()) { return null; }
+    T max = t.get(0);
+    for (int i = 1; i < t.size(); i++) {
+      if (t.get(i).compareTo(max) > 0) { max = t.get(i); }
+    }
+    return max;
+  }
+}
+\end{lstlisting}
+\end{cl}

@@ -171,7 +171,7 @@ import java.util.Arrays;
 
 class ObjectStreamExample {
 
-  private static class Player {
+  private static class Player implements Serializable {
 
     private String name;
     private int score;
@@ -197,29 +197,249 @@ class ObjectStreamExample {
 
 Suppose, on the contrary, that we store objects as strings in a file. This has two problems: first, as we said before, we would need to recursively serialize all compositional objects of the object that we are serializing. Second, we would need to write a parser to read the stringified object and reinitialize its fields. In essence, we have to reinvent worse versions of preexisting classes.
 
-\example uhhhh \ttt{Scanner} examples...
+\example In the first chapter we saw how to use the \ttt{Scanner} class to read from standard input. Indeed, standard input is a source of data input, but we can wrap any instance of \ttt{InputStream} or \ttt{File} inside a \ttt{Scanner} to take advantage of its helpful data-parsing methods. Let's design a method that reads a series of values that represent \ttt{Employee} data for a company. We just saw that we can take advantage of \ttt{Serializable} to do this for us, but it is helpful to see how we can also use a \ttt{Scanner} to solve a similar problem. 
+
+We will say that an \ttt{Employee} contains an employee identification number, a first name, a last name, a salary, and whether or not they are full-time staff. Each row in the file contains an \ttt{Employee} record.
+
+\begin{cl}[Employee.java]{Employee Class}
+\begin{lstlisting}[language=MyJava]
+class Employee {
+
+  private long employeeId;
+  private String firstName;
+  private String lastName;
+  private double salary;
+  private boolean fullTime;
+  
+  public Employee(long eid, String f, String l, double s, boolean ft) {
+    this.employeeId = eid;
+    this.firstName = f;
+    this.lastName = l;
+    this.salary = s;
+    this.fullTime = ft;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("[%d] %s, %s | %.2f | FT?=%b", 
+                         this.employeeId, this.lastName, this.firstName, 
+                         this.salary, this.fullTime);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Our method will return a list of \ttt{Employee} instances that has been populated after reading the data from the file. In particular, the \ttt{nextLong}, \ttt{nextDouble}, \ttt{nextBoolean}, and \ttt{next} methods will be helpful. The \ttt{next} method, whose behavior is not obvious from the name, returns the next sequence of characters prior to a whitespace. 
+
+To test, we will create a file containing the following contents:
+
+\begin{verbatim}
+123 John Smith 100000.00 false
+456 Jane Doe 75000.00 true
+789 Bob Jones 50000.00 false
+\end{verbatim}
+
+\begin{cl}[EmployeeScannerTester.java]{Testing the \ttt{EmployeeScanner} Class}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import java.util.List;
+
+class EmployeeScannerTester {
+
+  @Test
+  void readRecords() {
+    List<Employee> emps = EmployeeScanner.readRecords("employees.txt");
+    assertAll(
+      () -> assertEquals(emps.get(0).toString(), "[123] Smith, John | 100000.00 | FT?=false"),
+      () -> assertEquals(emps.get(1).toString(), "[456] Doe, Jane | 75000.00 | FT?=true"),
+      () -> assertEquals(emps.get(2).toString(), "[789] Jones, Bob | 50000.00 | FT?=false")
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[EmployeeScanner.java]{Reading Employee Records}
+\begin{lstlisting}[language=MyJava]
+class EmployeeScanner {
+
+  /**
+   * Reads in a list of employee records from a given filename.
+   *
+   * @param fileName name of file.
+   * @return list of Employee instances.
+   */
+  public static List<Employee> readRecords(String fileName) {
+    List<Employee> records = new ArrayList<>();
+
+    try (Scanner f = new Scanner(new File(fileName))) {
+      while (f.hasNextLine()) {
+        long eid = f.nextLong();
+        String fname = f.next();
+        String lname = f.next();
+        double s = f.nextDouble();
+        boolean ft = f.nextBoolean();
+        records.add(new Employee(eid, fname, lname, s, ft));
+      }
+    } catch (IOException ex) { ex.printStackTrace(); }
+
+    return records;
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 At this point we have seen several methods and classes for reading data from different data sources. Let's now write a few more meaningful programs.
 
-\example Reading even integers from a file and outputting them to another file...
+\example Let's write a program that reads a file containing integers and outputs, to another file, the even integers. Because our input file has only integers, we can use the \ttt{Scanner} class for reading the data and \ttt{PrintWriter} to output those even integers. To make the program a bit more interesting, we will read the input file from the terminal arguments, and output the even integers to a file whose name is the same as the input file, but instead with the \ttt{.out} extension.
 
-\example Reading a file and outputting the number of lines, words, and characters...
+\begin{cl}[EvenIntegers.java]{Reading and Writing Even Integers}
+\begin{lstlisting}[language=MyJava]
+class EvenIntegers {
 
-\example Reading a file and outputting the number of occurrences of each word, ignoring case...
+  public static void main(String[] args) {
+    if (args.length != 1) {
+      System.err.println("usage: java EvenIntegers <input-file>");
+      System.exit(1);
+    }
 
-\example A program that receives multiple files through terminal arguments and combines them all into one file, throwing an exception if the extensions do not match...
+    String inputFile = args[0];
+    String outputFile = inputFile.substring(0, inputFile.lastIndexOf('.')) + ".out";
 
-\example Find/replace function... read a file and replace all occurrences of a word with another word... using terminal args
+    try (Scanner f = new Scanner(new File(inputFile));
+         PrintWriter pw = new PrintWriter(new FileWriter(outputFile))) {
+      while (f.hasNextInt()) {
+        int val = f.nextInt();
+        if (val % 2 == 0) { pw.println(val); }
+      }
+    } catch (IOException ex) { ex.printStackTrace(); }
+  }
+}
+\end{lstlisting}
+\end{cl}
 
-...
+\example Let's write a program that returns an array containing the number of lines, words, and characters (including whitespaces but excluding newlines) in a given file. The array indices correspond to those quantities respectively. To simplify the program, words will be considered strings as separated by spaces. For example, if the file contains the following contents:
+
+\begin{verbatim}
+This is a test file.
+It contains three lines.
+Here is the last line.
+\end{verbatim}
+
+The returned array should be \ttt{[3, 14, 46]}. This way we can write JUnit tests to verify that our program works as intended.
+
+\begin{cl}[LineWordCharCounterTester.java]{Testing the \ttt{LineWordCharCounter} Class}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class LineWordCharCounterTester {
+
+  @Test
+  void count() {
+    int[] counts = LineWordCharCounter.count("file1.in");
+    assertAll(
+      () -> assertEquals(counts[0], 3),
+      () -> assertEquals(counts[1], 14),
+      () -> assertEquals(counts[2], 46)
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[LineWordCharCounter.java]{Counting Lines, Words, and Characters}
+\begin{lstlisting}[language=MyJava]
+class LineWordCharCounter {
+
+  /**
+   * Counts the number of lines, words, and characters in a given file.
+   *
+   * @param fileName name of file.
+   * @return array of counts.
+   */
+  public static int[] count(String fileName) {
+    int[] counts = new int[]{0, 0, 0};
+
+    try (Scanner f = new Scanner(new File(fileName))) {
+      while (f.hasNextLine()) {
+        String line = f.nextLine();
+        counts[0]++;
+        counts[1] += line.split(" ").length;
+        counts[2] += line.length();
+      }
+    } catch (IOException ex) { ex.printStackTrace(); }
+
+    return counts;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example Going further with terminal arguments, let's write a program that receives multiple file names from the terminal, and outputs a file with all of the data concatenated into one. We will throw an exception if the user passes in files that do not all share the same extension. As an example, if the user passes, 
+\begin{verbatim}
+java ConcatenateFiles file1.txt file2.txt file3.txt output-file.txt
+\end{verbatim}
+then the program should output a file \ttt{output-file.txt} that contains the contents of \ttt{file1.txt}, \ttt{file2.txt}, and \ttt{file3.txt} in that order. 
+
+\begin{cl}[ConcatenateFiles.java]{Concatenating Files}
+\begin{lstlisting}[language=MyJava]
+class ConcatenateFiles {
+ 
+  /**
+   * Determines whether all files have the same extension.
+   * 
+   * @param files array of file names.
+   * @return true if all files have same extension, false otherwise.
+   */
+  private static boolean sameExtension(String[] files) {
+    if (files[0].lastIndexOf('.') == -1) { return false; }
+    String extension = files[0].substring(files[0].lastIndexOf('.'));
+    for (String file : files) {
+      if (file.lastIndexOf(".") == -1 || 
+         !file.substring(file.lastIndexOf('.')).equals(extension)) { return false; }
+    }
+    return true;
+  }
+
+  /**
+   * Concatenates the contents of a list of files into a single file.
+   *
+   * @param files array of file names.
+   * @param outputFile name of output file.
+   */
+  private static void concatenate(String[] files, String outputFile) {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile))) {
+      for (String file : files) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+          String line = null;
+          while ((line = br.readLine()) != null) { bw.write(line + "\n"); }
+        }
+      }
+    } catch (IOException ex) { ex.printStackTrace(); }
+  }
+
+  public static void main(String[] args) {
+    if (args.length < 3) {
+      System.err.println("usage: java ConcatenateFiles <input-files> <output-file>");
+      System.exit(1);
+    }
+
+    String[] inputFiles = Arrays.copyOfRange(args, 0, args.length - 1);
+    String outputFile = args[args.length - 1];
+
+    if (!sameExtension(inputFiles)) {
+      System.err.println("ConcatenateFiles: all files must have same extension");
+      System.exit(1);
+    }
+
+    concatenate(inputFiles, outputFile);
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 
-\example Let's write a simple TimeEcho server...
-
-\example Serving multiple clients in the TimeEcho server...
-
-\example Reading commands from multiple clients...
-
-\example Chat server example
-
+% \example Our last example is to mimic a ``find/replace'' program. We will write a program that receives a file name, a string to find, and a string to replace. The program will then output a file with the replaced string. For example, if the user passes the following arguments:
 

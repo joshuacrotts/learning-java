@@ -275,7 +275,7 @@ We are on our way to understanding the full signature of the \ttt{main} method. 
 
 First, we must explain how terminal arguments work. Terminal arguments are specified after the executable (name) and are separated by spaces. For instance, if our program name is \ttt{calculator}, we might use \ttt{./calculator --add 5 4 17}. Thus, \ttt{args[0]} is \ttt{--add}, \ttt{args[1]} is \ttt{"5"}, \ttt{args[2]} is \ttt{"4"}, and \ttt{args[3]} is \ttt{"17"}. For simplification purposes, we will assume that the first argument is always the operation/help flag, and the remaining values are operands. This means that the program should output \ttt{26}. Let us write a method that parses the operation/help flag. Upon success, it returns \ttt{true} and upon failure, it returns \ttt{false}. This prevents the program from further interpreting bad terminal arguments, e.g., \ttt{./calculator --wrong 5 12}. We will also use \ttt{false} as an indication that the \ttt{help} menu was requested or prompted. Thus, to not duplicate code, we should write another method that displays the relevant program usage information.
 
-\begin{cl}[Calculator.java]{}
+\begin{cl}[Calculator.java]{Writing a Calculator and Parsing Terminal Arguments}
 \begin{lstlisting}[language=MyJava]
 class Calculator {
 
@@ -287,7 +287,7 @@ class Calculator {
   }
 
   public static boolean parseCommand(String cmd) {
-    if (cmd.equals("--add") || cmd.equals("--sub")) 
+    if (cmd.equals("--add") || cmd.equals("--sub")) {
       return true;
     } else {
       displayHelp();
@@ -306,7 +306,7 @@ Up next is the process of interpreting each valid operation, i.e., \ttt{--add} a
 
 Note that in the code below, we utilize an \ttt{if/else if} combination without an accompanying \ttt{else}, which we would normally discourage. Because we exhaust the possibilities with \ttt{parseCommand}, however, we will allow its usage. The \ttt{parseAdd} and \ttt{parseSub} methods are trivial and we have shown an example of their implementation previously, so we will also omit these to preserve space and avoid unnecessary repetition.
 
-\begin{cl}[Calculator.java]{}
+\begin{cl}[Calculator.java]{Main Method for Calculator}
 \begin{lstlisting}[language=MyJava]
 class Calculator {
 
