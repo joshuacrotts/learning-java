@@ -13,6 +13,8 @@ AbstractList<Integer> LS3 =
 \end{verbatim}
 
 \subsection*{Insertion Sort}
+Our sorting adventure begins with the \textit{insertion sort}. Insertion sort, in general, works by taking an element from the unsorted list and inserting it into the correct position in a sorted list. We can implement insertion sort in two ways: functionally and in-place. The functional variant will return a new list that is sorted, while the in-place variant will sort the list in-place. The functional variant is, in principle, easier to implement, but the in-place variant is more efficient in terms of memory usage.
+
 \begin{cl}[InsertionSortTester.java]{Insertion Sort Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;

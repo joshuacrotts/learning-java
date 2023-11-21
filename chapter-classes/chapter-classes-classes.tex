@@ -9,7 +9,15 @@ Classes can \textit{inherit} methods from other classes, a relationship called t
 
 \example Let's create a class called \ttt{Point}, which stores two \ttt{int} values representing a Cartesian coordinate $x$ and $y$. By ``store'', we mean to say that $x$ and $y$ are \textit{instance variables}\index{instance variables} of the \ttt{Point} class, also sometimes called \textit{attributes} or \textit{fields}. Instance variables denote the values associated with an arbitrary \textit{instance} of that object (an instance may also be defined as an entity). For example, if we have a \ttt{Point} object \ttt{p}, then \ttt{p} has two instance variables, \ttt{x} and \ttt{y}, which are the $x$ and $y$ coordinates of \ttt{p}. Then, if we declare another point \ttt{p2}, \ttt{p2} will have its own instance variables \ttt{x} and \ttt{y}, which are independent of \ttt{p}'s instance variables. In almost all circumstances, instance variables of a class should be marked as \ttt{private}. Instance variables that are \ttt{private} denotes that direct access to their values is granted only within the class definition. Lastly, for the time being, instance variables are immutable and cannot change. Thus, every instance variable will use the \ttt{final} keyword in its declaration, alongside the \ttt{UPPER\_CASE} naming convention.
 
-Speaking of \textit{access modifiers}, we should mention the four that Java provides, even though we make prolific use of only three. \textbf{CONTINUE HERE!}
+Speaking of \textit{access modifiers}, we should mention the four that Java provides, even though we make prolific use of only three:
+
+\begin{itemize}
+  \item A class, variable, or method declared with the \ttt{public} modifier is accessible to/by any other class. Variables that are \ttt{public} should be used sparingly.
+  \item A class, variable, or method declared with the \ttt{private} modifier is accessible only to/by the class in which it is declared. 
+  \item A class, variable, or method declared without an access modifier, also called the \textit{default access modifier}, behaves similarly to \ttt{public}, only that it is accessible only to/by classes in the same package. Packages are a means of organizing classes into groups, similar to directories.
+\end{itemize}
+
+The fourth and final access modifier is \ttt{protected}, which is similar to the default access modifier, but allows subclasses to access the variable or method.\footnote{If you have not heard of inheritance/subclasses yet, do not worry, as we will cover this in the next chapter; we explain it here to describe the relevant difference between the access modifiers.} We will not use \ttt{protected} in this text, but it is worth mentioning.
 
 \begin{cl}[Point.java]{\ttt{Point} Class Skeleton}
 \begin{lstlisting}[language=MyJava]

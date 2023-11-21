@@ -114,11 +114,13 @@ class GenericMax {
    */
   static <T extends Comparable<T>> T genericMax(List<T> t) {
     if (t.isEmpty()) { return null; }
-    T max = t.get(0);
-    for (int i = 1; i < t.size(); i++) {
-      if (t.get(i).compareTo(max) > 0) { max = t.get(i); }
+    else {
+      T max = t.get(0);
+      for (int i = 1; i < t.size(); i++) {
+        if (t.get(i).compareTo(max) > 0) { max = t.get(i); }
+      }
+      return max;
     }
-    return max;
   }
 }
 \end{lstlisting}

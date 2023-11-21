@@ -9,7 +9,7 @@ The \ttt{printf} method originates from C, but is handy for printing multiple va
 \begin{verbatim}
 int x = 42;
 System.out.printf("The value of x is %d\n", x);
-System.out.printf("We can also inline integers directly as strings: 42, or as literals %d\n", 42);
+System.out.printf("We can inline integers directly 42 or as literals %d\n", 42);
 \end{verbatim}
 
 \example To output a \ttt{double} using \ttt{printf}, we use the \ttt{\%f} format specifier. We can also specify the number of digits \ttt{n} to print after the decimal point by using the format specifier \ttt{.\%nf}. Note that floating a decimal to $n$ digits does not change the value of that variable; rather, it only changes its string/output representation. 
@@ -24,6 +24,7 @@ System.out.printf("PI with all decimals is %f\n", Math.PI);
 There are many ways to get creative with \ttt{printf}, including space padding, number formatting, left/right-alignment, and more. We will not discuss these in detail, but instead we provide Table~\ref{format-specifiers} of the most common format specifiers.
 
 \begin{figure}[htbp!]
+\centering
 \begin{tabular}{|c|c|}
 \hline
 Format Specifier & Description \\
