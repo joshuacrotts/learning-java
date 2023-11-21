@@ -39,8 +39,24 @@ When reading from an input source that is not \ttt{System.in}, it is imperative 
 
 \example Let's use the try-with-resources block to copy the contents of one file to another. In essence, we will write a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.
 
-...
+\begin{cl}[FileCopyExample.java]{Copying File Data Example with Try-With-Resources}
+\begin{lstlisting}[language=MyJava]
+class FileCopyExample {
 
+  public static void main(String[] args) {
+    try (FileInputStream fis = new FileInputStream("file1.in");
+         FileOutputStream fos = new FileOutputStream("file1.out")) {
+      int val = -1;
+      while ((val = fis.read()) != -1) { fos.write(val); }
+    } catch (FileNotFoundException ex) {
+      System.err.printf("main: could not find %s\n", inputFile);
+    } catch (IOException ex) {
+      System.err.printf("main: an I/O error occurred: %s\n", ex.getMessage());
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 The file input and output stream classes read data as raw bytes from their source/destination streams. In most circumstances, we probably want to read characters from a data source or to a data destination. To do so, we can instead opt to use the \ttt{FileReader} class, which extends \ttt{Reader} rather than the \ttt{InputStream} class. Namely, \ttt{FileReader} is for reading text, whereas \ttt{FileInputStream} is for reading raw byte content of a file. Therefore a \ttt{FileReader} can read only textual files, i.e., files without an encoding, e.g., \ttt{.pdf}, \ttt{.docx}, and so forth.
 
