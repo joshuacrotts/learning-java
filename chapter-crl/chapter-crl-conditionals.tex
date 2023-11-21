@@ -8,9 +8,7 @@ In Java, we use \ttt{if} to designate a branch in code. We supply to it a condit
 static int foo() {
   int a = ...;
   int b = ...;
-  if (a == b) {
-    return 5;
-  }
+  if (a == b) { return 5; }
   return 0;
 }
 \end{lstlisting}
@@ -23,9 +21,7 @@ static boolean bar() {
 }
 
 static int foo() {
-  if (bar()) {
-    return 5;
-  }
+  if (bar()) { return 5; }
   return 0;
 }
 \end{lstlisting}
@@ -41,14 +37,10 @@ static int foo() {
   int b = 10;
   int c = 5;
   // We never check if c == 5.
-  if (a == b && c == 5) {
-    return 100;
-  }
+  if (a == b && c == 5) { return 100; }
 
   // We never check if b != 10.
-  if (a == c || b != 10) {
-    return 200;
-  }
+  if (a == c || b != 10) { return 200; }
 
   return 0;
 }
@@ -62,15 +54,9 @@ In addition to \ttt{if}, Java also has \ttt{else} and \ttt{else if} for extendin
 static int foo() {
   int x = 10;
   int y = 0;
-  if (x == 10) {
-    y = 10;
-  } 
-  if (y == 10) {
-    y += 10;
-  }
-  if (x != 10 && y != 10) {
-    y += 1000;
-  }
+  if (x == 10) { y = 10; } 
+  if (y == 10) { y += 10; }
+  if (x != 10 && y != 10) { y += 1000; }
   return y;
 }
 \end{lstlisting}
@@ -79,13 +65,9 @@ static int foo() {
 static int foo() {
   int x = 10;
   int y = 0;
-  if (x == 10) {
-    y = 10;
-  } else if (y == 10) {
-    y += 10;
-  } else {
-    y += 1000;
-  }
+  if (x == 10) { y = 10; } 
+  else if (y == 10) { y += 10; } 
+  else { y += 1000; }
   return y;
 }
 \end{lstlisting}
@@ -133,25 +115,16 @@ class GpaCalculator {
     char letter = grade.charAt(0);
     double gpa = 0;
     // Compute the grade letter.
-    if (letter == 'A') {
-      gpa = 4.0;
-    } else if (letter == 'B') {
-      gpa = 3.0;
-    } else if (letter == 'C') {
-      gpa = 2.0;
-    } else if (letter == 'D') {
-      gpa = 1.0;
-    } else {
-      gpa = 0.0;
-    }
+    if (letter == 'A') {  gpa = 4.0; } 
+    else if (letter == 'B') { gpa = 3.0; } 
+    else if (letter == 'C') { gpa = 2.0; } 
+    else if (letter == 'D') { gpa = 1.0; } 
+    else { gpa = 0.0; }
 
-    if (letter != 'A' && letter != 'F') {
-      gpa = plus ? gpa + 0.3 : gpa;
-    }
+    if (letter != 'A' && letter != 'F') { gpa = plus ? gpa + 0.3 : gpa; }
+    
     // Compute - if applicable.
-    if (letter != 'F') {
-      gpa = minus ? gpa - 0.3 : gpa;
-    }
+    if (letter != 'F') { gpa = minus ? gpa - 0.3 : gpa; }
 
     return gpa;
   }
