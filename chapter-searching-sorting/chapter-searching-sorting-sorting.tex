@@ -595,7 +595,7 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   
   @Override
   public AbstractList<V> mergeSort(AbstractList<V> ls) {
-    return this.mergeSortHelper(ls);
+    return this.msHelper(ls);
   }
   
   /**
@@ -605,7 +605,7 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
    * @param ls the list to sort.
    * @return the sorted list.
    */
-  private AbstractList<V> mergeSortHelper(AbstractList<V> ls) {
+  private AbstractList<V> msHelper(AbstractList<V> ls) {
     if (ls.isEmpty()) { return new ArrayList<>(); }
     else if (ls.size() == 1) {
       AbstractList<V> newLs = new ArrayList<>();
@@ -613,9 +613,11 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
       return newLs;
     } else {
       int mid = (ls.size() - 1) / 2;
-      AbstractList<V> leftHalf = mergeSortHelper((AbstractList<V>) ls.subList(0, mid + 1));
-      AbstractList<V> rightHalf = mergeSortHelper((AbstractList<V>) ls.subList(mid + 1, ls.size()));
-      return merge(leftHalf, rightHalf);
+      List<V> leftHalf = ls.subList(0, mid + 1);
+      List<V> rightHalf = ls.subList(mid + 1, ls.size());
+      AbstractList<V> leftHalfSorted = this.msHelper((AbstractList<V>) leftHalf);
+      AbstractList<V> rightHalfSorted = this.msHelper((AbstractList<V>) rightHalf);
+      return this.merge(leftHalfSorted, rightHalfSorted);
     }
   }
   
@@ -661,7 +663,7 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
 
   @Override
   public AbstractList<V> mergeSort(AbstractList<V> ls) {
-    this.mergeSortHelper(ls, 0, ls.size() - 1);
+    this.msHelper(ls, 0, ls.size() - 1);
     return ls;
   }
 
@@ -672,12 +674,12 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
    * @param low the lower bound of the sublist. 
    * @param high the upper bound of the sublist.
    */
-  private void mergeSortHelper(AbstractList<V> ls, int low, int high) {
+  private void msHelper(AbstractList<V> ls, int low, int high) {
     if (low < high) {
       int mid = low + (high - low) / 2;
-      mergeSortHelper(ls, low, mid);
-      mergeSortHelper(ls, mid + 1, high);
-      merge(ls, low, mid, high);
+      this.msHelper(ls, low, mid);
+      this.msHelper(ls, mid + 1, high);
+      this.merge(ls, low, mid, high);
     }
   }
 
@@ -866,6 +868,10 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 }
 \end{lstlisting}
 \end{cl}
+
+\subsection*{Using Comparators for Sorting}
+
+
 
 % \subsubsection*{Randomized Quick Sort Asymptotic Analysis}
 

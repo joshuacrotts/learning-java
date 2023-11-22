@@ -699,7 +699,77 @@ A \textit{TreeMap} is a map with a determined order, either by a natural orderin
 \subsection*{\ttt{LinkedHashMap} Class}
 A \textit{LinkedHashMap} is a map with an ordering based on the insertion order of the key/value pairs. All methods in a \ttt{Map} are implemented by a \ttt{LinkedHashMap}. Those listed from the \ttt{HashMap} figure are also implemented.
 
+\section*{Iterators}
+We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
 
+\begin{verbatim}
+static int sum(int[] arr) {
+  int sum = 0;
+  for (int i = 0; i < arr.size; i++) { sum += arr[i]; }
+  return sum;
+}
+\end{verbatim}
+
+The problem is that not all data structures, as we have undoubtedly seen, are sequential; sets and maps are two examples of non-sequential data structures, so how do we traverse over those? Stacks and queues are another example of data structures that are not necessarily sequential. \textit{Iterator} objects are the answer to this problem. Iterators provide a mechanism for traversing over a generalized data structure. Any data structure whose class definition implements \ttt{Iterator} must define at least two methods: \ttt{boolean hasNext} and \ttt{T next}, which determines whether or not we are at the end of the traversal and retrieves the next element respectively. Note that \ttt{T}, for the time being, simply means ``any type''. All of the Java collections implement \ttt{Iterator}, we can retrieve the corresponding \ttt{Iterator} object via the \ttt{.iterator} method. 
+
+Upon retrieving an iterator, we can use a \ttt{while} loop to continuously traverse over the data structure until no more elements remain to be visited. The elements of the iterator are generated on-the-fly; only upon calling \ttt{next} is the value truly read from the data structure itself. Much like the rest of the Collections API, we must pass the parameterized type to the \ttt{Iterator} initialization so that it knows what to substitute for \ttt{T} in the \ttt{next} method.
+
+\example Let's use an iterator to traverse over a \ttt{LinkedHashSet}, whose elements ordering is determined by their insertion order, meaning the iterator should produce them in the order in which they were inserted.
+
+\begin{cl}[IteratorTester.java]{Testing an Iterator over a \ttt{LinkedHashSet}}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class IteratorTester {
+
+  @Test
+  void testIterator() {
+    Set<Integer> lhs = new LinkedHashSet<>();
+    lhs.add(8);
+    lhs.add(10);
+    lhs.add(0);
+    lhs.add(90);
+    Iterator<Integer> it = lhs.iterator();
+    assertAll(
+      () -> assertTrue(it.hasNext());
+      () -> assertEquals(8, it.next()),
+      () -> assertEquals(10, it.next()),
+      () -> assertEquals(0, it.next()),
+      () -> assertEquals(90, it.next()),
+      () -> assertFalse(it.hasNext())
+    );
+  }
+} 
+\end{lstlisting}
+\end{cl}
+
+Should we want to traverse over the data again, we need to produce yet another instance of the iterator because there is no way to reset the ``position'' of an iterator; they are a type of one-time use objects.
+
+It should be stated that the enhanced \ttt{for} loop is nearly identical to the job of an \ttt{Iterator}, so a programmer may wonder why not use the former over the latter. Inside an enhanced \ttt{for} loop, we cannot modify the data structure, meaning that we cannot add, insert, remove, or change elements. On the other hand, the use of iterators allows structural modification. We would not recommend altering the data structure, even if it is permissible by Java, since doing so can result in unforeseen bugs. 
+
+\example Let's now iterate over the \ttt{LinkedHashSet} using an enhanced \ttt{for} loop. We can do so by placing the type on the left-hand side of the element declaration. Our test will simply subtract the elements from left-to-right, since subtraction is not commutative, we can quickly verify the correctness of our result.
+
+\begin{cl}[EnhancedForLoopTester.java]{Using an Enhanced \ttt{for} Loop over a Collection}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertEquals;
+
+class EnhancedForLoopTester {
+
+  @Test
+  testEnhancedForLoop() {
+    Set<Integer> lhs = new LinkedHashSet<>();
+    lhs.add(1);
+    lhs.add(2);
+    lhs.add(3);
+    lhs.add(4);
+    int diff = 0;
+    for (Integer e : lhs) { diff -= e; }
+    assertEquals(-10, diff);
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 \section*{Streams}
 \textit{Streams} are, in effect, a \textit{lazy} collection of ``things''. By lazy, we mean to say that, if a result is not necessary, or requested, then it is not computed.

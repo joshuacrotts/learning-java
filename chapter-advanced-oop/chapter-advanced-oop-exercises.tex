@@ -199,3 +199,19 @@ A ConsList is one of:
  - new ConsList(x, ConsList)
 \end{verbatim}
 Implement the cons data structure into your interpreter. This should involve designing the \ttt{ConsNode} class that conforms to the aforementioned data definition. Moreover, you will need to update \ttt{PrimNode} to account for the \ttt{first} and \ttt{rest} primitive operations, as well as an \ttt{empty?} predicate, which returns whether or not the cons list is empty. Finally, update the \ttt{Lvalue} class to print a stringified representation of a \ttt{ConsNode}, which amounts to printing each element, separated by spaces, inside of brackets, e.g., \ttt{[$l_0, l_1, ..., l_{n-1}]$}.
+
+\exercise{4}{chapter-advanced-oop}{In this series of exercises, you will design several methods that act on very large natural numbers resembling the \ttt{BigInteger} class. You cannot use any methods from the class, or the class itself.}
+In this problem you will design several methods that act on very large \textit{natural numbers} resembling the \ttt{BigInteger} class. You \textit{\textbf{cannot}} use any methods from this class, or the class itself. 
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{BigNat} class, which has a constructor that receives a string. The \ttt{BigNat} class stores an \ttt{ArrayList<Integer>} as an instance variable. You will need to convert the given string into said list. Store the digits in reverse order, i.e., the least-significant digit (the ones digit) of the number is the first element of the list.
+    \item Override the \ttt{public String toString} method to return a string representation of the \ttt{BigNat} object. 
+    % In particular, place commas between the digits where necessary, e.g., \ttt{"1,000"} and \ttt{"12,345,678"}.
+    \item Override the \ttt{public BigNat clone} method that returns a new \ttt{BigNat} instance that contains the same number.
+    \item Override the \ttt{public boolean equals} method to compare two \ttt{BigNat} values for equality. 
+    \item Implement the \ttt{Comparable<BigNat>} interface, and override the \ttt{public int compareTo} method to return the sign of the result of comparing the given \ttt{BigNat} (which we will call $b$) to \ttt{this} \ttt{BigNat} (which we will call $a$). Namely, if $a < b$, return $-1$, if $a > b$, return $1$, otherwise return $0$.
+    \item Design the \ttt{public void add} method, which adds a \ttt{BigNat} to \ttt{this} \ttt{BigNat}. The method should not return anything. Note: this problem is harder than it may look at first glance!
+    \item Design the \ttt{public void sub} method, which subtracts a \ttt{BigNat} from \ttt{this} \ttt{BigNat}. If the subtrahend (the right-hand side of the subtraction) is greater than the minuend, the result is zero. Over natural numbers, this is called the \textit{monus} operator.
+    \item Design the \ttt{public void mul} method, which multiplies a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. Note: remember how we implement multiplication recursively? You shouldn't use recursion for this problem, but what \textit{is} multiplication? Think about the performance implications of this approach. As we will discuss later, it is $\Theta(n^2)$.
+    \item Design the \ttt{public void div} method, which divides a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. If the divisor is greater than the dividend, assign the dividend to be zero. If the divisor is zero, do nothing at all. Otherwise, perform integer division. Note: we can implement division recursively. You shouldn't use recursion for this problem, but what \textit{is} division? Think about the performance implications of this approach. As we will discuss later, it is $\Theta(n^2)$.
+\end{enumerate}
