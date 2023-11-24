@@ -325,3 +325,170 @@ class Calculator {
 \end{lstlisting}
 \end{cl}
 
+\example{Arrays can be of arbitrary dimension and are not restricted to only one. In this problem we will make use of a two-dimensional array, which might be thought of as a matrix or a grid. We will write a method that returns the sum of the elements of a two-dimensional array of integers. Traversing over an $n$-dimensional array generally involves nested loops. The order in which we traverse over the array can be significant. For example, the following code uses \textit{row-major} ordering, since we iterate over the rows first, and then the columns, meaning that we visit the elements in the order $A_{0,0}, A_{0,1}, A_{0,2}, ..., A_{1,0}, A_{1,1}, A_{1,2}, A_{2,0}, A_{2,1}, A_{2,2}$. Conversely, \textit{column-major} ordering would visit the elements in the order $A_{0,0}, A_{1,0}, A_{2,0}, ..., A_{0,1}, A_{1,1}, A_{2,1}, A_{0,2}, A_{1,2}, A_{2,2}$.}
+
+Multi-dimensional arrays are nothing more than arrays of arrays. Thus, as an example, we can declare a $3 \times 4$ two-dimensional array of integers (with three rows and four columns) as follows:
+\begin{verbatim}
+int[][] A = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
+\end{verbatim}
+
+\begin{cl}[SumOf2DArrayTester.java]{Tests for the Sum of a Two-Dimensional Array}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class SumOf2DArrayTester {
+
+  @Test
+  void sumOf2DArrayTest() {
+    int[][] A = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
+    assertAll(
+      () -> assertEquals(78, sumOf2DArray(A)),
+      () -> assertEquals(0, sumOf2DArray(new int[][]{})),
+      () -> assertEquals(1, sumOf2DArray(new int[][]{{1}}))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+We need to know both the number of rows and the number of columns to traverse over a two-dimensional array. To retrieve the number of rows, we simply refer to the array's length via \texttt{$A$.length}. To get the number of columns, again, because we know that $A$ is an array of one-dimensional arrays, we use \ttt{$A[0]$.length}, or in general, \ttt{$A[i]$.length} for any $i$ such that $0 \leq i < $\ttt{$A$.length}.\footnote{This generalization applies because arrays in Java cannot be \textit{ragged}, or where different rows/columns have different lengths.}
+
+\begin{cl}[SumOf2DArray.java]{Sum of a Two-Dimensional Array}
+\begin{lstlisting}[language=MyJava]
+class SumOf2DArray {
+
+  /**
+   * Computes the sum of the values in a two-dimensional array.
+   *
+   * @param arr two-dimensional array of integers.
+   * @return sum of those values.
+   */
+  static int sumOf2DArray(int[][] arr) {
+    int sum = 0;
+    for (int i = 0; i < arr.length; i++) {
+      for (int j = 0; j < arr[i].length; j++) {
+        sum += arr[i][j];
+      }
+    }
+    return sum;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Note that to access the element at row $i$ and column $j$, we use \ttt{$A[i][j]$}. 
+
+\example{Let's solve a slightly harder problem using two-dimensional arrays. Suppose that we want to write a method that returns the number of possible moves that a rook can take to go from the top-left of a (not-necessarily rectangular) board to the bottom-right, assuming that it cannot move left or up. The naive solution to this problem is to use a recursive method that changes its position by one in either direction, stopping once we hit the bottom-right of the board. Assuming the rook starts at $(x, y)$ and the board is $n \times m$, we can write the following method.}
+
+\begin{cl}[RookPathTester.java]{Tests for the Rook Problem}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class RookPathTester {
+
+  @Test
+  void testRookPath() {
+    assertAll(
+      () -> assertEquals(1, rook(0, 0, 1, 1)),
+      () -> assertEquals(2, rook(0, 0, 2, 2)),
+      () -> assertEquals(6, rook(0, 0, 3, 3)),
+      () -> assertEquals(10, rook(0, 0, 4, 4)),
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[RookPath.java]{Rook Problem Implementation}
+\begin{lstlisting}[language=MyJava]
+class RookPath {
+
+  /**
+   * Computes the number of possible paths that a rook can take to go from the
+   * top-left of a board to the bottom-right, assuming that it cannot move left
+   * or up.
+   *
+   * @param x x-coordinate of the rook's starting position.
+   * @param y y-coordinate of the rook's starting position.
+   * @param n number of rows of the board.
+   * @param m number of columns of the board.
+   * @return number of possible paths.
+   */
+  static int rook(int x, int y, int n, int m) {
+    if (x == n || y == m) { return 1; }
+    else { return rook(x + 1, y, n, m) + rook(x, y + 1, n, m); }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Much like how the recursive definition of Fibonacci is horrendously slow, so is this implementation. We need something faster, and indeed, we can take advantage of a two-dimensional array because of an emerging pattern. Notice that in the bottom-right corner, there is only one possible solution. We can generalize this to say that there is only one solution for any position in the bottom row or the far-right column. From here, we can work our way up and to the left, filling in the number of possible solutions for each position. For example, the position $(n - 1, m - 1)$ has a value of two, since it can move either right or down. The position $(n - 2, m - 1)$ has a value of three, since it can move right, down, or down and then right. We can continue this process until we reach the top-left corner, which will have the value of the number of possible paths from $(0, 0) to (n, m)$.\footnote{Should we want to choose an arbitrary starting point, we can retrieve that index rather than $(0, 0)$ in the resulting two-dimensional array.} We can write a method that computes this value using a two-dimensional array. Composing the solution in this manner is called \textit{dynamic programming}, which comes up often when attempting to optimize problems that have naive and outrageously recursive solutions.
+
+To prevent our code from going out of bounds, we need to add one to the bounds of our input array. That is, if we want to compute the number of possible paths from $(0, 0)$ to $(n, m)$, we need to create an array of size $(n + 1) \times (m + 1)$, because the current value of the array at $(n, m)$ depends on the values of the array at $(n + 1, m)$ and $(n, m + 1)$.\footnote{When writing dynamic programming algorithms, it is commonplace to call the array \ttt{dp} out of convention.} 
+
+Dynamic programming problems are often solved using two-dimensional arrays using the following three-step process: 
+
+\begin{enumerate}
+  \item For a problem size of $n$ and $m$, initialize a two-dimensional array of size $(n + 1) \times (m + 1)$.
+  \item Populate the array with the necessary base cases.
+  \item Iterate over the array, filling in the values using a recurrence relation.
+\end{enumerate}
+
+\begin{cl}[RookPathTester.java]{Tests for the Rook DP Problem}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class RookPathTester {
+
+  @Test
+  void testRookPathDP() {
+    assertAll(
+      () -> assertEquals(1, RookPath.rook(2, 3, 2, 3)),
+      () -> assertEquals(2, RookPath.rook(1, 2, 2, 3)),
+      () -> assertEquals(6, RookPath.rook(0, 1, 2, 3)),
+      () -> assertEquals(10, RookPath.rook(0, 0, 2, 3))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[RookPath.java]{Rook DP Problem Implementation}
+\begin{lstlisting}[language=MyJava]
+class RookPath {
+
+  /**
+   * Computes the number of possible paths that a rook can take to go from the
+   * (x, y) position of a board to the bottom-right, assuming that it cannot
+   * move left or up. This approach uses dynamic programming.
+   * 
+   * @param x x-coordinate of the rook's starting position.
+   * @param y y-coordinate of the rook's starting position.
+   * @param n number of rows of the board.
+   * @param m number of columns of the board.
+   * @return number of possible paths.
+   */
+  public static int rook(int x, int y, int n, int m) {
+    int[][] dp = new int[n + 1][m + 1];
+
+    // Compose the initial bottom-row solutions.
+    for (int i = 0; i < n + 1; i++) { dp[i][m] = 1; }
+
+    // Compose the initial far-right solutions.
+    for (int i = 0; i < m+1; i++) { dp[n][i] = 1; }
+
+    // Now do the dynamic programming algorithm.
+    for (int i = n - 1; i >= 0; i--) {
+      for (int j = m - 1; j >= 0; j--) {
+        dp[i][j] = dp[i + 1][j] + dp[i][j + 1];
+      }
+    }
+    return dp[x][y];
+  }
+}
+\end{lstlisting}
+\end{cl}
+

@@ -484,6 +484,30 @@ class FunctionMap {
 \end{lstlisting}
 \end{cl}
 
+\example{Java 8 introduced the \ttt{Function} interface, so we do not have to design our own version. Using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can make use of method referencing via the \ttt{::} operator. Let's rewrite the \ttt{addOne} example doing so. We will also show off the fact that Java will auto-box and unbox an integer primitive into its \ttt{Integer} counterpart, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives instead, which are easier to work with. Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, because Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.}\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}
+
+\begin{cl}[FunctionMapTester.java]{Map Function Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static FunctionMap.map;
+
+class FunctionMapTester {
+
+  static int addOne(int i) { return i + 1; }
+
+  @Test
+  void testMap() {
+    List<Integer> l = List.of(1, 2, 3, 4, 5);
+    assertAll(
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, FunctionMapTester::addOne)),
+      () -> assertEquals(List.of(), map(List.of(), FunctionMapTester::addOne)),
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, i -> i + 1))
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(List.of(), i -> i + 1))
+    );
+  }
+}
+
 \example{Now that we have interfaces, we can write a very simple expression tree interpreter! What do we mean by this? Consider the arithmatic expression $5 + (3 + 4)$. According to the standard order-of-operations, we evaluate the parenthesized sub-expressions first, then reduce outer expressions. So, in our case, we add $3$ and $4$ to get $7$, followed by an addition of $5$. We can represent this idea as an evaluation tree, where we travel from bottom-up, evaluating sub-expressions as they are encountered. How does this relate to interfaces? Suppose we create the \ttt{IExpr} interface, which contains a single method: \ttt{int value}, which returns the value of an expression.}
 
 \begin{cl}[IExpr.java]{Expression Interface}
