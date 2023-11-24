@@ -12,24 +12,15 @@
 \newcommand{\mathtime}{} % uncomment to use Times New Roman fonts
 % fonts
 
-%% Times New Roman Fonts
 \ifdefined\mathtime
   \usepackage{newtxtext} 
+  \usepackage[complete, subscriptcorrection, zswash]{mtpro2}
 \fi
 \usepackage[htt]{hyphenat}
 \usepackage{tikz}
 \usepackage{tikz-qtree}
 \usepackage[utf8]{inputenc}
-\ifdefined\mathtime
-  \usepackage[complete, subscriptcorrection, zswash]{mtpro2}
-\fi
 \usepackage[lighttt]{res/fonts/mylmodern}
-% \usepackage{fdsymbol}
-% \usepackage{pifont} % REQUIRED
-
-% \usepackage{amsmath}
-% \usepackage{amssymb}
-% \usepackage[cam,letter,center]{crop}  
 \usepackage[mathscr]{euscript}
 \usepackage{mathtools}
 \usepackage{simplebnf}
@@ -39,7 +30,7 @@
 \usepackage{url}
 
 % typesetting
-% \usepackage{icomma}
+\usepackage{hyperref}
 \usepackage{fancyhdr}
 \usepackage{pdfpages}
 \usepackage{framed}
