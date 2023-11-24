@@ -105,6 +105,7 @@
 }
 
 \newcounter{excounter}
+\newcounter{examplecounter}
 
 \newcommand{\nestedlang}[1]{$\mathcal{L}^{*}_{\textnormal{#1}}$}
 
@@ -148,12 +149,14 @@
 {#3} \stepcounter{excounter}}
 
 \newcommand{\example}[1]
-{\noindent\textbf{\textit{Example.}} {#1}}
+{\noindent\textbf{\textit{Example {\thechapter}.{\theexamplecounter}.}} {#1}
+\stepcounter{examplecounter}}
 
 
 \newenvironment{copyrightpage}{\thispagestyle{empty}\bgroup\parindent\z@%
 \raggedright%
-\fontsize{8\p@}{9.5\p@}\selectfont%
+% \fontsize{8\p@}{9.5\p@}\selectfont%
+% \fontsize{12\p@}{14\p@}\selectfont%
 \null\vspace{122\p@}\setlength{\parskip}{12.5\p@}%
 }{\par\egroup\newpage}%
 

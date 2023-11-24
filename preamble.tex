@@ -1,4 +1,4 @@
-\documentclass[9pt, twoside, openright]{extbook}
+\documentclass[10pt, twoside, openright]{extbook}
 % \documentclass[9pt, twoside, openright]{book}
 % \documentclass[9pt, twoside, openright]{memoir}
 \input{common}
@@ -16,44 +16,7 @@
   % paperheight=9.125in, paperwidth=7.25in,
   % top=.875in,bottom=.875in,right=.875in,left=1.25in
 }
-\usepackage[cam,center,letter]{crop}
-
-
-%  \geometry {
-%     % HEIN MARGINS:
-%     % 7.25" x 9.125"
-%     % paperheight=9.125in, paperwidth=7.25in,
-%     % top=.875in,bottom=.875in,right=.875in,left=1.25in
-
-%     % Largest margins and well-tested
-%         % paperheight=12in,paperwidth=12in,
-%     % top=1in, bottom=1in, right=2.5in,left=2.5in
-%     % top=1in,bottom=1in,right=2.5in,left=2.5in
-%     % paperheight=10.31in,paperwidth=10.25in,
-%     % top=1in,bottom=1in,right=2.5in,left=2.5in
-%     paperheight=11.0in,paperwidth=8.5in,
-%     top=1in,
-%     bottom=1in,
-%     right=1in,
-%     left=1in,
-%     % paperheight=9.04in,paperwidth=6.94in,
-%     % top=1in,bottom=1in,right=0.5in,left=0.5in
-%     % paperheight=11in,paperwidth=8.5in,
-%     % top=1in,bottom=1in,right=1.0in,left=1.0in
-% }
-% to be loaded first in order to avoid conflicts
-
-% end import
-
-% fix \widering (remove \smash and add \vss)
-% \renewcommand{\widering}[1]{%
-%   \overset{%
-%     \vbox to .2ex{%
-%       \hbox{$\mathring{}$}%
-%       \vss
-%     }
-%   }{\overgroup{#1}}}
-% end fix
+% \usepackage[cam,center,letter]{crop}
 
 \usetikzlibrary{automata, positioning, arrows, arrows.meta, chains, bending}
 \let\euscr\mathscr \let\mathscr\relax% just so we can load this and rsfs
@@ -66,34 +29,6 @@
 \definecolor{theorems}{RGB}{236,238,251}
 \definecolor{definitions}{RGB}{246,244,231}
 
-% % The following loads mtpro2 lite and defines some common options
-% %\usepackage[lite,subscriptcorrection,slantedGreek,nofontinfo]{mtpro2}
-
-% \lstdefinelanguage {assemblerx64}     
-%    % add a "x64" dialect of Assembler
-%    [x86masm]{Assembler} % based on the "x86masm" dialect
-%    % with these extra keywords:
-%    {keywords={CDQE,CQO,CMPSQ,CMPXCHG16B,JRCXZ,LODSQ,MOVSXD, %
-%                   POPFQ,PUSHFQ,SCASQ,STOSQ,IRETQ,RDTSCP,SWAPGS, movq},
-%     alsodigit=!\$\%&*+-./:<=>?@^_~,
-%   register = [1]{\%rax, \%rbx, rcx, rdx},
-%   sensitive=true,
-%   basewidth=0.5em,
-%   morecomment=[l]{\#},
-%   morecomment=[s]{\#|}{|\#},
-%   morestring=[b]",
-%   escapeinside={(*;}{;*)},
-%   % basicstyle=\scriptsize\ttfamily,
-%   basicstyle=\small\ttfamily,
-%   registerstyle=[2]\color[rgb]{ .678, .847, .902},
-%   keywordstyle=\bf\ttfamily\color[rgb]{0,.3,.7},
-%   commentstyle=\color[rgb]{0.133,0.545,0.133},
-%   stringstyle={\color[rgb]{0.75,0.49,0.07}},
-%   upquote=true,
-%   breaklines=true,
-%   breakatwhitespace=true,
-%   literate=*{`}{{`}}{1},
-%   showstringspaces=false} % etc.
 \definecolor{codegreen}{rgb}{0.1,0.5,0.1}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{commentgreen}{RGB}{2,112,10}
@@ -140,52 +75,6 @@
   escapeinside={(*;}{;*)},
 }
 
-%No Line Numbers
-\lstdefinelanguage{MyNLNC}{
-  basewidth=0.5em,
-  columns=fullflexible,
-  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
-  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
-  language=C,
-  morekeywords={NULL, size\_t, bool, ssize\_t, intptr\_t},
-  basicstyle=\footnotesize\ttfamily,
-  breaklines=true,
-  showstringspaces=false,
-  escapeinside={(*;}{;*)},
-  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
-}
-
-\lstdefinelanguage{MyC}{
-  basewidth=0.5em,
-  columns=fullflexible,
-  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
-  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
-  language=C,
-  morekeywords={NULL, size\_t, bool, ssize\_t, intptr\_t},
-  numbers=left,
-  numberstyle=\ttfamily,
-  basicstyle=\footnotesize\ttfamily,
-  breaklines=true,
-  showstringspaces=false,
-  escapeinside={(*;}{;*)},
-  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
-}
-
-\lstdefinelanguage{MyVC}{
-  % columns=fullflexible,
-  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
-  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
-  language=C,
-  numbers=left,
-  numberstyle=\ttfamily,
-  morekeywords={NULL, size\_t, bool, ssize\_t, intptr\_t},
-  basicstyle=\footnotesize\ttfamily,
-  breaklines=true,
-  showstringspaces=false,
-  escapeinside={(*;}{;*)},
-  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
-}
-
 \lstdefinelanguage{MyJava}{
   texcl=true,
   basewidth=0.5em,
@@ -216,126 +105,6 @@
   escapeinside={(*;}{;*)}
   % literate={~}{{\fontfamily{ptm}\selectfont \textasciitilde}}{1}{\ \ \ \ }{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
 }
-
-\lstdefinelanguage{MyPython}{
-  columns=fullflexible,
-  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
-  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
-  language=Python,
-    numbers=left,
-  numberstyle=\ttfamily,
-  morekeywords={NULL},
-  basicstyle=\footnotesize\ttfamily,
-  breaklines=true,
-  showstringspaces=false,
-  escapeinside={(*;}{;*)},
-  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
-}
-
-\lstdefinelanguage{MyNLNAssembly}{
-  basewidth=0.5em,
-  columns=flexible,
-  morekeywords={leaq, movq, callq, retq, cmpq, .extern, .data, .section, .global, .text, pushq, popq, subq, addq, .quad, .asciz, .ascii, negq, jmp, jz, syscall, .bss, .space, je, jne, imulq, movsd, .double, cvtsi2sd, cvtsi2sd, divsd, mulsd, sqrtsd, fldl, fsin, fstl, ffree, fldl, fmulp, fldpi, fxch, fdivp, popa, addsd},
-  alsodigit=!\$\%&*+-/:<=>?@^_~,
-  alsoletter={.},
-  % sensitive=true,
-  morecomment=[l]{\#},
-  morecomment=[s]{\#|}{|\#},
-  morestring=[b]",
-  escapeinside={(*;}{;*)},
-  basicstyle=\footnotesize\ttfamily,
-  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
-  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
-  stringstyle=\itshape,
-  upquote=true,
-  breaklines=true,
-  % breakatwhitespace=true,
-  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1},
-  showstringspaces=false,
-}
-
-\lstdefinelanguage{MyAssembly}{
-  basewidth=0.5em,
-  columns=flexible,
-    % numbers=left,
-  % numberstyle=\ttfamily,
-  morekeywords={leaq, movq, callq, retq, cmpq, .extern, .data, .section, .global, .text, pushq, popq, subq, addq, .quad, .asciz, .ascii, negq, jmp, jz, syscall, .bss, .space, je, jne, imulq, movsd, .double, cvtsi2sd, cvtsi2sd, divsd, mulsd, sqrtsd, fldl, fsin, fstl, ffree, fldl, fmulp, fldpi, fxch, fdivp, popa, addsd},
-  alsodigit=!\$\%&*+-/:<=>?@^_~,
-  alsoletter={.},
-  % sensitive=true,
-  morecomment=[l]{\#},
-  morecomment=[s]{\#|}{|\#},
-  morestring=[b]",
-  escapeinside={(*;}{;*)},
-  basicstyle=\footnotesize\ttfamily,
-  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
-  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
-  stringstyle=\itshape,
-  upquote=true,
-  breaklines=true,
-  % breakatwhitespace=true,
-  literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1},
-  showstringspaces=false,
-}
-
-\lstdefinelanguage{MyScheme}{
-  basewidth=0.5em,
-  columns=fullflexible,
-    % numbers=left,
-  % numberstyle=\ttfamily,
-  morekeywords=[1]{define, define-macro, lambda},
-  morekeywords=[2]{begin, call-with-current-continuation, call/cc, case, cond,
-      do, else, if, let/cc, set, set-car, set-cdr,
-      let*, let, letrec,
-      and, or, not, eqv, eq, cons, null,
-      quasiquote, quote, unquote, unquote-splice},
-  morekeywords=[3]{import, export},
-  alsodigit=!\$\%&*+-./:<=>?@^_~,
-  sensitive=true,
-  alsoletter={'\textquotesingle?},
-  morecomment=[l]{;},
-  morecomment=[s]{\#|}{|\#},
-  morestring=[b]",
-  escapeinside={(*;}{;*)},
-  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
-  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
-  basicstyle=\footnotesize\ttfamily,
-  upquote=true,
-  breaklines=true,
-  breakatwhitespace=true,
-  literate=~{$\sim$}2,
-  % literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1},
-  showstringspaces=false,
-}
-
-
-\lstdefinelanguage{MyNLNScheme}{
-  basewidth=0.5em,
-  columns=fullflexible,
-  morekeywords=[1]{define, define-macro, lambda},
-  morekeywords=[2]{begin, call-with-current-continuation, call/cc, case, cond,
-      do, else, if, let/cc, set, set-car, set-cdr,
-      let*, let, letrec,
-      and, or, not, eqv, eq, cons, null,
-      quasiquote, quote, unquote, unquote-splice},
-  morekeywords=[3]{import, export},
-  alsodigit=!\$\%&*+-./:<=>?@^_~,
-  sensitive=true,
-  alsoletter={'\textquotesingle?},
-  morecomment=[l]{;},
-  morecomment=[s]{\#|}{|\#},
-  morestring=[b]",
-  escapeinside={(*;}{;*)},
-  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
-  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
-  basicstyle=\footnotesize\ttfamily,
-  upquote=true,
-  breaklines=true,
-  breakatwhitespace=true,
-  % literate={~}{{\raisebox{0.5ex}{\texttildelow}}}{1}{'}{\textquotesingle}{1}{`}{\textasciitilde}{1},
-  showstringspaces=false,
-}
-
 
 \newtcolorbox[auto counter,number within=chapter]{clo}[2][]{
   enhanced,

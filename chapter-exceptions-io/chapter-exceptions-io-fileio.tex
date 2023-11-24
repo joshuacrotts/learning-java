@@ -6,7 +6,7 @@ Presumably this section discusses file input and output syntax and semantics. Wh
 
 Reading and writing from a source, at its core, is nothing more than reading and writing bytes. Indeed, Java provides classes for reading and writing bytes from and to data sources via the \ttt{FileInputStream} and \ttt{FileOutputStream} classes. To read the bytes, i.e,. the contents, of a file with a given name, which we pass to the \ttt{FileInputStream} constructor. The \ttt{.read} method returns an integer representing the next byte available in the stream, opting to return $-1$ if there is no byte available. 
 
-\example Let's write a program that reads data from a file and echos it to standard output.
+\example{Let's write a program that reads data from a file and echos it to standard output.}
 
 \begin{cl}[FileInputStreamExample.java]{Reading File Data Example}
 \begin{lstlisting}[language=MyJava]
@@ -37,7 +37,7 @@ Recall that in the previous section we mentioned checked exceptions, and deferre
 
 When reading from an input source that is not \ttt{System.in}, it is imperative to always close the stream resource. So, after we read the data from our file input stream object \ttt{fis}, inside the \ttt{finally} block, we should invoke \ttt{.close} on the instance, which releases the allocated system resources and deems the file no longer available.\footnote{We can check whether an input stream is available via the \ttt{.available} method.} Expanding upon the \ttt{finally} block a bit more, we will say that it is a segment of code that \textit{always} executes, no matter if the preceding code threw an exception. The finally block is useful for releasing resources, e.g,. opened input streams, that otherwise may not be released. Many programmers often forget to close a resource, and then are left to wonder why a file is either corrupted, overwritten, or some other alternative. To remediate this problem, we can use the \textit{try-with-resources} construct, which autocloses the resource.\footnote{Not every resource can be autoclosed; the class of interest must explicitly implement the \ttt{AutoCloseable} interface to be wrapped inside a try-with-resources block.}
 
-\example Let's use the try-with-resources block to copy the contents of one file to another. In essence, we will write a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.
+\example{Let's use the try-with-resources block to copy the contents of one file to another. In essence, we will write a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.}
 
 \begin{cl}[FileCopyExample.java]{Copying File Data Example with Try-With-Resources}
 \begin{lstlisting}[language=MyJava]
@@ -60,7 +60,7 @@ class FileCopyExample {
 
 The file input and output stream classes read data as raw bytes from their source/destination streams. In most circumstances, we probably want to read characters from a data source or to a data destination. To do so, we can instead opt to use the \ttt{FileReader} class, which extends \ttt{Reader} rather than the \ttt{InputStream} class. Namely, \ttt{FileReader} is for reading text, whereas \ttt{FileInputStream} is for reading raw byte content of a file. Therefore a \ttt{FileReader} can read only textual files, i.e., files without an encoding, e.g., \ttt{.pdf}, \ttt{.docx}, and so forth.
 
-\example Using \ttt{FileReader}, we will once again write an ``echo'' program, which reads data from its file source and outputs it to standard output. Of course, we may want to output data to a file, in which case we use the dual to \ttt{FileReader}, namely \ttt{FileWriter}. In summary, \ttt{FileWriter} provides several methods for writing strings and characters to a data destination. In this example we will also write some data to a test file, then examine its output based on the method invocations that we make. 
+\example{Using \ttt{FileReader}, we will once again write an ``echo'' program, which reads data from its file source and outputs it to standard output. Of course, we may want to output data to a file, in which case we use the dual to \ttt{FileReader}, namely \ttt{FileWriter}. In summary, \ttt{FileWriter} provides several methods for writing strings and characters to a data destination. In this example we will also write some data to a test file, then examine its output based on the method invocations that we make.}
 
 \begin{cl}[FileReaderWriterExample]{Examples of File Reader and Writer}
 \begin{lstlisting}[language=MyJava]
@@ -97,7 +97,7 @@ If we open the \ttt{file2.out}, we see that it outputs \ttt{"Here is a string"} 
 
 The problem with the file input and output stream classes, as well as the file reader and writer classes, is that they interact directly with the operating system using low-level operations. Constantly invoking these low-level operations is expensive on the CPU for various reasons, and these classes read/write byte-after-byte of data, which is horribly inefficient. The \ttt{BufferedReader} and \ttt{BufferedWriter} classes aim to alleviate this problem by instantiating buffers for data. Then, when the buffer is full, the data is flushed to either the source or destination. This way, the program makes fewer operating system-level calls, improving overall program performance. To read from a stream, as suggested, we use \ttt{BufferedReader}. Its constructor receives an instance of the \ttt{Reader} class, which may be one of several classes. For example, to read from a file, we wrap a \ttt{FileReader} inside the constructor of \ttt{BufferedReader}. Wrapping a \ttt{FileReader} inside a \ttt{BufferedReader} allows the buffered reader to interplay (using its optimization techniques) with the file reader, which in turn interacts with the operating system. To output data using buffered I/O, we use the analogous \ttt{BufferedWriter} class, which receives a \ttt{Writer} instance. 
 
-\example Using \ttt{BufferedReader} and \ttt{BufferedWriter}, we will write a program that reads data from a file and outputs it to another file.
+\example{Using \ttt{BufferedReader} and \ttt{BufferedWriter}, we will write a program that reads data from a file and outputs it to another file.}
 
 \begin{cl}[BufferedReaderWriterExample.java]{Buffered Reader and Writer Example}
 \begin{lstlisting}[language=MyJava]
@@ -148,7 +148,7 @@ class PerformanceExamples {
 
 The classes that we have explored thus far are primarily for reading/writing either binary or text data. Perhaps we want to output values that are not strictly strings or raw bytes, e.g., integers, doubles, floats, and other primitives datatypes. To do so, we can instantiate a \ttt{PrintWriter} instance, which itself receives an instance of the \ttt{Writer} class. A concern for some programmers may be that we lose the benefits of buffered I/O, but this is not the case; the constructor for \ttt{PrintWriter} wraps the writer object that it receives in an instantiation of a \ttt{BufferedWriter} object. Therefore, we do not forgo any performance gains from buffered writing, while gaining the ability to write non-strictly-text data.
 
-\example Using \ttt{PrintWriter}, let's output some arbitrary constants and formatted strings to a file.
+\example{Using \ttt{PrintWriter}, let's output some arbitrary constants and formatted strings to a file.}
 
 \begin{cl}[PrintWriterExample.java]{Using the \ttt{PrintWriter} Class}
 \begin{lstlisting}[language=MyJava]
@@ -177,7 +177,7 @@ This is a formatted string with & and 42 and 2.718282 and true
 
 We now have methods for reading strings and raw bytes, as well as methods for outputting all primitives and formatted strings to data destinations. We still have one problem: how can we output the representation of an object? For example, take the \ttt{BigInteger} class; it has associated instance variables and fields that we also need to store. For this particular class, it might be tempting to store a stringified representation, but this is not an optimal solution because, what if a class has a field that itself is an object? We would need to recursively stringify the object, which is not a good idea. Instead, we can use the \ttt{ObjectOutputStream} and \ttt{ObjectInputStream} classes, which allow us to \textit{serialize} and \textit{deserialize} objects. Serialization is the process of converting an object into a stream of (transmittable) bytes, whereas deserialization is the opposite process. In summary, when we serialize objects, we save the object itself, alongside any relevant information about the object, e.g., its fields, instance variables, and so forth. Upon deserializing said object, we can restore the object to its original state, initializing its fields. Suppose, on the contrary,
 
-\example Let's use \ttt{ObjectInput/OutputStream} classes to serialize an object of type \ttt{Player}, which has a name, score, health, and array of top scores. To designate that an object can be serialized, it must implement the \ttt{Serializable} interface. This interface is a \textit{marker interface}\index{marker interface}, meaning that it has no methods to implement. Instead, it is a flag that tells the compiler that the class can be serialized. Our example will also demonstrate the idea that classes can contain other class definitions, which is useful for grouping related classes together. The \ttt{ObjectStreamExample} class defines the private and static \ttt{Player} class as described above. Should we open the \ttt{player.out} file, we see that it contains incomprehensible data; this is because the data is intended to be read only by a program. 
+\example{Let's use \ttt{ObjectInput/OutputStream} classes to serialize an object of type \ttt{Player}, which has a name, score, health, and array of top scores. To designate that an object can be serialized, it must implement the \ttt{Serializable} interface. This interface is a \textit{marker interface}\index{marker interface}, meaning that it has no methods to implement. Instead, it is a flag that tells the compiler that the class can be serialized. Our example will also demonstrate the idea that classes can contain other class definitions, which is useful for grouping related classes together. The \ttt{ObjectStreamExample} class defines the private and static \ttt{Player} class as described above. Should we open the \ttt{player.out} file, we see that it contains incomprehensible data; this is because the data is intended to be read only by a program.}
 
 \begin{cl}[ObjectStreamExample.java]{(De-)Serializing the \ttt{Player} Class}
 \begin{lstlisting}[language=MyJava]
@@ -213,7 +213,7 @@ class ObjectStreamExample {
 
 Suppose, on the contrary, that we store objects as strings in a file. This has two problems: first, as we said before, we would need to recursively serialize all compositional objects of the object that we are serializing. Second, we would need to write a parser to read the stringified object and reinitialize its fields. In essence, we have to reinvent worse versions of preexisting classes.
 
-\example In the first chapter we saw how to use the \ttt{Scanner} class to read from standard input. Indeed, standard input is a source of data input, but we can wrap any instance of \ttt{InputStream} or \ttt{File} inside a \ttt{Scanner} to take advantage of its helpful data-parsing methods. Let's design a method that reads a series of values that represent \ttt{Employee} data for a company. We just saw that we can take advantage of \ttt{Serializable} to do this for us, but it is helpful to see how we can also use a \ttt{Scanner} to solve a similar problem. 
+\example{In the first chapter we saw how to use the \ttt{Scanner} class to read from standard input. Indeed, standard input is a source of data input, but we can wrap any instance of \ttt{InputStream} or \ttt{File} inside a \ttt{Scanner} to take advantage of its helpful data-parsing methods. Let's design a method that reads a series of values that represent \ttt{Employee} data for a company. We just saw that we can take advantage of \ttt{Serializable} to do this for us, but it is helpful to see how we can also use a \ttt{Scanner} to solve a similar problem.}
 
 We will say that an \ttt{Employee} contains an employee identification number, a first name, a last name, a salary, and whether or not they are full-time staff. Each row in the file contains an \ttt{Employee} record.
 
@@ -308,7 +308,7 @@ class EmployeeScanner {
 
 At this point we have seen several methods and classes for reading data from different data sources. Let's now write a few more meaningful programs.
 
-\example Let's write a program that reads a file containing integers and outputs, to another file, the even integers. Because our input file has only integers, we can use the \ttt{Scanner} class for reading the data and \ttt{PrintWriter} to output those even integers. To make the program a bit more interesting, we will read the input file from the terminal arguments, and output the even integers to a file whose name is the same as the input file, but instead with the \ttt{.out} extension.
+\example{Let's write a program that reads a file containing integers and outputs, to another file, the even integers. Because our input file has only integers, we can use the \ttt{Scanner} class for reading the data and \ttt{PrintWriter} to output those even integers. To make the program a bit more interesting, we will read the input file from the terminal arguments, and output the even integers to a file whose name is the same as the input file, but instead with the \ttt{.out} extension.}
 
 \begin{cl}[EvenIntegers.java]{Reading and Writing Even Integers}
 \begin{lstlisting}[language=MyJava]
@@ -335,14 +335,12 @@ class EvenIntegers {
 \end{lstlisting}
 \end{cl}
 
-\example Let's write a program that returns an array containing the number of lines, words, and characters (including whitespaces but excluding newlines) in a given file. The array indices correspond to those quantities respectively. To simplify the program, words will be considered strings as separated by spaces. For example, if the file contains the following contents:
-
+\example{Let's write a program that returns an array containing the number of lines, words, and characters (including whitespaces but excluding newlines) in a given file. The array indices correspond to those quantities respectively. To simplify the program, words will be considered strings as separated by spaces. For example, if the file contains the following contents:}
 \begin{verbatim}
 This is a test file.
 It contains three lines.
 Here is the last line.
 \end{verbatim}
-
 The returned array should be \ttt{[3, 14, 46]}. This way we can write JUnit tests to verify that our program works as intended.
 
 \begin{cl}[LineWordCharCounterTester.java]{Testing the \ttt{LineWordCharCounter} Class}
@@ -393,7 +391,7 @@ class LineWordCharCounter {
 \end{lstlisting}
 \end{cl}
 
-\example Going further with terminal arguments, let's write a program that receives multiple file names from the terminal, and outputs a file with all of the data concatenated into one. We will throw an exception if the user passes in files that do not all share the same extension. As an example, if the user passes, 
+\example{Going further with terminal arguments, let's write a program that receives multiple file names from the terminal, and outputs a file with all of the data concatenated into one. We will throw an exception if the user passes in files that do not all share the same extension. As an example, should the user input}
 \begin{verbatim}
 java ConcatenateFiles file1.txt file2.txt file3.txt output-file.txt
 \end{verbatim}
@@ -457,5 +455,4 @@ class ConcatenateFiles {
 \end{cl}
 
 
-% \example Our last example is to mimic a ``find/replace'' program. We will write a program that receives a file name, a string to find, and a string to replace. The program will then output a file with the replaced string. For example, if the user passes the following arguments:
-
+% \example{Our last example is to mimic a ``find/replace'' program. We will write a program that receives a file name, a string to find, and a string to replace. The program will then output a file with the replaced string. For example, if the user passes the following arguments:

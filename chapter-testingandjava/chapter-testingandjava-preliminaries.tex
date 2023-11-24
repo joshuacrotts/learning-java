@@ -1,7 +1,7 @@
 \section{A First Glimpse at Java}
 It makes little sense to avoid the topic at hand, so let us jump right in and write a program! We have seen \textit{functions}\index{function} before, as well as some mathematics operations, perhaps in a different context. 
 
-\example Our program will convert a given temperature in Fahrenheit to Celsius.
+\example{Our program will convert a given temperature in Fahrenheit to Celsius.}
 
 \begin{cl}[TempConverter.java]{}
 \begin{lstlisting}[language=MyJava]
@@ -102,7 +102,7 @@ This definition brings up a few points about Java's type system. The primitive m
 
 Unlike some programming languages that are \textit{dynamically-typed}, e.g., Scheme, Python, JavaScript, the Java programming language requires the programmer to specify the types of variables.\footnote{In Java 10, the \ttt{var} keyword was introduced, which automatically infers the type of a given expression.} Java has several default \textit{primitive data types}, which are the simplest reducible form of a variable. Such types include \ttt{int}, \ttt{char}, \ttt{double}, \ttt{boolean}, and others. Integers, or \ttt{int}, are any positive or negative number without decimals. Doubles, or \ttt{double}, are values with decimals. Characters, or \ttt{char}, are a single character enclosed by single quotes, e.g., \ttt{\q{X}\q}. Finally, booleans, or \ttt{boolean}, are either \ttt{true} or \ttt{false}. There are other Java data types that specify varying levels of precision for given values. Integers are 32-bit signed values, meaning they have a range of $[-2^{31}, 2^{31})$. The \ttt{short} data type, on the contrary, is 16-bit signed. Beyond this is the \ttt{byte} data type that, as its name suggests, stores 8-bit signed integers. Floating-point values are more tricky, but while \ttt{double} uses 64 bits of precision, the \ttt{float} data type uses 32 bits of precision.
 
-\example Let us write a method that receives two three-dimensional vectors and returns the distance between the two. We can, effectively, think of this as the distance between two points in a three-dimensional plane. Therefore because each vector contains three components, we need six parameters, where each triplet represents the vectors $v_1$ and $v_2$.
+\example{Let us write a method that receives two three-dimensional vectors and returns the distance between the two. We can, effectively, think of this as the distance between two points in a three-dimensional plane. Therefore because each vector contains three components, we need six parameters, where each triplet represents the vectors $v_1$ and $v_2$.}
 
 \begin{cl}[VectorDistance.java]{}
 \begin{lstlisting}[language=MyJava]
@@ -170,7 +170,7 @@ class VectorDistance {
 
 We make prolific use of Java's \ttt{Math} library in designing this method; we use the \ttt{sqrt} method for computing the square root of our result, as well as \ttt{pow} to square each intermediate difference.
 
-\example We are starting to get used to some of Java's verbosity! Let us now write a method that, when given a value of $x$, evaluates the following quartic formula:
+\example{We are starting to get used to some of Java's verbosity! Let us now write a method that, when given a value of $x$, evaluates the following quartic formula:}
 
 \[
 q(x) = 4x^4 - 17x^3 + 202x^2 - 65x + 13

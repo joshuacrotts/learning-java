@@ -16,7 +16,7 @@ Some may question the need for recursive methods, as it appears to be circular; 
 \end{enumerate}
 So, we may certainly use recursion to repeat a task and, by transitivity, we will do that, but we primarily write recursive methods to solve some large problem by breaking it down into smaller problems that we know how to solve.
 
-\example Let us consider the question of addition. Consider a context where we have access to only three methods: \ttt{addOne}, \ttt{subOne}, and \ttt{isZero}, all of which are trivially defined. We also have access to conditional statements and method calls. Finally, we have an identity that $m + 0 = m$ for any natural number $m$. Here's the problem that we want to solve: we want to add two natural numbers $m$ and $n$, but how do we do that? Think about how humans calculate the sum of two natural numbers (perhaps some do it differently from others, but the general process is the same). Since we do not have a \ttt{+} operator in this context, we have to try a different approach. Recall the identity that we have at our disposal: $m + 0 = m$. Is there a way we can make use of the identity? Imagine that we want to solve $3 + 4$ in this context. Can we rewrite this expression that takes advantage of those methods that we have at our disposal? Indeed, we can rewrite this as a series of calls to \ttt{subOne} and \ttt{addOne}, but we will first show this in math notation.
+\example{Let us consider the question of addition. Consider a context where we have access to only three methods: \ttt{addOne}, \ttt{subOne}, and \ttt{isZero}, all of which are trivially defined. We also have access to conditional statements and method calls. Finally, we have an identity that $m + 0 = m$ for any natural number $m$. Here's the problem that we want to solve: we want to add two natural numbers $m$ and $n$, but how do we do that? Think about how humans calculate the sum of two natural numbers (perhaps some do it differently from others, but the general process is the same). Since we do not have a \ttt{+} operator in this context, we have to try a different approach. Recall the identity that we have at our disposal: $m + 0 = m$. Is there a way we can make use of the identity? Imagine that we want to solve $3 + 4$ in this context. Can we rewrite this expression that takes advantage of those methods that we have at our disposal? Indeed, we can rewrite this as a series of calls to \ttt{subOne} and \ttt{addOne}, but we will first show this in math notation.}
 \begin{align*}
     &= 3 + 4\\
     &= (3 + 3) + 1\\
@@ -88,7 +88,7 @@ Once we reach the base case, we unwind the recursive calls, substituting our kno
 \end{align*}
 Recursion, as we stated before, composes the solution to a large problem by first solving smaller problems.
 
-\example Consider the factorial mathematical operation. The factorial of a natural number $n$ obeys the following definition:
+\example{Consider the factorial mathematical operation. The factorial of a natural number $n$ obeys the following definition:}
 \begin{align*}
     0! &= 1\\
     n! &= n \cdot (n - 1) \cdot (n - 2) \cdot \ldots \cdot 1
@@ -198,7 +198,7 @@ As we stated, calling a method pushes its activation record to the method call s
 
 A method $f$ is tail-recursive if all recursive calls are in \textit{tail position}. At first glance, this definition appears circular. But, consider this piece: an expression is in tail position if it is in the last-to-perform operation before a method return. When relating this to recursive methods, it implies that any invocation of $f$ occurs as the last-evaluated operation prior to a return from the method. Both \ttt{add} and \ttt{fact} were non-tail recursive because each have extra work to do after the recursive calls step; that work being an unwinding of the recursive calls. Tail recursive functions do not need to unwind anything because they (for the most part) accumulate the result to an overall problem in an argument to the tail recursive method.
 
-\example We want to compute the factorial of some number using tail recursion. Let us design a template for this method. We know that the method must be called where the call is in tail position, so we can add this as a preliminary step. Up next we can copy the logic of the previous standard recursive algorithm with the added exception that we do not return one from the base case, but instead return an accumulated result. The goal is to construct, or generate, the factorial of some $n$ as an argument to the method.
+\example{We want to compute the factorial of some number using tail recursion. Let us design a template for this method. We know that the method must be called where the call is in tail position, so we can add this as a preliminary step. Up next we can copy the logic of the previous standard recursive algorithm with the added exception that we do not return one from the base case, but instead return an accumulated result. The goal is to construct, or generate, the factorial of some $n$ as an argument to the method.}
 
 \begin{cl}[]{Template for Factorial Recursive Method}
 \begin{lstlisting}[language=MyJava]
@@ -300,7 +300,7 @@ class FactorialTailRecursive {
 
 Notice that we localized the tail recursion to this class and updated the signature of \ttt{factTR} to only have one parameter. We designate \ttt{factTR} as the driver method for jump-starting the tail recursion that occurs in \ttt{factHelper}. Driver methods, in general, should share the same signature with their standard recursion method counterparts, so as to not expose the innard implementation of a method to the caller. Hiding method implementation in this fashion is called \textit{encapsulation}\index{encapsulation}. 
 
-\example Let us get a bit more practice using recursion by integrating strings. Suppose we want to design a method that removes all characters whose position is a multiple of three. For example, given the string \ttt{"ABCDEFGHI"}, we want to return \ttt{"ABDEGH"}, since \ttt{"C"}, \ttt{"F"}, and \ttt{"I"} are located at positions (note the use of position and not index) are divisible by three. Tests are, of course, warranted and necessary.
+\example{Let us get a bit more practice using recursion by integrating strings. Suppose we want to design a method that removes all characters whose position is a multiple of three. For example, given the string \ttt{"ABCDEFGHI"}, we want to return \ttt{"ABDEGH"}, since \ttt{"C"}, \ttt{"F"}, and \ttt{"I"} are located at positions (note the use of position and not index) are divisible by three. Tests are, of course, warranted and necessary.}
 
 \begin{cl}[]{Remove Divisible By Three Tests}
 \begin{lstlisting}[language=MyJava]

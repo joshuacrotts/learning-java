@@ -6,7 +6,7 @@
 
 Explain how it works...
 
-\example Let's write a visitor that prints out a programming language expression in a human-readable format. In particular, we will use a simplified version of the interpreter from Chapter~\ref{chapter-advanced-oop}. First, we need to write the visitor interface, which contains a \ttt{visit} method for each type of expression, namely \ttt{NumNode}, \ttt{PrimNode}, \ttt{VarNode}, and \ttt{LetNode}. Each \ttt{visit} method takes an expression of the corresponding type as an argument and returns a string.
+\example{Let's write a visitor that prints out a programming language expression in a human-readable format. In particular, we will use a simplified version of the interpreter from Chapter~\ref{chapter-advanced-oop}. First, we need to write the visitor interface, which contains a \ttt{visit} method for each type of expression, namely \ttt{NumNode}, \ttt{PrimNode}, \ttt{VarNode}, and \ttt{LetNode}. Each \ttt{visit} method takes an expression of the corresponding type as an argument and returns a string.}
 
 \begin{cl}[ExpressionVisitor.java]{The \ttt{ExpressionVisitor} Interface}
 \begin{lstlisting}[language=MyJava]

@@ -1,4 +1,5 @@
 \section*{Chapter Exercises}
+\addcontentsline{toc}{section}{Exercises}
 
 \exercise{2}{chapter-advanced-oop}{Design the generic static method \ttt{T validateInput(String prompt, String errResp, U extends Predicate<T> p)} that receives a prompt, an error response, and an object that implements the \ttt{Predicate} interface to test whether or not the received value, received through standard input, is valid. If the value is invalid according to the predicate, print the error response and re-prompt the user. Otherwise, return the entered value.}
 
@@ -93,6 +94,15 @@ class FibonacciLazyListTester {
 }
 \end{lstlisting}
 \end{cl}
+
+\exercise{1}{chapter-advanced-oop}{This exercise involves the doubly-linked list we wrote in the chapter.}
+Design the \ttt{public int size()} method, which returns the number of elements in the list. You can do this either recursively or with a loop. For better practice, try (and thoroughly test) both implementations.
+
+\exercise{2}{chapter-advanced-oop}{This exercise involves the doubly-linked list we wrote in the chapter.}
+Design the \ttt{public void set(int i, T v)} method, which overwrites/assigns, at index $i$, the value $v$. If the provided index is out-of-bounds, do nothing.
+
+\exercise{2}{chapter-advanced-oop}{This exercise involves the doubly-linked list we wrote in the chapter.}
+Design the \ttt{public void insert(int i, T v)} method, which inserts the value $v$ at index $i$. As an example, if we insert $4$ into the list $[20, 5, 100, 25]$ at index $2$, the list then becomes $[20, 5, 4, 100, 25]$. If the provided index is out-of-bounds, do nothing.
 
 \exercise{1}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
 Add the \ttt{"read-number"} and \ttt{"print"} primitive operations to the language. The latter is polymorphic, meaning it can print both numbers and booleans.
