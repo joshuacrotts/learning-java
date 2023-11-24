@@ -8,15 +8,21 @@
 \usepackage{tocloft}% http://ctan.org/pkg/tocloft (for fixing section title in toc
 \usepackage{pgfornament} % FOR NEW COVER PAGE STUFF
 
+
+\newcommand{\mathtime}{} % uncomment to use Times New Roman fonts
 % fonts
 
 %% Times New Roman Fonts
-\usepackage{newtxtext} 
+\ifdefined\mathtime
+  \usepackage{newtxtext} 
+\fi
 \usepackage[htt]{hyphenat}
 \usepackage{tikz}
 \usepackage{tikz-qtree}
 \usepackage[utf8]{inputenc}
-\usepackage[complete, subscriptcorrection, zswash]{mtpro2}
+\ifdefined\mathtime
+  \usepackage[complete, subscriptcorrection, zswash]{mtpro2}
+\fi
 \usepackage[lighttt]{res/fonts/mylmodern}
 % \usepackage{fdsymbol}
 % \usepackage{pifont} % REQUIRED

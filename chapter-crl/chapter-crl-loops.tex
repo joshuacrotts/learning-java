@@ -202,7 +202,7 @@ static int fact(int n, int acc) {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{\textbf{$TR_{\textit{IVP}}$:}} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $\textit{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
+\subsection*{\textit{$TR_{IVP}$:}} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $\textit{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
 
 \begin{cl}[]{Accumulator Statement for Factorial}
 \begin{lstlisting}[language=MyJava]

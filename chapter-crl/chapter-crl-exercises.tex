@@ -14,7 +14,7 @@
 \exercise{1}{chapter-crl}{In propositional logic, there are several \textit{connectives} that act on boolean truth values. These include logical conjunction $\land$, disjunction $\lor$, conditional $\to$, biconditional $\leftrightarrow$, and negation $\lnot$. We can represent \textit{schemata} as a series of composed method calls. For example, an evaluation of}
 
 \[
-    `P \to \lnot (Q \leftrightarrow \lnot R)'
+    `P \to \lnot (Q \leftrightarrow \lnot R)\textrm'
 \]
 
 \noindent where `$P$' and `$R$' are assigned to \ttt{false} and `$Q$' is assigned to \ttt{true}, is equivalent to
@@ -148,9 +148,9 @@ isValidIpv4("192.168.1A6.201") -> false
 
 \exercise{1}{chapter-crl}{Design the \ttt{computeDiscount(double itemCost, int age, boolean isStudent)} method that computes a discount for some item based on their age and student status according to the following criteria:}
 \begin{itemize}
-    \item If $\textit{age} < 18$, apply a $20\%$ discount.
-    \item If $18 \leq \textit{age} \leq 25$ and they are a student, apply a $25\%$ discount. If they are not a student, do not apply a discount.
-    \item If $age \geq 65$ and they are a student, apply a $30\%$ discount. If they are not a student, apply a $15\%$ discount.
+    \item If $\mathit{age} < 18$, apply a $20\%$ discount.
+    \item If $18 \leq \mathit{age} \leq 25$ and they are a student, apply a $25\%$ discount. If they are not a student, do not apply a discount.
+    \item If $\mathit{age} \geq 65$ and they are a student, apply a $30\%$ discount. If they are not a student, apply a $15\%$ discount.
     \item All other cases should not have a discount applied.
 \end{itemize}
 Your method should return the total cost of the item after applying the discount.
