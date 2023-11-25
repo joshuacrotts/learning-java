@@ -160,7 +160,7 @@ class PrimNode extends AstNode {
 \end{lstlisting}
 \end{cl}
 
-\exercise{4}{chapter-advanced-oop}{This exercise is multi-part and involves the interpreter we wrote in the chapter.}
+\exercise{3}{chapter-advanced-oop}{This exercise is multi-part and involves the interpreter we wrote in the chapter.}
 \begin{enumerate}[label=(\alph*)]
   \item First, design the \ttt{ProgramNode} class, which allows the user to define a program as a sequence of statements rather than a single expression.
   \item Design the \ttt{DefNode} class, which allows the user to create a global definition. Because we're now working with definitions that do not extend the environment, we should use the set method in environment. When creating a global definition via \ttt{DefNode}, we're expressing the idea that, from that point forward, the (root) environment should contain a binding from the identifier to whatever value it binds.
@@ -210,7 +210,7 @@ A ConsList is one of:
 \end{verbatim}
 Implement the cons data structure into your interpreter. This should involve designing the \ttt{ConsNode} class that conforms to the aforementioned data definition. Moreover, you will need to update \ttt{PrimNode} to account for the \ttt{first} and \ttt{rest} primitive operations, as well as an \ttt{empty?} predicate, which returns whether or not the cons list is empty. Finally, update the \ttt{Lvalue} class to print a stringified representation of a \ttt{ConsNode}, which amounts to printing each element, separated by spaces, inside of brackets, e.g., \ttt{[$l_0, l_1, ..., l_{n-1}]$}.
 
-\exercise{4}{chapter-advanced-oop}{In this series of exercises, you will design several methods that act on very large natural numbers resembling the \ttt{BigInteger} class. You cannot use any methods from the class, or the class itself.}
+\exercise{3}{chapter-advanced-oop}{In this series of exercises, you will design several methods that act on very large natural numbers resembling the \ttt{BigInteger} class. You cannot use any methods from the class, or the class itself.}
 In this problem you will design several methods that act on very large \textit{natural numbers} resembling the \ttt{BigInteger} class. You \textit{\textbf{cannot}} use any methods from this class, or the class itself. 
 
 \begin{enumerate}[label=(\alph*)]

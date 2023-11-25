@@ -846,3 +846,103 @@ class DoublyLinkedList<T> {
 
 And that completes the example.
 
+\example{Some programming languages do not come standard with data structures such as \ttt{Map} or, if they do, they are cumbersome to utilize. A substitute for the common mapping data structure is called an \textit{association list}, originating with the Lisp programming language. Its desired purpose is nearly identical to that of a map, but with worse performance implications. In this example we will design such a structure, as if \ttt{Map} did not exist in Java.}
+
+Associations lists, as their name implies, associate values to other values, just like a map. In dynamically-typed languages, e.g., Scheme, association lists accept any type as their key and any type as their value. Therefore, we could have an association list that maps a string to an integer, or an integer to a list of strings, and so on. Should we want to use truly arbitrary types in the list, we can assign \ttt{Object} to both key and value types.
+
+Our association list will support several methods that are related to their functional programming eqiuvalents. In particular, we want a \ttt{lookup} method to retrieve the associated value of some element and an an \ttt{extend} method to add a new association. Note that the \ttt{extend} method will, rather than modifying the current association list, return a new association list with the new association added. This is because we want to preserve the idea of immutability, which is a common theme in functoinal programming. Association lists, therefore, need to have a ``parent'' pointer to keep track of those associations in the list that we extend from.\footnote{In the next section on abstract classes and interpreters, we will revisit this idea in greater detail.} We will also override the \ttt{toString} method to print the associations in a readable format. 
+
+\begin{cl}[AssociationListTester.java]{Association List Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AssociationListTester {
+
+  @Test
+  void testAssociationList() {
+    AssociationList<String, Integer> list = new AssociationList<>();
+    assertAll(
+      () -> assertEquals("[]", list.toString()),
+      () -> list = list.extend("a", 1),
+      () -> assertEquals("[(a, 1)]", list.toString()),
+      () -> list = list.extend("b", 2),
+      () -> assertEquals("[(b, 2), (a, 1)]", list.toString()),
+      () -> list = list.extend("c", 3),
+      () -> assertEquals("[(c, 3), (b, 2), (a, 1)]", list.toString()),
+      () -> assertEquals(Optional.of(3), list.lookup("c")),
+      () -> assertEquals(Optional.of(2), list.lookup("b")),
+      () -> assertEquals(Optional.of(1), list.lookup("a")),
+      () -> assertEquals(Optional.empty(), list.lookup("d"))
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[AssociationList.java]{Association List Class}
+\begin{lstlisting}[language=MyJava]
+class AssociationList<K, V> {
+  
+  private final K key;
+  private final V value;
+  private final AssociationList<K, V> parent;
+  
+  public AssociationList() {
+    this.key = null;
+    this.value = null;
+    this.parent = null;
+  }
+
+  private AssociationList(K key, V value, AssociationList<K, V> parent) {
+    this.key = key;
+    this.value = value;
+    this.parent = parent;
+  }
+  
+  /**
+   * Returns the value associated with a given key.
+   * 
+   * @param key the key to lookup.
+   * @return the value associated with the key, if it exists.
+   */
+  public Optional<V> lookup(K key) {
+    AssociationList<K, V> curr = this;
+    while (curr != null) {
+      if (curr.key.equals(key)) {
+        return Optional.of(curr.value);
+      } else {
+        curr = curr.parent;
+      }
+    }
+    return Optional.empty();
+  }
+  
+  /**
+   * Adds a new association to the list.
+   * 
+   * @param key the key to associate.
+   * @param value the value to associate.
+   * @return a new association list with the new association.
+   */
+   public AssociationList<K, V> extend(K key, V value) {
+    return new AssociationList<>(key, value, this);
+   }
+  
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder("[");
+    AssociationList<K, V> curr = this;
+    while (curr != null) {
+      sb.append(String.format("(%s, %s)", curr.key, curr.value));
+      curr = curr.parent;
+      if (curr != null) { sb.append(", "); }
+    }
+    sb.append("]");
+    return sb.toString();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Each association list in our representation stores exactly one association. Each time we extend the association, we create a new list that points to the previous list. This is a very inefficient way to store associations, but it is a common functional way of extending bindings in a programming language, most often in simple interpreted languages.
