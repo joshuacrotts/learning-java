@@ -1,5 +1,5 @@
 \section{A First Glimpse at Java}
-It makes little sense to avoid the topic at hand, so let us jump right in and write a program! We have seen \textit{functions}\index{function} before, as well as some mathematics operations, perhaps in a different context. 
+It makes little sense to avoid the topic at hand, so let us jump right in and write a program! We have seen \textit{functions}\index{function} before, as well as some mathematics operations, perhaps in a different (language) context. 
 
 \example{Our program will convert a given temperature in Fahrenheit to Celsius.}
 
@@ -54,7 +54,7 @@ class TempConverterTester {
 
 We want JUnit to recognize that \ttt{fahrenheitToCelsius} contains testing code, so we prepend the \ttt{@Test} annotation to the method signature. In its body, we have a call to \ttt{Assertions.assertAll}, which receives a series of methods that are ran in succession. In our case, we want to assert that our \ttt{fahrenheitToCelsius} method should return \ttt{0} degrees Celsius when given a temperature of \ttt{32} degrees Fahrenheit. The first parameter to \ttt{assertEquals} is the expected value of the test, i.e., what we want it to produce. The second parameter is the actual value of the test, i.e., what our code produces. 
 
-When writing tests, it is important to consider \textit{edge cases} and all possible branches of a method implementation. Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. So, let us add a few more test cases.\footnote{To condense our code, we use a \ttt{static} import of our \ttt{fahrenheitToCelsius} method, which allows us to call the method without specifying the full class name. We apply this same idea to those methods used from the \ttt{Assertions} class.}
+When writing tests, it is important to consider \textit{edge cases}\index{edge case} and all possible branches of a method implementation. Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. So, let us add a few more test cases.\footnote{To condense our code, we use a \ttt{static} import of our \ttt{fahrenheitToCelsius} method, which allows us to call the method without specifying the full class name. We apply this same idea to those methods used from the \ttt{Assertions} class.}
 
 \begin{cl}[TempConverterTester.java]{}
 \begin{lstlisting}[language=MyJava]
@@ -78,7 +78,7 @@ class TempConverterTester {
 \end{lstlisting}
 \end{cl}
 
-Floating-point arithmetic can cause precision/rounding errors. So, as an optional third argument to \ttt{assertEquals}, we might provide a delta, which allows for precision up to a certain amount to be accepted as a valid answer. For example, our tolerance for the fourth and fifth test cases is \ttt{0.01}, meaning that if our actual value is less than $\pm 0.01$ away from the expected value, the test case succeeds.
+Floating-point arithmetic can cause precision/rounding errors. So, as an optional third argument to \ttt{assertEquals}, we might provide a \textit{delta}\index{delta argument}, which allows for precision up to a certain amount to be accepted as a valid answer. For example, our tolerance for the fourth and fifth test cases is \ttt{0.01}, meaning that if our actual value is less than $\pm 0.01$ away from the expected value, the test case succeeds.
 
 Now that we have copious amounts of tests, we can write our method definition. Of course, it is trivial to write.
 
@@ -101,7 +101,7 @@ class TempConverter {
 
 This definition brings up a few points about Java's type system. The primitive mathematics operations account for the types of its arguments. So, for instance, subtracting two integers will produce another integer. More noteworthy, perhaps, a division of two integers produces another integer, even if that result seems to be incorrect. Thus, \ttt{5 / 9} results in the integer \ttt{0}. If, however, we treat at least one of the operands as a floating-point value, we receive a correct result of approximately \ttt{0.555555}: \ttt{5.0 / 9}. Java by default uses the standard order of operations when evaluating mathematics expressions, so we force certain operations to occur first via parentheses.\footnote{By ``standard'', we mean the widely-accepted paradigm of parentheses first, then exponents, followed by left-to-right multiplication/division, and finally left-to-right addition/subtraction.}
 
-Unlike some programming languages that are \textit{dynamically-typed}, e.g., Scheme, Python, JavaScript, the Java programming language requires the programmer to specify the types of variables.\footnote{In Java 10, the \ttt{var} keyword was introduced, which automatically infers the type of a given expression.} Java has several default \textit{primitive data types}, which are the simplest reducible form of a variable. Such types include \ttt{int}, \ttt{char}, \ttt{double}, \ttt{boolean}, and others. Integers, or \ttt{int}, are any positive or negative number without decimals. Doubles, or \ttt{double}, are values with decimals. Characters, or \ttt{char}, are a single character enclosed by single quotes, e.g., \ttt{\q{X}\q}. Finally, booleans, or \ttt{boolean}, are either \ttt{true} or \ttt{false}. There are other Java data types that specify varying levels of precision for given values. Integers are 32-bit signed values, meaning they have a range of $[-2^{31}, 2^{31})$. The \ttt{short} data type, on the contrary, is 16-bit signed. Beyond this is the \ttt{byte} data type that, as its name suggests, stores 8-bit signed integers. Floating-point values are more tricky, but while \ttt{double} uses 64 bits of precision, the \ttt{float} data type uses 32 bits of precision.
+Unlike some programming languages that are \textit{dynamically-typed}, e.g., Scheme, Python, JavaScript, the Java programming language requires the programmer to specify the types of variables.\footnote{In Java 10, the \ttt{var} keyword was introduced, which automatically infers the type of a given expression.} Java has several default \textit{primitive datatypes}\index{primitive datatypes}, which are the simplest reducible form of a variable. Such types include \ttt{int}, \ttt{char}, \ttt{double}, \ttt{boolean}, and others. Integers, or \ttt{int}, are any positive or negative number without decimals. Doubles, or \ttt{double}, are values with decimals. Characters, or \ttt{char}, are a single character enclosed by single quotes, e.g., \ttt{\q{X}\q}. Finally, booleans, or \ttt{boolean}, are either \ttt{true} or \ttt{false}. There are other Java data types that specify varying levels of precision for given values. Integers are 32-bit signed values, meaning they have a range of $[-2^{31}, 2^{31})$. The \ttt{short} data type, on the contrary, is 16-bit signed. Beyond this is the \ttt{byte} data type that, as its name suggests, stores 8-bit signed integers. Floating-point values are more tricky, but while \ttt{double} uses 64 bits of precision, the \ttt{float} data type uses 32 bits of precision.
 
 \example{Let us write a method that receives two three-dimensional vectors and returns the distance between the two. We can, effectively, think of this as the distance between two points in a three-dimensional plane. Therefore because each vector contains three components, we need six parameters, where each triplet represents the vectors $v_1$ and $v_2$.}
 
@@ -127,7 +127,7 @@ Again we start by writing the appropriate method signature with its respective p
 D(v_1, v_2) = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2 + (z_1 - z_2)^2}
 \]
 
-So, let us write a few test cases with a few arbitrarily-chosen points.
+So, let us write a few test cases with a few arbitrarily-chosen points that we can verify with a calculator or manual computation.
 
 \begin{cl}[VectorDistanceTester.java]{}
 \begin{lstlisting}[language=MyJava]

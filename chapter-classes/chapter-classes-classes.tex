@@ -373,7 +373,9 @@ class Card {
   public Card(Suit suit, int value) { this.SUIT = suit; this.VALUE = value; }
   
   @Override
-  public String toString() { return String.format("%d of %s", this.VALUE, this.SUIT); }
+  public String toString() { 
+    return String.format("%d of %s", this.VALUE, this.SUIT); 
+  }
 
   public int getValue() { return this.VALUE; } 
 }
@@ -659,7 +661,8 @@ class Rational {
    */
   public Rational add(Rational r) {
     long commonDenominator = this.DENOMINATOR * r.DENOMINATOR;
-    long newNumerator = this.NUMERATOR * r.DENOMINATOR + r.NUMERATOR * this.DENOMINATOR;
+    long newNumerator = this.NUMERATOR * r.DENOMINATOR 
+                        + r.NUMERATOR * this.DENOMINATOR;
     return new Rational(newNumerator, commonDenominator);
   }
 }
@@ -681,8 +684,7 @@ class RationalTest {
       () -> assertEquals("14/27", new Rational(2, 3).multiply(new Rational(7, 9)).toString()),
       () -> assertEquals("1/6", new Rational(1, 2).multiply(new Rational(1, 3)).toString()),
       () -> assertEquals("1/48", new Rational(1, 4).multiply(new Rational(1, 12)).toString()),
-      () -> assertEquals("1/64", new Rational(1, 8).multiply(new Rational(1, 8)).toString()),
-      () -> assertEquals("1/256", new Rational(1, 16).multiply(new Rational(1, 16)).toString())
+      () -> assertEquals("1/64", new Rational(1, 8).multiply(new Rational(1, 8)).toString())
     )
   }
 }
@@ -701,7 +703,8 @@ class Rational {
    * @return the (simplified) product of this and r.
    */
   public Rational multiply(Rational r) {
-    return new Rational(this.NUMERATOR * r.NUMERATOR, this.DENOMINATOR * r.DENOMINATOR);
+    return new Rational(this.NUMERATOR * r.NUMERATOR, 
+                        this.DENOMINATOR * r.DENOMINATOR);
   }
 }
 \end{lstlisting}

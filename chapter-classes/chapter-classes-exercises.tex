@@ -36,6 +36,18 @@
     \item Design the \ttt{genInt(int b)} method that returns an integer between $[0, b]$. Note that $0 \leq b < 2^{15}$; you do not need to account for values outside of this range. Do \textbf{not} simply loop until you find a value between that range; instead, use modulus to your advantage.
 \end{enumerate}
 
+\exercise{3}{chapter-classes}{This question has six parts.}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers $m$ and $n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers. Copy the integers from the passed array into an instance variable array.
+    \item Design the \ttt{void set(int i, int j, int val)} method, which sets the value at row $i$ and column $j$ to \ttt{val}.
+    \item Design the \ttt{void add(Matrix m)} method, which adds the values of the passed matrix to the current matrix. If the dimensions of the passed matrix do not match the dimensions of the current matrix, do nothing.
+    \item Design the \ttt{void multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply $m$ with this matrix, do nothing.
+    \item Design the \ttt{void transpose()} method, which transposes the matrix. That is, the rows become the columns and the columns become the rows. You may need to alter the dimensions of the matrix.
+    \item Design the \ttt{void rotate()} method, rotates the matrix $90$ degrees clockwise. To rotate a matrix, compute the transposition and then reverse the rows. You may need to alter the dimensions of the matrix.
+    \item Override the \ttt{toString} method to print out the matrix in a boxed format.
+\end{enumerate}
+
 \exercise{2}{chapter-classes}{This exercise has five parts.}
 \begin{enumerate}[label=(\alph*)]
     \item Design the \ttt{GameObject} class, which stores a \ttt{Pair<Double, Double>} denoting its center $(x, y)$ position and a \ttt{Pair<Double, Double>} denoting its width and height respectively. Its constructor should receive four \ttt{double} values representing $x$, $y$, $\textit{width}$, and $\textit{height}$. Be sure to write instance accessor and mutator methods for modifying both fields. That is, you should write \ttt{getLocationX()}, \ttt{setLocationX(double d)}, and so forth, to access and modify the \ttt{Pair} values directly. 

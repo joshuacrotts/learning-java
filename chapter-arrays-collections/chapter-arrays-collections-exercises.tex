@@ -17,7 +17,7 @@ accSum({1, 3, 3, 4, 5, 5, 6, 6, 2}) => {1, 4, 7, 11, 16, 21, 27, 33, 35}
 accSum({5, 5, 5, 5, 5, 5, 5, 1, 5}) => {5, 10, 15, 20, 25, 30, 35, 36, 41}
 \end{verbatim}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{String[] fizzBuzz(int min, int max)} method that iterates over the interval $[min, max]$ (you may assume $max \geq min$) and returns an array containing strings that meet the following criteria:}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{String[] fizzBuzz(int min, int max)} method that iterates over the interval $[\textit{min}, \textit{max}]$ (you may assume $\textit{max} \geq \textit{min}$) and returns an array containing strings that meet the following criteria:}
 
     \begin{itemize}
         \item If $i$ is divisible by $3$, insert \ttt{"Fizz"}.
@@ -43,9 +43,59 @@ sumYucky({})                   => 0.0
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] countEvenOdds(int[] vals)} method that returns a tuple (an array of two values) where index zero stores the amount of even values and index one stores the amount of odd values.}
 \begin{verbatim}
-countEvenOdds({11, 9, 2, 3, 7, 10, 12, 114} => {4, 4}
-countEvenOdds({11, 13, 15, 17})             => {0, 4}
+countEvenOdds({11, 9, 2, 3, 7, 10, 12, 114}) => {4, 4}
+countEvenOdds({11, 13, 15, 17})              => {0, 4}
 \end{verbatim}
+
+\exercise{2}{chapter-arrays-collections}{We can represent matrices as two-dimensional arrays. For example, the matrix}
+
+\[
+\begin{bmatrix}
+    1 & 2 & 3\\
+    4 & 5 & 6\\
+    7 & 8 & 9
+\end{bmatrix}
+\]
+
+\noindent can be represented as the two-dimensional array
+
+\begin{verbatim}
+int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+\end{verbatim}
+
+\noindent Design the \ttt{int[][] transpose(int[][] matrix)} method that returns the transpose of a given matrix. The transpose of a matrix is the matrix where the rows and columns are swapped. For example, the transpose of the above matrix is
+
+\[
+\begin{bmatrix}
+    1 & 4 & 7\\
+    2 & 5 & 8\\
+    3 & 6 & 9
+\end{bmatrix}
+\]
+
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{int[][] rotate(int[][] matrix)} method that returns the matrix rotated $90$ degrees clockwise. For example, the matrix}
+
+\[
+\begin{bmatrix}
+    1 & 4 & 7\\
+    2 & 5 & 8\\
+    3 & 6 & 9
+\end{bmatrix}
+\]
+
+\noindent is rotated to
+
+\[
+\begin{bmatrix}
+    3 & 2 & 1\\
+    6 & 5 & 4\\
+    9 & 8 & 7
+\end{bmatrix}
+\]
+
+To rotate a matrix, take its transposition, then reverse each row. You may assume that the input matrix is $N \times N$, i.e., a square matrix.
+
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{int[][] multiply(int[][] A, int[][] B)} method that returns the product of two matrices, where $A$ is $M \times N$ and $B$ is $P \times Q$. Not all matrices can be multiplied, so you should return \ttt{null} if the matrices cannot be multiplied. Two matrices can be multiplied if and only if $N = P$. The product of two matrices $A$ and $B$ is the matrix $C$ where $C_{i, j} = \sum_{k=1}^{N} A_{i, k}\cdot B_{k, j}$} for the indices $i$, $k$, and $j$.
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{ArrayList<String> shift(ArrayList<String> ls, int i)} method that, when given a list of strings $s$ and an index $i$, returns a new list where each element is shifted  by $i$ spots. Negative values correspond to left shifts, and positive values correspond to right shifts. If a shift is nonsensical, do not shift at all. A nonsensical shift is one of the following:}
 \begin{itemize}
@@ -144,7 +194,7 @@ postfixEvaluator({"5", "2", "*", "5", "+"}) => 17
 postfixEvaluator({"1", "2", "3", "4", "+"}) => 10
 \end{verbatim}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{substitute} method that, when given a \ttt{String} $exp$ and an environment $env$ \ttt{HashMap<String, Integer>}, substitutes each occurrence of an ``identifier'' for its value counterpart from the map.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{substitute} method that, when given a \ttt{String} $\mathit{exp}$ and an environment $\mathit{env}$ \ttt{HashMap<String, Integer>}, substitutes each occurrence of an ``identifier'' for its value counterpart from the map.}
 
 \begin{verbatim}
 substitute("f(x) = 3 * a + b", {<"a" : 10>, <"b" : 13>})
@@ -178,15 +228,41 @@ unifiesAll(M4, G4) => false
 \exercise{2}{chapter-arrays-collections}{We consider a \textit{key string} to be the string obtained after alphabetizing the letters of a string. For example, the string \ttt{"deloop"} is a key string of the strings \ttt{"poodle"} and \ttt{"looped"}. Write the \ttt{static HashMap<String, List<String>> keyStringGroups(List<String> ls)} method, which maps all key strings to the strings in $\textit{ls}$ using the above criteria}
 
 \begin{verbatim}
-ls = ["ant", "introduces", "poodle", "tan", "looped", "discounter", "nastier", 
-      "polled", "retains", "retinas", "reductions"]
+ls = ["ant", "introduces", "poodle", "tan", "looped", "discounter", 
+      "nastier", "polled", "retains", "retinas", "reductions"]
       
-keyStringGroups(ls) => {{"ant", ["tan", "ant"]}, 
-                        {"deloop", ["poodle", "looped"]}, 
-                        {"dellop", ["polled"]}, 
-                        {"cdeinorsu", ["discounter", "introduces", "reductions"]}, 
-                        {"aeinrst", ["retains", "retinas", "nastier"]}}
+keyStringGroups(ls) 
+  => {{"ant", ["tan", "ant"]}, 
+      {"deloop", ["poodle", "looped"]}, 
+      {"dellop", ["polled"]}, 
+      {"cdeinorsu", ["discounter", "introduces", "reductions"]}, 
+      {"aeinrst", ["retains", "retinas", "nastier"]}}
 \end{verbatim}
+
+\exercise{3}{chapter-arrays-collections}{A SLC (simplified lambda calculus) expression takes one of the two forms: $\mathit{varList}$ or $\lambda{\mathit{var}}.\mathit{expr}$, where $\mathit{var}$ is a lower-case letter from $u$ to $z$, $\mathit{varList}$ is a sequence of variables, and $\mathit{expr}$ is either a $\mathit{var}$ or another SLC expression. We provide some examples below.}
+
+\begin{align*}
+  & \lambda{}x.\lambda{y}.xyz\\
+  & \lambda{x}.x\\
+  & \lambda{y}.yzxw\\
+  & \lambda{w}.\lambda{x}.\lambda{y}.\lambda{z}.z
+\end{align*}
+
+Your job is to determine which variables are bound, which are free, and which are neither.
+
+A bound variable is a variable that is bound by a $\lambda$ and occurs in its expression. For example, in the expression $\lambda{x}.x$, $x$ is bound.
+
+A free variable is a variable that is \textit{not} bound by a $\lambda$ but does occur in an expression. For example, in the expression $\lambda{y}.\lambda{x}.zwv$, $z$, $w$, and $v$ are free variables.
+
+A variable that is neither free nor bound is a variable that is bound by a $\lambda$ but does not occur in its expression. For example, in the expression $\lambda{}x.\lambda{}y.yz$, $x$ is neither free nor bound.
+
+Write the \ttt{static HashMap<String, String> classifyVars(String expr)} method, which returns a map of variables to their classification. We provide some examples below. You may assume that the input is a valid SLC expression and that no variables shadow one another. Use the values \ttt{V}, \ttt{B}, and \ttt{N} to represent free, bound, and neither, respectively.
+\begin{alltt}
+classifyVars("xyz")       => {<"x" : "F">, <"y" : "F">, <"z" : "F">}
+classifyVars("\(\lambda\)x.\(\lambda\)y.xyz") => {<"x" : "B">, <"y" : "B">, <"z" : "F">}
+classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
+\end{alltt}
+
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that takes a \ttt{List<Integer>} and filters out even numbers and then calculates the sum of the remaining odd numbers.}
 

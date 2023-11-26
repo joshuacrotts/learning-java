@@ -250,6 +250,17 @@ If you write tests for one of these methods, you should be able to propagate it 
 If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
 \end{enumerate}
 
+\exercise{2}{chapter-crl}{This question has three parts.}
+\begin{enumerate}[label=(\alph*)]
+    \item Design the standard recursive \ttt{chickenCounter} method, which receives a string $s$ and returns the number of times the substring \ttt{"chicken"} appears in $s$. You must account for overlapping instances of \ttt{"chicken"}. For example, \ttt{chickenCounter("abcchickechickenn")} returns $2$, because after removing the substring \ttt{"chicken"} from the original string, we are left with \ttt{"abcchicken"}, which itself contains another instance of \ttt{"chicken"}.
+
+    \item Then, design the \ttt{chickenCounterTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
+
+    \item Finally, design the \ttt{chickenCounterLoop} method that solves the problem using a loop.
+
+    If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
+\end{enumerate}
+
 \exercise{2}{chapter-crl}{Design the static \ttt{indexOf} method, which receives two \ttt{String}s \ttt{s}, \ttt{key}, and returns the first index of \ttt{key} in \ttt{s}. Note that \ttt{key} may be any arbitrary string and not just a a single character. If \ttt{key} is not in \ttt{s}, return \ttt{-1}.}
 
 \exercise{2}{chapter-crl}{Design the static \ttt{substring} method, which receives a \ttt{String} and two integers \ttt{low}, \ttt{high}, and returns the substring between these indices. If either are out of bounds of the string, return \ttt{null}.}
@@ -296,21 +307,22 @@ That is, given an input number $n$, compute that many terms of the above sequenc
 \exercise{1}{chapter-crl}{Write a method that converts a positive integer into a \ttt{String} that represents its binary counterpart. We present some examples below.}
 
 \begin{verbatim}
-toBinary(13) => 1101
-toBinary(144) => 10010000
-toBinary(25) => 11001
+toBinary(13)  => "1101"
+toBinary(144) => "10010000"
+toBinary(25)  => "11001"
 \end{verbatim}
 
 \exercise{1}{chapter-crl}{Write a method that, when given a string, looks for a mirror image (backwards) string at both the beginning and end of the
-given string. In other words, zero or more characters at the very beginning of the given string, and at the very end of the string in reverse order (possibly overlapping). For example, the string \ttt{"abXYZba"} has the mirror end \ttt{"ab"}.}
+given string. In other words, zero or more characters at the very beginning of the given string, and at the very end of the string in reverse order (possibly overlapping). For example, the string \ttt{"abXYZba"} has the mirror end \ttt{"ab"}. If there is no such string, return \ttt{null}.}
 
 \begin{verbatim}
-mirrorEnds("abXYZba") => ab
-mirrorEnds("abca")    => a
-mirrorEnds("aba")     => aba
+mirrorEnds("abXYZba") => "ab"
+mirrorEnds("abca")    => "a"
+mirrorEnds("aba")     => "aba"
+mirrorEnds("abc")     => null
 \end{verbatim}
 
-\exercise{2}{chapter-crl}{Write the \ttt{multTable} method that, when given two integers $a$ and $b$ such that $a < b$, computes the ``multiplication table'' from $a$ to $b$. We provide some test cases below. Note that the newline is just for formatting purposes.}
+\exercise{2}{chapter-crl}{Write the \ttt{multTable} method that, when given two integers $a$ and $b$ such that $a \leq b$, computes the ``multiplication table'' from $a$ to $b$. We provide some test cases below. Note that the newline is just for formatting purposes.}
 \begin{verbatim}
 multTable(3, 3) => "1*1=1,1*2=2,1*3=3,2*1=2,2*2=4,
                     2*3=6,3*1=3,3*2=6,3*3=9"

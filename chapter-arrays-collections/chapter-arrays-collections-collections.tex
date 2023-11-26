@@ -954,7 +954,8 @@ class BigIntFibStream {
    * @return stream.
    */
   public static Stream<BigInteger> fibonacciStream() {
-    BigInteger[] vals = new BigInteger[]{new BigInteger("0"), new BigInteger("1")};
+    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),
+                                         new BigInteger("1")};
     return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])})
                  .map(v -> v[0]);
   }
@@ -966,25 +967,25 @@ We will now take a bit more of a look at \ttt{map}, as well as other useful \tex
 
 A \textit{higher-order function} is a function that takes functions as parameters. We saw that \ttt{map} receives a lambda expression and applies it to every element of a stream. 
 
-\example{Let's write the \ttt{squareList} method that receives a \ttt{List<Integer>} and squares each element using the Stream API. The method should return a new list. A motif presented throughout stream methods is that they do not modify the original data. We should use \ttt{map} to apply a lambda expression that receives an integer and returns its square. Fortunately for us, we can convert any collection into a stream using the \ttt{.stream()} method. From there, we use a simple \ttt{map} invocation to arrive at our desired outcome.}
+\example{Let's write the \ttt{sqList} method that receives a \ttt{List<Integer>} and squares each element using the Stream API. The method should return a new list. A motif presented throughout stream methods is that they do not modify the original data. We should use \ttt{map} to apply a lambda expression that receives an integer and returns its square. Fortunately for us, we can convert any collection into a stream using the \ttt{.stream()} method. From there, we use a simple \ttt{map} invocation to arrive at our desired outcome.}
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static SquareList.squareList;
+import static sqList.sqList;
 
-class SquareListTester {
+class sqListTester {
 
   @Test
-  void squareListTest() {
+  void sqListTest() {
     List<Integer> ls1 = new ArrayList<>(List.of(1, 4, 9, 16, 25));
     List<Integer> ls2 = new ArrayList<>(List.of(0, 100, 81, 81));
     List<Integer> ls3 = new ArrayList<>();
     assertAll(
-      () -> assertEquals(ls1, squareList(new ArrayList<>(List.of(1, 2, 3, 4, 5)))),
-      () -> assertEquals(ls2, squareList(new ArrayList<>(List.of(0, 10, 9, 9)))),
-      () -> assertEquals(ls3, squareList(new ArrayList<>()))
+      () -> assertEquals(ls1, sqList(new ArrayList<>(List.of(1, 2, 3, 4, 5)))),
+      () -> assertEquals(ls2, sqList(new ArrayList<>(List.of(0, 10, 9, 9)))),
+      () -> assertEquals(ls3, sqList(new ArrayList<>()))
     );
   }
 }
@@ -997,7 +998,7 @@ import java.util.Stream;
 import java.util.List;
 import java.util.ArrayList;
 
-class SquareList {
+class sqList {
 
   /**
    * Returns a list of squared integers from a list of integers.
@@ -1005,7 +1006,7 @@ class SquareList {
    * @param list of integers.
    * @return list of squared integers.
    */
-  static ArrayList<Integer> squareList(List<Integer> ls) {
+  static ArrayList<Integer> sqList(List<Integer> ls) {
     return ls.stream()
              .map(x -> x * x)
              .toList();

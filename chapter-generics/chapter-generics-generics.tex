@@ -53,7 +53,8 @@ class GenericSearchTester {
 class GenericSearch {
 
   /**
-   * Returns the index of the first occurrence of k in t, or -1 if it does not exist.
+   * Returns the index of the first occurrence of k in t, 
+   * or -1 if it does not exist.
    *
    * @param t the list of type T.
    * @param k the object of type T to search for.
@@ -85,7 +86,7 @@ class GenericMaxTester {
   void genericMaxTest() {
     List<Integer> l1 = new ArrayList<>(List.of(5, 10, 20, 7, 2));
     List<String> l2 = new ArrayList<>(List.of("A", "e", "x", "Z", "3", "N"));
-    List<Double> l3 = new ArrayList<>(List.of(500.0, 400.0, 300.0, Math.PI, 200.0));
+    List<Double> l3 = new ArrayList<>(List.of(500.0, 400.0, 3.0, Math.PI, 200.0));
     List<Character> l4 = new ArrayList<>(List.of('?','@','A','a','Z'));
     List<List<Integer>> l5 = new ArrayList<>();
 
@@ -106,8 +107,8 @@ class GenericMaxTester {
 class GenericMax {
   
   /**
-   * Returns the maximum element in the list according to the compareTo implementation
-   * of the type parameter.
+   * Returns the maximum element in the list according to 
+   * the compareTo implementation of the type parameter.
    *
    * @param t the list of type T, where T is a type that implements Comparable.
    * @return the maximum element in the list.
