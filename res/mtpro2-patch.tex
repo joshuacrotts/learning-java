@@ -1,0 +1,990 @@
+%
+% This is file `mtpro2-patch.tex'.
+%
+% The standard usage is:
+%
+%   \usepackage[<options>]{mtpro2}
+%   \newcommand*\mtpscale{0.910}
+%   \newcommand*\mtpscriptscale{0.847}
+%   \newcommand*\mtpscriptscriptscale{0.794}
+%   \input{mtpro2-patch}
+%   % Note:
+%   %   If not specified, then \mtpscale will be set to 1.
+%   %   If not specified, then each of \mtpscriptscale and
+%   % \mtpscriptscriptscale will be set to \mtpscale.
+%
+% There are 14 bugs needed to be fixed by hand.
+%
+% Warning: The \arc, \Arc and \widearc math accents are
+%          incomplete in the Complete font set!!!
+%            Use the Lite font set (e.g., from CTAN) to
+%          get full glyph coverage.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the following line
+%
+%   \alloc@0\count\countdef\insc@unt\pointcount@
+%
+% with
+%
+%   \newcount\pointcount@
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', remove all the occurrences of
+%
+%   \let\{=\lbrace % 3 times
+%
+% and
+%
+%   \let\}=\rbrace % 3 times
+%
+% in \curlybraces, \straightbraces and \morphedbraces
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', remove the pair
+%
+%   \@ifpackageloaded{amsmath}{}{%
+%   }
+%
+% containing
+%
+%   \let\doteq\@undefined ...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the following 2 occurrences of
+%
+%   \char12
+%
+% in \EXtest@ (twice) with
+%
+%   \char28
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the definition of \specdelim@ with
+%
+%   \def\specdelim@#1{\ifx#1(\specdelim@true
+%    \else\ifx#1)\specdelim@true
+%    \else\ifx#1<\specdelim@true
+%    \else\ifx#1\langle\specdelim@true
+%    \else\ifx#1>\specdelim@true
+%    \else\ifx#1\rangle\specdelim@true
+%    \else\ifx#1/\specdelim@true
+%    \else\ifx#1\backslash\specdelim@true
+%    \else\ifx#1\{\specdelim@true
+%    \else\ifx#1\}\specdelim@true
+%    \else\ifx#1\lbrace\specdelim@true
+%    \else\ifx#1\rbrace\specdelim@true
+%    \else\ifx#1\lcbrace\specdelim@true
+%    \else\ifx#1\rcbrace\specdelim@true
+%    \else\specdelim@false\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the following line
+%
+%   \left#1
+%
+% in \LEFTRIGHT with
+%
+%   \left#1%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the following line
+%
+%   \kern-2\nulldelimiterspace\mskip-\thinmuskip
+%
+% in \LEFTRIGHT with
+%
+%   \kern-2\nulldelimiterspace
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the following 2 occurrences of
+%
+%   \MTEXA@ d
+%
+% in \@widetilde (once) and \widetildedown (once) with
+%
+%   \MTEXA@ g
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the following 2 occurrences of
+%
+%   \MTEXA@ z
+%
+% in \@widecheck (once) and \widecheckdown (once) with
+%
+%   \MTEXA@|
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the following occurrence of
+%
+%   \mathaccent"03D0
+%
+% in \widearc with
+%
+%   \mathaccent"03CF
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the following line
+%
+%   \mkern-1mu\kern-.13\dimen@\mkern\LEFTROOT@ mu\box\z@\kern-\wd\rootbox
+%
+% in \R@@T with
+%
+%   \mkern-1mu\kern-.13\dimen@\mkern\LEFTROOT@ mu\box\z@
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', replace the following 2 lines
+%
+%   \ifx\next\uprod\xlposition@10\else
+%   \ifx\next\ucoprod\xlposition@11\else
+%
+% in \XXXL@ with
+%
+%   \ifx\next\upprod\xlposition@10\else
+%   \ifx\next\upcoprod\xlposition@11\else
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', insert the following 9 lines
+%
+%   \DeclareMathSymbol{\nleq}         {\mathrel}{AMSa}{"82}
+%   \DeclareMathSymbol{\ngeq}         {\mathrel}{AMSa}{"83}
+%   \DeclareMathSymbol{\nless}        {\mathrel}{AMSa}{"84}
+%   \DeclareMathSymbol{\ngtr}         {\mathrel}{AMSa}{"85}
+%   \DeclareMathSymbol{\nprec}        {\mathrel}{AMSa}{"86}
+%   \DeclareMathSymbol{\nsucc}        {\mathrel}{AMSa}{"87}
+%   \DeclareMathSymbol{\ncong}        {\mathrel}{AMSa}{"9D}
+%   \DeclareMathSymbol{\nsqsubseteq}    {\mathrel}{AMSa}{217}
+%   \DeclareMathSymbol{\nsqsupseteq}    {\mathrel}{AMSa}{218}
+%
+% in order according to `mtpro2.dtx'
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% In `mtpro2.sty', remove the pair
+%
+%   \@ifpackageloaded{textcomp}{}{%
+%   }
+%
+% containing
+%
+%   \DeclareTextSymbolDefault{\textdagger}{LMP1} ...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\expandafter\edef\csname current@catcode\endcsname{\the\catcode`\@}
+\catcode`\@=11 %
+% Scale factors
+\ifx\mtpscale\@undefined
+  \def\mtpscale{1}
+\fi
+\ifx\mtpscriptscale\@undefined
+  \let\mtpscriptscale\mtpscale
+\fi
+\ifx\mtpscriptscriptscale\@undefined
+  \let\mtpscriptscriptscale\mtpscale
+\fi
+% MathTime Professional 2 Lite
+\DeclareFontShape{LMP1}{mtt}{m}{it}{%
+  <-7> s*[\mtpscriptscriptscale] mt2mif
+  <7-9> s*[\mtpscriptscale] mt2mis
+  <9-> s*[\mtpscale] mt2mit}{}
+\DeclareFontShape{LMP2}{mtt}{m}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2syf
+  <7-9> s*[\mtpscriptscale] mt2sys
+  <9-> s*[\mtpscale] mt2syt}{%
+%   A TFM file allows only 16 different height specifications
+% and 16 different depth specifications. If the file has more,
+% then these `supposed' heights and depths will be changed.
+%   In mt2exa.tfm, each `\bigg'-variant delimiter has a total
+% height of 0.046+2.337999=2.383999, although it is `supposed'
+% to be 2-line tall (0.046+2.354=2.4=2*1.2).
+%   The \fontdimen20 in mt2syt.tfm is 2.39. So TeX in display
+% styles will construct \atopwithdelims using `\Bigg'-variant
+% delimiters, since the `\bigg'-variants are not `big enough'.
+% To fix this, we set \fontdimen20 to 2.383 in all three math
+% symbol fonts.
+  \fontdimen20\font=\dimexpr\fontdimen6\font*2383/1000\relax}
+\DeclareFontShape{LMP3}{mtt}{m}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2exa
+  <7-9> s*[\mtpscriptscale] mt2exa
+  <9-> s*[\mtpscale] mt2exa}{}
+\DeclareFontShape{U}{mtt}{b}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2mbf
+  <7-9> s*[\mtpscriptscale] mt2mbs
+  <9-> s*[\mtpscale] mt2mbt}{}
+\normalsize
+\dimen@\f@size\p@
+\ifx\AssignScaledResult\@undefined
+  \dimen@\mtpscale\dimen@
+\else
+  \AssignScaledResult\dimexpr\dimen@\mtpscale\dimen@
+\fi
+\newdimen\tMTPscalesize
+\tMTPscalesize\dimen@
+\font\MTEXA@=mt2exa at \dimen@
+\font\MTXL@=mt2xl at \dimen@
+\multiply\dimen@\tw@
+\font\MTEXE@=mt2exe at \dimen@
+\font\MTXXXL@=mt2xxxl at \dimen@
+\multiply\dimen@\tw@
+\font\MTEXF@=mt2exf at \dimen@
+\multiply\dimen@\tw@
+\font\MTEXG@=mt2exg at \dimen@
+% MathTime Professional 2 Complete
+\ifmtp@full
+\DeclareFontShape{LMP1}{mtt}{b}{it}{%
+  <-7> s*[\mtpscriptscriptscale] mt2bmif
+  <7-9> s*[\mtpscriptscale] mt2bmis
+  <9-> s*[\mtpscale] mt2bmit}{}
+\DeclareFontShape{LMP2}{mtt}{b}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2bsyf
+  <7-9> s*[\mtpscriptscale] mt2bsys
+  <9-> s*[\mtpscale] mt2bsyt}{}
+\DeclareFontShape{LMP2}{mtt}{eb}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2hsyf
+  <7-9> s*[\mtpscriptscale] mt2hsys
+  <9-> s*[\mtpscale] mt2hsyt}{}
+\DeclareFontShape{LMP3}{mtt}{b}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2bexa
+  <7-9> s*[\mtpscriptscale] mt2bexa
+  <9-> s*[\mtpscale] mt2bexa}{}
+\DeclareFontShape{LMP3}{mtt}{eb}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2hexa
+  <7-9> s*[\mtpscriptscale] mt2hexa
+  <9-> s*[\mtpscale] mt2hexa}{}
+\DeclareFontShape{U}{mt2sya}{m}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2syaf
+  <7-9> s*[\mtpscriptscale] mt2syas
+  <9-> s*[\mtpscale] mt2syat}{}
+\DeclareFontShape{U}{mt2sya}{b}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2bsyaf
+  <7-9> s*[\mtpscriptscale] mt2bsyas
+  <9-> s*[\mtpscale] mt2bsyat}{}
+\DeclareFontShape{U}{mt2sya}{eb}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2hsyaf
+  <7-9> s*[\mtpscriptscale] mt2hsyas
+  <9-> s*[\mtpscale] mt2hsyat}{}
+% umt2ms.fd
+\DeclareFontFamily{U}{mt2ms}{\skewchar\font42}
+\DeclareFontShape{U}{mt2ms}{m}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2mcf
+  <7-9> s*[\mtpscriptscale] mt2mcs
+  <9-> s*[\mtpscale] mt2mct}{}
+\DeclareFontShape{U}{mt2ms}{m}{it}{%
+  <-7> s*[\mtpscriptscriptscale] mt2msf
+  <7-9> s*[\mtpscriptscale] mt2mss
+  <9-> s*[\mtpscale] mt2mst}{}
+\DeclareFontShape{U}{mt2ms}{b}{it}{%
+  <-7> s*[\mtpscriptscriptscale] mt2bmsf
+  <7-9> s*[\mtpscriptscale] mt2bmss
+  <9-> s*[\mtpscale] mt2bmst}{}
+% umt2mf.fd
+\DeclareFontFamily{U}{mt2mf}{}
+\DeclareFontShape{U}{mt2mf}{m}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2mff
+  <7-9> s*[\mtpscriptscale] mt2mfs
+  <9-> s*[\mtpscale] mt2mft}{}
+\DeclareFontShape{U}{mt2mf}{b}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2bmff
+  <7-9> s*[\mtpscriptscale] mt2bmfs
+  <9-> s*[\mtpscale] mt2bmft}{}
+% umt2bb.fd
+\DeclareFontFamily{U}{mt2bb}{}
+\DeclareFontShape{U}{mt2bb}{m}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2bbf
+  <7-9> s*[\mtpscriptscale] mt2bbs
+  <9-> s*[\mtpscale] mt2bbt}{}
+\DeclareFontShape{U}{mt2bb}{m}{it}{%
+  <-7> s*[\mtpscriptscriptscale] mt2bbif
+  <7-9> s*[\mtpscriptscale] mt2bbis
+  <9-> s*[\mtpscale] mt2bbit}{\skewchar\font45}
+\DeclareFontShape{U}{mt2bb}{b}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2bbdf
+  <7-9> s*[\mtpscriptscale] mt2bbds
+  <9-> s*[\mtpscale] mt2bbdt}{}
+% umt2hrb.fd
+\DeclareFontFamily{U}{mt2hrb}{}
+\DeclareFontShape{U}{mt2hrb}{m}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2hrbf
+  <7-9> s*[\mtpscriptscale] mt2hrbs
+  <9-> s*[\mtpscale] mt2hrbt}{}
+\DeclareFontShape{U}{mt2hrb}{m}{it}{%
+  <-7> s*[\mtpscriptscriptscale] mt2hbif
+  <7-9> s*[\mtpscriptscale] mt2hbis
+  <9-> s*[\mtpscale] mt2hbit}{\skewchar\font45}
+\DeclareFontShape{U}{mt2hrb}{b}{n}{%
+  <-7> s*[\mtpscriptscriptscale] mt2hrbdf
+  <7-9> s*[\mtpscriptscale] mt2hrbds
+  <9-> s*[\mtpscale] mt2hrbdt}{}
+\fi
+% \bBiggg support
+% Example definitions:
+%   \mtp@bBigg@\MTEXE@\thr@@, \mtp@bBigg@\MTEXE@{3.5}, ..., \mtp@bBigg@\MTEXE@{5.5};
+%   \mtp@bBigg@\MTEXF@6,      \mtp@bBigg@\MTEXF@7,     ..., \mtp@bBigg@\MTEXF@{11};
+%   \mtp@bBigg@\MTEXG@{12},   \mtp@bBigg@\MTEXG@{14},  ..., \mtp@bBigg@\MTEXG@{24}.
+\ifcsname lbrace \endcsname
+%   Since ltfssdcl.dtx 2019/08/27 v3.0s, the LaTeX2e kernel
+% makes math delimiters robust (including \lbrace, \rbrace).
+% Between 2019/08/27 v3.0s and 2020/01/20 v3.0t, the `curly'
+% definition `\delimiter"4266308 ' is in the space-appended
+% \csname lbrace\space\endcsname.
+%   In this case, the mtpro2 package first lets \lcbrace to
+% the robust \lbrace. Then, it redefines \lbrace to be non-
+% robust (specifically, to be one of `\delimiter"4266308 ',
+% `\delimiter"42B93AE ' and `\delimiter"42663B6 ').
+%   So, to test if \curlybraces is in force, we compare the
+% definitions of \csname lbrace\space\endcsname and \lbrace.
+\newcommand*\@ifcurlybraces{%
+  \expandafter\ifx\csname lbrace \endcsname\lbrace
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
+\else
+%   Prior to ltfssdcl.dtx 2019/08/27 v3.0s, \lcbrace pointed
+% to the non-robust \lbrace (\let\lcbrace=\lbrace by mtpro2).
+% So it suffices to use the test \ifx\lcbrace\lbrace.
+%   But after ltfssdcl.dtx 2020/01/20 v3.0t, \lcbrace points
+% to the `protected' \lbrace (and there is no space-appended
+% \csname lbrace\space\endcsname defined). In this case, the
+% test \ifx\lcbrace\lbrace will always be false.
+%   To resolve this awkward situation, we can define our own
+% left curly brace.
+\begingroup
+  \curlybraces % redefines \lbrace to `\delimiter"4266308 '
+  \ifx\lcbrace\lbrace\else % \lcbrace is `protected' \lbrace
+    \expandafter\gdef\csname mtp2@lcbrace\endcsname
+      {\delimiter"4266308 }% define our own left curly brace
+  \fi
+\endgroup
+\ifcsname mtp2@lcbrace\endcsname
+% For ltfssdcl.dtx 2020/01/20 v3.0t, or later.
+\newcommand*\@ifcurlybraces{%
+  \expandafter\ifx\csname mtp2@lcbrace\endcsname\lbrace
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
+\else
+% For ltfssdcl.dtx before 2019/08/27 v3.0s.
+\newcommand*\@ifcurlybraces{%
+  \ifx\lcbrace\lbrace
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
+\fi
+\fi
+\newcommand*\mtp@bBigg@[3]{%
+  {\hbox{%
+    \specdelim@#3%
+    \ifspecdelim@
+      \textfont\thr@@=#1%
+      \ifnum
+        \ifx#3\{1\else\ifx#3\}1\else
+        \ifx#3\lbrace 1\else\ifx#3\rbrace 1\else 0\fi\fi\fi\fi
+          =1 %
+        \@ifcurlybraces{}{\textfont\thr@@=\MTEXA@}%
+      \fi
+    \fi
+    $\left#3\vcenter to#2\big@size{}\right.\n@space$%
+  }}%
+}
+% Fix \undercbrace and \overcbrace
+\def\undercbrace#1{\setbox\z@\hbox{$\displaystyle#1$}%
+ \dimen@\wd\z@
+ \pointcount@\numexpr(\dimen@-\tMTPscalesize/2)/\tMTPscalesize\relax
+ \ifnum\pointcount@<4
+  \ifdim\wd\z@<1.35\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char144}}%
+  \else\ifdim\wd\z@<1.65\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char145}}%
+  \else\ifdim\wd\z@<1.95\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char146}}%
+  \else\ifdim\wd\z@<2.25\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char147}}%
+  \else\ifdim\wd\z@<2.55\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char148}}%
+  \else\ifdim\wd\z@<2.85\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char149}}%
+  \else\ifdim\wd\z@<3.15\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char150}}%
+  \else\ifdim\wd\z@<3.45\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char151}}%
+  \else
+   \def\thebrace@{\hbox{\MTEXE@\char152}}%
+  \fi\fi\fi\fi\fi\fi\fi\fi
+ \else
+  \ifnum\pointcount@<12
+    \advance\pointcount@149
+    \def\thebrace@{\hbox{\MTEXE@\char\pointcount@}}%
+  \else
+   \ifnum\pointcount@<24
+    \advance\pointcount@132
+    \def\thebrace@{\hbox{\MTEXF@\char\pointcount@}}%
+   \else
+    \advance\pointcount@120
+    \ifnum\pointcount@>149 \pointcount@149 \fi
+    \def\thebrace@{\hbox{\MTEXG@\char\pointcount@}}%
+   \fi
+  \fi
+ \fi
+ \mathop{\vtop{\ialign{\hfil##\hfil\cr$\displaystyle#1$\crcr\noalign
+  {\vskip3pt\nointerlineskip}\thebrace@\cr\noalign{\kern3pt}}}}\limits}%
+\def\overcbrace#1{\setbox\z@\hbox{$\displaystyle#1$}%
+ \dimen@\wd\z@
+ \pointcount@\numexpr(\dimen@-\tMTPscalesize/2)/\tMTPscalesize\relax
+ \ifnum\pointcount@<4
+  \ifdim\wd\z@<1.35\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char176}}%
+  \else\ifdim\wd\z@<1.65\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char177}}%
+  \else\ifdim\wd\z@<1.95\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char178}}%
+  \else\ifdim\wd\z@<2.25\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char179}}%
+  \else\ifdim\wd\z@<2.55\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char180}}%
+  \else\ifdim\wd\z@<2.85\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char181}}%
+  \else\ifdim\wd\z@<3.15\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char182}}%
+  \else\ifdim\wd\z@<3.45\tMTPscalesize
+   \def\thebrace@{\hbox{\MTEXE@\char183}}%
+  \else
+   \def\thebrace@{\hbox{\MTEXE@\char184}}%
+  \fi\fi\fi\fi\fi\fi\fi\fi
+ \else
+  \ifnum\pointcount@<12
+    \advance\pointcount@181
+    \def\thebrace@{\hbox{\MTEXE@\char\pointcount@}}%
+  \else
+   \ifnum\pointcount@<24
+    \advance\pointcount@148
+    \def\thebrace@{\hbox{\MTEXF@\char\pointcount@}}%
+   \else
+    \advance\pointcount@136
+    \ifnum\pointcount@>165 \pointcount@165 \fi
+    \def\thebrace@{\hbox{\MTEXG@\char\pointcount@}}%
+   \fi
+  \fi
+ \fi
+ \mathop{\vbox{\ialign{\hfil##\hfil\cr\noalign{\kern3\p@}\thebrace@\crcr
+ \noalign{\kern3\p@\nointerlineskip}$\displaystyle#1$\crcr}}}\limits}%
+% Add \textbardbl and \textbigcircle; Redeclare \textcircled
+\DeclareTextSymbolDefault{\textbardbl}{LMP2}
+\DeclareTextSymbol{\textbardbl}{LMP2}{107}
+\DeclareTextSymbol{\textbigcircle}{LMP2}{13}
+\DeclareTextCommand{\textcircled}{LMP2}[1]{\hmode@bgroup
+   \ooalign{%
+      \hfil \raise .07ex\hbox {\upshape#1}\hfil \crcr
+      \char 13 % "0D
+   }%
+ \egroup}
+\RequirePackage{etoolbox}
+% MathTime Professional 2 sets math axis at 252/1000
+%   Use \redistributestruthtdp to adjust text strut if necessary,
+% e.g., \redistributestruthtdp{71/100}{29/100} (one-time-only!).
+\newcommand*\redistributestruthtdp[2]{%
+  \patchcmd\set@fontsize
+    {.7\baselineskip}
+    {\dimexpr\baselineskip*#1\relax}
+    {\typeout{Redistribute strut height}}
+    {\typeout{Couldn't patch \string\set@fontsize}}%
+  \patchcmd\set@fontsize
+    {.3\baselineskip}
+    {\dimexpr\baselineskip-\baselineskip*#1\relax}
+    {\typeout{Redistribute strut depth}}
+    {\typeout{Couldn't patch \string\set@fontsize}}%
+  \renewcommand*\redistributestruthtdp[2]{%
+    \typeout{\string\redistributestruthtdp\space has already been
+      used. So ##1 and ##2 will be gobbled and have no effect.}%
+  }%
+}
+% amsmath unfortunately codes \AtBeginDocument{\reset@strutbox@},
+% therefore any fix for \strutbox@ using \fontdimen22 must occur
+% after this. One must load amsmath prior and we make sure of it.
+% We also need \new@ifnextchar for \redistributestrutht.
+\RequirePackage{amsmath}
+\newcommand*\redistributestrutht[1]{%
+  \new@ifnextchar\bgroup
+    {\redistributestrutht@t@s{#1}}%
+    {\redistributestrutht@t@s{#1}{#1}}%
+}
+\newcommand*\redistributestrutht@t@s[2]{%
+  \new@ifnextchar\bgroup
+    {\redistributestrutht@t@s@ss{#1}{#2}}%
+    {\redistributestrutht@t@s@ss{#1}{#2}{#1}}%
+}
+\newcommand*\redistributestrutht@t@s@ss[3]{%
+  \patchcmd\set@fontsize
+    {.7\baselineskip}
+    {\dimexpr\baselineskip
+      *\ifdim\f@size\p@<7\p@ #3\else
+        \ifdim\f@size\p@<9\p@ #2\else #1\fi\fi\relax}
+    {\typeout{Redistribute strut height}}
+    {\typeout{Couldn't patch \string\set@fontsize}}%
+  \patchcmd\set@fontsize
+    {.3\baselineskip}
+    {\dimexpr\baselineskip-\baselineskip
+      *\ifdim\f@size\p@<7\p@ #3\else
+        \ifdim\f@size\p@<9\p@ #2\else #1\fi\fi\relax}
+    {\typeout{Redistribute strut depth}}
+    {\typeout{Couldn't patch \string\set@fontsize}}%
+  \renewcommand*\redistributestrutht@t@s@ss[3]{%
+    \typeout{\string\redistributestrutht\space has already been
+      used. So ##1 and so on will be gobbled and have no effect.}%
+  }%
+}
+%   Since mtpro2 is TFM-based, we should force \genfrac to be the
+% classical version to avoid (a) bugs across different mathstyles
+% (see https://github.com/latex3/latex2e/issues/432) and (b) slow
+% processing (see https://github.com/latex3/latex2e/issues/433).
+\DeclareRobustCommand{\genfrac}[4]{%
+  \def\@tempa{#1#2}%
+  \edef\@tempb{\@nx\@genfrac\@mathstyle{#4}%
+    \csname @@\ifx @#3@over\else above\fi
+    \ifx\@tempa\@empty \else withdelims\fi\endcsname}
+  \@tempb{#1#2#3}}
+% We can also hard code \binom for speed.
+\ifx\directlua\@undefined
+\DeclareRobustCommand{\binom}[2]{{\begingroup#1\endgroup\@@atopwithdelims()#2}}
+\else
+\DeclareRobustCommand{\binom}[2]{{\Ustack{\begingroup#1\endgroup\@@atopwithdelims()#2}}}
+\fi
+% https://github.com/latex3/latex2e/issues/160
+\patchcmd\math@cr@@@aligned
+  {\next@ \cr}
+  {\next@ \global\column@\z@ \cr}
+  {\typeout{Reset \string\column@\space for each row in `aligned'}}
+  {\typeout{Couldn't patch \string\math@cr@@@aligned}}
+% https://github.com/latex3/latex2e/issues/161
+\patchcmd\measure@
+  {%
+    \global\column@\z@
+    \add@amps\maxfields@\cr
+  }
+  {%
+    \advance\maxfields@\m@ne
+    \add@amps\maxfields@\cr
+  }
+  {\typeout{Remove excessive column in `align'}}
+  {\typeout{Couldn't patch \string\measure@}}
+% https://github.com/latex3/latex2e/issues/162
+\iftagsleft@\else\if@fleqn
+  \patchcmd\x@calc@shift@rf
+    {%
+      \ifdim\dimen@<\minalignsep\relax
+          \global\alignsep@\minalignsep\relax
+      \else
+          \global\alignsep@\dimen@
+      \fi
+    }
+    {%
+      \ifdim\dimen@<\minalignsep\relax
+          \global\alignsep@\minalignsep\relax
+      \else
+        \ifdim\dimen@<\alignsep@
+          \global\alignsep@\dimen@
+        \fi
+      \fi
+    }
+    {\typeout{Allow decreasing \string\alignsep@\space only}}
+    {\typeout{Couldn't patch \string\x@calc@shift@rf}}
+\fi\fi
+% https://github.com/latex3/latex2e/issues/136
+\iftagsleft@\else\if@fleqn\else
+  \patchcmd\x@calc@shift@rc
+    {%
+      \ifdim\dimen@<\minalignsep\relax
+          \global\alignsep@\minalignsep\relax
+          \eqnshift@\displaywidth
+          \advance\eqnshift@-\@tempdima
+          \advance\eqnshift@-\@tempcntb\alignsep@
+          \global\divide\eqnshift@\tw@
+      \else
+          \ifdim\dimen@<\eqnshift@
+              \ifdim\dimen@<\z@
+                  \global\eqnshift@\z@
+              \else
+                  \global\eqnshift@\dimen@
+              \fi
+          \fi
+          \ifdim\dimen@<\alignsep@
+              \global\alignsep@\dimen@
+          \fi
+      \fi
+    }
+    {%
+      \ifdim\dimen@<\minalignsep\relax
+          \global\alignsep@\minalignsep\relax
+          \dimen@\displaywidth
+          \advance\dimen@-\@tempdima
+          \advance\dimen@-\@tempcntb\alignsep@
+          \divide\dimen@\tw@
+      \else
+          \ifdim\dimen@<\alignsep@
+              \global\alignsep@\dimen@
+          \fi
+      \fi
+      \ifdim\dimen@<\eqnshift@
+          \ifdim\dimen@<\z@
+              \global\eqnshift@\z@
+          \else
+              \global\eqnshift@\dimen@
+          \fi
+      \fi
+    }
+    {\typeout{Allow decreasing \string\eqnshift@\space only}}
+    {\typeout{Couldn't patch \string\x@calc@shift@rc}}
+\fi\fi
+% https://github.com/latex3/latex2e/issues/156
+%   This is an experimental fix
+\iftagsleft@\if@fleqn
+    \def\calc@shift@align{%
+        \global\let\tag@shifts\@empty
+        \begingroup
+            \loop
+                \ifnum\row@>0
+                    \ifdim\tag@width\row@>\z@
+                        \x@calc@shift@lf
+                    \else
+                        \saveshift@0%
+                    \fi
+                    \advance\row@\m@ne
+            \repeat
+        \endgroup
+    }
+    \def\x@calc@shift@lf{%
+        \column@\z@
+        \@tempdima\z@
+        \@tempdimb\z@
+        \edef\@tempb{\fieldlengths@\row@}%
+        \@for\@tempa:=\@tempb\do{%
+            \advance\column@\@ne
+            \x@lcalc@width
+        }%
+        \advance\@tempdimb\eqnshift@
+        \advance\@tempdimb\count@\alignsep@
+        \advance\@tempdimb-\mintagsep\relax
+        \ifdim\tag@width\row@>\@tempdimb
+            \saveshift@1%
+        \else
+            \saveshift@0%
+        \fi
+    }
+    \def\x@lcalc@width{%
+        \ifdim\@tempdima = \z@
+            \ifdim\@tempa > \z@
+                \@tempdima\p@
+                \ifodd\column@
+                    \advance\@tempdimb \maxcol@width\column@
+                    \advance\@tempdimb-\@tempa
+                \fi
+                \count@\column@
+                \advance\count@\m@ne
+                \divide\count@\tw@
+                \advance\@tempcnta-\count@
+                \advance\@tempcntb-\count@
+            \else
+                \advance\@tempdimb \maxcol@width\column@\relax
+            \fi
+        \fi
+    }
+\fi\fi
+\newsavebox\mtp@matrix@cases
+\renewenvironment{pmatrix}{%
+  \matrix@check\pmatrix
+  \setbox\mtp@matrix@cases\hbox\bgroup$%
+  \env@matrix
+}{%
+  \endmatrix
+  \m@th$\egroup
+  \PARENS{\,\copy\mtp@matrix@cases\,}%
+}
+\renewenvironment{Bmatrix}{%
+  \setbox\mtp@matrix@cases\hbox\bgroup$%
+  \env@matrix
+}{%
+  \endmatrix
+  \m@th$\egroup
+  \@ifcurlybraces{%
+    \LEFTRIGHT@\lbrace\rbrace{\,\copy\mtp@matrix@cases\,}%
+  }{%
+    \left\lbrace\copy\mtp@matrix@cases\right\rbrace
+  }%
+}
+\renewenvironment{cases}{%
+  \matrix@check\cases
+  \setbox\mtp@matrix@cases\hbox\bgroup$%
+  \let\@ifnextchar\new@ifnextchar
+  \def\arraystretch{1.1}% less than 1000/\delimiterfactor
+  \array{@{}l@{\quad}l@{}}%
+}{%
+  \endarray
+  \m@th$\egroup
+  \@ifcurlybraces{%
+    \LEFTRIGHT@\lbrace.{\,\copy\mtp@matrix@cases}%
+  }{%
+    \left\lbrace\copy\mtp@matrix@cases\right.%
+  }%
+}
+% Fix mathtools environments?
+\newcommand*\standardbin{+}
+\newcommand*\tabularbin[1]{%
+  \mathbin{\mathpalette{\@tabularsym\standardbin}{#1}}%
+}
+\newcommand*\standardrel{=}
+\newcommand*\tabularrel[1]{%
+  \mathrel{\mathpalette{\@tabularsym\standardrel}{#1}}%
+}
+\newcommand*\@tabularsym[3]{%
+  \setbox\z@\hbox{$#2#1\m@th$}%
+  \hbox to\wd\z@{\hss$#2#3\m@th$\hss}%
+}
+% Fix mathtools' \cramped
+\DeclareRobustCommand*\cramped[1][\@empty]{%
+  \relax
+  \ifx\@empty#1\@empty
+    \expandafter\mathpalette\expandafter\@cramped
+  \else
+    \expandafter\@cramped\expandafter#1%
+  \fi
+}
+\newcommand*\@cramped[2]{%
+  \setbox\z@\hbox{$\m@th#1\kern-\nulldelimiterspace\radical\z@{#2}$}%
+  \ifx#1\displaystyle
+    \dimen@\fontdimen8 \textfont\thr@@
+    \advance\dimen@0.25\fontdimen5 \textfont\tw@
+  \else
+    \dimen@1.25\fontdimen8 %
+      \ifx#1\textstyle
+          \textfont
+      \else
+        \ifx#1\scriptstyle
+          \scriptfont
+        \else
+          \scriptscriptfont
+        \fi
+      \fi
+      \thr@@
+  \fi
+  \advance\dimen@-\ht\z@
+  \ht\z@-\dimen@
+  \ifvmode\leavevmode\fi
+  {}\box\z@
+}
+\newcommand*\subalign[2][t]{%
+  \if#1t\vtop\else\if#1b\vbox\else\vcenter\fi\fi{%
+    \let\centry\@centry
+    \Let@ \restore@math@cr \default@tag
+    \baselineskip\fontdimen10 \scriptfont\tw@
+    \advance\baselineskip\fontdimen12 \scriptfont\tw@
+    \lineskip\thr@@\fontdimen8 \scriptfont\thr@@
+    \lineskiplimit\lineskip
+    \ialign{%
+      &\hfil\span\@cramped\scriptstyle{##}%
+      &\span\@cramped\scriptstyle{{}##}\hfil\crcr
+      #2\crcr
+    }%
+  }%
+}
+\newcommand*\centry[1]{#1}
+\newcommand*\@centry[1]{%
+  \omit
+  \hfil\@cramped\scriptstyle{#1}\hfil
+}
+%   The 2020/10/01 release of LaTeX2e introduces a new hook
+% management system. Consequently, different chunks of code
+% in the \AtBeginDocument hook (added by different packages
+% and/or classes) will be sorted at \begin{document}. Hence,
+% even though we've loaded amsmath prior to this point, the
+% amsmath code chunk can be sorted so it is executed `after'
+% our patch for \reset@strutbox@.
+%   We patch \reset@strutbox@ to use \fontdimen22\textfont2.
+% If amsmath's code is executed after ours, then we get the
+% `Font \nullfont has only 7 fontdimen parameters' error.
+%   To accommodate this new hook management system, we need
+% to explicitly declare the execution order.
+\ifx\DeclareHookRule\@undefined
+  \expandafter\@firstoftwo
+\else
+  \expandafter\@secondoftwo
+\fi
+{%
+  \AtBeginDocument
+}{%
+  \DeclareHookRule{begindocument}{amsmath}{before}{mtpro2-patch}%
+  \AtBeginDocument[mtpro2-patch]%
+}{%
+  % Fix \big@size calculation
+  \addto@hook\every@math@size{%
+    \global\big@size\dimexpr\fontdimen6\textfont\thr@@*6/5\relax}%
+  % Fix \strutbox@ setup
+  \patchcmd\reset@strutbox@
+    {\copy\strutbox}
+    {\hbox{\vrule\@height\dimexpr\baselineskip/2
+                   +\fontdimen22\textfont\tw@\relax
+                 \@depth \dimexpr\baselineskip
+                   -\baselineskip/2
+                   -\fontdimen22\textfont\tw@\relax
+                 \@width \z@}}
+    {\typeout{Fixed strut setup for amsmath.sty}}
+    {\typeout{Couldn't patch \string\reset@strutbox@}}%
+  % Fix \@arstrutbox setup
+  \@ifpackageloaded{array}{%
+    \patchcmd\@array
+      {\arraystretch \@tempdima}
+      {\dimexpr\arraystretch\baselineskip/2
+        +\arraystretch\extrarowheight
+        +\fontdimen22\textfont\tw@\relax}
+      {\typeout{Fixed array strut height for array.sty}}
+      {\typeout{Couldn't patch \string\@array}}%
+    \patchcmd\@array
+      {\arraystretch \dp \strutbox}
+      {\dimexpr\arraystretch\baselineskip
+        -\arraystretch\baselineskip/2
+        -\fontdimen22\textfont\tw@\relax}
+      {\typeout{Fixed array strut depth for array.sty}}
+      {\typeout{Couldn't patch \string\@array}}%
+    \let\@@array\@array
+  }{%
+    \patchcmd\@array
+      {\arraystretch\ht\strutbox}
+      {\dimexpr\arraystretch\baselineskip/2
+        +\fontdimen22\textfont\tw@\relax}
+      {\typeout{Fixed array strut height}}
+      {\typeout{Couldn't patch \string\@array}}%
+    \patchcmd\@array
+      {\arraystretch \dp\strutbox}
+      {\dimexpr\arraystretch\baselineskip
+        -\arraystretch\baselineskip/2
+        -\fontdimen22\textfont\tw@\relax}
+      {\typeout{Fixed array strut depth}}
+      {\typeout{Couldn't patch \string\@array}}%
+  }%
+  \@ifpackageloaded{delarray}{%
+    \def\@@array[#1]{\@ifnextchar\bgroup
+      {\let\@arrayleft\relax\let\@arrayright\relax\@array[#1]}%
+      {\@del@array[#1]}}%
+  }{}%
+  \@ifpackageloaded{longtable}{%
+    \ifx\extrarowheight\@undefined
+    \patchcmd\LT@array
+      {\arraystretch \@tempdima}
+      {\dimexpr\arraystretch\baselineskip/2
+        +\fontdimen22\textfont\tw@\relax}
+      {\typeout{Fixed array strut height for longtable.sty}}
+      {\typeout{Couldn't patch \string\LT@array}}%
+    \else
+    \patchcmd\LT@array
+      {\arraystretch \@tempdima}
+      {\dimexpr\arraystretch\baselineskip/2
+        +\arraystretch\extrarowheight
+        +\fontdimen22\textfont\tw@\relax}
+      {\typeout{Fixed array strut height for longtable.sty}}
+      {\typeout{Couldn't patch \string\LT@array}}%
+    \fi
+    \patchcmd\LT@array
+      {\arraystretch \dp \strutbox}
+      {\dimexpr\arraystretch\baselineskip
+        -\arraystretch\baselineskip/2
+        -\fontdimen22\textfont\tw@\relax}
+      {\typeout{Fixed array strut depth for longtable.sty}}
+      {\typeout{Couldn't patch \string\LT@array}}%
+  }{}%
+  % Fix \mathsterling and \mathunderscore for OpenType text fonts
+  \@ifpackageloaded{fontspec}{%
+    \DeclareMathSymbol{\mathsterling}{\mathord}{operators}{"A3}%
+    \let\mathunderscore\@undefined
+    \DeclareMathSymbol{\mathunderscore}{\mathord}{operators}{95}%
+    % These should be fixed by fontspec, I think...
+    \DeclareSymbolFont{operators}{\encodingdefault}{\rmdefault}{\mddefault}{\updefault}%
+    \SetSymbolFont{operators}{bold}{\encodingdefault}{\rmdefault}{\bfdefault}{\updefault}%
+    \DeclareMathAlphabet{\mathbf}{\encodingdefault}{\rmdefault}{\bfdefault}{\updefault}%
+    \DeclareMathAlphabet{\mathit}{\encodingdefault}{\rmdefault}{\mddefault}{\itdefault}%
+    \DeclareMathAlphabet{\mathsf}{\encodingdefault}{\sfdefault}{\mddefault}{\updefault}%
+    \DeclareMathAlphabet{\mathtt}{\encodingdefault}{\ttdefault}{\mddefault}{\updefault}%
+    \SetMathAlphabet{\mathit}{bold}{\encodingdefault}{\rmdefault}{\bfdefault}{\itdefault}%
+    \SetMathAlphabet{\mathsf}{bold}{\encodingdefault}{\sfdefault}{\bfdefault}{\updefault}%
+    \SetMathAlphabet{\mathtt}{bold}{\encodingdefault}{\ttdefault}{\bfdefault}{\updefault}%
+  }{}%
+  % Troubles with U+00B7 (\char'267, \char183) being CJK punctuation
+  \@ifpackageloaded{xeCJK}{%
+    \def\widearc#1{\setbox\ARCbox@\hbox{$\displaystyle{#1}$}%
+      \setbox\z@\hbox{\makexeCJKinactive\MTEXF@\char'267}%
+       \ifdim\wd\ARCbox@>\wd\z@
+        \hbox{\textfont3=\MTEXG@ $\mathaccent"03B1 {\box\ARCbox@}$}%
+       \else
+        \setbox\z@\hbox{\MTEXE@\char'326}%
+        \ifdim\wd\ARCbox@>\wd\z@
+         \hbox{\textfont3=\MTEXF@ $\mathaccent"03B1 {\box\ARCbox@}$}%
+        \else
+         \setbox\z@\hbox{\MTEXA@ \char'302}%
+         \ifdim\wd\ARCbox@>\wd\z@
+          \hbox{\textfont3=\MTEXE@ $\mathaccent"03CF {\box\ARCbox@}$}%
+         \else
+          \hbox{\textfont3=\MTEXA@ $\mathaccent"03BF {\box\ARCbox@}$}%
+         \fi
+        \fi
+       \fi}%
+    \def\overcbrace#1{\setbox\z@\hbox{$\displaystyle#1$}%
+     \dimen@\wd\z@
+     \pointcount@\numexpr(\dimen@-\tMTPscalesize/2)/\tMTPscalesize\relax
+     \ifnum\pointcount@<4
+      \ifdim\wd\z@<1.35\tMTPscalesize
+       \def\thebrace@{\hbox{\MTEXE@\char176}}%
+      \else\ifdim\wd\z@<1.65\tMTPscalesize
+       \def\thebrace@{\hbox{\MTEXE@\char177}}%
+      \else\ifdim\wd\z@<1.95\tMTPscalesize
+       \def\thebrace@{\hbox{\MTEXE@\char178}}%
+      \else\ifdim\wd\z@<2.25\tMTPscalesize
+       \def\thebrace@{\hbox{\MTEXE@\char179}}%
+      \else\ifdim\wd\z@<2.55\tMTPscalesize
+       \def\thebrace@{\hbox{\MTEXE@\char180}}%
+      \else\ifdim\wd\z@<2.85\tMTPscalesize
+       \def\thebrace@{\hbox{\MTEXE@\char181}}%
+      \else\ifdim\wd\z@<3.15\tMTPscalesize
+       \def\thebrace@{\hbox{\MTEXE@\char182}}%
+      \else\ifdim\wd\z@<3.45\tMTPscalesize
+       \def\thebrace@{\hbox{\makexeCJKinactive\MTEXE@\char183}}%
+      \else
+       \def\thebrace@{\hbox{\MTEXE@\char184}}%
+      \fi\fi\fi\fi\fi\fi\fi\fi
+     \else
+      \ifnum\pointcount@<12
+        \advance\pointcount@181
+        \def\thebrace@{\hbox{\MTEXE@\char\pointcount@}}%
+      \else
+       \ifnum\pointcount@<24
+        \advance\pointcount@148
+        \def\thebrace@{\hbox{\MTEXF@\char\pointcount@}}%
+       \else
+        \advance\pointcount@136
+        \ifnum\pointcount@>165 \pointcount@165 \fi
+        \def\thebrace@{\hbox{\MTEXG@\char\pointcount@}}%
+       \fi
+      \fi
+     \fi
+     \mathop{\vbox{\ialign{\hfil##\hfil\cr\noalign{\kern3\p@}\thebrace@\crcr
+     \noalign{\kern3\p@\nointerlineskip}$\displaystyle#1$\crcr}}}\limits}%
+  }{}%
+}
+\catcode`\@=\current@catcode\relax
+\endinput
