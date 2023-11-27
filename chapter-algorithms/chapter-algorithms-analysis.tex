@@ -91,6 +91,7 @@ The term ``asymptotic analysis'' stems from the fact that ``asymptotic'' behavio
 Programmers often conflate Big-Oh as meaning the ``worst-case'' of an algorithm, Big-Omega as the ``best case'', and Theta as the ``average case''. In actuality, these have no precise and deterministic relation to one another. Remember that Big-Oh is the upper-bound, Big-Omega is the lower-bound, and Theta exists if and only if the function is Big-Oh and Big-Omega of the same function.
 
 \example{Consider the following function.}
+\begin{footnotesize}
 \begin{verbatim}
 // foo receives an array of integers.
 foo(ls) {
@@ -109,8 +110,9 @@ foo(ls) {
   return n;
 }
 \end{verbatim}
+\end{footnotesize}
 
-The best-case for this algorithm is for $v$ to be $100$, meaning we immediately return $42$. Therefore, we are upper-bounded by $\mathcal{O}(1)$, since this is a constant-time operation. We are similarly lower-bounded by this operation, meaning it is $\Omega{n}$. Therefore it is also $\Theta(n)$ in the best case.
+The best-case for this algorithm is for $v$ to be $100$, meaning we immediately return $42$. Therefore, we are upper-bounded by $\mathcal{O}(1)$, since this is a constant-time operation. We are similarly lower-bounded by this operation, meaning it is $\Omega{(1)}$. Therefore it is also $\Theta(1)$ in the best case.
 
 In the worst case, $v$ is zero, meaning we have a nested for-loop over the length of the input list, meaning we are (strictly) upper-bounded by $\mathcal{O}(n^2)$. The \ttt{for}-loops must always execute, meaning that we are lower-bounded by $\Omega(n^2)$ as well. We can conclude similar reasoning for $\Theta(n^2)$.
 
@@ -269,4 +271,77 @@ As we mentioned before, many programmers conflate best, average, and worst-cases
 
 \subsection*{Analysis of the Sorting Algorithms}
 
-TODO...
+We can analyze the five sorting algorithms described in Chapter~\ref{chapter-searching-sorting} in terms of their asymptotic behavior in the best, average, and worst cases.
+
+\subsubsection*{Bubble Sort}
+Starting off with bubble sort, in the best case, the array is already sorted, meaning we only need to traverse the array once. Therefore, we are upper and lower-bounded by $\mathcal{O}(n)$ and $\Omega(n)$ respectively. Hence, we can conclude that bubble sort is $\Theta(n)$ in the best case. 
+
+In the average case, each element is roughly ``half way'' to its sorted position. We can compute the expected number of swaps/inversions as follows: an array of length $n$ has an inversion $I_{i, j} = 1$ if we must swap the values $(i, j)$. Therefore the expected value of there being an inversion for any arbitrary pair is $1/2$ because either a pair must or must not be inverted. Our loop traverses from $i=1$ to $n$, with an inner loop of $j>i$ to In the average case, each element is roughly ``half way'' to its sorted position. We can compute the expected number of swaps/inversions as follows: an array of length $n$ has an inversion $I_{i, j} = 1$ if we must swap the values $(i, j)$. Therefore the expected value of there being an inversion for any arbitrary pair is $1/2$ because either a pair must or must not be inverted. Our loop traverses from $i=1$ to $n$, with an inner loop of $j>i$ to $n$, both of which correspond to summations. Because the inner term depends on neither $i$ nor $j$, we need to determine how many pairs are such that $1 \leq i < j \leq n$. We are, in effect, choosing two values out of a possible $n$, which collapses to $\binom{n}{2}$, which resolves to $\dfrac{n(n - 1)}{2}$.
+
+\begin{align*}
+\mathbf{E}(\sum_{i=1}^{n}\sum_{j>i}^{n}I_{i, j}) &= \sum_{i=1}^{n}\sum_{j>i}^{n}\dfrac{1}{2}\\
+&= \dbinom{n}{2} \cdot \dfrac{1}{2}\\
+&= \dfrac{n(n - 1)}{2} \cdot \dfrac{1}{2}\\
+&= \dfrac{n(n - 1)}{4}\\
+&= \dfrac{n^2}{4} - \dfrac{n}{4}
+\end{align*} 
+
+Dropping lower-order terms and coefficients shows that, in the average case, we are upper and lower-bounded by $\mathcal{O}(n^2)$ and $\Omega(n^2)$ respectively. Hence, we can conclude that bubble sort is $\Theta(n^2)$ in the average case. 
+
+In the worst case, the array is sorted in reverse order, meaning we must traverse the array $n$ times, and each traversal requires $n$ swaps. Therefore, we are upper and lower-bounded by $\mathcal{O}(n^2)$ and $\Omega(n^2)$ respectively. Hence, we can conclude that bubble sort is $\Theta(n^2)$ in the worst case.
+
+\subsubsection*{Selection Sort}
+Up next we come to selection sort, which as we know from the previous chapter, always finds the minimum element and places it at the beginning of the array. Finding the minimum element requires $n$ comparisons, and we must do this for every element in the list. Therefore, in all cases, no matter the input, we are upper and lower-bounded by $\mathcal{O}(n^2)$ and $\Omega(n^2)$ respectively. Hence, we can conclude that selection sort is $\Theta(n^2)$ in the best, average, and worst cases. Moreover, we now understand why selection sort is considerably worse than the other four sorting algorithms, because even in the best case, its asymptotic time complexity is still $\Theta(n^2)$.
+
+\subsubsection*{Insertion Sort}
+Insertion sort, similar to bubble sort, has a good start with its best case. The in-place insertion sort algorithm traverses through the list, and makes swaps with out-of-order elements. Therefore, in the best case, the list is already sorted, meaning it traverses over the data exactly once, meaning it is upper and lower-bounded by $\mathcal{O}(n)$ and $\Omega(n)$ respectively. Hence, we can conclude that insertion sort is $\Theta(n)$ in the best case.
+
+In the average case, we perform a similar analysis to bubble sort, in which we determine that every element is ``roughly halfway'' sorted. This brings about the conclusion that we are upper and lower-bounded by $\mathcal{O}(n^2)$ and $\Omega(n^2)$ respectively. Hence, we can conclude that insertion sort is $\Theta(n^2)$ in the average case.
+
+In the worst case, the list is sorted in reverse order, and every element must be swapped down to the $i^\text{th}$ index, starting from $1$ up to $n$. So, the element at the last index is swapped $n$ times, the element at the second-to-last index is swapped $n - 1$ times, and so on. 
+
+\begin{align*}
+  \sum_{i=1}^{n}i &= 1 + 2 + \cdots + (n - 1) + n\\
+  &= \dfrac{n(n + 1)}{2}\\
+  &= \dfrac{n^2}{2} + \dfrac{n}{2}
+\end{align*}
+
+Therefore, we are upper and lower-bounded by $\mathcal{O}(n^2)$ and $\Omega(n^2)$ respectively. Hence, we can conclude that insertion sort is $\Theta(n^2)$ in the worst case.$n$, both of which correspond to summations. 
+
+\subsubsection*{Merge Sort}
+Merge sort is a bit more complicated to analyze, but we can do so by using a recurrence relation. We know that merge sort splits the input list into two halves, and recursively sorts each half. We also know that the base case is when the input list is of length $1$, in which case we return the list. Accordingly, we can write the recurrence relation, as a function $T(n)$, as follows:
+
+\straightbraces
+\[
+T(n)=
+  \begin{cases}
+    \Theta(1), & \text{if } n \leq 1\\
+    2T(n/2) + \Theta(n), & \text{if } n > 1
+  \end{cases}
+\]
+
+Using this definition, we can continuously expand the recurrence relation to determine its asymptotic behavior.
+
+\begin{align*}
+  T(n) &= 2T(n/2) + \Theta(n)\\
+       &= 2(2T(n/4) + \Theta(n)) + \Theta(n)\\
+       &= 2(2(2T(n/8) + \Theta(n)) + \Theta(n)) + Theta(n)\\
+       &= 2^kT(n/2^k) + k\Theta(n)
+\end{align*}
+
+At this point, we have a relationship that is dependent on $k$, representing the depth of the recurrence. Suppose $n=2^k$. This implies that $\lg{n} = k$, because of the base two logarithm properties. Therefore, after substituting we get
+
+\begin{align*}
+  T(n) &= 2^kT(2^k/2^k) + k\cdot\Theta(n)\\
+       &= 2^kT(1) + k\cdot\Theta(n)\\
+       &= \lg(n)\Theta(1) + \lg(n)\cdot Theta(n)\\
+       &= \Theta{\lg(n)} + \Theta{(n \lg n)}\\
+       &= \Theta{(n \lg n)} 
+\end{align*}
+
+So, we can conclude that merge sort is $\Theta(n\lg{n})$ in the best, average, and worst cases. We make this conclusion because, no matter the input, we always subdivide the input into two halves, and merge the two halves together.
+
+\subsubsection*{Quick Sort}
+Finally, we will analyze the quick sort algorithm. We will analyze the randomized version of the algorithm, since it is more interesting and proves the efficacy of at least one randomized algorithm, which is a whole subfield in and of itself. 
+
+In the best case, the pivot is always the median, indicating that half of the data is to either of its sides. \textbf{CONTINUE HERE}

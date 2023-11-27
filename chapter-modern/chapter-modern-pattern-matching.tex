@@ -30,12 +30,18 @@ The definitions of \ttt{Rectangle}, \ttt{Circle}, \ttt{Triangle}, and \ttt{IShap
 \begin{lstlisting}[language=MyJava]
 class PatternMatching {
 
-  public static double perimeter(IShape shape) {
-    return switch (shape) {
+  /**
+   * Computes the perimeter of a given shape.
+   * 
+   * @param shape the IShape whose perimeter to compute.
+   * @return the perimeter of the shape.
+   */
+  public static double perimeter(IShape s) {
+    return switch (s) {
       case Rectangle r -> 2 * r.getWidth() + 2 * r.getHeight();
       case Circle c    -> 2 * Math.PI * c.getRadius();
       case Triangle t  -> 3 * t.getSideLength();
-      default -> throw new IllegalArgumentException("perimeter: unknown shape " + shape);
+      default -> throw new IllegalArgumentException("perimeter: bad shape " + s);
     };
   }
 }
@@ -81,6 +87,90 @@ class Factorial {
 \end{cl}
 
 Notice that we have to use the wrapper class, since Java permits only special types of pattern matching over the primitive data types, and otherwise works with objects. As an example, we could replace the first case with a match against the literal zero, since Java autounboxes the \ttt{Integer} object to a primitive \ttt{int}, e.g., \ttt{case 0 -> 1;}. Unfortunately we cannot use guard expressions over primitives.
+
+Pattern matching is not restricted to switch-case expressions. We can also use pattern matching in cases where we check the instance of an object, namely in the \ttt{equals} method. As an example, traditional \ttt{equals} methods look like the following:
+
+\begin{footnotesize}
+\begin{verbatim}
+@Override
+public boolean equals(Object o) {
+  if (o instanceof MyClass) {
+    MyClass other = (MyClass) o;
+    return this.field1.equals(other.field1) &&
+           this.field2.equals(other.field2) &&
+           ...
+           this.fieldN.equals(other.fieldN);
+  } else { return false; }
+}
+\end{verbatim}
+\end{footnotesize}
+
+The need to cast the object to the type of the class on its own separate line is tedious. Pattern matching allows us to write the \ttt{equals} method in a more concise manner by providing an identifier to the pattern that is bound to the object being tested. We can wrap this in either an \ttt{if} statement or as a logical AND, because the pattern matching expression returns a boolean and fails to match if the object is not an instance of the stated class.
+
+\begin{footnotesize}
+\begin{verbatim}
+@Override
+public boolean equals(Object o) {
+  return (o instanceof MyClass other)     &&
+         this.field1.equals(other.field1) &&
+         this.field2.equals(other.field2) &&
+         ...
+         this.fieldN.equals(other.fieldN);
+}
+\end{verbatim}
+\end{footnotesize}
+
+\example{Suppose that we want to override the \ttt{equals} method inside \ttt{Rectangle} using pattern matching. It's possible to use an \ttt{if} statement rather than resolving the \ttt{instanceof} check in an expression, but the latter is much more concise and solves the same problem.}
+
+\begin{cl}[RectangleTester.java]{Rectangle Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class RectangleTester {
+
+  @Test
+  void equalsTest() {
+    Rectangle r1 = new Rectangle(5, 10);
+    Rectangle r2 = new Rectangle(5, 10);
+    Rectangle r3 = new Rectangle(10, 5);
+
+    assertAll(
+      () -> assertEquals(r1, r2),
+      () -> assertNotEquals(r1, r3),
+      () -> assertNotEquals(r1, "Hello!")
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Rectangle.java]{Rectangle}
+\begin{lstlisting}[language=MyJava]
+class Rectangle implements IShape {
+
+  private final double WIDTH;
+  private final double HEIGHT;
+
+  public Rectangle(double width, double height) {
+    this.WIDTH = width;
+    this.HEIGHT = height;
+  }
+
+  public double getWidth() { return this.WIDTH; }
+
+  public double getHeight() { return this.HEIGHT; }
+
+  @Override
+  public boolean equals(Object o) {
+    return (o instanceof Rectangle r) &&
+           this.WIDTH == r.WIDTH &&
+           this.HEIGHT == r.HEIGHT;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
 
 \subsection*{Record Types}
 
@@ -143,7 +233,7 @@ class Evaluator {
     return switch (exp) {
       case Number(var n)               -> n;
       case Add   (var left, var right) -> eval(left).add(eval(right));
-      default -> throw new IllegalArgumentException("eval: unknown expression " + exp);
+      default -> throw new IllegalArgumentException("eval: bad expr " + exp);
     }
   }
 }

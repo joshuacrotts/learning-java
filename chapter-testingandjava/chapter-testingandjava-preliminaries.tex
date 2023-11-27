@@ -30,11 +30,13 @@ Above this method \textit{signature}\index{signature} is a Java documentation co
 
 Inside its method body lies a single \ttt{return}, in which we return \ttt{0.0}. Returning a value is what a \textit{method call}\index{method call}, or \textit{method invocation}\index{method invocation}, resolves to. For example, if we were to call \ttt{fahrenheitToCelsius} with any arbitrary \ttt{double} value, the call would be substituted with \ttt{0.0}. This is otherwise called \textit{method application}\index{method application}.
 
+\begin{footnotesize}
 \begin{verbatim}
 fahrenheitToCelsius(5)     -> 0.0
 fahrenheitToCelsius(78)    -> 0.0
 fahrenheitToCelsius(-3123) -> 0.0
 \end{verbatim}
+\end{footnotesize}
 
 Of course, this method is meaningless without an implementation. We want to design \textit{test cases}\index{test cases} to ensure the method works as expected. Test cases verify the correctness (or incorrectness) of a method. We, as the readers, know how to convert a temperature from Fahrenheit to Celsius, but telling a computer to do such a conversion is not as obvious at first glance. To test our methods, we will use the \textit{JUnit} testing framework\index{JUnit}. To create a test for \ttt{fahrenheitToCelsius}, we will make a second class called \ttt{TempConverterTester} to house a single method: \ttt{fahrenheitToCelsiusTest}.
 

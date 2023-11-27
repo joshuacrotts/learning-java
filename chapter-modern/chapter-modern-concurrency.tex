@@ -116,7 +116,7 @@ class ThreadSafeArrayList<T> {
 
 Java, in fact, does have a data structure in the Collections API that supports multithreading and is therefore thread-safe: the \ttt{Vector} class serves this purpose. Though, should we not want to use \ttt{Vector}, since some Java programmers consider it ``deprecated'', we can invoke the static \ttt{synchronizedList} method on \ttt{Collections} to return a synchronized/thread-safe version of the input list. There are also other data structures in the Collections API that are thread-safe, such as \ttt{ConcurrentHashMap} and \ttt{ConcurrentLinkedQueue}, as well as methods to convert a non-thread-safe data structure into one that is thread-safe, e.g., \ttt{synchronizedMap} and \ttt{synchronizedSet}.
 
-\example{In the event that we want to block concurrent access to a variable, we can mark the method as \ttt{synchronized}, which means that only one thread can access the method at a time. Moreover, if we want to not deal with locks but still need atomic operations, we can use, for example, \ttt{AtomicInteger}. Let's revisit the \ttt{counter} example from earlier, but this time we will use an \ttt{AtomicInteger} to ensure that the increment operation is atomic.}
+\example{In the event that we want to block concurrent access to a variable, we can mark the method as \ttt{synchronized}, which means that only one thread can access the method at a time. Moreover, if we want to not deal with locks but still require atomic operations over access to an integer, we can use, for example, \ttt{AtomicInteger}. Let's revisit the \ttt{counter} example from earlier, but this time we will use an \ttt{AtomicInteger} to ensure that the increment operation is atomic.}
 
 \begin{cl}[AtomicIntegerExample.java]{Example using \ttt{AtomicInteger}}
 \begin{lstlisting}[language=MyJava]
@@ -183,7 +183,7 @@ class Consumer<T> implements Runnable {
 \end{lstlisting}
 \end{cl}
 
-The consumer thread will ``busy-wait'' until the list is non-empty. A busy-wait loop is not recommended because the thread has to continuously check the list to determine if an element exists, which is wasteful. The better solution is to use a \textit{condition variable}, which serves as a signal between threads. While the list is empty, our consumer thread awaits on the condition variable, thereby putting it to sleep. Then, the producer thread(s) will issue a signal to the condition variable when inserting data into the list. Condition variables are always associated with a lock, so we need to define one in our main program and pass it around to both the producer(s) and consumer. 
+The consumer thread will ``busy-wait'' until the list is non-empty. A busy-wait loop is not recommended because the thread has to continuously check the list to determine if an element exists, which is wasteful. Plus, there's the added problem that this code is not thread-safe; by not acquiring a lock, we run into the potential of a race condition where one thread polls the queue and another is about to poll the queue. Even though our queue definition \textit{is} thread-safe, this does not solve the problem of a thread trying to remove an element that does not exist outside the fact. The solution is to use a \textit{condition variable}, which serves as a signal between threads. While the list is empty, our consumer thread awaits on the condition variable, thereby putting it to sleep. Then, the producer thread(s) will issue a signal to the condition variable when inserting data into the list. Condition variables are always associated with a lock, so we need to define one in our main program and pass it around to both the producer(s) and consumer. 
 
 When the consumer acquires the lock, it checks if the list is empty. If so, it awaits on the condition variable, which releases the held lock and puts the thread to sleep. When the producer acquires the lock, it adds an element to the list, then issues a signal to the condition variable, which wakes up the consumer thread. The signal causes the consumer to reacquire the lock, check if the list is empty, and, if not, remove (and process) the head element from the list, followed by releasing the lock.
 
@@ -251,6 +251,7 @@ class ConditionVariableExample {
 
 If we fix our input seed to \ttt{212}, the output is deterministically as follows:
 
+\begin{footnotesize}
 \begin{verbatim}
 Consumed: 1
 Consumed: 6
@@ -262,6 +263,7 @@ Consumed: 1
 Consumed: 4
 Consumed: 5
 \end{verbatim}
+\end{footnotesize}
 
 \subsection*{Networking \& Sockets}
 
@@ -290,12 +292,16 @@ class TimeEchoServer {
       while (true) {
         // Accept the incoming client, block until we receive one.
         Socket client = ss.accept();
-        System.out.printf("Client connected: %s\n", client.getInetAddress().toString());
-        PrintWriter pw = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
+        System.out.printf("Client connected: %s\n", 
+                          client.getInetAddress().toString());
+        PrintWriter pw = new PrintWriter(
+                          new OutputStreamWriter(client.getOutputStream()), 
+                                                 true);
         // Echo the server time to the client.
         pw.println("The server time is " + java.time.LocalDateTime.now());
         // Echo that the client has disconnected, then close their connection.
-        System.out.printf("Client disconnected: %s\n", client.getInetAddress().toString());
+        System.out.printf("Client disconnected: %s\n", 
+                          client.getInetAddress().toString());
         client.close();
       }
     } catch (IOException ex) { ex.printStackTrace(); }
@@ -320,7 +326,7 @@ class CountryPopulationRankServer {
     this.COUNTRIES = new ArrayList<>();
 
     // Read in the words from the text file.
-    try (BufferedReader br = new BufferedReader(new FileReader("countries.txt"))) {
+    try (BufferedReader br = new BufferedReader(new FileReader("clist.txt"))) {
       String line = null;
       while ((line = br.readLine()) != null) { this.COUNTRIES.add(line); }
     } catch (IOException ex) { ex.printStackTrace(); }
@@ -331,7 +337,8 @@ class CountryPopulationRankServer {
     try (ServerSocket ss = new ServerSocket(this.PORT)) {
       while (true) {
         Socket skt = ss.accept();
-        BufferedReader br = new BufferedReader(new InputStreamReader(skt.getInputStream()));
+        BufferedReader br = new BufferedReader(
+                              new InputStreamReader(skt.getInputStream()));
         // Read in the country from the user.
         String line = br.readLine();
         int country = Integer.parseInt(line) - 1;
@@ -351,6 +358,31 @@ class CountryPopulationRankServer {
 \end{cl}
 
 \example{Let's use what we have learned to write a \textit{multithreaded} chat server. That is, we will write a program that acts as server for a chat room. Clients can connect to the server and send messages to each other. The server will be multithreaded so that it can simultaneously serve clients. First, we need to decide on a protocol for communication between the server and the clients. For this example, to minimize the number of features necessary to convey the important ideas, we will only allow the user to log into the ``room'', type messages to all users in the room, or to disconnect via the \ttt{\textbackslash{quit}} command. The server houses a \textit{thread pool} that spins up a thread to communicate with a connected client. Fortunately for us, because we are in Java, we have access to synchronized data structures such as \ttt{Vector}. Therefore, we do not need to manually insert locks into a data structure for storing those connected clients. After a server receives a client, as we stated, we dedicate a thread to that user, then resume listening. We will also have a server thread that actively listens for messages that are then relayed to every other user. The notion of the server having a thread to listen for messages is known as a \textit{task-handler}, whose tasks are queued away in a synchronized \ttt{LinkedBlockingQueue} data structure. When reading a command from the user, we enqueue it into the server's queue of tasks, which blocks until a task is available. The task-handler then dequeues the task and broadcasts it to all users. It will be up to the client to determine whether or not they are the intended recipient.}\footnote{From a security standpoint, broadcasting a message in this fashion is incredibly insecure, since a client can simply decide if it is the intended recipient no matter if the message is not intended for them.}
+
+\begin{cl}[Server.java]{Task Handler Class Definition}
+\begin{lstlisting}[language=MyJava]
+class Server {
+  // ... other data not shown.
+
+  private static class TaskHandler implements Runnable {
+
+    private final Server SERVER;
+
+    public TaskHandler(Server server) { this.SERVER = server; }
+
+    @Override
+    public void run() {
+      while (this.SERVER.running) {
+        try {
+          Task task = this.SERVER.TASKS.take();
+          this.SERVER.CLIENTS.forEach(c -> c.send(task));
+        } catch (InterruptedException e) { e.printStackTrace(); }
+      }
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 \begin{cl}[Server.java]{Server Implementation}
 \begin{lstlisting}[language=MyJava]
@@ -389,26 +421,7 @@ class Server {
     if (t != null) { this.TASKS.add(t); }
   }
 
-  private static class TaskHandler implements Runnable {
-
-    private final Server SERVER;
-
-    public TaskHandler(Server server) { this.SERVER = server; }
-
-    @Override
-    public void run() {
-      while (this.SERVER.running) {
-        try {
-          Task task = this.SERVER.TASKS.take();
-          this.SERVER.CLIENTS.forEach(c -> c.send(task));
-        } catch (InterruptedException e) { e.printStackTrace(); }
-      }
-    }
-  }
-
-  public static void main(String[] args) {
-    new Server(8080).start();
-  }
+  public static void main(String[] args) { new Server(8080).start(); }
 }
 \end{lstlisting}
 \end{cl}
@@ -465,7 +478,7 @@ class Client {
       case "/login" -> { return this.handleLoginCmd(msg); }
       case "/send"  -> { return this.handleSendCmd(msg); }
       case "/quit"  -> { return this.handleQuitCmd(); }
-      default -> throw new IllegalArgumentException("parseCmd: invalid command " + cmd);
+      default -> throw new IllegalArgumentException("parseCmd: bad cmd " + cmd);
     }
   }
 }
@@ -535,14 +548,16 @@ We now must write the \ttt{Client} \ttt{send} method, which receives a \ttt{Task
 class Client {
   // ... other information not shown.
 
-  public void send(Task task) {
-    switch (task) {
-      case BroadcastTask t -> {
+  public void send(Task t) {
+    switch (t) {
+      case BroadcastTask tb -> {
         if (this.loggedIn) { 
-          this.OUT.printf("%s: %s\n", t.getSender(), t.getResponse()); 
+          this.OUT.printf("%s: %s\n", tb.getSender(), tb.getResponse()); 
         }
       }
-      default -> throw new IllegalArgumentException("send: invalid task type " + task.getType());
+      default -> {
+        throw new IllegalArgumentException("send: bad task " + t.getType());
+      }
     }
   }
 

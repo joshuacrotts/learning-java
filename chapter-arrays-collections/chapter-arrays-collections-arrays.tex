@@ -5,38 +5,50 @@ Thus far all of our work has been with data available as it is received by a met
 Arrays store \textit{elements} and \textit{indices} of some type. An element is just a value in an array. The \textit{index} of an element is its location in the array. Indices of an array are indexed from zero, much like strings. Thus, the first element of an array is located at index zero, whereas the last element is located at the index $|A| - 1$, where $|A|$ denotes the number of elements, or \textit{cardinality}, of some array $A$.
 
 We store contiguous elements in arrays, all of the same type. This means that, if we declare an array of type \ttt{int}, we cannot store, say, a \ttt{String} in the array. We can declare an array variable using initializer lists:
+\begin{footnotesize}
 \begin{verbatim}
 int[] array = {5, 10, 15, 20, 100, 50};
 \end{verbatim}
+\end{footnotesize}
 To retrieve the size of an array, i.e., the number of elements it stores, we access the \textit{.length} field of the array; e.g., \ttt{array.length}. For our example array, we see that its size is six. Moreover, \ttt{array[0]} stores \ttt{5}, and \ttt{array[5]} stores \ttt{50}. Accessing a negative index or beyond the bounds of the length results in an array index out of bounds exception. That is, accessing \ttt{array[-1]} or \ttt{array[6]} crashes the program. A common mistake is to access the index at the length of the array to retrieve the last element. Doing so represents a misunderstanding of how arrays compute indices of elements.
 
 To declare an array of some type $T$, called $A$, that stores $N$ elements, we write the following:
+\begin{footnotesize}
 \begin{verbatim}
 T[] A = new T[N];
 \end{verbatim}
+\end{footnotesize}
 We can store a value $e$ at some arbitrary index $i$ of array $A$, in addition to accessing the value at some index.
+\begin{footnotesize}
 \begin{verbatim}
 // Store "e" at index i of A.
 A[i] = e;
 // Print out the value at A[i].
 System.out.println(A[i]);
 \end{verbatim}
+\end{footnotesize}
 
 \example{Let us declare an array $A$ that stores the integers from zero to one hundred, in increments of ten.}
+\begin{footnotesize}
 \begin{verbatim}
 int[] A = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 \end{verbatim}
+\end{footnotesize}
 This is verbose and requires us to explicitly specify each individual constant. A better solution is to initialize the array to a size and populate its elements using a loop.
+\begin{footnotesize}
 \begin{verbatim}
 final int SIZE = 11;
 int[] A = new int[SIZE];
 for (int i = 0; i < A.length; i++) { A[i] = i * 10; }
 \end{verbatim}
+\end{footnotesize}
 We use $i$ to iterate over the possible indices of our array. Before we explained that $i$ is used out of standard convention, but we now say that $i$, in general, stands for either ``iteration'' or ``index''. We assign, to $A$, the value of $i$ multiplied by ten. We can convert the array to a \ttt{String} using a utility method from the \ttt{Arrays} class (note the plural!); a ``string-ified'' array separates each element by commas and surrounds them with braces.
+\begin{footnotesize}
 \begin{verbatim}
 String s1 = Arrays.toString(A);
 s1 => {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
 \end{verbatim}
+\end{footnotesize}
 
 \begin{figure}[tp]
 %\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
@@ -328,9 +340,11 @@ class Calculator {
 \example{Arrays can be of arbitrary dimension and are not restricted to only one. In this problem we will make use of a two-dimensional array, which might be thought of as a matrix or a grid. We will write a method that returns the sum of the elements of a two-dimensional array of integers. Traversing over an $n$-dimensional array generally involves nested loops. The order in which we traverse over the array can be significant. For example, the following code uses \textit{row-major} ordering, since we iterate over the rows first, and then the columns, meaning that we visit the elements in the order $A_{0,0}, A_{0,1}, A_{0,2}, ..., A_{1,0}, A_{1,1}, A_{1,2}, A_{2,0}, A_{2,1}, A_{2,2}$. Conversely, \textit{column-major} ordering would visit the elements in the order $A_{0,0}, A_{1,0}, A_{2,0}, ..., A_{0,1}, A_{1,1}, A_{2,1}, A_{0,2}, A_{1,2}, A_{2,2}$.}
 
 Multi-dimensional arrays are nothing more than arrays of arrays. Thus, as an example, we can declare a $3 \times 4$ two-dimensional array of integers (with three rows and four columns) as follows:
+\begin{footnotesize}
 \begin{verbatim}
 int[][] A = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
 \end{verbatim}
+\end{footnotesize}
 
 \begin{cl}[SumOf2DArrayTester.java]{Tests for the Sum of a Two-Dimensional Array}
 \begin{lstlisting}[language=MyJava]
@@ -424,7 +438,7 @@ class RookPath {
 \end{lstlisting}
 \end{cl}
 
-Much like how the recursive definition of Fibonacci is horrendously slow, so is this implementation. We need something faster, and indeed, we can take advantage of a two-dimensional array because of an emerging pattern. Notice that in the bottom-right corner, there is only one possible solution. We can generalize this to say that there is only one solution for any position in the bottom row or the far-right column. From here, we can work our way up and to the left, filling in the number of possible solutions for each position. For example, the position $(n - 1, m - 1)$ has a value of two, since it can move either right or down. The position $(n - 2, m - 1)$ has a value of three, since it can move right, down, or down and then right. We can continue this process until we reach the top-left corner, which will have the value of the number of possible paths from $(0, 0) to (n, m)$.\footnote{Should we want to choose an arbitrary starting point, we can retrieve that index rather than $(0, 0)$ in the resulting two-dimensional array.} We can write a method that computes this value using a two-dimensional array. Composing the solution in this manner is called \textit{dynamic programming}, which comes up often when attempting to optimize problems that have naive and outrageously recursive solutions.
+Much like how the recursive definition of Fibonacci is horrendously slow, so is this implementation. We need something faster, and indeed, we can take advantage of a two-dimensional array because of an emerging pattern. Notice that in the bottom-right corner, there is only one possible solution. We can generalize this to say that there is only one solution for any position in the bottom row or the far-right column. From here, we can work our way up and to the left, filling in the number of possible solutions for each position. For example, the position $(n - 1, m - 1)$ has a value of two, since it can move either right or down. The position $(n - 2, m - 1)$ has a value of three, since it can move right, down, or down and then right. We can continue this process until we reach the top-left corner, which will have the value of the number of possible paths from $(0, 0)$ to $(n, m)$.\footnote{Should we want to choose an arbitrary starting point, we can retrieve that index rather than $(0, 0)$ in the resulting two-dimensional array.} We can write a method that computes this value using a two-dimensional array. Composing the solution in this manner is called \textit{dynamic programming}, which comes up often when attempting to optimize problems that have naive and outrageously recursive solutions.
 
 To prevent our code from going out of bounds, we need to add one to the bounds of our input array. That is, if we want to compute the number of possible paths from $(0, 0)$ to $(n, m)$, we need to create an array of size $(n + 1) \times (m + 1)$, because the current value of the array at $(n, m)$ depends on the values of the array at $(n + 1, m)$ and $(n, m + 1)$.\footnote{When writing dynamic programming algorithms, it is commonplace to call the array \ttt{dp} out of convention.} 
 
