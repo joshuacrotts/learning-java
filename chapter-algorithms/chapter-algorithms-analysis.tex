@@ -91,7 +91,7 @@ The term ``asymptotic analysis'' stems from the fact that ``asymptotic'' behavio
 Programmers often conflate Big-Oh as meaning the ``worst-case'' of an algorithm, Big-Omega as the ``best case'', and Theta as the ``average case''. In actuality, these have no precise and deterministic relation to one another. Remember that Big-Oh is the upper-bound, Big-Omega is the lower-bound, and Theta exists if and only if the function is Big-Oh and Big-Omega of the same function.
 
 \example{Consider the following function.}
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 // foo receives an array of integers.
 foo(ls) {
@@ -110,7 +110,7 @@ foo(ls) {
   return n;
 }
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 The best-case for this algorithm is for $v$ to be $100$, meaning we immediately return $42$. Therefore, we are upper-bounded by $\mathcal{O}(1)$, since this is a constant-time operation. We are similarly lower-bounded by this operation, meaning it is $\Omega{(1)}$. Therefore it is also $\Theta(1)$ in the best case.
 
@@ -325,8 +325,8 @@ Using this definition, we can continuously expand the recurrence relation to det
 \begin{align*}
   T(n) &= 2T(n/2) + \Theta(n)\\
        &= 2(2T(n/4) + \Theta(n)) + \Theta(n)\\
-       &= 2(2(2T(n/8) + \Theta(n)) + \Theta(n)) + Theta(n)\\
-       &= 2^kT(n/2^k) + k\Theta(n)
+       &= 2(2(2T(n/8) + \Theta(n)) + \Theta(n)) + \Theta(n)\\
+       &= 2^kT(n/2^k) + k\cdot\Theta(n)
 \end{align*}
 
 At this point, we have a relationship that is dependent on $k$, representing the depth of the recurrence. Suppose $n=2^k$. This implies that $\lg{n} = k$, because of the base two logarithm properties. Therefore, after substituting we get
@@ -334,14 +334,56 @@ At this point, we have a relationship that is dependent on $k$, representing the
 \begin{align*}
   T(n) &= 2^kT(2^k/2^k) + k\cdot\Theta(n)\\
        &= 2^kT(1) + k\cdot\Theta(n)\\
-       &= \lg(n)\Theta(1) + \lg(n)\cdot Theta(n)\\
-       &= \Theta{\lg(n)} + \Theta{(n \lg n)}\\
+       &= \lg(n)\cdot\Theta(1) + \lg(n)\cdot \Theta(n)\\
+       &= \Theta{(\lg(n))} + \Theta{(n \lg n)}\\
        &= \Theta{(n \lg n)} 
 \end{align*}
 
 So, we can conclude that merge sort is $\Theta(n\lg{n})$ in the best, average, and worst cases. We make this conclusion because, no matter the input, we always subdivide the input into two halves, and merge the two halves together.
 
 \subsubsection*{Quick Sort}
-Finally, we will analyze the quick sort algorithm. We will analyze the randomized version of the algorithm, since it is more interesting and proves the efficacy of at least one randomized algorithm, which is a whole subfield in and of itself. 
+Finally, we will analyze the quick sort algorithm. In the best case, the pivot is always the median, indicating that half of the data is to either of its sides. This relationship resolves to the recurrence relation of the merge sort, whose analysis was in the previous section. Therefore, in the best case, the quick sort time complexity is $\Theta(n \lg n)$. 
 
-In the best case, the pivot is always the median, indicating that half of the data is to either of its sides. \textbf{CONTINUE HERE}
+Jumping down to the worst case, the pivot is always either the minimum or the maximum, meaning that all of the data is to one side of the pivot. As a piecewise equation, we know that the base case of quicksort is $T(n) = 1$ if $n \leq 1$. So, we get
+
+\straightbraces
+\[
+T(n)=
+  \begin{cases}
+    \Theta(1), & \text{if } n \leq 1\\
+    T(n - 1) + \Theta(n), & \text{if } n > 1
+  \end{cases}
+\]
+
+The added $\Theta(n)$ accounts for the time partitioning the list, which is linear in terms of the input size. Solving the recurrence relation gets us
+
+\begin{align*}
+T(n) &= T(n - 1) + \Theta(n)\\
+     &= (T(n - 2) + \Theta(n - 1)) + \Theta(n)\\
+     &= ((T(n - 3) + \Theta(n - 2)) + \Theta(n - 1)) + \Theta(n)\\
+     &\vdots\\
+     &= T(1) + \Theta(2) + \Theta(3) + ... + \Theta(n - 1) + \Theta(n)\\
+     &= 1 + 2 + 3 + ... + (n - 1) + n
+\end{align*}
+
+The result is an arithmetic series $\sum_{n=1}^{n}=\frac{n(n+1)}{2}$, which resolves to $\Theta(n^2)$ after dropping constants and lower-order terms. Therefore, in the worst case, the quicksort time complexity is $\Theta(n^2)$.
+
+The average case is significantly harder to analyze and the full proof goes beyond the scope of this book. It is known that, in the average case, quicksort is $\Theta(n\lg{n})$. 
+
+%% Cite a reference??
+\subsection*{Lower Bound for Comparison-Based Sorting Algorithms}
+The performance and time complexity of sorting algorithms largely depend on the underlying implementation. We will now prove that, for any comparison-based sorting algorithm, i.e., a sorting algorithm that answers ``YES'' or ``NO'' to the question, ``Is $a_i < a_j$?'' for any list $a$ and indices $i$ and $j$, it must perform $\Omega(n \lg n)$ comparisons to sort $n$ elements.
+
+\begin{proof}
+We need two auxiliary lemmas, or true statements, to prove our theorem.
+\begin{enumerate}[label=(\alph*)]
+  \item There are $n!$ ways to permute a list of distinct elements $\langle{x_1, x_2, ..., x_n}\rangle$. \item Exactly one of these permutations is the correct ordering such that each element $x_{i+1} > x_{i}$ for all $i$ in $0 \leq i \leq n-1$. 
+\end{enumerate}
+
+Assume that we have a set $S$ containing answers to every question (i.e., the ``YES''/``NO'' question we described above) found so far when attempting to sort using comparisons. Of course, by definition, this set must be such that $|S|=n!$ to start. If we answer the first question, we create two groups $S_1$ and $S_2$ describing those inputs for which the answer is ``YES'' and those inputs for which the answer is ``NO''. Each time we make a decision, we half the problem size, meaning it becomes a logarithmic relationship. In the end, we reach the base case of $|S|=1$, which means the algorithm knows which output is correct. Thus,
+\begin{align}
+\lg{n} + \lg{(n-1)} + ... + \lg{2} &= \lg{n!}\\
+        &= \Omega(n \lg n)
+\end{align}
+Recall the definition of logarithms: $\lg{a} + \lg{b} = \lg{ab}$. Thus, $\lg{a} + \lg{b} + \lg{c} = \lg{abc}$, and so forth ad infinitum. Therefore we get the equivalence shown in line (\ref{chapter-algorithms}.1). Using Stirling's approximation, we get the equivalence in line (\ref{chapter-algorithms}.2).
+\end{proof}

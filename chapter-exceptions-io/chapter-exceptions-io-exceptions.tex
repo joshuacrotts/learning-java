@@ -119,13 +119,13 @@ Another uncomfortably common unchecked exception that many Java programmers enco
 \example{Casting an object to a type that it is not results in an unchecked \ttt{ClassCastException}. By ``to a type that it is not'', we mean to say that the object is either not an instance of the type or is not a subtype of the type. Primitive datatypes are not subject to this exception, as they are not objects.\footnote{No pun intended.} All primitive datatypes, except for booleans, can be cast into one another. E.g., \ttt{int x = (int) 'A';} is valid, as is \ttt{char c = (char) 65;}. On the other hand, \ttt{String x = (String) new Integer(5);} is not valid, as \ttt{Integer} is not a subclass of \ttt{String}. We can treat \ttt{List<T>} as an \ttt{AbstractList<T>} by performing a runtime cast, e.g., \ttt{AbstractList<T> x = (AbstractList<T>) ls;}, where \ttt{ls} is defined as being of type \ttt{List<T>}.}
 
 \example{Sometimes, a program can encounter a state in which it cannot continue. In this case, we can throw an \ttt{IllegalStateException}, designating that the program has reached a point that it should not normally. An example might be attempting to access a closed \ttt{Scanner} instance.}
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 Scanner in = new Scanner(System.in);
 in.close();
 String s = in.nextLine(); // Throws IllegalStateException!
 \end{verbatim}
-\end{footnotesize}
+\par}
 \subsection*{Checked Exceptions}
 
 A checked exception is one that the programmer must explicitly handle. The compiler will not allow the program to compile if the code that may throw the exception is not wrapped in either a \ttt{try/catch} block, or the method signature does not specify that it throws the exception. Many checked exceptions arise from I/O operations, such as reading from or to a data source. Considering this, we will discuss checked exceptions in the context of I/O operations in the following (non-sub)section.

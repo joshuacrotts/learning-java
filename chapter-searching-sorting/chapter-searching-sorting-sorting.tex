@@ -3,7 +3,7 @@ In this section we will begin our discussion on the analysis and implementation 
 
 For each algorithm, we will assume the same three lists are declared and properly instantiated within the respective unit testing files. To conserve space, we will list their values below only once.
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 AbstractList<Integer> LS1 = 
   new ArrayList<>(List.of(5, 4, 2, 1, 3));
@@ -12,7 +12,7 @@ AbstractList<Integer> LS2 =
 AbstractList<Integer> LS3 = 
   new ArrayList<>(List.of(10, 8, 6, 7, 2, 10, 3, 3, 3, 10));
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 \subsection*{Insertion Sort}
 Our sorting adventure begins with the \textit{insertion sort}. Insertion sort, in general, works by taking an element from the unsorted list and inserting it into the correct position in a sorted list. We can implement insertion sort in two ways: functionally and in-place. The functional variant will return a new list that is sorted, while the in-place variant will sort the list in-place. The functional variant is, in principle, easier to implement, but the in-place variant is more efficient in terms of memory usage. Figure~\ref{fig:insertion-sort} illustrates the in-place insertion sort algorithm; each iteration of the outer loop is represented by a row in the figure, with the red underbars representing the now-sorted sublist.
@@ -30,7 +30,8 @@ class InsertionSortTester {
     assertAll(
       () -> assertEquals(List.of(1, 2, 3, 4, 5), ss.insertionSort(LS1)),
       () -> assertEquals(List.of(), ss.insertionSort(LS2)),
-      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), ss.insertionSort(LS3))
+      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), 
+                         ss.insertionSort(LS3))
     );
   }
 
@@ -69,7 +70,8 @@ The functional insertion sort is a recursive sorting algorithm; it sorts the lis
 import java.util.AbstractList;
 import java.util.ArrayList;
 
-class FunctionalInsertionSort<V extends Comparable<V>> implements IInsertionSort<V> {
+class FunctionalInsertionSort<V extends Comparable<V>> 
+                              implements IInsertionSort<V> {
   
   @Override
   public AbstractList<V> insertionSort(AbstractList<V> ls) {
@@ -206,7 +208,8 @@ class SelectionSortTester {
     assertAll(
       () -> assertEquals(List.of(1, 2, 3, 4, 5), ss.selectionSort(LS1)),
       () -> assertEquals(List.of(), ss.selectionSort(LS2)),
-      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), ss.selectionSort(LS3))
+      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), 
+                         ss.selectionSort(LS3))
     );
   }
 
@@ -237,14 +240,15 @@ interface ISelectionSort<V extends Comparable<V>> {
 \end{cl}
 
 \subsubsection*{Functional Selection Sort}
-\begin{cl}[FunctionalSelectionSort.java]{Functional Selection Sort Implementation}
+\begin{cl}[FunctionalSelectionSort.java]{Functional Selection Sort Def.}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
-class FunctionalSelectionSort<V extends Comparable<V>> implements ISelectionSort<V> {
+class FunctionalSelectionSort<V extends Comparable<V>> 
+                              implements ISelectionSort<V> {
 
   @Override
   public AbstractList<V> selectionSort(AbstractList<V> ls) {
@@ -260,7 +264,8 @@ class FunctionalSelectionSort<V extends Comparable<V>> implements ISelectionSort
       Collections.swap(ls, 0, minIdx);
 
       // Sort the rest of the list (excluding the first element).
-      AbstractList<V> sortedRest = selectionSort(new ArrayList<>(ls.subList(1, ls.size())));
+      AbstractList<V> sortedRest = selectionSort(
+                                    new ArrayList<>(ls.subList(1, ls.size())));
 
       // Construct the final sorted list.
       AbstractList<V> sortedList = new ArrayList<>();
@@ -384,7 +389,8 @@ class BubbleSortTester {
     assertAll(
       () -> assertEquals(List.of(1, 2, 3, 4, 5), fbs.bubbleSort(LS1)),
       () -> assertEquals(List.of(), fbs.bubbleSort(LS2)),
-      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), fbs.bubbleSort(LS3))
+      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), 
+                         fbs.bubbleSort(LS3))
     );
   }
 
@@ -557,7 +563,8 @@ class MergeSortTester {
     assertAll(
       () -> assertEquals(List.of(1, 2, 3, 4, 5), ms.mergeSort(LS1)),
       () -> assertEquals(List.of(), ms.mergeSort(LS2)),
-      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), ms.mergeSort(LS3))
+      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), 
+                         ms.mergeSort(LS3))
     );
   }
 
@@ -617,24 +624,23 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
       int mid = (ls.size() - 1) / 2;
       List<V> leftHalf = ls.subList(0, mid + 1);
       List<V> rightHalf = ls.subList(mid + 1, ls.size());
-      AbstractList<V> leftHalfSorted = this.msHelper((AbstractList<V>) leftHalf);
-      AbstractList<V> rightHalfSorted = this.msHelper((AbstractList<V>) rightHalf);
-      return this.merge(leftHalfSorted, rightHalfSorted);
+      AbstractList<V> leftHalfSort = this.msHelper((AbstractList<V>) leftHalf);
+      AbstractList<V> rightHalfSort = this.msHelper((AbstractList<V>) rightHalf);
+      return this.merge(leftHalfSort, rightHalfSort);
     }
   }
   
   /**
-   * Merges two sorted lists into one sorted list. Compares each element one-by-one
-   * and adds the smaller element to the new list. If one list is exhausted, then
-   * the remaining elements of the other list are added to the new list.
+   * Merges two sorted lists into one sorted list. Compares each element 
+   * one-by-one and adds the smaller element to the new list. If one list 
+   * is exhausted, the elements of the other list are added to the new list.
    *
    * @param ls1 the first sorted list.
    * @param ls2 the second sorted list.
    * @return the merged sorted list.
    */
   private AbstractList<V> merge(AbstractList<V> ls1, AbstractList<V> ls2) {
-    int i = 0;
-    int j = 0;
+    int i, j = 0;
     AbstractList<V> newLs = new ArrayList<>();
           
     // Merge the lists, comparing the elements.
@@ -645,10 +651,9 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   
     // Finish copying ls1.
     while (i < ls1.size()) { newLs.add(ls1.get(i++)); }
-  
     // Finish copying ls2.
     while (j < ls2.size()) { newLs.add(ls2.get(j++)); }
-  
+
     return newLs;
   }
 }
@@ -670,7 +675,7 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   }
 
   /**
-   * Recursively sorts the list by splitting it in half and merging the two halves.
+   * Recursively sorts the list by splitting it in half and merging the two halves
    * 
    * @param ls the list to sort.
    * @param low the lower bound of the sublist. 
@@ -694,27 +699,27 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
    * @param high the upper bound of the sublist.
    */
   private void merge(AbstractList<V> ls, int low, int mid, int high) {
-    // Create two auxiliary arrays.
-    AbstractList<V> left = new ArrayList<>();
-    AbstractList<V> right = new ArrayList<>();
+    AbstractList<V> ls1 = new ArrayList<>();
+    AbstractList<V> ls2 = new ArrayList<>();
 
-    // Copy the elements over into the auxiliary lists.
-    for (int i = low; i <= mid; i++) { left.add(ls.get(i)); }
-    for (int j = mid + 1; j <= high; j++) { right.add(ls.get(j)); }
+    for (int i = low; i <= mid; i++) { ls1.add(ls.get(i)); }
+    for (int j = mid + 1; j <= high; j++) { ls2.add(ls.get(j)); }
 
-    int mergedIdx = low;
-    int i = 0;
-    int j = 0;
+    int mergeIdx = low;
+    int i, j = 0;
         
     // Merge the elements into the existing list.
-    while (i < left.size() && j < right.size()) {
-      if (left.get(i).compareTo(right.get(j)) < 0) { ls.set(mergedIdx++, left.get(i++)); }
-      else { ls.set(mergedIdx++, right.get(j++)); }
+    while (i < ls1.size() && j < ls2.size()) {
+      if (ls1.get(i).compareTo(ls2.get(j)) < 0) { 
+        ls.set(mergeIdx++, ls1.get(i++)); 
+      } else { 
+        ls.set(mergeIdx++, ls2.get(j++)); 
+      }
     }
 
     // Copy the rest of the elements over.
-    while (i < left.size()) { ls.set(mergedIdx++, left.get(i++)); }
-    while (j < right.size()) { ls.set(mergedIdx++, right.get(j++)); }
+    while (i < ls1.size()) { ls.set(mergeIdx++, ls1.get(i++)); }
+    while (j < ls2.size()) { ls.set(mergeIdx++, ls2.get(j++)); }
   }
 }
 \end{lstlisting}
@@ -738,7 +743,8 @@ class QuickSortTester {
     assertAll(
       () -> assertEquals(List.of(1, 2, 3, 4, 5), fqs.quicksort(LS1)),
       () -> assertEquals(List.of(), fqs.quicksort(LS2)),
-      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), fqs.quicksort(LS3))
+      () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), 
+                         fqs.quicksort(LS3))
     );
   }
 
@@ -768,7 +774,6 @@ interface IQuickSort<V extends Comparable<V>> {
 \end{lstlisting}
 \end{cl}
 
-% talk about the randomized pivot versus the median of the list
 \subsubsection*{Functional Quick Sort}
 The functional implementation of quick sort is beautiful and elegant. We choose a pivot $p$ at random, then create three sublists $l_<$, $l_>$, $l_=$, where $l_<$ stores all elements less than $p$, where $l_>$ stores all elements greater than $p$, and $l_=$ stores all elements equal to the pivot. Each sublist, excluding $l_=$, is recursively sorted, followed by concatenating the three sublists in order. 
 
@@ -788,21 +793,24 @@ class FunctionalQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
       V pivot = ls.get((int) (Math.random() * ls.size()));
 
       // Sort the left-half.
-      AbstractList<V> leftHalf = (AbstractList<V>) ls.stream()
-                                                     .filter(x -> x.compareTo(pivot) < 0)
-                                                     .collect(Collectors.toList());
+      AbstractList<V> leftHalf = (AbstractList<V>) 
+                                  ls.stream()
+                                    .filter(x -> x.compareTo(pivot) < 0)
+                                    .collect(Collectors.toList());
       AbstractList<V> leftSorted = quicksort(leftHalf);
 
       // Sort the right-half.
-      AbstractList<V> rightHalf = (AbstractList<V>) ls.stream()
-                                                      .filter(x -> x.compareTo(pivot) > 0)
-                                                      .collect(Collectors.toList());
+      AbstractList<V> rightHalf = (AbstractList<V>) 
+                                   ls.stream()
+                                     .filter(x -> x.compareTo(pivot) > 0)
+                                     .collect(Collectors.toList());
       AbstractList<V> rightSorted = quicksort(rightHalf);
 
       // Get all elements equal to the pivot.
-      AbstractList<V> equal = (AbstractList<V>) ls.stream()
-                                                  .filter(x -> x.compareTo(pivot) == 0)
-                                                  .collect(Collectors.toList());
+      AbstractList<V> equal = (AbstractList<V>) 
+                               ls.stream()
+                                 .filter(x -> x.compareTo(pivot) > 0)
+                                 .collect(Collectors.toList());
 
       // Merge the three.
       leftSorted.addAll(equal);
@@ -870,10 +878,6 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 }
 \end{lstlisting}
 \end{cl}
-
-\subsection*{Using Comparators for Sorting}
-
-
 
 % \subsubsection*{Randomized Quick Sort Asymptotic Analysis}
 

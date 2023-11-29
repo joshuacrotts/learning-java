@@ -2,7 +2,7 @@
 
 \subsection*{Standard Recursion}
 You may or may not have seen recursion before, but in theory the concept is quite simple: a method $f$ is \textit{recursive} if, somewhere in the definition of \textit{f}, it invokes itself. For example, in the following code segment, we define $f$ to be a method of arbitrary arguments that calls itself from its body. 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 static int f(...) {
     ...
@@ -10,7 +10,7 @@ static int f(...) {
     ...
 }
 \end{verbatim}
-\end{footnotesize}
+\par}
 Some may question the need for recursive methods, as it appears to be circular; why would we ever want a method to call itself? There are two reasons, where the former is what we consider to be less significant than the latter:
 \begin{enumerate}
     \item It allows the programmer to repeat a given segment of code.

@@ -1,8 +1,65 @@
 \section{Concurrent Programming}
 
-\subsection*{Threads}
+There is sometimes a conflation between concurrency and parallelism, two related but different methodologies. \textit{Concurrency} describes actions/computations that occur at the same time, whereas \textit{parallelism} refers to simultaneous actions/computations. Whereas a non-concurrent program will complete tasks $t_1, t_2, ..., t_n$ one after the next, concurrent programs will start $t_1$, then start $t_2$, and so forth, without necessarily finishing $t_1$ before starting subsequent tasks. The order of execution and completion depends on the operating system's scheduler, but what is important is that no tasks $t_i$ and $t_j$ operate at the exact same moment. Contrast this idea with parallelism, which does allow tasks $t_i$ and $t_j$ to be worked on at the exact same moment. 
 
-\example{Multiple threads may access data simultaneously, which is convenient. The problem is the fact that threads can \textit{context switch} at arbitrary points, which may include during an \textit{atomic operation}. Atomic operations are operations that must be executed in their entirety, without interruption. For example, suppose that we have a variable \ttt{counter} that we want to increment. We might write the following code:}
+We can simulate the concurrency/parallelism distinction with two queues of people $A$ and $B$ in line for a ride at an amusement park. A concurrent system might poll a person from $A$, then from $B$, then back to $A$, but never from $A$ and $B$ at the same time. On the other hand, consider a kiosk that has multiple cashiers serving several people simultaneously, polling from both $A$ and $B$. The kiosk system is, therefore, operating in parallel. 
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  % Queue A items (circles)
+  \foreach \i in {0,...,5}
+    \draw[fill=blue!30] (0.5cm + \i*0.5cm, 0) circle [radius=0.2cm];
+  \node at (1.75cm, 0.4cm) {Queue A};
+
+  % Queue B items (circles)
+  \foreach \i in {0,...,5}
+    \draw[fill=red!30] (0.5cm + \i*0.5cm, -1cm) circle [radius=0.2cm];
+  \node at (1.75cm, -1.4cm) {Queue B};
+
+  % Shared Resource C
+  % \draw (6cm, -0.5cm) rectangle (4cm,3cm);
+  \draw[draw=black] (5.1cm,-.83cm) rectangle ++(1.85,0.6);
+  \node at (6cm, -0.5cm) {Resource C};
+
+  % Arrows
+  \draw[->] (3.5cm, 0cm) -- (5cm, -0.48cm);
+  \draw[->] (3.5cm, -1.0cm) -- (5cm, -0.62cm);
+\end{tikzpicture}
+\caption{Diagram of Concurrency}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  % Queue A items (circles)
+  \foreach \i in {0,...,5}
+    \draw[fill=blue!30] (0.5cm + \i*0.5cm, 0) circle [radius=0.2cm];
+  \node at (1.75cm, 0.4cm) {Queue A};
+
+  % Queue B items (circles)
+  \foreach \i in {0,...,5}
+    \draw[fill=red!30] (0.5cm + \i*0.5cm, -1cm) circle [radius=0.2cm];
+  \node at (1.75cm, -1.4cm) {Queue B};
+
+  % Shared Resource C
+  % \draw (6cm, -0.5cm) rectangle (4cm,3cm);
+  \draw[draw=black] (5.1cm,-.35cm) rectangle ++(1.85,0.6);
+  \node at (6cm, -0cm) {Resource C};
+  \draw[draw=black] (5.1cm,-1.33cm) rectangle ++(1.85,0.6);
+  \node at (6cm, -1.0cm) {Resource C};
+
+  % Arrows
+  \draw[->] (3.5cm, 0cm) -- (5cm, 0cm);
+  \draw[->] (3.5cm, -1.0cm) -- (5cm, -1.0cm);
+\end{tikzpicture}
+\caption{Diagram of Parallelism}
+\end{figure}
+
+\subsection*{Threads}
+Java supports concurrent programming through its Thread API, but what is a thread? In essence, a \textit{thread} is a single lightweight process that executes a task, or a sequential set of tasks. 
+
+\example{Multiple threads may access shared data at the same time, which is convenient. The problem is the fact that threads can \textit{context switch} at arbitrary points, which may include during an \textit{atomic operation}. Atomic operations are operations that must be executed in their entirety, without interruption. For example, suppose that we have a variable \ttt{counter} that we want to increment. We might write the following code:}
 
 \begin{cl}[RaceConditionExample.java]{Example of a Race Condition}
 \begin{lstlisting}[language=MyJava]
@@ -47,13 +104,289 @@ Upon running the program, we might expect the output to be \ttt{2_000_000}, but 
   \item Thread $t_2$ writes the value of \ttt{counter} as \ttt{1}.
 \end{enumerate}
 
-Thus, we need a way of synchronizing access to the \ttt{counter} variable. We will discuss this in the next section.
+Thus, we need a way of synchronizing access to the \ttt{counter} variable. We will discuss this, alongside a more-detailed example, in the next section.
 
 \subsubsection*{Synchronization}
 
-\example{Mutexes...}
+\example{Let's suppose that we're writing a Java class to represent a bank account, which allows users to withdraw and deposit money. Further suppose that we have multiple threads that access the same bank account at once, eah depositing then immediately withdrawing five hundred dollars.}
 
-\example{A \textit{thread-safe data structure} is one that supports reentrancy, i.e., multiple threads working over it at the same time. Java's \ttt{ArrayList} class is not thread-safe, so we will implement our own thread-safe array list using locks. The idea is to wrap all pieces of the code that multiple threads may access with a lock. Recalling our \ttt{MiniArrayList} class from Chapter~\ref{chapter:classes}, we see that \ttt{add}, \ttt{remove}, \ttt{insert}, \ttt{get}, and \ttt{size} all either access or modify the state of the list, which could conflict with another thread and cause a dangerous race condition. Thus we will surround the code within a lock. Note that some methods do not, themselves, need to be synchronized, e.g., \ttt{shiftLeft}/\ttt{shiftRight}/\ttt{resize}, because they are only ever called from within a synchronized context. Should we wrap those methods in the same lock, then the thread who owns the lock would be unable to call those methods, causing a \textit{deadlock}.\footnote{Java's \ttt{ReentrantLock} class is a reentrant lock, meaning that a thread can acquire the lock multiple times. So, this problem is not as big of an issue, but we will still avoid it for the sake of clarity and adaptability to other languages that may not have reentrant locks.} Moreover, because the \ttt{remove} method calls \ttt{get}, acquiring the lock immediately in \ttt{remove} is a bad idea. So, we acquire the lock in \ttt{get}, then release it, then acquire it again in \ttt{remove}. Certain methods, e.g., \ttt{size} and \ttt{get}, need to be updated to account for releasing the lock before the return statement; in these cases we store the result in a (local) temporary variable, release the lock, then return. In the code segment, we omit the comments for the sake of brevity.}
+\begin{cl}[BankAccount.java]{Bank Account Class Definition}
+\begin{lstlisting}[language=MyJava]
+class BankAccount {
+
+  private int amt;
+
+  public BankAccount(int amt) { this.amt = amt; }
+
+  public void deposit(int more) { this.amt += more; }
+
+  public void withdraw(int less) {
+    if (amt >= less) { this.amt -= less; }
+    else { System.err.printf("withdraw: insufficient funds\n", less); }
+  }
+
+  public int getAmount() { return this.amt; }
+}
+\end{lstlisting}
+\end{cl}
+
+Let's design a \ttt{TransactionThread} class, that implements \ttt{Runnable}, which executes one thousand ``transactions'', i.e., a deposit of \$500, then a withdrawal of \$500.\footnote{It is an implementer's choice to either extend the \ttt{Thread} class or implement the \ttt{Runnable} interface. We choose the latter because Java allows us to implement multiple interfaces, but we can only extend one parent class. This does, however, mean that any time we want to instantiate a thread, we must also instantiate a separate instance of the \ttt{Runnable} subtype.} At the end, assuming everything works as expected, we should net zero dollars in the account.
+
+\begin{cl}[TransactionThread.java]{Creating Multiple Transactions}
+\begin{lstlisting}[language=MyJava]
+class TransactionThread implements Runnable {
+
+  private BankAccount acc;
+
+  public TransactionThread(BankAccount acc) { this.acc = acc; }
+
+  @Override
+  public void run() {
+    for (int i = 0; i < 1000; i++) {
+      this.acc.deposit(500);
+      this.acc.withdraw(500);
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[BankAccountRunner.java]{Running ``Transaction'' Threads}
+\begin{lstlisting}[language=MyJava]
+class BankAccountRunner {
+
+  public static void runTransactionThreads() {
+    BankAccount acc = new BankAccount(0);
+    Thread t1 = new Thread(new TransactionThread(acc));
+    Thread t2 = new Thread(new TransactionThread(acc));
+    Thread t3 = new Thread(new TransactionThread(acc));
+
+    t1.start();
+    t2.start();
+    t3.start();
+
+    // Wait on the threads to finish, then print the result.
+    try {
+      t1.join();
+      t2.join();
+      t3.join();
+    } catch (InterruptedException ex) { ex.printStackTrace(); }
+
+    System.out.printf("%d\n", acc.getAmount());
+  }
+
+  public static void main(String[] args) {
+    runTransactionThreads();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Running the program may produce the following output:
+
+{\footnotesize
+\begin{verbatim}
+withdraw: insufficient funds
+withdraw: insufficient funds
+0
+\end{verbatim}
+\par}
+
+It seems that we have an unpredictable problem: rerunning the program produces different results each time, but the error stems from the fact that our accesses to the bank account are not \textit{synchronized}. To understand why, let's expand out the code for performing a withdraw.
+
+{\footnotesize
+\begin{verbatim}
+public void withdraw(int less) {
+  int currAmt = this.amt;
+  if (currAmt >= less) {
+    int newAmt = currAmt - less;
+    this.amt = newAmt;
+  } else {
+    // ... print not shown.
+  }
+}
+\end{verbatim}
+\par}
+
+\begin{sloppypar}{Recall how threads work---a thread $t_1$ might reach the third line of this method, and store some value in \ttt{newAmt}. At this point, suppose another thread $t_2$ makes a deposit of \$500. Finally, $t_1$ updates \ttt{newAmt} to zero, because \ttt{currAmt - less} must be zero, so we effectively nullify the deposit action by our second thread! As we showed with the previous example, this is a data race for the \ttt{amt} instance variable. To fix the problem, we want to ensure that our \ttt{withdraw} and \ttt{deposit} methods are synchronized, which we can do via marking the methods as \ttt{synchronized}. Synchronization of a method solves the problem of atomicity, i.e., a synchronized method can only be accessed by a single thread at any time. Let's mark our methods then rerun the code to check the result, which should never display an error. Even though the calls to \ttt{deposit} and \ttt{withdraw} might not be inside a synchronized environment, we end up netting zero in the account, because three successive calls to \ttt{deposit} must be followed, at some point, by three calls to \ttt{withdraw}, which our synchronization action guarantees.}
+\end{sloppypar}
+
+\example{Let's design a \ttt{transfer} method as part of the \ttt{BankAccount} class, which receives another \ttt{BankAccount} $b_2$ and an amount $n$ as an instance variable. We will transfer $n$ dollars from \ttt{this} bank into $b_2$, which resolves to a call to \ttt{withdraw} on \ttt{this} and a call to \ttt{deposit} on $b_2$.}
+
+\begin{cl}[BankAccountTester.java]{Bank Account Transfer Method Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class BankAccountTester {
+
+  @Test
+  public void testTransfer() {
+    BankAccount b1 = new BankAccount(0);
+    BankAccount b2 = new BankAccount(100);
+
+    assertAll(
+      () -> b2.transfer(b1, 30),
+      () -> assertEquals(30, b1.getAmount()),
+      () -> assertEquals(70, b2.getAmount())
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[BankAccount.java]{Bank Account Transfer Method}
+\begin{lstlisting}[language=MyJava]
+class BankAccount {
+
+  private int amt;
+
+  public BankAccount(int amt) { this.amt = amt; }
+
+  /**
+   * Transfers money from one account to another.
+   *
+   * @param b2 other bank account to deposit money into.
+   * @param amt the amount to withdraw from this account.
+   */
+  public void transfer(BankAccount b2, int amt) {
+    this.withdraw(amt);
+    b2.deposit(amt);
+  }
+
+  // deposit and withdraw not shown.
+}
+\end{lstlisting}
+\end{cl}
+
+This code has the problem of not being synchronized; if multiple threads call \ttt{transfer} on the same bank account, we run into the same problem as before. To fix this, we may think that we need to synchronize \ttt{transfer}, but this is not the case, because a method that is synchronized means that only one thread can enter the method, but we need to synchronize the bank objects themselves from access and mutation. We can do so by synchronizing on the bank objects themselves, which we can do by using the \ttt{synchronized} keyword on a block of code. First, we synchronize on \ttt{this} (the bank account that we are withdrawing from), followed by a synchronization on \ttt{b2} (the bank account that we are depositing into). This ensures that only one thread can access both bank accounts concurrently.
+
+Let's now create another class that implements \ttt{Runnable} to manage multiple transfers between bank accounts. Each thread will deposit \$500 into its first bank $b_1$, then transfer \$500 from $b_1$ to $b_2$, followed by a withdrawal of \$500 from $b_2$ to ensure that both accounts net zero dollars. Our tester will create two threads: one that transfers from $b_1$ to $b_2$, and another that transfers from $b_2$ to $b_1$.
+
+\begin{cl}[TransferThread.java]{Transfer Thread Implementation}
+\begin{lstlisting}[language=MyJava]
+class TransferThread implements Runnable {
+
+  private final BankAccount B1;
+  private final BankAccount B2;
+
+  public TransferThread(BankAccount b1, BankAccount b2) {
+    this.B1 = b1;
+    this.B2 = b2;
+  }
+
+  @Override
+  public void run() {
+    for (int i = 0; i < 1000; i++) { this.B1.transfer(this.B2, 500); }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[BankAccountRunner.java]{Running ``Transfer'' Threads}
+\begin{lstlisting}[language=MyJava]
+class BankAccountRunner {
+
+  public static void runTransferThreads() {
+    BankAccount b1 = new BankAccount(0);
+    BankAccount b2 = new BankAccount(0);
+    Thread t1 = new Thread(new TransferThread(b1, b2));
+    Thread t2 = new Thread(new TransferThread(b2, b1));
+
+    t1.start();
+    t2.start();
+
+    try {
+      t1.join();
+      t2.join();
+    } catch (InterruptedException ex) { ex.printStackTrace(); }
+  }
+
+  public static void main(String[] args) {
+    runTransferThreads();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[BankAccount.java]{Synchronized Transfer Method}
+\begin{lstlisting}[language=MyJava]
+class BankAccount {
+
+  private int amt;
+
+  public BankAccount(int amt) { this.amt = amt; }
+
+  /**
+   * Transfers money from one account to another.
+   *
+   * @param b2 other bank account to deposit money into.
+   * @param amt the amount to withdraw from this account.
+   */
+  public void transfer(BankAccount b2, int amt) {
+    synchronized (this) {
+      synchronized (b2) {
+        this.withdraw(amt);
+        b2.deposit(amt);
+      }
+    }
+  }
+
+  // deposit and withdraw not shown.
+}
+\end{lstlisting}
+\end{cl}
+
+Upon running this program it is very likely to encounter an unexpected problem: an infinite ``loop'', so to speak. This occurs because we have a \textit{deadlock}\index{deadlock}, which happens when two more more threads are waiting on each other to release a lock. In our case, thread $t_1$ synchronizes on itself and acquires the lock. Then, suppose we context switch into $t_2$ and it synchronizes on itself. At this point $t_1$ is waiting for the lock by $t_2$, and $t_2$ is waiting on $t_1$'s lock. There are several possible solutions to this problem, where one is to use a Java-defined \ttt{Lock} object. As we will discuss in the subsequent example, a reentrant lock allows a thread to acquire the lock multiple times, which is useful in the event that a thread needs to call a synchronized method from within a synchronized block. In particular, we will lock \ttt{transfer}, \ttt{deposit}, and \ttt{withdraw} using the same static lock. We will also use a \ttt{try/finally} block to ensure that the lock is released, even if an exception is thrown.
+
+\begin{cl}[BankAccount.java]{Methods Synchronized Using a Lock}
+\begin{lstlisting}[language=MyJava]
+class BankAccount {
+
+  private int amt;
+
+  private static Lock lock = new ReentrantLock();
+
+  public BankAccount(int amt) {
+    this.amt = amt;
+  }
+
+  /**
+   * Transfers money from one account to another.
+   *
+   * @param b2 other bank account to deposit money into.
+   * @param amt the amount to withdraw from this account.
+   */
+  public void transfer(BankAccount b2, int amt) {
+    BankAccount.lock.lock();
+    try {
+      this.withdraw(amt);
+      b2.deposit(amt);
+    } finally {
+      BankAccount.lock.unlock();
+    }
+  }
+
+  public void deposit(int more) {
+    BankAccount.lock.lock();
+    try { this.amt += more; } 
+    finally {  BankAccount.lock.unlock(); }
+  }
+
+  public void withdraw(int less) {
+    BankAccount.lock.lock();
+    try {
+      if (amt >= less) { this.amt -= less; }
+      else { System.err.printf("withdraw: insufficient funds\n"); }
+    } finally {
+      BankAccount.lock.unlock();
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example{A \textit{thread-safe data structure} is one that supports reentrancy, i.e., multiple threads working over it at the same time. Java's \ttt{ArrayList} class is not thread-safe, so we will implement our own thread-safe array list using locks. The idea is to wrap all pieces of the code that multiple threads may access with a lock. Recalling our \ttt{MiniArrayList} class from Chapter~\ref{chapter:classes}, we see that \ttt{add}, \ttt{remove}, \ttt{insert}, \ttt{get}, and \ttt{size} all either access or modify the state of the list, which could conflict with another thread and cause a dangerous race condition. Thus we will surround the code within a lock. Note that some methods do not, themselves, need to be synchronized, e.g., \ttt{shiftLeft}/\ttt{shiftRight}/\ttt{resize}, because they are only ever called from within a synchronized context. Should we wrap those methods in the same lock, then the thread who owns the lock would be unable to call those methods, causing a deadlock.\footnote{As we showed with the bank account example, Java's \ttt{ReentrantLock} class is reentrant, meaning that a thread can safely acquire the lock multiple times. So, this problem is not necessarily an issue, but we will still avoid it for the sake of clarity and adaptability to other languages that may not have reentrant locks.} Moreover, because the \ttt{remove} method calls \ttt{get}, acquiring the lock immediately in \ttt{remove} is a bad idea. So, we acquire the lock in \ttt{get}, then release it, then acquire it again in \ttt{remove}. Certain methods, e.g., \ttt{size} and \ttt{get}, need to be updated to account for releasing the lock before the return statement; in these cases we store the result in a (local) temporary variable, release the lock, then return. In the code segment, we omit the comments for the sake of brevity. In all cases, we use \ttt{try/finally} blocks to ensure that, even in the case of exceptions, the lock is released, which is especially important with data structural methods.}
 
 \begin{cl}[ThreadSafeArrayList.java]{Thread-Safe Array List Implementation}
 \begin{lstlisting}[language=MyJava]
@@ -82,32 +415,34 @@ class ThreadSafeArrayList<T> {
 
   public void insert(T e, int idx) {
     this.lock.lock();
-    if (this.size == capacity) { this.resize(); }
-    this.shiftRight(idx);
-    this.elements[idx] = e;
-    this.lock.unlock();
+    try {
+      if (this.size == capacity) { this.resize(); }
+      this.shiftRight(idx);
+      this.elements[idx] = e;
+    } finally { this.lock.unlock(); }
   }
 
   public T remove(int idx) {
-    T e = this.get(idx);
     this.lock.lock();
-    this.shiftLeft(idx);
-    this.size--;
-    this.lock.unlock();
+    try {
+      T e = this.get(idx);
+      this.shiftLeft(idx);
+      this.size--;
+    } finally { this.lock.unlock(); }
     return e;
   }
 
   public T get(int index) {
     this.lock.lock();
-    T e = this.elements[index];
-    this.lock.unlock();
+    try { T e = this.elements[index]; }
+    finally { this.lock.unlock(); }
     return e;
   }
 
   public int size() {
     this.lock.lock();
-    int sz = this.size;
-    this.lock.unlock();
+    try { int sz = this.size; }
+    finally { this.lock.unlock(); }
     return sz;
   }
 }
@@ -116,7 +451,7 @@ class ThreadSafeArrayList<T> {
 
 Java, in fact, does have a data structure in the Collections API that supports multithreading and is therefore thread-safe: the \ttt{Vector} class serves this purpose. Though, should we not want to use \ttt{Vector}, since some Java programmers consider it ``deprecated'', we can invoke the static \ttt{synchronizedList} method on \ttt{Collections} to return a synchronized/thread-safe version of the input list. There are also other data structures in the Collections API that are thread-safe, such as \ttt{ConcurrentHashMap} and \ttt{ConcurrentLinkedQueue}, as well as methods to convert a non-thread-safe data structure into one that is thread-safe, e.g., \ttt{synchronizedMap} and \ttt{synchronizedSet}.
 
-\example{In the event that we want to block concurrent access to a variable, we can mark the method as \ttt{synchronized}, which means that only one thread can access the method at a time. Moreover, if we want to not deal with locks but still require atomic operations over access to an integer, we can use, for example, \ttt{AtomicInteger}. Let's revisit the \ttt{counter} example from earlier, but this time we will use an \ttt{AtomicInteger} to ensure that the increment operation is atomic.}
+\example{In the event that we want to block concurrent access to a variable, we need to enforce a few more precautions than simply marking methods that access the variable as \ttt{synchronized}. Moreover, should we want to not deal with locks but still require atomic operations over access to an integer, we can use, for example, \ttt{AtomicInteger}. Let's revisit the \ttt{counter} example from earlier, but this time we will use an \ttt{AtomicInteger} to ensure that the increment operation is atomic.}
 
 \begin{cl}[AtomicIntegerExample.java]{Example using \ttt{AtomicInteger}}
 \begin{lstlisting}[language=MyJava]
@@ -251,7 +586,7 @@ class ConditionVariableExample {
 
 If we fix our input seed to \ttt{212}, the output is deterministically as follows:
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 Consumed: 1
 Consumed: 6
@@ -263,7 +598,7 @@ Consumed: 1
 Consumed: 4
 Consumed: 5
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 \subsection*{Networking \& Sockets}
 

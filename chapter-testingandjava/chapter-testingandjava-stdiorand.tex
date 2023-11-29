@@ -6,24 +6,24 @@ First, we need to discuss the nature of the \textit{standard data streams}. Java
 The \ttt{printf} method originates from C, but is handy for printing multiple values at once without resorting to unnecessary string concatenation. In addition, it preserves the formatting of the data, which is handy when wanting to treat a \ttt{double} as a floating-point number in a string representation. It receives at least one argument: a format string, and is one of several \textit{variadic methods} that we will discuss. A format string contains special format characters and possibly other text. 
 
 \example{To output an \ttt{int} or \ttt{long} using \ttt{printf}, we use the \ttt{\%d} format specifier.}
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 int x = 42;
 System.out.printf("The value of x is %d\n", x);
 System.out.printf("We can inline integers directly 42 or as literals %d\n", 42);
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 \example{To output a \ttt{double} using \ttt{printf}, we use the \ttt{\%f} format specifier. We can also specify the number of digits \ttt{n} to print after the decimal point by using the format specifier \ttt{.\%nf}. Note that floating a decimal to $n$ digits does not change the value of that variable; rather, it only changes its string/output representation.}
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 double x = 42.0;
 System.out.printf("The value of x is %f\n", x);
 System.out.printf("PI to 2 decimals is %.2f\n", Math.PI);
 System.out.printf("PI with all decimals is %f\n", Math.PI);
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 There are many ways to get creative with \ttt{printf}, including space padding, number formatting, left/right-alignment, and more. We will not discuss these in detail, but instead we provide Table~\ref{format-specifiers} of the most common format specifiers.
 
@@ -53,46 +53,46 @@ The \textit{standard input stream} allows us to ``read data from the console''. 
 
 \example{Suppose we want to read an integer from the standard input stream. To do so, we first need to instantiate a \ttt{Scanner}, which declares a ``pipe'', so to speak, from which information is read. It is important to state that, while a \ttt{Scanner} may read from the standard input stream, it can read from other input streams, e.g., files or network connections. We will explore this further in subsequent chapters, but for now, let's declare a \ttt{Scanner} object to read from standard input.}
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 Scanner in = new Scanner(System.in);
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 The \ttt{Scanner} class has handy methods for retrieving data from the stream it is scanning (which we will dub the \textit{scannee}). As we said in the example prompt, to read an integer from the scannee, we use \ttt{nextInt}, which retrieves and removes the next-available integer from the scannee data stream. Note that the \ttt{Scanner} class is line-buffered, meaning that the data will not be processed by the ``accessors'', e.g., \ttt{nextInt}, until there is a new-line character in the input stream. To force a new-line, we press the ``Enter''/``Return'' key.
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 Scanner in = new Scanner(System.in);
 int x = in.nextInt();
 System.out.println(x);
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 Running the program and typing in any $32$-bit integer feeds it into standard input, then echos it to standard output. Entering any other non-integer value crashes the program with an \ttt{InputMismatchException} exception. So, what if we want to read in a \ttt{String} from the scannee; would we use \ttt{nextString}? Unfortunately, this is not correct. We need to instead use \ttt{nextLine}. The \ttt{nextLine} method reads a ``line'' of text, as a string, from the scannee. We define a ``line'' as all characters until the first occurrence of a new-line. Invoking \ttt{nextLine} consumes these characters, including the newline, from the input stream, and stores them into a variable, if requested. It does not, however, store the newline in the variable. 
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 Scanner in = new Scanner(System.in);
 String line = in.nextLine();
 System.out.println(line);
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 Typing in some characters, which may or may not be numbers, followed by a new-line, stores them in the \ttt{line} variable, excluding said new-line. Though, what happens if we prompt for an integer \textit{then} a string? The program does something quite strange. We type the integer, hit ``Return'', and the program terminates as if it did not prompt for a string. This is because of how both \ttt{nextInt} and \ttt{nextLine} behave: \ttt{nextInt} consumes all data up to but excluding an integer from the input stream; ignoring leading whitespaces. So, after consuming the integer, a new-line character remains in the input stream buffer. Then, \ttt{nextLine} intends to wait until a newline is in the buffer. Because the input stream buffer presently contains a new-line, it takes everything before the new-line, which comprises the empty string, and consumes both said empty string and the new-line from the buffer. To circumvent this issue, we can insert a call to \ttt{nextLine} in between the calls to \ttt{nextInt} and \ttt{nextLine}, thereby consuming the lone new-line character, clearing the buffer. Notice that we do not put a return value on the left-hand side of this intermediate \ttt{nextLine} invocation; this is because such a variable would hold the empty string, which for the purposes of this program is a worthless (variable) assignment.
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 Scanner in = new Scanner(System.in);
 int x = in.nextInt();
 in.nextLine();
 String line = in.nextLine();
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 \example{Let's reimplement Python's \ttt{input} function, which receives a \ttt{String} serving as a prompt for the user to enter data. To make it a bit more user-friendly and elegant, we will add a colon and a space after the given prompt. Because we open a \ttt{Scanner} that reads from the standard input stream, there is no need to worry about, say, calling \ttt{nextInt} prior to invoking \ttt{input}. If, on the other hand, we declared a static global \ttt{Scanner} that reads standard input, and we use that to read an integer \textit{and} inside \ttt{input}, we would be in trouble. In our case, the possible scanners connected to the standard input stream differ, so this (the integer-input problem) never occurs.}
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 static String input(String prompt) {
   Scanner in = new Scanner(System.in);
@@ -100,7 +100,7 @@ static String input(String prompt) {
   return in.nextLine();
 }
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 \example{Suppose we want to write a method that reads three Cartesian points, as integers, from standard input, and computes the area of the triangle that comprises these points. We can type all integers on the same line, as separated by spaces, because \ttt{nextInt} only parses the \textit{next} integer delimited by spaces. And, as we said before, \ttt{nextInt} skips over existing trailing spaces in the input stream buffer, so those spaces are omitted. From there, we use the formula for computing the area of the triangle from those points.} 
 \[
@@ -150,20 +150,20 @@ So, how do we generate pseudorandom numbers in Java? There are a few methods, an
 
 \example{Using \ttt{Random}, let's generate an integer between $0$ and $9$, inclusive on both bounds. To do so, we first need to instantiate a \ttt{Random} object, which we will call \ttt{random}. Then, we should invoke \ttt{nextInt} on the \ttt{random} object with an argument of $10$. Passing the argument $n$ to \ttt{nextInt} returns an integer $x \in [0, n-1]$, the desired value.}
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 Random random = new Random();
 int x = random.nextInt(10); // x in [0, 9]
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 \example{Imagine we want to generate an integer between $-50$ and $50$, inclusive on both bounds. The idea is to generate an integer between $0$ and $100$, inclusive, then subtract $50$ from the result.}
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 Random random = new Random();
 int x = random.nextInt(101) - 50; // x in [-50, 50]
 \end{verbatim}
-\end{footnotesize}
+\par}
 \example{When creating a \ttt{Random} object, we can pass a \textit{seed} to the constructor, which is an integer that determines the sequence of pseudorandom numbers generated by our \ttt{Random} instance. Therefore if we pass the same seed to two \ttt{Random} objects, they will generate the same sequence of pseudorandom numbers. If we do not pass a seed to the constructor, then the \ttt{Random} object uses the current time as the seed. In theory we could use a predetermined seed to write JUnit tests for methods that rely on randomness.}
 
 \begin{cl}[DualRandomTester.java]{Testing Two PRNGs with the Same Seed}
@@ -190,8 +190,8 @@ Admittedly, the above test is somewhat useless since it only tests the efficacy 
 \example{Java provides the \ttt{random} method from the \ttt{Math} class, which receives no arguments. To do anything significant, we must understand how this method works, i.e., what values it can return. The \ttt{Math.random()} method returns a random \ttt{double} between $[0, 1)$, where the upper-bound is exclusive. So, we could receive results such as \ttt{0.391283114421}, \ttt{0}, \ttt{0.999999999999}, but never exactly one. We can use basic multiplicative offsets to convert this range into what we might want. For example, to generate a random double value between $[0, 10)$, we can multiply the output by ten, e.g., \ttt{Math.random() * 10}.}
 
 \example{To generate a random integer between $-5$ and $15$ using \ttt{Math.random}, however, we need to do something similar to our \ttt{Random} example. First, we multiply the result by $21$ to produce a double between $[0, 21)$. Then, we subtract five to get the interval $[-5, 16)$. This is almost what we want, but our specification says that the result should be an integer rather than a double. So, we can cast the value accordingly.}
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 int x = (int) ((Math.random() * 21 - 5))
 \end{verbatim}
-\end{footnotesize}
+\par}

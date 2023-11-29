@@ -90,7 +90,7 @@ Notice that we have to use the wrapper class, since Java permits only special ty
 
 Pattern matching is not restricted to switch-case expressions. We can also use pattern matching in cases where we check the instance of an object, namely in the \ttt{equals} method. As an example, traditional \ttt{equals} methods look like the following:
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 @Override
 public boolean equals(Object o) {
@@ -103,11 +103,11 @@ public boolean equals(Object o) {
   } else { return false; }
 }
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 The need to cast the object to the type of the class on its own separate line is tedious. Pattern matching allows us to write the \ttt{equals} method in a more concise manner by providing an identifier to the pattern that is bound to the object being tested. We can wrap this in either an \ttt{if} statement or as a logical AND, because the pattern matching expression returns a boolean and fails to match if the object is not an instance of the stated class.
 
-\begin{footnotesize}
+{\footnotesize
 \begin{verbatim}
 @Override
 public boolean equals(Object o) {
@@ -118,7 +118,7 @@ public boolean equals(Object o) {
          this.fieldN.equals(other.fieldN);
 }
 \end{verbatim}
-\end{footnotesize}
+\par}
 
 \example{Suppose that we want to override the \ttt{equals} method inside \ttt{Rectangle} using pattern matching. It's possible to use an \ttt{if} statement rather than resolving the \ttt{instanceof} check in an expression, but the latter is much more concise and solves the same problem.}
 
@@ -215,7 +215,7 @@ record Number(BigDecimal value) implements IExpr {
 
 \begin{cl}[Add.java]{``Add'' Record Type}
 \begin{lstlisting}[language=MyJava]
-interface Add(IExpr left, IExpr right) implements IExpr {}
+record Add(IExpr left, IExpr right) implements IExpr {}
 \end{lstlisting}
 \end{cl}
 
