@@ -2,14 +2,14 @@
 
 Generics as a concept go far back in programming history, generally reknown as type parameterization, which we briefly touched on during our discussion of how to instantiate instances of \ttt{ArrayList} from the Collections API. Imagine, for a moment, if the Java programmers had to write a differing implementation of \ttt{ArrayList} for \ttt{Integer}, \ttt{String}, \ttt{Double}, and so on ad infinitum. Not only is this impossible, it would also be extremely cumbersome and redundant, since the only altering parameter is the underlying element type in the data structure. Before Java 5, we could only use ``generics'' via collections of type \ttt{Object}, since it is the root class object type, meaning any element could be stored in any type of collection.
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 ArrayList al1 = new ArrayList();
 al1.add(new Integer(42));
 al1.add(new Integer(43));
 Integer x = (Integer) al1.get(0);
 \end{verbatim}
-\par}
+}
 
 Performing casts like this is prone to errors, not to mention the possibility of adding disjoint types into a collection. For example, there is nothing preventing us from adding objects of type \ttt{String} or \ttt{Integer} into an \ttt{ArrayList} at this time. Generics were introduced to convert the problem from one encountered at runtime to one encountered moreso at compile-time. 
 

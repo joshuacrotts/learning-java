@@ -5,50 +5,50 @@ Thus far all of our work has been with data available as it is received by a met
 Arrays store \textit{elements} and \textit{indices} of some type. An element is just a value in an array. The \textit{index} of an element is its location in the array. Indices of an array are indexed from zero, much like strings. Thus, the first element of an array is located at index zero, whereas the last element is located at the index $|A| - 1$, where $|A|$ denotes the number of elements, or \textit{cardinality}, of some array $A$.
 
 We store contiguous elements in arrays, all of the same type. This means that, if we declare an array of type \ttt{int}, we cannot store, say, a \ttt{String} in the array. We can declare an array variable using initializer lists:
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 int[] array = {5, 10, 15, 20, 100, 50};
 \end{verbatim}
-\par}
+}
 To retrieve the size of an array, i.e., the number of elements it stores, we access the \textit{.length} field of the array; e.g., \ttt{array.length}. For our example array, we see that its size is six. Moreover, \ttt{array[0]} stores \ttt{5}, and \ttt{array[5]} stores \ttt{50}. Accessing a negative index or beyond the bounds of the length results in an array index out of bounds exception. That is, accessing \ttt{array[-1]} or \ttt{array[6]} crashes the program. A common mistake is to access the index at the length of the array to retrieve the last element. Doing so represents a misunderstanding of how arrays compute indices of elements.
 
 To declare an array of some type $T$, called $A$, that stores $N$ elements, we write the following:
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 T[] A = new T[N];
 \end{verbatim}
-\par}
+}
 We can store a value $e$ at some arbitrary index $i$ of array $A$, in addition to accessing the value at some index.
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 // Store "e" at index i of A.
 A[i] = e;
 // Print out the value at A[i].
 System.out.println(A[i]);
 \end{verbatim}
-\par}
+}
 
 \example{Let us declare an array $A$ that stores the integers from zero to one hundred, in increments of ten.}
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 int[] A = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 \end{verbatim}
-\par}
+}
 This is verbose and requires us to explicitly specify each individual constant. A better solution is to initialize the array to a size and populate its elements using a loop.
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 final int SIZE = 11;
 int[] A = new int[SIZE];
 for (int i = 0; i < A.length; i++) { A[i] = i * 10; }
 \end{verbatim}
-\par}
+}
 We use $i$ to iterate over the possible indices of our array. Before we explained that $i$ is used out of standard convention, but we now say that $i$, in general, stands for either ``iteration'' or ``index''. We assign, to $A$, the value of $i$ multiplied by ten. We can convert the array to a \ttt{String} using a utility method from the \ttt{Arrays} class (note the plural!); a ``string-ified'' array separates each element by commas and surrounds them with braces.
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 String s1 = Arrays.toString(A);
 s1 => {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
 \end{verbatim}
-\par}
+}
 
 \begin{figure}[tp]
 %\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
@@ -340,11 +340,11 @@ class Calculator {
 \example{Arrays can be of arbitrary dimension and are not restricted to only one. In this problem we will make use of a two-dimensional array, which might be thought of as a matrix or a grid. We will write a method that returns the sum of the elements of a two-dimensional array of integers. Traversing over an $n$-dimensional array generally involves nested loops. The order in which we traverse over the array can be significant. For example, the following code uses \textit{row-major} ordering, since we iterate over the rows first, and then the columns, meaning that we visit the elements in the order $A_{0,0}, A_{0,1}, A_{0,2}, ..., A_{1,0}, A_{1,1}, A_{1,2}, A_{2,0}, A_{2,1}, A_{2,2}$. Conversely, \textit{column-major} ordering would visit the elements in the order $A_{0,0}, A_{1,0}, A_{2,0}, ..., A_{0,1}, A_{1,1}, A_{2,1}, A_{0,2}, A_{1,2}, A_{2,2}$.}
 
 Multi-dimensional arrays are nothing more than arrays of arrays. Thus, as an example, we can declare a $3 \times 4$ two-dimensional array of integers (with three rows and four columns) as follows:
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 int[][] A = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
 \end{verbatim}
-\par}
+}
 
 \begin{cl}[SumOf2DArrayTester.java]{Tests for the Sum of a Two-Dimensional Array}
 \begin{lstlisting}[language=MyJava]

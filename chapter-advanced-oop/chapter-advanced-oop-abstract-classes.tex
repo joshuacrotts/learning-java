@@ -262,13 +262,13 @@ final class PrimNode extends AstNode {
 
 We need a way of binding variables, so we shall take a hint from functional programming languages via the \ttt{LetNode} class. The \ttt{LetNode} class has three children: a variable name, a value, and a body. The variable name will be a string, with the value and body both being abstract syntax tree nodes. The \ttt{LetNode} class will have a \ttt{toString} method that will return a string in the form of \ttt{(let ([<var> <exp>]) <body>)}. The \ttt{eval} method will evaluate the value, extend the environment with the new binding, and then evaluate the body with the extended environment. To do this, we need to understand what environment extension entails. Reconsidering our \ttt{Environment} class, we know that it extends the \ttt{HashMap} class to designate that environments \textit{are} maps by design. We may be tempted to override the \ttt{set} method in our \ttt{Environment} class to add an identifier binding to the current environment. While this works (and will be a necessity in due time), it means that we can only \textit{modify}, or \textit{change}, the environment, which isn't desired. The alternative approach would be to utilize \textit{environment extension}. That is, create a new environment with the old bindings, followed by an insertion of the new binding. Environment extension brings up the issue of variable scope, because different variables are live at different locations in the program. Consider the following program described by the abstract syntax tree:
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 new LetNode("x", new NumberNode(5), 
  new LetNode("y", new PrimNode("+", new NumberNode(6), new VarNode("x")), 
   new VarNode("y")))
 \end{verbatim}
-\par}
+}
   
 Within the inner-most \ttt{PrimNode} expression, $x$ does not exist in its environment, but it does exist in an environment defined above its scope. So, each environment is itself a store a map of identifiers to abstract syntax trees, but they also contain another \ttt{Environment}. If we are at the ``root level'' of the program, this environment is set to \ttt{null}. Correspondingly, Environment contains two constructors: one that receives a parent environment and another without. As such, we also must override the \ttt{get} method, which looks up a variable in the current list of bindings and, if it does not exist, recursively looks it up in the parent environment. If we reach the root level environment and the variable does not exist, we return a \ttt{null} value. We also override the \ttt{toString} method to print out the environment in a readable format.
 

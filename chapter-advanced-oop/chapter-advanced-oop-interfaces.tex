@@ -177,7 +177,7 @@ class ISuitTester {
 
 One extra piece of information that we should share is that we can instantiate objects in different ways. To demonstrate why this matters, suppose we initialize an object $s_1$ to type \ttt{ISuit}, but instantiate it as type \ttt{Diamond}. Then, we initialize another object $s_2$ to type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. We would expect that $s_1$ and $s_2$ are equivalent, but this is not the case. Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. Because $s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. Should we want to be able to invoke \ttt{diamondCount} on $s_1$, we need to cast $s_1$ to type \ttt{Diamond}. This is called \textit{downcasting}, and it is a common practice in object-oriented programming.
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 ISuit s1 = new Diamond();
 s1.diamondCount();             // Compile-time error!
@@ -185,7 +185,7 @@ Diamond s2 = new Diamond();
 s2.diamondCount();             // Works but not polymorphic.
 ((Diamond) s1).diamondCount(); // Works but downcasts.
 \end{verbatim}
-\par}
+}
 
 \example{Animals are a common example of an interface. Imagine that, in our domain of animals, every animal can speak one way or another. Speaking involves returning a string representing the sound that the animal makes. By designing the \ttt{IAnimal} interface, we can group all animals that can speak together. We can then design classes that implement the \ttt{IAnimal} interface and provide an implementation of the \ttt{speak} method. When testing the latter, we can write tests that instantiate a collection of \ttt{IAnimal} instances, and invoke \ttt{speak} on each of them polymorphically. In doing so we get a refresher of the Java stream API.}
 

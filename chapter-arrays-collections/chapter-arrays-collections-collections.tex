@@ -202,23 +202,23 @@ What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation
 \end{figure}
 
 To declare an \ttt{ArrayList} called $A$, we write the following, where $T$ is a class representing the type of elements contained within:
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 ArrayList<T> A = new ArrayList<>();
 \end{verbatim}
-\par}
+}
 This instantiates a new \ttt{ArrayList}, but notice that we do not specify the number of elements to store like we would an array. Indeed, because lists are dynamic in size, there is no need to specify a default. Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this can be changed by passing a size argument between the parentheses.
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 ArrayList<T> A = new ArrayList<>(100);
 \end{verbatim}
-\par}
+}
 You might be tempted to ask, ``Why might that be necessary?'', which is a great question. Remember that resizing an array depends on the number of pre-existing elements. Thus, the fewer resizes there are, the better, hence why we double the array capacity in our functional list implementation. If we know that we might have a lot of elements to add to the list from the start, it is a good idea to specify this as a parameter to the \ttt{ArrayList}. On average, adding a value to the end of an \ttt{ArrayList} is a \textit{constant cost}\index{constant cost}, or occurs instantaneously, because we know exactly where the next free spot is located. We cannot forget the time it takes to resize, however, so we declare that the \ttt{.add} method takes constant time with respect to \textit{amortized analysis}\index{amortized analysis}. In essence, sometimes we have to perform a resize-and-copy operation, but on average, we do not need to consider the cost thereof.
 
 Like arrays, modifying elements in-place and retrieval also has a constant cost; the underlying data structure is an array after all. We retrieve a value at a given index using \ttt{.get}, and we replace an existing value at a given index using \ttt{.set}.
 
 \example{If we declare an \ttt{ArrayList} of integers $\ttt{ls1}$, we can perform several operations to demonstrate our understanding.}
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 ArrayList<Integer> ls1 = new ArrayList<>();
 ls1.add(439);
@@ -231,7 +231,7 @@ ls1.set(1, 212);
 ls1.add(677);
 ls1.toString()   -> {439, 212, 654, 523, 677}
 \end{verbatim}
-\par}
+}
 Finally, we can remove an element, when given its index, using \ttt{.remove}. Be aware that removing elements is not as simple as adding. Suppose that, from the previous example, we invoke $\ttt{ls1.remove}(2)$, which removes the value $654$. We cannot simply have a slot/index with a missing value. So, Java compensates by shifting all values to the right of the removed value over by one.
 
 \example{Consider a situation in which we have an \ttt{ArrayList} that contains $1,000,000$ arbitrary integers. If we continuously remove elements from the front of the list, we shift each and every value down by one index. Propagating this through all one million elements results in a hefty cost of $999,999 + 999,998 + \cdots + 3 + 2 + 1$ shifts. So, removing $n$ elements from the front of an \ttt{ArrayList} is representable as an equation of time $T$.}
@@ -254,7 +254,7 @@ Therefore, to remove $1,000,000$ elements from the front of an \ttt{ArrayList}, 
 \example{We made a big deal about growing the underlying array when we run out of room to add new elements. We could ask a similar question about what to do when we, say, remove a ton of elements from a large list. If our list contains one million elements and we then clear the list, it makes little sense, at first glance, to have space allocated for one million non-existent values. Though, Java's implementation of \ttt{ArrayList} does not decrease the size of the backing array, preferring performance over memory usage. The reasoning behind this choice is straightforward: suppose we have an \ttt{ArrayList} of $500$ elements and we remove $250$ elements. Is it fair to decrease the size of the list by a factor of two? If so, what happens when we add one more element, totaling to $251$? We then have to grow the list, again, wasting valuable time.}
 
 \example{Consider the following code. What does $s$ contain after execution?}
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 ArrayList<Integer> ls1 = new ArrayList<>();
 ls1.add(10);
@@ -263,18 +263,18 @@ ls2.add(20);
 ls1.add(30);
 String s = ls1.toString() + " " + ls2.toString();
 \end{verbatim}
-\par}
+}
 Should you unaware of aliasing, you might say it resolves to \ttt{"[10, 30] [20]"}. \textit{Aliasing}\index{aliasing} is a form of object-sharing. When allocating any type of \textit{object}, whether that object is an array, an \ttt{ArrayList}, a \ttt{String}, or something else, we assign a reference \textit{to} that object in memory via the variable declaration. That is, in the preceding code, \ttt{ls1} references the location, in memory, of an \ttt{ArrayList}. Correspondingly, when we declare \ttt{ls2} and assign to it \ttt{ls1}, we are not copying over the values from \ttt{ls1} into \ttt{ls2}; we are expressing that \ttt{ls2} should reference the same list as referenced by \ttt{ls1}. Therefore by asserting \ttt{ls2} as an alias of \ttt{ls1}, any modifications made to either is reflected when referencing the other. In this instance, $s$ resolves to \ttt{"[10, 20, 30] [10, 20, 30]"}
 
 We have seen the repeated use of the \ttt{Integer} and \ttt{Double} classes when parameterizing the types for \ttt{ArrayList}, but what is the point? Could we not instead opt for \ttt{int} and \ttt{double}, as we have traditionally? The answer is a resounding no; we must take advantage of the luxury that is \textit{autoboxing} and \textit{autounboxing} through the \textit{wrapper classes}. The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Char}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. Parameterized types only work with class types; primitive datatypes are disallowed. So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. We can, of course, declare an \ttt{Integer} using the following overly-verbose syntax:
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 Integer x = new Integer(42);
 int y = x.getValue(); // y = 42.
 \end{verbatim}
-\par}
+}
 We explicitly wrap the primitive integer $42$ in $x$, which is of the \ttt{Integer} type, then unwrap its value to be stored in $y$. Manually wrapping and unwrapping primitives is tiresome and only introduces redundant code, hence why Java autoboxes and autounboxes as needed. For example, if we declare an \ttt{ArrayList} of \ttt{Integer} values, then add the primitive integer literal \ttt{42} to the list, Java will autobox the literal into its \ttt{Integer} wrapper. Going the other direction, if we want to iterate over the values in the list, we might use the enhanced-for loop. If Java did not support autounboxing, we would instead have to use \ttt{Integer} as opposed to \ttt{int} in the loop variable declaration. 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 ArrayList<Integer> al = new ArrayList<>();
 al.add(42);
@@ -282,11 +282,11 @@ for (int e : al) {
   ...
 }
 \end{verbatim}
-\par}
+}
 
 Testing is always important when writing programs, as this text has emphasized from the first page. Writing test cases for lists, naively, is cumbersome due to the repetition of \ttt{.add} method calls when populating the list. Instead, Java has the convenient \ttt{List.of} method, which receives any number of arguments. Let us see an example of this method.
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 // Old way:
 ArrayList<Integer> ls1 = new ArrayList<>();
@@ -298,7 +298,7 @@ ls1.add(42);
 // New way:
 ArrayList<Integer> ls2 = new ArrayList<>(List.of(5, 40, 4, 42));
 \end{verbatim}
-\par}
+}
 Using \ttt{List.of} raises a question: does \ttt{List.of} only receive five integer arguments? What if I want to specify more than five, or less than five? The answer to this excellent question is that \ttt{List.of} is a \textit{variadic-argument method}\index{variadic-argument method}. Methods may be written to receive any number of arguments, which are then collapsed into a data structure that is traversable.
 
 \example{Suppose we want to write a variadic method that computes the average of any number of given \ttt{double} values. Without variadic-argument methods, we must wrap these in a list or an array, then pass it to the method. Variadic arguments allow us to specify any desired number of arguments, and it is the responsibility of the method to interpret those values as a traversable data structure. So, to iterate over such a structure, we can use the enhanced-for loop.}
@@ -478,11 +478,11 @@ Like the operations on a stack, these are also constant-time, since we may alway
 \end{figure}
 
 Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. Instead, \texttt{Queue} is an \textit{interface} that other classes implement whose structure resembles a queue. To create a first-in-first-out queue data structure, we may declare a variable as a \texttt{Queue} then instantiate it as a \texttt{LinkedList}. Thankfully the \texttt{LinkedList} class contains all relevant methods for operating a FIFO-based queue.
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 Queue<Integer> q = new LinkedList<>();
 \end{verbatim}
-\par}
+}
 Treating \texttt{q} as a queue rather than a linked list is easy thanks to the methods supplied by the \texttt{LinkedList} implementation. Figure~\ref{fig:queues} shows some of these handy methods. 
 \begin{figure}[tp]
   \small
@@ -640,7 +640,7 @@ class PriorityQueueByP {
 \end{lstlisting}
 \end{cl}
 The output is as follows:
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 park
 pecking
@@ -650,7 +650,7 @@ barks
 hello
 shrub
 \end{verbatim}
-\par}
+}
 Why is this what the priority queue outputs? If we reason about this with our comparator, it becomes clear. \ttt{park} has the highest priority because it starts with `p' and has a substring that comes before the rest of those strings starting with `p'. The strings \ttt{pecking}, \ttt{peek}, and \ttt{pool} come next for similar reasons. Finally, none of the strings \ttt{barks}, \ttt{hello}, and \ttt{shrub} start with `p', so we simply compare based on the strings themselves. The underlying implementation of how the priority queue works is beyond the scope of this textbook. These details are generally reserved for a textbook or course on advanced data structures, which follows the course designed for the audience of this text.
 
 \subsection*{Set-Based Data Structures}
@@ -718,7 +718,7 @@ A \textit{LinkedHashMap} is a map with an ordering based on the insertion order 
 \section*{Iterators}
 We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 static int sum(int[] arr) {
   int sum = 0;
@@ -726,7 +726,7 @@ static int sum(int[] arr) {
   return sum;
 }
 \end{verbatim}
-\par}
+}
 
 The problem is that not all data structures, as we have undoubtedly seen, are sequential; sets and maps are two examples of non-sequential data structures, so how do we traverse over those? Stacks and queues are another example of data structures that are not necessarily sequential. \textit{Iterator} objects are the answer to this problem. Iterators provide a mechanism for traversing over a generalized data structure. Any data structure whose class definition implements \ttt{Iterator} must define at least two methods: \ttt{boolean hasNext} and \ttt{T next}, which determines whether or not we are at the end of the traversal and retrieves the next element respectively. Note that \ttt{T}, for the time being, simply means ``any type''. All of the Java collections implement \ttt{Iterator}, we can retrieve the corresponding \ttt{Iterator} object via the \ttt{.iterator} method. 
 
@@ -793,13 +793,13 @@ class EnhancedForLoopTester {
 \textit{Streams} are, in effect, a \textit{lazy} collection of ``things''. By lazy, we mean to say that, if a result is not necessary, or requested, then it is not computed.
 
 \example{Consider a situation in which we call \ttt{fib(1000)} as the argument to the \ttt{foo} method, giving us \ttt{foo(fib(1000))}. In Java, all arguments are evaluated \textit{eagerly}, which means that, in effect, takes an eternity to terminate. Unfortunately for the caller of \ttt{foo}, we do not even use the value of $x$, meaning we computed \ttt{fib(1000)} for absolutely no reason whatsoever.}\footnote{We assume that \ttt{fib} is a non-side-effect-inducing method, and is the naive exponential version of the algorithm.} 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 static int foo(int x) {
   return 5;
 }
 \end{verbatim}
-\par}
+}
 If we were in a language that supported \textit{lazy evaluation}, we would not be in this predicament. Our discussion is not driven by a desire for lazy evaluation, but rather the desire for easily-composable operations; lazy evaluation is a perk, in that it allows us to design infinite data structures! An ``infinite'' data structure raises some important questions about how to store ``infinite'' data. Imagine we want to compute a list that contains every positive even integer. We can represent this as the following inductive set:
 \begin{align*}
     &0 \in S\\
@@ -809,11 +809,11 @@ Therefore $S$ is a set containing countably-infinite values. Implementing $S$ in
 
 To create a stream of infinite data is to recreate our inductive set definition inside a \ttt{IntStream} instance and the \ttt{iterate} static method.
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 IntStream is = IntStream.iterate(0, x -> x + 2);
 \end{verbatim}
-\par}
+}
 
 Let us explain this method, but to do so we must introduce \textit{lambda expressions}. A lambda expression is an anonymous function, i.e., a function definition without a name. In the above code snippet, we define a function that receives a value $x$ and returns $x$ plus two. It would be identical to defining a \ttt{private static} method to add two to some integer, but we like lambda expressions due to their locality; it seems superfluous to design a method that is used in only one context. Should we want to pass a method reference rather than a lambda expression, this is easily achievable.
 \begin{cl}[]{}

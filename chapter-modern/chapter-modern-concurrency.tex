@@ -184,17 +184,17 @@ class BankAccountRunner {
 
 Running the program may produce the following output:
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 withdraw: insufficient funds
 withdraw: insufficient funds
 0
 \end{verbatim}
-\par}
+}
 
 It seems that we have an unpredictable problem: rerunning the program produces different results each time, but the error stems from the fact that our accesses to the bank account are not \textit{synchronized}. To understand why, let's expand out the code for performing a withdraw.
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 public void withdraw(int less) {
   int currAmt = this.amt;
@@ -206,7 +206,7 @@ public void withdraw(int less) {
   }
 }
 \end{verbatim}
-\par}
+}
 
 \begin{sloppypar}{Recall how threads work---a thread $t_1$ might reach the third line of this method, and store some value in \ttt{newAmt}. At this point, suppose another thread $t_2$ makes a deposit of \$500. Finally, $t_1$ updates \ttt{newAmt} to zero, because \ttt{currAmt - less} must be zero, so we effectively nullify the deposit action by our second thread! As we showed with the previous example, this is a data race for the \ttt{amt} instance variable. To fix the problem, we want to ensure that our \ttt{withdraw} and \ttt{deposit} methods are synchronized, which we can do via marking the methods as \ttt{synchronized}. Synchronization of a method solves the problem of atomicity, i.e., a synchronized method can only be accessed by a single thread at any time. Let's mark our methods then rerun the code to check the result, which should never display an error. Even though the calls to \ttt{deposit} and \ttt{withdraw} might not be inside a synchronized environment, we end up netting zero in the account, because three successive calls to \ttt{deposit} must be followed, at some point, by three calls to \ttt{withdraw}, which our synchronization action guarantees.}
 \end{sloppypar}
@@ -586,7 +586,7 @@ class ConditionVariableExample {
 
 If we fix our input seed to \ttt{212}, the output is deterministically as follows:
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 Consumed: 1
 Consumed: 6
@@ -598,7 +598,7 @@ Consumed: 1
 Consumed: 4
 Consumed: 5
 \end{verbatim}
-\par}
+}
 
 \subsection*{Networking \& Sockets}
 

@@ -19,7 +19,7 @@
 
 \noindent where `$P$' and `$R$' are assigned to \ttt{false} and `$Q$' is assigned to \ttt{true}, is equivalent to
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 public static final boolean P = false;
 public static final boolean Q = true;
@@ -27,7 +27,7 @@ public static final boolean R = false;
 
 cond(P, not(bicond(Q, not(R))))
 \end{verbatim}
-\par}
+}
 
 \noindent The presented schema resolves to \ttt{true}.
 
@@ -118,7 +118,7 @@ cond(P, not(bicond(Q, not(R))))
 
 \exercise{2}{chapter-crl}{Carlo is shipping out orders of candy to local grocery stores. Boxes have a maximum weight defined by \ttt{maxSize}, and we can (potentially) fit both small and large bars of candy in a box. Write the \ttt{fitCandy} method that, when given a number of small bars, large bars, and maximum weight, determines the number of small candy bars he can fit in the box. Large bars weigh five kilograms, and small bars weigh one kilogram. Note that Carlo always tries to fit large candies first before small. Return \ttt{-1} if it is impossible to fill the box with the given criteria. Below are some test examples. Hint: consider this as an analysis of three cases.}
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 fitCandy(4, 1, 9) -> 4
 fitCandy(4, 1, 4) -> 4
@@ -128,11 +128,11 @@ fitCandy(60, 100, 550) -> 50
 fitCandy(7, 1, 12) -> 7
 fitCandy(7, 1, 13) -> -1
 \end{verbatim}
-\par}
+}
 
 \exercise{2}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{isValidIpv4} method that, when given a \ttt{String}, determines whether it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid.}
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 isValidIpv4("192.168.1.244") -> true
 isValidIpv4("149.165.192.52") -> true
@@ -142,7 +142,7 @@ isValidIpv4("192.168.1201.ABC") -> false
 isValidIpv4("ABC.DEF.GHI") -> false
 isValidIpv4("192.168.1A6.201") -> false
 \end{verbatim}
-\par}
+}
 
 \exercise{1}{chapter-crl}{Write a method that receives a temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{`C'} or \ttt{`F'} for Celsius and Fahrenheit respectively. Return a string representing whether the temperature is a liquid, solid, or gas at sea level.}
 
@@ -280,14 +280,14 @@ If you write tests for one of these methods, you should be able to propagate it 
 \exercise{1}{chapter-crl}{Design the \ttt{trimSpace} method, which receives a \ttt{String} \ttt{s} and returns a new string with all leading and trailing spaces removed.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{containsMiddleABC} method, which receives a \ttt{String} $s$ and returns whether $s$ contains the substring \ttt{"ABC"} in the ``middle''. We define the ``middle'' as the point where number of characters on the left and right differ by at most one. \textbf{You cannot use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}}.}
-    {\footnotesize
+    \par{\footnotesize
 \begin{verbatim}
 assertTrue(middleABC("helloABChiya!"));
 assertTrue(middleABC("ABC"));
 assertTrue(middleABC("aABCc!"));
 assertFalse(middleABC("notInTheMiddleABCmid!"));
     \end{verbatim}
-\par}
+}
 
 \exercise{1}{chapter-crl}{Design the \ttt{censor} method, which receives a String $s$ and another String $c$. It should return a ``censored'' version of $s$, wherein each instance of $c$ in $s$ is replaced by asterisks. \textbf{You cannot use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}}.}
 
@@ -296,7 +296,7 @@ assertFalse(middleABC("notInTheMiddleABCmid!"));
 \exercise{1}{chapter-crl}{Design the \ttt{allSelfDividing} method, which receives an integer $n$ and returns whether each digit evenly divides $n$. If any digit is zero, then return \ttt{false}. You must perform the arithmetic manually; you cannot convert the value to a \ttt{String} or use an array.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{strSumNums} that computes the sum of each \textit{positive integer} ($\geq 0$) in a \ttt{String} $s$. See the below test cases for examples. You may assume that each integer in $s$, should there be any, is in the bounds of a positive \ttt{int}, i.e., $0$ and $2^{31}-1$. Hint: use \ttt{Character.isDigit} to test whether a character $c$ is a digit, and \ttt{Integer.parseInt} to convert a \ttt{String} to an \ttt{int}.}
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 assertEquals(100, strSumNums("hello50how20are30you?"));
 assertEquals(10, strSumNums("t1h1i1s1i1s1e1a1s1y1!"));
@@ -304,7 +304,7 @@ assertEquals(0, strSumNums("there are no numbers :(")));
 assertEquals(0, strSumNums("still 0 just 0 zero0!"));
 assertEquals(500000, strSumNums("500000"));
 \end{verbatim}
-\par}
+}
 
 \exercise{2}{chapter-crl}{Design the \ttt{stripComments} method that, when given a \ttt{String} containing a (valid) Java program, returns a string where all comments (single-line, multi-line, and Java documentation) have been removed. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
@@ -316,28 +316,28 @@ That is, given an input number $n$, compute that many terms of the above sequenc
 
 \exercise{1}{chapter-crl}{Write a method that converts a positive integer into a \ttt{String} that represents its binary counterpart. We present some examples below.}
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 toBinary(13)  => "1101"
 toBinary(144) => "10010000"
 toBinary(25)  => "11001"
 \end{verbatim}
-\par}
+}
 
 \exercise{1}{chapter-crl}{Write a method that, when given a string, looks for a mirror image (backwards) string at both the beginning and end of the
 given string. In other words, zero or more characters at the very beginning of the given string, and at the very end of the string in reverse order (possibly overlapping). For example, the string \ttt{"abXYZba"} has the mirror end \ttt{"ab"}. If there is no such string, return \ttt{null}.}
 
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 mirrorEnds("abXYZba") => "ab"
 mirrorEnds("abca")    => "a"
 mirrorEnds("aba")     => "aba"
 mirrorEnds("abc")     => null
 \end{verbatim}
-\par}
+}
 
 \exercise{2}{chapter-crl}{Write the \ttt{multTable} method that, when given two integers $a$ and $b$ such that $a \leq b$, computes the ``multiplication table'' from $a$ to $b$. We provide some test cases below. Note that the newline is just for formatting purposes.}
-{\footnotesize
+\par{\footnotesize
 \begin{verbatim}
 multTable(3, 3) => "1*1=1,1*2=2,1*3=3,2*1=2,2*2=4,
                     2*3=6,3*1=3,3*2=6,3*3=9"
@@ -345,7 +345,7 @@ multTable(2, 6) => "1*1=1,1*2=2,1*3=3,1*4=4,1*5=5,
                     1*6=6,2*1=2,2*2=4,2*3=6,2*4=8,
                     2*5=10,2*6=12"
 \end{verbatim}
-\par}
+}
 
 \exercise{3}{chapter-crl}{The \textit{definite integral} of a function $f$, defined as $\int_{a}^{b} f(x)\;\text{d}x$, produces the area under the curve of $f$ on the interval $[a, b]$. The thing is, though, integrals are defined in terms of \textit{Riemann summations}, which provide estimations on the area under a curve.} Riemann sums approximate the area by creating rectangles of a fixed width $\Delta$, as shown in ~\ref{fig:riemannf} for an arbitrary function $f$. Left-Riemann, right-Riemann, and midpoint-Riemann approximations define the focal point, i.e., the height, of the rectangle. Notice that, in Figure ~\ref{fig:riemannf}, we use a midpoint-Riemann sum with $\Delta = 0.2$, in which the collective sum of all the rectangle areas is the Riemann approximation. Your job is to use this idea to approximate the area of a circle.
 
