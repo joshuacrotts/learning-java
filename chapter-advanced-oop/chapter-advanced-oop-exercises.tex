@@ -216,6 +216,15 @@ A ConsList is one of:
 
 Implement the cons data structure into your interpreter. This should involve designing the \ttt{ConsNode} class that conforms to the aforementioned data definition. Moreover, you will need to update \ttt{PrimNode} to account for the \ttt{first} and \ttt{rest} primitive operations, as well as an \ttt{empty?} predicate, which returns whether or not the cons list is empty. Finally, update the \ttt{Lvalue} class to print a stringified representation of a \ttt{ConsNode}, which amounts to printing each element, separated by spaces, inside of brackets, e.g., \ttt{[$l_0, l_1, ..., l_{n-1}]$}.
 
+\exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
+Having to manually type out the abstract syntax tree constructors when writing tests is extremely tedious. Design a \textit{lexer} for the language described by the interpreter. That is, the text is broken up into tokens that are then categorized. For example, \ttt{'('} might become \ttt{OPEN\_PAREN}, \ttt{"lambda"} might become \ttt{SYMBOL}, \ttt{"variable-name"} might become \ttt{SYMBOL}, and \ttt{123.45} might become \ttt{NUMBER}. The output of the lexer is a list of tokens. Part of the trick is to ensure that after reading an open parenthesis, the next token is not grabbed as part of the open parenthesis.
+
+\exercise{3}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
+Design a parser for the language described by the interpreter. The idea is to tokenize a raw string, then parse the tokens to create an abstract syntax tree that represents the program. A good starting point would be to parse \textit{all} parenthesized expressions into what we will call \ttt{SExprNode}, then traverse over the tree to ``correct'' them into their true nodes, e.g., whether they are \ttt{IfNode}, \ttt{LetNode}, and so forth. Realistically, all programs in our language are, at their core, either primitive values or s-expressions.
+
+\exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
+The Scheme programming language and its derivatives support \textit{code quotation}, i.e., the ability to convert an evaluable expression into data. As an example, if we evaluate \ttt{new QuoteNode(new VarNode("x"))}, we receive a symbol as the output, rather than the evaluated symbol via environment lookup. Add the \ttt{QuoteNode} class to your interpreter.
+
 \exercise{3}{chapter-advanced-oop}{In this series of exercises, you will design several methods that act on very large natural numbers resembling the \ttt{BigInteger} class. You cannot use any methods from the class, or the class itself.}
 In this problem you will design several methods that act on very large \textit{natural numbers} resembling the \ttt{BigInteger} class. You \textit{\textbf{cannot}} use any methods from this class, or the class itself. 
 

@@ -1,6 +1,16 @@
 \section{Design Patterns}
 
+\subsection*{Command}
+
+\example{Of a command...}
+
 \subsection*{Factory}
+
+\example{Fraction caching...}
+
+\example{Person DB....}
+
+\subsection*{Builder}
 
 \subsection*{Visitor}
 
@@ -20,26 +30,26 @@ interface ExpressionVisitor {
 \end{lstlisting}
 \end{cl}
 
-Next, we need to modify the \ttt{AstNode} class to include an abstract \ttt{accept} method that receives a \ttt{Visitor} object and calls the appropriate \ttt{visit} method using polymorphic dispatch. 
+Next, we need to modify the \ttt{AstNode} class to include an abstract \ttt{visit} method that receives a \ttt{Visitor} object and calls the appropriate \ttt{visit} method using polymorphic dispatch. 
 
 \begin{cl}[AstNode.java]{The \ttt{AstNode} Class}
 \begin{lstlisting}[language=MyJava]
 class AstNode {
   // ... other methods and variables not shown.
 
-  abstract String accept(ExpressionVisitor visitor);
+  abstract String visit(ExpressionVisitor visitor);
 }
 \end{lstlisting}
 \end{cl}
 
-Now, we update each subclass to override the \ttt{accept} method and call the appropriate \ttt{visit} method. Fortunately this is trivial, since all we must do is add the method signature and call \ttt{visit} with \ttt{this} as the argument to represent that the visitor is visiting the current node. Because this is consistently redundant, we will only show the implementation of the \ttt{NumNode} class, but the remaining classes are identical with respect to this method.
+Now, we update each subclass to override the \ttt{visit} method and call the appropriate \ttt{visit} method. Fortunately this is trivial, since all we must do is add the method signature and call \ttt{visit} with \ttt{this} as the argument to represent that the visitor is visiting the current node. Because this is consistently redundant, we will only show the implementation of the \ttt{NumNode} class, but the remaining classes are identical with respect to this method.
 
 \begin{cl}[NumNode.java]{The \ttt{NumNode} Class}
 \begin{lstlisting}[language=MyJava]
 class NumNode extends AstNode {
   // ... other methods and variables not shown.
 
-  public String accept(ExpressionVisitor visitor) {
+  public String visit(ExpressionVisitor visitor) {
     return visitor.visit(this);
   }
 }
@@ -48,7 +58,7 @@ class NumNode extends AstNode {
 
 From here, we need to design a variant of the interface that implements the expression printing behavior. Thus we will write the \ttt{ExpressionPrinterVisitor} class, which implements the \ttt{ExpressionVisitor} interface. The \ttt{ExpressionPrinterVisitor} class overrides the respective methods from the \ttt{ExpressionVisitor} interface to prints out the expression, to standard output, in a ``stringified'' format.
 
-The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{ExpressionVisitor} to \ttt{ExpressionPrinterVisitor}, followed by a call to \ttt{accept} on the root node of the expression tree. The result is a string representation of the expression, which we then verify.
+The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{ExpressionVisitor} to \ttt{ExpressionPrinterVisitor}, followed by a call to \ttt{visit} on the root node of the expression tree. The result is a string representation of the expression, which we then verify.
 
 \begin{cl}[ExpressionPrinterVisitorTester.java]{The \ttt{ExpressionPrinterVisitorTester} Class}
 \begin{lstlisting}[language=MyJava]
@@ -64,8 +74,7 @@ class ExpressionPrinterVisitorTester {
                         new PrimNode("*", 
                           new NumNode(2), 
                           new NumNode(3)));
-    ExpressionVisitor visitor = new ExpressionPrinterVisitor();
-    String result = expr.accept(visitor);
+    String result = expr.visit(new ExpressionPrinterVisitor());
     assertAll(
       () -> assertEquals("(+ 1 (* 2 3))", result)
     );
@@ -78,8 +87,7 @@ class ExpressionPrinterVisitorTester {
                         new PrimNode("+", 
                           new VarNode("x"), 
                           new NumNode(2)));
-    ExpressionVisitor visitor = new ExpressionPrinterVisitor();
-    String result = expr.accept(visitor);
+    String result = expr.accept(new ExpressionPrinterVisitor());
     assertAll(
       () -> assertEquals("(let ([x 1])\n  (+ x 2))", result)
     );
@@ -103,7 +111,7 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
     sb.append("(");
     sb.append(node.getOperator() + " ");
     sb.append(node.getChildren().stream()
-                                .map(c -> c.accept(this))
+                                .map(c -> c.visit(this))
                                 .collect(Collectors.joining(" ")));
     sb.append(")");
     return sb.toString();
@@ -118,9 +126,9 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
   public String visit(LetNode node) {
     StringBuilder sb = new StringBuilder();
     sb.append("(let ([" + node.getVar() + " ");
-    sb.append(node.value.accept(this));
+    sb.append(node.value.visit(this));
     sb.append(")]\n  ");
-    sb.append(node.body.accept(this));
+    sb.append(node.body.visit(this));
     sb.append(")");
     return sb.toString();
   }
@@ -129,11 +137,11 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
   public String visit(IfNode node) {
     StringBuilder sb = new StringBuilder();
     sb.append("(if ");
-    sb.append(node.condition.accept(this));
+    sb.append(node.condition.visit(this));
     sb.append(" ");
-    sb.append(node.thenExpr.accept(this));
+    sb.append(node.thenExpr.visit(this));
     sb.append(" ");
-    sb.append(node.elseExpr.accept(this));
+    sb.append(node.elseExpr.visit(this));
     sb.append(")");
     return sb.toString();
   }
@@ -142,5 +150,3 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
 \end{cl}
 
 \subsection*{Observer}
-
-\subsection*{Strategy}
