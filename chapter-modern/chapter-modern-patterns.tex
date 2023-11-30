@@ -87,7 +87,7 @@ class ExpressionPrinterVisitorTester {
                         new PrimNode("+", 
                           new VarNode("x"), 
                           new NumNode(2)));
-    String result = expr.accept(new ExpressionPrinterVisitor());
+    String result = expr.visit(new ExpressionPrinterVisitor());
     assertAll(
       () -> assertEquals("(let ([x 1])\n  (+ x 2))", result)
     );
