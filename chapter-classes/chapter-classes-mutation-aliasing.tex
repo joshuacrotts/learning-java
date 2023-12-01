@@ -35,7 +35,10 @@ class Point {
   private int x;
   private int y;
 
-  public Point(int x, int y) { this.x = x; this.y = y; }
+  public Point(int x, int y) { 
+    this.x = x; 
+    this.y = y; 
+  }
 
   public int getX() { return this.x; }
 
@@ -64,6 +67,7 @@ class PointTester {
     p1.setX(3);
     assertEquals(3, p1.getX());
     assertEquals(3, p2.getX());
+    assertEquals(p1, p2);
   }
 
   @Test
@@ -73,6 +77,7 @@ class PointTester {
     p1.setY(2);
     assertEquals(2, p1.getY());
     assertEquals(2, p2.getY());
+    assertEquals(p1, p2);
   }
 }
 \end{lstlisting}
@@ -185,17 +190,13 @@ class MiniArrayList<T> {
 
   private static final int RESIZE_FACTOR = 2;
 
-  // ... other details not shown.
-
   /**
    * Adds an element to the end of the list.
-   * 
    * @param element the element to add.
    */
   public void add(T element) {
     if (this.size == this.capacity) { this.resize(); }
-    this.elements[this.size] = element;
-    this.size++;
+    this.elements[this.size++] = element;
   }
 
   /**
@@ -204,9 +205,7 @@ class MiniArrayList<T> {
   private void resize() {
     this.capacity *= RESIZE_FACTOR;
     T[] newArray = (T[]) new Object[this.capacity];
-    for (int i = 0; i < this.size; i++) {
-      newArray[i] = this.elements[i];
-    }
+    for (int i = 0; i < this.size; i++) { newArray[i] = this.elements[i]; }
     this.elements = newArray;
   }
 
@@ -217,7 +216,7 @@ class MiniArrayList<T> {
 \end{lstlisting}
 \end{cl}
 
-We will write two more methods: \ttt{insert}, which inserts an element $e$ at a given index, and \ttt{remove}, which removes an element at a given index. These two methods are similar in that they alter the backing array by adding/removing an element, and shifting right and left respectively. Accordingly, our implementation will contain the private helper methods \ttt{shiftRight} and \ttt{shiftLeft}. If we attempt to insert an element into a list that must be resized, we can call \ttt{resize}. Both \ttt{insert} and \ttt{remove} warrant test cases! Like the \ttt{get} counterpart, neither of these new methods will perform bounds checking, so testing out-of-bounds behavior, for the time being, is not pertinent.
+We will write two more methods: \ttt{insert} and \ttt{remove}, which inserts an element $e$ at a given index $i$, and removes an element $e$ respectively. These two methods are similar in that they alter the backing array by shifting its values right and left. Accordingly, our implementation will contain the private helper methods \ttt{shiftRight} and \ttt{shiftLeft}. If we attempt to insert an element into a list that must be resized, we call \ttt{resize}. Both \ttt{insert} and \ttt{remove} warrant test cases! Like the \ttt{get} counterpart, neither of these new methods will perform bounds checking, so testing out-of-bounds behavior, for the time being, is not pertinent.
 
 \begin{cl}[MiniArrayListTester.java]{Testing \ttt{MiniArrayList} \ttt{insert} and \ttt{remove} Methods}
 \begin{lstlisting}[language=MyJava]
@@ -230,26 +229,22 @@ class MiniArrayListTester {
   void testInsert() {
     MiniArrayList<Integer> list = new MiniArrayList<>();
     list.add(100);
-    list.add(200);
     list.add(300);
     list.insert(1, 150);
-    assertEquals(4, list.size());
+    assertEquals(3, list.size());
     assertEquals(100, list.get(0));
     assertEquals(150, list.get(1));
-    assertEquals(200, list.get(2));
-    assertEquals(300, list.get(3));
+    assertEquals(300, list.get(2));
   }
 
   @Test
   void testRemove() {
     MiniArrayList<Integer> list = new MiniArrayList<>();
     list.add(100);
-    list.add(200);
     list.add(300);
-    list.remove(1);
-    assertEquals(2, list.size());
-    assertEquals(100, list.get(0));
-    assertEquals(300, list.get(1));
+    list.remove(0);
+    assertEquals(1, list.size());
+    assertEquals(300, list.get(0));
   }
 }
 \end{lstlisting}

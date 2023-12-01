@@ -202,13 +202,13 @@ What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation
 \end{figure}
 
 To declare an \ttt{ArrayList} called $A$, we write the following, where $T$ is a class representing the type of elements contained within:
-\par{\footnotesize
+\par{
 \begin{verbatim}
 ArrayList<T> A = new ArrayList<>();
 \end{verbatim}
 }
 This instantiates a new \ttt{ArrayList}, but notice that we do not specify the number of elements to store like we would an array. Indeed, because lists are dynamic in size, there is no need to specify a default. Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this can be changed by passing a size argument between the parentheses.
-\par{\footnotesize
+\par{
 \begin{verbatim}
 ArrayList<T> A = new ArrayList<>(100);
 \end{verbatim}
@@ -218,7 +218,7 @@ You might be tempted to ask, ``Why might that be necessary?'', which is a great 
 Like arrays, modifying elements in-place and retrieval also has a constant cost; the underlying data structure is an array after all. We retrieve a value at a given index using \ttt{.get}, and we replace an existing value at a given index using \ttt{.set}.
 
 \example{If we declare an \ttt{ArrayList} of integers $\ttt{ls1}$, we can perform several operations to demonstrate our understanding.}
-\par{\footnotesize
+\par{
 \begin{verbatim}
 ArrayList<Integer> ls1 = new ArrayList<>();
 ls1.add(439);
@@ -254,7 +254,7 @@ Therefore, to remove $1,000,000$ elements from the front of an \ttt{ArrayList}, 
 \example{We made a big deal about growing the underlying array when we run out of room to add new elements. We could ask a similar question about what to do when we, say, remove a ton of elements from a large list. If our list contains one million elements and we then clear the list, it makes little sense, at first glance, to have space allocated for one million non-existent values. Though, Java's implementation of \ttt{ArrayList} does not decrease the size of the backing array, preferring performance over memory usage. The reasoning behind this choice is straightforward: suppose we have an \ttt{ArrayList} of $500$ elements and we remove $250$ elements. Is it fair to decrease the size of the list by a factor of two? If so, what happens when we add one more element, totaling to $251$? We then have to grow the list, again, wasting valuable time.}
 
 \example{Consider the following code. What does $s$ contain after execution?}
-\par{\footnotesize
+\par{
 \begin{verbatim}
 ArrayList<Integer> ls1 = new ArrayList<>();
 ls1.add(10);
@@ -267,14 +267,14 @@ String s = ls1.toString() + " " + ls2.toString();
 Should you unaware of aliasing, you might say it resolves to \ttt{"[10, 30] [20]"}. \textit{Aliasing}\index{aliasing} is a form of object-sharing. When allocating any type of \textit{object}, whether that object is an array, an \ttt{ArrayList}, a \ttt{String}, or something else, we assign a reference \textit{to} that object in memory via the variable declaration. That is, in the preceding code, \ttt{ls1} references the location, in memory, of an \ttt{ArrayList}. Correspondingly, when we declare \ttt{ls2} and assign to it \ttt{ls1}, we are not copying over the values from \ttt{ls1} into \ttt{ls2}; we are expressing that \ttt{ls2} should reference the same list as referenced by \ttt{ls1}. Therefore by asserting \ttt{ls2} as an alias of \ttt{ls1}, any modifications made to either is reflected when referencing the other. In this instance, $s$ resolves to \ttt{"[10, 20, 30] [10, 20, 30]"}
 
 We have seen the repeated use of the \ttt{Integer} and \ttt{Double} classes when parameterizing the types for \ttt{ArrayList}, but what is the point? Could we not instead opt for \ttt{int} and \ttt{double}, as we have traditionally? The answer is a resounding no; we must take advantage of the luxury that is \textit{autoboxing} and \textit{autounboxing} through the \textit{wrapper classes}. The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Char}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. Parameterized types only work with class types; primitive datatypes are disallowed. So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. We can, of course, declare an \ttt{Integer} using the following overly-verbose syntax:
-\par{\footnotesize
+\par{
 \begin{verbatim}
 Integer x = new Integer(42);
 int y = x.getValue(); // y = 42.
 \end{verbatim}
 }
 We explicitly wrap the primitive integer $42$ in $x$, which is of the \ttt{Integer} type, then unwrap its value to be stored in $y$. Manually wrapping and unwrapping primitives is tiresome and only introduces redundant code, hence why Java autoboxes and autounboxes as needed. For example, if we declare an \ttt{ArrayList} of \ttt{Integer} values, then add the primitive integer literal \ttt{42} to the list, Java will autobox the literal into its \ttt{Integer} wrapper. Going the other direction, if we want to iterate over the values in the list, we might use the enhanced-for loop. If Java did not support autounboxing, we would instead have to use \ttt{Integer} as opposed to \ttt{int} in the loop variable declaration. 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 ArrayList<Integer> al = new ArrayList<>();
 al.add(42);
@@ -286,7 +286,7 @@ for (int e : al) {
 
 Testing is always important when writing programs, as this text has emphasized from the first page. Writing test cases for lists, naively, is cumbersome due to the repetition of \ttt{.add} method calls when populating the list. Instead, Java has the convenient \ttt{List.of} method, which receives any number of arguments. Let us see an example of this method.
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 // Old way:
 ArrayList<Integer> ls1 = new ArrayList<>();
@@ -478,7 +478,7 @@ Like the operations on a stack, these are also constant-time, since we may alway
 \end{figure}
 
 Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. Instead, \texttt{Queue} is an \textit{interface} that other classes implement whose structure resembles a queue. To create a first-in-first-out queue data structure, we may declare a variable as a \texttt{Queue} then instantiate it as a \texttt{LinkedList}. Thankfully the \texttt{LinkedList} class contains all relevant methods for operating a FIFO-based queue.
-\par{\footnotesize
+\par{
 \begin{verbatim}
 Queue<Integer> q = new LinkedList<>();
 \end{verbatim}
@@ -640,7 +640,7 @@ class PriorityQueueByP {
 \end{lstlisting}
 \end{cl}
 The output is as follows:
-\par{\footnotesize
+\par{
 \begin{verbatim}
 park
 pecking
@@ -718,7 +718,7 @@ A \textit{LinkedHashMap} is a map with an ordering based on the insertion order 
 \section*{Iterators}
 We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 static int sum(int[] arr) {
   int sum = 0;
@@ -793,7 +793,7 @@ class EnhancedForLoopTester {
 \textit{Streams} are, in effect, a \textit{lazy} collection of ``things''. By lazy, we mean to say that, if a result is not necessary, or requested, then it is not computed.
 
 \example{Consider a situation in which we call \ttt{fib(1000)} as the argument to the \ttt{foo} method, giving us \ttt{foo(fib(1000))}. In Java, all arguments are evaluated \textit{eagerly}, which means that, in effect, takes an eternity to terminate. Unfortunately for the caller of \ttt{foo}, we do not even use the value of $x$, meaning we computed \ttt{fib(1000)} for absolutely no reason whatsoever.}\footnote{We assume that \ttt{fib} is a non-side-effect-inducing method, and is the naive exponential version of the algorithm.} 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 static int foo(int x) {
   return 5;
@@ -809,14 +809,14 @@ Therefore $S$ is a set containing countably-infinite values. Implementing $S$ in
 
 To create a stream of infinite data is to recreate our inductive set definition inside a \ttt{IntStream} instance and the \ttt{iterate} static method.
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 IntStream is = IntStream.iterate(0, x -> x + 2);
 \end{verbatim}
 }
 
 Let us explain this method, but to do so we must introduce \textit{lambda expressions}. A lambda expression is an anonymous function, i.e., a function definition without a name. In the above code snippet, we define a function that receives a value $x$ and returns $x$ plus two. It would be identical to defining a \ttt{private static} method to add two to some integer, but we like lambda expressions due to their locality; it seems superfluous to design a method that is used in only one context. Should we want to pass a method reference rather than a lambda expression, this is easily achievable.
-\begin{cl}[]{}
+\begin{cl}[PositiveEvens.java]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
 
@@ -833,7 +833,7 @@ class PositiveEvens {
 
 The \ttt{IntStream} instance declares a stream that, when requested/prompted, invokes and populates the stream. Because it is impossible to represent an infinite data structure in Java with modern computers, we should limit how many values we want from this stream. Indeed, the \ttt{.limit} method computes exactly $n$ elements from the stream. So, to compute the first ten elements of our $\textit{is}$ \ttt{IntStream}, we invoke \ttt{.limit(10)} on our $\textit{is}$ stream. 
 
-\begin{cl}[]{}
+\begin{cl}[PositiveEvens.java]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
 
@@ -846,7 +846,7 @@ class PositiveEvens {
 \end{lstlisting}
 \end{cl}
 Now, suppose we want to view these ten elements. Right now they are consolidated into an \ttt{IntStream}, but we need to convert them to a list of sorts. The solution is to convert the values into a \ttt{Stream<Integer>} via \ttt{.boxed()}, and then to a list using the convenient \ttt{.toList()} method.
-\begin{cl}[]{}
+\begin{cl}[PositiveEvens.java]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
 
@@ -860,13 +860,28 @@ class PositiveEvens {
 }
 \end{lstlisting}
 \end{cl}
+
+\example{Suppose we want a stream of infinitely repeating \ttt{"a"} strings. We can easily do this via the \ttt{generate} method, which acts as the stream constructor, receiving a lambda expression to continuously generate new elements.}
+\begin{cl}[AGenerator.java]{}
+\begin{lstlisting}[language=MyJava]
+class AGenerator {
+
+  public static void main(String[] args) {
+    Stream<String> as = Stream.generate(() -> "a");
+    // ["a", "a", "a", "a", "a", "a", "a", "a", "a", "a"]
+    System.out.println(as.limit(10).boxed().toList()); 
+  } 
+}
+\end{lstlisting}
+\end{cl}
+
 Again, it is important to understand what is going on under the hood of a stream. Elements thereof only generate when we request them through some accessory means, e.g., \ttt{limit}. As we previously suggested, attempting to access an infinite stream without a limit causes the program to hang and eventually crash with an \ttt{OutOfMemoryError} exception.
 
 \example{Imagine we want to create a stream of all of the Fibonacci numbers. The thing is, eventually we will reach the $32$-bit limit for the \ttt{int} datatype, so we should take advantage of the \ttt{BigInteger} class, which allows us to represent arbitrarily-large integers.\footnote{Worrying about \textit{how} the \ttt{BigInteger} class works for now is unnecessary as our current plan is to demonstrate stream properties.} Also, this time we will write a method that returns the stream instance rather than creating it in the \ttt{main} method.}
 
 Here's what we need to do: we will use \ttt{iterate} to generate new values in the sequence. There is a slight problem in that the Fibonacci sequence has two starting (accumulator) values: $0$ and $1$. The issue is that \ttt{iterate} receives only one ``initializer'' value. To circumvent this predicament we can simply pass an array that contains the current and ``next'' Fibonacci values. Inside the lambda expression we of course receive an array of values, from which we can compute the next Fibonacci number. This time, however, instead of using \ttt{IntStream}, we will generalize to the \ttt{Stream} class since our initial value(s) is not an integer.
 
-\begin{cl}[]{}
+\begin{cl}[BigIntFibStreamTester.java]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -883,6 +898,8 @@ class BigIntFibStreamTester {
         List.of(new BigInteger[]{new BigInteger("0"), new BigInteger("1")},
                 new BigInteger[]{new BigInteger("1"), new BigInteger("1")},
                 ...));
+
+    // Check each array of BigIntegers of the expected and actual.
     assertTrue(expectedLs.size() == actualLs.size());
     for (int i = 0; i < expectedLs.size(); i++) {
       assertArrayEquals(expectedLs.get(i), actualLs.get(i));
@@ -892,12 +909,14 @@ class BigIntFibStreamTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{}
+\begin{cl}[BigIntFibStream.java]{}
 \begin{lstlisting}[language=MyJava]
 class BigIntFibStream {
 
   /**
    * Returns a stream of BigInteger values computing the nth Fibonacci value.
+   *
+   * @return stream containing arrays of the next sequential BigIntegers.
    */
   public static Stream<BigInteger[]> fibonacciStream() {
     BigInteger[] vals = new BigInteger[]{new BigInteger("0"), 
@@ -947,14 +966,14 @@ class BigIntFibStream {
 
 So our code now produces a list of \ttt{BigInteger} arrays containing the current Fibonacci value and its successor. Though, is this really what we want? A better solution would be to simply return the first element of the tuple/two-element array. We can achieve this via the \ttt{map} function. \ttt{map} receives a lambda expression as an argument and applies it to every element of the acting stream. Let's modify the code a bit to see an improved output. Excellently, this change means we do not need to loop over our expected/actual lists in the unit testing method, as \ttt{assertEquals} works as intended over \ttt{List} objects.
 
-\begin{cl}[]{}
+\begin{cl}[BigIntFibStreamTester.java]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
 class BigIntFibStreamTester {
 
   @Test
-  void bigIntFibStreamTest() {
+  void testBigIntFibStream() {
     Stream<BigInteger> s = StreamExample.fibonacciStream();
     List<BigInteger> actualLs = s.limit(10).toList();
     List<BigInteger[]> expectedLs 
@@ -968,7 +987,7 @@ class BigIntFibStreamTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{}
+\begin{cl}[BigIntFibStream.java]{}
 \begin{lstlisting}[language=MyJava]
 class BigIntFibStream {
 
@@ -993,13 +1012,13 @@ A \textit{higher-order function} is a function that takes functions as parameter
 
 \example{Let's write the \ttt{sqList} method that receives a \ttt{List<Integer>} and squares each element using the Stream API. The method should return a new list. A motif presented throughout stream methods is that they do not modify the original data. We should use \ttt{map} to apply a lambda expression that receives an integer and returns its square. Fortunately for us, we can convert any collection into a stream using the \ttt{.stream()} method. From there, we use a simple \ttt{map} invocation to arrive at our desired outcome.}
 
-\begin{cl}[]{}
+\begin{cl}[SqListTester.java]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static sqList.sqList;
+import static SqList.sqList;
 
-class sqListTester {
+class SqListTester {
 
   @Test
   void sqListTest() {
@@ -1016,13 +1035,13 @@ class sqListTester {
 \end{lstlisting}    
 \end{cl}
 
-\begin{cl}[]{}
+\begin{cl}[SqList.java]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.List;
 import java.util.ArrayList;
 
-class sqList {
+class SqList {
 
   /**
    * Returns a list of squared integers from a list of integers.
@@ -1050,7 +1069,7 @@ class sqList {
 
 Of course, we begin by writing a few tests. Fortunately, writing tests is simple for this method, whereas the implementation is the most complex seen thus far.
 
-\begin{cl}[]{Tests for \ttt{removeVowels} Method}
+\begin{cl}[RemoveVowelsStreamTester/java]{Tests for \ttt{removeVowels} Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static RemoveVowelsStream.removeVowels;
@@ -1058,7 +1077,7 @@ import static RemoveVowelsStream.removeVowels;
 class RemoveVowelsStreamTester {
   
   @Test
-  void removeVowels() {
+  void testRemoveVowels() {
     assertAll(
       () -> assertEquals("hll", StreamTests.removeVowels("hello")),
       () -> assertEquals("hw r y?", StreamTests.removeVowels("how are you?")),
@@ -1074,7 +1093,7 @@ class RemoveVowelsStreamTester {
 
 Onto the definition; we start by writing the method signature and purpose. Then, we need to complete step one: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. Step two involves us converting each integer into a ``one-string'', which we can do via the constructor for a \ttt{String} object. Step three requires the use of \ttt{filter}, which is another higher-order function. It receives a lambda expression and returns those objects from the stream that satisfy the filter. Since we want to filter \textit{out} the vowels, we should write a method that determines if a character is vowel, then negate the expression as part of the lambda definition. Lastly we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. The reduce function receives an initial value, i.e., an accumulator $a$ and a binary function $f$. It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly how reduce works; It folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} Due to the simplicity of the \ttt{isVowel} predicate, we omit its definition.
 
-\begin{cl}[]{Definition of \ttt{removeVowels} Using Streams}
+\begin{cl}[RemoveVowelsStream.java]{Definition of \ttt{removeVowels} Using Streams}
 \begin{lstlisting}[language=MyJava]
 class RemoveVowelsStream {
 

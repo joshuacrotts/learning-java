@@ -38,10 +38,8 @@ static int foo() {
   int c = 5;
   // We never check if c == 5.
   if (a == b && c == 5) { return 100; }
-
   // We never check if b != 10.
   if (a == c || b != 10) { return 200; }
-
   return 0;
 }
 \end{lstlisting}
@@ -77,22 +75,14 @@ static int foo() {
 
 \begin{cl}[]{GPA Calculator Testing}
 \begin{lstlisting}[language=MyJava]
-import static GpaCalculator.gpa;
-
 class GpaCalculatorTesting {
 
   @Test
   void gpaTest() {
     Assertions.assertAll(
-      Assertions.assertEquals(4.0, gpa("A+")),
-      Assertions.assertEquals(4.0, gpa("A")),
-      Assertions.assertEquals(3.7, gpa("A-")),
-      Assertions.assertEquals(3.3, gpa("B+")),
-      Assertions.assertEquals(1.7, gpa("C-")),
-      Assertions.assertEquals(0.7, gpa("D+")),
-      Assertions.assertEquals(0.0, gpa("F+")),
-      Assertions.assertEquals(0.0, gpa("F")),
-      Assertions.assertEquals(0.0, gpa("F-"))
+      Assertions.assertEquals(4.0, GpaCalculator.gpa("A+")),
+      Assertions.assertEquals(3.7, GpaCalculator.gpa("A-")),
+      Assertions.assertEquals(0.0, GpaCalculator.gpa("F-"))
     );
   }
 }
@@ -104,7 +94,6 @@ class GpaCalculatorTesting {
 class GpaCalculator {
 
   /**
-   * ...
    * 
    * @param
    * @return
@@ -120,12 +109,9 @@ class GpaCalculator {
     else if (letter == 'C') { gpa = 2.0; } 
     else if (letter == 'D') { gpa = 1.0; } 
     else { gpa = 0.0; }
-
+    // Compute +/- if applicable.
     if (letter != 'A' && letter != 'F') { gpa = plus ? gpa + 0.3 : gpa; }
-    
-    // Compute - if applicable.
     if (letter != 'F') { gpa = minus ? gpa - 0.3 : gpa; }
-
     return gpa;
   }
 }
@@ -134,7 +120,7 @@ class GpaCalculator {
 
 The latter two \ttt{if} statements, as we said, apply increments or decrements based on whether the grade is a \ttt{+} or a \ttt{-}. We use the not-equal-to operator, \ttt{!=}, to circumvent having to apply a negation on the outside, i.e., \ttt{!(letter == `A')}. The bodies of these cases, however, appear to be foreign, and indeed, we introduce the \textit{ternary operator}. Because \ttt{if} is a statement, there is no way to inline a conditional into an expression. The ternary operator is a fix to this problem. We read ${r = p\;?\;c\;:\;a}$ as follows: ``if $p$ is true, assign $c$ to $r$, otherwise assign $a$ to $r$.'' Inlining conditional expressions in this fashion reduces code clutter but should be used sparingly. We could write all \ttt{if} statements as ternary operations, but doing so would obfuscate our logic.
 
-Aside from the \ttt{if}/\ttt{else if}/\ttt{else} trio, plus the ternary operator, Java has the \ttt{switch}/\ttt{case} statements, which serve to help simplify case analysis problems. A \ttt{switch} statement receives an expression $e$ that resolves to some value $v$. Inside the \ttt{switch} exists \ttt{case} statements, corresponding to possible outcomes of $e$'s evaluation. For instance, if we wanted to write a method that determines the number of days there are in a given (non-leap year) month, we might be inclined to use several \ttt{if} statements, which is prone to errors. Let us see the answer to this problem using \ttt{switch} and \ttt{case} statements.
+Aside from the `\ttt{if}'/`\ttt{else if}'/`\ttt{else}' trio, plus the ternary operator, Java has the \ttt{switch}/\ttt{case} statements, which serve to help simplify case analysis problems. A \ttt{switch} statement receives an expression $e$ that resolves to some value $v$. Inside the \ttt{switch} exists \ttt{case} statements, corresponding to possible outcomes of $e$'s evaluation. For instance, if we wanted to write a method that determines the number of days there are in a given (non-leap year) month, we might be inclined to use several \ttt{if} statements, which is prone to errors. Let us see the answer to this problem using \ttt{switch} and \ttt{case} statements.
 
 \begin{cl}[]{Month to Days Tester}
 \begin{lstlisting}[language=MyJava]

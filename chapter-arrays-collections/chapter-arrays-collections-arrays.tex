@@ -5,7 +5,7 @@ Thus far all of our work has been with data available as it is received by a met
 Arrays store \textit{elements} and \textit{indices} of some type. An element is just a value in an array. The \textit{index} of an element is its location in the array. Indices of an array are indexed from zero, much like strings. Thus, the first element of an array is located at index zero, whereas the last element is located at the index $|A| - 1$, where $|A|$ denotes the number of elements, or \textit{cardinality}, of some array $A$.
 
 We store contiguous elements in arrays, all of the same type. This means that, if we declare an array of type \ttt{int}, we cannot store, say, a \ttt{String} in the array. We can declare an array variable using initializer lists:
-\par{\footnotesize
+\par{
 \begin{verbatim}
 int[] array = {5, 10, 15, 20, 100, 50};
 \end{verbatim}
@@ -13,13 +13,13 @@ int[] array = {5, 10, 15, 20, 100, 50};
 To retrieve the size of an array, i.e., the number of elements it stores, we access the \textit{.length} field of the array; e.g., \ttt{array.length}. For our example array, we see that its size is six. Moreover, \ttt{array[0]} stores \ttt{5}, and \ttt{array[5]} stores \ttt{50}. Accessing a negative index or beyond the bounds of the length results in an array index out of bounds exception. That is, accessing \ttt{array[-1]} or \ttt{array[6]} crashes the program. A common mistake is to access the index at the length of the array to retrieve the last element. Doing so represents a misunderstanding of how arrays compute indices of elements.
 
 To declare an array of some type $T$, called $A$, that stores $N$ elements, we write the following:
-\par{\footnotesize
+\par{
 \begin{verbatim}
 T[] A = new T[N];
 \end{verbatim}
 }
 We can store a value $e$ at some arbitrary index $i$ of array $A$, in addition to accessing the value at some index.
-\par{\footnotesize
+\par{
 \begin{verbatim}
 // Store "e" at index i of A.
 A[i] = e;
@@ -29,13 +29,13 @@ System.out.println(A[i]);
 }
 
 \example{Let us declare an array $A$ that stores the integers from zero to one hundred, in increments of ten.}
-\par{\footnotesize
+\par{
 \begin{verbatim}
 int[] A = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 \end{verbatim}
 }
 This is verbose and requires us to explicitly specify each individual constant. A better solution is to initialize the array to a size and populate its elements using a loop.
-\par{\footnotesize
+\par{
 \begin{verbatim}
 final int SIZE = 11;
 int[] A = new int[SIZE];
@@ -43,7 +43,7 @@ for (int i = 0; i < A.length; i++) { A[i] = i * 10; }
 \end{verbatim}
 }
 We use $i$ to iterate over the possible indices of our array. Before we explained that $i$ is used out of standard convention, but we now say that $i$, in general, stands for either ``iteration'' or ``index''. We assign, to $A$, the value of $i$ multiplied by ten. We can convert the array to a \ttt{String} using a utility method from the \ttt{Arrays} class (note the plural!); a ``string-ified'' array separates each element by commas and surrounds them with braces.
-\par{\footnotesize
+\par{
 \begin{verbatim}
 String s1 = Arrays.toString(A);
 s1 => {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
@@ -104,15 +104,12 @@ class SumOfDoubleArray {
 
   /**
    * Computes the sum of the values in a double array.
-   *
    * @param double [] array of double values.
    * @return sum of those values.
    */
   static double sumOfDoubles(double[] arr) {
     double sum = 0;
-    for (int i = 0; i < arr.length; i++) {
-      sum += arr[i];
-    }
+    for (int i = 0; i < arr.length; i++) { sum += arr[i]; }
     return sum;
   }
 }
@@ -182,12 +179,11 @@ Java arrays are rather primitive compared to other more-complex data structures.
 
 \example{Suppose we want to write a method that returns the index of an element $e$ of an array of \ttt{String} values $S$. Doing so is straightforward: check each element, one by one, until we find the desired element, or return $-1$. Note the similarity to the \ttt{indexOf} method, which is part of the \ttt{String} class. To gain practice using both recursion and iteration, we will write three versions of this method: one using standard recursion, the second using tail recursion, and the third using a loop. Our standard recursive method will recurse on the length of the array minus one until it is a negative number. The tail recursive method is almost identical to the former, with the exception that upon finding the element, we return the index itself rather than relying on the recursion to unwind. The tests for these two are both trivial to design.}
 
-\begin{cl}[ArrayFinderTester.java]{Tests for the Recursive \ttt{indexOf} Method}
+\begin{cl}[ArrayFinderTester.java]{Standard Recursive \ttt{indexOf} Method Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 import static ArrayFinder.indexOf;
-import static ArrayFinder.indexOfTR;
 
 class ArrayFinderTester {
 
@@ -201,6 +197,17 @@ class ArrayFinderTester {
       () -> assertEquals(-1, indexOf(arrS, "ahoy"))
     );
   }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[ArrayFinderTailRecursiveTester.java]{Tail Recursive \ttt{indexOf} Method Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static ArrayFinder.indexOfTR;
+
+class ArrayFinderTailRecursiveTester {
 
   @Test
   void arrayFinderTailRecursiveTest() {
@@ -221,6 +228,7 @@ Funnily enough, the standard recursive solution uses an accumulator like its tai
 \begin{cl}[ArrayFinder.java]{Searches an Array using Standard Recursion}
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
+
   static String indexOf(String[] arrS, String k) {
     return indexOf(arrS, k, 0);
   }
@@ -237,6 +245,7 @@ class ArrayFinder {
 \begin{cl}[ArrayFinder.java]{Searches an Array using Tail Recursion}
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
+
   static String indexOfTR(String[] arrS, String k) {
     return indexOf(arrS, k, 0);
   }
@@ -255,10 +264,13 @@ In converting the tail recursive solution to use iteration, we will make use of 
 \begin{cl}[ArrayFinder.java]{Searches an Array using a \ttt{while} Loop}
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
+
   static String indexOfLoop(String[] arrS, String k) {
     int i = 0;
     while (!(i >= arrS.length)) {
-      if (arrS[i].equals(k)) { return i; }
+      if (arrS[i].equals(k)) { 
+        return i; 
+      }
     }
     return -1;
   }
@@ -271,9 +283,12 @@ Of course, the conventional solution to this problem, especially since we know t
 \begin{cl}[ArrayFinder.java]{Searches an Array using a \ttt{for} Loop}
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
+  
   static String indexOfLoop(String[] arrS, String k) {
     for (int i = 0; i < arrS.length; i++) {
-      if (arrS[i].equals(k)) { return i; }
+      if (arrS[i].equals(k)) { 
+        return i; 
+      }
     }
     return -1;
   }
@@ -340,7 +355,7 @@ class Calculator {
 \example{Arrays can be of arbitrary dimension and are not restricted to only one. In this problem we will make use of a two-dimensional array, which might be thought of as a matrix or a grid. We will write a method that returns the sum of the elements of a two-dimensional array of integers. Traversing over an $n$-dimensional array generally involves nested loops. The order in which we traverse over the array can be significant. For example, the following code uses \textit{row-major} ordering, since we iterate over the rows first, and then the columns, meaning that we visit the elements in the order $A_{0,0}, A_{0,1}, A_{0,2}, ..., A_{1,0}, A_{1,1}, A_{1,2}, A_{2,0}, A_{2,1}, A_{2,2}$. Conversely, \textit{column-major} ordering would visit the elements in the order $A_{0,0}, A_{1,0}, A_{2,0}, ..., A_{0,1}, A_{1,1}, A_{2,1}, A_{0,2}, A_{1,2}, A_{2,2}$.}
 
 Multi-dimensional arrays are nothing more than arrays of arrays. Thus, as an example, we can declare a $3 \times 4$ two-dimensional array of integers (with three rows and four columns) as follows:
-\par{\footnotesize
+\par{
 \begin{verbatim}
 int[][] A = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
 \end{verbatim}

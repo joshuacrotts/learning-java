@@ -11,7 +11,7 @@
 \end{enumerate}
 
 \exercise{2}{chapter-arrays-collections}{Write a method that receives an \ttt{int[]} and returns an \ttt{int[]} that corresponds to the accumulated sum between each integer. We present some examples below.}
-\par{\footnotesize
+\par{
 \begin{verbatim}
 accSum({1, 7, 2, 9})                => {1, 8, 10, 19}
 accSum({1, 3, 3, 4, 5, 5, 6, 6, 2}) => {1, 4, 7, 11, 16, 21, 27, 33, 35}
@@ -28,7 +28,7 @@ accSum({5, 5, 5, 5, 5, 5, 5, 1, 5}) => {5, 10, 15, 20, 25, 30, 35, 36, 41}
         \item Otherwise, insert \ttt{"i"}, where \ttt{i} is the current number.
     \end{itemize}
 
-    \par{\footnotesize
+    \par{
 \begin{verbatim}
 fizzBuzz(1, 12)  => {"1", "2", "Fizz", "4", "Buzz",
                      "Fizz", "7", "8", "Fizz", "Buzz",
@@ -38,7 +38,7 @@ fizzBuzz(15, 18) => {"FizzBuzz", "16", "17", "Fizz"}
 }
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{double sumYucky(ArrayList<Integer> vals)} method that returns the average of the numbers in the list. Though, the number $9$ should not be counted towards the average, nor should the following number, should one exist.}
-\par{\footnotesize
+\par{
 \begin{verbatim}
 sumYucky({8, 7, 11, 9, 12, 10} => 9.0
 sumYucky({120, 99, 9}          => 109.5
@@ -48,7 +48,7 @@ sumYucky({})                   => 0.0
 }
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] countEvenOdds(int[] vals)} method that returns a tuple (an array of two values) where index zero stores the amount of even values and index one stores the amount of odd values.}
-\par{\footnotesize
+\par{
 \begin{verbatim}
 countEvenOdds({11, 9, 2, 3, 7, 10, 12, 114}) => {4, 4}
 countEvenOdds({11, 13, 15, 17})              => {0, 4}
@@ -67,7 +67,7 @@ countEvenOdds({11, 13, 15, 17})              => {0, 4}
 
 \noindent can be represented as the two-dimensional array
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 \end{verbatim}
@@ -115,7 +115,7 @@ To rotate a matrix, take its transposition, then reverse each row. You may assum
 \end{itemize}
     
 This method is harder than it may appear at first glance, so write plenty of tests!
-\par{\footnotesize
+\par{
 \begin{verbatim}
 shift({11, 12, 13, 14}, -1)          => {12, 13, 14, 11}
 shift({120, 120, 140, 140}, 2)       => {140, 140, 120, 120}
@@ -129,7 +129,7 @@ shift({120, 80, 70, 50, 40, 20}, -3) => {50, 40, 20, 120, 80, 70}
 
 Joe the mountain climber has come across a large mountain range. He wants to climb only the tallest mountains in the range. Design the \ttt{peakFinder} method that returns an array $H'$ of all the peaks in an \ttt{int[]} of mountain heights $H$. A peak $p$ is defined as an element of $h$ at index $i$ such that $p[i - 1] < p[i]$ and $p[i] > p[i + 1]$. If $i = 0$ or $i = |H| - 1$, Joe will not climb $p[i]$. Joe doesn't want to climb a mountain of the same height more than once, so you should not add any peaks that have already been added to $H'$. We present some test cases below. Hint: reuse the linear search algorithm from problem 1, except switch the \ttt{String} parameter for integers.
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 peakFinder({9, 13, 7, 2, 8})                        => {13}
 peakFinder({8, 7, 8, 7, 8, 7, 8, 7})                => {8}
@@ -146,7 +146,7 @@ peakFinder({1, 2, 3, 2, 1})                         => {3}
 
 \exercise{1}{chapter-arrays-collections}{A village has members where each has a partner. These members are grouped in pairs inside an \ttt{ArrayList<Integer>} where each pair of indices represents a relationship of the village. I.e., \ttt{A.get($2i$)} and \ttt{A.get($2i + 1$)} are in a relationship. A couple is considered the wisest if they have the highest combined age. Write the \ttt{wisest} method that, when given an \ttt{ArrayList<Integer>} $A$, return a new \ttt{ArrayList<Integer>} containing the ages of the wisest pair. If there is a tie, return the pair that has the highest age overall. The order is not significant. We present a few test cases below. You can assume that there will always be an even number of village members.}
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 wisest({31, 42, 43, 35, 21, 27, 24, 44} => {43, 35} or {35, 43}
 wisest({47, 51, 52, 48, 33, 67, 45, 35} => {33, 67} or {67, 33}
@@ -157,7 +157,7 @@ wisest({47, 51, 52, 48, 33, 67, 45, 35} => {33, 67} or {67, 33}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{wordCount} method that, when given a \ttt{String} $s$, counts the number of words in the list. Store the results in a \ttt{HashMap<String, Integer>}. Assume that $s$ is not cleaned. That is, you should first remove all punctuation (periods, commas, exclamation points, question marks, semi-colons, dashes, hashes, ampersands, asterisks, and parentheses) from $s$, producing a new string $s'$. Then, split the string based on spaces (remember \ttt{tokenize}?), and produce a map of the words to their respective counts. Do not factor case into your total; i.e., \ttt{"fAcToR"} and \ttt{"factor"} count as the same word. The ordering of the returned map is not significant.}
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 String s = "Hello world, the world is healthy, is 
             it not? I certainly agree that the world 
@@ -171,7 +171,7 @@ wordCount(s) => [{"hello", 1}, {"world", 3}, {"the", 2}
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{largeToSmall} method that, when given a \ttt{HashMap<String, Integer>} $M$, returns a \ttt{LinkedHashSet} of \ttt{String} values where the words are inserted into the set in order of decreasing count. Words that have the same count do not need to be inserted in any particular order. E.g., \ttt{"is"} may come before \ttt{"world"}. You cannot sort $M$. Hint: create an array of size $c$ (where $c$ is the highest word count) where each element is a \ttt{LinkedHashSet<String>}. For every element $e$ in $M$, add $e$ to the set at index $M[i]$, where $i$ is the count of $e$ in $M$. Then, append these sets in reverse order according to their index. We provide some pseudocode below.}
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 largeToSmall(M):
   // |M| is M.size().
@@ -189,7 +189,7 @@ largeToSmall(M):
 \end{verbatim}
 }
     
-\par{\footnotesize
+\par{
 \begin{verbatim}
 largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy", 
                                "hello", "it", "i", "certainly", 
@@ -211,7 +211,7 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{postfixEvaluator} method that, when given an \ttt{ArrayList<String>} of binary operators and numeric operands, returns the result of evaluating the postfix-notation expression. You will need to write a few helper methods to solve this problem, and it is best to break it down into steps. First, write a method that determines if a given string is one of the four binary operators: \ttt{"+"}, \ttt{"-"}, \ttt{"*"}, or \ttt{"/"}. You may assume that any inputs that are not binary operators are operands, i.e., numbers. Then, write a method that applies a given binary operator to a list of operands, i.e., an \ttt{ArrayList<Double>}.}
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 postfixEvaluator({"5", "2", "*", "5", "+"}) => 17
 postfixEvaluator({"1", "2", "3", "4", "+"}) => 10
@@ -220,7 +220,7 @@ postfixEvaluator({"1", "2", "3", "4", "+"}) => 10
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{substitute} method that, when given a \ttt{String} $\mathit{exp}$ and an environment $\mathit{env}$ \ttt{HashMap<String, Integer>}, substitutes each occurrence of an ``identifier'' for its value counterpart from the map.}
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 substitute("f(x) = 3 * a + b", {<"a" : 10>, <"b" : 13>})
            => "f(x) = 3 * 10 + 13"
@@ -231,7 +231,7 @@ substitute("g(h, f(x)) = y + x", {<"q" : 200>})
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{unifiesAll} method, which receives a \ttt{HashMap<String, Integer>} $M$ of unification assignments and a list of goals \ttt{ArrayList<LinkedList<String>>}} $\mathcal{G}$. Each goal $G \in \mathcal{G}$ is a tuple represented as a \ttt{LinkedList}; goals consist of two values $x, y$, and if it is possible for these to be the same value, then we say we can unify $x$ with $y$. Any successful unifications that occur with variables not present in $M$ should be added to $M$. We present some examples below (assume all values are strings; we omit the quotes out of conciseness). Hint: you might want to write an \ttt{isVar} predicate, which determines if a value is a variable or not, i.e., a value that does not start with a number.
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 M1 = {<x : 5>, <y : 10>, <z : 15>, <w : 5>}
 G1  = {{x, x}, {10, 10}, {z, 15}, {x, w}}
@@ -255,7 +255,7 @@ unifiesAll(M4, G4) => false
 
 \exercise{2}{chapter-arrays-collections}{We consider a \textit{key string} to be the string obtained after alphabetizing the letters of a string. For example, the string \ttt{"deloop"} is a key string of the strings \ttt{"poodle"} and \ttt{"looped"}. Write the \ttt{static HashMap<String, List<String>> keyStringGroups(List<String> ls)} method, which maps all key strings to the strings in $\textit{ls}$ using the above criteria}
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 ls = ["ant", "introduces", "poodle", "tan", "looped", "discounter", 
       "nastier", "polled", "retains", "retinas", "reductions"]

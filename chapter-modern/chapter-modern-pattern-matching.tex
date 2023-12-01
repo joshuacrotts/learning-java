@@ -90,7 +90,7 @@ Notice that we have to use the wrapper class, since Java permits only special ty
 
 Pattern matching is not restricted to switch-case expressions. We can also use pattern matching in cases where we check the instance of an object, namely in the \ttt{equals} method. As an example, traditional \ttt{equals} methods look like the following:
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 @Override
 public boolean equals(Object o) {
@@ -107,7 +107,7 @@ public boolean equals(Object o) {
 
 The need to cast the object to the type of the class on its own separate line is tedious. Pattern matching allows us to write the \ttt{equals} method in a more concise manner by providing an identifier to the pattern that is bound to the object being tested. We can wrap this in either an \ttt{if} statement or as a logical AND, because the pattern matching expression returns a boolean and fails to match if the object is not an instance of the stated class.
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 @Override
 public boolean equals(Object o) {

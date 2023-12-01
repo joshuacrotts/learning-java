@@ -14,18 +14,13 @@ In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List
 \begin{lstlisting}[language=MyJava]
 interface IShape {
 
-  /**
-    * Returns the area of the shape.
-    */
   double area();
 
-  /**
-    * Returns the perimeter of the shape.
-    */
   double perimeter();
 }
 \end{lstlisting}
 \end{cl}
+
 We cannot write any tests for the \ttt{IShape} interface directly, since it is impossible to instantiate an interface. We can, however, write two different classes that implement \ttt{IShape}, and test those. To demonstrate, we will write and test the \ttt{Pentagon} and \ttt{Octagon} classes whose constructors receive (and then store as instance variables) the side length of the shape. Fortunately, the definitions thereof are trivial because they are nothing more than regurgitations of the mathematical formulae. Notice that, when testing, we initialize the object instance to be of type \ttt{IShape}, not \ttt{Pentagon} or \ttt{Octagon}. This is because we want to be able to categorize these classes as types of \ttt{IShape} instances rather than solely instances of \ttt{Pentagon} or \ttt{Octagon} respectively. This is a common practice in object-oriented programming, and it is called \textit{polymorphism}. Polymorphism is the ability of an object to take on many forms. In this case, the \ttt{IShape} interface is the form that the \ttt{Pentagon} and \ttt{Octagon} classes use to take on the form of a shape as we described.
 
 \begin{cl}[IShapeTester.java]{Shape Tester}
@@ -177,7 +172,7 @@ class ISuitTester {
 
 One extra piece of information that we should share is that we can instantiate objects in different ways. To demonstrate why this matters, suppose we initialize an object $s_1$ to type \ttt{ISuit}, but instantiate it as type \ttt{Diamond}. Then, we initialize another object $s_2$ to type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. We would expect that $s_1$ and $s_2$ are equivalent, but this is not the case. Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. Because $s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. Should we want to be able to invoke \ttt{diamondCount} on $s_1$, we need to cast $s_1$ to type \ttt{Diamond}. This is called \textit{downcasting}, and it is a common practice in object-oriented programming.
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 ISuit s1 = new Diamond();
 s1.diamondCount();             // Compile-time error!
@@ -385,16 +380,24 @@ class IntegerBox implements IBox<Integer> {
   
   private Integer value;
   
-  private IntegerBox(Integer value) { this.value = value; }
+  private IntegerBox(Integer value) { 
+    this.value = value; 
+  }
   
   @Override
-  public static IBox<Integer> box(Integer value) { return new IntegerBox(value); }
+  public static IBox<Integer> box(Integer value) { 
+    return new IntegerBox(value); 
+  }
   
   @Override
-  public Integer get() { return this.value; }
+  public Integer get() { 
+    return this.value; 
+  }
   
   @Override
-  public void set(Integer value) { this.value = value; }
+  public void set(Integer value) { 
+    this.value = value; 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -486,7 +489,7 @@ class FunctionMap {
 \end{lstlisting}
 \end{cl}
 
-\example{Java 8 introduced the \ttt{Function} interface, so we do not have to design our own version. Using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can make use of method referencing via the \ttt{::} operator. Let's rewrite the \ttt{addOne} example doing so. We will also show off the fact that Java will auto-box and unbox an integer primitive into its \ttt{Integer} counterpart, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives instead, which are easier to work with. Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, because Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.}\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}
+\example{Java 8 introduced the \ttt{Function} interface, so we do not have to design our own version. Using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can make use of method referencing via the \ttt{::} operator. Let's rewrite the \ttt{addOne} example doing so. We will also show off the fact that Java will auto-box and unbox an integer primitive into its \ttt{Integer} counterpart, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives instead, which are easier to work with. Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, because Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}}
 
 \begin{cl}[FunctionMapTester.java]{Map Function Tester}
 \begin{lstlisting}[language=MyJava]
@@ -509,6 +512,8 @@ class FunctionMapTester {
     );
   }
 }
+\end{lstlisting}
+\end{cl}
 
 \example{Now that we have interfaces, we can write a very simple expression tree interpreter! What do we mean by this? Consider the arithmatic expression $5 + (3 + 4)$. According to the standard order-of-operations, we evaluate the parenthesized sub-expressions first, then reduce outer expressions. So, in our case, we add $3$ and $4$ to get $7$, followed by an addition of $5$. We can represent this idea as an evaluation tree, where we travel from bottom-up, evaluating sub-expressions as they are encountered. How does this relate to interfaces? Suppose we create the \ttt{IExpr} interface, which contains a single method: \ttt{int value}, which returns the value of an expression.}
 
@@ -550,9 +555,13 @@ class Lit implements IExpr {
 
   private final int N;
 
-  public Lit(int n) { this.N = n; }
+  public Lit(int n) { 
+    this.N = n; 
+  }
 
-  public int value() { return this.N; }
+  public int value() { 
+    return this.N; 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -570,7 +579,9 @@ class AddTester {
   void testAdd() {
     assertAll(
       () -> assertEquals(12, new Add(new Lit(5), new Add(new Lit(3), new Lit(4)))),
-      () -> assertEquals(42, new Add(new Lit(41), new Lit(1)))
+      () -> assertEquals(42, new Add(new Lit(41), new Lit(1))),
+      () -> assertEquals(101, new Add(new Add(new Lit(123), new Lit(-43)),
+                                      new Add(new Lit(2), new Lit(19))))
     );
   }
 }
@@ -603,7 +614,7 @@ First, remember the structure of a linked list: they are comprised of nodes, whi
 
 We need a generic class that stores references to the first and last elements of the list. Let's create the \ttt{DoublyLinkedList} class to receive a type parameter \ttt{T} and store the first and last nodes as instance variables. It's important to realize that, whoever uses this class will not be exposed to the innards of the class, i.e., how the links are established/constructed/altered/removed. We wish to preserve the idea of encapsulation, after all.
 
-We run into an eminent problem when declaring the types of the instance variables: what should they be? We need to design a class that encapsulates the value of the node, and holds references to its previous and successor nodes. Some programmers may consider designing a separate \ttt{.java} file for this class, but remember the encapsulation methodology: nobody outside of this class should even be aware that nodes exist in the first place. So, we can create a private and static \ttt{Node<T>} class, which is local to the definition of \ttt{DoublyLinkedList}. A privatized class can only ever be static, because it does not make sense to say that a private class definition belongs to an arbitrary instance of the class in which it resides.
+We run into an eminent problem when declaring the types of the instance variables: what should they be? We need to design a class that encapsulates the value of the node, and holds references to its previous and successor nodes. Some programmers may consider designing a separate \ttt{.java} file for this class, but remember the encapsulation methodology: nobody outside of this class should even be aware that nodes exist in the first place. So, we can create a private and static \ttt{Node<T>} class, which is local to the definition of \ttt{DoublyLinkedList}. A privatized class can only ever be static, because it does not make sense to say that a private class definition belongs to an arbitrary instance of the class in which it resides. We also override the \ttt{toString} to output the underlying stringified data of the node.
 
 \begin{cl}[DoublyLinkedList.java]{Doubly-Linked List Class}
 \begin{lstlisting}[language=MyJava]
@@ -615,7 +626,14 @@ class DoublyLinkedList<T> {
     private Node<T> prev;
     private Node<T> next;
 
-    private Node(T value) { this.value = value; }
+    private Node(T value) { 
+      this.value = value; 
+    }
+
+    @Override
+    public String toString() {
+      return this.value.toString();
+    }
   }
 
   private Node<T> head;
@@ -630,7 +648,7 @@ class DoublyLinkedList<T> {
 
 Notice that, in the constructor of \ttt{DoublyLinkedList}, we assign the first and last references to each other, which both point to \ttt{null}. This is because, when the list is empty, there is no first or last element.
 
-To test the methods that we are about to design, we will override the \ttt{toString} method to print the elements inside brackets, separated by commas and a space. To traverse over the list, however, we should use a custom-defined \ttt{Iterator}, which will be its own localized class definition. We have seen iterators before, but until now we have not implemented one on our own. The idea is, fortunately, very simple: we keep track of the current node, and upon calling \ttt{hasNext}, we return whether or not the node is \ttt{null}. Similarly, invoking \ttt{next} returns the value of the stored node and moves the pointer forward via the ``next'' instance. Finally, we create the \ttt{.iterator} method, which returns an instance of the iterator superclass. We do not want to expose how this particular iterator works, because the caller does not need to be aware of this logic; they are only concerned with iterating over the structure, in this case, a doubly-linked list.
+To test the methods that we are about to design, we will override the \ttt{toString} method (of \ttt{DoublyLinkedList}) to print the elements inside brackets, separated by commas and a space. To traverse over the list, however, we should use a custom-defined \ttt{Iterator}, which will be its own localized class definition. We have seen iterators before, but until now we have not implemented one on our own. The idea is, fortunately, very simple: we keep track of the current node, and upon calling \ttt{hasNext}, we return whether or not the node is \ttt{null}. Similarly, invoking \ttt{next} returns the value of the stored node and moves the pointer forward via the ``next'' instance. Finally, we create the \ttt{.iterator} method, which returns an instance of the iterator superclass. We do not want to expose how this particular iterator works, because the caller does not need to be aware of this logic; they are only concerned with iterating over the structure, in this case, a doubly-linked list.
 
 \begin{cl}[DoublyLinkedList.java]{Doubly-Linked List Iterator}
 \begin{lstlisting}[language=MyJava]
@@ -684,7 +702,11 @@ class DoublyLinkedListTester {
       () -> list.add(1),
       () -> list.add(2),
       () -> list.add(3),
-      () -> assertEquals("[1, 2, 3]", list.toString())
+      () -> assertEquals("[1, 2, 3]", list.toString()),
+      () -> list.add(4),
+      () -> list.add(1),
+      () -> list.add(5),
+      () -> assertEquals("[1, 2, 3, 4, 1, 5]", list.toString())
     );
   }
 }
@@ -703,6 +725,7 @@ class DoublyLinkedList<T> {
   */
   public void add(T data) {
     Node<T> newNode = new Node<>(data);
+
     // If the list is empty, make the new node the first and last node.
     if (this.first == null) {
       this.first = newNode;
@@ -737,7 +760,14 @@ class DoublyLinkedListTester {
       () -> assertEquals(Optional.of(50), list.get(0)),
       () -> assertEquals(Optional.of(25), list.get(1)),
       () -> assertEquals(Optional.of(100), list.get(2)),
-      () -> assertEquals(Optional.empty(), list.get(3))
+      () -> assertEquals(Optional.empty(), list.get(3)),
+      () -> list.add(1000),
+      () -> list.add(10000),
+      () -> list.add(50),
+      () -> assertEquals(Optional.of(1000), list.get(3)),
+      () -> assertEquals(Optional.of(10000), list.get(4)),
+      () -> assertEquals(Optional.of(50), list.get(5)),
+      () -> assertEquals(Optional.empty(), list.get(6))
     );
   }
 }

@@ -2,7 +2,7 @@
 
 \subsection*{Standard Recursion}
 You may or may not have seen recursion before, but in theory the concept is quite simple: a method $f$ is \textit{recursive} if, somewhere in the definition of \textit{f}, it invokes itself. For example, in the following code segment, we define $f$ to be a method of arbitrary arguments that calls itself from its body. 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 static int f(...) {
     ...
@@ -181,7 +181,7 @@ As we stated, calling a method pushes its activation record to the method call s
 \begin{figure}
 \begin{center}
 \begin{tikzpicture}[
-  stack/.style={draw, minimum width=3cm, minimum height=0.6cm},
+  stack/.style={draw, minimum width=3cm, minimum height=0.2cm},
 ]
 
 % Draw the stack frames
@@ -193,11 +193,15 @@ As we stated, calling a method pushes its activation record to the method call s
 \node[stack, above=0.0cm of frame5] (frame6) {$\cdots$};
 \node[stack, above=0.0cm of frame6] (frame7) {$\cdots$};
 \node[stack, above=0.0cm of frame7] (frame8) {$\cdots$};
+\node[stack, above=0.0cm of frame8] (frame9) {$\cdots$};
+% \node[stack, above=0.0cm of frame9] (frame10) {$\cdots$};
+% \node[stack, above=0.0cm of frame10] (frame11) {$\cdots$};
+% \node[stack, above=0.0cm of frame11] (frame12) {$\cdots$};
+% \node[stack, above=0.0cm of frame12] (frame13) {$\cdots$};
 \end{tikzpicture}
 \end{center}
 \caption{Pushing of \ttt{add} Activation Records to the Call Stack}
 \end{figure}
-
 A method $f$ is tail-recursive if all recursive calls are in \textit{tail position}. At first glance, this definition appears circular. But, consider this piece: an expression is in tail position if it is in the last-to-perform operation before a method return. When relating this to recursive methods, it implies that any invocation of $f$ occurs as the last-evaluated operation prior to a return from the method. Both \ttt{add} and \ttt{fact} were non-tail recursive because each have extra work to do after the recursive calls step; that work being an unwinding of the recursive calls. Tail recursive functions do not need to unwind anything because they (for the most part) accumulate the result to an overall problem in an argument to the tail recursive method.
 
 \example{We want to compute the factorial of some number using tail recursion. Let us design a template for this method. We know that the method must be called where the call is in tail position, so we can add this as a preliminary step. Up next we can copy the logic of the previous standard recursive algorithm with the added exception that we do not return one from the base case, but instead return an accumulated result. The goal is to construct, or generate, the factorial of some $n$ as an argument to the method.}
@@ -251,7 +255,7 @@ Because we have the result, its value is simply returned from the method. We do 
 \node[stack, above=0.0cm of frame2c] (frame3c) {\ttt{$\cdots$}};
 
 %2
-\node[stack, below=3cm of frame1] (frame1d) {\ttt{factTR(2, 60)}};
+\node[stack, below=2cm of frame1] (frame1d) {\ttt{factTR(2, 60)}};
 \node[stack, above=0.0cm of frame1d] (frame2d) {\ttt{$\cdots$}};
 \node[stack, above=0.0cm of frame2d] (frame3d) {\ttt{$\cdots$}};
 
@@ -268,7 +272,9 @@ Because we have the result, its value is simply returned from the method. We do 
 % Arrow between the first and second stacks
 \draw[->,thick] (frame1.east) -- (frame1b.west);
 \draw[->,thick] (frame1b.east) -- (frame1c.west);
-\draw[->,thick] (frame1c.south) -- (frame3d.north);
+\draw[->, thick, rounded corners] 
+    (frame1c.south) |- ($ (frame1c)!0.5!(frame3d) $)
+                      -| (frame3d.north);
 \draw[->,thick] (frame1d.east) -- (frame1e.west);
 \draw[->,thick] (frame1e.east) -- (frame1f.west);
 

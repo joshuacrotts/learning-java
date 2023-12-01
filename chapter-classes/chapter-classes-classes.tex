@@ -7,7 +7,7 @@ To create a class, we use the \ttt{class} keyword, followed by the name of the c
 
 Classes can \textit{inherit} methods from other classes, a relationship called the superclass/subclass hierarchy. For now we will only mention that the \ttt{Object} class is the ``ultimate'' superclass, in which all classes are implicit subclasses. The \ttt{Object} class, in particular, has two methods that we will override in almost every class that we write: \ttt{equals}, for comparing two classes for equality, and \ttt{toString}, a means of ``stringifying'' an object. In subsequent chapters we will dive more into inheritance and hierarchies.
 
-\example{Let's create a class called \ttt{Point}, which stores two \ttt{int} values representing a Cartesian coordinate $x$ and $y$. By ``store'', we mean to say that $x$ and $y$ are \textit{instance variables}\index{instance variables} of the \ttt{Point} class, also sometimes called \textit{attributes} or \textit{fields}. Instance variables denote the values associated with an arbitrary \textit{instance} of that object (an instance may also be defined as an entity). For example, if we have a \ttt{Point} object \ttt{p}, then \ttt{p} has two instance variables, \ttt{x} and \ttt{y}, which are the $x$ and $y$ coordinates of \ttt{p}. Then, if we declare another point \ttt{p2}, \ttt{p2} will have its own instance variables \ttt{x} and \ttt{y}, which are independent of \ttt{p}'s instance variables. In almost all circumstances, instance variables of a class should be marked as \ttt{private}. Instance variables that are \ttt{private} denotes that direct access to their values is granted only within the class definition. Lastly, for the time being, instance variables are immutable and cannot change. Thus, every instance variable will use the \ttt{final} keyword in its declaration, alongside the \ttt{UPPER\_CASE} naming convention.}
+\example{Let's create a class called \ttt{Point}, which stores two \ttt{int} values representing a Cartesian coordinate $x$ and $y$. By ``store'', we mean to say that $x$ and $y$ are \textit{instance variables}\index{instance variables} of the \ttt{Point} class, also sometimes called \textit{attributes}, \textit{fields}, or \textit{members} (in Java, we conventionally use the ``instance variables'' term). Instance variables denote the values associated with an arbitrary \textit{instance} of that object (an instance may also be defined as an entity). For example, if we have a \ttt{Point} object \ttt{p}, then \ttt{p} has two instance variables, \ttt{x} and \ttt{y}, which are the $x$ and $y$ coordinates of \ttt{p}. Then, if we declare another point \ttt{p2}, \ttt{p2} will have its own instance variables \ttt{x} and \ttt{y}, which are independent of \ttt{p}'s instance variables. In almost all circumstances, instance variables of a class should be marked as \ttt{private}. Instance variables that are \ttt{private} denotes that direct access to their values is granted only within the class definition. Lastly, for the time being, instance variables are immutable and cannot change. Thus, every instance variable will use the \ttt{final} keyword in its declaration, alongside the \ttt{UPPER\_CASE} naming convention.}
 
 Speaking of \textit{access modifiers}, we should mention the four that Java provides, even though we make prolific use of only three:
 
@@ -17,7 +17,7 @@ Speaking of \textit{access modifiers}, we should mention the four that Java prov
   \item A class, variable, or method declared without an access modifier, also called the \textit{default access modifier}, behaves similarly to \ttt{public}, only that it is accessible only to/by classes in the same package. Packages are a means of organizing classes into groups, similar to directories.
 \end{itemize}
 
-The fourth and final access modifier is \ttt{protected}, which is similar to the default access modifier, but allows subclasses to access the variable or method.\footnote{If you have not heard of inheritance/subclasses yet, do not worry, as we will cover this in the next chapter; we explain it here to describe the relevant difference between the access modifiers.} We will not use \ttt{protected} in this text, but it is worth mentioning.
+The fourth and final access modifier is \ttt{protected}, which is similar to the default access modifier, but allows subclasses to access the variable or method.\footnote{If you have not heard of inheritance/subclasses yet, do not worry, as we will cover this in the next chapter; we explain it here to describe the relevant difference between the access modifiers.} We will not use \ttt{protected} in this text, but it is worth mentioning. As a corollary of sorts, any time that \ttt{protected} \textit{can} be used, there is almost certainly a better design alternative, whether that means marking the variable/method as \ttt{private} or \ttt{public}, we are of the opinion that \ttt{protected} has few benefits.
 
 \begin{cl}[Point.java]{\ttt{Point} Class Skeleton}
 \begin{lstlisting}[language=MyJava]
@@ -29,7 +29,7 @@ class Point {
 \end{lstlisting}
 \end{cl}
 
-We now want a way to create an instance of a \ttt{Point}. We declare instances of objects using the \ttt{new} keyword followed by the class constructor. \textit{Constructors} are special methods that are called when we wish to create a new object of that class. Our \ttt{Point} class constructor can receive parameters, which we can use to initialize the relevant $x$ and $y$ instance variables. So, let's declare the constructor for our \ttt{Point} class. Constructors, in general, should be \ttt{public}, as we will need to call them from outside the class definition. Constructors are also special in that they do not have a return type.\footnote{It is a bit of a misnomer to say that constructors do not have a return type. Indeed, they do have a return type, but it is the type of the class itself.} We create a constructor by specifying the class name alongside any desired parameters.
+We now want a way to create an instance of a \ttt{Point}. We declare instances of objects using the \ttt{new} keyword followed by the class constructor. \textit{Constructors} are special methods that are called when we wish to create a new object of that class. Our \ttt{Point} class constructor can receive parameters, which we can use to initialize the relevant $x$ and $y$ instance variables. So, let's declare the constructor for our \ttt{Point} class. Constructors, in general, should be \ttt{public}, as we will need to call them from outside the class definition. Constructors are also special in that they do not have a return type, although phrasing it in this way leads to some confusion, because constructors have implicit return types. By implicit, we mean that we do not directly specify the return type, but Java knows that constructors are special, whose return types are of the class itself. We create a constructor by specifying the class name alongside any desired parameters.
 
 \begin{cl}[Point.java]{\ttt{Point} Class Constructor}
 \begin{lstlisting}[language=MyJava]
@@ -45,7 +45,7 @@ class Point {
 }
 \end{lstlisting}
 \end{cl}
-Remember that the purpose of the constructor is to initialize the class instance variables. So, unless we wish to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. In this case, we are assigning the value of the parameter \ttt{x} to the instance variable \ttt{x}.\footnote{Should we opt to not use \ttt{this}, then the parameter \ttt{x} would shadow the instance variable \ttt{x}, meaning that writing \ttt{x = x} would assign the parameter to itself!}. At last, we can create a \ttt{Point} object by calling the constructor. But wait, we have no way of accessing the instance variables of the \ttt{Point} object! We need to create \textit{accessor methods}\index{accessor methods} to retrieve the values of the instance variables. Accessor methods are \ttt{public} methods that return the value of an instance variable. 
+Remember that the purpose of the constructor is to initialize the class instance variables. So, unless we wish to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. Inside the constructor, we assign the value of the parameter \ttt{x} to the instance variable \ttt{x}. Should we opt to not use \ttt{this} on the left-hand variable identifier, then the parameter \ttt{x} would shadow the instance variable \ttt{x}, meaning that writing \ttt{x = x} assigns the parameter to itself. At last, we can create a \ttt{Point} object by calling the constructor, but wait, we have no way of accessing/referring to the instance variables of the \ttt{Point} object! We need to create \textit{accessor methods}\index{accessor methods} to retrieve the values of the instance variables. Accessor methods are \ttt{public} and should do exactly one thing: return the respective instance variable.
 
 \begin{cl}[Point.java]{Designing Accessor Methods}
 \begin{lstlisting}[language=MyJava]
@@ -72,7 +72,7 @@ Creating an instance of the \ttt{Point} class is identical to creating an instan
 
 Declaring, or initializing, an object refers to typing the class name followed by the variable name. For instance, the following code declares a \ttt{Point} object \ttt{p}.
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 Point p;
 \end{verbatim}
@@ -80,7 +80,7 @@ Point p;
 
 By default, $p$ now points to \ttt{null}, since we have not yet created an instance of the \ttt{Point} class. We can create an instance of the \ttt{Point} class by invoking its constructor, an action otherwise called \textit{object instantiation}. We use the \ttt{new} keyword and pass the desired $x$ and $y$ coordinates. 
 
-\par{\footnotesize
+\par{
 \begin{verbatim}
 Point p = new Point(3, 4);
 \end{verbatim}
@@ -255,11 +255,9 @@ class PointTester {
 import java.util.Random;
 
 class Point {
-  // ... previous code not shown.
 
   /**
    * Generates a random point with a maximum radius.
-   *
    * @param maxRadius the maximum radius.
    * @return a random point.
    */
@@ -295,6 +293,12 @@ class PointTester {
     assertEquals(2, Point.getCount());
     Point p3 = new Point(0, 0);
     assertEquals(3, Point.getCount());
+
+    // Even though we lose reference to p, the static varible still increments!
+    for (int i = 0; i < 10; i++) {
+      Point p = new Point();
+    }
+    assertEquals(13, Point.getCount());
   }
 }
 \end{lstlisting}
@@ -345,7 +349,7 @@ class Suit {
 \end{lstlisting}
 \end{cl}
 
-Testing the \ttt{Card} class is simple and straightforward; we only need to test one method, the \ttt{toString} method, since testing \ttt{getValue}, at this point, is superfluous. We could also test the \ttt{Suit} class, but we will not do so here.
+Testing the \ttt{Card} class is simple and straightforward; we only need to test one method, the \ttt{toString} method, since testing \ttt{getValue}, at this point, is superfluous. We could also test the \ttt{Suit} class, but we will not do so here, given that the only useful methods are to retrieve the instance variables and the iterator.
 
 \begin{cl}[CardTest.java]{Testing the \ttt{Card} Class}
 \begin{lstlisting}[language=MyJava]
@@ -377,9 +381,7 @@ class Card {
   public Card(Suit suit, int value) { this.SUIT = suit; this.VALUE = value; }
   
   @Override
-  public String toString() { 
-    return String.format("%d of %s", this.VALUE, this.SUIT); 
-  }
+  public String toString() { return String.format("%d of %s", this.VALUE, this.SUIT); }
 
   public int getValue() { return this.VALUE; } 
 }
@@ -388,7 +390,7 @@ class Card {
 
 In a standard fifty-two deck of cards, some are ``special'', e.g., the Jacks, Queens, Kings, and Ace cards. To simplify our design, these cards will be treated the same as a ``ten'' card, showing no syntactic nor semantic difference. Now that we have a class to represents cards, let's design the \ttt{Deck} class, which stores an \ttt{ArrayList<Card>} representing the current state of the deck. It also contains a static variable representing the maximum number of allowed cards. For our purposes, as we alluded to, this quantity is fifty-two. In the \ttt{Deck} constructor, we will call the \ttt{populateDeck} method, which adds four cards of the same value, but of each suit. So, to exemplify, this means that there are four cards whose value is three, where each is one of the four suits. We make use of the iterator from the \ttt{Suit} class to simplify our deck population. Only the \ttt{Deck} class needs to know how to populate an initial (empty) deck, so we privatize its implementation.
 
-To test a \ttt{Deck}, we can write a \ttt{drawCard} method, which retrieves the ``top-most'' card on the deck to see if it is in the correct order. According to our implementation of the iterator, the top-most cards should have values of ten and be of the same suit. From there, we can draw three more cards to ensure they are of values nine, eight, and seven of the same suit. The iterator places \ttt{DIAMOND} as the final suit, so this is what we will assume in our tester. It might also be beneficial to test the \ttt{isEmpty} method, which returns \ttt{true} if the deck is empty, and \ttt{false} otherwise. We can test this functionality by drawing all fifty-two cards from the deck and ensuring that the deck is empty afterwards. 
+To test a \ttt{Deck}, we can write a \ttt{drawCard} method, which retrieves the ``top-most'' card on the deck to see if it is in the correct order. According to our implementation of the iterator, the top-most cards should have values of ten and be of the same suit. From there, we can draw three more cards to ensure they are of values nine, eight, and seven of the same suit. The iterator places \ttt{DIAMOND} as the final suit, so this is what we will assume in our tester. It might also be beneficial to test the \ttt{isEmpty} method, which returns \ttt{true} if the deck is empty, and \ttt{false} otherwise. We can test this functionality by drawing all fifty-two cards from the deck and ensuring that the deck is empty afterwards. Note that we draw four tens because there are no "Kings", "Queens", or "Jacks" in the deck.
 
 \begin{cl}[DeckTest.java]{Testing the \ttt{Deck} Class}
 \begin{lstlisting}[language=MyJava]
@@ -401,14 +403,11 @@ class DeckTest {
   void testDeckDrawCard() {
     Deck d = new Deck();
     assertAll(
-      // We draw four tens because there are no "Kings", "Queens", or "Jacks".
       () -> assertEquals("10 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
       () -> assertEquals("10 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
       () -> assertEquals("10 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
       () -> assertEquals("10 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
       () -> assertEquals("9 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
-      () -> assertEquals("8 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
-      () -> assertEquals("7 of (*;$\diamondsuit$;*)", d.drawCard().toString())
     );
   }
 
@@ -428,6 +427,7 @@ class DeckTest {
 \begin{cl}[Deck.java]{\ttt{Deck} Class}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
+import java.util.Iterator;
 
 class Deck {
 
@@ -440,10 +440,11 @@ class Deck {
     this.populateDeck();
   }
 
-  /**
-  * Retrieves a card from the "top" of the deck.
+ /**
+  * Retrieves a card from the "top" of the deck. If the
+  * deck is empty, we return null.
   *
-  * @return card on top of the deck.
+  * @return the top-most card in the deck, or null if the deck is empty.
   */
   public Card drawCard() {
     return this.CARDS.isEmpty() ? null : this.CARDS.remove(this.CARDS.size() - 1);
@@ -452,23 +453,27 @@ class Deck {
   /**
    * Determines if the deck is empty.
    *
-   * @return true if the deck is empty, false otherwise.
+   * @return true if the deck contains no cards, and false otherwise.
    */
-  public boolean isEmpty() {
-    return this.CARDS.isEmpty();
+  public boolean isEmpty() { 
+    return this.CARDS.isEmpty(); 
   }
 
   /**
    * Instantiates the deck to contain all 52 cards.
+   * Note that the deck contains cards in-order by suit. There are 
+   * no face cards in the deck, i.e., no Jack, Queen, King, nor ace.
+   * All cards have a value between 1 and 10.
    */
   private void populateDeck() {
     // For every suit, create 13 cards, the last four of which all have
-    // a value of four.
+    // a value of ten.
     Iterator<Suit> it = Suit.iterator();
     while (it.hasNext()) {
       Suit s = it.next();
       for (int i = 1; i <= MAX_NUM_CARDS / Suit.NUM_SUITS; i++) {
-        this.CARDS.add(new Card(s, Math.min(10, i)));
+        Card c = new Card(s, Math.min(10, i));
+        this.CARDS.add(c);
       }
     }
   }
@@ -488,19 +493,25 @@ class Player {
 
   private final ArrayList<Card> HAND;
 
-  public Player() { this.HAND = new ArrayList<Card>(); }
+  public Player() { 
+    this.HAND = new ArrayList<Card>(); 
+  }
 
   /**
    * Adds a card to the player's hand.
    *
    * @param c card to add to the player's hand.
    */
-  public void addCard(Card c) { this.HAND.add(c); }
+  public void addCard(Card c) { 
+    this.HAND.add(c); 
+  }
 
   /**
    * Removes all cards from the player's hand.
    */
-  public void clearHand() { this.HAND.clear(); }
+  public void clearHand() { 
+    this.HAND.clear(); 
+  }
 
   /**
    * Determines the player's score.
@@ -508,7 +519,9 @@ class Player {
    * @return the player's score.
    */
   public int getScore() {
-    return this.HAND.stream().map(c -> c.getValue()).reduce(0, Integer::sum);
+    return this.HAND.stream()
+                    .map(c -> c.getValue())
+                    .reduce(0, Integer::sum);
   }
 
   @Override
@@ -521,6 +534,8 @@ class Player {
 \end{cl}
 
 Using the capabilities of \ttt{Player}, \ttt{Deck}, and \ttt{Card}, we will write \ttt{TwentyOne}: the class that runs a game of ``twenty-one''. The game logic is simple: if the game is still running, clear the player's hand, create a new deck of cards, shuffle them, and give the player two. Then, ask the player if they want to draw another card. If they do, draw a card and add it to their hand. If they do not, then the game is over. If the player's score is greater than twenty-one, then the player loses. Otherwise, the player wins. We will also write a \ttt{main} method that runs the game. We will not write any tests for this class, since it interacts with the user through the \ttt{Scanner} class.
+
+It should be noted that this version of ``twenty-one'' only has the objective of getting as close as possible to a hand containing cards with a value that sums to twenty one, compared to a more-traditional card game where multiple players exist, with a dealer to distribute cards. As exercises, there are many ways to enhance the game, including adding a ``high score'' board to keep track of previous game outcomes, introducing CPU players to automatically poll cards from the deck to beat the main player, or even adding more human players through standard input/output iteractions. 
 
 \begin{cl}[TwentyOne.java]{\ttt{TwentyOne} Class}
 \begin{lstlisting}[language=MyJava]
@@ -544,12 +559,15 @@ class TwentyOne {
     while (continuePlaying) {
       // Clear the player's hand.
       this.player.clearHand();
+
       // Create and shuffle the deck.
       Deck d = new Deck();
       d.shuffleDeck();
+
       // First, deal two cards.
       this.PLAYER.addCard(d.drawCard());
       this.PLAYER.addCard(d.drawCard());
+
       // While the player has not "busted", ask them to draw a card or stand.
       while (this.PLAYER.getScore() <= this.MAX_SCORE) {
         System.out.println(this.PLAYER);
@@ -594,16 +612,18 @@ import static Assertions.assertEquals;
 
 class RationalTester {
   
-    @Test
-    void testRationalToString() {
-      assertAll(
-        () -> assertEquals("1/2", new Rational(1, 2).toString()),
-        () -> assertEquals("3/400", new Rational(3, 400).toString()),
-        () -> assertEquals("1/1305", new Rational(5, 6525).toString()),
-        () -> assertEquals("3591/46562", new Rational(7182, 93124).toString()),
-        () -> assertEquals("7/32", new Rational(7, 32).toString())
-      );
-    }
+  @Test
+  void testRationalToString() {
+    assertAll(
+      () -> assertEquals("1/2", new Rational(1, 2).toString()),
+      () -> assertEquals("3/400", new Rational(3, 400).toString()),
+      () -> assertEquals("1/1305", new Rational(5, 6525).toString()),
+      () -> assertEquals("3591/46562", new Rational(7182, 93124).toString()),
+      () -> assertEquals("7/32", new Rational(7, 32).toString()),
+      () -> assertEquals("39483123/99938432", new Rational("493539/12492304").toString()),
+      () -> assertEquals("1/1", new Rational(1, 1).toString()),
+    );
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -645,7 +665,9 @@ class RationalTest {
       () -> assertEquals("5/6", new Rational(1, 2).add(new Rational(1, 3)).toString()),
       () -> assertEquals("1/3", new Rational(1, 4).add(new Rational(1, 12)).toString()),
       () -> assertEquals("1/4", new Rational(1, 8).add(new Rational(1, 8)).toString()),
-      () -> assertEquals("1/8", new Rational(1, 16).add(new Rational(1, 16)).toString())
+      () -> assertEquals("1/8", new Rational(1, 16).add(new Rational(1, 16)).toString()),
+      () -> assertEquals("1/16", new Rational(1, 32).add(new Rational(1, 32)).toString()),
+      () -> assertEquals("2/1", new Rational(32, 32).add(new Rational(32, 32)).toString())
     )
   }
 }
@@ -673,7 +695,7 @@ class Rational {
 \end{lstlisting}
 \end{cl}
 
-Due to the correspondence to addition, we will leave \ttt{subtraction} as an exercise to the reader. We can now do multiplication, which is even simpler than addition; all that is needed is to multiply the numerators and denominators together. We will also leave \ttt{division} as an exercise to the reader.
+Due to the correspondence to addition, we will leave \ttt{subtraction} as an exercise to the reader. We can now do multiplication, which is even simpler than addition; all that is needed is to multiply the numerators and denominators together. We will also leave \ttt{division} as an exercise to the reader. We also encourage the reader to write methods for comparing rationals for equality, as well as greater than/less than. Plus, we could extend this system to support \ttt{BigInteger} values for the numerator and denominator, which would allow us to represent arbitrarily large rational numbers. This, in turn, would require updating all methods to use \ttt{BigInteger} arithmetic, which is a good exercise in itself.
 
 \begin{cl}[RationalTest.java]{Testing Multiplication of Rationals}
 \begin{lstlisting}[language=MyJava]
@@ -688,7 +710,9 @@ class RationalTest {
       () -> assertEquals("14/27", new Rational(2, 3).multiply(new Rational(7, 9)).toString()),
       () -> assertEquals("1/6", new Rational(1, 2).multiply(new Rational(1, 3)).toString()),
       () -> assertEquals("1/48", new Rational(1, 4).multiply(new Rational(1, 12)).toString()),
-      () -> assertEquals("1/64", new Rational(1, 8).multiply(new Rational(1, 8)).toString())
+      () -> assertEquals("1/64", new Rational(1, 8).multiply(new Rational(1, 8)).toString()),
+      () -> assertEquals("1/25", new Rational(1, 5).multiply(new Rational(1, 5)).toString()),
+      () -> assertEquals("1/1", new Rational(1, 1).multiply(new Rational(1, 1)).toString())
     )
   }
 }

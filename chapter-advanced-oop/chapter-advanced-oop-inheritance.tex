@@ -222,14 +222,15 @@ Why not create a world for this robot to live within, and objects to interact wi
 
 This is a lot of information to consider, so let's back up a bit and start by designing the \ttt{WorldPosition} class. A \ttt{WorldPosition} is, itself, a list of \ttt{WorldObject} instances. Some may consider storing this list of instances as an instance variable in the class, which would be a redundant design choice. We know that \ttt{WorldPosition} encapsulates objects that exist on that particular position, so it makes sense to extend a data structure rather than reimplement one by hand. \ttt{WorldPosition} will extend the \ttt{ArrayList} class. We also need to write the \ttt{WorldObject} class, which does nothing but acts as a placeholder for other objects to extend; one of those being \ttt{BeeperObject}.
 
-We, ideally, want robots to be able to pick and place beepers on a world position. It is nonsensical, though, for a robot to pick beepers on a \ttt{WorldPosition} that has no existing beepers. Therefore, in the \ttt{WorldPosition} class, we will write a method that returns the number of instances of a given object. Doing so raises a question of, ``How do we specify a class to count?'', the answer to which comes via \textit{reflection}. Reflection is a programming language feature that allows us to inspect the structure of a class at runtime. We can use reflection to determine the class of an object, and then compare that class to the class we are using to search through the data structure. If the classes instances match (i.e., an object in the list is an instance of the desired searching class), in the case of our ``counter'' method, we increment the counter. To access an object's class information through reflection, we use the \ttt{getClass} method, which returns a \ttt{Class} instance. To receive any type of class as the parameter to a method, we parameterize the type of \ttt{Class} with a wildcard, \ttt{<?>}.
+We, ideally, want robots to be able to pick and place beepers on a world position. It is nonsensical, though, for a robot to pick beepers on a \ttt{WorldPosition} that has no existing beepers. Therefore, in the \ttt{WorldPosition} class, we will write a method that returns the number of instances of a given object. Doing so raises a question of, ``How do we specify a class to count?'', the answer to which comes via \textit{reflection}. 
+
+Reflection is a programming language feature that allows us to inspect the structure of a class at runtime. We can use reflection to determine the class of an object, and then compare that class to the class we are using to search through the data structure. If the classes instances match (i.e., an object in the list is an instance of the desired searching class), in the case of our ``counter'' method, we increment the counter. To access an object's class information through reflection, we use the \ttt{getClass} method, which returns a \ttt{Class} instance. To receive any type of class as the parameter to a method, we parameterize the type of \ttt{Class} with a wildcard, \ttt{<?>}.
 
 Why are we worrying about reflection in the first place? Would it not be easier to simply write a method that, say, returns the number of \ttt{BeeperObject} instances in the \ttt{WorldPosition} through perhaps an enumeration describing the type of object? The answer is a resounding yes, but forcing the programmer to write an enumeration just to describe the type of some class is cumbersome and unnecessary. Moreover, when we want to extend the functionality to include a new type, we must update the enumeration, which is a poor design choice. Reflection allows us to write a single method that can count the number of instances of any class, without having to continuously/repeatedly rewrite the method.
 
 \begin{cl}[WorldObject.java]{World Object Class Definition}
 \begin{lstlisting}[language=MyJava]
 class WorldObject {
-
   public WorldObject() {}
 }
 \end{lstlisting}
@@ -238,8 +239,10 @@ class WorldObject {
 \begin{cl}[BeeperObject.java]{Beeper Object Class Definition}
 \begin{lstlisting}[language=MyJava]
 class BeeperObject extends WorldObject {
-
-  public BeeperObject() { super(); }
+  
+  public BeeperObject() { 
+    super(); 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -253,17 +256,12 @@ class WorldPosition extends ArrayList<WorldObject> {
   public WorldPosition() { super(); }
 
   /**
-   * Returns the number of instances of a given class that exist on this world position.
-   *
-   * @param cls the class to search for
-   * @return the number of instances of the given class that exist on this world position
+   * Using streams, returns the number of occurrences of a given class type.
+   * @param cls the class to search for.
+   * @return those instances of a class that exist on the position.
    */
   public int count(Class<?> cls) {
-    int count = 0;
-    for (WorldObject obj : this) {
-      if (obj.getClass().equals(cls)) { count++; }
-    }
-    return count;
+    return this.stream().filter(o -> obj.getClass().equals(cls)).count();
   }
 }
 \end{lstlisting}
