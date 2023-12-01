@@ -2,9 +2,95 @@
 
 \subsection*{Command}
 
-\example{Of a command...}
+The \textit{command} pattern is a simple pattern that encapsulates a request, of sorts, to some type of handler. The handler knows nothing about the request itself, only that the handler acts as a dispatch for invoking the request.
 
-\subsection*{Factory}
+\example{Suppose that we're writing a game that involves moving a player around an environment. We want to write a class that handles moving the player, but remains independent of the player implementation. First, we will say that the player executes some type of \ttt{Command}, which is an interface containing a sole \ttt{execute} method. Then, we will write a \ttt{Player} class containing \ttt{move} and \ttt{jump} methods, where the former increments their $x$ coordinate and jump increments their $y$ coordinate, starting from the origin.}
+
+\begin{cl}[Command.java]{Command Interface Definition}
+\begin{lstlisting}[language=MyJava]
+interface Command {
+
+  void execute();
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Player.java]{Player Class Definition}
+\begin{lstlisting}[language=MyJava]
+class Player {
+  
+  private int x;
+  private int y;
+
+  public Player() { this.x = 0; this.y = 0; }
+
+  // Getters and setters omitted.
+}
+\end{lstlisting}
+\end{cl}
+
+Now, we will write two subtypes of \ttt{Command}, namely \ttt{MoveCommand} and \ttt{JumpCommand}, that each implement \ttt{execute}, the only difference being the intended behavior. The \ttt{MoveForward} command receives the \ttt{Player} instance and a direction, whereas \ttt{JumpCommand} only needs to receives a \ttt{Player} instance. 
+
+\begin{cl}[MoveCommand.java]{Move Command Implementation}
+\begin{lstlisting}[language=MyJava]
+class MoveCommand implements Command {
+
+  private Player player;
+
+  public MoveCommand(Player p) { this.player = p; }
+
+  @Override
+  public void execute() {
+    this.player.setX(this.player.getX() + 1);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[JumpCommand.java]{Jump Command Implementation}
+\begin{lstlisting}[language=MyJava]
+class JumpCommand implements Command {
+  
+  private Player player;
+
+  public JumpCommand(Player p) { this.player = p; }
+
+  @Override
+  public void execute() {
+    this.player.setY(this.player.getY() + 1);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Lastly, we must implement a ``command dispatch handler'', of sorts, which we might envision to be a controller. In particular, we will write \ttt{InputHandler} to store two commands that respond to presses to an `X button' and presses to a `Y button'. The methods to `press' each button correspond to invoking \ttt{execute} on the respective commands. The general idea behind the command pattern is that we can pass any arbitrary implementation of a command to this handler to change/update the behavior of a button press or action in the handler. 
+
+\begin{cl}[InputHandler.java]{...}
+\begin{lstlisting}[language=MyJava]
+class InputHandler {
+
+  private Command xButton;
+  private Command yButton;
+
+  public InputHandler(Command xButton, Command yButton) {
+    this.xButton = xButton;
+    this.yButton = yButton;
+  }
+
+  public void pressXButton() {
+    this.xButton.execute();
+  }
+
+  public void pressYButton() {
+    this.yButton.execute();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Now, we can test the system. Normally we would write JUnit tests before writing the separate commands, but we needed to write the handler before writing coherent tests. 
+
+\subsection*{Fraction}
 
 \example{Fraction caching...}
 
