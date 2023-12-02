@@ -275,6 +275,9 @@ Recall the use of comparators from~\ref{chapter-arrays-collections} when discuss
 
 \begin{cl}[IBinarySearch.java]{Adding a Comparator-Based Binary Search}
 \begin{lstlisting}[language=MyJava]
+import java.util.Comparable;
+import java.util.AbstractList;
+
 interface IBinarySearch {
 
   <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, V v);
@@ -284,12 +287,15 @@ interface IBinarySearch {
 \end{lstlisting}
 \end{cl}
 
-Now, we do not want to have to rewrite the entire definition of \ttt{binarySearch} just to make use of a different comparator, and indeed, we do not have to do so. All we must do is move the logic of the search into the version that receives a comparator and update the one that operates over comparable elements. This means that we need to instantiate a \ttt{Comparator} that uses the \ttt{compareTo} method from the elements, which is trivial to do via a lambda expression. We also must change the definition from using \ttt{compareTo}, which comes from \ttt{Comparable} to use \ttt{compare} from the \ttt{c} object.
+Now, of course, we do not want to have to rewrite the entire definition of \ttt{binarySearch} just to make use of a different comparator, and indeed, we do not have to do so. All we must do is move the logic of the search into the version that receives a comparator and update the one that operates over comparable elements. This means that we need to instantiate a \ttt{Comparator} that uses the \ttt{compareTo} method from the elements, which is trivial to do via a lambda expression. We also must change the definition from using \ttt{compareTo}, which comes from \ttt{Comparable} to use \ttt{compare} from the \ttt{c} object.
 
 \begin{cl}[IBinarySearchTester.java]{Testing the Comparator-Based Binary Search}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+
+import java.util.AbstractList;
+import java.util.Comparator;
 
 class IBinarySearchTester {
 
@@ -300,10 +306,12 @@ class IBinarySearchTester {
     IBinarySearch<Integer> search = new TailRecursiveBinarySearch<>();
     AbstractList<Integer> ls = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     Comparator<Integer> c = (o1, o2) -> o1.compareTo(o2);
-    assertEquals(0, search.binarySearch(ls, 1, c));
-    assertEquals(9, search.binarySearch(ls, 10, c));
-    assertEquals(4, search.binarySearch(ls, 5, c));
-    assertEquals(-1, search.binarySearch(ls, 11, c));
+    assertAll(
+      () -> assertEquals(0, search.binarySearch(ls, 1, c));
+      () -> assertEquals(9, search.binarySearch(ls, 10, c));
+      () -> assertEquals(4, search.binarySearch(ls, 5, c));
+      () -> assertEquals(-1, search.binarySearch(ls, 11, c));
+    );
   }
 }
 \end{lstlisting}
