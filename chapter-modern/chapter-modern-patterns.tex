@@ -88,11 +88,138 @@ class InputHandler {
 \end{lstlisting}
 \end{cl}
 
-Now, we can test the system. Normally we would write JUnit tests before writing the separate commands, but we needed to write the handler before writing coherent tests. 
+Now, we can test the system. Under other circumstances we would write JUnit tests before writing the separate commands, but we needed to write the handler before writing coherent tests. 
 
-\subsection*{Fraction}
+\begin{cl}[CommandTester.java]{Command Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
 
-\example{Fraction caching...}
+class CommandTester {
+
+  @Test
+  void testCommand() {
+    Player p = new Player();
+    InputHandler handler = new InputHandler(new MoveCommand(p), new JumpCommand(p));
+    assertAll(
+      () -> assertEquals(0, p.getX()),
+      () -> assertEquals(0, p.getY()),
+      () -> handler.pressXButton(),
+      () -> assertEquals(1, p.getX()),
+      () -> handler.pressYButton(),
+      () -> assertEquals(1, p.getY())
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+As shown, we have decoupled the player from the handler, and the handler from the implementation of the commands. This, consequently, allows us to alter or modify the behavior of commands without redesigning the handler or player classes.
+
+\subsection*{Factory}
+
+\example{To showcase our next pattern, we will design the \ttt{Fraction} class to represent mathematical fractions containing integer numerators and denominators. This example greatly resembles the rational number class in a previous chapter, but we introduce a twist to exemplify the benefits of the \textit{factory} pattern.}
+
+\begin{cl}[FractionTester.java]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class FractionTester {
+
+  @Test
+  void testFraction() {
+    assertAll(
+      () -> assertEquals("1/1", new Fraction(1, 1).toString()),
+      () -> assertEquals("1/2", new Fraction(1, 2).toString()),
+      () -> assertEquals("17/312", new Fraction(17, 312).toString()),
+      () -> assertEquals("321/199", new Fraction(321, 199).toString())
+    );
+
+    // Test random allocations of 1/2.
+    for (int i = 0; i < 500_000; i++) {
+      assertEquals("1/2", new Fraction(1, i).toString());
+    }
+  } 
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Fraction.java]{}
+\begin{lstlisting}[language=MyJava]
+class Fraction {
+
+  private int num;
+  private int den;
+
+  public Fraction(int num, int den) {
+    this.num = num;
+    this.den = den;
+  }
+
+  @Override
+  public String toString() { return String.format("%d/%d", this.num, this.den); }
+}
+\end{lstlisting}
+\end{cl}
+
+Notice that one of our test cases loops five hundred thousand times, repeatedly allocating the same fraction, namely $1/2$. It is almost certainly true that, whatever application uses the \ttt{Fraction} class, will not need separate/distinct instances of a fraction. Accordingly, we are unnecessarily allocating \ttt{Fraction} instances, taking a lot of CPU time and memory. The solution is to introduce a form of caching, wherein we create a lookup table of the most ``common'' fractions and, whenever someone wants to construct a \ttt{Fraction}, we first determine if it can be polled from the table. If not, we have no choice but to allocate the fraction. We call this the \textit{factory} pattern, because we have a class that represents and processes the creation of \ttt{Fraction} objects, rather than allowing the user to directly instantiate one themselves. 
+
+In designing the \ttt{FractionFactory} class, we declare a five-hundred element array to store the fractions $1/n$, where $n$ is an integer such that $1 \leq n \leq 500$. Its constructor allocates the fraction ``cache''. We now need a method to take the role of building fractions; namely a \ttt{Fraction create(int num, int den)} method, which either looks up and returns the shared instance of a common fraction, or allocates a new instance.
+
+\begin{cl}[FractionFactoryTester]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static Assertions.assertTrue;
+
+class FractionFactoryTester {
+
+  @Test
+  void testFractionFactory() {
+    FractionFactory ff = new FractionFactory();
+    assertAll(
+      () -> assertEquals("1/1", ff.create(1, 1).toString()),
+      () -> assertEquals("1/2", ff.create(1, 2).toString()),
+      () -> assertEquals("17/312", ff.create(17, 312).toString()),
+      () -> assertEquals("321/199", ff.create(321, 199).toString())
+    );
+
+    // Check to see that all of the allocations are the same.
+    Fraction f1 = ff.create(1, 2);
+    for (int i = 0; i < 500_000; i++) {
+      assertEquals("1/2", ff.create(1, 2).toString());
+      assertTrue(f1 == ff.create(1, 2));
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[FractionFactory]{}
+\begin{lstlisting}[language=MyJava]
+class FractionFactory {
+
+  private static final int LIMIT = 500;
+  
+  private static final Fraction[] CACHE;
+
+  public FractionFactory() {
+    this.CACHE = new Fraction[LIMIT];
+  }
+
+  /**
+   * Creates a new Fraction instance, or looks it up in the cache.
+   * @param num numerator of fraction.
+   * @param den denominator of fraction.
+   * @return a new instance of Fraction, or a shared instance if it was cached.
+   */
+  public Fraction create(int num, int den) {
+    return den >= 1 && den <= LIMIT ? this.CACHE[den - 1] : new Fraction(num, den);
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 \example{Person DB....}
 
