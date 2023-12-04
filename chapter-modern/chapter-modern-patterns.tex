@@ -381,12 +381,17 @@ class UrlTester {
 
   @Test
   void testUrlBuilder() {
-    Url url = new Url().schema("http").host("www.google.com").port(80).path("search");
+    Url url = new Url().schema("http")
+                       .host("www.google.com")
+                       .port(80)
+                       .path("search");
     assertAll(
       () -> assertEquals("http://www.google.com:80/search", url.toString())
     );
   }
 }
+\end{lstlisting}
+\end{cl}
 
 \begin{cl}[Url.java]{Url Class Definition}
 \begin{lstlisting}[language=MyJava]
@@ -437,8 +442,7 @@ class Url {
 \end{lstlisting}
 \end{cl}
 
-Partially-constructed objects may seem odd at first, but they are useful in situations where we want to instantiate an object piecemeal, i.e., one instance variable at a time. Plus, we can reuse the same builder with multiple objects. As an example, suppose that we want to create a \ttt{Url} object for a website, but we do not know what port or path to use. We can create a \ttt{Url} object with the schema and host, and then reuse the same builder to construct another \ttt{Url} with the same schema and host, but a differing port or path.
-
+Partially-constructed objects may seem odd at first, but they are useful in situations where we want to instantiate an object piecemeal, i.e., one instance variable at a time. Plus, we can reuse the same builder with multiple objects. As an example, suppose that we want to create a \ttt{Url} for a particular host and schema, but without a specific port or path. We can then reuse this object repeatedly to populate an partially-constructed instance with differing ports and paths, rather than having to unnecessarily repeat the known schema and host.
 
 \subsection*{Visitor}
 

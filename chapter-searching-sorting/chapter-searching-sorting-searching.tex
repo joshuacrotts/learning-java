@@ -106,7 +106,11 @@ class StandardRecursiveLinearSearch<V extends Comparable<V>>
 \end{lstlisting}
 \end{cl}
 
+As demonstrated, we must handle the no-element case as an exception, which would otherwise be left as a decision to the programmer that calls this version of the \ttt{linearSearch} algorithm.
+
 \subsubsection*{Tail Recursive Linear Search}
+
+The tail recursive linear search is much more intuitive to understand compared to its standard recursive counterpart---we use an accumulator to keep track of the current index, and if we reach the end of the list, a $-1$ is returned. If we find the element $v$, we return the index, which does not unwind the stack since there is no work remaining after each tail call, making this extremely efficient (again, at least in comparison to the standard recursive version).
 
 \begin{cl}[TailRecursiveLinearSearch.java]{Tail-Recursive Linear Search}
 \begin{lstlisting}[language=MyJava]
@@ -129,6 +133,9 @@ class TailRecursiveLinearSearch<V extends Comparable<V>>
 \end{cl}
 
 \subsubsection*{Loop Linear Search}
+
+Even though the tail recursive linear search is relatively straightforward to understand, almost all linear search implementations prefer the iterative version, or one that uses a loop, which we will now show. As an exercise, the readers should go through the process described in Chapter~\ref{chapter-crl} to convert the tail recursive method into an iterative method. We do not do so here because we know the upper-bound of a linear search, so even though a \ttt{while} loop is correct, it offers no advantages over a \ttt{for} loop.
+
 \begin{cl}[LoopLinearSearch.java]{Iterative Linear Search}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
