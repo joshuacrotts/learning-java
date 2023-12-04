@@ -221,9 +221,224 @@ class FractionFactory {
 \end{lstlisting}
 \end{cl}
 
-\example{Person DB....}
+\example{Imagine that we have a file of data containing information about a ``Person'', which entails their university records. A person can be a student, faculty, or staff member, and each type of person contains a name. For the purposes of this example, this is the only information that we care about, but we could easily extend it to include other datapoints. The idea is that we want to read in these records and create a \ttt{Person} object for each record. We could store `type' of person as, say, an enum, or a string, but this is not ideal. Instead, we will use the \textit{factory} pattern to create a \ttt{Person} object for each record, and the factory will determine the subclass of person based on the record.}
+
+Namely, let's create the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{public String getRole()} method to-be overridden in each subclass. We will also write the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that takes a \ttt{name} and \ttt{role} as arguments, and returns the relevant subclass of \ttt{Person}.
+
+To read the input file, we will write the \ttt{PersonDatabase} class, which extends \ttt{Map} of \ttt{Person} objects, where the key is the name of the person and the value is the \ttt{Person} object. The \ttt{PersonDatabase} class contains a \ttt{readFile} method that takes a \ttt{String} argument representing the path to the file, and reads the file line-by-line, creating a \ttt{Person} object for each record and storing it in the \ttt{Map}.
+
+\begin{cl}[PersonDatabase.java]{Reads a File of Person Records}
+\begin{lstlisting}[language=MyJava]
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+class PersonDatabase extends Map<String, Person> {
+
+  public PersonDatabase() { super(); }
+
+  public void readFile(String path) {
+    try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        String[] tokens = line.split(",");
+        super.put(tokens[0], PersonFactory.create(tokens[0], tokens[1]));
+      }
+    } catch (IOException ex) { ex.printStackTrace(); }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[PersonFactory.java]{Person Factory Implementation}
+\begin{lstlisting}[language=MyJava]
+class PersonFactory {
+  
+  /**
+   * Creates a new Person object based on the role.
+   * 
+   * @param name name of person.
+   * @param role role of person.
+   * @return a new subclass of Person.
+   */
+  public static Person create(String name, String role) {
+    return switch(role) {
+      case "student" -> new Student(name);
+      case "faculty" -> new Faculty(name);
+      case "staff" -> new Staff(name);
+      default -> throw new IllegalArgumentException("create: invalid role: " + role);
+    };
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Person.java]{Abstract Person Class Definition}
+\begin{lstlisting}[language=MyJava]
+abstract class Person {
+
+  private final String NAME;
+
+  public Person(String name) { this.NAME = name; }
+
+  public String getName() { return this.NAME; }
+
+  public abstract String getRole();
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Student.java]{Student Class Definition}
+\begin{lstlisting}[language=MyJava]
+class Student extends Person {
+
+  public Student(String name) { super(name); }
+
+  @Override
+  public String getRole() { return "student"; }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Faculty.java]{Faculty Class Definition}
+\begin{lstlisting}[language=MyJava]
+class Faculty extends Person {
+
+  public Faculty(String name) { super(name); }
+
+  @Override
+  public String getRole() { return "faculty"; }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Staff.java]{}
+\begin{lstlisting}[language=MyJava]
+class Staff extends Person {
+
+  public Staff(String name) { super(name); }
+
+  @Override
+  public String getRole() { return "staff"; }
+}
+\end{lstlisting}
+\end{cl}
+
+If we assume that our input records are line-separated and comma-delimited, then we can write a simple test case to verify that the \ttt{PersonDatabase} class correctly reads the file and creates the appropriate \ttt{Person} objects. The following file (titled \ttt{"records1.dat"}) will be used for testing purposes.
+
+\par{
+\begin{verbatim}
+Willard Van Orman Quine,faculty
+Alan Mathison Turing,student
+John von Neumann,staff
+Stephen Cole Kleene,faculty
+\end{verbatim}
+}
+
+\begin{cl}[PersonDatabaseTester.java]{Person Database Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class PersonDatabaseTester {
+
+  @Test
+  void testPersonDatabase() {
+    PersonDatabase db = new PersonDatabase();
+    db.readFile("records1.dat");
+    assertAll(
+      () -> assertTrue(db.get("Willard Van Orman Quine") instanceof Faculty),
+      () -> assertTrue(db.get("Alan Mathison Turing") instanceof Student),
+      () -> assertTrue(db.get("John von Neumann") instanceof Staff),
+      () -> assertTrue(db.get("Stephen Cole Kleene") instanceof Faculty)
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+As expected, all tests pass.
+
 
 \subsection*{Builder}
+
+When creating instances of classes, it is not always feasible or possible to pass all of the necessary arguments to a constructor. The \textit{builder} pattern allows us to write ``partial constructors'', i.e., methods that take a subset of the arguments and return an object that contains the partial arguments. 
+
+\example{Suppose that we are designing a \ttt{URL} class to represent a URL, which contains a schema, host, port, and path. We want to write a \ttt{URLBuilder} class that allows us to construct a \ttt{URL} object by passing arguments one-at-a-time to a series of methods. In particular, each instance variable, namely \ttt{\_schema}, \ttt{\_host}, \ttt{\_port}, and \ttt{\_path}, has a corresponding method of the same name sans the underscore. Each method returns \ttt{this}, which allows us to chain method calls together. Moreover, returning \ttt{this} and forgoing the constructor means we do not need to unnecessarily allocate a new \ttt{Url} object for every method call.}
+
+We will designate that a ``complete'' URL is one that has, at the very least, a schema and a host. To complement this, we now design the \ttt{build} method that returns a \ttt{Url} object if the schema and host are non-\ttt{null}, otherwise, it throws an \ttt{IllegalStateException}. When the optional fields are not specified, they are set to default values, namely \ttt{0} for the port and \ttt{""} for the path.
+
+To test the implementation, we chain together a series of method calls on a \ttt{Url} instance and verify that the resulting \ttt{Url} object is correct through its \ttt{toString} representation.
+
+\begin{cl}[UrlTester.java]{Url Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class UrlTester {
+
+  @Test
+  void testUrlBuilder() {
+    Url url = new Url().schema("http").host("www.google.com").port(80).path("search");
+    assertAll(
+      () -> assertEquals("http://www.google.com:80/search", url.toString())
+    );
+  }
+}
+
+\begin{cl}[Url.java]{Url Class Definition}
+\begin{lstlisting}[language=MyJava]
+class Url {
+
+  private String _schema;
+  private String _host;
+  private int _port;
+  private String _path;
+  
+  private Url() {}
+
+  public Url schema(String schema) {
+    this._schema = schema;
+    return this;
+  }
+
+  public Url host(String host) {
+    this._host = host;
+    return this;
+  }
+
+  public Url port(int port) {
+    this._port = port;
+    return this;
+  }
+
+  public Url path(String path) {
+    this._path = path;
+    return this;
+  }
+
+  public Url build() {
+    if (this._schema == null || this._host == null) {
+      throw new IllegalStateException("build: incomplete URL");
+    }
+    this._port = this._port == 0 ? 80 : this._port;
+    this._path = this._path == null ? "" : this._path;
+    this.complete = true;
+    return this;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s://%s:%d/%s", this._schema, this._host, this._port, this._path);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Partially-constructed objects may seem odd at first, but they are useful in situations where we want to instantiate an object piecemeal, i.e., one instance variable at a time. Plus, we can reuse the same builder with multiple objects. As an example, suppose that we want to create a \ttt{Url} object for a website, but we do not know what port or path to use. We can create a \ttt{Url} object with the schema and host, and then reuse the same builder to construct another \ttt{Url} with the same schema and host, but a differing port or path.
+
 
 \subsection*{Visitor}
 
