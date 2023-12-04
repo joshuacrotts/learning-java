@@ -225,7 +225,7 @@ class FractionFactory {
 
 Namely, let's create the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{public String getRole()} method to-be overridden in each subclass. We will also write the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that takes a \ttt{name} and \ttt{role} as arguments, and returns the relevant subclass of \ttt{Person}.
 
-To read the input file, we will write the \ttt{PersonDatabase} class, which extends \ttt{Map} of \ttt{Person} objects, where the key is the name of the person and the value is the \ttt{Person} object. The \ttt{PersonDatabase} class contains a \ttt{readFile} method that takes a \ttt{String} argument representing the path to the file, and reads the file line-by-line, creating a \ttt{Person} object for each record and storing it in the \ttt{Map}.
+To read the input file, we will write the \ttt{PersonDatabase} class, which stores a \ttt{Map} of \ttt{Person} objects, where the key is the name of the person and the value is the \ttt{Person} object. The \ttt{PersonDatabase} class contains a \ttt{readFile} method that takes a \ttt{String} argument representing the path to the file, and reads the file line-by-line, creating a \ttt{Person} object for each record and storing it in the \ttt{Map}.
 
 \begin{cl}[PersonDatabase.java]{Reads a File of Person Records}
 \begin{lstlisting}[language=MyJava]
@@ -235,19 +235,23 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-class PersonDatabase extends Map<String, Person> {
+class PersonDatabase {
 
-  public PersonDatabase() { super(); }
+  private final Map<String, Person> DATABASE;
+
+  public PersonDatabase() { this.DATABASE = new HashMap<>(); }
 
   public void readFile(String path) {
     try (BufferedReader br = new BufferedReader(new FileReader(path))) {
       String line;
       while ((line = br.readLine()) != null) {
         String[] tokens = line.split(",");
-        super.put(tokens[0], PersonFactory.create(tokens[0], tokens[1]));
+        this.DATABASE.put(tokens[0], PersonFactory.create(tokens[0], tokens[1]));
       }
     } catch (IOException ex) { ex.printStackTrace(); }
   }
+
+  public Person lookup(String name) { return this.DATABASE.get(name); }
 }
 \end{lstlisting}
 \end{cl}
@@ -349,10 +353,10 @@ class PersonDatabaseTester {
     PersonDatabase db = new PersonDatabase();
     db.readFile("records1.dat");
     assertAll(
-      () -> assertTrue(db.get("Willard Van Orman Quine") instanceof Faculty),
-      () -> assertTrue(db.get("Alan Mathison Turing") instanceof Student),
-      () -> assertTrue(db.get("John von Neumann") instanceof Staff),
-      () -> assertTrue(db.get("Stephen Cole Kleene") instanceof Faculty)
+      () -> assertTrue(db.lookup("Willard Van Orman Quine") instanceof Faculty),
+      () -> assertTrue(db.lookup("Alan Mathison Turing") instanceof Student),
+      () -> assertTrue(db.lookup("John von Neumann") instanceof Staff),
+      () -> assertTrue(db.lookup("Stephen Cole Kleene") instanceof Faculty)
     );
   }
 }
@@ -446,7 +450,7 @@ Partially-constructed objects may seem odd at first, but they are useful in situ
 
 \subsection*{Visitor}
 
-Explain how it works...
+The \textit{visitor} pattern is the most complex pattern that we will work with, but it offers a host of benefits. Consider a situation in which we do not have access to classes, but want to modify their implementation to add some functionality. In particular, if those classes support the use of visitors, then we can design almost any type of functionality without needing to modify those classes at all.
 
 \example{Let's write a visitor that prints out a programming language expression in a human-readable format. In particular, we will use a simplified version of the interpreter from Chapter~\ref{chapter-advanced-oop}. First, we need to write the visitor interface, which contains a \ttt{visit} method for each type of expression, namely \ttt{NumNode}, \ttt{PrimNode}, \ttt{VarNode}, and \ttt{LetNode}. Each \ttt{visit} method takes an expression of the corresponding type as an argument and returns a string.}
 
@@ -474,7 +478,7 @@ class AstNode {
 \end{lstlisting}
 \end{cl}
 
-Now, we update each subclass to override the \ttt{visit} method and call the appropriate \ttt{visit} method. Fortunately this is trivial, since all we must do is add the method signature and call \ttt{visit} with \ttt{this} as the argument to represent that the visitor is visiting the current node. Because this is consistently redundant, we will only show the implementation of the \ttt{NumNode} class, but the remaining classes are identical with respect to this method.
+Now, we update each subclass to override the \ttt{visit} method and call the appropriate \ttt{visit} method. Fortunately this is trivial, since all we must do is add the method signature and call \ttt{visit} with \ttt{this} as the argument to represent that the visitor is visiting the current node. Because this is consistently redundant, we will only show the implementation of the \ttt{NumNode} class, but the remaining classes are identical with respect to this method.\footnote{Remember that we said that we could not alter/update these classes (or rather that the visitor pattern guarantees this invariant), but we rely on the assumption that they support the visitor pattern, which is the only internal modification.}
 
 \begin{cl}[NumNode.java]{The \ttt{NumNode} Class}
 \begin{lstlisting}[language=MyJava]
@@ -576,6 +580,122 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
     sb.append(node.elseExpr.visit(this));
     sb.append(")");
     return sb.toString();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example{As another example, suppose that we have classes to represent items at a grocery store. Namely, we have a \ttt{IGroceryItem} interface, and subtypes \ttt{Fruit}, \ttt{Milk}, and \ttt{Cereal}. Additionally, we can extend the \ttt{IGroceryItemVisitor} interface, which itself contains corresponding ``visit'' methods for each subtype to describe how we wish to visit an \ttt{IGroceryItem} object. Let's take advantage of Java's generics to allow a specification of the return type for \ttt{visit} methods. A visitor that always returns nothing severely limits the capabilities of the visitor pattern.}
+
+\begin{cl}[IGroceryItemVisitor.java]{}
+\begin{lstlisting}[language=MyJava]
+interface IGroceryItemVisitor<R> {
+
+  R visit(Fruit fruit);
+  R visit(Milk milk);
+  R visit(Cereal cereal);
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[IGroceryItem.java]{}
+\begin{lstlisting}[language=MyJava]
+interface IGroceryItem {
+
+  <R> R visit(IGroceryItemVisitor<R> visitor);
+}
+\end{lstlisting}
+\end{cl}
+
+The subtypes of \ttt{IGroceryItem}, as we stated, are \ttt{Fruit}, \ttt{Milk}, and \ttt{Cereal}. Fruits have a name and a weight in ounces, milk is either skim milk or regular (designated by a boolean) and a weight in fluid ounces, and cereal has a mascot and a weight in ounces. While we are in the realm of modern Java, let's once again use records to our advantage to remove redundant code. Conveniently, this means that we only have to override the \ttt{visit} method in each record type.
+
+\begin{cl}[Fruit.java]{}
+\begin{lstlisting}[language=MyJava]
+record Fruit(String name, int oz) implements IGroceryItem {
+
+  @Override
+  public <R> R visit(IGroceryItemVisitor<R> visitor) { return visitor.visit(this); }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Milk.java]{}
+\begin{lstlisting}[language=MyJava]
+record Milk(boolean skim, int fluidOz) implements IGroceryItem {
+  
+  @Override
+  public <R> R visit(IGroceryItemVisitor<R> visitor) { return visitor.visit(this); }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Cereal.java]{}
+\begin{lstlisting}[language=MyJava]
+record Cereal(String mascot, int oz) implements IGroceryItem {
+    
+  @Override
+  public <R> R visit(IGroceryItemVisitor<R> visitor) { return visitor.visit(this); }
+}
+\end{lstlisting}
+\end{cl}
+
+Now, let's extend the capabilities of our classes by designing a visitor that calculates the total price of a grocery list. Namely, we will write the \ttt{GroceryListTotalVisitor} class, which implements the \ttt{IGroceryItemVisitor} interface. The \ttt{GroceryListTotalVisitor} class overrides the respective methods from the \ttt{IGroceryItemVisitor} interface to calculate the total price of the grocery list. For the sake of example, fruits are priced at \$0.25$ per ounce, milk is priced at \$2.00$ by the gallon, and cereal is priced at \$0.10 per ounce. If the milk is skim, we add \$0.50 to its price.
+
+The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{IGroceryItemVisitor} to \ttt{GroceryListTotalVisitor}, followed by a call to \ttt{visit} on each item in the grocery list. The result is the total price of the grocery list, which we then verify.
+
+\begin{cl}[GroceryListTotalVisitorTester.java]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class GroceryListTotalVisitorTester {
+
+  @Test
+  void testGroceryListTotalVisitor() {
+    List<IGroceryItem> groceryList = List.of(
+      new Fruit("apple", 4),
+      new Fruit("banana", 2),
+      new Milk(true, 128),
+      new Cereal("Tony the Tiger", 16)
+    );
+
+    assertAll(
+      () -> assertEquals(0, List.of().stream()
+                                     .mapToDouble(item -> 
+                                       item.visit(new GroceryListTotalVisitor()))
+                                     .sum()),
+      () -> assertEquals(5.60, groceryList.stream()
+                                          .mapToDouble(item -> 
+                                            item.visit(new GroceryListTotalVisitor()))
+                                          .sum())
+    );
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[GroceryListTotalVisitor.java]{}
+\begin{lstlisting}[language=MyJava]
+class GroceryItemPriceVisitor implements IGroceryItemVisitor<Double> {
+
+  private static final double FRUIT_PRICE_PER_OZ = 0.25;
+  private static final double MILK_PRICE_PER_GALLON = 2.0;
+  private static final double CEREAL_PRICE_PER_OZ = 0.1;
+
+  @Override
+  public Double visit(Fruit f) {
+    return f.oz() * FRUIT_PRICE_PER_OZ;
+  }
+
+  @Override
+  public Double visit(Milk m) {
+    double gallonsPrice = m.fluidOz() / 128.0 * MILK_PRICE_PER_GALLON;
+    return m.skim() ? gallonsPrice + 0.5 : gallonsPrice;
+  }
+
+  @Override
+  public Double visit(Cereal c) {
+    return c.oz() * CEREAL_PRICE_PER_OZ;
   }
 }
 \end{lstlisting}
