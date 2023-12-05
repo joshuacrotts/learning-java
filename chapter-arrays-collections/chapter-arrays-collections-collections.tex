@@ -933,16 +933,13 @@ class BigIntFibStream {
     A \textit{stream} is a lazy collection of elements that are computed only when requested.
     \vspace{2ex}
   \begin{description}
-    \item [\ttt{$S$.count$()$}] returns the number of elements in the stream.
-    \item [\ttt{$S$.map($f$)}] returns a new stream whose elements are the result of applying $f$ to each element of $S$.
-    \item [\ttt{$S$.filter($p$)}] returns a new stream whose elements are those of $S$ that satisfy the predicate $p$.
-    \item [\ttt{$S$.reduce($a$, $f$)}] returns the result of applying the binary function $f$ to each element of $S$ and the accumulator $a$. The value of $a$ serves as the accumulator's initial value.
-    \item [\ttt{$S$.limit($n$)}] returns a new stream whose elements are the first $n$ elements of $S$.
-    \item [\ttt{$S$.skip($n$)}] returns a new stream whose elements are those of $S$ after the first $n$ elements.
-    % \item [\ttt{$S$.anyMatch($p$)}] returns \ttt{true} if \textbf{at least one} element of $S$ satisfies the predicate $p$; otherwise, returns \ttt{false}.
-    % \item [\ttt{$S$.allMatch($p$)}] returns \ttt{true} if \textbf{all} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
-    % \item [\ttt{$S$.noneMatch($p$)}] returns \ttt{true} if \textbf{no} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
-    \item [\ttt{$S$.min/max($c$)}] returns the minimum/maximum element of $S$ according to the comparator $c$. If $S$ is empty, returns \ttt{Optional.empty()}.
+    \item [\ttt{int $S$.count$()$}] returns the number of elements in the stream.
+    \item [\ttt{Stream<$T$> $S$.map($f$)}] returns a new stream whose elements are the result of applying $f$ to each element of $S$.
+    \item [\ttt{Stream<$T$> $S$.filter($p$)}] returns a new stream whose elements are those of $S$ that satisfy the predicate $p$.
+    \item [\ttt{Stream<$T$> $S$.reduce($a$, $f$)}] returns the result of applying the binary function $f$ to each element of $S$ and the accumulator $a$. The value of $a$ serves as the accumulator's initial value.
+    \item [\ttt{Stream<$T$> $S$.limit($n$)}] returns a new stream whose elements are the first $n$ elements of $S$.
+    \item [\ttt{Stream<$T$> $S$.skip($n$)}] returns a new stream whose elements are those of $S$ after the first $n$ elements.
+    \item [\ttt{Optional<$T$> $S$.min/max($c$)}] returns the minimum/maximum element of $S$ according to the comparator $c$. If $S$ is empty, returns \ttt{Optional.empty()}.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{Stream}-based Methods.}
@@ -955,9 +952,9 @@ class BigIntFibStream {
     We can search for the existence of types of elements in a stream.
     \vspace{2ex}
   \begin{description}
-    \item [\ttt{$S$.anyMatch($p$)}] returns \ttt{true} if \textbf{at least one} element of $S$ satisfies the predicate $p$; otherwise, returns \ttt{false}.
-    \item [\ttt{$S$.allMatch($p$)}] returns \ttt{true} if \textbf{all} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
-    \item [\ttt{$S$.noneMatch($p$)}] returns \ttt{true} if \textbf{no} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
+    \item [\ttt{boolean $S$.anyMatch($p$)}] returns \ttt{true} if \textbf{at least one} element of $S$ satisfies the predicate $p$; otherwise, returns \ttt{false}.
+    \item [\ttt{boolean $S$.allMatch($p$)}] returns \ttt{true} if \textbf{all} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
+    \item [\ttt{boolean $S$.noneMatch($p$)}] returns \ttt{true} if \textbf{no} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{Stream}-Searching Methods.}

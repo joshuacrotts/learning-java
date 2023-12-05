@@ -2,7 +2,7 @@
 \label{sec:object-mutation-and-aliasing}
 A limitation that we have purposefully imposed on our object/class design is the inability to modify the values of instance variables. Value mutation is a foreign concept in some programming languages, but we have made extensive use of it throughout our time in the land of Java. In this section, we will discuss the implications of allowing instance variable mutation and how it can lead to some unexpected behavior.
 
-To access a \ttt{private} instance variable, we design a \ttt{public} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a \ttt{public} mutator method, which takes in a parameter and assigns the instance variable to the parameter. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a point $p$ to $(7, 4)$, but we then want to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which we confirm through the accessor method. Because we want to be able to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove this keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we should use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
+To access a \ttt{private} instance variable, we design a \ttt{public} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a \ttt{public} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns the instance variable to the parameter. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a point $p$ to $(7, 4)$, but we then want to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which we confirm through the accessor method. Another way of phrasing this is that, when testing a mutator, we care about the \textit{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. Setter methods, or methods that modify outside values or data are definitionally \textit{impure}\index{impure}. Because we want to be able to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove this keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we \textit{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
 
 \begin{cl}[PointTester.java]{Testing \ttt{Point} Setter Methods}
 \begin{lstlisting}[language=MyJava]
@@ -117,9 +117,9 @@ class PointTester {
 \end{lstlisting}
 \end{cl}
 
-\example{Now that we have classes, mutation, and accessibility, we can finally implement generic data structures such as an \ttt{ArrayList}. In this example we will implement the behavior of the \ttt{ArrayList} data structure, which means we finally understand what is going on under the hood in the Collections API. We will create a class \ttt{MiniArrayList}, which operates over any type using generics. Like generic static methods, we must quantify the generic type. Unlike static methods, however, we quantify the type in the class declaration, meaning that all instance and static methods inside the generic class do not need to be separately quantified.}
+\example{Now that we have classes, mutation, and accessibility, we can finally implement generic data structures such as an \ttt{ArrayList}. In this example we will implement the behavior of the \ttt{ArrayList} data structure, which means we finally understand what is going on under the hood in the Collections API. Let's design a class \ttt{MiniArrayList}, which operates over any type using generics. Like generic static methods, we must quantify the generic type, but unlike static methods, however, we quantify the type over the class declaration, meaning that all instance and static methods observe/respect the quantifier and do not need to be separately quantified.}
 
-In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements, is stored in \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is stored in \ttt{capacity}. Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class; this idea is called \textit{constructor chaining}. 
+In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements, is stored in \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is stored in \ttt{capacity}. Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class, an idea called \textit{constructor chaining}. 
 
 \begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Class}
 \begin{lstlisting}[language=MyJava]
@@ -139,7 +139,7 @@ class MiniArrayList<T> {
 \end{lstlisting}
 \end{cl}
 
-Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type. Recall that generics are a compile-time feature, and arrays are a runtime feature. Therefore, we cannot instantiate an array of a generic type. Instead, we must instantiate an array containing type \ttt{Object}, followed by a cast to contain type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \textit{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays. Doing so means the program typechecks and successfully compiles.
+Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type. Recall that generics are a compile-time feature, and arrays are a runtime feature. Therefore, we cannot instantiate an array of a generic type. Instead, we must instantiate an array containing type \ttt{Object}, followed by a cast to contain type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \textit{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
 
 \begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Class Instantiating the Backing Array}
 \begin{lstlisting}[language=MyJava]
@@ -175,10 +175,12 @@ class MiniArrayListTester {
     list.add(100);
     list.add(200);
     list.add(300);
-    assertEquals(3, list.size());
-    assertEquals(100, list.get(0));
-    assertEquals(200, list.get(1));
-    assertEquals(300, list.get(2));
+    assertAll(
+      () -> assertEquals(3, list.size()),
+      () -> assertEquals(100, list.get(0)),
+      () -> assertEquals(200, list.get(1)),
+      () -> assertEquals(300, list.get(2))
+    );
   }
 }
 \end{lstlisting}
@@ -231,10 +233,12 @@ class MiniArrayListTester {
     list.add(100);
     list.add(300);
     list.insert(1, 150);
-    assertEquals(3, list.size());
-    assertEquals(100, list.get(0));
-    assertEquals(150, list.get(1));
-    assertEquals(300, list.get(2));
+    assertAll(
+      () -> assertEquals(3, list.size()),
+      () -> assertEquals(100, list.get(0)),
+      () -> assertEquals(150, list.get(1)),
+      () -> assertEquals(300, list.get(2))
+    );
   }
 
   @Test
@@ -243,8 +247,10 @@ class MiniArrayListTester {
     list.add(100);
     list.add(300);
     list.remove(0);
-    assertEquals(1, list.size());
-    assertEquals(300, list.get(0));
+    assertAll(
+      () -> assertEquals(1, list.size()),
+      () -> assertEquals(300, list.get(0))
+    );
   }
 }
 \end{lstlisting}
@@ -348,7 +354,7 @@ To set the scene, we first declare \ttt{a} as an immutable instance of \ttt{A} w
 Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two references to the same object. Because \ttt{a} is immutable, we cannot change its value, so both \ttt{b} and \ttt{c} will always refer to the same object. Therefore, we use \ttt{assertEquals} to compare the two references. In particular, passing \ttt{a} to both constructors passes a reference to the same object.
 %% Perhaps draw a diagram?
 
-Comparing \ttt{b.getA().getS()} against \ttt{c.getA().getS()} is a comparison of two references to the same object, similar to the previous problem... right? Wrong! Recall that the \ttt{String} class overrides the \ttt{.equals} method implementation to compare strings for their content rather than their reference. Should we choose to compare the two strings for referential equality, we must use the \ttt{==} operator. In this case, we use \ttt{assertEquals} since the two strings are equal in content, but using \ttt{==} would also work because the strings are also equal in reference.
+Comparing \ttt{b.getA().getS()} against \ttt{c.getA().getS()} is a comparison of two references to the same object, similar to the previous problem, right? Wrong! Recall that the \ttt{String} class overrides the \ttt{.equals} method implementation to compare strings for their content rather than their reference. Should we choose to compare the two strings for referential equality, we must use the \ttt{==} operator. In this case, we use \ttt{assertEquals} since the two strings are equal in content, but using \ttt{==} would also work because the strings are also equal in reference.
 
 In the third line we change the value of the string inside \ttt{a} to be \ttt{"Hi!"}, which updates across all instances that point to \ttt{a}. Therefore, rerunning the same comparison as before still results in a true equality.
 
@@ -396,7 +402,7 @@ The second for loop assigns each element of the array to the \ttt{e} object. The
 
 Thus, if we set the number of one arbitrary element, this change propagates to every other element in the list, because again, all references point to the same object.
 
-\example{Some may question why we emphasize aliasing and mutation. When working with the collections API and designing data structures, proper care must be taken to avoid undesired behavior. Consider what happens if we design a class \ttt{F} that stores a reference to a \ttt{List<Integer>} as an instance variable. Then, suppose we instantiate two distinct instances of \ttt{F}, namely $f_1$ and $f_2$, each of which receive the same list of numbers. If we then mutate the list somewhere inside of $f_1$, then the list inside of $f_2$ will also be mutated.}
+\example{Some may question why we emphasize aliasing and mutation. When working with the Collections API and designing data structures, proper care must be taken to avoid undesired behavior. Consider what happens if we design a class \ttt{F} that stores a reference to a \ttt{List<Integer>} as an instance variable. Then, suppose we instantiate two distinct instances of \ttt{F}, namely $f_1$ and $f_2$, each of which receive the same list of numbers. If we then mutate the list somewhere inside of $f_1$, then the list stored as a reference inside $f_2$ is also changed.}
 
 \begin{cl}[ClassTester.java]{Testing List Mutation and Aliasing}
 \begin{lstlisting}[language=MyJava]

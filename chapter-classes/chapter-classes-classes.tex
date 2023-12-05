@@ -1,7 +1,7 @@
 \section{Classes}
 From the first page, we have made prolific use of classes, but in this section we will finally venture into the inner workings of a class, and how to create our own.
 
-\textit{Classes}\index{classes} are blueprints for \textit{objects}. When we create a class, we declare a new type of object. As we stated, we have repeatedly used classes, e.g., strings, arrays, \ttt{Scanner}, \ttt{Random}, as well as those classes from the Collections API. Until now, however, we viewed these as forms of abstraction, whose details were not important. 
+\textit{Classes}\index{classes}\index{class} are blueprints for \textit{objects}\index{object}. When we create a class, we declare a new type of object. As we stated, we have repeatedly used classes, e.g., strings, arrays, \ttt{Scanner}, \ttt{Random}, as well as those classes from the Collections API. Until now, however, we viewed these as forms of abstraction, whose details were not important. 
 
 To create a class, we use the \ttt{class} keyword, followed by the name of the class. The name of the class should be capitalized, and should, in general, describe a noun. All Java files describe a class and must be named accordingly. We, of course, have seen this repeatedly before, but we omitted the details.
 
@@ -9,7 +9,7 @@ Classes can \textit{inherit} methods from other classes, a relationship called t
 
 \example{Let's create a class called \ttt{Point}, which stores two \ttt{int} values representing a Cartesian coordinate $x$ and $y$. By ``store'', we mean to say that $x$ and $y$ are \textit{instance variables}\index{instance variables} of the \ttt{Point} class, also sometimes called \textit{attributes}, \textit{fields}, or \textit{members} (in Java, we conventionally use the ``instance variables'' term). Instance variables denote the values associated with an arbitrary \textit{instance} of that object (an instance may also be defined as an entity). For example, if we have a \ttt{Point} object \ttt{p}, then \ttt{p} has two instance variables, \ttt{x} and \ttt{y}, which are the $x$ and $y$ coordinates of \ttt{p}. Then, if we declare another point \ttt{p2}, then \ttt{p2} will have its own instance variables \ttt{x} and \ttt{y}, which are independent of \ttt{p}'s instance variables. In almost all circumstances, instance variables of a class should be marked as \ttt{private}. Instance variables that are \ttt{private} denotes that direct access to their values is granted only within the class definition. Lastly, for the time being, instance variables are immutable and cannot change. Thus, every instance variable will use the \ttt{final} keyword in its declaration, alongside the \ttt{UPPER\_CASE} naming convention.}
 
-Speaking of \textit{access modifiers}, we should mention the four that Java provides, even though we make prolific use of only three:
+Speaking of \textit{access modifiers}\index{access modifier}, we should mention the four that Java provides, even though we make prolific use of only three:
 
 \begin{itemize}
   \item A class, variable, or method declared with the \ttt{public} modifier is accessible to/by any other class. Variables that are \ttt{public} should be used sparingly.
@@ -29,7 +29,7 @@ class Point {
 \end{lstlisting}
 \end{cl}
 
-We now want a way to create an instance of a \ttt{Point}. We declare instances of objects using the \ttt{new} keyword followed by the class constructor. \textit{Constructors} are special methods that are called when we wish to create a new object of that class. Our \ttt{Point} class constructor can receive parameters, which we can use to initialize the relevant $x$ and $y$ instance variables. So, let's declare the constructor for our \ttt{Point} class. Constructors, in general, should be \ttt{public}, as we will need to call them from outside the class definition. Constructors are also special in that they do not have a return type, although phrasing it in this way leads to some confusion, because constructors have implicit return types. By implicit, we mean that we do not directly specify the return type, but Java knows that constructors are special, whose return types are of the class itself. We create a constructor by specifying the class name alongside any desired parameters.
+We now want a way to create an instance of a \ttt{Point}. We declare instances of objects using the \ttt{new} keyword followed by the class constructor. \textit{Constructors}\index{constructor} are special methods that are called when we wish to create a new object of that class. Our \ttt{Point} class constructor can receive parameters, which we can use to initialize the relevant $x$ and $y$ instance variables. So, let's declare the constructor for our \ttt{Point} class. Constructors, in general, should be \ttt{public}, as we will need to call them from outside the class definition. Constructors are also special in that they do not have a return type, although phrasing it in this way leads to some confusion, because constructors have implicit return types. By implicit, we mean that we do not directly specify the return type, but Java knows that constructors are special, whose return types are of the class itself. We create a constructor by specifying the class name alongside any desired parameters.
 
 \begin{cl}[Point.java]{\ttt{Point} Class Constructor}
 \begin{lstlisting}[language=MyJava]
@@ -45,7 +45,7 @@ class Point {
 }
 \end{lstlisting}
 \end{cl}
-Remember that the purpose of the constructor is to initialize the class instance variables. So, unless we wish to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. Inside the constructor, we assign the value of the parameter \ttt{x} to the instance variable \ttt{x}. Should we opt to not use \ttt{this} on the left-hand variable identifier, then the parameter \ttt{x} would shadow the instance variable \ttt{x}, meaning that writing \ttt{x = x} assigns the parameter to itself. At last, we can create a \ttt{Point} object by calling the constructor, but wait, we have no way of accessing/referring to the instance variables of the \ttt{Point} object! We need to create \textit{accessor methods}\index{accessor methods} to retrieve the values of the instance variables. Accessor methods are \ttt{public} and should do exactly one thing: return the respective instance variable.
+Remember that the purpose of the constructor is to initialize the class instance variables. So, unless we wish to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. Inside the constructor, we assign the value of the parameter \ttt{x} to the instance variable \ttt{x}. Should we opt to not use \ttt{this} on the left-hand variable identifier, then the parameter \ttt{x} would shadow the instance variable \ttt{x}, meaning that writing \ttt{x = x} assigns the parameter to itself. At last, we can create a \ttt{Point} object by calling the constructor, but wait, we have no way of accessing/referring to the instance variables of the \ttt{Point} object! We need to create \textit{accessor methods}\index{accessor method} to retrieve the values of the instance variables. Accessor methods are \ttt{public} and should do exactly one thing: return the respective instance variable.
 
 \begin{cl}[Point.java]{Designing Accessor Methods}
 \begin{lstlisting}[language=MyJava]
@@ -78,7 +78,7 @@ Point p;
 \end{verbatim}
 }
 
-By default, $p$ now points to \ttt{null}, since we have not yet created an instance of the \ttt{Point} class. We can create an instance of the \ttt{Point} class by invoking its constructor, an action otherwise called \textit{object instantiation}. We use the \ttt{new} keyword and pass the desired $x$ and $y$ coordinates. 
+By default, $p$ points to \ttt{null}, since we have not yet created an instance of the \ttt{Point} class. We can create an instance of the \ttt{Point} class by invoking its constructor, an action otherwise called \textit{object instantiation}\index{object instantiation}. We use the \ttt{new} keyword and pass the desired $x$ and $y$ coordinates. 
 
 \par{
 \begin{verbatim}
@@ -493,25 +493,19 @@ class Player {
 
   private final ArrayList<Card> HAND;
 
-  public Player() { 
-    this.HAND = new ArrayList<Card>(); 
-  }
+  public Player() { this.HAND = new ArrayList<Card>(); }
 
   /**
    * Adds a card to the player's hand.
    *
    * @param c card to add to the player's hand.
    */
-  public void addCard(Card c) { 
-    this.HAND.add(c); 
-  }
+  public void addCard(Card c) { this.HAND.add(c); }
 
   /**
    * Removes all cards from the player's hand.
    */
-  public void clearHand() { 
-    this.HAND.clear(); 
-  }
+  public void clearHand() { this.HAND.clear(); }
 
   /**
    * Determines the player's score.
