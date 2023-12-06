@@ -351,8 +351,29 @@ class ClassTester {
 
 To set the scene, we first declare \ttt{a} as an immutable instance of \ttt{A} with the string literal \ttt{"Hello!"}. Then, we instantiate objects \ttt{b} and \ttt{c} of types \ttt{B} and \ttt{C} respectively, each receiving \ttt{a} as an argument to their constructors. 
 
-Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two references to the same object. Because \ttt{a} is immutable, we cannot change its value, so both \ttt{b} and \ttt{c} will always refer to the same object. Therefore, we use \ttt{assertEquals} to compare the two references. In particular, passing \ttt{a} to both constructors passes a reference to the same object.
-%% Perhaps draw a diagram?
+Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two references to the same object. Because \ttt{a} is immutable, we cannot change its value, so both \ttt{b} and \ttt{c} will always refer to the same object. Therefore, we use \ttt{assertEquals} to compare the two references. In particular, passing \ttt{a} to both constructors passes a reference to the same object.\footnote{In Figure~\ref{fig:memoryref}, we use memory addresses to refer to the location of \ttt{a}. To be a bit pedantic, objects are not stored directly in system memory per se, but rather a location accessible by the Java Virtual Machine.}
+\begin{figure}[H]
+\begin{tikzpicture}
+  % Object a
+  \node[rectangle, draw] (a) {\texttt{a = 0xffff2345}};
+
+  % References b and c
+  \node[above left=of a,on grid,align=left] (b) {\texttt{B b = new B(a);}\\\texttt{b.getA();}};
+  \node[above right=of a,on grid, align=left] (c) {\texttt{C c = new C(a);}\\\texttt{c.getA();}};
+
+  % Arrows
+  \draw[-{Latex[length=2mm]}] (b) -> (a);
+  \draw[-{Latex[length=2mm]}] (c) -> (a);
+
+  % Annotations
+  \node[below=0.5cm of a] (note) {Both `\texttt{b.getA()}' and `\texttt{c.getA()}' refer to the same `\texttt{a}' instance in memory};
+\node[below of=note] (note2) {Assume `\texttt{a}' is instantiated as `\texttt{new A()}' and points to address \texttt{0xffff2345}};
+
+  % Equality Check Illustration (optional)
+  % ... (Can be an inset showing assertEquals usage)
+\end{tikzpicture}
+\label{fig:memoryref}
+\end{figure}
 
 Comparing \ttt{b.getA().getS()} against \ttt{c.getA().getS()} is a comparison of two references to the same object, similar to the previous problem, right? Wrong! Recall that the \ttt{String} class overrides the \ttt{.equals} method implementation to compare strings for their content rather than their reference. Should we choose to compare the two strings for referential equality, we must use the \ttt{==} operator. In this case, we use \ttt{assertEquals} since the two strings are equal in content, but using \ttt{==} would also work because the strings are also equal in reference.
 
@@ -432,7 +453,7 @@ class F {
   
   private final List<Integer> LS;
   
-  public F(List<Integer> ls) { this.KS = ls; }
+  public F(List<Integer> ls) { this.LS = ls; }
   
   public List<Integer> getList() { return this.LS; }
 }
