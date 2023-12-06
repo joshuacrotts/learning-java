@@ -991,7 +991,8 @@ class BigIntFibStream {
   /**
    * Returns a stream of BigInteger values computing the nth Fibonacci value.
    *
-   * @return stream.
+   * @return stream containing arrays of the next sequential Fibonacci BigIntegers.
+   */
    */
   public static Stream<BigInteger> fibonacciStream() {
     BigInteger[] vals = new BigInteger[]{new BigInteger("0"),

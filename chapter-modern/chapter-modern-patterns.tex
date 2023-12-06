@@ -1,8 +1,12 @@
 \section{Design Patterns}
 
+Part of the reason that we have spent so much time discussing object-oriented design is because it is a fundamental aspect of software engineering. In particular, we have discussed the importance of designing classes that are cohesive, loosely coupled, and adhere to the single responsibility principle. We have also discussed the importance of designing classes that are extensible, and how to do so through the use of inheritance and polymorphism. As software engineers, we are responsible for designing and implementing software that is scalable and maintainable. Scalable software does not explode in complexity when adding new features/functionality, or as the userbase grows. Maintainable software, on the other hand, is simple to understand and make incremental changes and fixes as time passes. 
+
+In this section we will discuss several \textit{design patterns}\index{design patterns}, which are common solutions to specific problems that arise largely in the context of object-oriented design. Design patterns are, of course, not specific to Java and can be implemented in any reasonable object-oriented language. 
+
 \subsection*{Command}
 
-The \textit{command} pattern is a simple pattern that encapsulates a request, of sorts, to some type of handler. The handler knows nothing about the request itself, only that the handler acts as a dispatch for invoking the request.
+The \textit{command}\index{command pattern} pattern is a simple pattern that encapsulates a request, of sorts, to some type of handler. The handler knows nothing about the request itself, only that the handler acts as a dispatch for invoking the request.
 
 \example{Suppose that we're writing a game that involves moving a player around an environment. We want to write a class that handles moving the player, but remains independent of the player implementation. First, we will say that the player executes some type of \ttt{Command}, which is an interface containing a sole \ttt{execute} method. Then, we will write a \ttt{Player} class containing \ttt{move} and \ttt{jump} methods, where the former increments their $x$ coordinate and jump increments their $y$ coordinate, starting from the origin.}
 
@@ -40,9 +44,7 @@ class MoveCommand implements Command {
   public MoveCommand(Player p) { this.player = p; }
 
   @Override
-  public void execute() {
-    this.player.setX(this.player.getX() + 1);
-  }
+  public void execute() { this.player.setX(this.player.getX() + 1); }
 }
 \end{lstlisting}
 \end{cl}
@@ -56,9 +58,7 @@ class JumpCommand implements Command {
   public JumpCommand(Player p) { this.player = p; }
 
   @Override
-  public void execute() {
-    this.player.setY(this.player.getY() + 1);
-  }
+  public void execute() { this.player.setY(this.player.getY() + 1); }
 }
 \end{lstlisting}
 \end{cl}
@@ -77,13 +77,9 @@ class InputHandler {
     this.yButton = yButton;
   }
 
-  public void pressXButton() {
-    this.xButton.execute();
-  }
+  public void pressXButton() { this.xButton.execute(); }
 
-  public void pressYButton() {
-    this.yButton.execute();
-  }
+  public void pressYButton() { this.yButton.execute(); }
 }
 \end{lstlisting}
 \end{cl}
@@ -118,7 +114,7 @@ As shown, we have decoupled the player from the handler, and the handler from th
 
 \subsection*{Factory}
 
-\example{To showcase our next pattern, we will design the \ttt{Fraction} class to represent mathematical fractions containing integer numerators and denominators. This example greatly resembles the rational number class in a previous chapter, but we introduce a twist to exemplify the benefits of the \textit{factory} pattern.}
+\example{To showcase our next pattern, we will design the \ttt{Fraction} class to represent mathematical fractions containing integer numerators and denominators. This example greatly resembles the rational number class in a previous chapter, but we introduce a twist to exemplify the benefits of the \textit{factory}\index{factory pattern} pattern.}
 
 \begin{cl}[FractionTester.java]{}
 \begin{lstlisting}[language=MyJava]

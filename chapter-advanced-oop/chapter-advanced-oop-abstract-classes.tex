@@ -572,7 +572,7 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
    * @return true if the objects overlap and false otherwise.
    */
   public boolean collidesWith(AxisAlignedBoundingBoxObject obj) {
-    return (this.getX() < obj.getX() + obj.width)   &&
+    return (this.getX() < obj.getX() + obj.width) &&
 	   (this.getX() + this.width >= obj.getX()) &&
  	   (this.getY() < obj.getY() + obj.height)  &&
 	   (this.getY() + this.height >= obj.height); 
