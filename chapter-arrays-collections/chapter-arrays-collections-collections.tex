@@ -313,11 +313,10 @@ class NumAverageTester {
 
   @Test
   void numAverageTest() {
-    Assertions.assertAll(
+    assertAll(
       () -> assertEquals(0, numAverage()),
       () -> assertEquals(5.66, numAverage(5, 2, 10)),
-      () -> assertEquals(55.2, numAverage(10, 65, 77, 81, 43))
-    );
+      () -> assertEquals(55.2, numAverage(10, 65, 77, 81, 43)));
   }
 }
 \end{lstlisting}
@@ -755,8 +754,7 @@ class IteratorTester {
       () -> assertEquals(10, it.next()),
       () -> assertEquals(0, it.next()),
       () -> assertEquals(90, it.next()),
-      () -> assertFalse(it.hasNext())
-    );
+      () -> assertFalse(it.hasNext()));
   }
 } 
 \end{lstlisting}
@@ -1026,8 +1024,7 @@ class SqListTester {
     assertAll(
       () -> assertEquals(ls1, sqList(new ArrayList<>(List.of(1, 2, 3, 4, 5)))),
       () -> assertEquals(ls2, sqList(new ArrayList<>(List.of(0, 10, 9, 9)))),
-      () -> assertEquals(ls3, sqList(new ArrayList<>()))
-    );
+      () -> assertEquals(ls3, sqList(new ArrayList<>())));
   }
 }
 \end{lstlisting}    
@@ -1082,8 +1079,7 @@ class RemoveVowelsStreamTester {
       () -> assertEquals("", StreamTests.removeVowels("aaaaaaaaaaaa")),
       () -> assertEquals("bbbbbbbbbb", StreamTests.removeVowels("bbbbbbbbbb")),
       () -> assertEquals("bbbbb", StreamTests.removeVowels("abababababa")),
-      () -> assertEquals("hll", StreamTests.removeVowels("aeiouAEIOU"))
-    );
+      () -> assertEquals("hll", StreamTests.removeVowels("aeiouAEIOU")));
   }
 }
 \end{lstlisting}
@@ -1134,8 +1130,7 @@ class OptionalTester {
       () -> assertEquals(op1, LS1.stream().max((a, b) -> a - b)),
       () -> assertEquals(op2, LS2.stream().max((a, b) -> a - b)),
       () -> assertEquals(42, LS1.stream().max((a, b) -> a - b).orElse(null));
-      () -> assertNull(LS2.stream().max((a, b) -> a - b).orElse(null))
-    );
+      () -> assertNull(LS2.stream().max((a, b) -> a - b).orElse(null)));
   }
 }
 \end{lstlisting}

@@ -89,8 +89,7 @@ class SumOfDoubleArrayTester {
     assertAll(
       () -> assertEquals(0.0, sumOfDoubles(new double[]{})),
       () -> assertEquals(50.0, sumOfDoubles(new double[]{50.0})),
-      () -> assertEquals(100.0, sumOfDoubles(new double[]{25.0, 50.0, 25.0}))
-    );
+      () -> assertEquals(100.0, sumOfDoubles(new double[]{25.0, 50.0, 25.0})));
   }
 }
 \end{lstlisting}
@@ -151,8 +150,7 @@ class LargestIntTester {
       assertEquals(-5, largestInt(new int[]{-5, -7, -1932, -6, -6})), 
       assertEquals(9, largestInt(new int[]{9, 9, 9, 9, 9, 9, 9, 9})), 
       assertEquals(0, largestInt(new int[]{-321, -43, 0, -43, -321})), 
-      assertEquals(0, largestInt(new int[]{-9, 0, -8, -7, -1234})) 
-    );
+      assertEquals(0, largestInt(new int[]{-9, 0, -8, -7, -1234})));
   }
 }
 \end{lstlisting}
@@ -194,8 +192,7 @@ class ArrayFinderTester {
       () -> assertEquals(2, indexOf(arrS, "hiya")),
       () -> assertEquals(0, indexOf(arrS, "Hello")),
       () -> assertEquals(4, indexOf(arrS, "hello")),
-      () -> assertEquals(-1, indexOf(arrS, "ahoy"))
-    );
+      () -> assertEquals(-1, indexOf(arrS, "ahoy")));
   }
 }
 \end{lstlisting}
@@ -216,8 +213,7 @@ class ArrayFinderTailRecursiveTester {
       () -> assertEquals(2, indexOfTR(arrS, "hiya")),
       () -> assertEquals(0, indexOfTR(arrS, "Hello")),
       () -> assertEquals(4, indexOfTR(arrS, "hello")),
-      () -> assertEquals(-1, indexOfTR(arrS, "ahoy"))
-    );
+      () -> assertEquals(-1, indexOfTR(arrS, "ahoy")));
   }
 }
 \end{lstlisting}
@@ -389,8 +385,7 @@ class ArrayArgumentsTester {
       () -> assertEquals(true, isFlagPresent(args, "--sum")),
       () -> assertEquals(true, isFlagPresent(args, "--max")),
       () -> assertEquals(true, isFlagPresent(args, "--min")),
-      () -> assertEquals(false, isFlagPresent(args, "--product"))
-    );
+      () -> assertEquals(false, isFlagPresent(args, "--product")));
   }
 }
 \end{lstlisting}
@@ -471,8 +466,7 @@ class SumOf2DArrayTester {
     assertAll(
       () -> assertEquals(78, sumOf2DArray(A)),
       () -> assertEquals(0, sumOf2DArray(new int[][]{})),
-      () -> assertEquals(1, sumOf2DArray(new int[][]{{1}}))
-    );
+      () -> assertEquals(1, sumOf2DArray(new int[][]{{1}})));
   }
 }
 \end{lstlisting}
@@ -520,8 +514,7 @@ class RookPathTester {
       () -> assertEquals(1, rook(0, 0, 1, 1)),
       () -> assertEquals(2, rook(0, 0, 2, 2)),
       () -> assertEquals(6, rook(0, 0, 3, 3)),
-      () -> assertEquals(10, rook(0, 0, 4, 4)),
-    );
+      () -> assertEquals(10, rook(0, 0, 4, 4)));
   }
 }
 \end{lstlisting}
@@ -575,8 +568,7 @@ class RookPathTester {
       () -> assertEquals(1, RookPath.rook(2, 3, 2, 3)),
       () -> assertEquals(2, RookPath.rook(1, 2, 2, 3)),
       () -> assertEquals(6, RookPath.rook(0, 1, 2, 3)),
-      () -> assertEquals(10, RookPath.rook(0, 0, 2, 3))
-    );
+      () -> assertEquals(10, RookPath.rook(0, 0, 2, 3)));
   }
 }
 \end{lstlisting}

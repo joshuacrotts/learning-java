@@ -82,9 +82,8 @@ There are two other common notations for asymptotic analysis: Big-Omega and Thet
   \fill[black] (intersection) circle (1.9pt);
   \draw[solid] (intersection) -- (1.5,0);
 \end{tikzpicture}
-\caption{}
+\caption{$f(n) = \Theta(g(n))$}
 \end{figure}
-
 
 The term ``asymptotic analysis'' stems from the fact that ``asymptotic'' behavior describes the behavior of a function as its input approaches infinity. 
 
@@ -311,7 +310,7 @@ Therefore, we are upper and lower-bounded by $\mathcal{O}(n^2)$ and $\Omega(n^2)
 \subsubsection*{Merge Sort}
 Merge sort is a bit more complicated to analyze, but we can do so by using a recurrence relation. We know that merge sort splits the input list into two halves, and recursively sorts each half. We also know that the base case is when the input list is of length $1$, in which case we return the list. Accordingly, we can write the recurrence relation, as a function $T(n)$, as follows:
 
-\straightbraces
+% \straightbraces
 \[
 T(n)=
   \begin{cases}
@@ -346,7 +345,7 @@ Finally, we will analyze the quick sort algorithm. In the best case, the pivot i
 
 Jumping down to the worst case, the pivot is always either the minimum or the maximum, meaning that all of the data is to one side of the pivot. As a piecewise equation, we know that the base case of quicksort is $T(n) = 1$ if $n \leq 1$. So, we get
 
-\straightbraces
+% \straightbraces
 \[
 T(n)=
   \begin{cases}

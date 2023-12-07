@@ -228,8 +228,7 @@ class BankAccountTester {
     assertAll(
       () -> b2.transfer(b1, 30),
       () -> assertEquals(30, b1.getAmount()),
-      () -> assertEquals(70, b2.getAmount())
-    );
+      () -> assertEquals(70, b2.getAmount()));
   }
 }
 \end{lstlisting}

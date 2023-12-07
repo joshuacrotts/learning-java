@@ -73,8 +73,7 @@ class TempConverterTester {
       () -> assertEquals(100, fahrenheitToCelsius(212)),
       () -> assertEquals(-40, fahrenheitToCelsius(40)),
       () -> assertEquals(-17.778, fahrenheitToCelsius(0), .01),
-      () -> assertEquals(-273.15, fahrenheitToCelsius(-459), .01)
-    );
+      () -> assertEquals(-273.15, fahrenheitToCelsius(-459), .01));
   }
 }
 \end{lstlisting}
@@ -144,8 +143,7 @@ class VectorDistanceTester {
     assertAll(
       assertEquals(8.66, computeDistance(3, 2, 1, 8, 7, 6), .01),
       assertEquals(12.20, computeDistance(0, 0, 0, 8, 7, 6), .01),
-      assertEquals(8.30, computeDistance(-8, -2, 1, 0, 0, 0), .01),
-    );
+      assertEquals(8.30, computeDistance(-8, -2, 1, 0, 0, 0), .01));
   }
 }
 \end{lstlisting}
@@ -215,8 +213,7 @@ class QuarticFormulaSolverTester {
       () -> assertEquals(13, solveQuartic(0)),
       () -> assertEquals(1501, solveQuartic(3)),
       () -> assertEquals(189613, solveQuartic(15)),
-      () -> assertEquals(258266, solveQuartic(16.25)),
-    );
+      () -> assertEquals(258266, solveQuartic(16.25)));
   }
 }
 \end{lstlisting}

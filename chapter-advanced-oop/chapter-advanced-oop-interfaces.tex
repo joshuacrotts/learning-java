@@ -40,8 +40,7 @@ class IShapeTester {
       () -> assertEquals(1.72, p1.area(), DELTA),
       () -> assertEquals(90.43, p2.area(), DELTA),
       () -> assertEquals(5, p1.perimeter(), DELTA),
-      () -> assertEquals(36.25, p2.perimeter(), DELTA), 
-    );
+      () -> assertEquals(36.25, p2.perimeter(), DELTA));
   }
 
   @Test
@@ -52,8 +51,7 @@ class IShapeTester {
       () -> assertEquals(4.83, o1.area(), DELTA),
       () -> assertEquals(253.79, o2.area(), DELTA),
       () -> assertEquals(8, o1.perimeter(), DELTA),
-      () -> assertEquals(58, o2.perimeter(), DELTA), 
-    );
+      () -> assertEquals(58, o2.perimeter(), DELTA));
   }
 }
 \end{lstlisting}
@@ -367,8 +365,7 @@ class IBoxTester {
     assertAll(
       () -> assertEquals(5, box.get()),
       () -> modifyBox(box, 10),
-      () -> assertEquals(10, box.get())
-    );
+      () -> assertEquals(10, box.get()));
   }
 }
 \end{lstlisting}
@@ -429,8 +426,7 @@ class AddOneTester {
     assertAll(
       () -> assertEquals(0, AddOne.apply(1)),
       () -> assertEquals(3, AddOne.apply(2)),
-      () -> assertEquals(30001, AddOne.apply(30000)),
-    );
+      () -> assertEquals(30001, AddOne.apply(30000)));
   }
 }
 \end{lstlisting}
@@ -462,8 +458,7 @@ class FunctionMapTester {
     Function<Integer, Integer> addOne = new AddOne();
     assertAll(
       () -> assertEquals(List.of(2, 3, 4, 5, 6), FunctionMap.map(l, addOne)),
-      () -> assertEquals(List.of(), FunctionMap.map(List.of(), addOne))
-    );
+      () -> assertEquals(List.of(), FunctionMap.map(List.of(), addOne)));
   }
 }
 \end{lstlisting}
@@ -507,9 +502,8 @@ class FunctionMapTester {
     assertAll(
       () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, FunctionMapTester::addOne)),
       () -> assertEquals(List.of(), map(List.of(), FunctionMapTester::addOne)),
-      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, i -> i + 1))
-      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(List.of(), i -> i + 1))
-    );
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, i -> i + 1)),
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(List.of(), i -> i + 1)));
   }
 }
 \end{lstlisting}
@@ -542,8 +536,7 @@ class LitTester {
   void testLit() {
     assertAll(
       () -> assertEquals(0, new Lit(0).value()),      
-      () -> assertEquals(42, new Lit(42).value())
-    );
+      () -> assertEquals(42, new Lit(42).value()));
   }
 }
 \end{lstlisting}
@@ -581,8 +574,7 @@ class AddTester {
       () -> assertEquals(12, new Add(new Lit(5), new Add(new Lit(3), new Lit(4)))),
       () -> assertEquals(42, new Add(new Lit(41), new Lit(1))),
       () -> assertEquals(101, new Add(new Add(new Lit(123), new Lit(-43)),
-                                      new Add(new Lit(2), new Lit(19))))
-    );
+                                      new Add(new Lit(2), new Lit(19)))));
   }
 }
 \end{lstlisting}
@@ -706,8 +698,7 @@ class DoublyLinkedListTester {
       () -> list.add(4),
       () -> list.add(1),
       () -> list.add(5),
-      () -> assertEquals("[1, 2, 3, 4, 1, 5]", list.toString())
-    );
+      () -> assertEquals("[1, 2, 3, 4, 1, 5]", list.toString()));
   }
 }
 \end{lstlisting}
@@ -767,8 +758,7 @@ class DoublyLinkedListTester {
       () -> assertEquals(Optional.of(1000), list.get(3)),
       () -> assertEquals(Optional.of(10000), list.get(4)),
       () -> assertEquals(Optional.of(50), list.get(5)),
-      () -> assertEquals(Optional.empty(), list.get(6))
-    );
+      () -> assertEquals(Optional.empty(), list.get(6)));
   }
 }
 \end{lstlisting}
@@ -810,6 +800,8 @@ Finally we arrive at element removal, which is not as cut-and-dry. We want to pa
   \item If the element-to-remove $e$ is not in the list, do nothing.
 \end{enumerate}
 
+And that completes the example.
+
 \begin{cl}[DoublyLinkedListTester.java]{Testing the Doubly-Linked List Remove Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -831,12 +823,12 @@ class DoublyLinkedListTester {
       () -> list.remove(25),
       () -> assertEquals("[]", list.toString()),
       () -> list.remove(25),
-      () -> assertEquals("[]", list.toString())
-    );
+      () -> assertEquals("[]", list.toString()));
   }
 }
 \end{lstlisting}
 \end{cl}
+
 
 \begin{cl}[DoublyLinkedList.java]{Doubly-Linked List Remove Method}
 \begin{lstlisting}[language=MyJava]
@@ -876,8 +868,6 @@ class DoublyLinkedList<T> {
 \end{lstlisting}
 \end{cl}
 
-And that completes the example.
-
 \example{Some programming languages do not come standard with data structures such as \ttt{Map} or, if they do, they are cumbersome to utilize. A substitute for the common mapping data structure is called an \textit{association list}, originating with the Lisp programming language. Its desired purpose is nearly identical to that of a map, but with worse performance implications. In this example we will design such a structure, as if \ttt{Map} did not exist in Java.}
 
 Associations lists, as their name implies, associate values to other values, just like a map. In dynamically-typed languages, e.g., Scheme, association lists accept any type as their key and any type as their value. Therefore, we could have an association list that maps a string to an integer, or an integer to a list of strings, and so on. Should we want to use truly arbitrary types in the list, we can assign \ttt{Object} to both key and value types.
@@ -905,8 +895,7 @@ class AssociationListTester {
       () -> assertEquals(Optional.of(3), list.lookup("c")),
       () -> assertEquals(Optional.of(2), list.lookup("b")),
       () -> assertEquals(Optional.of(1), list.lookup("a")),
-      () -> assertEquals(Optional.empty(), list.lookup("d"))
-    );
+      () -> assertEquals(Optional.empty(), list.lookup("d")));
   }
 }
 \end{lstlisting}

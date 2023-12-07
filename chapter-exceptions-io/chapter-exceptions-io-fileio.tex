@@ -93,7 +93,7 @@ class FileReaderWriterExamples {
 \end{lstlisting}
 \end{cl}
 
-If we open the \ttt{file2.out}, we see that it outputs \ttt{"Here is a string"} on one line, followed by \ttt{"Here is another string"} on the next line. Then, we might expect it to output the numeric strings \ttt{"9"}, \ttt{"71"}, and \ttt{"33"} all on the same line. The \ttt{write} method will coerce (valid) numbers into their ASCII character counterparts, meaning that the file contains the tab character, an uppercase \ttt{'G'}, and the exclamation point \ttt{'!'}. As we will soon demonstrate, working directly with \ttt{FileReader} and \ttt{FileWriter} is rarely advantageous. 
+If we open the \ttt{file2.out}, we see that it outputs \ttt{"Here is a string"} on one line, followed by \ttt{"Here is another string"} on the next line. Then, we might expect it to output the numeric strings \ttt{"9"}, \ttt{"71"}, and \ttt{"33"} all on the same line. The \ttt{write} method will coerce (valid) numbers into their ASCII character counterparts, meaning that the file contains the tab character, an uppercase \ttt{`G'}, and the exclamation point \ttt{`!'}. As we will soon demonstrate, working directly with \ttt{FileReader} and \ttt{FileWriter} is rarely advantageous. 
 
 The problem with the file input and output stream classes, as well as the file reader and writer classes, is that they interact directly with the operating system using low-level operations. Constantly invoking these low-level operations is expensive on the CPU for various reasons, and these classes read/write byte-after-byte of data, which is horribly inefficient. The \ttt{BufferedReader} and \ttt{BufferedWriter} classes aim to alleviate this problem by instantiating buffers for data. Then, when the buffer is full, the data is flushed to either the source or destination. This way, the program makes fewer operating system-level calls, improving overall program performance. To read from a stream, as suggested, we use \ttt{BufferedReader}. Its constructor receives an instance of the \ttt{Reader} class, which may be one of several classes. For example, to read from a file, we wrap a \ttt{FileReader} inside the constructor of \ttt{BufferedReader}. Wrapping a \ttt{FileReader} inside a \ttt{BufferedReader} allows the buffered reader to interplay (using its optimization techniques) with the file reader, which in turn interacts with the operating system. To output data using buffered I/O, we use the analogous \ttt{BufferedWriter} class, which receives a \ttt{Writer} instance. 
 
@@ -273,8 +273,7 @@ class EmployeeScannerTester {
     assertAll(
       () -> assertEquals(emps.get(0).toString(), "[123] Smith, John | 100000.00 | FT?=false"),
       () -> assertEquals(emps.get(1).toString(), "[456] Doe, Jane | 75000.00 | FT?=true"),
-      () -> assertEquals(emps.get(2).toString(), "[789] Jones, Bob | 50000.00 | FT?=false")
-    );
+      () -> assertEquals(emps.get(2).toString(), "[789] Jones, Bob | 50000.00 | FT?=false"));
   }
 }
 \end{lstlisting}
@@ -363,8 +362,7 @@ class LineWordCharCounterTester {
     assertAll(
       () -> assertEquals(counts[0], 3),
       () -> assertEquals(counts[1], 14),
-      () -> assertEquals(counts[2], 46)
-    );
+      () -> assertEquals(counts[2], 46));
   }
 }
 \end{lstlisting}

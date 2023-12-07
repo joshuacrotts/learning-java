@@ -51,8 +51,7 @@ class RobotTester {
       () -> r1.turnLeft(),
       () -> assertEquals(Robot.Direction.EAST, r1.getDir()),
       () -> r1.moveForward(),
-      () -> assertEquals(1, r1.getX())
-    );
+      () -> assertEquals(1, r1.getX()));
   }
 }
 \end{lstlisting}
@@ -122,8 +121,7 @@ class RightRobotTester {
       () -> r1.turnRight(),
       () -> assertEquals(RightRobot.Direction.WEST, r1.getDir()),
       () -> r1.turnLeft(),
-      () -> assertEquals(RightRobot.Direction.SOUTH, r1.getDir())
-    );
+      () -> assertEquals(RightRobot.Direction.SOUTH, r1.getDir()));
   }
 }
 \end{lstlisting}
@@ -167,8 +165,7 @@ class MileMoverRobotTester {
       () -> assertEquals(10, r1.getX()),
       () -> r1.turnLeft(),
       () -> r1.moveForward(),
-      () -> assertEquals(10, r1.getY()),
-    )
+      () -> assertEquals(10, r1.getY()))
   }
 }
 \end{lstlisting}
@@ -240,9 +237,7 @@ class WorldObject {
 \begin{lstlisting}[language=MyJava]
 class BeeperObject extends WorldObject {
   
-  public BeeperObject() { 
-    super(); 
-  }
+  public BeeperObject() { super(); }
 }
 \end{lstlisting}
 \end{cl}

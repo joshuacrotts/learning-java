@@ -103,8 +103,7 @@ class CommandTester {
       () -> handler.pressXButton(),
       () -> assertEquals(1, p.getX()),
       () -> handler.pressYButton(),
-      () -> assertEquals(1, p.getY())
-    );
+      () -> assertEquals(1, p.getY()));
   }
 }
 \end{lstlisting}
@@ -129,8 +128,7 @@ class FractionTester {
       () -> assertEquals("1/1", new Fraction(1, 1).toString()),
       () -> assertEquals("1/2", new Fraction(1, 2).toString()),
       () -> assertEquals("17/312", new Fraction(17, 312).toString()),
-      () -> assertEquals("321/199", new Fraction(321, 199).toString())
-    );
+      () -> assertEquals("321/199", new Fraction(321, 199).toString()));
 
     // Test random allocations of 1/2.
     for (int i = 0; i < 500_000; i++) {
@@ -178,8 +176,7 @@ class FractionFactoryTester {
       () -> assertEquals("1/1", ff.create(1, 1).toString()),
       () -> assertEquals("1/2", ff.create(1, 2).toString()),
       () -> assertEquals("17/312", ff.create(17, 312).toString()),
-      () -> assertEquals("321/199", ff.create(321, 199).toString())
-    );
+      () -> assertEquals("321/199", ff.create(321, 199).toString()));
 
     // Check to see that all of the allocations are the same.
     Fraction f1 = ff.create(1, 2);
@@ -352,8 +349,7 @@ class PersonDatabaseTester {
       () -> assertTrue(db.lookup("Willard Van Orman Quine") instanceof Faculty),
       () -> assertTrue(db.lookup("Alan Mathison Turing") instanceof Student),
       () -> assertTrue(db.lookup("John von Neumann") instanceof Staff),
-      () -> assertTrue(db.lookup("Stephen Cole Kleene") instanceof Faculty)
-    );
+      () -> assertTrue(db.lookup("Stephen Cole Kleene") instanceof Faculty));
   }
 }
 \end{lstlisting}
@@ -385,8 +381,7 @@ class UrlTester {
                        .port(80)
                        .path("search");
     assertAll(
-      () -> assertEquals("http://www.google.com:80/search", url.toString())
-    );
+      () -> assertEquals("http://www.google.com:80/search", url.toString()));
   }
 }
 \end{lstlisting}
@@ -507,8 +502,7 @@ class ExpressionPrinterVisitorTester {
                           new NumNode(3)));
     String result = expr.visit(new ExpressionPrinterVisitor());
     assertAll(
-      () -> assertEquals("(+ 1 (* 2 3))", result)
-    );
+      () -> assertEquals("(+ 1 (* 2 3))", result));
   }
 
   @Test
@@ -520,8 +514,7 @@ class ExpressionPrinterVisitorTester {
                           new NumNode(2)));
     String result = expr.visit(new ExpressionPrinterVisitor());
     assertAll(
-      () -> assertEquals("(let ([x 1])\n  (+ x 2))", result)
-    );
+      () -> assertEquals("(let ([x 1])\n  (+ x 2))", result));
   }
 }
 \end{lstlisting}
@@ -662,8 +655,7 @@ class GroceryListTotalVisitorTester {
       () -> assertEquals(5.60, groceryList.stream()
                                           .mapToDouble(item -> 
                                             item.visit(new GroceryListTotalVisitor()))
-                                          .sum())
-    );
+                                          .sum()));
   }
 }
 \end{lstlisting}

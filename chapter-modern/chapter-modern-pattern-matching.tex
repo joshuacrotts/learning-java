@@ -14,11 +14,10 @@ class PatternMatchingTester {
     IShape rectangle = new Rectangle(5, 10);
     IShape triangle = new Triangle(5);
 
-    assertAll() {
+    assertAll(
       () -> assertEquals(31.41592653589793, perimeter(circle)),
       () -> assertEquals(30, perimeter(rectangle)),
-      () -> assertEquals(15, perimeter(triangle))
-    }
+      () -> assertEquals(15, perimeter(triangle)));
   }
 }
 \end{lstlisting}
@@ -64,8 +63,7 @@ class FactorialTester {
       () -> assertEquals(2, factorial(2)),
       () -> assertEquals(6, factorial(3)),
       () -> assertEquals(24, factorial(4)),
-      () -> assertEquals(120, factorial(5))
-    );
+      () -> assertEquals(120, factorial(5)));
   }
 }
 \end{lstlisting}
@@ -138,8 +136,7 @@ class RectangleTester {
     assertAll(
       () -> assertEquals(r1, r2),
       () -> assertNotEquals(r1, r3),
-      () -> assertNotEquals(r1, "Hello!")
-    );
+      () -> assertNotEquals(r1, "Hello!"));
   }
 }
 \end{lstlisting}
@@ -191,8 +188,7 @@ class EvaluatorTest {
       () -> assertEquals(new BigDecimal("42"),
                          Evaluator.eval(new Number(42))),
       () -> assertEquals(new BigDecimal("42"),
-                         Evaluator.eval(new Add(new Number(41), new Number(1))))
-    );
+                         Evaluator.eval(new Add(new Number(41), new Number(1)))));
   }
 }
 \end{lstlisting}
@@ -264,8 +260,7 @@ class ReflectiveCalculatorTester {
       () -> assertEquals(5, calculate(new String[] {"add", "2", "3"}), DELTA),
       () -> assertEquals(5, calculate(new String[] {"subtract", "10", "5"}), DELTA),
       () -> assertEquals(10, calculate(new String[] {"multiply", "2", "5"}), DELTA),
-      () -> assertEquals(2, calculate(new String[] {"divide", "10", "5"}), DELTA)
-    );
+      () -> assertEquals(2, calculate(new String[] {"divide", "10", "5"}), DELTA));
   }
 }
 \end{lstlisting}

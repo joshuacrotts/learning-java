@@ -36,8 +36,7 @@ class ILinearSearchTest {
       () -> assertThrows(NoSuchElementException.class, 
                          () -> ls.linearSearch(LS2, 13)),
       () -> assertEquals(8, ls.linearSearch(LS2, 9)),
-      () -> assertEquals(0, ls.linearSearch(LS2, 1)),
-    );
+      () -> assertEquals(0, ls.linearSearch(LS2, 1)));
   }
 
   @Test
@@ -52,8 +51,7 @@ class ILinearSearchTest {
       () -> assertEquals(2, ls.linearSearch(LS2, 3)),
       () -> assertThrows(-1, ls.linearSearch(LS2, 13)),
       () -> assertEquals(8, ls.linearSearch(LS2, 9)),
-      () -> assertEquals(0, ls.linearSearch(LS2, 1)),
-    );
+      () -> assertEquals(0, ls.linearSearch(LS2, 1)));
   }
 
   @Test
@@ -68,8 +66,7 @@ class ILinearSearchTest {
       () -> assertEquals(2, ls.linearSearch(LS2, 3)),
       () -> assertThrows(-1, ls.linearSearch(LS2, 13)),
       () -> assertEquals(8, ls.linearSearch(LS2, 9)),
-      () -> assertEquals(0, ls.linearSearch(LS2, 1)),
-    );
+      () -> assertEquals(0, ls.linearSearch(LS2, 1)));
   }
 }
 \end{lstlisting}
@@ -186,8 +183,7 @@ class IBinarySearchTest {
       () -> assertEquals(2, ls.binarySearch(LS2, 3)),
       () -> assertEquals(-1, ls.binarySearch(LS2, 13)),
       () -> assertEquals(8, ls.binarySearch(LS2, 9)),
-      () -> assertEquals(0, ls.binarySearch(LS2, 1))
-    );
+      () -> assertEquals(0, ls.binarySearch(LS2, 1)));
   }
   
   @Test
@@ -202,8 +198,7 @@ class IBinarySearchTest {
       () -> assertEquals(2, ls.binarySearch(LS2, 3)),
       () -> assertEquals(-1, ls.binarySearch(LS2, 13)),
       () -> assertEquals(8, ls.binarySearch(LS2, 9)),
-      () -> assertEquals(0, ls.binarySearch(LS2, 1))
-    );
+      () -> assertEquals(0, ls.binarySearch(LS2, 1)));
   }
 }
 \end{lstlisting}
@@ -317,8 +312,7 @@ class IBinarySearchTester {
       () -> assertEquals(0, search.binarySearch(ls, 1, c));
       () -> assertEquals(9, search.binarySearch(ls, 10, c));
       () -> assertEquals(4, search.binarySearch(ls, 5, c));
-      () -> assertEquals(-1, search.binarySearch(ls, 11, c));
-    );
+      () -> assertEquals(-1, search.binarySearch(ls, 11, c)));
   }
 }
 \end{lstlisting}

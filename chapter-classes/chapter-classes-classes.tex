@@ -172,8 +172,7 @@ class PointTester {
       () -> assertEquals(5, P1.distance(P3), DELTA),
       () -> assertEquals(5, P3.distance(P1), DELTA),
       () -> assertEquals(5, P2.distance(P3), DELTA),
-      () -> assertEquals(5, P3.distance(P2), DELTA)
-    );
+      () -> assertEquals(5, P3.distance(P2), DELTA));
   }
 }
 \end{lstlisting}
@@ -364,8 +363,7 @@ class CardTest {
       () -> assertEquals("2 of (*;$\clubsuit$;*)", new Card(Suit.CLUBS, 2).toString()),
       () -> assertEquals("3 of (*;$\diamondsuit$;*)", new Card(Suit.DIAMONDS, 3).toString()),
       () -> assertEquals("4 of (*;$\heartsuit$;*)", new Card(Suit.HEARTS, 4).toString()),
-      () -> assertEquals("5 of (*;$\spadesuit$;*)", new Card(Suit.SPADES, 5).toString())
-    );
+      () -> assertEquals("5 of (*;$\spadesuit$;*)", new Card(Suit.SPADES, 5).toString()));
   }
 }
 \end{lstlisting}
@@ -407,8 +405,7 @@ class DeckTest {
       () -> assertEquals("10 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
       () -> assertEquals("10 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
       () -> assertEquals("10 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
-      () -> assertEquals("9 of (*;$\diamondsuit$;*)", d.drawCard().toString()),
-    );
+      () -> assertEquals("9 of (*;$\diamondsuit$;*)", d.drawCard().toString()));
   }
 
   @Test
@@ -615,8 +612,7 @@ class RationalTester {
       () -> assertEquals("3591/46562", new Rational(7182, 93124).toString()),
       () -> assertEquals("7/32", new Rational(7, 32).toString()),
       () -> assertEquals("39483123/99938432", new Rational("493539/12492304").toString()),
-      () -> assertEquals("1/1", new Rational(1, 1).toString()),
-    );
+      () -> assertEquals("1/1", new Rational(1, 1).toString()));
   }
 }
 \end{lstlisting}

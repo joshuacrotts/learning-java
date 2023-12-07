@@ -45,8 +45,7 @@ class IllegalArgumentExceptionExampleTester {
   void iaeExampleTester {
     assertAll(
       () -> assertThrows(IllegalArgumentException.class, () -> div(5, 3, 0)),
-      () -> assertDoesNotThrow(div(5, 3, 1))
-    );
+      () -> assertDoesNotThrow(div(5, 3, 1)));
   }
 }
 \end{lstlisting}
@@ -107,8 +106,7 @@ class IndexOutOfBoundsExceptionExampleTester {
       () -> assertThrows(ArrayIndexOutOfBoundsException.class, () -> ex2[17]);
       () -> assertThrows(ArrayIndexOutOfBoundsException.class, () -> ex2[-1]);
       () -> assertDoesNotThrow(() -> ex2[0]),
-      () -> assertDoesNotThrow(() -> ex2[ex2.length - 1]),
-    );
+      () -> assertDoesNotThrow(() -> ex2[ex2.length - 1]));
   } 
 }
 \end{lstlisting}

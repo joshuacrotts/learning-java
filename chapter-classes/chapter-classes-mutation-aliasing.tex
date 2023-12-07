@@ -179,8 +179,7 @@ class MiniArrayListTester {
       () -> assertEquals(3, list.size()),
       () -> assertEquals(100, list.get(0)),
       () -> assertEquals(200, list.get(1)),
-      () -> assertEquals(300, list.get(2))
-    );
+      () -> assertEquals(300, list.get(2)));
   }
 }
 \end{lstlisting}
@@ -223,7 +222,6 @@ We will write two more methods: \ttt{insert} and \ttt{remove}, which inserts an 
 \begin{cl}[MiniArrayListTester.java]{Testing \ttt{MiniArrayList} \ttt{insert} and \ttt{remove} Methods}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
-import static Assertions.assertEquals;
 
 class MiniArrayListTester {
 
@@ -237,8 +235,7 @@ class MiniArrayListTester {
       () -> assertEquals(3, list.size()),
       () -> assertEquals(100, list.get(0)),
       () -> assertEquals(150, list.get(1)),
-      () -> assertEquals(300, list.get(2))
-    );
+      () -> assertEquals(300, list.get(2)));
   }
 
   @Test
@@ -249,8 +246,7 @@ class MiniArrayListTester {
     list.remove(0);
     assertAll(
       () -> assertEquals(1, list.size()),
-      () -> assertEquals(300, list.get(0))
-    );
+      () -> assertEquals(300, list.get(0)));
   }
 }
 \end{lstlisting}
