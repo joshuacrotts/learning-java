@@ -1,0 +1,110 @@
+\section{API Connectivity}
+Writing programs that interact with the outside world is outrageously common in modern programming. We have explored this idea with reading from standard input, files, and other data streams. There are many other ways to connect to the outside world, one of which is via an API, or Application Programming Interface. In this context, an API refers to the functions that a server provides to allow external programs to connect and retrieve data. Understanding how an API connection works is a valuable skill to have, and we will show some examples of how to 1. connect to an API, 2. parse the data, and 3. use the data in a meaningful way.
+
+\example{Consider a program that needs to retrieve the current weather conditions for a given latitude and longitude. Let's write a program that connects to the OpenMeteo weather API, sends a request for weather data, and then parses the response.}
+
+First, we need to understand how to connect to an server-based API in Java. In general, when querying a server, we are sending what's called a GET request over HTTP (Hypertext Transfer Protocol). A GET request is comprised of an address, as well as parameters to tell the API what data the request asks for. In our case, we want to send a GET request to the OpenMeteo API, and we want to ask for the current weather conditions at a given latitude and longitude. The address for the OpenMeteo API is \url{https://api.open-meteo.com/v1/forecast}. Because we want to retrieve the weather for a given latitude and longitude case, we need to add these parameters \texttt{latitude} and \texttt{longitude} onto the end of the address. Parameters to a GET request are separated by ampersands, and preceded by a question mark. For instance, the full address to fetch the weather for Bloomington, Indiana is \url{https://api.open-meteo.com/v1/forecast?latitude=...\&...}. Pasting this into a browser, we see that the browser makes the request and returns a response in the form of a JSON (JavaScript Object Notation) object, which is a common format for data transfer. To make adding additional parameters down the road easier, we will store them as strings that map to strings in a map, then concatenate them into the resulting URL string.
+
+Now, we want to see how to do this in Java. We can create a \ttt{URL} instance with our address, and open a connection to the server by casting the \ttt{URL} to a \ttt{HttpURLConnection}. We also must tell the connection what type of request we are making, which in this case is a GET request. After establishing the connection, we must check the response code to ensure that the request was successful. Success is indicated by a response code of 200. Should the connection return a response code other than 200, we can throw some form of exception. On the other hand, if the connection succeeded, we read the response back from the server via some input stream reader. The simplest way is to use a \ttt{BufferedReader} to read the response line-by-line.
+
+\begin{cl}[ApiConnection.java]{}
+\begin{lstlisting}[language=MyJava]
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+class ApiConnection {
+
+  public static void main(String[] args) {
+    try {
+      // Bind the parameters to their values.
+      Map<String, String> parameters = new HashMap<>();
+      parameters.put("latitude", "39.1653");
+      parameters.put("longitude", "-86.5264");
+
+      // Create a URL with the link, then concatenate each parameter.
+      StringBuilder baseUrl = new StringBuilder("https://api.open-meteo.com/v1/forecast?");
+      for (String s : parameters.keySet()) { 
+        baseUrl.append(String.format("%s&%s", s, parameters.get(s))); 
+      }
+    
+      // Open the connection and set the request to GET.
+      URL url = new URL(baseUrl.toString());
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn.setRequestMethod("GET");
+      int resp = conn.getResponseCode();
+      if (resp != 200) {
+        throw new RuntimeException("main: response code " + resp + " was not 200.");
+      } else {
+        try (BufferedReader br = new BufferedReader(
+                                 new InputStreamReader(conn.getInputStream()))) {
+          StringBuffer response = new StringBuffer();
+          String inputLine = null;
+          while ((inputLine = input.readLine()) != null) { response.append(inputLine); }
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Again, the response that we receive from the API is in the JSON format, but at the moment, all we have is a large string, returned from the API, that takes the form of a JSON object. We therefore need to parse this string into a JSON object that we can then use in our program to retrieve fields and values. The question is, how do we do that? We need to take advantage of a library that can parse JSON data.\footnote{We could, and is indeed a great exercise in working with real-world data and parsing techniques, write our own JSON parser.} There are dozens to choose from, but thankfully, JSON is a simple format to understand, meaning many of the APIs are largely the same, so we shall use \textit{JSON-java} by ``stleary". We wrap our data, which we retrieved from the API, inside the constructor of a \ttt{JSONObject} instance. Doing so converts our raw string data into an object that we can traverse and access keys inside. 
+
+JSON stores its data in terms of keys and recursive values. By ``recursive values'', we mean that the values may, themselves, be keys to other objects. Therefore it is sensible to conclude that JSON is somewhat akin to a ``multi-level'' map. 
+
+Looking at the raw JSON is a good idea, since it helps us to distinguish between the important keys and values returned from the API. Passing only the latitude and longitude as HTTP parameters is not sufficient; we must also tell the API what data we want associated with that particular location. According to the open-meteo API, to view the current temperature, we must append the \ttt{current} key with the \ttt{temperature\_2m} value into the request parameters. Rerunning this request now shows the data split into two distinct JSON Objects: \ttt{current\_units} and \ttt{current}. The former, as its name might suggest, acts as a one-to-one mapping to the keys in \ttt{current}, where each entry associates the data with a specific unit. By default, for instance, the temperature is reported in degrees Celsius, which the API informs us. We also see the interval at which the API polls its temperature sensors/collectors: every 900 seconds, or every fifteen minutes. Now, how do we access this data in our program? We, of course, have a \ttt{JSONObject} instance, namely $e$, that encapsulates the raw JSON data, and we need to retrieve the temperature. From looking at the response, as we said, the temperature is a key inside the \ttt{"current"} object, which resides within $e$. We access this object by calling \ttt{.getJSONObject} on the JSONObject, which, itself, is a JSONObject that we can manipulate. Finally, we need to retrieve the value associated with the \ttt{"temperature"} key, that of which we know to be a \ttt{double}, i.e., a numeric temperature.
+
+\begin{cl}[ApiConnection.java]{}
+\begin{lstlisting}[language=MyJava]
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import org.json.JSONObject;
+
+class ApiConnection {
+
+  public static void main(String[] args) {
+    try {
+      // Bind the parameters to their values.
+      Map<String, String> parameters = new HashMap<>();
+      parameters.put("latitude", "39.1653");
+      parameters.put("longitude", "-86.5264");
+      parameters.put("current", "temperature_2m");
+
+      // Create a URL with the link, then concatenate each parameter.
+      StringBuilder baseUrl = new StringBuilder("https://api.open-meteo.com/v1/forecast?");
+      for (String s : parameters.keySet()) { 
+        baseUrl.append(String.format("%s&%s", s, parameters.get(s))); 
+      }
+    
+      // Open the connection and set the request to GET.
+      URL url = new URL(baseUrl.toString());
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn.setRequestMethod("GET");
+      int resp = conn.getResponseCode();
+      if (resp != 200) {
+        throw new RuntimeException("main: response code " + resp + " was not 200.");
+      } else {
+        try (BufferedReader br = new BufferedReader(
+                                 new InputStreamReader(conn.getInputStream()))) {
+          StringBuffer response = new StringBuffer();
+          String inputLine = null;
+          while ((inputLine = input.readLine()) != null) { response.append(inputLine); }
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+And that (which, admittedly, is a lot) is all there is to reading data from an API. This project introduces a lot of new concepts, but it opens up a whole new world of possibilities for programs; we can now connect to any (public) API and retrieve data and make decisions based on that data.
