@@ -667,11 +667,8 @@ The standard recursive algorithm is trivial to write but also horribly inefficie
 class Fibonacci {
 
   static int fib(int n) {
-    if (n <= 1) {
-      return n;
-    } else {
-      return fib(n - 1) + fib(n - 2);
-    }
+    if (n <= 1) { return n; } 
+    else { return fib(n - 1) + fib(n - 2); }
   }
 }
 \end{lstlisting}

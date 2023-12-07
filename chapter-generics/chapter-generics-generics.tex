@@ -135,3 +135,54 @@ class GenericMax {
 }
 \end{lstlisting}
 \end{cl}
+
+\subsubsection*{Wildcards and Unspecific Bounds}
+Sometimes we want to specify that a collection contains different, but related, types. If we declare a \ttt{List<Integer>}, then Java throws a compile-time error if we attempt to pass, say, an unboxed \ttt{double}, since a \ttt{Double} is not of type \ttt{Integer}. As a solution, Java allows the programmer to enforce \textit{wildcard} bounds on the type of a generic. 
+
+\example{Reusing the example that we just talked about, if we want to store both \ttt{Integer} and \ttt{Double} objects in the same collection, we need to look to see how they are related. Both of these classes extend the \ttt{Number} superclass, so we can place an upper-bound on the type parameter to say that anything that extends \ttt{Number}, whatever it may be, can be stored in the collection. Wildcards are denoted via the question mark: `\ttt{?}', to represent that it can be substituted with any other type that meets the bound criteria. Our example method, which computes the sum of a list of numbers, requires the substitutable type to be a subclass of \ttt{Number}.}
+
+\begin{cl}[NumberListTester.java]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+
+class NumberListTester {
+
+  private static final double DELTA = 0.0000001;
+
+  @Test
+  void testSum() {
+    assertAll(
+      () -> assertEquals(0, NumberList.sum(List.of())),
+      () -> assertEquals(42, 
+                         NumberList.sum(
+                           List.of(-0.2f, -1, (short) 43, 2.6d, (byte) 100, -100L, -2.4f)),
+                         DELTA));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[NumberList.java]{}
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+
+class NumberList {
+
+  /**
+    * Computes the sum of a list of Number subclasses.
+    * @param ls list of Number instances.
+    * @return sum as a double.
+    */
+  public static double sum(List<? extends Number> ls) {
+    return ls.stream()
+              .mapToDouble(Number::doubleValue)
+              .sum();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example{Lower-bounded type parameters are the dual to upper-bounded type parameters. If we want to restrict our possible types in a generic implementation to be only superclasses of a type, we can easily do so. For instance, the following code specifies that the input list can only contain objects that are superclasses of \ttt{Integer}, or are \ttt{Integer} itself. Unfortunately, the only classes that are ancestors/superclasses of \ttt{Integer} are \ttt{Number} and \ttt{Object}, which severely limits what we can do with our list. For the sake of an example, we might return a string containing the ``stringified'' elements, separated by commas, enclosed by brackets.}
