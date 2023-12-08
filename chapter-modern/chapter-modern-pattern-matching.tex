@@ -4,7 +4,7 @@ Pattern matching is a powerful tool for working with data. It allows the program
 
 \example{Suppose we want to write a method that uses pattern matching to compute the perimeter of an \ttt{IShape}. We can do this by matching on the shape and then computing the perimeter for each type of shape.}
 
-\begin{cl}[PatternMatchingTester.java]{Example of Pattern Matching}
+\begin{cl}[]{Example of Pattern Matching}
 \begin{lstlisting}[language=MyJava]
 class PatternMatchingTester {
 
@@ -25,7 +25,7 @@ class PatternMatchingTester {
 
 The definitions of \ttt{Rectangle}, \ttt{Circle}, \ttt{Triangle}, and \ttt{IShape} are trivial and have been shown in previous chapters. The \ttt{perimeter} method, which is static inside \ttt{PatternMatching}, is shown below. We return the result of a \ttt{switch} expression, which matches against the possible subtypes of \ttt{IShape}. We create a temporary binding for the identifier \ttt{shape} that is bound to the \ttt{IShape} object passed into the method. This, in effect, casts the \ttt{IShape} to the subtype that is pattern matched, and we can then access the respective public methods and fields of the specific subtype rather than being restricted to only members of the \ttt{IShape} interface.
 
-\begin{cl}[PatternMatching.java]{Pattern Matching}
+\begin{cl}[]{Pattern Matching}
 \begin{lstlisting}[language=MyJava]
 class PatternMatching {
 
@@ -51,7 +51,7 @@ We can also use ``guard expressions'' when constructing patterns to only match a
 
 \example{Suppose that we want to write a factorial method using pattern matching. We can do this by matching on the argument to the factorial method. If the argument is zero, we return one. Otherwise, we return the argument multiplied by the factorial of the argument minus one. We can use a guard expression to ensure that the argument is non-negative.}
 
-\begin{cl}[FactorialTester.java]{Example of Guard Expressions} 
+\begin{cl}[]{Example of Guard Expressions} 
 \begin{lstlisting}[language=MyJava]
 class FactorialTester {
 
@@ -69,7 +69,7 @@ class FactorialTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Factorial.java]{Factorial}
+\begin{cl}[]{Factorial}
 \begin{lstlisting}[language=MyJava]
 class Factorial {
 
@@ -120,7 +120,7 @@ public boolean equals(Object o) {
 
 \example{Suppose that we want to override the \ttt{equals} method inside \ttt{Rectangle} using pattern matching. It's possible to use an \ttt{if} statement rather than resolving the \ttt{instanceof} check in an expression, but the latter is much more concise and solves the same problem.}
 
-\begin{cl}[RectangleTester.java]{Rectangle Tester}
+\begin{cl}[]{Rectangle Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -142,7 +142,7 @@ class RectangleTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Rectangle.java]{Rectangle}
+\begin{cl}[]{Rectangle}
 \begin{lstlisting}[language=MyJava]
 class Rectangle implements IShape {
 
@@ -175,7 +175,7 @@ Our perimeter pattern matcher is helpful and convenient, but what is not-so-conv
 
 \example{Using record types, let's write a small interpreter for a simple language that supports arithmetic expressions and boolean expressions. Instead of the interface approach that we took before, we will use records and pattern matching to evaluate the expressions. With this, our interpreter will make use of \ttt{var}: a new keyword for a variable whose type is inferred from the type of the expression on the right-hand side of the assignment operator. This allows us to omit long and complex types such as \ttt{BigDecimal}.} 
 
-\begin{cl}[EvaluatorTester.java]{Testing the Evaluator}
+\begin{cl}[]{Testing the Evaluator}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -194,13 +194,13 @@ class EvaluatorTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[IExpr.java]{Expression Interface}
+\begin{cl}[]{Expression Interface}
 \begin{lstlisting}[language=MyJava]
 interface IExpr {}
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Number.java]{``Number'' Record Type}
+\begin{cl}[]{``Number'' Record Type}
 \begin{lstlisting}[language=MyJava]
 record Number(BigDecimal value) implements IExpr {
   
@@ -209,13 +209,13 @@ record Number(BigDecimal value) implements IExpr {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Add.java]{``Add'' Record Type}
+\begin{cl}[]{``Add'' Record Type}
 \begin{lstlisting}[language=MyJava]
 record Add(IExpr left, IExpr right) implements IExpr {}
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Evaluator.java]{Evaluator}
+\begin{cl}[]{Evaluator}
 \begin{lstlisting}[language=MyJava]
 class Evaluator {
 
@@ -244,7 +244,7 @@ Reflection\index{reflection}, while not a necessarily new computer science conce
 
 \example{Suppose that we want to be able to search, then invoke, a method based on its name. Reconsider the primitive calculator example from many chapters ago, where we utilize a case dispatch on the operator received as a terminal argument. As we add functions to the system, we must proportionally add code in the \ttt{main} method to account for the new case, which is tiresome at best. Java allows us to lookup a method, at runtime, using its reflection API, and pass parameters accordingly. As a substitute for terminal arguments (and the \ttt{main} method in general), we will pass an ``argument array'' to a static \ttt{calculate} method, so we can easily run unit tests.}
 
-\begin{cl}[ReflectiveCalculatorTester.java]{Reflective Calculator Tester}
+\begin{cl}[]{Reflective Calculator Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -274,7 +274,7 @@ Finally, we invoke the method encapsulated by the \ttt{Method} using the conveni
 
 There is one small intricacy with how Java handles variadic arguments and passing arrays to reflective methods. Passing an array to a variadic argument method unwraps the arguments and passes them individually. For example, if we have a method \ttt{foo(String... args)}, and we pass \ttt{foo(new String[] \string{"Hello", "World"\string})}, the method receives two arguments: \ttt{"Hello"} and \ttt{"World"}. In our case this is problematic, since we want our computation methods to receive the entire array of arguments. To accomplish this, we can cast the array to an \ttt{Object} and pass it to \ttt{invoke} as a single argument.
 
-\begin{cl}[ReflectiveCalculator.java]{Reflective Calculator}
+\begin{cl}[]{Reflective Calculator}
 \begin{lstlisting}[language=MyJava]
 import java.lang.reflect.Method;
 class ReflectiveCalculator {

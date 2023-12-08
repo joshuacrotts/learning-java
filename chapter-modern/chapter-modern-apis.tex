@@ -7,7 +7,7 @@ First, we need to understand how to connect to an server-based API in Java. In g
 
 Now, we want to see how to do this in Java. We can create a \ttt{URL} instance with our address, and open a connection to the server by casting the \ttt{URL} to a \ttt{HttpURLConnection}. We also must tell the connection what type of request we are making, which in this case is a GET request. After establishing the connection, we must check the response code to ensure that the request was successful. Success is indicated by a response code of 200. Should the connection return a response code other than 200, we can throw some form of exception. On the other hand, if the connection succeeded, we read the response back from the server via some input stream reader. The simplest way is to use a \ttt{BufferedReader} to read the response line-by-line.
 
-\begin{cl}[ApiConnection.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,7 +59,7 @@ JSON stores its data in terms of keys and recursive values. By ``recursive value
 
 Looking at the raw JSON is a good idea, since it helps us to distinguish between the important keys and values returned from the API. Passing only the latitude and longitude as HTTP parameters is not sufficient; we must also tell the API what data we want associated with that particular location. According to the open-meteo API, to view the current temperature, we must append the \ttt{current} key with the \ttt{temperature\_2m} value into the request parameters. Rerunning this request now shows the data split into two distinct JSON Objects: \ttt{current\_units} and \ttt{current}. The former, as its name might suggest, acts as a one-to-one mapping to the keys in \ttt{current}, where each entry associates the data with a specific unit. By default, for instance, the temperature is reported in degrees Celsius, which the API informs us. We also see the interval at which the API polls its temperature sensors/collectors: every 900 seconds, or every fifteen minutes. Now, how do we access this data in our program? We, of course, have a \ttt{JSONObject} instance, namely $e$, that encapsulates the raw JSON data, and we need to retrieve the temperature. From looking at the response, as we said, the temperature is a key inside the \ttt{"current"} object, which resides within $e$. We access this object by calling \ttt{.getJSONObject} on the JSONObject, which, itself, is a JSONObject that we can manipulate. Finally, we need to retrieve the value associated with the \ttt{"temperature"} key, that of which we know to be a \ttt{double}, i.e., a numeric temperature.
 
-\begin{cl}[ApiConnection.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.io.BufferedReader;
 import java.io.IOException;

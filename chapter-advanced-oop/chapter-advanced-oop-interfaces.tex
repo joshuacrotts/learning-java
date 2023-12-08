@@ -10,7 +10,7 @@ In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List
 
 \example{Imagine that we want to design an interface that describes a shape. All (two-dimensional) shapes have an area and a perimeter, so we can define an interface that, when implemented by a class, requires that the class provide an implementation of the \ttt{area} and \ttt{perimeter} methods. A common convention for user-defined interfaces is to prefix the names with \ttt{I} to distinguish them from classes. Moreover, the names of interfaces are either nouns or, more traditionally, verbs, since they describe behaviors or characteristics of a class.}\footnote{We do not add the \ttt{public} keyword to the interface definition because all interface methods are implicitly public.}
 
-\begin{cl}[IShape.java]{Shape Interface}
+\begin{cl}[]{Shape Interface}
 \begin{lstlisting}[language=MyJava]
 interface IShape {
 
@@ -23,7 +23,7 @@ interface IShape {
 
 We cannot write any tests for the \ttt{IShape} interface directly, since it is impossible to instantiate an interface. We can, however, write two different classes that implement \ttt{IShape}, and test those. To demonstrate, we will write and test the \ttt{Pentagon} and \ttt{Octagon} classes whose constructors receive (and then store as instance variables) the side length of the shape. Fortunately, the definitions thereof are trivial because they are nothing more than regurgitations of the mathematical formulae. Notice that, when testing, we initialize the object instance to be of type \ttt{IShape}, not \ttt{Pentagon} or \ttt{Octagon}. This is because we want to be able to categorize these classes as types of \ttt{IShape} instances rather than solely instances of \ttt{Pentagon} or \ttt{Octagon} respectively. This is a common practice in object-oriented programming, and it is called \textit{polymorphism}. Polymorphism is the ability of an object to take on many forms. In this case, the \ttt{IShape} interface is the form that the \ttt{Pentagon} and \ttt{Octagon} classes use to take on the form of a shape as we described.
 
-\begin{cl}[IShapeTester.java]{Shape Tester}
+\begin{cl}[]{Shape Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -57,7 +57,7 @@ class IShapeTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Pentagon.java]{Pentagon Class}
+\begin{cl}[]{Pentagon Class}
 \begin{lstlisting}[language=MyJava]
 class Pentagon implements IShape {
   
@@ -79,7 +79,7 @@ class Pentagon implements IShape {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Octagon.java]{Octagon Class}
+\begin{cl}[]{Octagon Class}
 \begin{lstlisting}[language=MyJava]
 class Octagon implements IShape {
 
@@ -102,7 +102,7 @@ class Octagon implements IShape {
 
 \example{Recall from the previous chapter our ``Twenty-one'' card game example. In that, we designed the \ttt{Suit} class, which contained four public and static instances of \ttt{Suit}, where each represented one of the four valid card suits. While this works as intended, it fails to be elegant and demonstrate how the suits are all the same, but differ only in their string representation. Let's design the \ttt{ISuit} interface, which requires any implementing class to override the \ttt{stringify} method.}
 
-\begin{cl}[ISuit.java]{Suit Interface Example}
+\begin{cl}[]{Suit Interface Example}
 \begin{lstlisting}[language=MyJava]
 interface ISuit {
 
@@ -116,7 +116,7 @@ interface ISuit {
 
 From here, we can define four separate classes, all of which implement \ttt{ISuit} and override the \ttt{stringify} method. These classes are incredibly simple, and as such, we will show only the \ttt{Diamond} and \ttt{Heart} classes.
 
-\begin{cl}[Diamond.java]{Diamond Suit Class}
+\begin{cl}[]{Diamond Suit Class}
 \begin{lstlisting}[language=MyJava]
 class Diamond implements ISuit {
   
@@ -128,7 +128,7 @@ class Diamond implements ISuit {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Heart.java]{Heart Suit Class}
+\begin{cl}[]{Heart Suit Class}
 \begin{lstlisting}[language=MyJava]
 class Heart implements ISuit {
     
@@ -142,7 +142,7 @@ class Heart implements ISuit {
 
 As we see, both \ttt{Diamond} and \ttt{Heart} implement \ttt{ISuit} and handle ``stringification'' differently. We can test these definitions by storing a list of \ttt{ISuit} instances and ensuring that the correct character is returned.
 
-\begin{cl}[ISuitTester.java]{Suit Interface Tester}
+\begin{cl}[]{Suit Interface Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -182,7 +182,7 @@ s2.diamondCount();             // Works but not polymorphic.
 
 \example{Animals are a common example of an interface. Imagine that, in our domain of animals, every animal can speak one way or another. Speaking involves returning a string representing the sound that the animal makes. By designing the \ttt{IAnimal} interface, we can group all animals that can speak together. We can then design classes that implement the \ttt{IAnimal} interface and provide an implementation of the \ttt{speak} method. When testing the latter, we can write tests that instantiate a collection of \ttt{IAnimal} instances, and invoke \ttt{speak} on each of them polymorphically. In doing so we get a refresher of the Java stream API.}
 
-\begin{cl}[IAnimal.java]{Animal Interface}
+\begin{cl}[]{Animal Interface}
 \begin{lstlisting}[language=MyJava]
 interface IAnimal {
 
@@ -194,7 +194,7 @@ interface IAnimal {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[IAnimalTester.java]{Animal Tester}
+\begin{cl}[]{Animal Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -228,7 +228,7 @@ class IAnimalTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Cat.java]{Cat Class}
+\begin{cl}[]{Cat Class}
 \begin{lstlisting}[language=MyJava]
 class Cat implements IAnimal {
 
@@ -240,7 +240,7 @@ class Cat implements IAnimal {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Dog.java]{Dog Class}
+\begin{cl}[]{Dog Class}
 \begin{lstlisting}[language=MyJava]
 class Dog implements IAnimal {
 
@@ -253,7 +253,7 @@ class Dog implements IAnimal {
 \end{cl}
 
 % \example{Suppose we want an interface that acts as a CRUD operation. In web-based applications and database systems, CRUD refers to ``create, read, update, and destroy''. In other words, we want to be able to create a new object, read the contents of an object, update the contents of an object, and destroy an object. We can define an interface that requires that any class that implements it provide an implementation of these four methods.}
-% \begin{cl}[ICrud.java]{CRUD Interface}
+% \begin{cl}[]{CRUD Interface}
 % \begin{lstlisting}[language=MyJava]
 % interface ICrud<T> {
 
@@ -282,7 +282,7 @@ class Dog implements IAnimal {
 
 % What are some examples of classes that we might design that implement the \ttt{ICrud} interface? A coupled example might come from a database system. Suppose we have a database that stores information about students. We might design a \ttt{Student} class that stores the name, ID, and GPA of a student. We can then design a \ttt{Student} class that implements the \ttt{ICrud} interface and provides an implementation of the four methods. The \ttt{Student} class would then be responsible for creating, reading, updating, and destroying \ttt{Student} objects in the database. Along those lines, if we wanted to be able to perform operations on an administrator role, we might design the \ttt{Admin} class that implements \ttt{ICrud}. What these operations do in our toy example is unimportant since we are only concerned with the interface definition. Moreover, we created \ttt{ICrud} as a generic interface, meaning that when we substitute the type into the interface, we propagate the type through the class definition.
 
-% \begin{cl}[Student.java]{Student Class}
+% \begin{cl}[]{Student Class}
 % \begin{lstlisting}[language=MyJava]
 % class Student implements ICrud<Student> {
   
@@ -326,7 +326,7 @@ class Dog implements IAnimal {
 
 Interestingly, interfaces may have static methods. Our \ttt{IBox} interface has a static \ttt{box} method that returns a box of the type passed in as an argument. This is useful because we can call the \ttt{box} method without having to instantiate a class that implements the \ttt{IBox} interface. We can then use the \ttt{get} and \ttt{set} methods to retrieve and change the value of the box.
 
-\begin{cl}[IBox.java]{Box Interface}
+\begin{cl}[]{Box Interface}
 \begin{lstlisting}[language=MyJava]
 class IBox<T> {
   
@@ -348,7 +348,7 @@ class IBox<T> {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[IBoxTester.java]{Box Tester} 
+\begin{cl}[]{Box Tester} 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -371,7 +371,7 @@ class IBoxTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[IntegerBox.java]{Integer Box Class}
+\begin{cl}[]{Integer Box Class}
 \begin{lstlisting}[language=MyJava]
 class IntegerBox implements IBox<Integer> {
   
@@ -405,7 +405,7 @@ The Java Swing API is a graphics framework for designing graphical interfaces an
 
 Let's design the generic \ttt{Function<T, V>} interface, which quantifies over two types \ttt{T}, representing the input type, and \ttt{V}, representing the output type. The \ttt{Function<T, V>} interface has a single static method, \ttt{apply}, that receives an argument of type \ttt{T} and returns a value of type \ttt{V}. We can then design a class that implements the \ttt{Function<T, V>} interface and provides an implementation of the \ttt{apply} method. We can then pass the class around as an argument to other methods, and invoke the \ttt{apply} method on the class to get the result of the function. An incredibly simple example is \ttt{AddOne}, which implements the \ttt{Function<Integer, Integer>} interface and adds one to its input. We make the constructor of the implementing class private to prevent any unnecessary instantiations; we only want to use the class as a first-class function rather than an object.
 
-\begin{cl}[Function.java]{Functional Interface}
+\begin{cl}[]{Functional Interface}
 \begin{lstlisting}[language=MyJava]
 interface Function<T, V> {
 
@@ -414,7 +414,7 @@ interface Function<T, V> {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[AddOneTester.java]{Add One Functional Interface Tester}
+\begin{cl}[]{Add One Functional Interface Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -431,7 +431,7 @@ class AddOneTester {
 }
 \end{lstlisting}
 \end{cl}
-\begin{cl}[AddOne.java]{Add One Functional Interface Implementation}
+\begin{cl}[]{Add One Functional Interface Implementation}
 \begin{lstlisting}[language=MyJava]
 class AddOne implements Function<Integer, Integer> {
 
@@ -445,7 +445,7 @@ class AddOne implements Function<Integer, Integer> {
 
 So far, we have not demonstrated the potential of first-class functions in Java with our design. Suppose we have a list of \ttt{Integer} values $l=v_1, v_2, ..., v_n$ and a function $f$, and we want to apply $f$ to each element thereof. That is, we will create a new list $l'=f(v_1), f(v_2), ..., f(v_n)$. Normally, we would need to write a specific function for each function $f$, but by passing a functional interface, we can write a single method that receives this list and a function $f$ and applies $f$ to each element of the list. This operation, in general, is called \ttt{map}, which we saw during our discussion on streams!\footnote{Do not confuse this with the concept of a map/dictionary from our data structures/collections discussion.}
 
-\begin{cl}[MapTester.java]{Map Function Tester}
+\begin{cl}[]{Map Function Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -464,7 +464,7 @@ class FunctionMapTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[FunctionMap.java]{Map Function Implementation}
+\begin{cl}[]{Map Function Implementation}
 \begin{lstlisting}[language=MyJava]
 class FunctionMap {
 
@@ -486,7 +486,7 @@ class FunctionMap {
 
 \example{Java 8 introduced the \ttt{Function} interface, so we do not have to design our own version. Using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can make use of method referencing via the \ttt{::} operator. Let's rewrite the \ttt{addOne} example doing so. We will also show off the fact that Java will auto-box and unbox an integer primitive into its \ttt{Integer} counterpart, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives instead, which are easier to work with. Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, because Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}}
 
-\begin{cl}[FunctionMapTester.java]{Map Function Tester}
+\begin{cl}[]{Map Function Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -511,7 +511,7 @@ class FunctionMapTester {
 
 \example{Now that we have interfaces, we can write a very simple expression tree interpreter! What do we mean by this? Consider the arithmatic expression $5 + (3 + 4)$. According to the standard order-of-operations, we evaluate the parenthesized sub-expressions first, then reduce outer expressions. So, in our case, we add $3$ and $4$ to get $7$, followed by an addition of $5$. We can represent this idea as an evaluation tree, where we travel from bottom-up, evaluating sub-expressions as they are encountered. How does this relate to interfaces? Suppose we create the \ttt{IExpr} interface, which contains a single method: \ttt{int value}, which returns the value of an expression.}
 
-\begin{cl}[IExpr.java]{Expression Interface}
+\begin{cl}[]{Expression Interface}
 \begin{lstlisting}[language=MyJava]
 interface IExpr {
 
@@ -525,7 +525,7 @@ interface IExpr {
 
 The simplest (atomic) values in our language are numbers, or literals as they are called. A \ttt{Lit} stores a single integer as an instance variable, and returns this instance variable upon a \ttt{value} invocation, which means \ttt{Lit} must implement the \ttt{IExpr} interface. Testing this class is trivial, so we will only write two tests.
 
-\begin{cl}[LitTester.java]{Literal Tester}
+\begin{cl}[]{Literal Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -542,7 +542,7 @@ class LitTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Lit.java]{Lit Class Implementation}
+\begin{cl}[]{Lit Class Implementation}
 \begin{lstlisting}[language=MyJava]
 class Lit implements IExpr {
 
@@ -561,7 +561,7 @@ class Lit implements IExpr {
 
 How do we add two numbers? Or, rather, how do we represent the addition of two numbers? This question comes through the answer to our question of representing literal values. Addition expressions store two \ttt{IExpr} expressions as instance variables, and (mutually) recursively calls their \ttt{value} methods, followed by a summation. Note the parallelism to how we do this when evaluating expressions either on paper or in our heads.
 
-\begin{cl}[AddTester.java]{Addition Expression Tester}
+\begin{cl}[]{Addition Expression Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -580,7 +580,7 @@ class AddTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Add.java]{Addition Expression Implementation}
+\begin{cl}[]{Addition Expression Implementation}
 \begin{lstlisting}[language=MyJava]
 class Add implements IExpr {
 
@@ -608,7 +608,7 @@ We need a generic class that stores references to the first and last elements of
 
 We run into an eminent problem when declaring the types of the instance variables: what should they be? We need to design a class that encapsulates the value of the node, and holds references to its previous and successor nodes. Some programmers may consider designing a separate \ttt{.java} file for this class, but remember the encapsulation methodology: nobody outside of this class should even be aware that nodes exist in the first place. So, we can create a private and static \ttt{Node<T>} class, which is local to the definition of \ttt{DoublyLinkedList}. A privatized class can only ever be static, because it does not make sense to say that a private class definition belongs to an arbitrary instance of the class in which it resides. We also override the \ttt{toString} to output the underlying stringified data of the node.
 
-\begin{cl}[DoublyLinkedList.java]{Doubly-Linked List Class}
+\begin{cl}[]{Doubly-Linked List Class}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
 
@@ -642,7 +642,7 @@ Notice that, in the constructor of \ttt{DoublyLinkedList}, we assign the first a
 
 To test the methods that we are about to design, we will override the \ttt{toString} method (of \ttt{DoublyLinkedList}) to print the elements inside brackets, separated by commas and a space. To traverse over the list, however, we should use a custom-defined \ttt{Iterator}, which will be its own localized class definition. We have seen iterators before, but until now we have not implemented one on our own. The idea is, fortunately, very simple: we keep track of the current node, and upon calling \ttt{hasNext}, we return whether or not the node is \ttt{null}. Similarly, invoking \ttt{next} returns the value of the stored node and moves the pointer forward via the ``next'' instance. Finally, we create the \ttt{.iterator} method, which returns an instance of the iterator superclass. We do not want to expose how this particular iterator works, because the caller does not need to be aware of this logic; they are only concerned with iterating over the structure, in this case, a doubly-linked list.
 
-\begin{cl}[DoublyLinkedList.java]{Doubly-Linked List Iterator}
+\begin{cl}[]{Doubly-Linked List Iterator}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
   // ... previous code omitted ...
@@ -679,7 +679,7 @@ Using the iterator in \ttt{toString} is straightforward: we have a while loop th
 
 Now we can write methods to add, retrieve, and remove elements from the list. To add an elemenet, we need to take the links of \ttt{first} and \ttt{last}, and reassign them accordingly to remain consistent with our doubly-linked list property. If the list is empty, then we just have to assign the new node $n$ to both the \ttt{first} and \ttt{last} references. Otherwise, we set the ``next'' pointer of \ttt{last} to $n$, and set the ``previous'' pointer of $n$ to \ttt{last}. 
 
-\begin{cl}[DoublyLinkedListTester.java]{Testing the Doubly-Linked List Add Method}
+\begin{cl}[]{Testing the Doubly-Linked List Add Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -704,7 +704,7 @@ class DoublyLinkedListTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[DoublyLinkedList.java]{Doubly-Linked List Add Method}
+\begin{cl}[]{Doubly-Linked List Add Method}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
   // ... previous code omitted ...
@@ -733,7 +733,7 @@ class DoublyLinkedList<T> {
 
 Retrieving an element is trivial, as it's just a matter of traversing over the list and returning the data at the index of a node. If the index is out of bounds, we return an empty \ttt{Optional}.\footnote{It is, in general, a better idea to use exceptions, but we have not covered them yet.}
 
-\begin{cl}[DoublyLinkedListTester.java]{Testing the Doubly-Linked List Get Method}
+\begin{cl}[]{Testing the Doubly-Linked List Get Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -764,7 +764,7 @@ class DoublyLinkedListTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[DoublyLinkedList.java]{Doubly-Linked List Get Method}
+\begin{cl}[]{Doubly-Linked List Get Method}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
   // ... previous code omitted ...
@@ -802,7 +802,7 @@ Finally we arrive at element removal, which is not as cut-and-dry. We want to pa
 
 And that completes the example.
 
-\begin{cl}[DoublyLinkedListTester.java]{Testing the Doubly-Linked List Remove Method}
+\begin{cl}[]{Testing the Doubly-Linked List Remove Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -830,7 +830,7 @@ class DoublyLinkedListTester {
 \end{cl}
 
 
-\begin{cl}[DoublyLinkedList.java]{Doubly-Linked List Remove Method}
+\begin{cl}[]{Doubly-Linked List Remove Method}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
   // ... previous code omitted ...
@@ -874,7 +874,7 @@ Associations lists, as their name implies, associate values to other values, jus
 
 Our association list will support several methods that are related to their functional programming eqiuvalents. In particular, we want a \ttt{lookup} method to retrieve the associated value of some element and an an \ttt{extend} method to add a new association. Note that the \ttt{extend} method will, rather than modifying the current association list, return a new association list with the new association added. This is because we want to preserve the idea of immutability, which is a common theme in functoinal programming. Association lists, therefore, need to have a ``parent'' pointer to keep track of those associations in the list that we extend from.\footnote{In the next section on abstract classes and interpreters, we will revisit this idea in greater detail.} We will also override the \ttt{toString} method to print the associations in a readable format. 
 
-\begin{cl}[AssociationListTester.java]{Association List Tester}
+\begin{cl}[]{Association List Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -901,7 +901,7 @@ class AssociationListTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[AssociationList.java]{Association List Class}
+\begin{cl}[]{Association List Class}
 \begin{lstlisting}[language=MyJava]
 class AssociationList<K, V> {
   

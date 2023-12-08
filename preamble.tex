@@ -1,28 +1,19 @@
-\documentclass[9pt, twoside, openright]{extbook}
-% \documentclass[9pt, twoside, openright]{book}
-% \documentclass[9pt, twoside, openright]{memoir}
+\documentclass[9.5pt, twoside, openright]{extbook}
 \input{common}
 \input{res/fitch.sty}
-\nddim{3.5ex}{3.5ex}{1.5ex}{0.5em}{1.6em}{.5em}{2.5em}{.2mm}
 
 % \makeatother
 \geometry {
   %     % HEIN MARGINS:
   %     % 7.25" x 9.125"
   paperheight=10in, paperwidth=7in,
-  top=1.0in, bottom=1.0in, left=1in, right=1in,
-  % bottom=1.5em,
-  % nohead
-  % paperheight=9.125in, paperwidth=7.25in,
-  % top=.875in,bottom=.875in,right=.875in,left=1.25in
+  top=1.0in, bottom=1.0in, left=1in, right=0.75in,
 }
 % \usepackage[cam,center,letter]{crop}
 
 \usetikzlibrary{automata, positioning, arrows, arrows.meta, chains, bending}
 \let\euscr\mathscr \let\mathscr\relax% just so we can load this and rsfs
-%\usepackage[bitstream-charter]{mathdesign}
 \tcbuselibrary{listings, skins, breakable}
-% \pagestyle{fancy}
 
 \definecolor{darkgreen}{RGB}{0,100,0}
 \definecolor{darkyellow}{RGB}{239,155,15}
@@ -82,7 +73,7 @@
   commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
   keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
   language=Java,
-    numbers=left,
+    % numbers=left,
   numberstyle=\ttfamily,
   morekeywords={NULL, enum, record},
   basicstyle=\footnotesize\ttfamily,
@@ -415,7 +406,7 @@
   bottom=-5pt,
   toptitle=1mm,
   bottomtitle=0.7mm,
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}}}
 }
 
 % BREAKABLE code listing - usually only for very, VERY long listings.
@@ -464,7 +455,7 @@
 
 \clubpenalty=10000 % Discourages page breaks after the first line of a paragraph
 \widowpenalty=10000 % Discourages page breaks before the last line of a paragraph
-\interlinepenalty=10000 % Discourages page breaks within a paragraph
+% \interlinepenalty=10000 % Discourages page breaks within a paragraph
 
 \renewcommand{\cftchapfont}{\normalsize\bfseries\sffamily}
 \advance\cftsecnumwidth 0.5em\relax
@@ -472,20 +463,20 @@
 \advance\cftsubsecnumwidth 0.5em\relax
 % \renewcommand{\cftsubsecfont}{\rmdefault}
 
-\makeatletter
-\def\cleardoublepage{\clearpage\if@twoside%
-  \ifodd\c@page\else
-    \vspace*{\fill}
-    \hfill
-    \begin{center}
-      % \textit{This page intentionally left blank.}
-    \end{center}
-    \vspace{\fill}
-    \thispagestyle{empty}
-    \newpage
-    \if@twocolumn\hbox{}\newpage\fi\fi\fi
-}
-\makeatother
+% \makeatletter
+% \def\cleardoublepage{\clearpage\if@twoside%
+%   \ifodd\c@page\else
+%     \vspace*{\fill}
+%     \hfill
+%     \begin{center}
+%       % \textit{This page intentionally left blank.}
+%     \end{center}
+%     \vspace{\fill}
+%     \thispagestyle{empty}
+%     \newpage
+%     \if@twocolumn\hbox{}\newpage\fi\fi\fi
+% }
+% \makeatother
 
 
  \pgfplotsset{compat=1.18}

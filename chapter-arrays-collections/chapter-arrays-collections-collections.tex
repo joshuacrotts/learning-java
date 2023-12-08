@@ -19,7 +19,7 @@ We need a few methods to solve this problem: \ttt{makeList}, \ttt{addToList}, \t
 
 To better relate to the \ttt{ArrayList} class implementation, we will write two versions of the \ttt{makeList} method: one that receives an initial size and one that does not. Designing two methods of the same name that receive different parameter types/quantities is known as \textit{method overloading}\index{method overloading}, and we will see this further in our discussion on \textit{classes}. \ttt{makeList} returns an array of integers instantiated to the given size, or a base size of ten elements in the method that does not receive a parameter. Note that, inside of the \ttt{makeList} method that does not receive a parameter, we invoke \ttt{makeList(10)} so as to not repeat ourselves.
 
-\begin{cl}[DIntArray.java]{Dynamic Integer Array Method ``Constructors''}
+\begin{cl}[]{Dynamic Integer Array Method ``Constructors''}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -46,7 +46,7 @@ class DIntArray {
 
 We now want a method that will add a value to a given ``list'' in this fashion. In particular, we know that indices whose elements are $-1$ correspond to ``free/available'' slots for the next value to-be added. The thing is, there is more to consider than just replacing the first-found instance of $-1$ with the desired value. We need to ensure that room exists for this new value; i.e., whether or not there is a $-1$ to begin with. As such, we should write a local helper method that returns a resized list with the values copied over from the old list; the only difference being a doubling in element capacity. Then, inside \ttt{addToList}, we check to see if we were able to properly insert $v$ into the list and, if not, we resize and make a recursive call to \ttt{addToList}.\footnote{We could use \ttt{Arrays.copyOf}, but it is important to understand \textit{how} the copying occurs.} Regarding performance and memory usage, this is not an optimal solution since we could simply add $v$ to index $|A|$ of the new array $A'$, since we know $|A'| = |A|$.
 
-\begin{cl}[DIntArrayTester.java]{Adding Value into Dynamic Array Tests}
+\begin{cl}[]{Adding Value into Dynamic Array Tests}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertArrayEquals;
@@ -67,7 +67,7 @@ class DIntArrayTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[DIntArray.java]{Resize Array Method Implementation}
+\begin{cl}[]{Resize Array Method Implementation}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -86,7 +86,7 @@ class DIntArray {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[DIntArray.java]{Adding Value into Dynamic Array Implementation}
+\begin{cl}[]{Adding Value into Dynamic Array Implementation}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -121,7 +121,7 @@ class DIntArray {
 
 We have two methods to go: \ttt{getFromList} and \ttt{setInList}. The former retrieves an element at a given index and the latter replaces the element at a given index. Both methods receive an index $i$ that must be in-bounds, where in-bounds refers to not only the bounds of the array, i.e., neither negative nor exceeding the length of the list, but also the logical indices. The \textit{logical indices} of a list are the indices in which elements exist. For our purposes, these indices are from zero up until and excluding the first instance of $-1$. We will also write a helper method that retrieves the index of the first ``free'' slot of a list, which corresponds to the first occurrence of $-1$.
 
-\begin{cl}[DIntArray.java]{``Get From List'' Dynamic Array Implementation}
+\begin{cl}[]{``Get From List'' Dynamic Array Implementation}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -144,7 +144,7 @@ class DIntArray {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[DIntArray.java]{``Set In List'' Dynamic Array Implementation}
+\begin{cl}[]{``Set In List'' Dynamic Array Implementation}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -733,7 +733,7 @@ Upon retrieving an iterator, we can use a \ttt{while} loop to continuously trave
 
 \example{Let's use an iterator to traverse over a \ttt{LinkedHashSet}, whose elements ordering is determined by their insertion order, meaning the iterator should produce them in the order in which they were inserted.}
 
-\begin{cl}[IteratorTester.java]{Testing an Iterator over a \ttt{LinkedHashSet}}
+\begin{cl}[]{Testing an Iterator over a \ttt{LinkedHashSet}}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -766,7 +766,7 @@ It should be stated that the enhanced \ttt{for} loop is nearly identical to the 
 
 \example{Let's now iterate over the \ttt{LinkedHashSet} using an enhanced \ttt{for} loop. We can do so by placing the type on the left-hand side of the element declaration. Our test will simply subtract the elements from left-to-right, since subtraction is not commutative, we can quickly verify the correctness of our result.}
 
-\begin{cl}[EnhancedForLoopTester.java]{Using an Enhanced \ttt{for} Loop over a Collection}
+\begin{cl}[]{Using an Enhanced \ttt{for} Loop over a Collection}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -814,7 +814,7 @@ IntStream is = IntStream.iterate(0, x -> x + 2);
 }
 
 Let us explain this method, but to do so we must introduce \textit{lambda expressions}. A lambda expression is an anonymous function, i.e., a function definition without a name. In the above code snippet, we define a function that receives a value $x$ and returns $x$ plus two. It would be identical to defining a \ttt{private static} method to add two to some integer, but we like lambda expressions due to their locality; it seems superfluous to design a method that is used in only one context. Should we want to pass a method reference rather than a lambda expression, this is easily achievable.
-\begin{cl}[PositiveEvens.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
 
@@ -831,7 +831,7 @@ class PositiveEvens {
 
 The \ttt{IntStream} instance declares a stream that, when requested/prompted, invokes and populates the stream. Because it is impossible to represent an infinite data structure in Java with modern computers, we should limit how many values we want from this stream. Indeed, the \ttt{.limit} method computes exactly $n$ elements from the stream. So, to compute the first ten elements of our $\textit{is}$ \ttt{IntStream}, we invoke \ttt{.limit(10)} on our $\textit{is}$ stream. 
 
-\begin{cl}[PositiveEvens.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
 
@@ -844,7 +844,7 @@ class PositiveEvens {
 \end{lstlisting}
 \end{cl}
 Now, suppose we want to view these ten elements. Right now they are consolidated into an \ttt{IntStream}, but we need to convert them to a list of sorts. The solution is to convert the values into a \ttt{Stream<Integer>} via \ttt{.boxed()}, and then to a list using the convenient \ttt{.toList()} method.
-\begin{cl}[PositiveEvens.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
 
@@ -860,7 +860,7 @@ class PositiveEvens {
 \end{cl}
 
 \example{Suppose we want a stream of infinitely repeating \ttt{"a"} strings. We can easily do this via the \ttt{generate} method, which acts as the stream constructor, receiving a lambda expression to continuously generate new elements.}
-\begin{cl}[AGenerator.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 class AGenerator {
 
@@ -879,7 +879,7 @@ Again, it is important to understand what is going on under the hood of a stream
 
 Here's what we need to do: we will use \ttt{iterate} to generate new values in the sequence. There is a slight problem in that the Fibonacci sequence has two starting (accumulator) values: $0$ and $1$. The issue is that \ttt{iterate} receives only one ``initializer'' value. To circumvent this predicament we can simply pass an array that contains the current and ``next'' Fibonacci values. Inside the lambda expression we of course receive an array of values, from which we can compute the next Fibonacci number. This time, however, instead of using \ttt{IntStream}, we will generalize to the \ttt{Stream} class since our initial value(s) is not an integer.
 
-\begin{cl}[BigIntFibStreamTester.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -907,7 +907,7 @@ class BigIntFibStreamTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[BigIntFibStream.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 class BigIntFibStream {
 
@@ -961,7 +961,7 @@ class BigIntFibStream {
 
 So our code now produces a list of \ttt{BigInteger} arrays containing the current Fibonacci value and its successor. Though, is this really what we want? A better solution would be to simply return the first element of the tuple/two-element array. We can achieve this via the \ttt{map} function. \ttt{map} receives a lambda expression as an argument and applies it to every element of the acting stream. Let's modify the code a bit to see an improved output. Excellently, this change means we do not need to loop over our expected/actual lists in the unit testing method, as \ttt{assertEquals} works as intended over \ttt{List} objects.
 
-\begin{cl}[BigIntFibStreamTester.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -982,7 +982,7 @@ class BigIntFibStreamTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[BigIntFibStream.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 class BigIntFibStream {
 
@@ -1008,7 +1008,7 @@ A \textit{higher-order function} is a function that takes functions as parameter
 
 \example{Let's write the \ttt{sqList} method that receives a \ttt{List<Integer>} and squares each element using the Stream API. The method should return a new list. A motif presented throughout stream methods is that they do not modify the original data. We should use \ttt{map} to apply a lambda expression that receives an integer and returns its square. Fortunately for us, we can convert any collection into a stream using the \ttt{.stream()} method. From there, we use a simple \ttt{map} invocation to arrive at our desired outcome.}
 
-\begin{cl}[SqListTester.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1030,7 +1030,7 @@ class SqListTester {
 \end{lstlisting}    
 \end{cl}
 
-\begin{cl}[SqList.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.List;
@@ -1064,7 +1064,7 @@ class SqList {
 
 Of course, we begin by writing a few tests. Fortunately, writing tests is simple for this method, whereas the implementation is the most complex seen thus far.
 
-\begin{cl}[RemoveVowelsStreamTester/java]{Tests for \ttt{removeVowels} Method}
+\begin{cl}[]{Tests for \ttt{removeVowels} Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static RemoveVowelsStream.removeVowels;
@@ -1087,7 +1087,7 @@ class RemoveVowelsStreamTester {
 
 Onto the definition; we start by writing the method signature and purpose. Then, we need to complete step one: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. Step two involves us converting each integer into a ``one-string'', which we can do via the constructor for a \ttt{String} object. Step three requires the use of \ttt{filter}, which is another higher-order function. It receives a lambda expression and returns those objects from the stream that satisfy the filter. Since we want to filter \textit{out} the vowels, we should write a method that determines if a character is vowel, then negate the expression as part of the lambda definition. Lastly we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. The reduce function receives an initial value, i.e., an accumulator $a$ and a binary function $f$. It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly how reduce works; It folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} Due to the simplicity of the \ttt{isVowel} predicate, we omit its definition.
 
-\begin{cl}[RemoveVowelsStream.java]{Definition of \ttt{removeVowels} Using Streams}
+\begin{cl}[]{Definition of \ttt{removeVowels} Using Streams}
 \begin{lstlisting}[language=MyJava]
 class RemoveVowelsStream {
 
@@ -1111,7 +1111,7 @@ The primary benefit of streams is their compositionality. We can chain together 
 
 \example{Consider a series of stream operations to find the maximum integer of a list. For the general case, this is straightforward, but what about when the list is empty? It does not make sense to return zero, since the maximum integer in a list may very well be zero, which leads to a false conclusion. The solution, in this case, is the \ttt{Optional} class. An \ttt{Optional} is a container that may or may not contain a value. If so, we may access the value directly via \ttt{.get}. If we do not know whether or not it contains a value, we may use \ttt{.orElse($t$)}, which returns the encapsulated value if it exists, or $t$ otherwise. We can also check, prior to a retrieval, if the \ttt{Optional} contains a value via the \ttt{.isPresent} method. \ttt{Optional} is generic and works over any class type, like almost all other classes from the collections API. To test the return value of a stream operation that returns an \ttt{Optional}, e.g., \ttt{max}, we instantiate an \ttt{Optional} that wraps the resulting value if it exists, or \ttt{Optional.empty()} otherwise.}
 
-\begin{cl}[OptionalTester.java]{Using the Optional Wrapper Class}
+\begin{cl}[]{Using the Optional Wrapper Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

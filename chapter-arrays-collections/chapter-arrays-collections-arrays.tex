@@ -76,7 +76,7 @@ s1 => {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
 
 \example{Let us write a method that receives an array of \ttt{double} values and returns the sum of the elements. Of course, we need tests!}
 
-\begin{cl}[SumOfDoubleArrayTester.java]{Sum of Double Array Tests}
+\begin{cl}[]{Sum of Double Array Tests}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -97,7 +97,7 @@ class SumOfDoubleArrayTester {
 
 Our method uses a local variable to accumulate the ``running sum'', so to speak, of the values seen so far from the given array.
 
-\begin{cl}[SumOfDoubleArray.java]{Sum of Double Array Implementation}
+\begin{cl}[]{Sum of Double Array Implementation}
 \begin{lstlisting}[language=MyJava]
 class SumOfDoubleArray {
 
@@ -117,7 +117,7 @@ class SumOfDoubleArray {
 
 While our code works and the tests that we wrote pass without question, there is a bit of verbosity with our loop; all we ever use the iteration variable, $i$, is for accessing a variable. In such circumstances, we may prefer using the enhanced \ttt{for} loop, which abstracts away the index and provides an iteration construct for accessing elements sequentially.
 
-\begin{cl}[SumOfDoubleArray.java]{Sum of Double Array Enhanced \ttt{for} Loop}
+\begin{cl}[]{Sum of Double Array Enhanced \ttt{for} Loop}
 \begin{lstlisting}[language=MyJava]
 class SumOfDoubleArray {
 
@@ -134,7 +134,7 @@ Why might someone want to use the enhanced \ttt{for} loop over a standard \ttt{f
 
 \example{Let us write a method that returns the largest integer in an array of integers. This is straightforward, but can be a little tricky to get right due to how we determine the ``largest''. Some programmers may choose to declare a value \ttt{largest} and assign it, say, $-1$, then if we encounter a larger value, overwrite its value. This works well when the provided array contains only positive values, but what if our array contains only negative numbers? This approach falls apart in such instances. To simplify the implementation, we will assume that the given array contains at least one value.}
 
-\begin{cl}[LargestIntTester.java]{Largest Integer in Array Tests}
+\begin{cl}[]{Largest Integer in Array Tests}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -156,7 +156,7 @@ class LargestIntTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[LargestInt.java]{Largest Integer in Array Implementation}
+\begin{cl}[]{Largest Integer in Array Implementation}
 \begin{lstlisting}[language=MyJava]
 class LargestInt {
 
@@ -177,7 +177,7 @@ Java arrays are rather primitive compared to other more-complex data structures.
 
 \example{Suppose we want to write a method that returns the index of an element $e$ of an array of \ttt{String} values $S$. Doing so is straightforward: check each element, one by one, until we find the desired element, or return $-1$. Note the similarity to the \ttt{indexOf} method, which is part of the \ttt{String} class. To gain practice using both recursion and iteration, we will write three versions of this method: one using standard recursion, the second using tail recursion, and the third using a loop. Our standard recursive method will recurse on the length of the array minus one until it is a negative number. The tail recursive method is almost identical to the former, with the exception that upon finding the element, we return the index itself rather than relying on the recursion to unwind. The tests for these two are both trivial to design.}
 
-\begin{cl}[ArrayFinderTester.java]{Standard Recursive \ttt{indexOf} Method Tester}
+\begin{cl}[]{Standard Recursive \ttt{indexOf} Method Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -198,7 +198,7 @@ class ArrayFinderTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[ArrayFinderTailRecursiveTester.java]{Tail Recursive \ttt{indexOf} Method Tester}
+\begin{cl}[]{Tail Recursive \ttt{indexOf} Method Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -221,7 +221,7 @@ class ArrayFinderTailRecursiveTester {
 
 Funnily enough, the standard recursive solution uses an accumulator like its tail recursive counterpart. Unfortunately, the standard recursive method is unnecessarily complicated and we would not recommend using it for searching through an array. Its implementation is here only for pedagogical purposes. On the other hand, the tail recursive method recurses over the accumulator, which serves as the current index to investigate. If this value exceeds the bounds of the array, we return $-1$. If $S[i]$ is equal to $k$, we return $i$. Otherwise, we recurse and increment $i$ by one.
 
-\begin{cl}[ArrayFinder.java]{Searches an Array using Standard Recursion}
+\begin{cl}[]{Searches an Array using Standard Recursion}
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
 
@@ -238,7 +238,7 @@ class ArrayFinder {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[ArrayFinder.java]{Searches an Array using Tail Recursion}
+\begin{cl}[]{Searches an Array using Tail Recursion}
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
 
@@ -257,7 +257,7 @@ class ArrayFinder {
 
 In converting the tail recursive solution to use iteration, we will make use of the translation pipeline. Our base case is when $i$ equals or exceeds the length of the array, so the negated expression is our loop condition. Moreover, we can place a conditional statement inside the loop, which returns whether $S[i]$ equals $k$ for that value of $i$ and, if so, we return $i$. We might also form a conjunction between the two conditions, whose exit condition is when one of those conditions is falsified. Because we have two different atomic return values, though, we will use the former approach. Because the test cases are, verbatim, those that we wrote for the recursive solutions, we omit them out of a desire for conciseness.
 
-\begin{cl}[ArrayFinder.java]{Searches an Array using a \ttt{while} Loop}
+\begin{cl}[]{Searches an Array using a \ttt{while} Loop}
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
 
@@ -276,7 +276,7 @@ class ArrayFinder {
 
 Of course, the conventional solution to this problem, especially since we know the upper bound on the number of iterations, would be to use a \ttt{for} loop. Doing so localizes the accumulator variable. Moreover, we \textit{could} use the translation pipeline conditional expression, but it is idiomatic to loop while the index is less than the length of the array and use an expression describing this relationship.
 
-\begin{cl}[ArrayFinder.java]{Searches an Array using a \ttt{for} Loop}
+\begin{cl}[]{Searches an Array using a \ttt{for} Loop}
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
   
@@ -298,7 +298,7 @@ We are on our way to understanding the full signature of the \ttt{main} method. 
 
 First, we must explain how terminal arguments work. Terminal arguments are specified after the executable (name) and are separated by spaces. For instance, if our program name is \ttt{calculator}, we might use \ttt{./calculator --add 5 4 17}. Thus, \ttt{args[0]} is \ttt{--add}, \ttt{args[1]} is \ttt{"5"}, \ttt{args[2]} is \ttt{"4"}, and \ttt{args[3]} is \ttt{"17"}. For simplification purposes, we will assume that the first argument is always the operation/help flag, and the remaining values are operands. This means that the program should output \ttt{26}. Let us write a method that parses the operation/help flag. Upon success, it returns \ttt{true} and upon failure, it returns \ttt{false}. This prevents the program from further interpreting bad terminal arguments, e.g., \ttt{./calculator --wrong 5 12}. We will also use \ttt{false} as an indication that the \ttt{help} menu was requested or prompted. Thus, to not duplicate code, we should write another method that displays the relevant program usage information.
 
-\begin{cl}[Calculator.java]{Writing a Calculator and Parsing Terminal Arguments}
+\begin{cl}[]{Writing a Calculator and Parsing Terminal Arguments}
 \begin{lstlisting}[language=MyJava]
 class Calculator {
 
@@ -329,7 +329,7 @@ Up next is the process of interpreting each valid operation, i.e., \ttt{--add} a
 
 Note that in the code below, we utilize an \ttt{if/else if} combination without an accompanying \ttt{else}, which we would normally discourage. Because we exhaust the possibilities with \ttt{parseCommand}, however, we will allow its usage. The \ttt{parseAdd} and \ttt{parseSub} methods are trivial and we have shown an example of their implementation previously, so we will also omit these to preserve space and avoid unnecessary repetition.
 
-\begin{cl}[Calculator.java]{Main Method for Calculator}
+\begin{cl}[]{Main Method for Calculator}
 \begin{lstlisting}[language=MyJava]
 class Calculator {
 
@@ -370,7 +370,7 @@ usage: ./ArrayArguments <n> <n1> [n...] [--(sum | product | min | max)]
 
 The ordering of the output is irrelevant, and depends on how we parse the input flags in the main method. To scan for a given flag, let's write a static method to return whether or not the flag exists in the arguments array.
 
-\begin{cl}[ArrayArgumentsTester.java]{Scanning for a Flag Tester} 
+\begin{cl}[]{Scanning for a Flag Tester} 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -391,7 +391,7 @@ class ArrayArgumentsTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[ArrayArguments.java]{Scanning for a Flag Implementation}
+\begin{cl}[]{Scanning for a Flag Implementation}
 \begin{lstlisting}[language=MyJava]
 class ArrayArguments {
 
@@ -415,7 +415,7 @@ The other ``operations'' methods, as well as their tests, are simple to write, a
 
 Our main method first checks to see if the user entered the ``help'' command and, if so, presents the necessary information for runnning the program. Otherwise, we perform a case analysis on the terminal arguments, looking for the presence of the operation flags. For arbitrary reasons, we output the sum, then the product, then the min, and finally the max, in that order, despite the ordering of the flags. As an exercise, we encourage the readers to modify the program to output the values in the order of the flags. An important detail that some may miss is that we use a sequence of \ttt{if} statements rather than \ttt{if/else if} statements. This is because we want to allow the user to pass multiple flags, and we do not want to restrict them to only one. Thus, we must check for the presence of each flag individually.
 
-\begin{cl}[ArrayArguments.java]{Main Method for Array Arguments}
+\begin{cl}[]{Main Method for Array Arguments}
 \begin{lstlisting}[language=MyJava]
 class ArrayArguments {
 
@@ -453,7 +453,7 @@ int[][] A = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
 \end{verbatim}
 }
 
-\begin{cl}[SumOf2DArrayTester.java]{Tests for the Sum of a Two-Dimensional Array}
+\begin{cl}[]{Tests for the Sum of a Two-Dimensional Array}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -474,7 +474,7 @@ class SumOf2DArrayTester {
 
 We need to know both the number of rows and the number of columns to traverse over a two-dimensional array. To retrieve the number of rows, we simply refer to the array's length via \texttt{$A$.length}. To get the number of columns, again, because we know that $A$ is an array of one-dimensional arrays, we use \ttt{$A[0]$.length}, or in general, \ttt{$A[i]$.length} for any $i$ such that $0 \leq i < $\ttt{$A$.length}.\footnote{This generalization applies because arrays in Java cannot be \textit{ragged}, or where different rows/columns have different lengths.}
 
-\begin{cl}[SumOf2DArray.java]{Sum of a Two-Dimensional Array}
+\begin{cl}[]{Sum of a Two-Dimensional Array}
 \begin{lstlisting}[language=MyJava]
 class SumOf2DArray {
 
@@ -501,7 +501,7 @@ Note that to access the element at row $i$ and column $j$, we use \ttt{$A[i][j]$
 
 \example{Let's solve a slightly harder problem using two-dimensional arrays. Suppose that we want to write a method that returns the number of possible moves that a rook can take to go from the top-left of a (not-necessarily rectangular) board to the bottom-right, assuming that it cannot move left or up. The naive solution to this problem is to use a recursive method that changes its position by one in either direction, stopping once we hit the bottom-right of the board. Assuming the rook starts at $(x, y)$ and the board is $n \times m$, we can write the following method.}
 
-\begin{cl}[RookPathTester.java]{Tests for the Rook Problem}
+\begin{cl}[]{Tests for the Rook Problem}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -520,7 +520,7 @@ class RookPathTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[RookPath.java]{Rook Problem Implementation}
+\begin{cl}[]{Rook Problem Implementation}
 \begin{lstlisting}[language=MyJava]
 class RookPath {
 
@@ -557,7 +557,7 @@ Dynamic programming problems are often solved using two-dimensional arrays using
   \item Iterate over the array, filling in the values using a recurrence relation.
 \end{enumerate}
 
-\begin{cl}[RookPathTester.java]{Tests for the Rook DP Problem}
+\begin{cl}[]{Tests for the Rook DP Problem}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -576,7 +576,7 @@ class RookPathTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[RookPath.java]{Rook DP Problem Implementation}
+\begin{cl}[]{Rook DP Problem Implementation}
 \begin{lstlisting}[language=MyJava]
 class RookPath {
 

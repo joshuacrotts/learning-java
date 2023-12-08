@@ -2,7 +2,7 @@
 
 Generics as a concept go far back in programming history, generally reknown as type parameterization, which we briefly touched on during our discussion of how to instantiate instances of \ttt{ArrayList} from the Collections API. Imagine, for a moment, if the Java programmers had to write a differing implementation of \ttt{ArrayList} for \ttt{Integer}, \ttt{String}, \ttt{Double}, and so on ad infinitum. Not only is this impossible, it would also be extremely cumbersome and redundant, since the only altering parameter is the underlying element type in the data structure. Before Java 5, we could only use ``generics'' via collections of type \ttt{Object}, since it is the root class object type, meaning any element could be stored in any type of collection.
 
-\begin{cl}[WeakGenerics.java]{Pre Java-5 ``Generics'' Example}
+\begin{cl}[]{Pre Java-5 ``Generics'' Example}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ To declare a static method as generic, we must specify the type variable(s) nece
 
 \example{Let's design the \ttt{int search(List<T> t, T k)} method, which receives a list $t$ and an object $k$, where the elements of $t$ are of type \ttt{T} and $k$ is also of type \ttt{T}. Its purpose is to return the index of the first occurrence of $k$ in $t$, and $-1$ if it does not exist. Because all objects have \ttt{.equals}, we can take advantage of this fact when comparing objects in the list against the search parameter. When testing, we will instantiate the type parameter to several different types to demonstrate.}
 
-\begin{cl}[GenericSearchTester.java]{Testing the Generic Search Method}
+\begin{cl}[]{Testing the Generic Search Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -57,7 +57,7 @@ class GenericSearchTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[GenericSearch.java]{Generic Search Method}
+\begin{cl}[]{Generic Search Method}
 \begin{lstlisting}[language=MyJava]
 class GenericSearch {
 
@@ -84,7 +84,7 @@ To restrict the type parameter to a certain subset of types, we can use \textit{
 
 \example{Let's design the \ttt{static <T extends Comparable<T>> T max(List<T> t)} method, which receives a list $t$ of type \ttt{T} and returns the maximum element in the list. Because determining the max element of a list involves comparison-based checking, we must restrict the type parameter to only types that implement an interface for comparing objects, e.g., \ttt{Comparable}. In the previous chapter we discussed that \ttt{Optional} is a container class that can either hold a value or be empty. An exercise at the end of this section will ask you to use \ttt{Optional} in designing a similar method, rather than returning \ttt{null} as we will show here.}
 
-\begin{cl}[GenericMaxTester.java]{Testing the Generic Max Method}
+\begin{cl}[]{Testing the Generic Max Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -111,7 +111,7 @@ class GenericMaxTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[GenericMax.java]{Generic Max Method}
+\begin{cl}[]{Generic Max Method}
 \begin{lstlisting}[language=MyJava]
 class GenericMax {
   
@@ -141,7 +141,7 @@ Sometimes we want to specify that a collection contains different, but related, 
 
 \example{Reusing the example that we just talked about, if we want to store both \ttt{Integer} and \ttt{Double} objects in the same collection, we need to look to see how they are related. Both of these classes extend the \ttt{Number} superclass, so we can place an upper-bound on the type parameter to say that anything that extends \ttt{Number}, whatever it may be, can be stored in the collection. Wildcards are denoted via the question mark: `\ttt{?}', to represent that it can be substituted with any other type that meets the bound criteria. Our example method, which computes the sum of a list of numbers, requires the substitutable type to be a subclass of \ttt{Number}.}
 
-\begin{cl}[NumberListTester.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -165,7 +165,7 @@ class NumberListTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[NumberList.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -187,7 +187,7 @@ class NumberList {
 
 \example{Lower-bounded type parameters are the dual to upper-bounded type parameters. If we want to restrict our possible types in a generic implementation to be only superclasses of a type, we can easily do so. For instance, the following code specifies that the input list can only contain objects that are superclasses of \ttt{Integer}, or are \ttt{Integer} itself. Unfortunately, the only classes that are ancestors/superclasses of \ttt{Integer} are \ttt{Number} and \ttt{Object}, which severely limits what we can do with our list. For the sake of an example, we might return a string containing the ``stringified'' elements, separated by commas, enclosed by brackets.}
 
-\begin{cl}[NumberListTester.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -207,7 +207,7 @@ class NumberListTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[NumberList.java]{}
+\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.stream.Collectors;

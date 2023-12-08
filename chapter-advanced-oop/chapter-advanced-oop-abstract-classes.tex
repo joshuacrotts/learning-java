@@ -4,7 +4,7 @@ We consider a class to be abstract if it is not representable by any instance. T
 
 \example{Consider, once again, a hierarchy of animals.} There is no such thing as an ``animal'', or something that is solely called an animal. On the other hand, everything that we would categorize as an animal \textit{is} an animal. Therefore it makes sense to say that animals are a generalization of other types of ``sub''-animals. Imagine we want to write an \ttt{Animal} class, where we will say that any animal can speak. The abstract class contains a superfluous constructor as well as an abstract \ttt{speak} method. We define \ttt{speak} as abstract to denote that an animal can speak, but it is nonsensical for \ttt{Animal} to speak. Because it is impossible to instantiate an instance of \ttt{Animal}, it is similarly impossible to reasonably define \ttt{speak}.
 
-\begin{cl}[Animal.java]{Animal Class}
+\begin{cl}[]{Animal Class}
 \begin{lstlisting}[language=MyJava]
 abstract class Animal {
 
@@ -17,7 +17,7 @@ abstract class Animal {
 
 Let's declare two subclasses: \ttt{Dog} and \ttt{Cat}, representing dogs and cats respectively. A cat can meow via the string \ttt{"Meow!"}, whereas a dog woofs via the string \ttt{"Woof!"}. 
 
-\begin{cl}[Dog.java]{Dog Class}
+\begin{cl}[]{Dog Class}
 \begin{lstlisting}[language=MyJava]
 class Dog extends Animal {
 
@@ -29,7 +29,7 @@ class Dog extends Animal {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Cat.java]{Cat Class}
+\begin{cl}[]{Cat Class}
 \begin{lstlisting}[language=MyJava]
 class Cat extends Animal {
 
@@ -110,7 +110,7 @@ It might seem strange to use an abstract class, since we could write a \ttt{Spea
 \label{fig:collisiondetection}
 \end{figure}
 
-\begin{cl}[GameObject.java]{Game Object Class Definition}
+\begin{cl}[]{Game Object Class Definition}
 \begin{lstlisting}[language=MyJava]
 abstract class GameObject {
   
@@ -127,7 +127,7 @@ abstract class GameObject {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[AxisAlignedBoundingBoxObject.java]{Axis-Aligned Bounding Box Class}
+\begin{cl}[]{Axis-Aligned Bounding Box Class}
 \begin{lstlisting}[language=Myjava]
 abstract class AxisAlignedBoundingBoxObject extends GameObject {
   
@@ -160,7 +160,7 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
 
 We declared an abstract class to extend another abstract class; which is perfectly acceptable. Because it makes no sense to have an entity called \ttt{AxisAlignedBoundingBoxObject}, we declare it as abstract, but we need it to contain the functionality of \ttt{GameObject}, which calls for the inheritance. Normally, we would immediately write an extensive test suite for \ttt{collidesWith}, but because we cannot instantiate an \ttt{AxisAlignedBoundingBox} directly, we cannot test \ttt{collidesWith} at the moment. In a couple of paragraphs, however, this will be possible, with the additions of \ttt{CircleObject} and \ttt{RectangleObject}.
 
-\begin{cl}[AxisAlignedBoundingBoxObject.java]{Testing AABB Collision Detection}
+\begin{cl}[]{Testing AABB Collision Detection}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -195,7 +195,7 @@ We need to translate our circles into axis-aligned bounding box, but what does t
 
 The question that we anticipate many readers are thinking of is, why do we even distinguish objects of differing ``types'' if they both implement collision detection in the same fashion? Since we are working in the context of a game, the way we draw these objects will almost certainly be different! Let's, for the sake of emphasizing the distinctions, design a \ttt{IDrawable} interface, which provides one method: \ttt{draw(Graphics2D g2d)}, which gives us a \ttt{Graphics2D} object. We will not discuss, nor do we really care about the innards of a graphics library aside from the fact that it contains two primitive methods: \ttt{drawOval(int x, int y, int w, int h)} and \ttt{drawRect(int x, int y, int w, int h)}. Therefore our two object subclasses will implement \ttt{IDrawable} and override the method differently.
 
-\begin{cl}[IDrawable.java]{Drawable Interface Definition}
+\begin{cl}[]{Drawable Interface Definition}
 \begin{lstlisting}[language=MyJava]
 interface IDrawable {
   
@@ -212,7 +212,7 @@ interface IDrawable {
 \end{lstlisting}
 \end{cl} 
 
-\begin{cl}[CircleObject.java]{Circle Object Class Definition}
+\begin{cl}[]{Circle Object Class Definition}
 \begin{lstlisting}[language=MyJava]
 class CircleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
   
@@ -226,7 +226,7 @@ class CircleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[RectangleObject.java]{Rectangle Object Class Definition}
+\begin{cl}[]{Rectangle Object Class Definition}
 \begin{lstlisting}[language=MyJava]
 class RectangleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
   
@@ -248,7 +248,7 @@ Additionally, we want our abstract syntax trees to be evaluable. Because ``evalu
 
 An \ttt{Lvalue} is the left-hand side of the evaluation of an abstract syntax tree. That is, it is the value that a node resolves to after evaluation. As an example, consider an abstract syntax tree that represents a conditional expression. After evaluating the tree, we expect the resulting value to be either the evaluated consequent or the alternative, neither of which are abstract syntax trees themselves. So, we will design a class that encapsulates an abstract syntax tree, and returns the underlying value when prompted. For our programming language, an abstract syntax tree can only resolve to a number or a boolean, since they are the most primitive forms. Because we may need to retrieve the abstract syntax tree of an l-value, we will provide the relevant accessor method. For simplicity, will compare l-values based on their abstract syntax tree string representations.
 
-\begin{cl}[AstNode.java]{Abstract Syntax Tree Class}
+\begin{cl}[]{Abstract Syntax Tree Class}
 \begin{lstlisting}[language=MyJava]
 public abstract class AstNode implements Evaluable {
 
@@ -274,7 +274,7 @@ public abstract class AstNode implements Evaluable {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Lvalue.java]{L-value Class}
+\begin{cl}[]{L-value Class}
 \begin{lstlisting}[language=MyJava]
 final class Lvalue {
 
@@ -310,7 +310,7 @@ final class Lvalue {
 
 From here, the simplest three abstract syntax tree nodes are \ttt{VarNode}, \ttt{NumberNode}, and \ttt{BoolNode}, corresponding to variables, numbers, and booleans, respectively. Each of these nodes will have a single value, that being the variable name, number, or boolean. The \ttt{eval} methods of the latter two classes return an l-value that wraps themselves, since these values resolve to themselves. The former, that being \ttt{VarNode}, is a little trickier. We must consider what happens when we evaluate a variable in any other programming language. The language looks up the variable identifier in the list of accessible bindings and returns whatever is the corresponding value. This location of bindings is called an environment in the programming languages nomenclature, and generally takes the form of a \ttt{HashMap} data structure. Therefore we can store an instance of a \ttt{HashMap} in our \ttt{Environment} class. The question now is of what type are the keys and values in our map. Fortunately this is simple to determine; the keys are string identifiers, and the values are their corresponding abstract syntax trees. Our environment representation/class is extremely simple and almost seems superfluous, but in due time we will add more functionality to justify its existence over a simple \ttt{HashMap} instance.
 
-\begin{cl}[Environment.java]{Environment Class Implementation}
+\begin{cl}[]{Environment Class Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 
@@ -323,7 +323,7 @@ final class Environment {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[AstTest.java]{Testing Abstract Syntax Tree Tests}
+\begin{cl}[]{Testing Abstract Syntax Tree Tests}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 import static Assertions.assertAll;
@@ -349,7 +349,7 @@ class AstTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[VarNode.java]{Variable Node}
+\begin{cl}[]{Variable Node}
 \begin{lstlisting}[language=MyJava]
 final class VarNode extends AstNode {
 
@@ -380,7 +380,7 @@ final class VarNode extends AstNode {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[NumberNode.java]{Number Node}
+\begin{cl}[]{Number Node}
 \begin{lstlisting}[language=MyJava]
 final class NumberNode extends AstNode {
 
@@ -402,7 +402,7 @@ final class NumberNode extends AstNode {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[BoolNode.java]{Boolean Node}
+\begin{cl}[]{Boolean Node}
 \begin{lstlisting}[language=MyJava]
 final class BoolNode extends AstNode {
 
@@ -426,7 +426,7 @@ final class BoolNode extends AstNode {
 
 From here, we arrive at primitive operators via \ttt{PrimNode}. A primitive operator is one akin to addition, subtraction, and so forth. Two additional primitives that we will support are reading an integer from standard input, and printing one to standard output. Primitive operators receive any number of arguments and whose behavior is handled as a case analysis of the \ttt{eval} method. 
 
-\begin{cl}[PrimNode.java]{Primitive Operator Node}
+\begin{cl}[]{Primitive Operator Node}
 \begin{lstlisting}[language=MyJava]
 final class PrimNode extends AstNode {
 
@@ -488,7 +488,7 @@ new LetNode("x", new NumberNode(5),
   
 Within the inner-most \ttt{PrimNode} expression, $x$ does not exist in its environment, but it does exist in an environment defined above its scope. So, each environment is itself a store a map of identifiers to abstract syntax trees, but they also contain another \ttt{Environment}. If we are at the ``root level'' of the program, this environment is set to \ttt{null}. Correspondingly, Environment contains two constructors: one that receives a parent environment and another without. As such, we must write the \ttt{lookup} method, which finds a variable binding in the current list of bindings and, if it does not exist, recursively looks it up in the parent environment. If we reach the root level environment and the variable does not exist, we return a \ttt{null} value. We also override the \ttt{toString} method to print out the environment in a readable format.
 
-\begin{cl}[EnvironmentTester.java]{Environment Tester}
+\begin{cl}[]{Environment Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 import static Assertions.assertAll;
@@ -510,7 +510,7 @@ class EnvironmentTester {
 \end{lstlisting}
 \end{cl}
   
-\begin{cl}[Environment.java]{Environment Class}
+\begin{cl}[]{Environment Class}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 
@@ -554,7 +554,7 @@ final class Environment {
 
 Our modified version of the environment allows us to implement local/let bindings in a way that respects parent environments. As one of the exercises of this chapter demonstrate, environment extension helps us when adding user-defined functions.
 
-\begin{cl}[LetNode.java]{Let Node}
+\begin{cl}[]{Let Node}
 \begin{lstlisting}[language=MyJava]
 final class LetNode extends AstNode {
 
@@ -596,7 +596,7 @@ final class LetNode extends AstNode {
 
 Finally we arrive at decision-based nodes. The \ttt{IfNode} class represents a conditional expression rather than a statement. Recall the ternary operator; it resolves to a value, unlike Java's \ttt{if} statement. The \ttt{IfNode} class has three children: a predicate, a consequent, and an alternative. The predicate is an abstract syntax tree that represents a boolean expression, and the consequent and alternative are arbitrary abstract syntax tree nodes. The \ttt{IfNode} class will have a \ttt{toString} method that will return a string of the form \ttt{(if <pred> <conseq> <alt>)}. Its evaluator will evaluate the predicate, and then evaluate either the consequent or alternative depending on the result of the predicate.
 
-\begin{cl}[IfNode.java]{If Node}
+\begin{cl}[]{If Node}
 \begin{lstlisting}[language=MyJava]
 final class IfNode extends AstNode {
   
@@ -634,7 +634,7 @@ final class IfNode extends AstNode {
 
 Finally, at long last, we can write some tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment. Unfortunately, we still have to write the programs as an abstract syntax tree rather than as a program, but the problems of lexing and parsing are reserved for some other time (or perhaps a separate course altogether).
 
-\begin{cl}[InterpTester.java]{Interpreter Tester}
+\begin{cl}[]{Interpreter Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

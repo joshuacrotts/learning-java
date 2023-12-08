@@ -17,7 +17,7 @@ AbstractList<Integer> LS3 =
 \subsection*{Insertion Sort}
 Our sorting adventure begins with the \textit{insertion sort}. Insertion sort, in general, works by taking an element from the unsorted list and inserting it into the correct position in a sorted list. We can implement insertion sort in two ways: functionally and in-place. The functional variant will return a new list that is sorted, while the in-place variant will sort the list in-place. The functional variant is, in principle, easier to implement, but the in-place variant is more efficient in terms of memory usage. Figure~\ref{fig:insertion-sort} illustrates the in-place insertion sort algorithm; each iteration of the outer loop is represented by a row in the figure, with the red underbars representing the now-sorted sublist.
 
-\begin{cl}[InsertionSortTester.java]{Insertion Sort Tester}
+\begin{cl}[]{Insertion Sort Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -49,7 +49,7 @@ class InsertionSortTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[IInsertionSort.java]{Insertion Sort Generic Interface}
+\begin{cl}[]{Insertion Sort Generic Interface}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 
@@ -63,7 +63,7 @@ interface IInsertionSort<V extends Comparable<V>> {
 
 The functional insertion sort is a recursive sorting algorithm; it sorts the list by recursively sorting its tail (i.e., the list without the first element)
 
-\begin{cl}[FunctionalInsertionSort.java]{Functional Insertion Sort Implementation}
+\begin{cl}[]{Functional Insertion Sort Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -110,7 +110,7 @@ class FunctionalInsertionSort<V extends Comparable<V>>
 \end{cl}
 
 \subsubsection*{In-place Insertion Sort}
-\begin{cl}[InPlaceInsertionSort.java]{In-place Insertion Sort Implementation}
+\begin{cl}[]{In-place Insertion Sort Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.Collections;
@@ -133,7 +133,7 @@ class InPlaceInsertionSort<V extends Comparable<V>> implements IInsertionSort<V>
 \end{lstlisting}
 \end{cl}
 
-\begin{figure}[tp]
+\begin{figure}[ht!]
   \centering
   \begin{tikzpicture}[>=Stealth]
     \matrix (sort) [matrix of nodes, nodes={draw, minimum size=7mm, anchor=center}, column sep=-\pgflinewidth, row sep=0.6cm]{
@@ -193,7 +193,7 @@ class InPlaceInsertionSort<V extends Comparable<V>> implements IInsertionSort<V>
 \subsection*{Selection Sort}
 The selection sort is the next sorting algorithm that we will analyze. It works by first searching for the smallest element in the list, then swapping it with the first element. Then we search for the second smallest element, and swap it with the second element. We continue this process until the list is sorted. Being that we always search the entire list for the smallest element, this is a horrendously slow sorting algorithm and should be avoided in favor of faster approaches. Nevertheless, we show both the functional and in-place versions. Figure~\ref{fig:selection-sort} illustrates the in-place selection sort algorithm. We admit that the figure is a bit misleading since it gives the false impression that it requires the same number of traversals as insertion sort, but the figures do not represent the number of comparisons made in between each element.
 
-\begin{cl}[SelectionSortTester.java]{Selection Sort Tester}
+\begin{cl}[]{Selection Sort Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -225,7 +225,7 @@ class SelectionSortTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[ISelectionSort.java]{Insertion Sort Generic Interface}
+\begin{cl}[]{Insertion Sort Generic Interface}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 
@@ -236,7 +236,7 @@ interface ISelectionSort<V extends Comparable<V>> {
 \end{cl}
 
 \subsubsection*{Functional Selection Sort}
-\begin{cl}[FunctionalSelectionSort.java]{Functional Selection Sort Def.}
+\begin{cl}[]{Functional Selection Sort Def.}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -275,7 +275,7 @@ class FunctionalSelectionSort<V extends Comparable<V>>
 \end{cl}
 
 \subsubsection*{In-place Selection Sort}
-\begin{cl}[InPlaceSelectionSort.java]{In-place Selection Sort Implementation}
+\begin{cl}[]{In-place Selection Sort Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.Collections;
@@ -372,7 +372,7 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
 \subsection*{Bubble Sort}
 The bubble sort is the last of the poor-performing sorts that we will discuss. With bubble sort we repeatedly swap adjacent elements if they are in the wrong order. We repeat this process until the list is sorted, which is guaranteed after at most $n^2$ iterations, where $n$ is the size of the input list. Figure~\ref{fig:bubble-sort} illustrates the in-place bubble sort algorithm. Note the use of two iteration variables $i$ and $j$, where $i$ represents the outer loop and $j$ represents the inner loop. The inner loop is responsible for the actual swapping of elements, whereas the outer controls the number of traversals over the list. The idea is to ``bubble'' the elements to the top/end of the list via repeated comparisons and swapping, hence the name. There are optimizations that can be made to the bubble sort algorithm. For example, if we traverse through the entire list without swapping at all, then the list must be in sorted order and we can terminate early. We will not implement this optimization, but it is worth considering.
 
-\begin{cl}[BubbleSortTester.java]{Bubble Sort Tester}
+\begin{cl}[]{Bubble Sort Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -404,7 +404,7 @@ class BubbleSortTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[IBubbleSort.java]{Bubble Sort Generic Interface}
+\begin{cl}[]{Bubble Sort Generic Interface}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 
@@ -417,7 +417,7 @@ interface IBubbleSort<V extends Comparable<V>> {
 \subsubsection*{Functional Bubble Sort}
 The functional bubble sort works similarly to the functional insertion sort. We remove exactly one instance of the largest element in the list, then recursively sort the remaining list. Once we know that list is sorted (by the recursive invariant property), we insert the largest element back into the list.
 
-\begin{cl}[FunctionalBubbleSort.java]{Functional Bubble Sort Implementation}
+\begin{cl}[]{Functional Bubble Sort Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -463,7 +463,7 @@ class FunctionalBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
 \end{cl}
 
 \subsubsection*{In-place Bubble Sort}
-\begin{cl}[InPlaceBubbleSort.java]{In-place Bubble Sort Implementation}
+\begin{cl}[]{In-place Bubble Sort Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.Collections;
@@ -544,7 +544,7 @@ The \textit{merge sort}\index{merge sort} is one of the first explicitly divide-
 
 \example{Consider merging the lists $l_1 = [9, 11, 14]$, and $l_2 = [2, 20]$. We create a new list $l_3$ whose size is the sum of the sizes of $l_1$ and $l_2$. Then we compare $9$ against $2$, of which the latter is smaller, meaning it goes first in $l_3$. Then we have $20$ against $9$, of which the latter is smaller, meaning it is second. Then we have $20$ against $11$, of which the latter is smaller, meaning it is third. Then we have $20$ against $14$, of which the latter is, once again, smaller, meaning it is fourth. Since we have exhausted all elements of $l_1$, and we know for certain that $l_2$ is sorted, we can then just copy the remaining elements of $l_2$ into $l_3$.}
 
-\begin{cl}[MergeSortTester.java]{Merge Sort Tester}
+\begin{cl}[]{Merge Sort Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -576,7 +576,7 @@ class MergeSortTester {
 \end{lstlisting}
 \end{cl}
   
-\begin{cl}[IMergeSort.java]{Merge Sort Generic Interface}
+\begin{cl}[]{Merge Sort Generic Interface}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 
@@ -587,7 +587,7 @@ interface IMergeSort<V extends Comparable<V>> {
 \end{cl}
 
 \subsubsection*{Functional Merge Sort}
-\begin{cl}[FunctionalMergeSort.java]{Functional Merge Sort Implementation}
+\begin{cl}[]{Functional Merge Sort Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -653,7 +653,7 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
 \end{cl}
 
 \subsubsection*{In-place Merge Sort}
-\begin{cl}[InPlaceMergeSort.java]{In Place Merge Sort}
+\begin{cl}[]{In Place Merge Sort}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -722,7 +722,7 @@ At last we arrive at the \ttt{quick sort} algorithm. Quick sort works by choosin
 
 Quick sort performs optimally when the median is selected as the pivot because roughly half of the elements are less than the pivot and roughly half are greater than the pivot, allowing for a performance similar to that of merge sort. Unfortunately, finding the median a priori to sorting ultimately defeats the point. In the subsequent chapter we will analyze the sorting algorithms in more detail.
 
-\begin{cl}[QuickSortTester.java]{Quick Sort Tester}
+\begin{cl}[]{Quick Sort Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -754,7 +754,7 @@ class QuickSortTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[IQuickSort.java]{Quick Sort Generic Interface}
+\begin{cl}[]{Quick Sort Generic Interface}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 
@@ -768,7 +768,7 @@ interface IQuickSort<V extends Comparable<V>> {
 The functional implementation of quick sort is beautiful and elegant. We choose a pivot $p$ at random, then create three sublists $l_<$, $l_>$, $l_=$, where $l_<$ stores all elements less than $p$, where $l_>$ stores all elements greater than $p$, and $l_=$ stores all elements equal to the pivot. Each sublist, excluding $l_=$, is recursively sorted, followed by concatenating the three sublists in order. 
 
 %%%%%%%%%%%%% FUNCTIONAL QUICK SORT %%%%%%%%%%%%% 
-\begin{cl}[FunctionalQuickSort.java]{Functional Quick Sort Implementation}
+\begin{cl}[]{Functional Quick Sort Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.stream.Collectors;
@@ -814,7 +814,7 @@ class FunctionalQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 
 %%%%%%%%%%%%% IN PLACE QUICK SORT %%%%%%%%%%%%% 
 \subsubsection*{In-place Quick Sort}
-\begin{cl}[InPlaceQuickSort.java]{In-place Quick Sort Implementation}
+\begin{cl}[]{In-place Quick Sort Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.AbstractList;
 import java.util.Collections;

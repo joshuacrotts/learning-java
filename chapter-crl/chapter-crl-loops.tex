@@ -350,7 +350,7 @@ Declaring an integer counter $c$ is mandatory. Our loop condition, therefore, is
 
 Up next we need a method to determine if a value is prime. We presented the definition of primality before, and it is also known that we only need to check up to the square root of $n$ for primality. Let us design such a method, writing the appropriate tests. Our condition is to continue so long as a variable, $i$, is less than or equal to the square root of our input number. The variable $i$ serves as a counter towards our number; if we find that $n$ is not divisible by any numbers from two up to the square root of $n$, then it must be prime.\footnote{We cast the result of \ttt{Math.sqrt} to an integer because it returns a \ttt{double} rather than an \ttt{int} datatype.} Note the edge cases of zero and one, which are both non-prime.
 
-\begin{cl}[SumPrimes.java]{Sum First 100 Primes Skeleton}
+\begin{cl}[]{Sum First 100 Primes Skeleton}
 \begin{lstlisting}[language=MyJava]
 class SumPrimes {
 
@@ -367,7 +367,7 @@ class SumPrimes {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[PrimeTester.java]{Loop Primality Tests}
+\begin{cl}[]{Loop Primality Tests}
 \begin{lstlisting}[language=MyJava]
 import static Prime.isPrime;
 
@@ -391,7 +391,7 @@ class PrimeTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Prime.java]{Loop Primality Implementation}
+\begin{cl}[]{Loop Primality Implementation}
 \begin{lstlisting}[language=MyJava]
 class Prime {
 
@@ -422,7 +422,7 @@ class Prime {
 
 The primality tests pass, which means we can put \ttt{isPrime} to work inside of \ttt{sum100Primes}. The method logic is straightforward: initialize our counter c at one. We also need a variable to track the last-found prime integer, so we know from where to start the search. We will call this variable $l$ and initialize it to zero. Finally, a $\mathit{sum}$ variable accumulates the sum of each prime. Inside the loop, we declare another variable $v$, which serves as the value to check for primality, taking on the value of $l + 1$ (if it were just $l$, we would forever check the same value for primality!). Run $v$ through the \ttt{isPrime} method and, if it is prime, assign to $l$ the value of $v$, add $v$ to the sum, and increment $c$. Otherwise, increment $l$ by one.
 
-\begin{cl}[SumPrimes.java]{Sum First 100 Primes Implementation}
+\begin{cl}[]{Sum First 100 Primes Implementation}
 \begin{lstlisting}[language=MyJava]
 class SumPrimes {
 
@@ -457,7 +457,7 @@ Running the code produces $24133$: the desired answer.
 
 \example{Suppose we want to compute the sum of the first $n$ odd reciprocals. That is, $\frac{1}{1} + \frac{1}{3} + \frac{1}{5} + \cdots + \frac{1}{2n-1}$. Again, we might do this recursively, but let us try and write an iterative algorithm. The signature is straightforward: we want to receive some integer $n$ and compute the sum of $n$ odd reciprocals. Our tests are trivial to write with the employment of a calculator.}
 
-\begin{cl}[OddReciprocalSumTester.java]{Odd Reciprocal Summation Tests}
+\begin{cl}[]{Odd Reciprocal Summation Tests}
 \begin{lstlisting}[language=MyJava]
 import static OddReciprocalSum.oddRecipSum;
 
@@ -482,7 +482,7 @@ class OddReciprocalSumTester {
 
 The implementation is similarly simple: we create a counter $c$ that increments so long as $c$ is not equal to $n$, accumulating the $sum$ of $1$ divided by $2c-1$.
 
-\begin{cl}[OddReciprocalSum.java]{Odd Reciprocal Summation Implementation}
+\begin{cl}[]{Odd Reciprocal Summation Implementation}
 \begin{lstlisting}[language=MyJava]
 class OddReciprocalSum {
 
@@ -512,7 +512,7 @@ With a \ttt{for} loop, we provide three values: an \textit{initializer statement
 
 \example{Suppose we wish to write a program that returns the sum of the integers between two integers $a$ and $b$, inclusive. We know how many integers there are between $a$ and $b$, assuming $a \leq b$, so we should use a \ttt{for} loop to solve this problem.} 
 
-\begin{cl}[SumIntervalTester.java]{Sum of Integers in the Interval $[a, b]$}
+\begin{cl}[]{Sum of Integers in the Interval $[a, b]$}
 \begin{lstlisting}[language=MyJava]
 import static SumInterval.sum;
 
@@ -534,7 +534,7 @@ class SumIntervalTester {
 
 We want to iterate from $i = a$ so long as $i \leq b$. We use the variable $i$ out of convention; one could easily use any other unused identifier.
 
-\begin{cl}[SumInterval.java]{Sum of Integers in the Interval $[a, b]$}
+\begin{cl}[]{Sum of Integers in the Interval $[a, b]$}
 \begin{lstlisting}[language=MyJava]
 import static SumInterval.sum;
 
@@ -580,7 +580,7 @@ g_5 &= \dfrac{\left(8.2921 + \dfrac{64}{8.2921}\right)}{2} &= 8.0051\\
 
 At each iteration, we square the current guess and determine if the absolute difference between it and $n$ is less than the guess. When so, that iteration of $g_x$ is the square root approximation. Otherwise, we continue to approach the square root value. We cannot reasonably predict when this will occur (that is, how many iterations are necessary), so we use a \ttt{while} loop. Because there are multiple potential points of failure in this algorithm, we make sure to write an extensive test suite. The method itself is a re-telling of the mathematical definition with bits of Java syntax sprinkled about. 
 
-\begin{cl}[NewtonApproximationTester.java]{Newton's Approximation Tests}
+\begin{cl}[]{Newton's Approximation Tests}
 \begin{lstlisting}[language=MyJava]
 import static NewtonApproximation.sqrtApprox;
 
@@ -605,7 +605,7 @@ class NewtonApproximationTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[NewtonApproximation.java]{Newton's Approximation Algorithm}
+\begin{cl}[]{Newton's Approximation Algorithm}
 \begin{lstlisting}[language=MyJava]
 class NewtonApproximation {
 
@@ -639,7 +639,7 @@ To decrease the level of accuracy, we of course should pass a different value fo
 \end{align*}
 Writing tests for a Fibonacci algorithm is trivial to do and propagates through to the other variants. So, writing tests for the standard recursive algorithm, assuming they are correct, allows us to easily write tests for the others!
 
-\begin{cl}[FibonacciTester.java]{Standard Recursion Fibonacci Algorithm Tests}
+\begin{cl}[]{Standard Recursion Fibonacci Algorithm Tests}
 \begin{lstlisting}[language=MyJava]
 import static Fibonacci.fib;
 
@@ -662,7 +662,7 @@ class FibonacciTester {
 
 The standard recursive algorithm is trivial to write but also horribly inefficient; because we make two recursive calls to $\textit{Fib}$, we end up computing the same data multiple times, resulting in an \textit{exponential time algorithm}\index{exponential time}. In other words, small inputs, e.g., $\textit{Fib}(40)$, will take a very long time to finish.
 
-\begin{cl}[Fibonacci.java]{Standard Recursive Fibonacci Implementation}
+\begin{cl}[]{Standard Recursive Fibonacci Implementation}
 \begin{lstlisting}[language=MyJava]
 class Fibonacci {
 
@@ -676,7 +676,7 @@ class Fibonacci {
 
 Our method works and tests pass, which is great, but we can do better by using tail recursion. The tail recursive variant, however, is slightly more complicated than prior tail recursive definitions due to the use of two accumulators. We use two values to compute the ``next'' Fibonacci number: the previous, and the previous' previous. So, storing these as values, say, $a$ and $b$, is sensible, where $a$ is the ``previous' previous'', and $b$ is the previous. Thus, when making a tail recursive call, we assign $b$ as $a + b$, and $a$ as $b$. We must not forget the driver method!
 
-\begin{cl}[Fibonacci.java]{Tail Recursive Fibonacci Implementation}
+\begin{cl}[]{Tail Recursive Fibonacci Implementation}
 \begin{lstlisting}[language=MyJava]
 class Fibonacci {
 

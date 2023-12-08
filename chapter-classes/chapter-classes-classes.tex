@@ -19,7 +19,7 @@ Speaking of \textit{access modifiers}\index{access modifier}, we should mention 
 
 The fourth and final access modifier is \ttt{protected}, which is similar to the default access modifier, but allows subclasses to access the variable or method.\footnote{If you have not heard of inheritance/subclasses yet, do not worry, as we will cover this in the next chapter; we explain it here to describe the relevant difference between the access modifiers.} We will not use \ttt{protected} in this text, but it is worth mentioning. As a corollary of sorts, any time that \ttt{protected} \textit{can} be used, there is almost certainly a better design alternative, whether that means marking the variable/method as \ttt{private} or \ttt{public}, we are of the opinion that \ttt{protected} has few benefits.
 
-\begin{cl}[Point.java]{\ttt{Point} Class Skeleton}
+\begin{cl}[]{\ttt{Point} Class Skeleton}
 \begin{lstlisting}[language=MyJava]
 class Point {
 
@@ -31,7 +31,7 @@ class Point {
 
 We now want a way to create an instance of a \ttt{Point}. We declare instances of objects using the \ttt{new} keyword followed by the class constructor. \textit{Constructors}\index{constructor} are special methods that are called when we wish to create a new object of that class. Our \ttt{Point} class constructor can receive parameters, which we can use to initialize the relevant $x$ and $y$ instance variables. So, let's declare the constructor for our \ttt{Point} class. Constructors, in general, should be \ttt{public}, as we will need to call them from outside the class definition. Constructors are also special in that they do not have a return type, although phrasing it in this way leads to some confusion, because constructors have implicit return types. By implicit, we mean that we do not directly specify the return type, but Java knows that constructors are special, whose return types are of the class itself. We create a constructor by specifying the class name alongside any desired parameters.
 
-\begin{cl}[Point.java]{\ttt{Point} Class Constructor}
+\begin{cl}[]{\ttt{Point} Class Constructor}
 \begin{lstlisting}[language=MyJava]
 class Point {
   
@@ -47,7 +47,7 @@ class Point {
 \end{cl}
 Remember that the purpose of the constructor is to initialize the class instance variables. So, unless we wish to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. Inside the constructor, we assign the value of the parameter \ttt{x} to the instance variable \ttt{x}. Should we opt to not use \ttt{this} on the left-hand variable identifier, then the parameter \ttt{x} would shadow the instance variable \ttt{x}, meaning that writing \ttt{x = x} assigns the parameter to itself. At last, we can create a \ttt{Point} object by calling the constructor, but wait, we have no way of accessing/referring to the instance variables of the \ttt{Point} object! We need to create \textit{accessor methods}\index{accessor method} to retrieve the values of the instance variables. Accessor methods are \ttt{public} and should do exactly one thing: return the respective instance variable.
 
-\begin{cl}[Point.java]{Designing Accessor Methods}
+\begin{cl}[]{Designing Accessor Methods}
 \begin{lstlisting}[language=MyJava]
 public Point {
 
@@ -88,7 +88,7 @@ Point p = new Point(3, 4);
 
 We should write some tests to ensure that our \ttt{Point} class is working as expected. We note that this may seem redundant for such a simple class and the fact that the accessor methods do nothing more than retrieve instance variable values, but it is a good habit for beginning object-oriented programmers.
 
-\begin{cl}[PointTester.java]{Testing Accessor Methods}
+\begin{cl}[]{Testing Accessor Methods}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -151,7 +151,7 @@ This is also a good time to bring up another terminology distinction. Some progr
 
 Returning to the \ttt{Point} class, we will now write \ttt{distance}, which receives a \ttt{Point} as a parameter and returns the Euclidean distance from \ttt{this} to the parameter. Before doing so, however, we should write a few tests. Conveniently, the three points that we test all have a distance of five between each other.
 
-\begin{cl}[PointTester.java]{Testing the \ttt{distance} Method}
+\begin{cl}[]{Testing the \ttt{distance} Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -178,7 +178,7 @@ class PointTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Point.java]{Distance Between Two Points}
+\begin{cl}[]{Distance Between Two Points}
 \begin{lstlisting}[language=MyJava]
 class Point {
   // ... previous code not shown.
@@ -205,7 +205,7 @@ A method is identified by two attributes: its name, and its signature. Java allo
 
 \example{Let's overload the \ttt{distance} method by writing a version that does not receive a parameter at all, and instead returns the magnitude/distance from the point to the origin. Fortunately this is extremely easy, because we can make use of the existing \ttt{distance} method that does receive a \ttt{Point}; we can pass it the origin point, namely \ttt{new Point(0, 0)}, and everything works out wonderfully! Because this version of \ttt{distance} simply refers to the existing definition, which we have thoroughly tested, we will omit a separate tester.}
 
-\begin{cl}[Point.java]{Distance Method Overloading}
+\begin{cl}[]{Distance Method Overloading}
 \begin{lstlisting}[language=MyJava]
 class Point {
   // Previous code not shown.
@@ -229,7 +229,7 @@ We could, if desired, overload the \ttt{Point} constructor as well. Though, it m
 
 Because the \ttt{random} method generates a random point, we cannot reasonably write a test that asserts the exact location of the point without prior knowledge of the random seed. Instead, we can write a test that asserts that the point is within a certain radius of the origin. 
 
-\begin{cl}[PointTester.java]{Testing the \ttt{random} Method}
+\begin{cl}[]{Testing the \ttt{random} Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -249,7 +249,7 @@ class PointTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Point.java]{Random Point Generation Method}
+\begin{cl}[]{Random Point Generation Method}
 \begin{lstlisting}[language=MyJava]
 import java.util.Random;
 
@@ -276,7 +276,7 @@ We have seen static methods, but what about static variables? A static variable,
 
 \example{Suppose we want to keep track of how many instances of \ttt{Point} have been instantiated. Since this is a property of the \ttt{Point} class rather than an instance of the class, we can declare a static variable \ttt{count} to keep track of the number of instances, which is incremented inside the constructor. To remain consistent with our recurring theme of encapsulation, \ttt{count} will be declared as \ttt{private}, and we will write a static method \ttt{getCount} to retrieve the number of instances, which is invoked on the class.\footnote{It is possible to invoke a static method on an instance of the class, but it is considered bad practice and unnecessary.} When testing, we need to be careful to only instantiate instances of \ttt{Point} when we are ready to check the status of \ttt{count}, since the static \ttt{count} variable is incremented inside the constructor.}
 
-\begin{cl}[PointTester]{Testing the \ttt{count} Static Variable}
+\begin{cl}[]{Testing the \ttt{count} Static Variable}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -303,7 +303,7 @@ class PointTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Point.java]{\ttt{Point} Class with \ttt{count} Static Variable}
+\begin{cl}[]{\ttt{Point} Class with \ttt{count} Static Variable}
 \begin{lstlisting}[language=MyJava]
 class Point {
 
@@ -323,7 +323,7 @@ Notice that, inside the \ttt{getCount} method, we do not refer to \ttt{count} wi
 
 \example{Let's amplify the complexity a bit by designing a ``21'' card game, which is a card game where the players try to get a card value total of $21$ without going over. We should think about the design process of this game, namely what classes we need to create. It makes sense to start off with a \ttt{Card} class, which stores its suit and its numeric value. Because a suit is one of four possibilities, each of which uses a different symbol, we can create another class called \ttt{Suit}. In \ttt{Suit} we instantiate four static instances of \ttt{Suit}, each of which represents one of the four valid suits. Its constructor is privatized because we, as the programmers, define the four possible suits; it should not be possible for the user to define their own custom suit, at least for this particular game. The notion of \ttt{Suit} being an instance variable of \ttt{Card}, and only exists due to \ttt{Card} is called \textit{object composition}. Lastly, we will provide a method that returns an \ttt{Iterator<Suit>} over the four suit possibilities to make our lives easier when designing the \ttt{Deck} class. The method should be static so it is accessible through the class.}
 
-\begin{cl}[Suit.java]{\ttt{Suit} Class}
+\begin{cl}[]{\ttt{Suit} Class}
 \begin{lstlisting}[language=MyJava]
 class Suit {
 
@@ -350,7 +350,7 @@ class Suit {
 
 Testing the \ttt{Card} class is simple and straightforward; we only need to test one method, the \ttt{toString} method, since testing \ttt{getValue}, at this point, is superfluous. We could also test the \ttt{Suit} class, but we will not do so here, given that the only useful methods are to retrieve the instance variables and the iterator.
 
-\begin{cl}[CardTest.java]{Testing the \ttt{Card} Class}
+\begin{cl}[]{Testing the \ttt{Card} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -369,7 +369,7 @@ class CardTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Card.java]{\ttt{Card} Class}
+\begin{cl}[]{\ttt{Card} Class}
 \begin{lstlisting}[language=MyJava]
 class Card {
 
@@ -390,7 +390,7 @@ In a standard fifty-two deck of cards, some are ``special'', e.g., the Jacks, Qu
 
 To test a \ttt{Deck}, we can write a \ttt{drawCard} method, which retrieves the ``top-most'' card on the deck to see if it is in the correct order. According to our implementation of the iterator, the top-most cards should have values of ten and be of the same suit. From there, we can draw three more cards to ensure they are of values nine, eight, and seven of the same suit. The iterator places \ttt{DIAMOND} as the final suit, so this is what we will assume in our tester. It might also be beneficial to test the \ttt{isEmpty} method, which returns \ttt{true} if the deck is empty, and \ttt{false} otherwise. We can test this functionality by drawing all fifty-two cards from the deck and ensuring that the deck is empty afterwards. Note that we draw four tens because there are no "Kings", "Queens", or "Jacks" in the deck.
 
-\begin{cl}[DeckTest.java]{Testing the \ttt{Deck} Class}
+\begin{cl}[]{Testing the \ttt{Deck} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -421,7 +421,7 @@ class DeckTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Deck.java]{\ttt{Deck} Class}
+\begin{cl}[]{\ttt{Deck} Class}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -482,7 +482,7 @@ Hopefully the \ttt{populateDeck} method is intuitive and not intimidating. All w
 
 Finally we come to the \ttt{Player} class, which stores a ``hand'' containing the cards in their possession. Fortunately this is a very straightforward definition and contains four one-line methods: \ttt{addCard}, \ttt{clearHand}, \ttt{getScore}, and \ttt{toString}. The former two are trivial to explain, as is \ttt{toString}, whereas \ttt{getScore} is the only slightly convoluted method. The idea is to return an integer that represents the total value of the cards in the player's hand. Since streams were introduced a couple of chapters ago, we will once again use them to our advantage.
 
-\begin{cl}[Player.java]{\ttt{Player} Class}
+\begin{cl}[]{\ttt{Player} Class}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 
@@ -528,7 +528,7 @@ Using the capabilities of \ttt{Player}, \ttt{Deck}, and \ttt{Card}, we will writ
 
 It should be noted that this version of ``twenty-one'' only has the objective of getting as close as possible to a hand containing cards with a value that sums to twenty one, compared to a more-traditional card game where multiple players exist, with a dealer to distribute cards. As exercises, there are many ways to enhance the game, including adding a ``high score'' board to keep track of previous game outcomes, introducing CPU players to automatically poll cards from the deck to beat the main player, or even adding more human players through standard input/output iteractions. 
 
-\begin{cl}[TwentyOne.java]{\ttt{TwentyOne} Class}
+\begin{cl}[]{\ttt{TwentyOne} Class}
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 
@@ -596,7 +596,7 @@ Designing a game caused some strife, but it was a good exercise in object-orient
 
 The \ttt{Rational} constructor receives two integers $p$ and $q$, and assigns them as instance variables. The \ttt{toString} method is trivial to write and only involves us adding a slash between our numerator and denominator. Though, let's back up for a second and rethink the constructor. Do we really want to be able to store fractions that are not in their simplest form? For example, do we want to allow the user to create a \ttt{Rational} object with a numerator of $2$ and a denominator of $4$? The answer is probably not, meaning that we should add a method that simplifies the fraction. We can do this by finding the greatest common divisor of the numerator and denominator, and dividing both by that value. Euclid's algorithm for finding the greatest common divisor of two integers works wonderfully here. Due to its trivial implementation and the fact that it is a tail recursive algorithm exercise from the previous chapters, we will omit its implementation.
 
-\begin{cl}[RationalTest.java]{Testing the \ttt{Rational} Class}
+\begin{cl}[]{Testing the \ttt{Rational} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -618,7 +618,7 @@ class RationalTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Rational.java]{\ttt{Rational} Class}
+\begin{cl}[]{\ttt{Rational} Class}
 \begin{lstlisting}[language=MyJava]
 class Rational {
   
@@ -641,7 +641,7 @@ class Rational {
 
 To add two rational numbers $r_1$ and $r_2$, they must share a denominator. If they do not, then we must find a common denominator by multiplying the denominators together, then multiplying the relevant numerators by the reciprocals of the denominator. For instance, if we want to add $2/3$ and $7/9$, the (not-necessarily lowest) common denominator is $3\cdot{9} = 27$. We then multiply $2$ by $9$ and $7$ by $3$ to get $18/27$ and $24/27$. Adding across the numerators results in $42/27$, which reduces to $14/9$. Since we wish to preserve the original rational number, we will write a method that returns a new \ttt{Rational} rather than modifying the one we have in-place (this also allows us to omit a step in which we simplify the resulting fraction, since the constructor takes care of this task).
 
-\begin{cl}[RationalTest.java]{Testing Addition of Rationals}
+\begin{cl}[]{Testing Addition of Rationals}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -664,7 +664,7 @@ class RationalTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Rational.java]{Adding Two Rational Numbers}
+\begin{cl}[]{Adding Two Rational Numbers}
 \begin{lstlisting}[language=MyJava]
 class Rational {
   // Other details not shown.
@@ -687,7 +687,7 @@ class Rational {
 
 Due to the correspondence to addition, we will leave \ttt{subtraction} as an exercise to the reader. We can now do multiplication, which is even simpler than addition; all that is needed is to multiply the numerators and denominators together. We will also leave \ttt{division} as an exercise to the reader. We also encourage the reader to write methods for comparing rationals for equality, as well as greater than/less than. Plus, we could extend this system to support \ttt{BigInteger} values for the numerator and denominator, which would allow us to represent arbitrarily large rational numbers. This, in turn, would require updating all methods to use \ttt{BigInteger} arithmetic, which is a good exercise in itself.
 
-\begin{cl}[RationalTest.java]{Testing Multiplication of Rationals}
+\begin{cl}[]{Testing Multiplication of Rationals}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -709,7 +709,7 @@ class RationalTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Rational.java]{Multiplying Two Rational Numbers}
+\begin{cl}[]{Multiplying Two Rational Numbers}
 \begin{lstlisting}[language=MyJava]
 class Rational {
   // Other details not shown.

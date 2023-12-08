@@ -37,7 +37,7 @@ class FactorialLazyList implements ILazyList {
 
 Testing it with ten calls to \ttt{next} yields predictable results.
 
-\begin{cl}[FactorialLazyListTester.java]{Testing Fact Lazy List}
+\begin{cl}[]{Testing Fact Lazy List}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -66,7 +66,7 @@ class FactorialLazyListTester {
 
 Design the \ttt{FibonacciLazyList} class, which implements \ttt{ILazyList} and correctly overrides \ttt{next} to produce Fibonacci sequence values. You code should \textit{not} use any loops or recursion. Recall that the Fibonacci sequence is defined as $f(n) = f(n - 1) + f(n - 2)$ for all $n\geq{2}$. The base cases are $f(0) = 0$ and $f(1) = 1$.
 
-\begin{cl}[FibonacciLazyListTester.java]{Testing Fib Lazy List}
+\begin{cl}[]{Testing Fib Lazy List}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -115,7 +115,7 @@ Variables, in our language, are defined and bound exactly once, namely when they
 
 \exercise{3}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.} Having to manually update our case analysis on the primitive operator type is cumbersome and prone to mistakes. A better solution would be to store the operator and its corresponding ``handler'' method, i.e., the method that receives the operands and does the logic of the operator. We can do this via a map where the keys are the string operators and the values are functional references to the handlers. Unfortunately, Java does not directly support passing methods as parameters, meaning they are not first-class. Conversely, we can make use of Java's functional interfaces to achieve our goal. Namely, the interface will contain one method: \ttt{Lvalue apply(List<Lvalue> args, Environment env)}, where \ttt{args} is the list of evaluated arguments. We will call the interface \ttt{IFunction} and make it generic, with the first type quantified to a list of \ttt{Lvalue} instances, and the second type quantified to \ttt{Lvalue}. Hopefully, the connection between these quantified types and the signature of \ttt{apply} is apparent. Using the below definition of \ttt{IFunction}, update \ttt{PrimNode} to no longer perform a case analysis in favor of the map. We provide an example of populating the map with the initial operators in a \ttt{static} block.
 
-\begin{cl}[IFunction.java]{Functional Interface for Primitive Operators}
+\begin{cl}[]{Functional Interface for Primitive Operators}
 \begin{lstlisting}[language=MyJava]
 @FunctionalInterface
 interface IFunction<T, R> {
@@ -125,7 +125,7 @@ interface IFunction<T, R> {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[PrimNode.java]{Primitive Node Class with Function Map}
+\begin{cl}[]{Primitive Node Class with Function Map}
 \begin{lstlisting}[language=MyJava]
 class PrimNode extends AstNode {
   

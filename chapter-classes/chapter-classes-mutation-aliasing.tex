@@ -4,7 +4,7 @@ A limitation that we have purposefully imposed on our object/class design is the
 
 To access a \ttt{private} instance variable, we design a \ttt{public} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a \ttt{public} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns the instance variable to the parameter. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a point $p$ to $(7, 4)$, but we then want to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which we confirm through the accessor method. Another way of phrasing this is that, when testing a mutator, we care about the \textit{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. Setter methods, or methods that modify outside values or data are definitionally \textit{impure}\index{impure}. Because we want to be able to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove this keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we \textit{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
 
-\begin{cl}[PointTester.java]{Testing \ttt{Point} Setter Methods}
+\begin{cl}[]{Testing \ttt{Point} Setter Methods}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -28,7 +28,7 @@ class PointTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[Point.java]{\ttt{Point} Class with Accessor and Mutator Methods}
+\begin{cl}[]{\ttt{Point} Class with Accessor and Mutator Methods}
 \begin{lstlisting}[language=MyJava]
 class Point {
 
@@ -53,7 +53,7 @@ class Point {
 
 What are some consequences to mutating an object? One comes through the notion of \textit{object aliasing}. Recall that objects point to references in memory. Therefore if we instantiate a \ttt{Point} $p_1$, then initialize another \ttt{Point} $p_2$ to reference $p_1$, then both objects refer to the same \ttt{Point} instance in memory. If we modify $p_1$ through a setter method, then $p_2$ will reflect the change.
 
-\begin{cl}[PointTester.java]{Object Aliasing}
+\begin{cl}[]{Object Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -85,7 +85,7 @@ class PointTester {
 
 This idea carries over to other, more complex classes as well. For example, strings, arrays, lists, and others are all objects, and therefore, they are all subject to object aliasing. Modifying one \ttt{ArrayList} instance will modify all other \ttt{ArrayList} instances that reference the same object. This is a common source of bugs in Java programs, and it is important to be aware of this behavior. In the following example, we will demonstrate aliasing through the \ttt{ArrayList} data structure containing \ttt{Point} objects. We add a series of \ttt{Point} instances to an \ttt{ArrayList}, which is then aliased by another \ttt{ArrayList}. We then add another \ttt{Point} instance to the first \ttt{ArrayList}, followed by a verification that the lists are the same size. Additionally, we traverse over the lists and verify that the elements are the same through the \ttt{==} operator. Remember that \ttt{==} returns whether or not two objects reference the same instance in memory. Because these lists are merely aliases of each other, they will contain references to the same \ttt{Point} instances.
 
-\begin{cl}[PointTester.java]{Testing \ttt{ArrayList} Aliasing}
+\begin{cl}[]{Testing \ttt{ArrayList} Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -121,7 +121,7 @@ class PointTester {
 
 In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements, is stored in \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is stored in \ttt{capacity}. Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class, an idea called \textit{constructor chaining}. 
 
-\begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Class}
+\begin{cl}[]{\ttt{MiniArrayList} Class}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -141,7 +141,7 @@ class MiniArrayList<T> {
 
 Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type. Recall that generics are a compile-time feature, and arrays are a runtime feature. Therefore, we cannot instantiate an array of a generic type. Instead, we must instantiate an array containing type \ttt{Object}, followed by a cast to contain type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \textit{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
 
-\begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Class Instantiating the Backing Array}
+\begin{cl}[]{\ttt{MiniArrayList} Class Instantiating the Backing Array}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -162,7 +162,7 @@ class MiniArrayList<T> {
 
 We now need to implement the \ttt{add} method, which adds an element to the end of the array list. We first check if the array is full, and if so, we resize the array. We then add the element to the end of the array and increment the size. Resizing the array is, fortunately, not complicated; all we need to do is instantiate a new, larger array, copy the existing elements over, then reassign the instance variable. The question now is, by what factor should the array capacity increase? This decision is implementation-dependent, but we will use a doubling factor out of convenience. We make \ttt{resize} private because it is an implementation detail that the user does not need to know about. To write coherent tests, we should also write the \ttt{get} method, which returns the element at a given index, as well as \ttt{size}, which returns the number of logical elements in the list. For now, we will not worry about bounds checking, but we will return to this in a later chapter on exceptions.
 
-\begin{cl}[MiniArrayListTester.java]{Testing \ttt{MiniArrayList} \ttt{add} Method}
+\begin{cl}[]{Testing \ttt{MiniArrayList} \ttt{add} Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -185,7 +185,7 @@ class MiniArrayListTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Adding Elements}
+\begin{cl}[]{\ttt{MiniArrayList} Adding Elements}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -219,7 +219,7 @@ class MiniArrayList<T> {
 
 We will write two more methods: \ttt{insert} and \ttt{remove}, which inserts an element $e$ at a given index $i$, and removes an element $e$ respectively. These two methods are similar in that they alter the backing array by shifting its values right and left. Accordingly, our implementation will contain the private helper methods \ttt{shiftRight} and \ttt{shiftLeft}. If we attempt to insert an element into a list that must be resized, we call \ttt{resize}. Both \ttt{insert} and \ttt{remove} warrant test cases! Like the \ttt{get} counterpart, neither of these new methods will perform bounds checking, so testing out-of-bounds behavior, for the time being, is not pertinent.
 
-\begin{cl}[MiniArrayListTester.java]{Testing \ttt{MiniArrayList} \ttt{insert} and \ttt{remove} Methods}
+\begin{cl}[]{Testing \ttt{MiniArrayList} \ttt{insert} and \ttt{remove} Methods}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 
@@ -252,7 +252,7 @@ class MiniArrayListTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[MiniArrayList.java]{\ttt{MiniArrayList} Inserting and Removing Elements}
+\begin{cl}[]{\ttt{MiniArrayList} Inserting and Removing Elements}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -313,7 +313,7 @@ class MiniArrayList<T> {
 
 We present several test cases that assert different pieces of these classes. We will analyze each one and determine why it uses either \ttt{assertEquals} or \ttt{assertNotEquals} in its comparison. Our first series of tests only focuses on classes \ttt{A}, \ttt{B}, and \ttt{C} to keep things simple. We insert blanks in the assertion statements for you to fill in as exercise before checking your answers.
 
-\begin{cl}[ClassTester.java]{Testing Object Mutation and Aliasing}
+\begin{cl}[]{Testing Object Mutation and Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -385,7 +385,7 @@ Up next we reassign \ttt{b} to point to \ttt{b2}. This is a reassignment of a re
 
 Let's now test the \ttt{D} and \ttt{E} classes, which use arrays as instance variables.
 
-\begin{cl}[ClassTester.java]{Testing Object Mutation and Aliasing}
+\begin{cl}[]{Testing Object Mutation and Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -421,7 +421,7 @@ Thus, if we set the number of one arbitrary element, this change propagates to e
 
 \example{Some may question why we emphasize aliasing and mutation. When working with the Collections API and designing data structures, proper care must be taken to avoid undesired behavior. Consider what happens if we design a class \ttt{F} that stores a reference to a \ttt{List<Integer>} as an instance variable. Then, suppose we instantiate two distinct instances of \ttt{F}, namely $f_1$ and $f_2$, each of which receive the same list of numbers. If we then mutate the list somewhere inside of $f_1$, then the list stored as a reference inside $f_2$ is also changed.}
 
-\begin{cl}[ClassTester.java]{Testing List Mutation and Aliasing}
+\begin{cl}[]{Testing List Mutation and Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -441,7 +441,7 @@ class ClassTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[F.java]{Class Storing a List of Integers}
+\begin{cl}[]{Class Storing a List of Integers}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
