@@ -240,6 +240,132 @@ class RectangleObject extends AxisAlignedBoundingBoxObject implements IDrawable 
 \end{lstlisting}
 \end{cl}
 
+\example{A terminal argument parser is a program/function that interprets a series of arguments passed to another program and makes it easier for programmers to determine if a flag is enabled. Without one, many programmers often resort to using a complex series of conditional statements to check for the existence of a flag. Not only is this cumbersome, but it is prone to errors, and neither extendable nor flexible to different arrangements of arguments. In this example we will develop a small terminal argument parser.}
+
+First, we need to design a class that represents an ``argument'' to a program. Arguments, as we described in Chapter~\ref{chapter-arrays-and-collections}, are space-separated string values that we pass to a program executable, which populate the \ttt{String[] args} array in the \ttt{main} method. In particular, however, we want to specify that an argument is not necessarily the values themselves, but are instead the flags, or instructions, passed to the executable. The simplest version of a flag is one that receives exactly one argument, which we will represent via an abstract \ttt{Argument} class. Later on, we want to be able to validate a flag with its given arguments, so the \ttt{Argument} class includes an abstract \ttt{boolean validate} method, that shall be overridden in all subclasses of \ttt{Argument}.
+
+\begin{cl}[]{Argument Class Definition}
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.Map;
+
+abstract class Argument {
+
+  private String key;
+
+  public Argument(String key) { this.key = key; }
+
+  public String getKey() { return this.key; }
+
+  public abstract boolean validate(Map<String, List<String>> args);
+}
+\end{lstlisting}
+\end{cl}
+
+From here, let's design two types of arguments: one that is optional and one that receives $n$ arguments. Namely, an optional argument is one that is always valid, according to \ttt{validate}, because it does not necessarily need to exist. The $n$-valued argument, on the other hand, requires that the associated passed flag contains exactly $n$ values. For example, if we say that the \ttt{--input} flag requires exactly $3$ arguments, then if we do not pass exactly three space-separated non-flag values, it fails to validate.
+
+\begin{cl}[]{Optional Argument Implementation}
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.Map;
+
+class OptionalArgument extends Argument {
+
+  public OptionalArgument(String key) { super(key); }
+
+  @Override
+  public boolean validate(Map<String, List<String>> args) { return true; }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Numbered Argument Implementation}
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.Map;
+
+class NumberedArgument extends Argument {
+
+  private final int NUM_REQUIRED_ARGS;
+
+  public NumberedArgument(String key, int n) {
+    super(key);
+    this.NUM_REQUIRED_ARGS = n;
+  }
+
+  @Override
+  public boolean validate(Map<String, List<String>> args) {
+    if (!args.containsKey(this.getKey())) { return false; } 
+    else { return args.get(this.getKey()).size() == this.NUM_REQUIRED_ARGS; }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Now comes the argument parser itself, which receives a string array of argument values, much like \ttt{main}, and extracts out the flags and arguments into a \ttt{Map<String, List<String>>} where the key represents the flag and the value is a list of the arguments to said flag. We also store a \ttt{Set<Argument>} to allow the programmer to designate arguments to the parser. The idea is straightforward: while traversing over \ttt{args}, if we encounter a string that begins with a double dash `\ttt{--}', it is qualified as a flag and the following arguments, up to another flag, are marked as arguments to the flag. We add these to the respective map as described before, and continue until we run out of elements in the array.
+
+\begin{cl}[]{Terminal Arguments Parser Implementation}
+\begin{lstlisting}[language=MyJava]
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+
+class ArgumentParser {
+
+  private Map<String, List<String>> parsedArguments;
+  private Set<Argument> arguments;
+
+  public ArgumentParser(String[] args) {
+    this.arguments = new HashSet<>();
+    this.parsedArguments = new HashMap<>();
+    String currKey = null;
+    for (String arg : args) {
+      if (arg.startsWith("--")) {
+        currKey = arg.split("--")[1];
+        this.parsedArguments.putIfAbsent(currKey, new ArrayList<>());
+      } else if (currKey != null) {
+        this.parsedArguments.get(currKey).add(arg);
+      }
+    }
+  }
+
+  public void addArgument(Argument arg) { this.arguments.add(arg); }
+
+  public List<String> getArguments(String key) {
+    return this.parsedArguments.containsKey(key) ? 
+             this.parsedArguments.get(key) : 
+             null;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+The \ttt{parseArguments} method returns whether or not the supplied arguments are valid according to the arguments populated via \ttt{addArgument}. Using streams, we verify that, after invoking \ttt{validate} on every argument, each separate call returns true, meaning that all arguments are valid and correct. Because it might be useful to return the associated arguments to a flag from a programmer's perspective who uses this parser, we include a \ttt{getArguments} method to return the list of arguments passed to a flag.
+
+\begin{cl}[]{Tester for Terminal Arguments Parser}
+\begin{lstlisting}[language=MyJava]
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+
+class ArgumentParser {
+  
+  // ... other methods not shown.
+
+  /**
+   * ... 
+   * @return
+   */
+  public boolean parseArguments() {
+    return this.arguments.stream()
+                         .allMatch(e -> e.validate(this.parsedArguments));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
 \example{Inheritance is a truly powerful programming language construct, and we will now attempt to describe its beauty through the design of a mini-project. Said mini-project will encompass writing a small programming language. Programming language syntax and semantics, collectively, require a lot of knowledge outside the domain and scope of this text, but we will see that, even with our somewhat limited arsenal of tools, we can construct a fairly powerful programming language. Our language will start off as a recreation of the interpreter from our section on interfaces, but contains modifications to make it more flexible.}
 
 Programming language syntax is often broken up into the nodes of an \textit{abstract syntax tree}, which at a quick glance is nothing more than a description of the operations of a language. To begin, we need to describe our programming language capabilities. To keep things simple, our language will contain integers, variables, a few arithmetic operators, and conditionals. It's important to note that, because we are glossing over the innards of lexing and  parsing, all of our tests will exist in the form of abstract syntax trees. We want an abstract AST node class from which every other AST node inherits. Then, we can design purpose-specific nodes that do what we wish. Every abstract syntax tree has a list of children node. We will also define a \texttt{toString} method that will print out the abstract syntax tree in a readable format. Our abstract syntax tree class uses two constructors: one that receives a list of abstract syntax tree nodes, and another that is variadic over the \ttt{AstNode} type. We implement two different constructors for convenience purposes during testing.
