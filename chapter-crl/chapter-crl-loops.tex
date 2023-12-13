@@ -542,10 +542,9 @@ class SumInterval {
 
   /**
    * Computes the sum of the integers between a and b inclusive.
-   *
    * @param a lower-bound inclusive.
    * @param b upper-bound inclusive.
-   * @return sum 
+   * @return sum of values.
    */
   static void sum(int a, int b) {
     if (a > b) {
@@ -612,7 +611,6 @@ class NewtonApproximation {
   /**
    * Computes an approximation of the square root of
    * a number using Newton's Approximation algorithm.
-   *
    * @param n number to square root.
    * @param delta approximation range.
    * @return approximation of sqrt of n.
@@ -686,10 +684,9 @@ class Fibonacci {
 
   /**
    * Computes the nth Fibonacci number using tail recursion.
-   *
    * @param n nth Fibonacci number.
-   * @accumulator a - "previous' previous" fib.
-   * @accumulator b - "previous" fib.
+   * @accumulator a "previous' previous" fib.
+   * @accumulator b "previous" fib.
    * @return result.
    */
   static int fibHelper(int n, int a, int b) {

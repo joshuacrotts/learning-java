@@ -470,7 +470,6 @@ class FunctionMap {
 
   /**
    * Applies the function f to each element of the list l.
-   * 
    * @param l the list of elements.
    * @param f the function to apply to each element.
    * @return the list of elements after applying f to each element.
@@ -711,7 +710,6 @@ class DoublyLinkedList<T> {
 
   /**
   * Adds a new node to the end of the list.
-  *
   * @param data The data to be stored in the new node.
   */
   public void add(T data) {
@@ -771,11 +769,10 @@ class DoublyLinkedList<T> {
 
   /**
    * Returns the element at a given index as an Optional.
-    * 
-    * @param idx index to retrieve.
-    * @return Optional.empty() if the index is out of bounds,
-    *         the data at that node's index otherwise.
-    */
+   * @param idx index to retrieve.
+   * @return Optional.empty() if the index is out of bounds,
+   *         the data at that node's index otherwise.
+   */
   public Optional<T> get(int idx) {
     Node<T> curr = this.first;
     int i = 0;
@@ -923,7 +920,6 @@ class AssociationList<K, V> {
   
   /**
    * Returns the value associated with a given key.
-   * 
    * @param key the key to lookup.
    * @return the value associated with the key, if it exists.
    */
@@ -941,7 +937,6 @@ class AssociationList<K, V> {
   
   /**
    * Adds a new association to the list.
-   * 
    * @param key the key to associate.
    * @param value the value to associate.
    * @return a new association list with the new association.

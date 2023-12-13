@@ -110,9 +110,9 @@ Strings are \textit{indexed from zero}, which means that the characters in the s
     \item[\ttt{$S_1$ + $S_2$}] adds the characters from $S_2$ onto the end of $S_1$, producing a new string.
     \item[\ttt{int $S$.length()}] returns the number of characters in $S$.
     \item[\ttt{char $S$.charAt($i$)}] retrieves the $i^\text{th}$ character in $S$.
-    \item[\ttt{String $S$.substring($i$, $j$)}] returns a new string extracted from $S$, from indices $i$ inclusive to $j$ exclusive. The number of extracted characters is $j-i$.
-    \item[\ttt{String $S$.substring($i$)}] returns a new string extracted from $S$, from index $i$ until the end of $S$.
-    \item[\ttt{int $S$.indexOf($S'$)}] returns the index of the first occurrence of $S'$ in $S$, or $-1$ if $S'$ is not in $S$.
+    \item[\ttt{String $S$.substring($i$, $j$)}] returns a new string containing the characters from index $i$, inclusive, to index $j$, exclusive. The number of extracted characters is $j-i$.
+    \item[\ttt{String $S$.substring($i$)}] returns a new string from index $i$ to the end of $S$.
+    \item[\ttt{int $S$.indexOf($S'$)}] returns the index of the first instance of $S'$ in $S$, or $-1$ if $S'$ is not in $S$.
     \item[\ttt{boolean $S$.contains($S'$)}] returns \ttt{true} if $S'$ appears as a substring of $S$; \ttt{false} otherwise.
     \item[\ttt{String $S$.repeat($n$)}] returns a new string containing $n$ copies of $S$.
   \end{description}

@@ -94,9 +94,9 @@ class GpaCalculatorTesting {
 class GpaCalculator {
 
   /**
-   * 
-   * @param
-   * @return
+   * Computes the numeric GPA for a given letter grade.
+   * @param letter grade between A and F, with optional +/-.
+   * @return numeric grade from 4.0 to 0.0.
    */
   static double gpa(String grade) {
     boolean plus = grade.contains("+");
@@ -150,7 +150,6 @@ class MonthToDays {
 
   /**
    * Determines how many days a given month has, not accounting for leap years.
-   *
    * @param m capitalized month, e.g., "July".
    * @return the number of days in the month
    */

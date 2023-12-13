@@ -64,7 +64,6 @@ class GenericSearch {
   /**
    * Returns the index of the first occurrence of k in t, 
    * or -1 if it does not exist.
-   *
    * @param t the list of type T.
    * @param k the object of type T to search for.
    * @return the index of k or -1.
@@ -118,7 +117,6 @@ class GenericMax {
   /**
    * Returns the maximum element in the list according to 
    * the compareTo implementation of the type parameter.
-   *
    * @param t the list of type T, where T is a type that implements Comparable.
    * @return the maximum element in the list.
    */
@@ -172,10 +170,10 @@ import java.util.List;
 class NumberList {
 
   /**
-    * Computes the sum of a list of Number subclasses.
-    * @param ls list of Number instances.
-    * @return sum as a double.
-    */
+   * Computes the sum of a list of Number subclasses.
+   * @param ls list of Number instances.
+   * @return sum as a double.
+   */
   static double sum(List<? extends Number> ls) {
     return ls.stream()
               .mapToDouble(Number::doubleValue)

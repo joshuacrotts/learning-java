@@ -253,19 +253,23 @@ unifiesAll(M4, G4) => false
 
 \exercise{3}{chapter-arrays-collections}{Two strings $s_1$ and $s_2$ are isomorphic if we can create a mapping from $s_1$ from $s_2$. For example, the strings \ttt{"DCBA"} and \ttt{"ZYXW"} are isomorphic because we can map $D$ to $Z$, $C$ to $Y$, and so forth. Another example is \ttt{"ABACAB"} and \ttt{"XYXZXY"} for similar reasons. A non-example is \ttt{"PROXY"} and \ttt{"ALPHA"}, because once we map \ttt{"A"} to \ttt{"P"}, we cannot create a map between \ttt{"A"} and \ttt{"Y"}. Write the \ttt{isIsomorphic} method, which determines whether or not two strings are isomorphic. }
 
-\exercise{2}{chapter-arrays-collections}{We consider a \textit{key string} to be the string obtained after alphabetizing the letters of a string. For example, the string \ttt{"deloop"} is a key string of the strings \ttt{"poodle"} and \ttt{"looped"}. Write the \ttt{static HashMap<String, List<String>> keyStringGroups(List<String> ls)} method, which maps all key strings to the strings in $\textit{ls}$ using the above criteria}
-
+\exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Write the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> ls)} method, which maps all alphabetized anagrams to the strings in $\textit{ls}$ using the above criteria.}
+    
 \par{
 \begin{verbatim}
-ls = ["ant", "introduces", "poodle", "tan", "looped", "discounter", 
-      "nastier", "polled", "retains", "retinas", "reductions"]
+ls = ["presorting", "plea", "introduces", "anger", "leap", "petals",
+      "donate", "plates", "range", "reductions", "rediscount", 
+      "tapers", "pale", "atoned", "staple", "repast", "reportings"]
       
-keyStringGroups(ls) 
-  => {{"ant", ["tan", "ant"]}, 
-      {"deloop", ["poodle", "looped"]}, 
-      {"dellop", ["polled"]}, 
-      {"cdeinorsu", ["discounter", "introduces", "reductions"]}, 
-      {"aeinrst", ["retains", "retinas", "nastier"]}}
+alphaAnagramGroups(ls) 
+  => {{"aegnr", ["anger", "range"]}, 
+      {"aelp", ["plea", "leap", "pale"]}, 
+      {"aelpst", ["petals", "plates", "staple"]}, 
+      {"aeprst", ["tapers", "repast"]}
+      {"cdeinorstu", ["introduces", "reductions", "rediscount"]}, 
+      {"adenot", ["donate", "atoned"]}, 
+      {"eginoprrst", ["presorting", "reportings"]}}
+    
 \end{verbatim}
 }
 
@@ -304,15 +308,15 @@ classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that, given a \ttt{List<Integer>}, returns a list of those numbers squared and adds ten to the result, omitting any of the resulting numbers that end in $5$ or $6$.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{removeDups} method that removes all duplicate integers from a given \ttt{ArrayList<Integer>}. Return this result as a new list.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{removeDups} method that removes all duplicate integers from a given \ttt{List<Integer>}. Return this result as a new list.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{removeLongerThan} method that removes all strings that are longer than a given integer $n$, from a given \ttt{ArrayList<String>}. Return this result as a new list.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{removeLongerThan} method that removes all strings that are longer than a given integer $n$, from a given \ttt{List<String>}. Return this result as a new list.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{filterThenSquare} method that, when given an \ttt{ArrayList<Double>} $L$, removes all odd values, and squares the remaining values. Return this result as a new list.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{filterThenSquare} method that, when given a \ttt{List<Double>} $L$, removes all odd values, and squares the remaining values. Return this result as a new list.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{filterDoubleAvg} method that, when given an \ttt{ArrayList<Integer>} $L$, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a value.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{filterDoubleAvg} method that, when given a \ttt{List<Integer>} $L$, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a value.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{min} method that, when given an \ttt{ArrayList<Integer>} $L$, returns the minimum value in the list. Return this result as an \ttt{Optional<Integer>}. If there are no values in $L$, return \ttt{Optional.empty()}.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{min} method that, when given a \ttt{List<Integer>} $L$, returns the minimum value in the list. Return this result as an \ttt{Optional<Integer>}. If there are no values in $L$, return \ttt{Optional.empty()}.}
 
 
 %f(a, b) and f(3, 4) produces {<a : 3>, <b : 4>}

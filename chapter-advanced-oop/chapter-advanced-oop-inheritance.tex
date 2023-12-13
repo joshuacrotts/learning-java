@@ -282,7 +282,6 @@ final class World {
   /**
    * Assigns a WorldObject to a given position in the world by adding
    * it to the list of objects.
-   * 
    * @param obj the object to assign.
    * @param x the x-coordinate of the position.
    * @param y the y-coordinate of the position.
@@ -293,8 +292,7 @@ final class World {
 
   /**
    * Counts the number of beepers on a given position in the world.
-   * 
-   * @return the number of beepers on the given position.
+   * @return the number of beepers.
    */
   public int countBeepers() {
     return this.WORLD[x][y].count(BeeperObject.class);

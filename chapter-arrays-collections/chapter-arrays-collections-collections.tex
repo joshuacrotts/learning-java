@@ -328,7 +328,6 @@ class NumAverage {
 
   /**
    * Computes the average of a sequence of provided integers.
-   *
    * @param variadic integers.
    * @return average if there is at least one number or zero otherwise.
    */
@@ -700,7 +699,7 @@ Java has an interface called \ttt{Map} rather than a class because, like sets, t
     \item [\ttt{Map<$K, V$> $M=$ new HashMap<>()}] creates a \ttt{HashMap} named $M$ whose keys are of type $K$ and whose values are of type $V$. Namely, the keys map to the values.
      \item [\ttt{$M$.containsKey$(k)$}] returns whether or not $k$ is a key in the map $M$.
      \item [\ttt{$M$.put$(k, v)$}] maps the key $k$ to the value $v$ in $M$.
-     \item [\ttt{$M$.get$(k)$}] returns the value associated with the key $k$ in $M$, or \ttt{null} if $k$ does not have a mapping.
+     \item [\ttt{$M$.get$(k)$}] returns the value associated with $k$ in $M$, or \ttt{null} if $k$ does not have a mapping.
     \item [\ttt{$S$.size$()$}] returns the number of logical elements in the set.
   \end{description}
 \end{tcolorbox}
@@ -912,8 +911,7 @@ class BigIntFibStreamTester {
 class BigIntFibStream {
 
   /**
-   * Returns a stream of BigInteger values computing the nth Fibonacci value.
-   *
+   * Computes a stream of BigInteger values computing the nth Fibonacci value.
    * @return stream containing arrays of the next sequential BigIntegers.
    */
   public static Stream<BigInteger[]> fibonacciStream() {
@@ -933,10 +931,10 @@ class BigIntFibStream {
   \begin{description}
     \item [\ttt{int $S$.count$()$}] returns the number of elements in the stream.
     \item [\ttt{Stream<$T$> $S$.map($f$)}] returns a new stream whose elements are the result of applying $f$ to each element of $S$.
-    \item [\ttt{Stream<$T$> $S$.filter($p$)}] returns a new stream whose elements are those of $S$ that satisfy the predicate $p$.
-    \item [\ttt{Stream<$T$> $S$.reduce($a$, $f$)}] returns the result of applying the binary function $f$ to each element of $S$ and the accumulator $a$. The value of $a$ serves as the accumulator's initial value.
-    \item [\ttt{Stream<$T$> $S$.limit($n$)}] returns a new stream whose elements are the first $n$ elements of $S$.
-    \item [\ttt{Stream<$T$> $S$.skip($n$)}] returns a new stream whose elements are those of $S$ after the first $n$ elements.
+    \item [\ttt{Stream<$T$> $S$.filter($p$)}] returns a new stream of values in $S$ that satisfy the predicate $p$.
+    \item [\ttt{Stream<$T$> $S$.reduce($a$, $f$)}] returns the result of applying the binary function $f$ to each element of $S$, starting from $a$, which serves as the accumulator's initial value.
+    \item [\ttt{Stream<$T$> $S$.limit($n$)}] returns a new stream containing the first $n$ elements of $S$.
+    \item [\ttt{Stream<$T$> $S$.skip($n$)}] returns a new stream containing the elements of $S$ after the first $n$.
     \item [\ttt{Optional<$T$> $S$.min/max($c$)}] returns the minimum/maximum element of $S$ according to the comparator $c$. If $S$ is empty, returns \ttt{Optional.empty()}.
   \end{description}
 \end{tcolorbox}
@@ -987,10 +985,8 @@ class BigIntFibStreamTester {
 class BigIntFibStream {
 
   /**
-   * Returns a stream of BigInteger values computing the nth Fibonacci value.
-   *
+   * Computes a stream of BigInteger values computing the nth Fibonacci value.
    * @return stream containing arrays of the next sequential Fibonacci BigIntegers.
-   */
    */
   public static Stream<BigInteger> fibonacciStream() {
     BigInteger[] vals = new BigInteger[]{new BigInteger("0"),
@@ -1040,7 +1036,6 @@ class SqList {
 
   /**
    * Returns a list of squared integers from a list of integers.
-   *
    * @param list of integers.
    * @return list of squared integers.
    */
