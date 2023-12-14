@@ -144,7 +144,7 @@ class BadStringInputException extends RuntimeException {
 \end{lstlisting}
 \end{cl}
 
-Then, if we write code that reads a string from the user, we can throw a \ttt{BadStringInputException} if the input is a non-alphabetic string.
+Then, if we write code that reads a string from the user, we can throw a \ttt{BadStringInputException} if the input is a non-alphabetic string. The following code segment uses the \ttt{matches} method, which receives a regular expression, and returns whether or not the string satisfies the expression. In particular, \ttt{[a-zA-Z]+} states that there must be at least one lowercase or uppercase character.
 
 \begin{cl}[]{Bad String Input Running Example}
 \begin{lstlisting}[language=MyJava]

@@ -172,7 +172,7 @@ We make prolific use of Java's \ttt{Math} library in designing this method; we u
 \example{We are starting to get used to some of Java's verbosity! Let us now write a method that, when given a value of $x$, evaluates the following quartic formula:}
 
 \[
-q(x) = 4x^4 - 17x^3 + 202x^2 - 65x + 13
+q(x) = 4x^4 + 7x^3 + 21x^2 - 65x + 3
 \]
 
 Its signature is straightforward: we receive a value of $x$, namely a \ttt{double}, and return a \ttt{double} since we are performing mathematical operations on \ttt{double} values. Again, we return zero as a temporary solution to ensure the program successfully compiles.
@@ -183,7 +183,7 @@ class QuarticFormulaSolver {
 
   /**
    * Evaluates the following quartic equation:
-   * 4x^4 + 17x^3 + 202x^2 - 65x + 13.
+   * 4x^4 + 7x^3 + 21x^2 - 65x + 3.
    * @param the input variable x.
    * @return the result of the expression after substituting x.
    */
@@ -207,10 +207,10 @@ class QuarticFormulaSolverTester {
   @Test
   void solveQuarticTest() {
     assertAll(
-      () -> assertEquals(13, solveQuartic(0)),
-      () -> assertEquals(1501, solveQuartic(3)),
-      () -> assertEquals(189613, solveQuartic(15)),
-      () -> assertEquals(258266, solveQuartic(16.25)));
+      () -> assertEquals(3, solveQuartic(0)),
+      () -> assertEquals(510, solveQuartic(3)),
+      () -> assertEquals(229878, solveQuartic(15)),
+      () -> assertEquals(313445.1875, solveQuartic(16.25)));
   }
 }
 \end{lstlisting}
@@ -224,12 +224,12 @@ class QuarticFormulaSolver {
 
   /**
    * Evaluates the following quartic equation:
-   * 4x^4 + 17x^3 + 202x^2 - 65x + 13.
+   * 4x^4 + 7x^3 + 21x^2 - 65x + 3.
    * @param the input variable x.
    * @return the result of the expression after substituting x.
    */
   static double solveQuartic(double x) {
-    return 4 * Math.pow(x, 4) + 17 * Math.pow(x, 3) +c202 * Math.pow(x, 2) - 65 * x + 13;
+    return 4 * Math.pow(x, 4) + 7 * Math.pow(x, 3) + 21 * Math.pow(x, 2) - 65 * x + 3;
   }
 }
 \end{lstlisting}

@@ -267,6 +267,31 @@ If you write tests for one of these methods, you should be able to propagate it 
     If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
 \end{enumerate}
 
+\exercise{3}{chapter-crl}{This question has five parts. We need to provide some background for the question first. An \textit{encoded string} $S$ is one of the form:}
+\begin{align*}
+S &= n[S']\\
+S' &= SS' \mid [a, ..., z]^{*} \mid \ttt{""}
+\end{align*}
+We imagine this didn't clear up what the definition means. Take the encoded string \ttt{"3[a]2[b]"} as an example. The resulting decoded string is \ttt{"aaabb"}, because we create three copies of \ttt{"a"}, followed by two copies of \ttt{"b"}. Another example is \ttt{"4[abcd]"}, which returns the string containing \ttt{"abcdabcdabcdabcd"}.
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, write a method \ttt{retrieveN} that returns the integer at the start of an encoded string. Take the following examples as motivation.
+\begin{verbatim}
+retrieveN("3[a]2[b]")     => 3
+retrieveN("47[abcd]")     => 47
+retrieveN("1[bbbbb]3[a]") => 1
+\end{verbatim}
+    \item Next, write the \ttt{cutN} that returns a string without the integer at the start of an encoded string. Hint: use \ttt{indexOf} and \ttt{substring}.
+\begin{verbatim}
+cutN("3[a]2[b]")     => "[a]2[b]
+cutN("47[abcd]")     => "[abcd]"
+cutN("1[bbbbb]3[a]") => "[bbbbb]3[a]"
+\end{verbatim}
+    \item Design the \textit{standard recursive} \ttt{decode} method, which receives an encoded string and performs a decoding operation.
+    \item Design the \texttt{decodeTR} and \texttt{decodeTRHelper} methods. The former acts as the driver to the latter; the latter solves the same problem that \texttt{decode} does, but it instead uses tail recursion. Remember to include the relevant access modifiers!
+    \item Design the \texttt{decodeLoop} method, which solves the problem using either a \texttt{while} or \texttt{for} loop.
+\end{enumerate}
+
 \exercise{2}{chapter-crl}{Design the static \ttt{indexOf} method, which receives two \ttt{String}s \ttt{s}, \ttt{key}, and returns the first index of \ttt{key} in \ttt{s}. Note that \ttt{key} may be any arbitrary string and not just a a single character. If \ttt{key} is not in \ttt{s}, return \ttt{-1}.}
 
 \exercise{2}{chapter-crl}{Design the static \ttt{substring} method, which receives a \ttt{String} and two integers \ttt{low}, \ttt{high}, and returns the substring between these indices. If either are out of bounds of the string, return \ttt{null}.}
@@ -430,3 +455,5 @@ Design the \ttt{circleArea} method, which receives a radius $r$ and a delta $\De
 \caption{Right-Riemann Approximation of a Function}
 \label{fig:circlearea}
 \end{figure}
+
+\exercise{3}{chapter-crl-exercises}{Speech-to-text software plays a significant role in accessibility for those who may not be able to type quickly or at all. Design the \ttt{speechToText} method that, when given a ``speech string', returns the corresponding text. A speech string, in this context, is a string spoken, in English, by a person, which may or may not contain punctuation. If a speech string contains a word that represents punctuation, e.g., \ttt{"period"}, \ttt{"question mark"}, encode this punctuation in the returned text. For example, \ttt{speechToText("hello period how are you question mark")} returns \ttt{"Hello. How are you?"}. You should also account for quotations, e.g., \ttt{speechToText("hello quote how are you question mark unquote")} returns \ttt{Hello. "how are you?"}.}

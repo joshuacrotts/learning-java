@@ -372,21 +372,21 @@ class CardTest {
 class Card {
 
   private final Suit SUIT;
-  private final int VALUE;
+  private final int VAL;
 
-  public Card(Suit suit, int value) { this.SUIT = suit; this.VALUE = value; }
+  public Card(Suit suit, int value) { this.SUIT = suit; this.VAL = value; }
   
   @Override
-  public String toString() { return String.format("%d of %s", this.VALUE, this.SUIT); }
+  public String toString() { return String.format("%d of %s", this.VAL, this.SUIT); }
 
-  public int getValue() { return this.VALUE; } 
+  public int getValue() { return this.VAL; } 
 }
 \end{lstlisting}
 \end{cl}
 
 In a standard fifty-two deck of cards, some are ``special'', e.g., the Jacks, Queens, Kings, and Ace cards. To simplify our design, these cards will be treated the same as a ``ten'' card, showing no syntactic nor semantic difference. Now that we have a class to represents cards, let's design the \ttt{Deck} class, which stores an \ttt{ArrayList<Card>} representing the current state of the deck. It also contains a static variable representing the maximum number of allowed cards. For our purposes, as we alluded to, this quantity is fifty-two. In the \ttt{Deck} constructor, we will call the \ttt{populateDeck} method, which adds four cards of the same value, but of each suit. So, to exemplify, this means that there are four cards whose value is three, where each is one of the four suits. We make use of the iterator from the \ttt{Suit} class to simplify our deck population. Only the \ttt{Deck} class needs to know how to populate an initial (empty) deck, so we privatize its implementation.
 
-To test a \ttt{Deck}, we can write a \ttt{drawCard} method, which retrieves the ``top-most'' card on the deck to see if it is in the correct order. According to our implementation of the iterator, the top-most cards should have values of ten and be of the same suit. From there, we can draw three more cards to ensure they are of values nine, eight, and seven of the same suit. The iterator places \ttt{DIAMOND} as the final suit, so this is what we will assume in our tester. It might also be beneficial to test the \ttt{isEmpty} method, which returns \ttt{true} if the deck is empty, and \ttt{false} otherwise. We can test this functionality by drawing all fifty-two cards from the deck and ensuring that the deck is empty afterwards. Note that we draw four tens because there are no "Kings", "Queens", or "Jacks" in the deck.
+To test a \ttt{Deck}, we can write a \ttt{drawCard} method, which retrieves the ``top-most'' card on the deck to see if it is in the correct order. According to our implementation of the iterator, the top-most cards should have values of ten and be of the same suit. From there, we can draw three more cards to ensure they are of values nine, eight, and seven of the same suit. The iterator places \ttt{DIAMOND} as the final suit, so this is what we will assume in our tester. It might also be beneficial to test the \ttt{isEmpty} method, which returns \ttt{true} if the deck is empty, and \ttt{false} otherwise. We can test this functionality by drawing all fifty-two cards from the deck and ensuring that the deck is empty afterwards. Note that we draw four tens because there are no ``Kings'', ``Queens'', or ``Jacks'' in the deck.
 
 \begin{cl}[]{Testing the \ttt{Deck} Class}
 \begin{lstlisting}[language=MyJava]
@@ -584,7 +584,7 @@ class TwentyOne {
 \end{lstlisting}
 \end{cl}
 
-Designing a game caused some strife, but it was a good exercise in object-oriented design.
+Designing interactive games is a great exercise in object-oriented programming, as well as the culmination of other discussed topics.
 
 \example{Let's design the \ttt{Rational} class, which stores a rational number as a numerator and denominator. In doing so we will create methods for adding, subtracting, multiplying, and dividing rational numbers. Testing is paramount with this example, so we will be sure to write plenty. Recall the definition of a rational number: a number that can be expressed as the ratio of two integers $p$ and $q$, namely $p/q$. We are acutely familiar with how to perform basic operations on fractions from grade school, so we will glide through the actual mathematics and focus more on the Java implementation and class design.}
 
@@ -605,7 +605,7 @@ class RationalTester {
       () -> assertEquals("1/1305", new Rational(5, 6525).toString()),
       () -> assertEquals("3591/46562", new Rational(7182, 93124).toString()),
       () -> assertEquals("7/32", new Rational(7, 32).toString()),
-      () -> assertEquals("39483123/99938432", new Rational("493539/12492304").toString()),
+      () -> assertEquals("9388/48122", new Rational("4694/24061").toString()),
       () -> assertEquals("1/1", new Rational(1, 1).toString()));
   }
 }
@@ -645,14 +645,20 @@ class RationalTest {
   @Test
   void testRationalAdd() {
     assertAll (
-      () -> assertEquals("14/9", new Rational(2, 3).add(new Rational(7, 9)).toString()),
-      () -> assertEquals("5/6", new Rational(1, 2).add(new Rational(1, 3)).toString()),
-      () -> assertEquals("1/3", new Rational(1, 4).add(new Rational(1, 12)).toString()),
-      () -> assertEquals("1/4", new Rational(1, 8).add(new Rational(1, 8)).toString()),
-      () -> assertEquals("1/8", new Rational(1, 16).add(new Rational(1, 16)).toString()),
-      () -> assertEquals("1/16", new Rational(1, 32).add(new Rational(1, 32)).toString()),
-      () -> assertEquals("2/1", new Rational(32, 32).add(new Rational(32, 32)).toString())
-    )
+      () -> assertEquals("14/9", 
+                         new Rational(2, 3).add(new Rational(7, 9)).toString()),
+      () -> assertEquals("5/6", 
+                         new Rational(1, 2).add(new Rational(1, 3)).toString()),
+      () -> assertEquals("1/3", 
+                         new Rational(1, 4).add(new Rational(1, 12)).toString()),
+      () -> assertEquals("1/4", 
+                         new Rational(1, 8).add(new Rational(1, 8)).toString()),
+      () -> assertEquals("1/8", 
+                         new Rational(1, 16).add(new Rational(1, 16)).toString()),
+      () -> assertEquals("1/16", 
+                         new Rational(1, 32).add(new Rational(1, 32)).toString()),
+      () -> assertEquals("2/1", 
+                         new Rational(32, 32).add(new Rational(32, 32)).toString()));
   }
 }
 \end{lstlisting}
@@ -690,13 +696,18 @@ class RationalTest {
   @Test
   void testRationalMultiply() {
     assertAll (
-      () -> assertEquals("14/27", new Rational(2, 3).multiply(new Rational(7, 9)).toString()),
-      () -> assertEquals("1/6", new Rational(1, 2).multiply(new Rational(1, 3)).toString()),
-      () -> assertEquals("1/48", new Rational(1, 4).multiply(new Rational(1, 12)).toString()),
-      () -> assertEquals("1/64", new Rational(1, 8).multiply(new Rational(1, 8)).toString()),
-      () -> assertEquals("1/25", new Rational(1, 5).multiply(new Rational(1, 5)).toString()),
-      () -> assertEquals("1/1", new Rational(1, 1).multiply(new Rational(1, 1)).toString())
-    )
+      () -> assertEquals("14/27", 
+                         new Rational(2, 3).multiply(new Rational(7, 9)).toString()),
+      () -> assertEquals("1/6", 
+                         new Rational(1, 2).multiply(new Rational(1, 3)).toString()),
+      () -> assertEquals("1/48", 
+                         new Rational(1, 4).multiply(new Rational(1, 12)).toString()),
+      () -> assertEquals("1/64", 
+                         new Rational(1, 8).multiply(new Rational(1, 8)).toString()),
+      () -> assertEquals("1/25", 
+                         new Rational(1, 5).multiply(new Rational(1, 5)).toString()),
+      () -> assertEquals("1/1", 
+                         new Rational(1, 1).multiply(new Rational(1, 1)).toString()));
   }
 }
 \end{lstlisting}
