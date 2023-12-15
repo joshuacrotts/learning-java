@@ -188,7 +188,7 @@ What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation
     % \hrule
     % \vspace{2ex}
   \begin{description}
-    \item [\ttt{ArrayList<$T$> $A=$ new ArrayList<>()}] creates an \ttt{ArrayList} of type $T$ named~$A$.
+    \item [\ttt{List<$T$> $A=$ new ArrayList<>()}] creates an \ttt{ArrayList} of type $T$ named~$A$.
     \item [\ttt{$A$.get$(i)$}] retrieves the element at index $i^{\text{th}}$ of $A$. We refer to this as position $i + 1$. 
     \item [\ttt{$A$.set$(i, v)$}] assigns $v$ to index $i$ of $A$.
     \item [\ttt{$A$.size$()$}] returns the number of logical elements in the list, i.e., the logical size.
@@ -204,10 +204,10 @@ What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation
 To declare an \ttt{ArrayList} called $A$, we write the following, where $T$ is a class representing the type of elements contained within:
 \par{
 \begin{verbatim}
-ArrayList<T> A = new ArrayList<>();
+List<T> A = new ArrayList<>();
 \end{verbatim}
 }
-This instantiates a new \ttt{ArrayList}, but notice that we do not specify the number of elements to store like we would an array. Indeed, because lists are dynamic in size, there is no need to specify a default. Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this can be changed by passing a size argument between the parentheses.
+This initializes a \ttt{List} $A$, but instantiates it as a new \ttt{ArrayList}.\footnote{The reason behind this \textit{polymorphic} choice will become apparent in subsequent chapters.} Notice that we do not specify the number of elements to store like we would an array. Indeed, because lists are dynamic in size, there is no need to specify a default. Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this can be changed by passing a size argument between the parentheses.
 \par{
 \begin{verbatim}
 ArrayList<T> A = new ArrayList<>(100);
@@ -217,10 +217,10 @@ You might be tempted to ask, ``Why might that be necessary?'', which is a great 
 
 Like arrays, modifying elements in-place and retrieval also has a constant cost; the underlying data structure is an array after all. We retrieve a value at a given index using \ttt{.get}, and we replace an existing value at a given index using \ttt{.set}.
 
-\example{If we declare an \ttt{ArrayList} of integers $\ttt{ls1}$, we can perform several operations to demonstrate our understanding.}
+\example{If we instantiate an \ttt{ArrayList} of integers $\ttt{ls1}$, we can perform several operations to demonstrate our understanding.}
 \par{
 \begin{verbatim}
-ArrayList<Integer> ls1 = new ArrayList<>();
+List<Integer> ls1 = new ArrayList<>();
 ls1.add(439);
 ls1.add(311);
 ls1.add(654);
@@ -256,9 +256,9 @@ Therefore, to remove $1,000,000$ elements from the front of an \ttt{ArrayList}, 
 \example{Consider the following code. What does $s$ contain after execution?}
 \par{
 \begin{verbatim}
-ArrayList<Integer> ls1 = new ArrayList<>();
+List<Integer> ls1 = new ArrayList<>();
 ls1.add(10);
-ArrayList<Integer> ls2 = ls1;
+List<Integer> ls2 = ls1;
 ls2.add(20);
 ls1.add(30);
 String s = ls1.toString() + " " + ls2.toString();
@@ -289,14 +289,14 @@ Testing is always important when writing programs, as this text has emphasized f
 \par{
 \begin{verbatim}
 // Old way:
-ArrayList<Integer> ls1 = new ArrayList<>();
+List<Integer> ls1 = new ArrayList<>();
 ls1.add(5);
 ls1.add(40);
 ls1.add(4);
 ls1.add(42);
 
 // New way:
-ArrayList<Integer> ls2 = new ArrayList<>(List.of(5, 40, 4, 42));
+List<Integer> ls2 = new ArrayList<>(List.of(5, 40, 4, 42));
 \end{verbatim}
 }
 Using \ttt{List.of} raises a question: does \ttt{List.of} only receive five integer arguments? What if I want to specify more than five, or less than five? The answer to this excellent question is that \ttt{List.of} is a \textit{variadic-argument method}\index{variadic-argument method}. Methods may be written to receive any number of arguments, which are then collapsed into a data structure that is traversable.
@@ -366,7 +366,7 @@ Of course, these advantages are not without their disadvantages. Reading and mod
     % \hrule
     % \vspace{2ex}
   \begin{description}
-    \item [\ttt{LinkedList<$T$> $A=$ new LinkedList<>()}] creates a \ttt{LinkedList} of type $T$ named~$A$.
+    \item [\ttt{List<$T$> $A=$ new LinkedList<>()}] creates a \ttt{LinkedList} of type $T$ named~$A$.
     \item [\ttt{$A$.get$(i)$}] retrieves the element at index $i^{\text{th}}$ of $A$. We refer to this as position $i + 1$. 
     \item [\ttt{$A$.set$(i, v)$}] assigns $v$ to index $i$ of $A$.
     \item [\ttt{$A$.size$()$}] returns the number of logical elements in the list, i.e., the logical size.
@@ -475,7 +475,8 @@ Like the operations on a stack, these are also constant-time, since we may alway
 \label{fig:printerqueue}
 \end{figure}
 
-Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. Instead, \texttt{Queue} is an \textit{interface} that other classes implement whose structure resembles a queue. To create a first-in-first-out queue data structure, we may declare a variable as a \texttt{Queue} then instantiate it as a \texttt{LinkedList}. Thankfully the \texttt{LinkedList} class contains all relevant methods for operating a FIFO-based queue.
+Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. Instead, \texttt{Queue} is an \textit{interface}\index{interface} that other classes implement whose structure resembles a queue. To create a first-in-first-out queue data structure, we may declare a variable as a \texttt{Queue} then instantiate it as a \texttt{LinkedList}. Thankfully the \texttt{LinkedList} class contains all relevant methods for operating a FIFO-based queue.
+
 \par{
 \begin{verbatim}
 Queue<Integer> q = new LinkedList<>();
@@ -499,7 +500,6 @@ Treating \texttt{q} as a queue rather than a linked list is easy thanks to the m
   \label{fig:queues}
 \end{figure}
 
-
 \subsubsection*{\ttt{PriorityQueue} Class}
 \begin{figure}[tp]
   \small
@@ -507,7 +507,7 @@ Treating \texttt{q} as a queue rather than a linked list is easy thanks to the m
     A \textit{Priority queue} is a rank/score-based data structure wherein the ordering of elements is determined by either their natural ordering or a \ttt{Comparator}.
     \vspace{2ex}
   \begin{description}
-    \item [\ttt{PriorityQueue<$T$> $PQ=$ new PriorityQueue<>($c$)}] creates a \ttt{PriorityQueue} of type $T$, named $PQ$, with a \ttt{Comparator} $c$.
+    \item [\ttt{Queue<$T$> $PQ=$ new PriorityQueue<>($c$)}] creates a \ttt{PriorityQueue} of type $T$, named $PQ$, with a \ttt{Comparator} $c$ that is used to compare objects of type $T$ within the priority queue.
      \item [\ttt{$PQ$.add$(e)$}] inserts $e$ into $PQ$, whose position in the priority queue depends on the currently-existing elements.
      \item [\ttt{$PQ$.poll$()$}] returns and removes the element with the highest priority.
      \item [\ttt{$PQ$.peek$()$}] returns the element with the highest priority.
@@ -517,13 +517,14 @@ Treating \texttt{q} as a queue rather than a linked list is easy thanks to the m
   \caption{Useful \ttt{PriorityQueue}-based Methods.}
   \label{fig:priorityqueues}
 \end{figure}
-\textit{Priority queues} are the final sequential data structure that we will discuss from the Collections API. Though, placing it in this section is slightly disingenuous because, while priority queues have an ordering in their underlying data structure, saying that elements correspond to an index is largely incorrect. Priority queues, as their name suggests, rank items in the queue by a score called the \textit{priority}. Elements with the highest priority are at the ``front'' of the priority queue. Inserting elements into a priority queue potentially alters the positioning of preexisting elements.
+
+\textit{Priority queues} are the final sequential data structure that we will discuss from the Collections API\@. Though, placing it in this section is slightly disingenuous because, while priority queues have an ordering in their underlying data structure, saying that elements correspond to an index is largely incorrect. Priority queues, as their name suggests, rank items in the queue by a score called the \textit{priority}. Elements with the highest priority are at the ``front'' of the priority queue. Inserting elements into a priority queue potentially alters the positioning of preexisting elements.
 
 Priority queues base priority on one of two contributing factors: either the \textit{natural ordering} of elements, or a \textit{comparator object}. The natural ordering of elements is straightforward: natural ordering for numbers is their standard numeric ordering. For strings, the natural ordering is by lexicographical ordering. These, however, are not as interesting as comparators, which we will now discuss.
 
-A \textit{comparator} is a way of comparing two arbitrary ``things'', whether these things are numbers (i.e., the wrapper classes), strings, or any other kind of object, we can define custom ways of comparing \textit{any} non-primitive datatype!
+A \textit{comparator} is a way of comparing two arbitrary ``things'', whether these things are numbers (i.e., the wrapper classes), strings, or another kind of object, we can define custom ways of comparing \textit{any} non-primitive datatype.
 
-\example{Let us design a \ttt{Comparator} for prioritizing strings that start with the lowercase letter \ttt{`p'}. Comparators are constructed like other objects via \ttt{new}, but something interesting about their implementation is that we must specify \textit{how} to compare two objects. Therefore when we create a new instance of \ttt{Comparator} we must also override its \ttt{compare} method. This method's signature varies based on the parameterized type provided to the comparator, but since we want to compare strings, we should declare it as follows:}
+\example{Let us design a \ttt{Comparator} for prioritizing strings that start with the lowercase letter \ttt{`p'}. Comparators are constructed like other objects via \ttt{new}, but something interesting about their implementation is that we must specify \textit{how} to compare two objects. Therefore when we create a new instance of \ttt{Comparator} we must also override its \ttt{compare} method. This method's signature varies based on the parameterized type provided to the comparator, but since we want to compare strings, we should declare it as follows:\footnote{Again, we are labeling the return type as a \textit{Queue} because priority queues are a type of queue. Upon instantiating a new priority queue, Java will typecheck the return value against the signature of the method to verify that we are returning something that is, in fact, a queue.}}
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
@@ -532,7 +533,11 @@ import java.util.PriorityQueue;
 
 class PriorityQueueByP {
 
-  static PriorityQueue<String> priorityByP() {
+  /**
+   * Returns a priority queue that prioritizes strings that start with `p'.
+   * @return priority queue instance.
+   */
+  static Queue<String> priorityByP() {
     Comparator<String> c = new Comparator<>(
       @Override
       public int compare(String s1, String s2) { 
@@ -575,10 +580,11 @@ We now must specify how to compare \ttt{s1} and \ttt{s2} to achieve our goal. St
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 class PriorityQueueByP {
 
-  static PriorityQueue<String> priorityByP() {
+  static Queue<String> priorityByP() {
     Comparator<String> c = new Comparator<>(
       @Override
       public int compare(String s1, String s2) {
@@ -612,14 +618,16 @@ Let us add a few elements to a priority queue with our custom comparator to exem
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 class PriorityQueueByP {
-  static PriorityQueue<String> priorityByP() {
+
+  static Queue<String> priorityByP() {
     // Implementation not shown.
   }
 
   public static void main(String[] args) {
-    PriorityQueue<String> pq1 = priorityByP();
+    Queue<String> pq1 = priorityByP();
     // Add a few values.
     pq1.add("pool");
     pq1.add("peek");
