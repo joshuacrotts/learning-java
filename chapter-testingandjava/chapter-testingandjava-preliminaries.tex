@@ -126,7 +126,7 @@ Again we start by writing the appropriate method signature with its respective p
 D(v_1, v_2) = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2 + (z_1 - z_2)^2}
 \]
 
-So, let us write a few test cases with a few arbitrarily-chosen points that we can verify with a calculator or manual computation.
+So, let's now write a few test cases with a few arbitrarily-chosen points that we can verify with a calculator or manual computation.
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
@@ -146,9 +146,10 @@ class VectorDistanceTester {
 }
 \end{lstlisting}
 \end{cl}
+
 Notice again our use of the optional delta parameter to allow us a bit of leeway with the rounding of our answer. Fortunately, the implementation of our method is just a retelling of the mathematical definition.
 
-\begin{cl}[]{}
+\begin{cl}[VectorDistance.java]{}
 \begin{lstlisting}[language=MyJava]
 class VectorDistance {
 
@@ -168,6 +169,93 @@ class VectorDistance {
 \end{cl}
 
 We make prolific use of Java's \ttt{Math} library in designing this method; we use the \ttt{sqrt} method for computing the square root of our result, as well as \ttt{pow} to square each intermediate difference.
+
+\example{Slope-intercept is an incredibly common algebra and geometry problem, and even pokes its way into machine learning at times when computing best-fit lines. Let's write two methods, both of which receive two points $(x_1, y_1)$, $(x_2, y_2)$. The first method returns the slope $m$ of the points, and the second returns the y-intercept $b$ of the line. Their respective signatures are straightforward---each set of points is represented by two integer values and return doubles.}
+
+\begin{align*}
+m &= \dfrac{y_2-y_1}{x_2-x_1}\\
+b &= y_1 - mx_1
+\end{align*}
+
+\begin{cl}[SlopeIntercept.java]{Computing the Slope Intercept Method Signatures}
+\begin{lstlisting}[language=MyJava]
+class SlopeIntercept {
+
+  /**
+   * Computes the slope of the line represented by the two Cartesian points.
+   * @return slope of points.
+   */
+  static double slope(int x1, int y1, int x2, int y2) {
+    return 0.0;
+  }
+
+  /**
+   * Computes the y-intercept of the line represented by the two Cartesian points.
+   * @return y-intercept of line represented by points.
+   */
+  static double yIntercept(x1, int y1, int x2, int y2) {
+    return 0.0;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+The tests that we write are verifiable by a calculator or mental math. Note that the \ttt{yIntercept} method depends on a successful implementation of \ttt{slope}, as designated by the formula of the former. In the next chapter, we will consider cases that invalidate the formula, e.g., when two points share an $x$ coordinate, in which the slope is undefined for those points.
+
+\begin{cl}[SlopeInterceptTester.java]{Testing the Slope Intercept Methods}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static SlopeIntercept.slope;
+import static SlopeIntercept.yIntercept;
+
+class SlopeInterceptTester {
+  
+  @Test
+  void testSlope() {
+    assertAll(
+      () -> assertEquals(1, slope(0, 0, 1, 1)),
+      () -> assertEquals(0, slope(0, 0, 1, 0)),
+      () -> assertEquals(2, slope(8, 4, 2, 4)),
+      () -> assertEquals(0.5, slope(-1, 5, 3, 7)));
+  }
+
+  @Test
+  void testYIntercept() {
+    assertAll(
+      () -> assertEquals(0, yIntercept(0, 0, 1, 1)),
+      () -> assertEquals(0, yIntercept(0, 0, 1, 0)),
+      () -> assertEquals(4, yIntercept(8, 4, 2, 4)),
+      () -> assertEquals(5.5, yIntercept(-1, 5, 3, 7)));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+And the implementation of the two methods follows from the mathematical definitions. We replace our temporary \ttt{0.0} return values with the appropriate expressions, and all tests pass.
+
+\begin{cl}[SlopeIntercept.java]{Implementing the Slope Intercept Methods}
+\begin{lstlisting}[language=MyJava]
+class SlopeIntercept {
+
+  /**
+   * Computes the slope of the line represented by the two Cartesian points.
+   * @return slope of points.
+   */
+  static double slope(int x1, int y1, int x2, int y2) {
+    return (y2 - y1) / (x2 - x1);
+  }
+
+  /**
+   * Computes the y-intercept of the line represented by the two Cartesian points.
+   * @return y-intercept of points.
+   */
+  static double yIntercept(x1, int y1, int x2, int y2) {
+    return y1 - slope(x1, y1, x2, y2) * x1;
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 \example{We are starting to get used to some of Java's verbosity! Let us now write a method that, when given a value of $x$, evaluates the following quartic formula:}
 

@@ -10,10 +10,14 @@
   \usepackage{fmtcount}
 \newcommand{\hsp}{\hspace{20pt}}
 \titleformat{\chapter}[block]
-  {\Large\sffamily\bfseries}
+  {\Large\rmfamily\bfseries}
   {}{0em}
   {\hfill\thechapter{.}\hspace{1em}}
 \titlespacing{\chapter}{0pt}{50pt}{100pt} 
+
+\renewcommand{\cftloftitlefont}{\hspace*{\fill}\Large\rmfamily\bfseries}
+\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\Large\rmfamily\bfseries}
+
 
 % \titleformat{\chapter}[block]
 % {\Large\sffamily\bfseries}
@@ -36,9 +40,7 @@
 % \fancyhead[LO]{\bfseries\rightmark}
 % \fancyhead[RE]{\bfseries\leftmark}
 % \fancyfoot[C]{}
-\renewcommand\contentsname{\Large\sffamily Table of Contents}
-\renewcommand{\cftloftitlefont}{\sffamily\bfseries\Large}
-% \renewcommand{\headrulewidth}{0pt}
+% \renewcommand\contentsname{\Large\sffamily Table of Contents}
 \renewcommand{\qedsymbol}{QED.}
 \cftsetindents{figure}{0em}{2.3em}
 \addtolength{\headheight}{0.5pt}
@@ -204,3 +206,5 @@ array element/.style = {
   {\end{tabular}\par\medskip}
 
 % \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+% \renewcommand{\cftloftitlefont}{\hfill\bfseries}
+% \renewcommand{\cftafterloftitle}{\hfill}

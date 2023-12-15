@@ -109,6 +109,11 @@ static String input(String prompt) {
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 class ThreePointArea {
+
+  /**
+   * Computes the area of a triangle given three Cartesian points via standard input.
+   * @return the area of the triangle.
+   */
   static double computeThreePointArea() {
     Scanner in = new Scanner(System.in);
     int x1 = in.nextInt();
@@ -126,6 +131,11 @@ We make a note that reading data from a scanner inside a static method that comp
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 class ThreePointArea {
+  
+  /**
+   * Computes the area of a triangle given three Cartesian points as parameters.
+   * @return the area of the triangle.
+   */
   static double computeThreePointArea(double x1, double y1,
                                       double x2, double y2,
                                       double x3, double y3) {
