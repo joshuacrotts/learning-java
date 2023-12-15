@@ -7,9 +7,21 @@
   <-5.5> mathb5 <5.5-6.5> mathb6 <6.5-7.5> mathb7
   <7.5-8.5> mathb8 <8.5-9.5> mathb9 <9.5-11> mathb10
   <11-> mathb12 }{}
-
+  \usepackage{fmtcount}
 \newcommand{\hsp}{\hspace{20pt}}
-\titleformat{\chapter}[block]{\Huge\sffamily\bfseries}{\thechapter\hsp\textcolor{gray}\hsp}{0pt}{\Large\sffamily\bfseries}
+\titleformat{\chapter}[block]
+  {\Large\sffamily\bfseries}
+  {}{0em}
+  {\hfill\thechapter{.}\hspace{1em}}
+\titlespacing{\chapter}{0pt}{50pt}{100pt} 
+
+% \titleformat{\chapter}[block]
+% {\Large\sffamily\bfseries}
+% {\hfill{}\thechapter\textcolor{gray}}{0pt}{\hfill{}\Large\sffamily\bfseries}
+% \titleformat{\chapter}[display]
+% {\normalfont\Large\sffamily}
+% {\chaptertitlename\ \Huge\Numberstring{chapter}}
+% {20pt}{\Large}
 
 % import \dotdiv
 \DeclareRobustCommand{\dotdiv}{\mathbin{\text{\mathabxdotdiv}}}
