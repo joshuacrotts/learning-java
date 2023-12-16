@@ -3,7 +3,7 @@ It makes little sense to avoid the topic at hand, so let us jump right in and wr
 
 \example{Our program will convert a given temperature in Fahrenheit to Celsius.}
 
-\begin{cl}[]{}
+\begin{cl}[TempConverter.java]{}
 \begin{lstlisting}[language=MyJava]
 class TempConverter {
   
@@ -39,15 +39,14 @@ fahrenheitToCelsius(-3123) -> 0.0
 
 Of course, this method is meaningless without an implementation. We want to design \textit{test cases}\index{test cases} to ensure the method works as expected. Test cases verify the correctness (or incorrectness) of a method. We, as the readers, know how to convert a temperature from Fahrenheit to Celsius, but telling a computer to do such a conversion is not as obvious at first glance. To test our methods, we will use the \textit{JUnit} testing framework\index{JUnit}. To create a test for \ttt{fahrenheitToCelsius}, we will make a second class called \ttt{TempConverterTester} to house a single method: \ttt{fahrenheitToCelsiusTest}.
 
-\begin{cl}[]{}
+\begin{cl}[TempConverterTester.java]{}
 \begin{lstlisting}[language=MyJava]
 class TempConverterTester {
 
   @Test
-  void fahrenheitToCelsiusTest() {
+  void testFahrenheitToCelsius() {
     Assertions.assertAll(
-      () -> Assertions.assertEquals(0, TempConverter.fahrenheitToCelsius(32))
-    );
+      () -> Assertions.assertEquals(0, TempConverter.fahrenheitToCelsius(32)));
   }
 }
 \end{lstlisting}
@@ -57,7 +56,7 @@ We want JUnit to recognize that \ttt{fahrenheitToCelsius} contains testing code,
 
 When writing tests, it is important to consider \textit{edge cases}\index{edge case} and all possible branches of a method implementation. Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. So, let us add a few more test cases.\footnote{To condense our code, we use a \ttt{static} import of our \ttt{fahrenheitToCelsius} method, which allows us to call the method without specifying the full class name. We apply this same idea to those methods used from the \ttt{Assertions} class.}
 
-\begin{cl}[]{}
+\begin{cl}[TempConverterTester.java]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -66,7 +65,7 @@ import static TempConverter.fahrenheitToCelsius;
 class TempConverterTester {
 
   @Test
-  void fahrenheitToCelsiusTest() {
+  void testFahrenheitToCelsius() {
     assertAll(
       () -> assertEquals(0, fahrenheitToCelsius(32)),
       () -> assertEquals(100, fahrenheitToCelsius(212)),
@@ -82,7 +81,7 @@ Floating-point arithmetic can cause precision/rounding errors. So, as an optiona
 
 Now that we have copious amounts of tests, we can write our method definition. Of course, it is trivial to write.
 
-\begin{cl}[]{}
+\begin{cl}[TempConverter.java]{}
 \begin{lstlisting}[language=MyJava]
 class TempConverter {
 
@@ -104,7 +103,7 @@ Unlike some programming languages that are \textit{dynamically-typed}, e.g., Sch
 
 \example{Let us write a method that receives two three-dimensional vectors and returns the distance between the two. We can, effectively, think of this as the distance between two points in a three-dimensional plane. Therefore because each vector contains three components, we need six parameters, where each triplet represents the vectors $v_1$ and $v_2$.}
 
-\begin{cl}[]{}
+\begin{cl}[VectorDistance.java]{}
 \begin{lstlisting}[language=MyJava]
 class VectorDistance {
 
@@ -128,7 +127,7 @@ D(v_1, v_2) = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2 + (z_1 - z_2)^2}
 
 So, let's now write a few test cases with a few arbitrarily-chosen points that we can verify with a calculator or manual computation.
 
-\begin{cl}[]{}
+\begin{cl}[VectorDistanceTester.java]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -137,7 +136,7 @@ import static VectorDistance.computeDistance;
 class VectorDistanceTester {
 
   @Test
-  void computeDistanceTest() {
+  void testComputeDistance() {
     assertAll(
       assertEquals(8.66, computeDistance(3, 2, 1, 8, 7, 6), .01),
       assertEquals(12.20, computeDistance(0, 0, 0, 8, 7, 6), .01),
@@ -265,7 +264,7 @@ q(x) = 4x^4 + 7x^3 + 21x^2 - 65x + 3
 
 Its signature is straightforward: we receive a value of $x$, namely a \ttt{double}, and return a \ttt{double} since we are performing mathematical operations on \ttt{double} values. Again, we return zero as a temporary solution to ensure the program successfully compiles.
  
-\begin{cl}[]{}
+\begin{cl}[QuarticFormulaSolver.java]{}
 \begin{lstlisting}[language=MyJava]
 class QuarticFormulaSolver {
 
@@ -284,7 +283,7 @@ class QuarticFormulaSolver {
 
 Test cases are certainly warranted, but may be a bit tedious to compute by hand, so we recommend using a verified calculator to compute expected solutions!\footnote{Remember that the coefficient is applied \textit{after} applying the exponent to the variable. That is, if $x=3$, then $4x^3$ is equal to $4 \cdot (3)^3$, which resolves to $4 \cdot 27$, which resolves to $108$.}
 
-\begin{cl}[]{}
+\begin{cl}[QuarticFormulaSolverTester.java]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -293,7 +292,7 @@ import static QuarticFormulaSolver.solveQuartic;
 class QuarticFormulaSolverTester {
 
   @Test
-  void solveQuarticTest() {
+  void testSolveQuartic() {
     assertAll(
       () -> assertEquals(3, solveQuartic(0)),
       () -> assertEquals(510, solveQuartic(3)),
@@ -306,7 +305,7 @@ class QuarticFormulaSolverTester {
 
 Again, we write tests \textit{before} the method implementation because we know, intuitively, how to solve an equation for a variable, but a computer has to be told how to solve this task. Fortunately for us, a quartic equation solver is nothing more than returning the result of the expression. We, of course, have to use the exponential \ttt{Math.pow} method again (or conjoin several multiplicatives of $x$), but otherwise, it is straightforward.
 
-\begin{cl}[]{}
+\begin{cl}[QuarticFormulaSolver.java]{}
 \begin{lstlisting}[language=MyJava]
 class QuarticFormulaSolver {
 
