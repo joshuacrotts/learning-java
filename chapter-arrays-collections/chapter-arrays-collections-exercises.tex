@@ -321,6 +321,13 @@ Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet 
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{min} method that, when given a \ttt{List<Integer>} $L$, returns the minimum value in the list. Return this result as an \ttt{Optional<Integer>}. If there are no values in $L$, return \ttt{Optional.empty()}.}
 
+\exercise{1}{chapter-arrays-collections}{Design the generic \ttt{lookup} method that, when given an \ttt{Map<K, V>} $M$ and a value $k$ of type \ttt{K}, returns the corresponding value (of type \ttt{V}) associated with the key $k$. If the key does not exist, return \ttt{null}. You will need to use the \ttt{.equals} method.}
+
+\exercise{1}{chapter-arrays-collections}{Design the generic \ttt{stringifyList} method that, when given an \ttt{ArrayList<T>} $L$, returns a \ttt{String} of comma-separated values where each value is an element of $L$, but converted into a \ttt{String}. You'll need to use the \ttt{.toString} method.}
+
+\exercise{2}{chapter-arrays-collections}{Design the generic \ttt{min} method, which receives a list of integers and returns the minimum element in the list. It should return an \ttt{Optional} value of type \ttt{T}, where \ttt{T} is the type of the list. If the list is empty, return an empty \ttt{Optional}. Remember that \ttt{T} must be a type that implements the \ttt{Comparable} interface.}
+
+
 
 %f(a, b) and f(3, 4) produces {<a : 3>, <b : 4>}
 %f(a, a) and f(3, 4) produces {<>}
