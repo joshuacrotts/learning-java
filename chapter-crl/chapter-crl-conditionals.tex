@@ -78,12 +78,11 @@ static int foo() {
 class GpaCalculatorTesting {
 
   @Test
-  void gpaTest() {
+  void testGpa() {
     Assertions.assertAll(
       Assertions.assertEquals(4.0, GpaCalculator.gpa("A+")),
       Assertions.assertEquals(3.7, GpaCalculator.gpa("A-")),
-      Assertions.assertEquals(0.0, GpaCalculator.gpa("F-"))
-    );
+      Assertions.assertEquals(0.0, GpaCalculator.gpa("F-")));
   }
 }
 \end{lstlisting}
@@ -103,12 +102,14 @@ class GpaCalculator {
     boolean minus = grade.contains("-");
     char letter = grade.charAt(0);
     double gpa = 0;
+    
     // Compute the grade letter.
     if (letter == 'A') {  gpa = 4.0; } 
     else if (letter == 'B') { gpa = 3.0; } 
     else if (letter == 'C') { gpa = 2.0; } 
     else if (letter == 'D') { gpa = 1.0; } 
     else { gpa = 0.0; }
+    
     // Compute +/- if applicable.
     if (letter != 'A' && letter != 'F') { gpa = plus ? gpa + 0.3 : gpa; }
     if (letter != 'F') { gpa = minus ? gpa - 0.3 : gpa; }
@@ -129,7 +130,7 @@ import static MonthToDays.monthToDays;
 class MonthToDaysTester {
 
   @Test
-  void monthToDaysTest() {
+  void testMonthToDays() {
     Assertions.assertAll(
       Assertions.assertEquals(31, monthToDays("January")),
       Assertions.assertEquals(28, monthToDays("February")),
@@ -137,8 +138,7 @@ class MonthToDaysTester {
       Assertions.assertEquals(31, monthToDays("July")),
       Assertions.assertEquals(31, monthToDays("August")),
       Assertions.assertEquals(30, monthToDays("September")),
-      Assertions.assertEquals(31, monthToDays("December"))
-    );
+      Assertions.assertEquals(31, monthToDays("December")));
   }
 }
 \end{lstlisting}

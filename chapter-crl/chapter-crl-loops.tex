@@ -126,27 +126,23 @@ Of course, the goal, in due time, is to work our way from $TR$ to $I$, but there
 \begin{figure}[h!]
 \centering
 \begin{tikzcd}
- P \arrow[r, dashrightarrow, ""] & R \arrow[r, dashrightarrow, ""] & TR \arrow[r, "1"] & TR_{\textit{H}} \arrow[r, "2"] & TR_{\textit{IVP}} \arrow[dl, "3"] & & \\
- & & & TR_\textit{C} \arrow[r, "4"] & TR_{\textit{B}} \arrow[r, "5"] & TR_{\textit{Ret}} \arrow[r, dashrightarrow,""] & I
+ P \arrow[r, dashrightarrow, ""] & R \arrow[r, dashrightarrow, ""] & TR \arrow[r, "1"] & \textit{$TR_\mathbf{H}$} \arrow[r, "2"] & \textit{$TR_\mathbf{IVP}$} \arrow[dl, "3"] & & \\
+ & & & \textit{$TR_\mathbf{C}$} \arrow[r, "4"] & \textit{$TR_\mathbf{B}$} \arrow[r, "5"] & \textit{$TR_\mathbf{Ret}$} \arrow[r, dashrightarrow,""] & I
 \end{tikzcd}
-% \begin{tikzcd}
-%  &  & TR \arrow[r, "3"] & TR_{H} \arrow[dl, dashrightarrow,"4"] \arrow[d, "4"] \\
-% P \arrow[r, dashrightarrow, "1"] & R \arrow[ur, dashrightarrow, "2"] & I^{-} \arrow[r] \arrow[loop below] & I_{\textit{IVP}} \arrow[r, "5"] & I\\
-% \end{tikzcd}
 \caption{Fine-Grained Translation Pipeline}
 \end{figure}
 
-$TR$ is the tail recursive method derived either from the problem statement $P$ or the standard recursive step $R$. From here, we make our way to $TR_\textit{H}$, denoting the ``color-coding'' phase, where we mark the three sub components of a tail recursive method, those being the base case(s), updated variables in the tail recursive call, and returned values from the base case. 
+$TR$ is the tail recursive method derived either from the problem statement $P$ or the standard recursive step $R$. From here, we make our way to \textit{$TR_\mathbf{H}$}, denoting the ``color-coding'' phase, where we mark the three sub components of a tail recursive method, those being the base case(s), updated variables in the tail recursive call, and returned values from the base case. 
 
-$TR_{\textit{IVP}}$, or ``Iterative Variable Purpose'', is a step following the method signature, but preceding the loop definition. In this step, we examine the updated variables/accumulators marked in $TR_\textit{H}$ and localize them into variables not passed as arguments to a method, but rather as a sequence of value updates. Moreover, we add comments to these variable declarations explaining their purpose.
+\textit{$TR_\mathbf{IVP}$}, or ``Iterative Variable Purpose'', is a step following the method signature, but preceding the loop definition. In this step, we examine the updated variables/accumulators marked in \textit{$TR_\mathbf{H}$} and localize them into variables not passed as arguments to a method, but rather as a sequence of value updates. Moreover, we add comments to these variable declarations explaining their purpose.
 
-$TR_\textit{C}$ is the step wherein we write the \ttt{while} keyword, followed by the negated base case condition(s) as a series of conjunctions.
+\textit{$TR_\mathbf{C}$} is the step wherein we write the \ttt{while} keyword, followed by the negated base case condition(s) as a series of conjunctions.
 
-$TR_\textit{B}$ is where we design the body of our loop, which contains update statements to our localized iterative variables rather than arguments to a recursive call.
+\textit{$TR_\mathbf{B}$} is where we design the body of our loop, which contains update statements to our localized iterative variables rather than arguments to a recursive call.
 
-Finally, in $TR_\textit{Ret}$, we add the line to return the accumulated local variable(s). $I$ is the output translation.
+Finally, in \textit{$TR_\mathbf{Ret}$}, we add the line to return the accumulated local variable(s). $I$ is the output translation.
 
-\subsection*{\textbf{$TR_H$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. Each of these play a crucial role in the transition to $I$, and quickly yet correctly identifying these as they fit in tail recursive methods is paramount. Let us re-look at our old factorial friend to see what this entails.
+\subsection*{\textit{$TR_\mathbf{H}$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. Each of these play a crucial role in the transition to $I$, and quickly yet correctly identifying these as they fit in tail recursive methods is paramount. Let us re-look at our old factorial friend to see what this entails.
 
 \begin{cl}[]{Tail Recursive Factorial}
 \begin{lstlisting}[language=MyJava]
@@ -202,7 +198,7 @@ static int fact(int n, int acc) {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{\textit{$TR_{IVP}$:}} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $\textit{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
+\subsection*{\textit{$TR_\mathbf{IVP}$}:} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $\textit{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
 
 \begin{cl}[]{Accumulator Statement for Factorial}
 \begin{lstlisting}[language=MyJava]
@@ -232,7 +228,7 @@ static int fact(int n) {
 
 Writing these imperative variable purposes, akin to accumulator statements, helps us organize what variables change and, more importantly, when and how they change. 
 
-\subsection*{\textbf{$TR_\textit{C}$:}} Up next is where we take our base case condition, highlighted in red, and insert it as the negated condition for our loop. First, we add the \ttt{while} keyword to our method, then follow this with a set of parentheses and an exclamation point immediately after the opening parenthesis but before the closing. Inside these parentheses we insert the base case condition. To be safe, you should also insert parentheses for the base case, which ensures that the correct expression is negated by the logical `not' operator. Follow this with an opening and closing brace set.
+\subsection*{\textit{$TR_\mathbf{C}$}:} Up next is where we take our base case condition, highlighted in red, and insert it as the negated condition for our loop. First, we add the \ttt{while} keyword to our method, then follow this with a set of parentheses and an exclamation point immediately after the opening parenthesis but before the closing. Inside these parentheses we insert the base case condition. To be safe, you should also insert parentheses for the base case, which ensures that the correct expression is negated by the logical `not' operator. Follow this with an opening and closing brace set.
 
 \begin{cl}[]{Adding Condition to Loop}
 \begin{lstlisting}[language=MyJava]
@@ -246,7 +242,7 @@ static int fact(int n) {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{\textbf{$TR_\textit{B}$:}} Finally we get to the fun part of this translation process: the body of our loop. Here we need to make a design choice of what variables to update and when they should be updated. We take the \textcolor{darkyellow}{yellow} highlighted tail recursive arguments, create assignment statements out of them, and insert them into the body of our loop. To do so, we need to follow two principles:
+\subsection*{\textit{$TR_\mathbf{B}$}:} Finally we get to the fun part of this translation process: the body of our loop. Here we need to make a design choice of what variables to update and when they should be updated. We take the \textcolor{darkyellow}{yellow} highlighted tail recursive arguments, create assignment statements out of them, and insert them into the body of our loop. To do so, we need to follow two principles:
 
 \textbf{Rule of Reassignment}: In any tail recursive call, if we pass an expression $e$ which updates parameter $p$, then in the loop body, we directly reassign $p$ to $e$.
 
@@ -314,7 +310,7 @@ This results in $120$, which matches our recursive trace. Therefore, without los
 
 Determining the correct order of update, according to the rules we specify, may take a few tries to get right. The idea is to match the result of a tail recursive trace done previously that is known to be correct.
 
-\subsection*{$TR_\textit{Ret}$}
+\subsection*{\textit{$TR_\mathbf{Ret}$}:}
 In our final stage of translation, we add the necessary return statement(s) that serve to return the accumulated result from our loop. We highlighted these values in \textcolor{darkgreen}{green} during the highlighting/color-coding stage.
 \begin{cl}[]{Adding Accumulator Return Statement to Loop}
 \begin{lstlisting}[language=MyJava]
@@ -374,7 +370,7 @@ import static Prime.isPrime;
 class PrimeTester {
 
   @Test
-  void primeTest() {
+  void testPrime() {
     Assertions.assertAll(
       () -> Assertions.assertTrue(isPrime(17)),
       () -> Assertions.assertTrue(isPrime(101)),
@@ -384,8 +380,7 @@ class PrimeTester {
       () -> Assertions.assertFalse(isPrime(1)),
       () -> Assertions.assertFalse(isPrime(2)),
       () -> Assertions.assertFalse(isPrime(202)),
-      () -> Assertions.assertFalse(isPrime(213123447))
-    );
+      () -> Assertions.assertFalse(isPrime(213123447)));
   }
 }
 \end{lstlisting}
@@ -463,18 +458,19 @@ import static OddReciprocalSum.oddRecipSum;
 
 class OddReciprocalSumTester {
 
+  private static final double DELTA = 0.001;
+
   @Test
-  void oddRecipSumTest() {
+  void testOddRecipSum() {
     Assertions.assertAll(
       // 1/1 + 1/3 + 1/5 + 1/7.
-      () -> Assertions.assertEquals(1.67619, oddRecipSum(4), 0.001),
+      () -> Assertions.assertEquals(1.67619, oddRecipSum(4), DELTA),
       // Sum of zero reciprocals is zero.
-      () -> Assertions.assertEquals(0, oddRecipSum(0), 0.001),
+      () -> Assertions.assertEquals(0, oddRecipSum(0), DELTA),
       // 1/1.
-      () -> Assertions.assertEquals(1, oddRecipSum(1), 0.001),
+      () -> Assertions.assertEquals(1, oddRecipSum(1), DELTA),
       // 1/1 + 1/3 + 1/5 + 1/7 + 1/9 + 1/13 + ...
-      () -> Assertions.assertEquals(2.26435, oddRecipSum(13), 0.001)
-    );
+      () -> Assertions.assertEquals(2.26435, oddRecipSum(13), DELTA));
   }
 }
 \end{lstlisting}
@@ -519,14 +515,13 @@ import static SumInterval.sum;
 class SumIntervalTester {
 
   @Test
-  void sumIntervalTest() {
+  void testSumInterval() {
     Assertions.assertAll(
       () -> Assertions.assertEquals(0, sum(5, 0)),
       () -> Assertions.assertEquals(0, sum(0, 0)),
       () -> Assertions.assertEquals(55, sum(0, 10)),
       () -> Assertions.assertEquals(55, sum(1, 10)),
-      () -> Assertions.assertEquals(110, sum(5, 15)),
-    );
+      () -> Assertions.assertEquals(110, sum(5, 15)));
   }
 }
 \end{lstlisting}
@@ -536,8 +531,6 @@ We want to iterate from $i = a$ so long as $i \leq b$. We use the variable $i$ o
 
 \begin{cl}[]{Sum of Integers in the Interval $[a, b]$}
 \begin{lstlisting}[language=MyJava]
-import static SumInterval.sum;
-
 class SumInterval {
 
   /**
@@ -588,7 +581,7 @@ class NewtonApproximationTester {
   final double DELTA = 0.1;
 
   @Test
-  void newtonApproximationTest() {
+  void testNewtonApproximation() {
     Assertions.assertAll(
       () -> Assertions.assertEquals(Math.sqrt(0), sqrtApprox(0, DELTA)),
       () -> Assertions.assertEquals(Math.sqrt(1), sqrtApprox(1, DELTA)),
@@ -644,15 +637,14 @@ import static Fibonacci.fib;
 class FibonacciTester {
 
   @Test
-  void fibTest() {
+  void testFib() {
     Assertions.assertAll(
       () -> Assertions.assertEquals(0, fib(0)),
       () -> Assertions.assertEquals(1, fib(1)),
       () -> Assertions.assertEquals(1, fib(2)),
       () -> Assertions.assertEquals(8, fib(5)),
       () -> Assertions.assertEquals(55, fib(10)),
-      () -> Assertions.assertEquals(6765, fib(20))
-    );
+      () -> Assertions.assertEquals(6765, fib(20)));
   }
 }
 \end{lstlisting}

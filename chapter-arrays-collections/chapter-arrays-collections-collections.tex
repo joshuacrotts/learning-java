@@ -1038,7 +1038,6 @@ class SqListTester {
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.List;
-import java.util.ArrayList;
 
 class SqList {
 
@@ -1047,7 +1046,7 @@ class SqList {
    * @param list of integers.
    * @return list of squared integers.
    */
-  static ArrayList<Integer> sqList(List<Integer> ls) {
+  static List<Integer> sqList(List<Integer> ls) {
     return ls.stream()
              .map(x -> x * x)
              .toList();

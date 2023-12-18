@@ -154,7 +154,8 @@ class NumberListTester {
       () -> assertEquals(0, NumberList.sum(List.of())),
       () -> assertEquals(42, 
                          NumberList.sum(
-                           List.of(-0.2f, -1, (short) 43, 2.6d, (byte) 100, -100L, -2.4f)),
+                           List.of(-0.2f, -1, (short) 43, 2.6d, 
+                                   (byte) 100, -100L, -2.4f)),
                          DELTA));
   }
 }
@@ -174,8 +175,8 @@ class NumberList {
    */
   static double sum(List<? extends Number> ls) {
     return ls.stream()
-              .mapToDouble(Number::doubleValue)
-              .sum();
+             .mapToDouble(Number::doubleValue)
+             .sum();
   }
 }
 \end{lstlisting}

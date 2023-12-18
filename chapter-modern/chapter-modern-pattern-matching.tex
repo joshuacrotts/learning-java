@@ -153,16 +153,16 @@ class Rectangle implements IShape {
     this.HEIGHT = height;
   }
 
-  public double getWidth() { return this.WIDTH; }
-
-  public double getHeight() { return this.HEIGHT; }
-
   @Override
   public boolean equals(Object o) {
     return (o instanceof Rectangle r) &&
            this.WIDTH == r.WIDTH &&
            this.HEIGHT == r.HEIGHT;
   }
+
+  public double getWidth() { return this.WIDTH; }
+
+  public double getHeight() { return this.HEIGHT; }
 }
 \end{lstlisting}
 \end{cl}

@@ -4,7 +4,6 @@ Presumably this section discusses file input and output syntax and semantics. Wh
 
 \subsection*{Primitive I/O Classes}
 
-Reading and writing from a source, at its core, is nothing more than reading and writing bytes. Indeed, Java provides classes for reading and writing bytes from and to data sources via the \ttt{FileInputStream} and \ttt{FileOutputStream} classes. To read the bytes, i.e,. the contents, of a file with a given name, which we pass to the \ttt{FileInputStream} constructor. The \ttt{.read} method returns an integer representing the next byte available in the stream, opting to return $-1$ if there is no byte available. 
 
 \example{Let's write a program that reads data from a file and echos it to standard output.}
 
@@ -17,7 +16,6 @@ class FileInputStreamExample {
     String inputFile = "file1.in";
     try {
       fis = new FileInputStream(inputFile);
-      
       // Read in data byte-by-byte.
       int val = -1;
       while ((val = fis.read()) != -1) { System.out.print(val); }
@@ -160,7 +158,8 @@ class PrintWriterExample {
     try (PrintWriter pw = new PrintWriter(new FileWriter("file4.out"))) {
       pw.println(Math.PI);
       pw.println(false);
-      pw.printf("This is a %s string with %c and %d and %f and %b\n", "formatted", '&', 42, Math.E, true);
+      pw.printf("This is a %s string with %c and %d and %f and %b\n", 
+                "formatted", '&', 42, Math.E, true);
     } catch (IOException ex) { ex.printStackTrace(); }
   }
 }
@@ -271,9 +270,12 @@ class EmployeeScannerTester {
   void readRecords() {
     List<Employee> emps = EmployeeScanner.readRecords("employees.txt");
     assertAll(
-      () -> assertEquals(emps.get(0).toString(), "[123] Smith, John | 100000.00 | FT?=false"),
-      () -> assertEquals(emps.get(1).toString(), "[456] Doe, Jane | 75000.00 | FT?=true"),
-      () -> assertEquals(emps.get(2).toString(), "[789] Jones, Bob | 50000.00 | FT?=false"));
+      () -> assertEquals(emps.get(0).toString(), 
+                         "[123] Smith, John | 100000.00 | FT?=false"),
+      () -> assertEquals(emps.get(1).toString(), 
+                         "[456] Doe, Jane | 75000.00 | FT?=true"),
+      () -> assertEquals(emps.get(2).toString(), 
+                         "[789] Jones, Bob | 50000.00 | FT?=false"));
   }
 }
 \end{lstlisting}
@@ -416,7 +418,7 @@ class ConcatenateFiles {
     String extension = files[0].substring(files[0].lastIndexOf('.'));
     for (String file : files) {
       if (file.lastIndexOf(".") == -1 || 
-         !file.substring(file.lastIndexOf('.')).equals(extension)) { 
+          !file.substring(file.lastIndexOf('.')).equals(extension)) { 
         return false; 
       }
     }

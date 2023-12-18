@@ -168,7 +168,7 @@ class ISuitTester {
 \end{lstlisting}
 \end{cl}
 
-One extra piece of information that we should share is that we can instantiate objects in different ways. To demonstrate why this matters, suppose we initialize an object $s_1$ to type \ttt{ISuit}, but instantiate it as type \ttt{Diamond}. Then, we initialize another object $s_2$ to type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. We would expect that $s_1$ and $s_2$ are equivalent, but this is not the case. Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. Because $s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. Should we want to be able to invoke \ttt{diamondCount} on $s_1$, we need to cast $s_1$ to type \ttt{Diamond}. This is called \textit{downcasting}, and it is a common practice in object-oriented programming.
+One extra piece of information that we should share is that we can instantiate objects in different ways. To demonstrate why this matters, suppose we initialize an object $s_1$ to type \ttt{ISuit}, but instantiate it as type \ttt{Diamond}. Then, we initialize another object $s_2$ to type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. We would expect that $s_1$ and $s_2$ are equivalent, but this is not the case. Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. Because $s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. Should we want to be able to invoke \ttt{diamondCount} on $s_1$, we need to \textit{downcast}\index{downcast} $s_1$ to type \ttt{Diamond}.
 
 \par{
 \begin{verbatim}
@@ -233,9 +233,7 @@ class IAnimalTester {
 class Cat implements IAnimal {
 
   @Override
-  public String speak() {
-    return "Meow!";
-  }
+  public String speak() { return "Meow!"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -245,9 +243,7 @@ class Cat implements IAnimal {
 class Dog implements IAnimal {
 
   @Override
-  public String speak() {
-    return "Woof!";
-  }
+  public String speak() { return "Woof!"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -331,18 +327,18 @@ Interestingly, interfaces may have static methods. Our \ttt{IBox} interface has 
 class IBox<T> {
   
   /**
-    * Boxes the value of type T.
-    */
+   * Boxes the value of type T.
+   */
   static IBox<T> box(T t);
 
   /**
-    * Returns the boxed value of type T.
-    */
+   * Returns the boxed value of type T.
+   */
   T get();
 
   /**
-    * Sets the boxed value of type T.
-    */
+   * Sets the boxed value of type T.
+   */
   void set(T t);
 }
 \end{lstlisting}
@@ -387,14 +383,10 @@ class IntegerBox implements IBox<Integer> {
   }
   
   @Override
-  public Integer get() { 
-    return this.value; 
-  }
+  public Integer get() { return this.value; }
   
   @Override
-  public void set(Integer value) { 
-    this.value = value; 
-  }
+  public void set(Integer value) { this.value = value; }
 }
 \end{lstlisting}
 \end{cl}
@@ -547,13 +539,9 @@ class Lit implements IExpr {
 
   private final int N;
 
-  public Lit(int n) { 
-    this.N = n; 
-  }
+  public Lit(int n) { this.N = n; }
 
-  public int value() { 
-    return this.N; 
-  }
+  public int value() { return this.N; }
 }
 \end{lstlisting}
 \end{cl}

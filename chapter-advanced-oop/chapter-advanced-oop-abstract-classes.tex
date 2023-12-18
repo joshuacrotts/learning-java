@@ -200,8 +200,8 @@ interface IDrawable {
   
   /**
    * Provides a means of drawing primitive graphics.
-   * The inner details of "Graphics2D" are not important to us, but what is important is
-   * the fact that we can use the following methods:
+   * The inner details of "Graphics2D" are not important to us; 
+   * we care about the fact that we can use the following methods:
    * 
    * - drawOval(int x, int y, int w, int h);
    * - drawRect(int x, int y, int w, int h);
@@ -301,7 +301,7 @@ class NumberedArgument extends Argument {
 \end{lstlisting}
 \end{cl}
 
-Now comes the argument parser itself, which receives a string array of argument values, much like \ttt{main}, and extracts out the flags and arguments into a \ttt{Map<String, List<String>>} where the key represents the flag and the value is a list of the arguments to said flag. We also store a \ttt{Set<Argument>} to allow the programmer to designate arguments to the parser. The idea is straightforward: while traversing over \ttt{args}, if we encounter a string that begins with a double dash `\ttt{--}', it is qualified as a flag and the following arguments, up to another flag, are marked as arguments to the flag. We add these to the respective map as described before, and continue until we run out of elements in the array.
+Now comes the argument parser itself, which receives a string array of argument values, much like \ttt{main}, and extracts out the flags and arguments into a \ttt{Map<String, List<String$>$$>$} where the key represents the flag and the value is a list of the arguments to said flag. We also store a \ttt{Set<Argument>} to allow the programmer to designate arguments to the parser. The idea is straightforward: while traversing over \ttt{args}, if we encounter a string that begins with a double dash `\ttt{--}', it is qualified as a flag and the following arguments, up to another flag, are marked as arguments to the flag. We add these to the respective map as described before, and continue until we run out of elements in the array.
 
 \begin{cl}[]{Terminal Arguments Parser Implementation}
 \begin{lstlisting}[language=MyJava]
@@ -644,13 +644,16 @@ final class Environment {
 
   public Environment() { this(null); }
 
-  public Environment(Environment parent) { this.ENV = new HashMap<>(); this.PARENT = parent; }
+  public Environment(Environment parent) { 
+    this.ENV = new HashMap<>(); 
+    this.PARENT = parent; 
+  }
 
   /**
-    * Looks up a variable in the current environment.
-    * @param var the variable name.
-    * @return the value bound to the variable, or null if it does not exist.
-    */
+   * Looks up a variable in the current environment.
+   * @param var the variable name.
+   * @return the value bound to the variable, or null if it does not exist.
+   */
   @Override
   public AstNode lookup(String var) {
     if (this.ENV.containsKey(var)) { return this.ENV.get(var); }
@@ -659,12 +662,11 @@ final class Environment {
   }
 
   /**
-    * Extends the current environment to contain a new variable binding.
-    * 
-    * @param var the variable name.
-    * @param value the value to bind to the variable.
-    * @return a new environment with the new binding.
-    */
+   * Extends the current environment to contain a new variable binding.
+   * @param var the variable name.
+   * @param value the value to bind to the variable.
+   * @return a new environment with the new binding.
+   */
   public Environment extend(String var, AstNode value) {
     Environment env = new Environment(this);
     env.ENV.put(var, value);
@@ -688,8 +690,8 @@ final class LetNode extends AstNode {
   }
 
   /**
-   * Interpret a let statement. A new environment is introduced in which the
-   * let body is evaluated.
+   * Interpret a let statement. A new environment is introduced 
+   * in which the let body is evaluated.
    * @param env The environment in which to interpret the let binding.
    * @return The result of the let statement.
    */
@@ -707,9 +709,9 @@ final class LetNode extends AstNode {
 
   @Override
   public String toString() {
-    AstNode exp = this.getChildren().get(0);
-    AstNode body = this.getChildren().get(1);
-    return String.format("(let ([%s %s]) %s"), this.VAR, exp.toString(), body.toString());
+    AstNode e = this.getChildren().get(0);
+    AstNode b = this.getChildren().get(1);
+    return String.format("(let ([%s %s]) %s"), this.VAR, e.toString(), b.toString());
   }
 }
 \end{lstlisting}
@@ -743,10 +745,10 @@ final class IfNode extends AstNode {
   
   @Override
   public String toString() {
-    AstNode pred = this.getChildren().get(0);
-    AstNode cons = this.getChildren().get(1);
-    AstNode alt = this.getChildren().get(2);
-    return String.format("(if %s %s %s)", pred.toString(), cons.toString(), alt.toString());
+    AstNode p = this.getChildren().get(0);
+    AstNode c = this.getChildren().get(1);
+    AstNode a = this.getChildren().get(2);
+    return String.format("(if %s %s %s)", p.toString(), c.toString(), a.toString());
   }
 }
 \end{lstlisting}

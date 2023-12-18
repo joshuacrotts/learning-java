@@ -5,9 +5,9 @@ You may or may not have seen recursion before, but in theory the concept is quit
 \par{
 \begin{verbatim}
 static int f(...) {
-    ...
-    f(...);
-    ...
+  ...
+  f(...);
+  ...
 }
 \end{verbatim}
 }
@@ -51,8 +51,7 @@ class AddTester {
       () -> Assertions.assertEquals(7, add(3, 4)),
       () -> Assertions.assertEquals(12, add(11, 1)),
       () -> Assertions.assertEquals(6, add(0, 6)),
-      () -> Assertions.assertEquals(6, add(6, 0))
-    );
+      () -> Assertions.assertEquals(6, add(6, 0)));
   }
 }
 \end{lstlisting}
@@ -126,7 +125,7 @@ import static Factorial.fact;
 class FactTester {
   
   @Test
-  void factTest() {
+  void testFact() {
     Assertions.assertAll(
       () -> Assertions.assertEquals(120, fact(5)),
       () -> Assertions.assertEquals(1, fact(0)),
@@ -175,7 +174,7 @@ In the previous section we discussed recursion, or what we will refer to as \tex
 
 Each time Java invokes a method, it pushes an \textit{activation record} to its \textit{method call stack}. The call stack is a location in memory where all method invocations reside. Activation records contain information about the method that was called, such as the arguments, the number of locally-defined variables, and other miscellaneous data. More importantly, activation records designate the ``return location'' of a method. When a method call returns, it is popped off the call stack. The stack memory, or lack thereof, is the root cause of problems with our standard recursion. Let us demonstrate this predicament with an example trace of \ttt{add} whose second argument, namely $n$, is incredibly large; over two million.
 
-As we stated, calling a method pushes its activation record to the method call stack, so invoking \ttt{add(3, 2000000)} pushes one record. Then, because two million is certainly not zero, we then recursively call \ttt{add(3, 1999999)} and push that record to the call stack. This idea continues until we reach a point where there is not enough memory to push another activation record to the (call) stack, in which a \ttt{StackOverflowException} is thrown by Java. We want a way of writing recursive algorithms without having to waste so much memory and risk a stack overflow of the call stack. The solution to our problem is \textit{tail recursion}, otherwise sometimes called \textit{accumulator-passing style}.
+As we stated, calling a method pushes its activation record to the method call stack, so invoking \ttt{add(3, 2000000)} pushes one record. Then, because two million is certainly not zero, we then recursively call \ttt{add(3, 1999999)} and push that record to the call stack. This idea continues until we reach a point where there is not enough memory to push another activation record to the (call) stack, in which a \ttt{StackOverflowException} is thrown by the Java Virtual Machine. We want a way of writing recursive algorithms without having to waste so much memory and risk a stack overflow of the call stack. A potential solution to our problem is via \textit{tail recursion}\index{tail recursion} through \textit{accumulator-passing style}\index{accumulator-passing style}.
 
 \begin{figure}
 \begin{center}
@@ -231,7 +230,7 @@ Let us perform a trace of \ttt{factTR} to see how we build the result in the \tt
     \text{Is }\ttt{1} \text{ zero?} &\text{ No! }\ttt{return factTR(0, 120)}\\
     \text{Is }\ttt{0} \text{ zero?} &\text{ Yes! }\ttt{return 120}
 \end{align*}
-Because we have the result, its value is simply returned from the method. We do not need to unwind the recursive calls since there is no extra work to be done after making the recursive calls in the first place. Even still, some may question how this avoids a stack overflow error because we still push an activation record to the call stack each time we invoke \ttt{factTR}, right? Wrong! Because the method is tail recursive, the Java compiler can detect this and, instead of pushing a new activation record to the call stack, it overwrites the preexisting record, hence using constant space and only one record. Overriding the existing activation record is permissible since we do not unwind the stack. Recall with standard recursion that we push an activation record to the call stack in the first place to remember the context of ``how deep we are'' into the recursion and what values we must substitute back into the unknowns during the unwinding phase. Conversely, when looking at the tail recursive approach, we build the result alongside heading towards the base case, meaning previous recursive calls are made irrelevant. Let's see what this looks like in the model of a stack.
+Because we have the result, its value is simply returned from the method. We do not need to unwind the recursive calls since there is no extra work to be done after making the recursive calls in the first place. Even still, some may question how this avoids a stack overflow error because we still push an activation record to the call stack each time we invoke \ttt{factTR}, right? Indeed, this solution does not solve the stack overflow problem, because Java does not employ the necessary optimizations to do so. What might one of those solutions be, in fact? As a hypothesis, because the method is tail recursive, the Java compiler could detect this and, instead of pushing a new activation record to the call stack, it overwrites the preexisting record, hence using constant space and only one record. Overriding the existing activation record is permissible since we do not unwind the stack. Recall with standard recursion that we push an activation record to the call stack in the first place to remember the context of ``how deep we are'' into the recursion and what values we must substitute back into the unknowns during the unwinding phase. Conversely, when looking at the tail recursive approach, we build the result alongside heading towards the base case, meaning previous recursive calls are made irrelevant. Let's see what this looks like in the model of a stack.
 \begin{figure}
 \begin{center}
 \begin{tikzpicture}[
@@ -323,8 +322,7 @@ class DivByThreeTests {
       () -> Assertions.assertEquals("AB", removeDiv3Chars("AB")),
       () -> Assertions.assertEquals("A", removeDiv3Chars("A")),
       () -> Assertions.assertEquals("", removeDiv3Chars("")),
-      () -> Assertions.assertEquals("ABCD", removeDiv3Chars("ABD"))
-    );
+      () -> Assertions.assertEquals("ABCD", removeDiv3Chars("ABD")));
   }
 }
 \end{lstlisting}
@@ -367,4 +365,4 @@ class DivByThree {
 \end{lstlisting}
 \end{cl}
 
-So, we have explored how tail recursion can take a problem that otherwise overflows the procedure call stack and turn it into one that barely uses the stack at all. The thing is, tail recursion has a direct correspondence to loops, i.e., \ttt{while}. In fact, some programming languages convert all tail recursive functions into their iterative counterparts, alleviating the need for a stack whatsoever. Replacing tail recursion, or tail recursive calls, with iteration is known as \textit{tail call optimization}. In the next section, we will discuss a translation pipeline from tail recursion to loops in greater detail, as well as describe the syntax and semantics of Java iteration structures.
+So, we have explored both standard and tail recursive methods, and how a programming language might optimize tail recursive calls. The thing is, tail recursion has a direct correspondence to loops, i.e., \ttt{while}. In fact, some programming languages convert all tail recursive functions into their iterative counterparts, alleviating the need for a stack whatsoever. Replacing tail recursion, or tail recursive calls, with iteration is known as \textit{tail call optimization}.\footnote{Java is one of many imperative languages that does not support tail call optimization, meaning that tail calls, unfortunately, continue to blow up the procedure call stack.} In the next section, we will discuss a translation pipeline from tail recursion to loops in greater detail, as well as describe the syntax and semantics of Java iteration structures.
