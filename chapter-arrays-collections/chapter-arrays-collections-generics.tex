@@ -30,6 +30,10 @@ To declare a static method as generic, we must specify the type variable(s) nece
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import static GenericSearch.genericSearch;
+
+import java.util.List;
+import java.util.ArrayList;
 
 class GenericSearchTester {
 
@@ -58,6 +62,8 @@ class GenericSearchTester {
 
 \begin{cl}[]{Generic Search Method}
 \begin{lstlisting}[language=MyJava]
+import java.util.List;
+
 class GenericSearch {
 
   /**
@@ -86,6 +92,10 @@ To restrict the type parameter to a certain subset of types, we can use \textit{
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import static GenericMax.genericMax;
+
+import java.util.List;
+import java.util.ArrayList;
 
 class GenericMaxTester {
   
