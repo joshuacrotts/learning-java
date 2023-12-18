@@ -7,7 +7,7 @@ Presumably this section discusses file input and output syntax and semantics. Wh
 
 \example{Let's write a program that reads data from a file and echos it to standard output.}
 
-\begin{cl}[]{Reading File Data Example}
+\begin{cl}[FileInputStreamExample.java]{Reading File Data Example}
 \begin{lstlisting}[language=MyJava]
 class FileInputStreamExample {
 
@@ -37,7 +37,7 @@ When reading from an input source that is not \ttt{System.in}, it is imperative 
 
 \example{Let's use the try-with-resources block to copy the contents of one file to another. In essence, we will write a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.}
 
-\begin{cl}[]{Copying File Data Example with Try-With-Resources}
+\begin{cl}[FileCopyExample.java]{Copying File Data Example with Try-With-Resources}
 \begin{lstlisting}[language=MyJava]
 class FileCopyExample {
 
@@ -60,7 +60,7 @@ The file input and output stream classes read data as raw bytes from their sourc
 
 \example{Using \ttt{FileReader}, we will once again write an ``echo'' program, which reads data from its file source and outputs it to standard output. Of course, we may want to output data to a file, in which case we use the dual to \ttt{FileReader}, namely \ttt{FileWriter}. In summary, \ttt{FileWriter} provides several methods for writing strings and characters to a data destination. In this example we will also write some data to a test file, then examine its output based on the method invocations that we make.}
 
-\begin{cl}[]{Examples of File Reader and Writer}
+\begin{cl}[FileReaderWriterExamples.java]{Examples of File Reader and Writer}
 \begin{lstlisting}[language=MyJava]
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -97,7 +97,7 @@ The problem with the file input and output stream classes, as well as the file r
 
 \example{Using \ttt{BufferedReader} and \ttt{BufferedWriter}, we will write a program that reads data from a file and outputs it to another file.}
 
-\begin{cl}[]{Buffered Reader and Writer Example}
+\begin{cl}[BufferedReaderWriterExample.java]{Buffered Reader and Writer Example}
 \begin{lstlisting}[language=MyJava]
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -119,7 +119,7 @@ class BufferedReaderWriterExample {
 
 The benefits of buffered I/O are not obvious to us as the programmers who use these classes. We can, however, directly compare the timed performance of buffered I/O to non-buffered I/O. The following code shows two implementations of reading the contents of a very large file and echoing them to another. We have two defined methods: \ttt{buffered} and \ttt{nonbuffered}, which utilize the \ttt{BufferedReader/Writer} and \ttt{FileInput/OutputStream} classes respectively. Upon testing, we see that the buffered variant takes around three seconds to finish, whereas the nonbuffered version took over four minutes!
 
-\begin{cl}[]{Buffered versus Non-Buffered I/O Performance}
+\begin{cl}[PerformanceExamples.java]{Buffered versus Non-Buffered I/O Performance}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 
@@ -148,7 +148,7 @@ The classes that we have explored thus far are primarily for reading/writing eit
 
 \example{Using \ttt{PrintWriter}, let's output some arbitrary constants and formatted strings to a file.}
 
-\begin{cl}[]{Using the \ttt{PrintWriter} Class}
+\begin{cl}[PrintWriterExample.java]{Using the \ttt{PrintWriter} Class}
 \begin{lstlisting}[language=MyJava]
 import java.io.PrintWriter;
 
@@ -180,13 +180,13 @@ We now have methods for reading strings and raw bytes, as well as methods for ou
 
 \example{Let's use \ttt{ObjectInput/OutputStream} classes to serialize an object of type \ttt{Player}, which has a name, score, health, and array of top scores. To designate that an object can be serialized, it must implement the \ttt{Serializable} interface. This interface is a \textit{marker interface}\index{marker interface}, meaning that it has no methods to implement. Instead, it is a flag that tells the compiler that the class can be serialized. Our example will also demonstrate the idea that classes can contain other class definitions, which is useful for grouping related classes together. The \ttt{ObjectStreamExample} class defines the private and static \ttt{Player} class as described above. Should we open the \ttt{player.out} file, we see that it contains incomprehensible data; this is because the data is intended to be read only by a program.}
 
-\begin{cl}[]{(De-)Serializing the \ttt{Player} Class}
+\begin{cl}[ObjectStreamExample.java]{(De-)Serializing the \ttt{Player} Class}
 \begin{lstlisting}[language=MyJava]
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Arrays;
+import java.io.Serializable;
 
 class ObjectStreamExample {
+
+  // ... other information omitted.
 
   private static class Player implements Serializable {
 
@@ -218,7 +218,7 @@ Suppose, on the contrary, that we store objects as strings in a file. This has t
 
 We will say that an \ttt{Employee} contains an employee identification number, a first name, a last name, a salary, and whether or not they are full-time staff. Each row in the file contains an \ttt{Employee} record.
 
-\begin{cl}[]{Employee Class}
+\begin{cl}[Employee.java]{Employee Class Definition}
 \begin{lstlisting}[language=MyJava]
 class Employee {
 
@@ -258,7 +258,7 @@ To test, we will create a file containing the following contents:
 \end{verbatim}
 }
 
-\begin{cl}[]{Testing the \ttt{EmployeeScanner} Class}
+\begin{cl}[EmployeeScannerTester.java]{Testing the \ttt{EmployeeScanner} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -267,7 +267,7 @@ import java.util.List;
 class EmployeeScannerTester {
 
   @Test
-  void readRecords() {
+  void testReadRecords() {
     List<Employee> emps = EmployeeScanner.readRecords("employees.txt");
     assertAll(
       () -> assertEquals(emps.get(0).toString(), 
@@ -281,8 +281,14 @@ class EmployeeScannerTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{Reading Employee Records}
+\begin{cl}[EmployeeScanner.java]{Reading Employee Records}
 \begin{lstlisting}[language=MyJava]
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+
 class EmployeeScanner {
 
   /**
@@ -314,8 +320,14 @@ At this point we have seen several methods and classes for reading data from dif
 
 \example{Let's write a program that reads a file containing integers and outputs, to another file, the even integers. Because our input file has only integers, we can use the \ttt{Scanner} class for reading the data and \ttt{PrintWriter} to output those even integers. To make the program a bit more interesting, we will read the input file from the terminal arguments, and output the even integers to a file whose name is the same as the input file, but instead with the \ttt{.out} extension.}
 
-\begin{cl}[]{Reading and Writing Even Integers}
+\begin{cl}[EvenIntegers.java]{Reading and Writing Even Integers}
 \begin{lstlisting}[language=MyJava]
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+
 class EvenIntegers {
 
   public static void main(String[] args) {
@@ -350,7 +362,7 @@ Here is the last line.
 }
 The returned array should be \ttt{[3, 14, 46]}. This way we can write JUnit tests to verify that our program works as intended.
 
-\begin{cl}[]{Testing the \ttt{LineWordCharCounter} Class}
+\begin{cl}[LineWordCharCounterTester.java]{Testing the \ttt{LineWordCharCounter} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -369,8 +381,11 @@ class LineWordCharCounterTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{Counting Lines, Words, and Characters}
+\begin{cl}[LineWordCharCounter.java]{Counting Lines, Words, and Characters}
 \begin{lstlisting}[language=MyJava]
+import java.util.Scanner;
+import java.util.File;
+
 class LineWordCharCounter {
 
   /**
@@ -380,7 +395,6 @@ class LineWordCharCounter {
    */
   public static int[] count(String fileName) {
     int[] counts = new int[]{0, 0, 0};
-
     try (Scanner f = new Scanner(new File(fileName))) {
       while (f.hasNextLine()) {
         String line = f.nextLine();
@@ -389,7 +403,6 @@ class LineWordCharCounter {
         counts[2] += line.length();
       }
     } catch (IOException ex) { ex.printStackTrace(); }
-
     return counts;
   }
 }
@@ -404,7 +417,7 @@ java ConcatenateFiles file1.txt file2.txt file3.txt output-file.txt
 }
 then the program should output a file \ttt{output-file.txt} that contains the contents of \ttt{file1.txt}, \ttt{file2.txt}, and \ttt{file3.txt} in that order. 
 
-\begin{cl}[]{Concatenating Files}
+\begin{cl}[ConcatenateFiles.java]{Concatenating Files}
 \begin{lstlisting}[language=MyJava]
 class ConcatenateFiles {
  
