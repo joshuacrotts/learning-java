@@ -130,6 +130,8 @@ class ThreePointArea {
 We make a note that reading data from a scanner inside a static method that computes some value is not a very good idea; a better solution would be to read the data inside the \ttt{main} method, then call \ttt{computeThreePointArea} with the six arguments representing each point.
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import java.util.Scanner;
+
 class ThreePointArea {
   
   /**
@@ -180,6 +182,8 @@ int x = random.nextInt(101) - 50; // x in [-50, 50]
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+
+import java.util.Random;
 
 class DualRandomTester {
   

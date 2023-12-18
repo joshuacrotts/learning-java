@@ -1,4 +1,4 @@
-\section{Collections}
+z\section{Collections}
 
 In this section we will introduce the \textit{Java Collections API}. In doing so we will discuss three broad classifications of data structures provided by the API:
 \begin{enumerate}
@@ -530,6 +530,7 @@ A \textit{comparator} is a way of comparing two arbitrary ``things'', whether th
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 class PriorityQueueByP {
 
@@ -745,6 +746,10 @@ Upon retrieving an iterator, we can use a \ttt{while} loop to continuously trave
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
+import java.util.Set;
+import java.util.LinkedHashSet;
+import java.util.Iterator;
+
 class IteratorTester {
 
   @Test
@@ -776,6 +781,9 @@ It should be stated that the enhanced \ttt{for} loop is nearly identical to the 
 \begin{cl}[]{Using an Enhanced \ttt{for} Loop over a Collection}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
+
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 class EnhancedForLoopTester {
 
@@ -854,6 +862,7 @@ Now, suppose we want to view these ten elements. Right now they are consolidated
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
+import java.util.List;
 
 class PositiveEvens {
   
@@ -869,6 +878,8 @@ class PositiveEvens {
 \example{Suppose we want a stream of infinitely repeating \ttt{"a"} strings. We can easily do this via the \ttt{generate} method, which acts as the stream constructor, receiving a lambda expression to continuously generate new elements.}
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import java.util.Stream;
+
 class AGenerator {
 
   public static void main(String[] args) {
@@ -889,6 +900,11 @@ Here's what we need to do: we will use \ttt{iterate} to generate new values in t
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
+
+import java.util.Stream;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.BigInteger;
 
 class BigIntFibStreamTester {
 
@@ -916,6 +932,9 @@ class BigIntFibStreamTester {
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import java.util.Stream;
+import java.util.BigInteger;
+
 class BigIntFibStream {
 
   /**
@@ -971,6 +990,11 @@ So our code now produces a list of \ttt{BigInteger} arrays containing the curren
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
+import java.util.Stream;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.BigInteger;
+
 class BigIntFibStreamTester {
 
   @Test
@@ -990,6 +1014,9 @@ class BigIntFibStreamTester {
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import java.util.Stream;
+import java.util.BigInteger;
+
 class BigIntFibStream {
 
   /**
@@ -1018,6 +1045,9 @@ import static Assertions.assertAll;
 import static Assertions.assertEquals;
 import static SqList.sqList;
 
+import java.util.List;
+import java.util.ArrayList;
+
 class SqListTester {
 
   @Test
@@ -1036,7 +1066,6 @@ class SqListTester {
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
-import java.util.Stream;
 import java.util.List;
 
 class SqList {
@@ -1117,7 +1146,9 @@ The primary benefit of streams is their compositionality. We can chain together 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+
 import java.util.Optional;
+import java.util.List;
 
 class OptionalTester {
 
@@ -1126,7 +1157,7 @@ class OptionalTester {
 
   @Test
   void testMaxValue() {
-    Optional<Integer> op1 = new Optional<>(42);
+    Optional<Integer> op1 = Optional.of(42);
     Optional<Integer> op2 = Optional.empty();
     assertAll(
       () -> assertEquals(op1, LS1.stream().max((a, b) -> a - b)),

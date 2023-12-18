@@ -147,6 +147,9 @@ As we see, both \ttt{Diamond} and \ttt{Heart} implement \ttt{ISuit} and handle `
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
+import java.util.List;
+import java.util.ArrayList;
+
 class ISuitTester {
 
   @Test
@@ -198,6 +201,9 @@ interface IAnimal {
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+
+import java.util.List;
+import java.util.ArrayList;
 
 class IAnimalTester {
   
@@ -442,6 +448,8 @@ So far, we have not demonstrated the potential of first-class functions in Java 
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
+import java.util.List;
+
 class FunctionMapTester {
 
   @Test
@@ -458,6 +466,9 @@ class FunctionMapTester {
 
 \begin{cl}[]{Map Function Implementation}
 \begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.ArrayList;
+
 class FunctionMap {
 
   /**
@@ -482,6 +493,8 @@ class FunctionMap {
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 import static FunctionMap.map;
+
+import java.util.List;
 
 class FunctionMapTester {
 
@@ -631,6 +644,8 @@ To test the methods that we are about to design, we will override the \ttt{toStr
 
 \begin{cl}[]{Doubly-Linked List Iterator}
 \begin{lstlisting}[language=MyJava]
+import java.util.Iterator;
+
 class DoublyLinkedList<T> {
   // ... previous code omitted ...
 
@@ -752,6 +767,8 @@ class DoublyLinkedListTester {
 
 \begin{cl}[]{Doubly-Linked List Get Method}
 \begin{lstlisting}[language=MyJava]
+import java.util.Optional;
+
 class DoublyLinkedList<T> {
   // ... previous code omitted ...
 
@@ -885,6 +902,8 @@ class AssociationListTester {
 
 \begin{cl}[]{Association List Class}
 \begin{lstlisting}[language=MyJava]
+import java.util.Optional;
+
 class AssociationList<K, V> {
   
   private final K key;

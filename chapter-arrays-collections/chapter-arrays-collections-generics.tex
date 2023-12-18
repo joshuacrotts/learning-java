@@ -31,6 +31,9 @@ To declare a static method as generic, we must specify the type variable(s) nece
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
+import java.util.List;
+import java.util.ArrayList;
+
 class GenericSearchTester {
 
   @Test 
@@ -58,6 +61,8 @@ class GenericSearchTester {
 
 \begin{cl}[]{Generic Search Method}
 \begin{lstlisting}[language=MyJava]
+import java.util.List;
+
 class GenericSearch {
 
   /**
@@ -87,6 +92,9 @@ To restrict the type parameter to a certain subset of types, we can use \textit{
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
+import java.util.List;
+import java.util.ArrayList;
+
 class GenericMaxTester {
   
   @Test 
@@ -110,6 +118,9 @@ class GenericMaxTester {
 
 \begin{cl}[]{Generic Max Method}
 \begin{lstlisting}[language=MyJava]
+import java.util.Comparable;
+import java.util.List;
+
 class GenericMax {
   
   /**
@@ -220,11 +231,11 @@ class NumberList {
    */
   static String stringify(List<? super Integer> ls) {
     return ls.stream()
-            .map(Object::toString)
-            .collect(Collectors.joining(", ", "[", "]"));
+             .map(Object::toString)
+             .collect(Collectors.joining(", ", "[", "]"));
   }
 }
 \end{lstlisting}
 \end{cl}
 
-Without our own classes to work with, the potential benefits for wildcards and type parameter bounds are not easy to spot. We present them in this chapter, though, to show that they at least exist in Java.
+Without our own classes to work with, the potential benefits for wildcards and type parameter bounds are not easy to spot. We present them in this chapter, though, to show that they at least exist in Java. 
