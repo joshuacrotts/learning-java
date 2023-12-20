@@ -781,3 +781,89 @@ static int fib(int n) {
 }
 \end{lstlisting}
 \end{cl}
+
+\example{Let's write one more example of a loop where we go directly from the problem statement to the code in question. Suppose we're writing a method that receives some string $s$, a ``search string'' $f$, and a replacement string $r$, and our goal is to replace all occurrences of $f$ with $r$ without helper methods in the \ttt{String} class, e.g., \ttt{indexOf}, \ttt{contains}, and certainly not \ttt{replace}. Of course, we start by writing the signature, documentation comments, and a handful of tests. We emphasize writing more tests than perhaps normal for this specific problem due to its complexity and number of ``edge cases'', i.e., cases in which a method might not account for because of their obscurity.}
+
+\begin{cl}[FindReplaceTester.java]{Find \& Replace Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static FindReplace.replace;
+
+class FindReplaceTester {
+
+  @Test
+  void testFindReplace() {
+    assertAll(
+      () -> assertEquals("hiya there!",
+                         replace("hiya there!", "", "replace!")),
+      () -> assertEquals("hiya there!",
+                         replace("hiya there!" "ya T", "replace!")),
+      () -> assertEquals("Spaces_With_Underscores",
+                         replace("Spaces With Underscores", " ", "_")),
+      () -> assertEquals("heyyyyyay",
+                         replace("heyaaaaay", "aa", "yy")),
+      () -> assertEquals("hello",
+                         replace("hillo", "i", "e")),
+      () -> assertEquals("heyheyhey",
+                         replace("hiyhiyhiy", "i", "e")),
+      () -> assertEquals("We replaced the entire string!",
+                         replace("Hello world, how are you?", 
+                                 "Hello world, how are you?" 
+                                 "We replaced the entire string!")));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Now we write the implementation of \ttt{replace}, which breaks down into a few cases: while traversing, are did we find the start of the search string $f$, did we find the end of $f$, and did we encounter a break in $f$? Let's go from the start to the end in our analysis. When traversing over the input string $s$, if we find the character that starts $f$ in $s$, we increment a counter $c$, and continue counting as long as the characters in the particular substring of $s$ match the characters in $f$. As an example, in the string $s=\ttt{"hello"}$, if $f=\ttt{"ell"}$, once our traversal finds \ttt{"e"}, we increment $c$ by one to designate that we matched one character of $f$. We continue this until we either hit the end of $f$, the end of $s$, or we find a non-matching character. In the former instance, we append the replacement string $r$ onto our newly-constructed string $s'$, because it indicates that we encountered a full match of $f$ inside $s$, meaning it is of course replaced by $r$. In the second instance, we reach the end of $s$, meaning that we are out of characters to match. Therefore, we either copy over the last $c$ characters from $s$ into $s'$ if we have not also hit the end of $f$, or $r$ otherwise. For example, if $s=\ttt{"hello"}$, and $f=\ttt{"low"}$, we reach the end of $s$ prior to finishing the substring $f$, meaning that we only copy over those final characters of $s$ and do not append $r$. Conversely, if $f=\ttt{"lo"}$ in that instance, we instead substitute the suffix \ttt{"lo"} with whatever is the value of $r$. Finally, when we encounter a non-matching character, we terminate the current replacement strategy and simply append the last $c$ characters of $s$ onto $s'$ and move the index forward.
+
+\begin{cl}[FindReplace.java]{Find \& Replace Implementation}
+\begin{lstlisting}[language=MyJava]
+class FindReplace {
+
+  /**
+   * Searches through a string s for occurrences of "find", and
+   * replaces them with "repl".
+   *
+   * @param s string to search through.
+   * @param find string to find.
+   * @param repl string to replace "find" with.
+   * @return new replaced string.
+   */
+  public static String replace(String s, String find, String repl) {
+    StringBuilder sb = new StringBuilder(s.length());
+    for (int i = 0; i < s.length(); i++) {
+      int pos = 0;
+      int j;
+      for (j = i; j < s.length(); j++) {
+        // If we find the entire "find" string, append the replacement.
+        if (pos >= find.length()) {
+          sb.append(repl);
+          i = j - 1;
+          break;
+        }
+        // If we are in the middle of searching and we find a non-matching
+        // character, append everything up until this point and break.
+        else if (s.charAt(j) != find.charAt(pos)) {
+          sb.append(s, i, i + pos + 1);
+          i = j;
+          break;
+        }
+        // If we are matching, continue to search.
+        else if (s.charAt(j) == find.charAt(pos)) {
+          pos++;
+        }
+      }
+      // If we reach the end of the string and are in the middle of
+      // searching, we append it to the sting.
+      if (pos > 0 && j >= s.length()) {
+        sb.append(repl);
+        break;
+      }
+    }
+    return sb.toString();
+  }
+}
+\end{lstlisting}
+\end{cl}

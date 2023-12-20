@@ -1,6 +1,8 @@
 \section*{Chapter Exercises}
 \addcontentsline{toc}{section}{Exercises}
 
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] operate(int[] A)} method that, when given an array of integers, returns a new array where the elements are the result of applying the following operation to each element: if the $i^{\text{th}}$ element is odd, multiply it by its index $i$ plus one. Otherwise, divide it by its index $i$ plus one.}
+
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{boolean containsOnlyPrime(int[] arr)} method that returns whether or not a given array of integers contains only prime integers. Hint: use the method you wrote in Chapter 2.}
 
 \exercise{1}{chapter-arrays-collections}{This question has two parts.}
@@ -36,6 +38,8 @@ fizzBuzz(1, 12)  => {"1", "2", "Fizz", "4", "Buzz",
 fizzBuzz(15, 18) => {"FizzBuzz", "16", "17", "Fizz"}
     \end{verbatim}
 }
+
+\exercise{2}{chapter-arrays-collections}{Using only arrays, design the \ttt{int[] findIntersection(int[] A, int[] B)} method that returns an array containing the \textit{intersection} of two arrays. The intersection of two arrays is the set of elements that are common to both arrays. For example, the intersection of $\{7, 4, 8, 0, 2, 1\}$ and $\{8, 6, 4, 9, 26, 4, 0\}$ is $\{7, 8, 0\}$. Do not assume that the arrays are sorted, and you cannot sort them yourself.}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{double sumYucky(ArrayList<Integer> vals)} method that returns the average of the numbers in the list. Though, the number $9$ should not be counted towards the average, nor should the following number, should one exist.}
 \par{
@@ -301,6 +305,15 @@ classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
 
 Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet string $A$, a cipher-text string $K$, and a string $s$ to encode, \ttt{substitutionCipher} should return a string $s'$ using the aforementioned substitution cipher algorithm. You must follow the ``design recipe'' laid out in class. That is, you must write the method purpose statement comment, tests, and the implementation.}
 
+\exercise{3}{chapter-arrays-collections}{Quine's method of truth resolution is a method of automatically reasoning about the truth of a propositional logic statement (recall the exercise from Chapter~\ref{chapter-crl}). The method is as follows:}
+
+\begin{enumerate}
+    \item Choose an atom $P$ from the statement. Consider two cases: when $P$ is true and when $P$ is false. Derive the consequences of each case. The rules follow those of the propositional logic connectives.
+    \item Repeat this process for each sub-statement until there are no more sub-statements, and you have only true or false results. If you have \textit{both} true and false results, the statement is a contingency. If all branches lead to true, the statement is a tautology. If all branches lead to false, the statement is a contradiction. 
+\end{enumerate}
+
+Design several classes to represent a series of well-formed schemata in propositional logic, namely \ttt{CondNode}, \ttt{BicondNode}, \ttt{NegNode}, \ttt{AndNode}, \ttt{OrNode}, and \ttt{AtomNode}, all of which extend a root \ttt{Node} class, similar to our representation of the abstract syntax trees within the ASPL interpreter. Then, design three methods: \ttt{boolean isContingency(Node t)}, \ttt{boolean isContradiction(Node t)}, and \ttt{boolean isTautology(Node t)}, which return whether or not the given statement is a contingency, contradiction, or tautology, respectively. You may assume that the input is a well-formed schema. Note that only one of these methods needs a full-fledged recursive traversal over the data; the other two can be implemented in terms of the first.
+
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that takes a \ttt{List<Integer>} and filters out even numbers and then calculates the sum of the remaining odd numbers.}
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that, given a \ttt{List<String>}, concatenates all the strings together into a single string, separated by a comma.}
@@ -326,7 +339,6 @@ Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet 
 \exercise{1}{chapter-arrays-collections}{Design the generic \ttt{stringifyList} method that, when given an \ttt{ArrayList<T>} $L$, returns a \ttt{String} of comma-separated values where each value is an element of $L$, but converted into a \ttt{String}. You'll need to use the \ttt{.toString} method.}
 
 \exercise{2}{chapter-arrays-collections}{Design the generic \ttt{min} method, which receives a list of integers and returns the minimum element in the list. It should return an \ttt{Optional} value of type \ttt{T}, where \ttt{T} is the type of the list. If the list is empty, return an empty \ttt{Optional}. Remember that \ttt{T} must be a type that implements the \ttt{Comparable} interface.}
-
 
 
 %f(a, b) and f(3, 4) produces {<a : 3>, <b : 4>}
