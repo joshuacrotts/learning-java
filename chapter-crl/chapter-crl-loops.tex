@@ -125,9 +125,32 @@ Of course, the goal, in due time, is to work our way from $TR$ to $I$, but there
 
 \begin{figure}[h!]
 \centering
-\begin{tikzcd}
- P \arrow[r, "1"] & R \arrow[r, "2"] & \textit{$TR$} \arrow[r, "3"] & \textit{$TR_\mathbf{H}$} \arrow[r, "4"] & \textit{$TR_\mathbf{IVP}$} \arrow[r, "3"] & \textit{$TR_\mathbf{C}$} \arrow[r, "4"] & \textit{$TR_\mathbf{B}$} \arrow[r, "5"] & \textit{$TR_\mathbf{Ret}$} \arrow[r, dashrightarrow,""] & I
-\end{tikzcd}
+\begin{tikzpicture}
+  % Define nodes for all elements
+  \node (P) at (-2,0) {$P$};
+  \node (R) at (-0.5,0) {$R$};
+  \node (TR) at (1.2,0) {\textit{$TR$}};
+  \node (TRH) at (3.2,0) {\textit{$TR_\mathbf{H}$}};
+  \node (TRIVP) at (5.3,0) {\textit{$TR_\mathbf{IVP}$}};
+  \node (TRC) at (8,0.7) {\textit{$TR_\mathbf{C}$}};
+  \node (TRB) at (8,0) {\textit{$TR_\mathbf{B}$}};
+  \node (TRRet) at (8,-0.7) {\textit{$TR_\mathbf{Ret}$}};
+  \node (I) at (10,0) {$I$};
+
+  % Draw arrows
+  \draw[->] (P) -- (R) node[midway, above] {1};
+  \draw[->] (R) -- (TR) node[midway, above] {2};
+  \draw[->] (TR) -- (TRH) node[midway, above] {3};
+  \draw[->] (TRH) -- (TRIVP) node[midway, above] {4};
+  \draw[->] (TRIVP) -- (6.8,0) node[midway, above] {5};
+  \draw[->] (TRC) -- (TRB);
+  \draw[->] (TRB) -- (TRRet);
+  
+  % Draw dashed circle
+  \draw[dashed] (8,0) circle (1.2);
+  \draw[dashed,->] (9.2,0) -- (I);
+
+\end{tikzpicture}
 \caption{Fine-Grained Translation Pipeline}
 \end{figure}
 
