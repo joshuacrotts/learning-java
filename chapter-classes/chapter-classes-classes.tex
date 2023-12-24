@@ -759,8 +759,41 @@ class StackFrame {
 Now, let's translate the standard recursive \ttt{fact} method, which will receive a \ttt{BigInteger}, and return its factorial. Below we show the recursive version. From this, we write the \ttt{factLoop} method that instantiates a \ttt{Stack<StackFrame>} to replicate the call stack. We begin the process by pushing the initial frame, which stores the initial input argument. This is followed by a variable to keep track of the ``return value'', which should match the type of the standard recursive method (for our purposes of factorial, this is a \ttt{BigInteger}). Our loop continues as long as there is a stack frame to pop, and the core logic of the algorithm, namely $n!$, is identical to our standard recursive counterpart.
 
 \begin{cl}[StackFrameTester.java]{}
-  \begin{lstlisting}[language=MyJava]
-  \end{lstlisting}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static StackFrameDriver.fact;
+import static StackFrameDriver.factLoop;
+
+import java.util.BigInteger;
+
+class StackFrameTester {
+
+  @Test
+  void testFact() {
+    assertAll (
+      () -> assertEquals(new BigInteger("1"), 
+                         fact(new BigInteger("0"))),
+      () -> assertEquals(new BigInteger("120"), 
+                         fact(new BigInteger("5"))),
+      () -> assertEquals(new BigInteger("3628800"), 
+                         fact(new BigInteger("100"))),
+    );
+  }
+
+  @Test
+  void testFactLoop() {
+      assertAll (
+      () -> assertEquals(new BigInteger("1"), 
+                         factLoop(new BigInteger("0"))),
+      () -> assertEquals(new BigInteger("120"), 
+                         factLoop(new BigInteger("5"))),
+      () -> assertEquals(new BigInteger("3628800"), 
+                         factLoop(new BigInteger("100"))),
+    );
+  }
+}  
+\end{lstlisting}
 \end{cl}
 
 \begin{cl}[StackFrameDriver.java]{}
@@ -779,11 +812,7 @@ class StackFrameDriver {
     Stack<StackFrame> sf = new Stack<>();
     BigInteger res = n;
     sf.push(new StackFrame().addParam("n", n));
-
-    while (!sf.isEmpty()) {
-      // TODO.
-    }
-
+    while (!sf.isEmpty()) { /* TODO. */ }
     return res;
   }
 \end{lstlisting}
@@ -799,7 +828,7 @@ class StackFrameDriver {
 
   public static BigInteger factLoop(BigInteger n) {
     Stack<StackFrame> sf = new Stack<>();
-    BigInteger res = n;
+    BigInteger res = BigInteger.ONE;
     sf.push(new StackFrame().addParam("n", n));
 
     while (!sf.isEmpty()) {
@@ -807,7 +836,7 @@ class StackFrameDriver {
       BigInteger pn = (BigInteger) f.get("n");
       if (pn.compareTo(BigInteger.ONE) <= 0) { continue; }
       else {
-        sf.push(new StackFrame().addParam("n", n.subtract(BigInteger.ONE)));
+        sf.push(new StackFrame().addParam("n", pn.subtract(BigInteger.ONE)));
         res = res.multiply(pn);
       }
     }
@@ -818,7 +847,4 @@ class StackFrameDriver {
 \end{lstlisting}
 \end{cl}
 
-
-
-
-
+With this, notice two things: first, we mimic the behavior of the call stack manually. This consequently means that, unless there is a method inside that uses the stack, we never push any activation records. Second, by managing the stack ourselves, we drastically increase the limit to the number of possible ``recursive calls'', since we push instances of our \ttt{StackFrame} onto the heap. Theoretically, we could continuously push new ``frames'' to our stack so long as we have active and available heap memory. This, of course, is impossible with current hardware limitations, so in due time, with a large-enough call to \ttt{factLoop}, the JVM terminates the program with an \ttt{OutOfMemory} exception. In the relevant test suite, we do not include tests for extraordinarily large numbers to preserve space, but we encourage the readers to try out such test cases, e.g., $100000000!$. We should state that these tests will not complete in a reasonable amount of time.\footnote{On an AMD Ryzen 5 3600 with 16GB of DDR4 RAM, this test did not complete within a three hour time frame.} 

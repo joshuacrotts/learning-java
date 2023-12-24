@@ -218,6 +218,23 @@ Your method should return the total cost of the item after applying the discount
 \end{enumerate}
 
 \exercise{1}{chapter-crl}{This question has three parts.}
+The \textit{subfactorial} of a number, namely $!n$, is the number of permutations of $n$ objects such that no object appears in its natural spot. For example, take the set of objects $\{a, b, c\}$. There are $3!=6$ possible permutations: $\{a, b, c\}, \{a, c, b\}, \{b, c, a\}, \{c, b, a\}, \{c, a, b\}, \{b, a, c\}$, but only two of these are \textit{derangements}: $\{b, c, a\}$ and $\{c, a, b\}$, because no element is in the same spot as the original set. Therefore, we say that $!3=2$. We can describe subfactorial as a recursive formula:
+\begin{align*}
+    !0 &= 1\\
+    !1 &= 0\\
+    !n &= (n-1) \cdot (!(n - 1) + !(n - 2))
+\end{align*}
+\begin{enumerate}[label=(\alph*)]
+    \item Design the standard recursive \ttt{subfactorial} method, which receives an integer $n$ and returns its subfactorial.
+
+    \item Then, design the \ttt{subfactorialTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
+
+    \item Finally, design the \ttt{subfactorial} method that solves the problem using a loop.
+
+    If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
+\end{enumerate}
+
+\exercise{1}{chapter-crl}{This question has three parts.}
 \begin{enumerate}[label=(\alph*)]
 \item Design the standard recursive \ttt{collatz} method, which receives a positive integer and returns the Collatz sequence for said integer. This sequence is defined by the following recursive process:
 \begin{align*}
@@ -269,8 +286,10 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \exercise{3}{chapter-crl}{This question has five parts. We need to provide some background for the question first. An \textit{encoded string} $S$ is one of the form:}
 \begin{align*}
-S &= n[S']\\
-S' &= SS' \mid [a, ..., z]^{*} \mid \ttt{""}
+S &= G^{*}\\
+G &= NL\\
+N &= [0-9]^{+}\\
+L &= [a-z]^{+}
 \end{align*}
 We imagine this didn't clear up what the definition means. Take the encoded string \ttt{"3[a]2[b]"} as an example. The resulting decoded string is \ttt{"aaabb"}, because we create three copies of \ttt{"a"}, followed by two copies of \ttt{"b"}. Another example is \ttt{"4[abcd]"}, which returns the string containing \ttt{"abcdabcdabcdabcd"}.
 

@@ -45,36 +45,36 @@
     \item Design the \ttt{void multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply $m$ with this matrix, do nothing.
     \item Design the \ttt{void transpose()} method, which transposes the matrix. That is, the rows become the columns and the columns become the rows. You may need to alter the dimensions of the matrix.
     \item Design the \ttt{void rotate()} method, rotates the matrix $90$ degrees clockwise. To rotate a matrix, compute the transposition and then reverse the rows. You may need to alter the dimensions of the matrix.
-    \item Override the \ttt{toString} method to print out the matrix in a boxed format.
+    \item Override the \ttt{String toString()} method to print out the matrix in a boxed format.
 \end{enumerate}
 
 \exercise{2}{chapter-classes}{This exercise has five parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{GameObject} class, which stores a \ttt{Pair<Double, Double>} denoting its center $(x, y)$ position and a \ttt{Pair<Double, Double>} denoting its width and height respectively. Its constructor should receive four \ttt{double} values representing $x$, $y$, $\textit{width}$, and $\textit{height}$. Be sure to write instance accessor and mutator methods for modifying both fields. That is, you should write \ttt{getLocationX()}, \ttt{setLocationX(double d)}, and so forth, to access and modify the \ttt{Pair} values directly. 
+    \item Design the \ttt{GameObject} class, which stores a \ttt{Pair<Double, Double>} denoting its center $(x, y)$ position and a \ttt{Pair<Double, Double>} denoting its width and height respectively. Its constructor should receive four \ttt{double} values representing $x$, $y$, $\textit{width}$, and $\textit{height}$. Be sure to write instance accessor and mutator methods for modifying both fields. That is, you should write \ttt{double getLocationX()}, \ttt{void setLocationX(double d)}, and so forth, to access and modify the \ttt{Pair} values directly. 
 
-    \item Design the \ttt{public boolean collidesWith(GameObject obj)} method that returns if \ttt{this} \ttt{GameObject} collides with the parameter \ttt{obj}. You should design this solution as if the game objects are shaped like rectangles (which they are!).
+    \item Design the \ttt{boolean collidesWith(GameObject obj)} method that returns if \ttt{this} \ttt{GameObject} collides with the parameter \ttt{obj}. You should design this solution as if the game objects are shaped like rectangles (which they are!).
 
-    \item Design the \ttt{public double distance(GameObject obj)} method that returns the Euclidean distance from the center of \ttt{this} \ttt{GameObject} to the center of the parameter \ttt{obj}. 
+    \item Design the \ttt{double distance(GameObject obj)} method that returns the Euclidean distance from the center of \ttt{this} \ttt{GameObject} to the center of the parameter \ttt{obj}. 
 
-    \item Design the \ttt{public double move(double dx, double dy)} method that moves the object about the Cartesian (two-dimensional) plane. The distance should be a delta represented as two \ttt{double} numbers \ttt{dx} and \ttt{dy} that directly manipulate the object position. For instance, if \ttt{dx} is $3.0$ and \ttt{dy} is $-2.0$ and the object is currently at $<2.0, -9.0>$, invoking \ttt{move(3.0, -2.0)} updates the object to be at $<5.0, -11.0>$.
+    \item Design the \ttt{double move(double dx, double dy)} method that moves the object about the Cartesian (two-dimensional) plane. The distance should be a delta represented as two \ttt{double} numbers \ttt{dx} and \ttt{dy} that directly manipulate the object position. For instance, if \ttt{dx} is $3.0$ and \ttt{dy} is $-2.0$ and the object is currently at $<2.0, -9.0>$, invoking \ttt{move(3.0, -2.0)} updates the object to be at $<5.0, -11.0>$.
 
-    \item Override the \ttt{toString} method to call the \ttt{toString} methods of the two instance variables, conjoined by a semicolon.
+    \item Override the \ttt{String toString()} method to call the \ttt{toString} methods of the two instance variables, conjoined by a semicolon.
 \end{enumerate}
 
 \exercise{2}{chapter-classes}{This exercise has three parts.}
 \begin{enumerate}[label=(\alph*)]
     \item Design the \ttt{GameRunner} class, which stores a list of objects \ttt{ArrayList<GameObject>} as an instance variable. Its constructor should receive an integer representing a random number generator seed. It should first instantiate \ttt{rand} to a new \ttt{Random} object with this seed, and then populate the list with twenty random \ttt{GameObject} instances at random \textbf{integer} positions with random \textbf{integer} sizes. These random positions should be between $[-10, 10]$ for both coordinates and the random sizes should be between $[1, 10]$ for both dimensions.
 
-    \item Design the \ttt{moveObjects} method, which moves each object by three positive $x$ units and four negative $y$ units.
+    \item Design the \ttt{void moveObjects()} method, which moves each object by three positive $x$ units and four negative $y$ units.
 
-    \item Design the \ttt{stringifyObjects} method, which converts each object in the list into its string representation, with brackets around the elements, and separated by commas. Hint: you can use one method from the \ttt{Stream} class to do this quickly!
+    \item Design the \ttt{String stringifyObjects()} method, which converts each object in the list into its string representation, with brackets around the elements, and separated by commas. Hint: you can use one method from the \ttt{Stream} class to do this quickly!
 \end{enumerate}
 
 \exercise{2}{chapter-classes}{This exercise involves the ``Twenty-One'' game implementation from the chapter.}
 \begin{enumerate}[label=(\alph*)]
-    \item Change each card to use the Unicode symbol counterpart rather than the default \ttt{"X of Y"} \ttt{toString} model, where \ttt{X} is the value and \ttt{Y} is the suit. The Unicode symbols are available on the second page of this PDF: \url{https://www.unicode.org/charts/PDF/U1F0A0.pdf}. This will be a little tedious, but it makes the game look cooler!
+    \item Change each card to use the Unicode symbol counterpart rather than the \ttt{"X of Y"} \ttt{toString} model, where \ttt{X} is the value and \ttt{Y} is the suit. The Unicode symbols are available on the second page of this PDF: \url{https://www.unicode.org/charts/PDF/U1F0A0.pdf}. This will be a little tedious, but it makes the game look cooler!
     \item Add the Ace, Jack, Queen, and King cards, instead of the previous implementation of using four cards whose values were all ten. A simple solution is to use a \ttt{String} that keeps track of the ``name'' of a card alongside the other instance variables. 
-    \item Add an AI to the game (you do not need to test this class). This involves writing the \ttt{AI} class and designing the \ttt{boolean play(Deck deck)} method. An \ttt{AI} has a \ttt{ArrayList<Card>}, similar to \ttt{Player}, but makes decisions autonomously using the following algorithm:
+    \item Add an AI to the game (you do not need to test this class). This involves writing the \ttt{AI} class and designing the \ttt{boolean play(Deck deck)} method. An \ttt{AI} has a \ttt{ArrayList<Card>}, similar to \ttt{Player}, but makes decisions autonomously using the following algorithm (written in a pseudocode-like language):
     \par{
 \begin{verbatim}
 boolean play(Deck d) {
@@ -96,11 +96,12 @@ The method returns whether or not the AI drew a card. If they did not draw a car
 \item After designing the \ttt{AI} class and adding one to your game, create an \ttt{ArrayList<AI>} simulating multiple computer players in the game.
 \end{enumerate}
 
-\exercise{1}{chapter-classes}{Add the \ttt{public void set(T e, int idx)} method to the \ttt{MiniArrayList} class, which sets the element at $\textit{idx}$ to the given $e$ element.}
+\exercise{1}{chapter-classes}{Add the \ttt{void set(T e, int idx)} method to the \ttt{MiniArrayList} class, which sets the element at $\textit{idx}$ to the given $e$ element.}
 
-\exercise{1}{chapter-classes}{Add the \ttt{public void isEmpty()} method to the \ttt{MiniArrayList} class, which returns whether or not the list is empty.}
+\exercise{1}{chapter-classes}{Add the \ttt{void isEmpty()} method to the \ttt{MiniArrayList} class, which returns whether or not the list is empty.}
 
-\exercise{2}{chapter-classes}{Add the \ttt{public void clear()} method to the \ttt{MiniArrayList} class, which ``removes'' all elements from the list. This should not change the capacity of the list. Note that there's a reason why ``removes'' is in quotes. We rank this exercise as a two-star not because of its length, but because it is a little tricky.}
+\exercise{2}{chapter-classes}{Add the \ttt{void clear()} method to the \ttt{MiniArrayList} class, which ``removes'' all elements from the list. This should not change the capacity of the list. Note that there's a reason why ``removes'' is in quotes. We rank this exercise as a two-star not because of its length, but because it is a little tricky.}
 
 \exercise{2}{chapter-classes}{Override the \ttt{equals} method (from \ttt{Object}) in the \ttt{MiniArrayList} class to compare two lists by their elements. Return \ttt{true} if all elements in the two lists are \ttt{.equals} to one another, and \ttt{false} otherwise.}
 
+\exercise{2}{chapter-classes}{Using the \ttt{StackFrame} class, design an implementation of the tail recursive factorial method. Recall how to do this from Chapter~\ref{chapter-crl}: instead of pushing an activation record to the call stack, we can simply update the bindings in the existing frame.}
