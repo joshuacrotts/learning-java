@@ -1,15 +1,15 @@
 \section*{Chapter Exercises}
 \addcontentsline{toc}{section}{Exercises}
 
-\exercise{1}{chapter-crl}{Write a method that determines whether three integers are strictly increasing. Three integers $x, y,$ and $z$ are strictly increasing if $x < y < z$.}
+\exercise{1}{chapter-crl}{Design the \ttt{boolean isStrictlyIncreasing(int x, int y, int z)} that determines whether three integers are strictly increasing. Three integers $x, y,$ and $z$ are strictly increasing if $x < y < z$.}
 
 \exercise{1}{chapter-crl}{Write conditional statements that determines if an integer $n$ is greater than $100$. If so, return the string of $n$ divided by two. If the number is less than 50, return the string of $n$ divided by five. In any other case, return the string ``N/A''.}
 
 \exercise{1}{chapter-crl}{Given an integer variable \textit{age} in years, write conditional statements to determine if the age is able to vote in the United States. For reference, someone may legally once they turn eighteen years old.}
 
-\exercise{1}{chapter-crl}{Write the \ttt{max} that returns the maximum of three integers $a$, $b$, and $c$. Do not use any built-in (\ttt{Math} library) methods.}
+\exercise{1}{chapter-crl}{Design the \ttt{int max(int x, int y, int z)} that returns the maximum of three integers $x$, $y$, and $z$. Do not use any built-in (\ttt{Math} library) methods.}
 
-\exercise{1}{chapter-crl}{Write the \ttt{isEvenlySpaced} method, which receives three integers and returns whether they are evenly spaced. Evenly spaced means that the difference between the smallest and medium number is the same as the difference between the medium and largest number.}
+\exercise{1}{chapter-crl}{Design the \ttt{boolean isEvenlySpaced(int x, int y, int z} method, which receives three integers $x, y,$ and $z$, and returns whether they are evenly spaced. Evenly spaced means that the difference between the smallest and medium number is the same as the difference between the medium and largest number.}
 
 \exercise{1}{chapter-crl}{In propositional logic, there are several \textit{connectives} that act on boolean truth values. These include logical conjunction $\land$, disjunction $\lor$, conditional $\to$, biconditional $\leftrightarrow$, and negation $\lnot$. We can represent \textit{schemata} as a series of composed method calls. For example, an evaluation of}
 
@@ -150,9 +150,9 @@ isValidIpv4("192.168.1A6.201") -> false
 
 \exercise{1}{chapter-crl}{Write a method that receives three strings and sorts them lexicographically. Return the sorted set of strings as a string itself, separated by commas. For example, if the input is \ttt{Charlie}, \ttt{Able}, \ttt{Baker}, you should return \ttt{Able,Baker,Charlie}.}
 
-\exercise{1}{chapter-crl}{A year with $366$ days is called a leap year. Leap years are necessary to keep the calendar synchronized with the sun because the earth revolves around the sun once every $365.25$ days. Actually, that figure is not entirely precise, and for all dates after $1582$ the Gregorian correction applies. Usually years that are divisible by 4 are leap years, for example $1996$. However, years that are divisible by $100$ (for example, $1900$) are not leap years, but years that are divisible by $400$ are leap years (for example, $2000$). Write a method that receives a year and computes whether that year is a leap year. Use a single \ttt{if} statement and Boolean operators.}
+\exercise{1}{chapter-crl}{A year with $366$ days is called a leap year. Leap years are necessary to keep the calendar synchronized with the sun because the earth revolves around the sun once every $365.25$ days. Actually, that figure is not entirely precise, and for all dates after $1582$ the Gregorian correction applies. Usually years that are divisible by 4 are leap years, for example $1996$. However, years that are divisible by $100$ (for example, $1900$) are not leap years, but years that are divisible by $400$ are leap years (for example, $2000$). Design the \ttt{boolean isLeapYear(int y)} that receives a year (as an integer) $y$ and computes whether $y$ is a leap year. Use a single \ttt{if} statement and Boolean operators.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{computeDiscount(double itemCost, int age, boolean isStudent)} method that computes a discount for some item based on their age and student status according to the following criteria:}
+\exercise{1}{chapter-crl}{Design the \ttt{double computeDiscount(double c, int age, boolean isStudent)} met\-hod that computes a discount for some item cost $c$ based on their age $\mathit{age}$ and student status according to the following criteria:}
 \begin{itemize}
     \item If $\mathit{age} < 18$, apply a $20\%$ discount.
     \item If $18 \leq \mathit{age} \leq 25$ and they are a student, apply a $25\%$ discount. If they are not a student, do not apply a discount.
@@ -161,7 +161,7 @@ isValidIpv4("192.168.1A6.201") -> false
 \end{itemize}
 Your method should return the total cost of the item after applying the discount.
 
-\exercise{1}{chapter-crl}{Design the \ttt{computeTaxCost(double itemCost, String state)} method that computes the tax for some item based on the state in which it is purchased. The method should return the total cost of the item, which includes the taxed amount. The tax rates are as follows:}
+\exercise{1}{chapter-crl}{Design the \ttt{double computeTaxCost(double itemCost, String state)} method that computes the tax for some item based on the state in which it is purchased. The method should return the total cost of the item, which includes the taxed amount. The tax rates are as follows:}
 \begin{itemize}
     \item \ttt{"CA"}: $9.25\%$
     \item \ttt{"NY"}: $4.0\%$
@@ -172,15 +172,15 @@ Your method should return the total cost of the item after applying the discount
     \item \ttt{"IN"}: $8.0\%$
 \end{itemize}
 
-\exercise{1}{chapter-crl}{Write the recursive method \ttt{countStr} that counts the number of times the substring \ttt{"str"} appears in a given string.}
+\exercise{1}{chapter-crl}{Design the recursive \ttt{int countStr(String s)} that counts the number of times the substring \ttt{"str"} appears in a given string $s$.}
 
 \exercise{1}{chapter-crl}{Rewrite the \ttt{countStr} method to use tail recursion. Name this new version of the method \ttt{countStrTR}. Hint: you will need to design a \ttt{private static} helper method. The \ttt{countStrTR} method should only have one parameter.}
 
-\exercise{1}{chapter-crl}{Write the recursive method \ttt{replaceAB} that replaces any occurrence of the character \ttt{`A'} with the character \ttt{`B'} in a given string.}
+\exercise{1}{chapter-crl}{Design the recursive \ttt{String replaceAB(String s)} method that replaces any occurrence of the character \ttt{`A'} with the character \ttt{`B'} in a given string $s$.}
 
 \exercise{1}{chapter-crl}{Rewrite the \ttt{replaceAB} method to use tail recursion. Name this new version of the method \ttt{replaceABTR}. Hint: you will need to design a \ttt{private static} helper method. The \ttt{replaceABTR} method should only have one parameter.}
 
-\exercise{1}{chapter-crl}{Elephants have two ears, right? Write the recursive method \ttt{countElephantEars} that returns the total number of elephant ears that are in a group of elephants.}
+\exercise{1}{chapter-crl}{Elephants have two ears, right? Design the recursive \ttt{int countElephantEars(int n)} that returns the total number of elephant ears that are in a group of $n$ elephants.}
 
 \exercise{1}{chapter-crl}{Rewrite the \ttt{countElephantEars} method to use tail recursion. Name this new version of the method \ttt{countElephantEarsTR}. Hint: you will need to design a \ttt{private static} helper method. The \ttt{countElephantEarsTR} method should only have one parameter.}
 
@@ -218,10 +218,11 @@ Your method should return the total cost of the item after applying the discount
 \end{enumerate}
 
 \exercise{1}{chapter-crl}{This question has three parts.}
-The \textit{hyperfactorial} of a number, namely $H(n)$, is the value of $1^1 \cdot 2^2 \cdot ... \cdot n^n$. As you might imagine, the resulting numbers from a hyperfactorial are outrageously large. Therefore we will make use of the \ttt{long} datatype rather than \ttt{int} for this problem.
 
 \begin{enumerate}[label=(\alph*)]
-    \item Design the standard recursive \ttt{hyperfactorial} method, which receives a long integer $n$ and returns its hyperfactorial.
+    \item The \textit{hyperfactorial} of a number, namely $H(n)$, is the value of $1^1 \cdot 2^2 \cdot ... \cdot n^n$. As you might imagine, the resulting numbers from a hyperfactorial are outrageously large. Therefore we will make use of the \ttt{long} datatype rather than \ttt{int} for this problem. 
+    
+    Design the standard recursive \ttt{hyperfactorial} method, which receives a long integer $n$ and returns its hyperfactorial.
     \item Then, design the \ttt{hyperfactorialTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
 
     \item Finally, design the \ttt{hyperfactorialLoop} method that solves the problem using a loop.
@@ -230,14 +231,16 @@ The \textit{hyperfactorial} of a number, namely $H(n)$, is the value of $1^1 \cd
 \end{enumerate}
 
 \exercise{1}{chapter-crl}{This question has three parts.}
-The \textit{subfactorial} of a number, namely $!n$, is the number of permutations of $n$ objects such that no object appears in its natural spot. For example, take the set of objects $\{a, b, c\}$. There are $3!=6$ possible permutations: $\{a, b, c\}, \{a, c, b\}, \{b, c, a\}, \{c, b, a\}, \{c, a, b\}, \{b, a, c\}$, but only two of these are \textit{derangements}: $\{b, c, a\}$ and $\{c, a, b\}$, because no element is in the same spot as the original set. Therefore, we say that $!3=2$. We can describe subfactorial as a recursive formula:
+
+\begin{enumerate}[label=(\alph*)]
+    \item The \textit{subfactorial} of a number, namely $!n$, is the number of permutations of $n$ objects such that no object appears in its natural spot. For example, take the collection of objects $\{a, b, c\}$. There are $3!=6$ possible permutations: $\{a, b, c\}, \{a, c, b\}, \\\{b, c, a\}, \{c, b, a\}, \{c, a, b\}, \{b, a, c\}$, but only two of these are \textit{derangements}: $\{b, c, a\}$ and $\{c, a, b\}$, because no element is in the same spot as the original collection. Therefore, we say that $!3=2$. We can describe subfactorial as a recursive formula:
 \begin{align*}
     !0 &= 1\\
     !1 &= 0\\
-    !n &= (n-1) \cdot (!(n - 1) + !(n - 2))
+    !n &= (n-1) \cdot (!(n - 1)\;+\;!(n - 2))
 \end{align*}
-\begin{enumerate}[label=(\alph*)]
-    \item Design the standard recursive \ttt{subfactorial} method, which receives an integer $n$ and returns its subfactorial.
+
+    Design the standard recursive \ttt{subfactorial} method, which receives an integer $n$ and returns its subfactorial.
 
     \item Then, design the \ttt{subfactorialTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
 
@@ -287,7 +290,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \exercise{2}{chapter-crl}{This question has three parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the standard recursive \ttt{chickenCounter} method, which receives a string $s$ and returns the number of times the substring \ttt{"chicken"} appears in $s$. You must account for overlapping instances of \ttt{"chicken"}. For example, \ttt{chickenCounter("abcchickechickenn")} returns $2$, because after removing the substring \ttt{"chicken"} from the original string, we are left with \ttt{"abcchicken"}, which itself contains another instance of \ttt{"chicken"}.
+    \item Design the standard recursive \ttt{chickenCounter} method, which receives a string $s$ and returns the number of times the substring \ttt{"chicken"} appears in $s$. You must account for overlapping instances of \ttt{"chicken"}. For example, calling the method with \ttt{chickenCounter("abcchickechickenn")} returns $2$ because, after removing the substring \ttt{"chicken"} from the original string, we are left with \ttt{"abcchicken"}, which itself contains another instance of \ttt{"chicken"}.
 
     \item Then, design the \ttt{chickenCounterTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
 
@@ -300,19 +303,19 @@ If you write tests for one of these methods, you should be able to propagate it 
 \begin{align*}
 S &= G^{*}\\
 G &= NL\\
-N &= [0-9]^{+}\\
-L &= [a-z]^{+}
+N &= [\text{\ttt{0}---\ttt{9}}]^{+}\\
+L &= [\text{\ttt{a}---\ttt{z}}]^{+}
 \end{align*}
 We imagine this didn't clear up what the definition means. Take the encoded string \ttt{"3[a]2[b]"} as an example. The resulting decoded string is \ttt{"aaabb"}, because we create three copies of \ttt{"a"}, followed by two copies of \ttt{"b"}. Another example is \ttt{"4[abcd]"}, which returns the string containing \ttt{"abcdabcdabcdabcd"}.
 
 \begin{enumerate}[label=(\alph*)]
-    \item First, write a method \ttt{retrieveN} that returns the integer at the start of an encoded string. Take the following examples as motivation.
+    \item First, design the \ttt{int retrieveN(String s)} that returns the integer at the start of an encoded string. Take the following examples as motivation.
 \begin{verbatim}
 retrieveN("3[a]2[b]")     => 3
 retrieveN("47[abcd]")     => 47
 retrieveN("1[bbbbb]3[a]") => 1
 \end{verbatim}
-    \item Next, write the \ttt{cutN} that returns a string without the integer at the start of an encoded string. Hint: use \ttt{indexOf} and \ttt{substring}.
+    \item Next, design the \ttt{String cutN(String s)} method that returns a string without the integer at the start of an encoded string. Hint: use \ttt{indexOf} and \ttt{substring}.
 \begin{verbatim}
 cutN("3[a]2[b]")     => "[a]2[b]
 cutN("47[abcd]")     => "[abcd]"
@@ -323,35 +326,34 @@ cutN("1[bbbbb]3[a]") => "[bbbbb]3[a]"
     \item Design the \texttt{decodeLoop} method, which solves the problem using either a \texttt{while} or \texttt{for} loop.
 \end{enumerate}
 
-\exercise{2}{chapter-crl}{Design the static \ttt{indexOf} method, which receives two \ttt{String}s \ttt{s}, \ttt{key}, and returns the first index of \ttt{key} in \ttt{s}. Note that \ttt{key} may be any arbitrary string and not just a a single character. If \ttt{key} is not in \ttt{s}, return \ttt{-1}.}
+\exercise{2}{chapter-crl}{Design the \ttt{int indexOf(String s, String k)} method, which receives two strings $s$, $k$, and returns the first index of $k$ in $s$. Note that $k$ may be any arbitrary string and not just a a single character. If $k$ is not in $s$, return \ttt{-1}. You \textbf{cannot} use the \ttt{indexOf} method provided by the \ttt{String} class.}
 
-\exercise{2}{chapter-crl}{Design the static \ttt{substring} method, which receives a \ttt{String} and two integers \ttt{low}, \ttt{high}, and returns the substring between these indices. If either are out of bounds of the string, return \ttt{null}.}
+\exercise{2}{chapter-crl}{Design the \ttt{String substring(String s, int a, int b)} method, which receives a string and two integers $a$, $b$, and returns the substring between these indices. If either are out of bounds of the string, return \ttt{null}. You \textbf{cannot} use the \ttt{substring} method(s) provided by the \ttt{String} class.}
 
-\exercise{1}{chapter-crl}{Design the static \ttt{isEqualTo} method, which receives two strings $s_1$ and $s_2$, and determines whether they are lexicographically equal. You cannot use the built-in \ttt{equals} or \ttt{compareTo} methods.}
+\exercise{1}{chapter-crl}{Design the \ttt{boolean isEqualTo(String s1, String s2)} method, which receives two strings $s_1$ and $s_2$, and determines whether they are lexicographically equal. You cannot use the built-in \ttt{equals} or \ttt{compareTo} methods.}
 
-\exercise{2}{chapter-crl}{Design the static \ttt{compareTo} method, which receives two \ttt{String}s \ttt{s1}, \ttt{s2}, and compares their contents lexicographically. If \ttt{s1} is less than \ttt{s2}, return \ttt{-1}. If \ttt{s1} is greater than \ttt{s2}, return \ttt{1}. Otherwise, return \ttt{0}. Note that our implementation of \ttt{compareTo} will differ from Java's in that, if \ttt{s1} has less characters than \ttt{s2}, we return \ttt{-1}; if \ttt{s2} has less characters than \ttt{s1}, we return \ttt{1}. Otherwise, we do the character-by-character comparison.}
+\exercise{2}{chapter-crl}{Design the \ttt{int compareTo(String s1, String s2)} method, which receives two strings \ttt{s1}, \ttt{s2}, and compares their contents lexicographically. If \ttt{s1} is less than \ttt{s2}, return \ttt{-1}. If \ttt{s1} is greater than \ttt{s2}, return \ttt{1}. Otherwise, return \ttt{0}. Note that our implementation of \ttt{compareTo} will differ from Java's in that, if \ttt{s1} has less characters than \ttt{s2}, we return \ttt{-1}; if \ttt{s2} has less characters than \ttt{s1}, we return \ttt{1}. Otherwise, we do the character-by-character comparison.}
 
-\exercise{2}{chapter-crl}{Design the \ttt{trim} method, which receives a \ttt{String} \ttt{s} and a character \ttt{ch}, and returns a string with all leading and trailing occurrences of \ttt{ch} removed. For instance, \ttt{trim("aaHelloa", \textquotesingle{}a\textquotesingle)} returns \ttt{"Hello"}. Hint: while you cannot use Java's \ttt{substring} method, you can certainly use the one you wrote previously to solve this problem!}
+\exercise{2}{chapter-crl}{Design the \ttt{String trim(String s)} method, which receives a string $s$ and a character \ttt{ch}, and returns a string with all leading and trailing occurrences of \ttt{ch} removed. For instance, \ttt{trim("aaHelloa", \textquotesingle{}a\textquotesingle)} returns \ttt{"Hello"}. Hint: while you cannot use Java's \ttt{substring} method, you can certainly use the one you wrote previously to solve this problem!}
 
-\exercise{1}{chapter-crl}{Design the \ttt{trimSpace} method, which receives a \ttt{String} \ttt{s} and returns a new string with all leading and trailing spaces removed.}
+\exercise{1}{chapter-crl}{Design the \ttt{String trimSpace(String s)} method, which receives a string \ttt{s} and returns a new string with all leading and trailing spaces removed. You cannot use the \ttt{trim} method provided by the \ttt{String} class.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{containsMiddleABC} method, which receives a \ttt{String} $s$ and returns whether $s$ contains the substring \ttt{"ABC"} in the ``middle''. We define the ``middle'' as the point where number of characters on the left and right differ by at most one. \textbf{You cannot use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}}.}
+\exercise{1}{chapter-crl}{Design the \ttt{boolean containsMiddleABC(String s)} method, which receives a string $s$ and returns whether $s$ contains the substring \ttt{"ABC"} in the ``middle''. We define the ``middle'' as the point where number of characters on the left and right differ by at most one. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
     \par{
 \begin{verbatim}
 assertTrue(middleABC("helloABChiya!"));
 assertTrue(middleABC("ABC"));
 assertTrue(middleABC("aABCc!"));
 assertFalse(middleABC("notInTheMiddleABCmid!"));
-    \end{verbatim}
+\end{verbatim}
 }
+\exercise{1}{chapter-crl}{Design the \ttt{String censor(String s, String c)} method, which receives a string $s$ and another string $c$. It should return a ``censored'' version of $s$, wherein each instance of $c$ in $s$ is replaced by asterisks. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{censor} method, which receives a String $s$ and another String $c$. It should return a ``censored'' version of $s$, wherein each instance of $c$ in $s$ is replaced by asterisks. \textbf{You cannot use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}}.}
+\exercise{1}{chapter-crl}{Design the \ttt{boolean isSelfDividing(int n)} method, which receives an integer $n$ and returns whether the sum of its digits evenly divide $n$. You must perform the arithmetic manually; you \textbf{cannot} convert the value to a \ttt{String} or use an array.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{isSelfDividing} method, which receives an integer $n$ and returns whether the sum of its digits evenly divide $n$. You must perform the arithmetic manually; you cannot convert the value to a \ttt{String} or use an array. }
+\exercise{1}{chapter-crl}{Design the \ttt{boolean allSelfDividing(int n)} method, which receives an integer $n$ and returns whether each digit evenly divides $n$. If any digit is zero, then return \ttt{false}. You must perform the arithmetic manually; you \textbf{cannot} convert the value to a \ttt{String} or use an array.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{allSelfDividing} method, which receives an integer $n$ and returns whether each digit evenly divides $n$. If any digit is zero, then return \ttt{false}. You must perform the arithmetic manually; you cannot convert the value to a \ttt{String} or use an array.}
-
-\exercise{1}{chapter-crl}{Design the \ttt{strSumNums} that computes the sum of each \textit{positive integer} ($\geq 0$) in a \ttt{String} $s$. See the below test cases for examples. You may assume that each integer in $s$, should there be any, is in the bounds of a positive \ttt{int}, i.e., $0$ and $2^{31}-1$. Hint: use \ttt{Character.isDigit} to test whether a character $c$ is a digit, and \ttt{Integer.parseInt} to convert a \ttt{String} to an \ttt{int}.}
+\exercise{1}{chapter-crl}{Design the \ttt{int strSumNums(String s)} that computes the sum of each \textit{positive integer} ($\geq 0$) in a string $s$. See the below test cases for examples. You may assume that each integer in $s$, should there be any, is in the bounds of a positive \ttt{int}, i.e., $0$ and $2^{31}-1$. Hint: use \ttt{Character.isDigit} to test whether a character $c$ is a digit, and \ttt{Integer.parseInt} to convert a \ttt{String} to an \ttt{int}.}
 \par{
 \begin{verbatim}
 assertEquals(100, strSumNums("hello50how20are30you?"));
@@ -362,15 +364,15 @@ assertEquals(500000, strSumNums("500000"));
 \end{verbatim}
 }
 
-\exercise{2}{chapter-crl}{Design the \ttt{stripComments} method that, when given a \ttt{String} containing a (valid) Java program, returns a string where all comments (single-line, multi-line, and Java documentation) have been removed. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
+\exercise{2}{chapter-crl}{Design the \ttt{String stripComments(String s)} method that, when given a string $s$ representing a (valid) Java program, returns a string where all comments (single-line, multi-line, and Java documentation) have been removed. You \textbf{cannot} use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
-\exercise{1}{chapter-crl}{Write a method that approximates $\pi$ using the following formula:}
+\exercise{1}{chapter-crl}{Design the \ttt{double approxPi(int n)} that approximates $\pi$ using the following formula:}
 \[
     \pi = 4 \cdot \left(1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \frac{1}{9} - \frac{1}{11} + \frac{1}{13} - \frac{1}{15} + \frac{1}{17} - \cdots \right)
 \]
 That is, given an input number $n$, compute that many terms of the above sequence. Return the difference between this approximation and Java's built-in \ttt{Math.PI} using \ttt{Math.abs}.
 
-\exercise{1}{chapter-crl}{Write a method that converts a positive integer into a \ttt{String} that represents its binary counterpart. We present some examples below.}
+\exercise{1}{chapter-crl}{Design the \ttt{String toBinary(int n)} that converts a positive integer $n$ into a \ttt{String} that represents its binary counterpart. We present some examples below.}
 
 \par{
 \begin{verbatim}
@@ -380,9 +382,9 @@ toBinary(25)  => "11001"
 \end{verbatim}
 }
 
-\exercise{1}{chapter-crl}{Write a method that computes the number of pairs $(a, b)$ that satisfy the equation $(a^2 + b^2 + 1)/(a+b)$. }
+\exercise{1}{chapter-crl}{Design the \ttt{int countPairs(int n)} method that computes the number of pairs $(a, b)$ that satisfy the equation $(a^2 + b^2 + 1)/(ab)$ such that $1 \leq a \leq b < n$. To ``satisfy the equation'', in this context, means that the quotient is an integer.}
 
-\exercise{1}{chapter-crl}{Write a method that, when given a string, looks for a mirror image (backwards) string at both the beginning and end of the
+\exercise{1}{chapter-crl}{Design the \ttt{String mirrorEnds(String s)} method that, when given a string $s$, looks for a mirror image (backwards) string at both the beginning and end of the
 given string. In other words, zero or more characters at the very beginning of the given string, and at the very end of the string in reverse order (possibly overlapping). For example, the string \ttt{"abXYZba"} has the mirror end \ttt{"ab"}. If there is no such string, return \ttt{null}.}
 
 \par{
@@ -394,7 +396,7 @@ mirrorEnds("abc")     => null
 \end{verbatim}
 }
 
-\exercise{2}{chapter-crl}{Write the \ttt{multTable} method that, when given two integers $a$ and $b$ such that $a \leq b$, computes the ``multiplication table'' from $a$ to $b$. We provide some test cases below. Note that the newline is just for formatting purposes.}
+\exercise{2}{chapter-crl}{Design the \ttt{String multTable(int a, int b)} method that, when given two integers $a$ and $b$ such that $a \leq b$, computes the ``multiplication table'' from $a$ to $b$. We provide some test cases below. Note that the newline is just for formatting purposes.}
 \par{
 \begin{verbatim}
 multTable(3, 3) => "1*1=1,1*2=2,1*3=3,2*1=2,2*2=4,
@@ -455,7 +457,7 @@ multTable(2, 6) => "1*1=1,1*2=2,1*3=3,1*4=4,1*5=5,
 \label{fig:riemannf}
 \end{figure}
 
-Design the \ttt{circleArea} method, which receives a radius $r$ and a delta $\Delta$. It computes (and returns) a left/right-Riemann approximation of the area of a circle. Hint: if you compute the left/right-Riemann approximation of one quadrant, you can very easily obtain an approximation of the total circle area. We illustrate this hint in Figure ~\ref{fig:circlearea} where $\Delta=0.5$ and its radius $r=2$. Note that the approximated area will vary based on the chosen Riemann approximation.\footnote{A left-Riemann sum under-approximates the area, whereas a right-Riemann sum provides an over-approximation. A midpoint approximation uses the average between the left and right approximations. It should be noted that, in the general case, these statements do not hold as they depend on the interval we integrate our function over.} Further note that no calculus knowledge is necessary to solve this exercise.
+Design the \ttt{double circleArea(double r, double delta)} method, which receives a radius $r$ and a delta $\Delta$. It computes (and returns) a left/right-Riemann approximation of the area of a circle. Hint: if you compute the left/right-Riemann approximation of one quadrant, you can very easily obtain an approximation of the total circle area. We illustrate this hint in Figure ~\ref{fig:circlearea} where $\Delta=0.5$ and its radius $r=2$. Note that the approximated area will vary based on the chosen Riemann approximation.\footnote{A left-Riemann sum under-approximates the area, whereas a right-Riemann sum provides an over-approximation. A midpoint approximation uses the average between the left and right approximations. It should be noted that, in the general case, these statements do not hold as they depend on the interval we integrate our function over.} Further note that no calculus knowledge is necessary to solve this exercise.
 
 \begin{figure}[H]
 \begin{center}
@@ -489,4 +491,4 @@ Design the \ttt{circleArea} method, which receives a radius $r$ and a delta $\De
 \label{fig:circlearea}
 \end{figure}
 
-\exercise{3}{chapter-crl-exercises}{Speech-to-text software plays a significant role in accessibility for those who may not be able to type quickly or at all. Design the \ttt{speechToText} method that, when given a ``speech string', returns the corresponding text. A speech string, in this context, is a string spoken, in English, by a person, which may or may not contain punctuation. If a speech string contains a word that represents punctuation, e.g., \ttt{"period"}, \ttt{"question mark"}, encode this punctuation in the returned text. For example, \ttt{speechToText("hello period how are you question mark")} returns \ttt{"Hello. How are you?"}. You should also account for quotations, e.g., \ttt{speechToText("hello quote how are you question mark unquote")} returns \ttt{Hello. "how are you?"}.}
+\exercise{3}{chapter-crl}{Speech-to-text software plays a significant role in accessibility for those who may not be able to type quickly or at all. Design the \ttt{String speechToText(String s)} method that, when given a ``speech string', returns the corresponding text. A speech string, in this context, is a string spoken, in English, by a person, which may or may not contain punctuation. If a speech string contains a word that represents punctuation, e.g., \ttt{"period"}, \ttt{"question mark"}, encode this punctuation in the returned text. For example, \ttt{speechToText("hello period how are you question mark")} returns the string \ttt{"Hello. How are you?"}. You should also account for quotations, e.g., \ttt{speechToText("hello quote how are you question mark unquote")} returns the string \ttt{Hello. "how are you?"}.}

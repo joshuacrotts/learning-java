@@ -1,9 +1,9 @@
 \section{API Connectivity}
 Writing programs that interact with the outside world is outrageously common in modern programming. We have explored this idea with reading from standard input, files, and other data streams. There are many other ways to connect to the outside world, one of which is via an API, or Application Programming Interface. In this context, an API refers to the functions that a server provides to allow external programs to connect and retrieve data. Understanding how an API connection works is a valuable skill to have, and we will show some examples of how to 1. connect to an API, 2. parse the data, and 3. use the data in a meaningful way.
 
-\example{Consider a program that needs to retrieve the current weather conditions for a given latitude and longitude. Let's write a program that connects to the OpenMeteo weather API, sends a request for weather data, and then parses the response.}
+\example{Consider a program that needs to retrieve the current weather conditions for a given latitude and longitude. Let's write a program that connects to the ``OpenMeteo'' Weather API, sends a request for weather data, and then parses the response.}
 
-First, we need to understand how to connect to an server-based API in Java. In general, when querying a server, we are sending what's called a GET request over HTTP (Hypertext Transfer Protocol). A GET request is comprised of an address, as well as parameters to tell the API what data the request asks for. In our case, we want to send a GET request to the OpenMeteo API, and we want to ask for the current weather conditions at a given latitude and longitude. The address for the OpenMeteo API is \url{https://api.open-meteo.com/v1/forecast}. Because we want to retrieve the weather for a given latitude and longitude case, we need to add these parameters \texttt{latitude} and \texttt{longitude} onto the end of the address. Parameters to a GET request are separated by ampersands, and preceded by a question mark. For instance, the full address to fetch the weather for Bloomington, Indiana is \url{https://api.open-meteo.com/v1/forecast?latitude=...\&...}. Pasting this into a browser, we see that the browser makes the request and returns a response in the form of a JSON (JavaScript Object Notation) object, which is a common format for data transfer. To make adding additional parameters down the road easier, we will store them as strings that map to strings in a map, then concatenate them into the resulting URL string.
+First, we need to understand how to connect to an server-based API in Java. In general, when querying a server, we are sending what's called a GET request over HTTP (Hypertext Transfer Protocol). A GET request is comprised of an address, as well as parameters to tell the API what data the request asks for. In our case, we want to send a GET request to the OpenMeteo API, and we want to ask for the current weather conditions at a given latitude and longitude. The address for the OpenMeteo API is \url{https://api.open-meteo.com/v1/forecast}. Because we want to retrieve the weather for a given latitude and longitude case, we need to add these parameters \texttt{latitude} and \texttt{longitude} onto the end of the address. Parameters to a GET request are separated by ampersands, and preceded by a question mark. For instance, the full address to fetch the weather for Bloomington, Indiana is \url{https://api.open-meteo.com/v1/forecast?latitude=39.1653&longitude=86.5264&hourly=temperature\_2m&timezone=EST&temperature_unit=fahrenheit}. Pasting this into a browser, we see that the browser makes the request and returns a response in the form of a JSON (JavaScript Object Notation) object, which is a common format for data transfer. To make adding additional parameters down the road easier, we will store them as strings that map to strings in a map, then concatenate them into the resulting URL string.
 
 Now, we want to see how to do this in Java. We can create a \ttt{URL} instance with our address, and open a connection to the server by casting the \ttt{URL} to a \ttt{HttpURLConnection}. We also must tell the connection what type of request we are making, which in this case is a GET request. After establishing the connection, we must check the response code to ensure that the request was successful. Success is indicated by a response code of 200. Should the connection return a response code other than 200, we can throw some form of exception. On the other hand, if the connection succeeded, we read the response back from the server via some input stream reader. The simplest way is to use a \ttt{BufferedReader} to read the response line-by-line.
 
@@ -20,12 +20,13 @@ class ApiConnection {
   public static void main(String[] args) {
     try {
       // Bind the parameters to their values.
+      String webUrl = "https://api.open-meteo.com/v1/forecast?";
       Map<String, String> parameters = new HashMap<>();
       parameters.put("latitude", "39.1653");
       parameters.put("longitude", "-86.5264");
 
       // Create a URL with the link, then concatenate each parameter.
-      StringBuilder baseUrl = new StringBuilder("https://api.open-meteo.com/v1/forecast?");
+      StringBuilder baseUrl = new StringBuilder(webUrl);
       for (String s : parameters.keySet()) { 
         baseUrl.append(String.format("%s&%s", s, parameters.get(s))); 
       }
@@ -38,11 +39,14 @@ class ApiConnection {
       if (resp != 200) {
         throw new RuntimeException("main: response code " + resp + " was not 200.");
       } else {
+        // Read the response from the connection line-by-line.
         try (BufferedReader br = new BufferedReader(
-                                 new InputStreamReader(conn.getInputStream()))) {
+                                   new InputStreamReader(conn.getInputStream()))) {
           StringBuffer response = new StringBuffer();
           String inputLine = null;
-          while ((inputLine = input.readLine()) != null) { response.append(inputLine); }
+          while ((inputLine = input.readLine()) != null) { 
+            response.append(inputLine); 
+          }
         }
       }
     } catch (IOException e) {
@@ -73,13 +77,14 @@ class ApiConnection {
   public static void main(String[] args) {
     try {
       // Bind the parameters to their values.
+      String webUrl = "https://api.open-meteo.com/v1/forecast?";
       Map<String, String> parameters = new HashMap<>();
       parameters.put("latitude", "39.1653");
       parameters.put("longitude", "-86.5264");
       parameters.put("current", "temperature_2m");
 
       // Create a URL with the link, then concatenate each parameter.
-      StringBuilder baseUrl = new StringBuilder("https://api.open-meteo.com/v1/forecast?");
+      StringBuilder baseUrl = new StringBuilder(webUrl);
       for (String s : parameters.keySet()) { 
         baseUrl.append(String.format("%s&%s", s, parameters.get(s))); 
       }
@@ -92,11 +97,26 @@ class ApiConnection {
       if (resp != 200) {
         throw new RuntimeException("main: response code " + resp + " was not 200.");
       } else {
+        // Read the response from the connection line-by-line.
         try (BufferedReader br = new BufferedReader(
-                                 new InputStreamReader(conn.getInputStream()))) {
+                                   new InputStreamReader(conn.getInputStream()))) {
           StringBuffer response = new StringBuffer();
           String inputLine = null;
-          while ((inputLine = input.readLine()) != null) { response.append(inputLine); }
+          while ((inputLine = input.readLine()) != null) {
+            response.append(inputLine); 
+          }
+
+          // Now that we have the data, we can parse it.
+          JsonElement jsonElement = JsonParser.parseString(resp.toString());
+          JsonObject jsonObject = jsonElement.getAsJsonObject();
+          JsonArray times = jsonObject.get("hourly")
+                                      .getAsJsonObject()
+                                      .get("time")
+                                      .getAsJsonArray();
+          JsonArray temps = jsonObject.get("hourly")
+                                      .getAsJsonObject()
+                                      .get("temperature_2m")
+                                      .getAsJsonArray();
         }
       }
     } catch (IOException e) {
