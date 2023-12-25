@@ -111,6 +111,25 @@ To rotate a matrix, take its transposition, then reverse each row. You may assum
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{int[][] multiply(int[][] A, int[][] B)} method that returns the product of two matrices, where $A$ is $M \times N$ and $B$ is $P \times Q$. Not all matrices can be multiplied, so you should return \ttt{null} if the matrices cannot be multiplied. Two matrices can be multiplied if and only if $N = P$. The product of two matrices $A$ and $B$ is the matrix $C$ where $C_{i, j} = \sum_{k=1}^{N} A_{i, k}\cdot B_{k, j}$} for the indices $i$, $k$, and $j$.
 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{boolean canSum(int[] A, int t)} method that, when given an array of integers $A$ and a target $t$, determines whether or not there exists a gruop of numbers in $A$ that sum to $t$. For example, if $A=\{2, 4, 10, 8\}$ and $t=9$, then \ttt{canSum} returns false because there is no possible selection of integers from $A$ that sum to $9$. On the other hand, if $A=\{3, 7, 4, 5, 9\}$ and $t=8$, then we return true because $3+5=8$. If $A=\{2, 4, 2, 11, 5, 4\}$ and $t=9$, then we return true because $1+4+4=9$, but also $4+5=9$ and $5+4=9$.}
+
+There is a simple recursive algorithm to solve this problem: if you have searched through the entire array, return whether or not the target is zero. Otherwise, make two recursive calls: one for where you choose the current number and a second for where you do not. By ``choose'', we mean to say that the current number is subtracted from the target value. By ``current number'', we mean to suggest a design that resemble the tail recursive linear search algorithm. You'll need to design a helper method to solve this problem using this approach.
+
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{Set<List<Integer>> twoSum(int[] A, int t)} method that, when given an array of integers $A$ and a target $t$, returns all possible pairs of numbers in $A$ that sum to $t$. For example, if $A=\{2, 2, 4, 10, 6, -2\}$ and $t=4$, we return a set containing two two-element lists: $\{2, 2\}$ and $\{6, -2\}$. DO not add a pair that already exists in the set or a pair that, by reversing the pair, we get a pair in the existing set. E.g., $\{-2, 6\}$ should not be added to the set. 
+
+There is a simple brute-force algorithm to solve this problem via two loops, but by incorporating a second set for lookups, we can do much better: for every number $n$ in $A$, add $n$ to a set $S$, and if $t-n=m$ for some $m\in{S}$, then we know that $m+n$ must equal $t$, therefore we add $\{n, m\}$ to the resulting set of integer arrays.}
+Walking through this with the example from before, we get the following sequence of actions:
+
+\begin{itemize}
+    \item Initialize $S=\{\}$ and $L=\{\}$. We know that $t=4$.
+    \item We add $2$ to $S$. $S=\{2\}$.
+    \item Because $4-2\in{S}$, the two-element array $\{2, 2\}$ is added to $L$. $2$ is not re-added to $S$.
+    \item Because $4-4\not\in{S}$, we only add $4$ to $S$. $S=\{2, 4\}$.
+    \item Because $4-10\not\in{S}$, we only add $10$ to $S$. $S=\{2, 4, 10\}$.
+    \item Because $4-6\not\in{S}$, we only add $6$ to $S$. $S=\{2, 4, 10, 6\}$.
+    \item Because $4-(-2)\in{S}$, the two-element array $\{6, -2\}$ is added to $L$. We add $-2$ to $S$. $S=\{2, 4, 10, 6, -2\}$.
+\end{itemize}
+
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{ArrayList<String> shift(ArrayList<String> ls, int i)} method that, when given a list of strings $s$ and an index $i$, returns a new list where each element is shifted  by $i$ spots. Negative values correspond to left shifts, and positive values correspond to right shifts. If a shift is nonsensical, do not shift at all. A nonsensical shift is one of the following:}
 \begin{itemize}
     \item If there are no elements in the list.
@@ -209,7 +228,7 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{reverse} method that, when given a \ttt{LinkedList<Integer>} $l$, returns a \textit{new} \ttt{LinkedList<Integer>} containing the elements of $l$, but reversed.}
 
-\exercise{2}{chapter-arrays-collections}{Design the \texttt{moreThanThree} method that, when given an \texttt{int[]} $A$, returns a new \texttt{HashSet<Integer>} of values containing those values from $A$ that occur strictly more than three times.}
+\exercise{2}{chapter-arrays-collections}{Design the \texttt{moreThanThree} method that, when given an \texttt{int[]} $A$, returns a new \texttt{HashSet\-<Integer>} of values containing those values from $A$ that occur strictly more than three times.}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{collectComments} method that, when given a \ttt{String} containing a (valid) Java program, returns an \ttt{ArrayList<String>} containing all comments from the input program string. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
@@ -305,15 +324,6 @@ classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
 
 Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet string $A$, a cipher-text string $K$, and a string $s$ to encode, \ttt{substitutionCipher} should return a string $s'$ using the aforementioned substitution cipher algorithm. You must follow the ``design recipe'' laid out in class. That is, you must write the method purpose statement comment, tests, and the implementation.}
 
-\exercise{3}{chapter-arrays-collections}{Quine's method of truth resolution is a method of automatically reasoning about the truth of a propositional logic statement (recall the exercise from Chapter~\ref{chapter-crl}). The method is as follows:}
-
-\begin{enumerate}
-    \item Choose an atom $P$ from the statement. Consider two cases: when $P$ is true and when $P$ is false. Derive the consequences of each case. The rules follow those of the propositional logic connectives.
-    \item Repeat this process for each sub-statement until there are no more sub-statements, and you have only true or false results. If you have \textit{both} true and false results, the statement is a contingency. If all branches lead to true, the statement is a tautology. If all branches lead to false, the statement is a contradiction. 
-\end{enumerate}
-
-Design several classes to represent a series of well-formed schemata in propositional logic, namely \ttt{CondNode}, \ttt{BicondNode}, \ttt{NegNode}, \ttt{AndNode}, \ttt{OrNode}, and \ttt{AtomNode}, all of which extend a root \ttt{Node} class, similar to our representation of the abstract syntax trees within the ASPL interpreter. Then, design three methods: \ttt{boolean isContingency(Node t)}, \ttt{boolean isContradiction(Node t)}, and \ttt{boolean isTautology(Node t)}, which return whether or not the given statement is a contingency, contradiction, or tautology, respectively. You may assume that the input is a well-formed schema. Note that only one of these methods needs a full-fledged recursive traversal over the data; the other two can be implemented in terms of the first.
-
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that takes a \ttt{List<Integer>} and filters out even numbers and then calculates the sum of the remaining odd numbers.}
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that, given a \ttt{List<String>}, concatenates all the strings together into a single string, separated by a comma.}
@@ -330,7 +340,7 @@ Design several classes to represent a series of well-formed schemata in proposit
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{filterThenSquare} method that, when given a \ttt{List<Double>} $L$, removes all odd values, and squares the remaining values. Return this result as a new list.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{filterDoubleAvg} method that, when given a \ttt{List<Integer>} $L$, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a value.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{filterDoubleAvg} method that, when given a \ttt{List\-<Integer>} $L$, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a value.}
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{min} method that, when given a \ttt{List<Integer>} $L$, returns the minimum value in the list. Return this result as an \ttt{Optional<Integer>}. If there are no values in $L$, return \ttt{Optional.empty()}.}
 

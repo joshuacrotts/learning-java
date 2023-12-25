@@ -345,6 +345,7 @@ To set the scene, we first declare \ttt{a} as an immutable instance of \ttt{A} w
 
 Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two references to the same object. Because \ttt{a} is immutable, we cannot change its value, so both \ttt{b} and \ttt{c} will always refer to the same object. Therefore, we use \ttt{assertEquals} to compare the two references. In particular, passing \ttt{a} to both constructors passes a reference to the same object.\footnote{In Figure~\ref{fig:memoryref}, we use memory addresses to refer to the location of \ttt{a}. To be a bit pedantic, objects are not stored directly in system memory per se, but rather a location accessible by the Java Virtual Machine.}
 \begin{figure}[H]
+\centering
 \begin{tikzpicture}
   % Object a
   \node[rectangle, draw] (a) {\texttt{a = 0xffff2345}};
@@ -358,8 +359,8 @@ Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two reference
   \draw[-{Latex[length=2mm]}] (c) -> (a);
 
   % Annotations
-  \node[below=0.5cm of a] (note) {Both `\texttt{b.getA()}' and `\texttt{c.getA()}' refer to the same `\texttt{a}' instance in memory};
-\node[below of=note] (note2) {Assume `\texttt{a}' is instantiated as `\texttt{new A()}' and points to address \texttt{0xffff2345}};
+%   \node[below=0.5cm of a] (note) {Both `\texttt{b.getA()}' and `\texttt{c.getA()}' refer to the same `\texttt{a}' instance in memory};
+% \node[below of=note] (note2) {Assume `\texttt{a}' is instantiated as `\texttt{new A()}' and points to address \texttt{0xffff2345}};
 
   % Equality Check Illustration (optional)
   % ... (Can be an inset showing assertEquals usage)

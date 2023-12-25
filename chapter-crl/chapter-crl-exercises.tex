@@ -218,6 +218,18 @@ Your method should return the total cost of the item after applying the discount
 \end{enumerate}
 
 \exercise{1}{chapter-crl}{This question has three parts.}
+The \textit{hyperfactorial} of a number, namely $H(n)$, is the value of $1^1 \cdot 2^2 \cdot ... \cdot n^n$. As you might imagine, the resulting numbers from a hyperfactorial are outrageously large. Therefore we will make use of the \ttt{long} datatype rather than \ttt{int} for this problem.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the standard recursive \ttt{hyperfactorial} method, which receives a long integer $n$ and returns its hyperfactorial.
+    \item Then, design the \ttt{hyperfactorialTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
+
+    \item Finally, design the \ttt{hyperfactorialLoop} method that solves the problem using a loop.
+
+    If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
+\end{enumerate}
+
+\exercise{1}{chapter-crl}{This question has three parts.}
 The \textit{subfactorial} of a number, namely $!n$, is the number of permutations of $n$ objects such that no object appears in its natural spot. For example, take the set of objects $\{a, b, c\}$. There are $3!=6$ possible permutations: $\{a, b, c\}, \{a, c, b\}, \{b, c, a\}, \{c, b, a\}, \{c, a, b\}, \{b, a, c\}$, but only two of these are \textit{derangements}: $\{b, c, a\}$ and $\{c, a, b\}$, because no element is in the same spot as the original set. Therefore, we say that $!3=2$. We can describe subfactorial as a recursive formula:
 \begin{align*}
     !0 &= 1\\

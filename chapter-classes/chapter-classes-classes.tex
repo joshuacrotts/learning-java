@@ -147,7 +147,7 @@ class PointTester {
 
 In addition to the \ttt{toString} method, we might also write other methods associated with a \ttt{Point} object. For example, we might want to calculate the distance between two points. We can write a \ttt{public} method that takes a \ttt{Point} object as a parameter and returns the distance between the two points, the first being the \textit{implicit parameter}, and the second being the \textit{explicit parameter}. We say the first is \textit{implicit} because, under the hood, all class methods take an implicit parameter, which is the object on which the method is called, which is accessible through \ttt{this}. We say the second is \textit{explicit} because we explicitly pass the object as a parameter. 
 
-This is also a good time to bring up another terminology distinction. Some programming languages use \textit{functions}, others use \textit{procedures}, \textit{subroutines}, or \textit{methods}. Going from simplest to most complex, subroutines are simply a sequence of instructions that are executed in order. Procedures are subroutines that return a value. Functions are procedures that take parameters. Methods are functions that are associated with a class. In Java, we use the term \textit{method} to refer to all of these, since all methods must be associated with a class. A language like C++, on the other hand, uses the term \textit{function} to refer to methods that are not associated with a class, and \textit{method} to refer to methods that are associated with a class.
+This is also a good time to bring up another terminology distinction. Some programming languages use \textit{functions}, others use \textit{procedures}, \textit{subroutines}, or \textit{methods}. Going from simplest to most complex, subroutines are simply a sequence of instructions that are executed in order. Procedures are subroutines that return a value. Functions are procedures that take parameters. Methods are functions that are associated with a class. In Java, we use the term \textit{method} to refer to all of these, since all methods must be associated with a class. A language like C++, on the other hand, distinguishes between the two: \textit{functions} refer to subroutines, procedures, or parameter-receiving procedures that are not associated with a class; \textit{methods} are subroutines, procedures, or functions embedded inside a class definition.
 
 Returning to the \ttt{Point} class, we will now write \ttt{distance}, which receives a \ttt{Point} as a parameter and returns the Euclidean distance from \ttt{this} to the parameter. Before doing so, however, we should write a few tests. Conveniently, the three points that we test all have a distance of five between each other.
 
@@ -227,7 +227,7 @@ We could, if desired, overload the \ttt{Point} constructor as well. Though, it m
 
 Because the \ttt{random} method generates a random point, we cannot reasonably write a test that asserts the exact location of the point without prior knowledge of the random seed. Instead, we can write a test that asserts that the point is within a certain radius of the origin. 
 
-\begin{cl}[]{Testing the \ttt{random} Method}
+\begin{cl}[PointTester.java]{Testing the \ttt{random} Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -247,7 +247,7 @@ class PointTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{Random Point Generation Method}
+\begin{cl}[Point.java]{Random Point Generation Method}
 \begin{lstlisting}[language=MyJava]
 import java.util.Random;
 
@@ -274,7 +274,7 @@ We have seen static methods, but what about static variables? A static variable,
 
 \example{Suppose we want to keep track of how many instances of \ttt{Point} have been instantiated. Since this is a property of the \ttt{Point} class rather than an instance of the class, we can declare a static variable \ttt{count} to keep track of the number of instances, which is incremented inside the constructor. To remain consistent with our recurring theme of encapsulation, \ttt{count} will be declared as \ttt{private}, and we will write a static method \ttt{getCount} to retrieve the number of instances, which is invoked on the class.\footnote{It is possible to invoke a static method on an instance of the class, but it is considered bad practice and unnecessary.} When testing, we need to be careful to only instantiate instances of \ttt{Point} when we are ready to check the status of \ttt{count}, since the static \ttt{count} variable is incremented inside the constructor.}
 
-\begin{cl}[]{Testing the \ttt{count} Static Variable}
+\begin{cl}[PointTester.java]{Testing the \ttt{count} Static Variable}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -301,7 +301,7 @@ class PointTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{\ttt{Point} Class with \ttt{count} Static Variable}
+\begin{cl}[Point.java]{\ttt{Point} Class with \ttt{count} Static Variable}
 \begin{lstlisting}[language=MyJava]
 class Point {
 
@@ -321,7 +321,7 @@ Notice that, inside the \ttt{getCount} method, we do not refer to \ttt{count} wi
 
 \example{Let's amplify the complexity a bit by designing a ``21'' card game, which is a card game where the players try to get a card value total of $21$ without going over. We should think about the design process of this game, namely what classes we need to create. It makes sense to start off with a \ttt{Card} class, which stores its suit and its numeric value. Because a suit is one of four possibilities, each of which uses a different symbol, we can create another class called \ttt{Suit}. In \ttt{Suit} we instantiate four static instances of \ttt{Suit}, each of which represents one of the four valid suits. Its constructor is privatized because we, as the programmers, define the four possible suits; it should not be possible for the user to define their own custom suit, at least for this particular game. The notion of \ttt{Suit} being an instance variable of \ttt{Card}, and only exists due to \ttt{Card} is called \textit{object composition}. Lastly, we will provide a method that returns an \ttt{Iterator<Suit>} over the four suit possibilities to make our lives easier when designing the \ttt{Deck} class. The method should be static so it is accessible through the class.}
 
-\begin{cl}[]{\ttt{Suit} Class}
+\begin{cl}[Suit.java]{\ttt{Suit} Class}
 \begin{lstlisting}[language=MyJava]
 class Suit {
 
@@ -348,12 +348,12 @@ class Suit {
 
 Testing the \ttt{Card} class is simple and straightforward; we only need to test one method, the \ttt{toString} method, since testing \ttt{getValue}, at this point, is superfluous. We could also test the \ttt{Suit} class, but we will not do so here, given that the only useful methods are to retrieve the instance variables and the iterator.
 
-\begin{cl}[]{Testing the \ttt{Card} Class}
+\begin{cl}[CardTester.java]{Testing the \ttt{Card} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class CardTest {
+class CardTester {
 
   @Test
   void testCardToString() {
@@ -367,7 +367,7 @@ class CardTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{\ttt{Card} Class}
+\begin{cl}[Card.java]{\ttt{Card} Class}
 \begin{lstlisting}[language=MyJava]
 class Card {
 
@@ -388,12 +388,12 @@ In a standard fifty-two deck of cards, some are ``special'', e.g., the Jacks, Qu
 
 To test a \ttt{Deck}, we can write a \ttt{drawCard} method, which retrieves the ``top-most'' card on the deck to see if it is in the correct order. According to our implementation of the iterator, the top-most cards should have values of ten and be of the same suit. From there, we can draw three more cards to ensure they are of values nine, eight, and seven of the same suit. The iterator places \ttt{DIAMOND} as the final suit, so this is what we will assume in our tester. It might also be beneficial to test the \ttt{isEmpty} method, which returns \ttt{true} if the deck is empty, and \ttt{false} otherwise. We can test this functionality by drawing all fifty-two cards from the deck and ensuring that the deck is empty afterwards. Note that we draw four tens because there are no ``Kings'', ``Queens'', or ``Jacks'' in the deck.
 
-\begin{cl}[]{Testing the \ttt{Deck} Class}
+\begin{cl}[DeckTester.java]{Testing the \ttt{Deck} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class DeckTest {
+class DeckTester {
 
   @Test
   void testDeckDrawCard() {
@@ -419,7 +419,7 @@ class DeckTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{\ttt{Deck} Class}
+\begin{cl}[Deck.java]{\ttt{Deck} Class}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -478,7 +478,7 @@ Hopefully the \ttt{populateDeck} method is intuitive and not intimidating. All w
 
 Finally we come to the \ttt{Player} class, which stores a ``hand'' containing the cards in their possession. Fortunately this is a very straightforward definition and contains four one-line methods: \ttt{addCard}, \ttt{clearHand}, \ttt{getScore}, and \ttt{toString}. The former two are trivial to explain, as is \ttt{toString}, whereas \ttt{getScore} is the only slightly convoluted method. The idea is to return an integer that represents the total value of the cards in the player's hand. Since streams were introduced a couple of chapters ago, we will once again use them to our advantage.
 
-\begin{cl}[]{\ttt{Player} Class}
+\begin{cl}[Player.java]{\ttt{Player} Class}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 
@@ -522,7 +522,7 @@ Using the capabilities of \ttt{Player}, \ttt{Deck}, and \ttt{Card}, we will writ
 
 It should be noted that this version of ``twenty-one'' only has the objective of getting as close as possible to a hand containing cards with a value that sums to twenty one, compared to a more-traditional card game where multiple players exist, with a dealer to distribute cards. As exercises, there are many ways to enhance the game, including adding a ``high score'' board to keep track of previous game outcomes, introducing CPU players to automatically poll cards from the deck to beat the main player, or even adding more human players through standard input/output iteractions. 
 
-\begin{cl}[]{\ttt{TwentyOne} Class}
+\begin{cl}[TwentyOne.java]{\ttt{TwentyOne} Class}
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 
@@ -590,7 +590,7 @@ Designing interactive games is a great exercise in object-oriented programming, 
 
 The \ttt{Rational} constructor receives two integers $p$ and $q$, and assigns them as instance variables. The \ttt{toString} method is trivial to write and only involves us adding a slash between our numerator and denominator. Though, let's back up for a second and rethink the constructor. Do we really want to be able to store fractions that are not in their simplest form? For example, do we want to allow the user to create a \ttt{Rational} object with a numerator of $2$ and a denominator of $4$? The answer is probably not, meaning that we should add a method that simplifies the fraction. We can do this by finding the greatest common divisor of the numerator and denominator, and dividing both by that value. Euclid's algorithm for finding the greatest common divisor of two integers works wonderfully here. Due to its trivial implementation and the fact that it is a tail recursive algorithm exercise from the previous chapters, we will omit its implementation.
 
-\begin{cl}[]{Testing the \ttt{Rational} Class}
+\begin{cl}[RationalTester.java]{Testing the \ttt{Rational} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -612,7 +612,7 @@ class RationalTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{\ttt{Rational} Class}
+\begin{cl}[Rational.java]{\ttt{Rational} Class}
 \begin{lstlisting}[language=MyJava]
 class Rational {
   
@@ -635,12 +635,12 @@ class Rational {
 
 To add two rational numbers $r_1$ and $r_2$, they must share a denominator. If they do not, then we must find a common denominator by multiplying the denominators together, then multiplying the relevant numerators by the reciprocals of the denominator. For instance, if we want to add $2/3$ and $7/9$, the (not-necessarily lowest) common denominator is $3\cdot{9} = 27$. We then multiply $2$ by $9$ and $7$ by $3$ to get $18/27$ and $24/27$. Adding across the numerators results in $42/27$, which reduces to $14/9$. Since we wish to preserve the original rational number, we will write a method that returns a new \ttt{Rational} rather than modifying the one we have in-place (this also allows us to omit a step in which we simplify the resulting fraction, since the constructor takes care of this task).
 
-\begin{cl}[]{Testing Addition of Rationals}
+\begin{cl}[RationalTester.java]{Testing Addition of Rationals}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class RationalTest {
+class RationalTester {
 
   @Test
   void testRationalAdd() {
@@ -664,7 +664,7 @@ class RationalTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{Adding Two Rational Numbers}
+\begin{cl}[Rational.java]{Adding Two Rational Numbers}
 \begin{lstlisting}[language=MyJava]
 class Rational {
   // Other details not shown.
@@ -686,12 +686,12 @@ class Rational {
 
 Due to the correspondence to addition, we will leave \ttt{subtraction} as an exercise to the reader. We can now do multiplication, which is even simpler than addition; all that is needed is to multiply the numerators and denominators together. We will also leave \ttt{division} as an exercise to the reader. We also encourage the reader to write methods for comparing rationals for equality, as well as greater than/less than. Plus, we could extend this system to support \ttt{BigInteger} values for the numerator and denominator, which would allow us to represent arbitrarily large rational numbers. This, in turn, would require updating all methods to use \ttt{BigInteger} arithmetic, which is a good exercise in itself.
 
-\begin{cl}[]{Testing Multiplication of Rationals}
+\begin{cl}[RationalTester.java]{Testing Multiplication of Rationals}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class RationalTest {
+class RationalTester {
 
   @Test
   void testRationalMultiply() {
@@ -713,7 +713,7 @@ class RationalTest {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{Multiplying Two Rational Numbers}
+\begin{cl}[Rational.java]{Multiplying Two Rational Numbers}
 \begin{lstlisting}[language=MyJava]
 class Rational {
   // Other details not shown.
@@ -735,7 +735,7 @@ class Rational {
 
 To create our own stack, we first need to decide what goes inside the stack. We know that each method call pushes an activation record, or a stack frame, to the procedure call stack containing the existing local variables and parameters. For the sake of simplicity, let's assume that our methods never declare local variables. We need a class that stores variable identifiers to values, which can be any type. A simple solution to the ``any type'' problem is to use the \ttt{Object} class that all classes implicitly extend. So, the \ttt{StackFrame} class stores a \ttt{Map<String, Object>} as an instance variable. Its constructor receives no arguments because we do not know a priori how many parameters any arbitrary user of \ttt{StackFrame} will require. To compensate, let's write the \ttt{addParam} method that receives a \ttt{String} and an \ttt{Object}, enters those into the existing map, and returns the existing instance.\footnote{This idea resembles the \textit{builder} design pattern, which we will discuss in Chapter~\ref{chapter-modern}.} We design the method in this fashion to prevent the need to separately instantiate the frame, then add its parameters on separate lines, which would be required if \ttt{addParam} were of type void.
 
-\begin{cl}[StackFrame.java]{}
+\begin{cl}[StackFrame.java]{Stack Frame Definition}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.Map;
@@ -758,7 +758,7 @@ class StackFrame {
 
 Now, let's translate the standard recursive \ttt{fact} method, which will receive a \ttt{BigInteger}, and return its factorial. Below we show the recursive version. From this, we write the \ttt{factLoop} method that instantiates a \ttt{Stack<StackFrame>} to replicate the call stack. We begin the process by pushing the initial frame, which stores the initial input argument. This is followed by a variable to keep track of the ``return value'', which should match the type of the standard recursive method (for our purposes of factorial, this is a \ttt{BigInteger}). Our loop continues as long as there is a stack frame to pop, and the core logic of the algorithm, namely $n!$, is identical to our standard recursive counterpart.
 
-\begin{cl}[StackFrameTester.java]{}
+\begin{cl}[StackFrameTester.java]{Testing Two Factorial Implementations}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -796,8 +796,11 @@ class StackFrameTester {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[StackFrameDriver.java]{}
+\begin{cl}[StackFrameDriver.java]{Factorial Method Definitions}
 \begin{lstlisting}[language=MyJava]
+import java.util.Stack;
+import java.util.BigInteger;
+
 class StackFrameDriver {
 
   public static BigInteger fact(BigInteger n) {
@@ -815,12 +818,13 @@ class StackFrameDriver {
     while (!sf.isEmpty()) { /* TODO. */ }
     return res;
   }
+}
 \end{lstlisting}
 \end{cl}
 
 Turning our attention to the innards of the loop, we must accurately replicate the procedure call stack actions. Thus, we first pop the existing frame, extract the desired parameters to work with from its map, then perform the algorithm's logic.
 
-\begin{cl}[StackFrameDriver.java]{}
+\begin{cl}[StackFrameDriver.java]{Finishing ``Loop'' Factorial Definition}
 \begin{lstlisting}[language=MyJava]
 class StackFrameDriver {
 
