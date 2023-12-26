@@ -3,12 +3,12 @@
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] operate(int[] A)} method that, when given an array of integers, returns a new array where the elements are the result of applying the following operation to each element: if the $i^{\text{th}}$ element is odd, multiply it by its index $i$ plus one. Otherwise, divide it by its index $i$ plus one.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{boolean containsOnlyPrime(int[] arr)} method that returns whether or not a given array of integers contains only prime integers. Hint: use the method you wrote in Chapter 2.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{boolean containsOnlyPrime(int[] arr)} method that returns whether or not a given array of integers contains only prime integers. Hint: use the method you wrote in Chapter~\ref{chapter-crl}.}
 
 \exercise{1}{chapter-arrays-collections}{This question has two parts.}
 
 \begin{enumerate}[label=(\alph*)]
-    \item Design the recursive \ttt{linearSearch} method that, when given a \ttt{String[]} $S$ and a \ttt{String} to search for $k$, returns the index of $k$ in $S$, and \ttt{-1} if $k$ is not in the array. Since this method is definitionally tail recursive, you should write a \ttt{private} helper method that actually performs the recursion.
+    \item Design the recursive \ttt{linearSearch} method that, when given a \ttt{String[]} $S$ and a \ttt{String} to search for $k$, returns the index of $k$ in $S$, and \ttt{-1} if $k$ is not in the array. This method is definitionally tail recursive, you should write a \ttt{private} helper method that actually performs the recursion.\footnote{By ``definitionally tail recursive'', we mean that, even though a standard recursive variant exists, it is strongly recommended to only use a tail recursive algorithm, given the recursive definition requirement.}
     \item Design the \ttt{linearSearchLoop} method that solves the problem using a loop. 
 \end{enumerate}
 
@@ -41,13 +41,13 @@ fizzBuzz(15, 18) => {"FizzBuzz", "16", "17", "Fizz"}
 
 \exercise{2}{chapter-arrays-collections}{Using only arrays, design the \ttt{int[] findIntersection(int[] A, int[] B)} method that returns an array containing the \textit{intersection} of two arrays. The intersection of two arrays is the set of elements that are common to both arrays. For example, the intersection of $\{7, 4, 8, 0, 2, 1\}$ and $\{8, 6, 4, 9, 26, 4, 0\}$ is $\{7, 8, 0\}$. Do not assume that the arrays are sorted, and you cannot sort them yourself.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{double sumYucky(ArrayList<Integer> vals)} method that returns the average of the numbers in the list. Though, the number $9$ should not be counted towards the average, nor should the following number, should one exist.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{double sumYucky(ArrayList<Integer> vals)} method that returns the average of the numbers in the list with the following caveat: The number $9$ should not be counted towards the average, nor should the following number, should one exist.}
 \par{
 \begin{verbatim}
-sumYucky({8, 7, 11, 9, 12, 10} => 9.0
-sumYucky({120, 99, 9}          => 109.5
-sumYucky({9})                  => 0.0
-sumYucky({})                   => 0.0
+sumYucky({8, 7, 11, 9, 12, 10}) => 9.0
+sumYucky({120, 99, 9})          => 109.5
+sumYucky({9})                   => 0.0
+sumYucky({})                    => 0.0
 \end{verbatim}
 }
 
@@ -165,20 +165,20 @@ peakFinder({1, 2, 3, 2, 1})                         => {3}
 \end{verbatim}
 }
 
-\exercise{1}{chapter-arrays-collections}{A professor gives their students extra credit on an exam if they can guess the average within five percent of the actual average. Design the \ttt{isGivenExtraCredit} method that, when given an \ttt{ArrayList<Double>} $D$ and a guess $g$, returns whether a student is given extra credit.}
+\exercise{1}{chapter-arrays-collections}{A professor gives their students extra credit on an exam if they can guess the average within five percent of the actual average. Design the \ttt{boolean isGivenExtraCredit(ArrayList<Double> D, double g)} method that, when given a list of scores $D$ and a guess $g$, returns whether a student is given extra credit.}
 
-\exercise{1}{chapter-arrays-collections}{A village has members where each has a partner. These members are grouped in pairs inside an \ttt{ArrayList<Integer>} where each pair of indices represents a relationship of the village. I.e., \ttt{A.get($2i$)} and \ttt{A.get($2i + 1$)} are in a relationship. A couple is considered the wisest if they have the highest combined age. Write the \ttt{wisest} method that, when given an \ttt{ArrayList<Integer>} $A$, return a new \ttt{ArrayList<Integer>} containing the ages of the wisest pair. If there is a tie, return the pair that has the highest age overall. The order is not significant. We present a few test cases below. You can assume that there will always be an even number of village members.}
+\exercise{1}{chapter-arrays-collections}{A village has members where each has a partner. These members are grouped in pairs inside an \ttt{ArrayList<Integer>} where each pair of indices represents a relationship of the village. I.e., \ttt{A.get($2i$)} and \ttt{A.get($2i + 1$)} are in a relationship. A couple is considered the wisest if they have the highest combined age. Design the \ttt{ArrayList<Integer> wisest(ArrayList<Integer> A)} method that, when given a list of (integer) ages $A$, return a new \ttt{ArrayList<Integer>} containing the ages of the wisest pair. If there is a tie, return the pair that has the highest age overall. The order is not significant. We present a few test cases below. You can assume that there will always be an even number of village members.}
 
 \par{
 \begin{verbatim}
-wisest({31, 42, 43, 35, 21, 27, 24, 44} => {43, 35} or {35, 43}
-wisest({47, 51, 52, 48, 33, 67, 45, 35} => {33, 67} or {67, 33}
+wisest({31, 42, 43, 35, 21, 27, 24, 44}) => {43, 35} or {35, 43}
+wisest({47, 51, 52, 48, 33, 67, 45, 35}) => {33, 67} or {67, 33}
 \end{verbatim}
 }
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{tokenize} method that, when given a \ttt{String} $s$ and a \ttt{char} delimiter $d$, returns an \ttt{ArrayList} of tokens split at the delimiter. You must do this by hand; you cannot call any \ttt{String} methods (except \ttt{.length} and \ttt{.charAt}).}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{ArrayList<String> tokenize(String s, char d)} method that, when given a string $s$ and a \ttt{char} delimiter $d$, returns an \ttt{ArrayList} of tokens split at the delimiter. You must do this by hand; you \textbf{cannot} call any \ttt{String} methods (except \ttt{.length} and \ttt{.charAt}).}
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{wordCount} method that, when given a \ttt{String} $s$, counts the number of words in the list. Store the results in a \ttt{HashMap<String, Integer>}. Assume that $s$ is not cleaned. That is, you should first remove all punctuation (periods, commas, exclamation points, question marks, semi-colons, dashes, hashes, ampersands, asterisks, and parentheses) from $s$, producing a new string $s'$. Then, split the string based on spaces (remember \ttt{tokenize}?), and produce a map of the words to their respective counts. Do not factor case into your total; i.e., \ttt{"fAcToR"} and \ttt{"factor"} count as the same word. The ordering of the returned map is not significant.}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{HashMap<String, Integer> wordCount(String s)} method that, when given a string $s$, counts the number of words in the list. Store the results in a \ttt{HashMap<String, Integer>}. Assume that $s$ is not cleaned. That is, you should first remove all punctuation (periods, commas, exclamation points, question marks, semi-colons, dashes, hashes, ampersands, asterisks, and parentheses) from $s$, producing a new string $s'$. Then, split the string based on spaces (remember \ttt{tokenize}?), and produce a map of the words to their respective counts. Do not factor case into your total; i.e., \ttt{"fAcToR"} and \ttt{"factor"} count as the same word. The ordering of the returned map is not significant.}
 
 \par{
 \begin{verbatim}
@@ -192,7 +192,7 @@ wordCount(s) => [{"hello", 1}, {"world", 3}, {"the", 2}
 \end{verbatim}
 }
 
-\exercise{3}{chapter-arrays-collections}{Design the \ttt{largeToSmall} method that, when given a \ttt{HashMap<String, Integer>} $M$, returns a \ttt{LinkedHashSet} of \ttt{String} values where the words are inserted into the set in order of decreasing count. Words that have the same count do not need to be inserted in any particular order. E.g., \ttt{"is"} may come before \ttt{"world"}. You cannot sort $M$. Hint: create an array of size $c$ (where $c$ is the highest word count) where each element is a \ttt{LinkedHashSet<String>}. For every element $e$ in $M$, add $e$ to the set at index $M[i]$, where $i$ is the count of $e$ in $M$. Then, append these sets in reverse order according to their index. We provide some pseudocode below.}
+\exercise{3}{chapter-arrays-collections}{Design the \ttt{LinkedHashSet<String>largeToSmall(HashMap<String, Integer> M)} method that, when given a \ttt{HashMap<String, Integer>} $M$, returns a \ttt{LinkedHashSet} of \ttt{String} values where the words are inserted into the set in order of decreasing count. Words that have the same count do not need to be inserted in any particular order. E.g., \ttt{"is"} may come before \ttt{"world"}. You cannot sort $M$. Hint: create an array of size $c$ (where $c$ is the highest word count) where each element is a \ttt{LinkedHashSet<String>}. For every element $e$ in $M$, add $e$ to the set at index $M[i]$, where $i$ is the count of $e$ in $M$. Then, append these sets in reverse order according to their index. We provide some pseudocode below.}
 
 \par{
 \begin{verbatim}
@@ -220,11 +220,11 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 \end{verbatim}
 }
 
-\exercise{1}{chapter-arrays-collections}{Design the static \ttt{addLast} method that, when given a \ttt{LinkedList<Integer>} $l$ and an \ttt{int} $v$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements plus $v$ added to the end of $l$.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> addLast(LinkedList<Integer> l, int v)} method that, when given a \ttt{LinkedList<Integer>} $l$ and an \ttt{int} $v$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements plus $v$ added to the end of $l$.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{set} method that, when given a \ttt{LinkedList<Integer>} $l$, an \ttt{int} $v$, and an index $i$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index $i$ is, instead, the value $v$. If $i$ is less than zero or exceeds the length of $l$, return \ttt{null}.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> set(LinkedList<Integer> l, int v, int i)} method that, when given a \ttt{LinkedList<Integer>} $l$, an \ttt{int} $v$, and an index $i$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index $i$ is, instead, the value $v$. If $i$ is less than zero or exceeds the length of $l$, return \ttt{null}.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] toArray(List<Integer>} method that, when given a list of integers $l$, returns an array containing the values from $l$.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] toArray(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns an array containing the values from $l$.}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> reverse(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns a \textit{new} linked list containing the elements of $l$, but reversed.}
 

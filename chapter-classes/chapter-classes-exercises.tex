@@ -31,7 +31,7 @@
 
 \begin{enumerate}[label=(\alph*)]
     \item Design the \ttt{LcgRandom} class, which implements this behavior. In particular, it should have two constructors: one that receives a seed value $s$, and another that sets the seed to one. The seed initializes the value of $r_0$.
-    \item Design the \ttt{genInt} method, which returns a random integer between $0$ and $2^{15}$ using this algorithm.
+    \item Design the \ttt{int genInt()} method, which returns a random integer between $0$ and $2^{15}$ using this algorithm.
     \item Design the \ttt{IntStream stream()} method, which returns a stream of random numbers that uses \ttt{genInt} to generate numbers. Hint: use \ttt{generate}!
     \item Design the \ttt{genInt(int b)} method that returns an integer between $[0, b]$. Note that $0 \leq b < 2^{15}$; you do not need to account for values outside of this range. Do \textbf{not} simply loop until you find a value between that range; instead, use modulus to your advantage.
 \end{enumerate}
