@@ -1,6 +1,6 @@
 \section{Loops}
 
-Looping is a fundamental concept in computer programming. Loops allow for repetition of actions or tasks. As we stated in the previous section on recursion, any tail recursive algorithm may be translated into an algorithm that uses loops. In this section, we will describe this translation pipeline as a sequence of steps, then begin to distance ourselves from recursion when it is nonoptimal.
+Looping is a fundamental concept in computer programming. Loops allow for repetition of actions or tasks. As we stated in the previous section on recursion, any tail recursive algorithm may be translated into an algorithm that uses loops. In this section, we will describe this translation pipeline as a sequence of steps, then begin to distance ourselves from recursion when it is suboptimal.
 
 \subsection*{Translation Pipeline for Tail Recursive Methods}
 \subsubsection*{A Coarse-Grained Approach}
@@ -396,16 +396,16 @@ class PrimeTester {
 
   @Test
   void testPrime() {
-    Assertions.assertAll(
-      () -> Assertions.assertTrue(isPrime(17)),
-      () -> Assertions.assertTrue(isPrime(101)),
-      () -> Assertions.assertTrue(isPrime(3)),
-      () -> Assertions.assertTrue(isPrime(9173)),
-      () -> Assertions.assertFalse(isPrime(0)),
-      () -> Assertions.assertFalse(isPrime(1)),
-      () -> Assertions.assertFalse(isPrime(2)),
-      () -> Assertions.assertFalse(isPrime(202)),
-      () -> Assertions.assertFalse(isPrime(213123447)));
+    assertAll(
+      () -> assertTrue(isPrime(17)),
+      () -> assertTrue(isPrime(101)),
+      () -> assertTrue(isPrime(3)),
+      () -> assertTrue(isPrime(9173)),
+      () -> assertFalse(isPrime(0)),
+      () -> assertFalse(isPrime(1)),
+      () -> assertFalse(isPrime(2)),
+      () -> assertFalse(isPrime(202)),
+      () -> assertFalse(isPrime(213123447)));
   }
 }
 \end{lstlisting}
@@ -480,6 +480,8 @@ Running the code produces $24133$: the desired answer.
 
 \begin{cl}[OddReciprocalSumTester.java]{Odd Reciprocal Summation Tests}
 \begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
 import static OddReciprocalSum.oddRecipSum;
 
 class OddReciprocalSumTester {
@@ -488,15 +490,15 @@ class OddReciprocalSumTester {
 
   @Test
   void testOddRecipSum() {
-    Assertions.assertAll(
+    assertAll(
       // 1/1 + 1/3 + 1/5 + 1/7.
-      () -> Assertions.assertEquals(1.67619, oddRecipSum(4), DELTA),
+      () -> assertEquals(1.67619, oddRecipSum(4), DELTA),
       // Sum of zero reciprocals is zero.
-      () -> Assertions.assertEquals(0, oddRecipSum(0), DELTA),
+      () -> assertEquals(0, oddRecipSum(0), DELTA),
       // 1/1.
-      () -> Assertions.assertEquals(1, oddRecipSum(1), DELTA),
+      () -> assertEquals(1, oddRecipSum(1), DELTA),
       // 1/1 + 1/3 + 1/5 + 1/7 + 1/9 + 1/13 + ...
-      () -> Assertions.assertEquals(2.26435, oddRecipSum(13), DELTA));
+      () -> assertEquals(2.26435, oddRecipSum(13), DELTA));
   }
 }
 \end{lstlisting}
@@ -545,12 +547,12 @@ class SumIntervalTester {
 
   @Test
   void testSumInterval() {
-    Assertions.assertAll(
-      () -> Assertions.assertEquals(0, sum(5, 0)),
-      () -> Assertions.assertEquals(0, sum(0, 0)),
-      () -> Assertions.assertEquals(55, sum(0, 10)),
-      () -> Assertions.assertEquals(55, sum(1, 10)),
-      () -> Assertions.assertEquals(110, sum(5, 15)));
+    assertAll(
+      () -> assertEquals(0, sum(5, 0)),
+      () -> assertEquals(0, sum(0, 0)),
+      () -> assertEquals(55, sum(0, 10)),
+      () -> assertEquals(55, sum(1, 10)),
+      () -> assertEquals(110, sum(5, 15)));
   }
 }
 \end{lstlisting}
@@ -610,15 +612,15 @@ class NewtonApproximationTester {
 
   @Test
   void testNewtonApproximation() {
-    Assertions.assertAll(
-      () -> Assertions.assertEquals(Math.sqrt(0), sqrtApprox(0, DELTA)),
-      () -> Assertions.assertEquals(Math.sqrt(1), sqrtApprox(1, DELTA)),
-      () -> Assertions.assertEquals(Math.sqrt(3), sqrtApprox(3, DELTA)),
-      () -> Assertions.assertEquals(Math.sqrt(16), sqrtApprox(16, DELTA)),
-      () -> Assertions.assertEquals(Math.sqrt(64), sqrtApprox(64, DELTA)),
-      () -> Assertions.assertEquals(Math.sqrt(256), sqrtApprox(256, DELTA)),
-      () -> Assertions.assertEquals(Math.sqrt(4000), sqrtApprox(4000, DELTA)),
-      () -> Assertions.assertEquals(Math.sqrt(129500), sqrtApprox(1295000, DELTA)));
+    assertAll(
+      () -> assertEquals(Math.sqrt(0), sqrtApprox(0, DELTA)),
+      () -> assertEquals(Math.sqrt(1), sqrtApprox(1, DELTA)),
+      () -> assertEquals(Math.sqrt(3), sqrtApprox(3, DELTA)),
+      () -> assertEquals(Math.sqrt(16), sqrtApprox(16, DELTA)),
+      () -> assertEquals(Math.sqrt(64), sqrtApprox(64, DELTA)),
+      () -> assertEquals(Math.sqrt(256), sqrtApprox(256, DELTA)),
+      () -> assertEquals(Math.sqrt(4000), sqrtApprox(4000, DELTA)),
+      () -> assertEquals(Math.sqrt(129500), sqrtApprox(1295000, DELTA)));
   }
 }
 \end{lstlisting}
@@ -667,13 +669,13 @@ class FibonacciTester {
 
   @Test
   void testFib() {
-    Assertions.assertAll(
-      () -> Assertions.assertEquals(0, fib(0)),
-      () -> Assertions.assertEquals(1, fib(1)),
-      () -> Assertions.assertEquals(1, fib(2)),
-      () -> Assertions.assertEquals(8, fib(5)),
-      () -> Assertions.assertEquals(55, fib(10)),
-      () -> Assertions.assertEquals(6765, fib(20)));
+    assertAll(
+      () -> assertEquals(0, fib(0)),
+      () -> assertEquals(1, fib(1)),
+      () -> assertEquals(1, fib(2)),
+      () -> assertEquals(8, fib(5)),
+      () -> assertEquals(55, fib(10)),
+      () -> assertEquals(6765, fib(20)));
   }
 }
 \end{lstlisting}

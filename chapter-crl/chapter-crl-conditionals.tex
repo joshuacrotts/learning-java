@@ -75,14 +75,18 @@ static int foo() {
 
 \begin{cl}[]{GPA Calculator Testing}
 \begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static GpaCalculator.gpa;
+
 class GpaCalculatorTesting {
 
   @Test
   void testGpa() {
-    Assertions.assertAll(
-      Assertions.assertEquals(4.0, GpaCalculator.gpa("A+")),
-      Assertions.assertEquals(3.7, GpaCalculator.gpa("A-")),
-      Assertions.assertEquals(0.0, GpaCalculator.gpa("F-")));
+    assertAll(
+      () -> assertEquals(4.0, gpa("A+")),
+      () -> assertEquals(3.7, gpa("A-")),
+      () -> assertEquals(0.0, gpa("F-")));
   }
 }
 \end{lstlisting}
@@ -125,20 +129,22 @@ Aside from the `\ttt{if}'/`\ttt{else if}'/`\ttt{else}' trio, plus the ternary op
 
 \begin{cl}[]{Month to Days Tester}
 \begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
 import static MonthToDays.monthToDays;
 
 class MonthToDaysTester {
 
   @Test
   void testMonthToDays() {
-    Assertions.assertAll(
-      Assertions.assertEquals(31, monthToDays("January")),
-      Assertions.assertEquals(28, monthToDays("February")),
-      Assertions.assertEquals(31, monthToDays("May")),
-      Assertions.assertEquals(31, monthToDays("July")),
-      Assertions.assertEquals(31, monthToDays("August")),
-      Assertions.assertEquals(30, monthToDays("September")),
-      Assertions.assertEquals(31, monthToDays("December")));
+    assertAll(
+      () -> assertEquals(31, monthToDays("January")),
+      () -> assertEquals(28, monthToDays("February")),
+      () -> assertEquals(31, monthToDays("May")),
+      () -> assertEquals(31, monthToDays("July")),
+      () -> assertEquals(31, monthToDays("August")),
+      () -> assertEquals(30, monthToDays("September")),
+      () -> assertEquals(31, monthToDays("December")));
   }
 }
 \end{lstlisting}

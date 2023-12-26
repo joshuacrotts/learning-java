@@ -224,15 +224,15 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{set} method that, when given a \ttt{LinkedList<Integer>} $l$, an \ttt{int} $v$, and an index $i$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index $i$ is, instead, the value $v$. If $i$ is less than zero or exceeds the length of $l$, return \ttt{null}.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{toArray} method that, when given a \ttt{LinkedList<Integer>} $l$ of \ttt{Integer}, returns an array containing the values from $l$.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] toArray(List<Integer>} method that, when given a list of integers $l$, returns an array containing the values from $l$.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{reverse} method that, when given a \ttt{LinkedList<Integer>} $l$, returns a \textit{new} \ttt{LinkedList<Integer>} containing the elements of $l$, but reversed.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> reverse(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns a \textit{new} linked list containing the elements of $l$, but reversed.}
 
-\exercise{2}{chapter-arrays-collections}{Design the \texttt{moreThanThree} method that, when given an \texttt{int[]} $A$, returns a new \texttt{HashSet\-<Integer>} of values containing those values from $A$ that occur strictly more than three times.}
+\exercise{2}{chapter-arrays-collections}{Design the \texttt{HashSet<Integer> moreThanThree(int[] A)} method that, when given an \texttt{int[]} $A$, returns a new \texttt{HashSet\-<Integer>} of values containing those values from $A$ that occur strictly more than three times.}
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{collectComments} method that, when given a \ttt{String} containing a (valid) Java program, returns an \ttt{ArrayList<String>} containing all comments from the input program string. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> collectComments(String s)} method that, when given a string representing a (valid) Java program, returns an list containing all comments from the input program string. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{postfixEvaluator} method that, when given an \ttt{ArrayList<String>} of binary operators and numeric operands, returns the result of evaluating the postfix-notation expression. You will need to write a few helper methods to solve this problem, and it is best to break it down into steps. First, write a method that determines if a given string is one of the four binary operators: \ttt{"+"}, \ttt{"-"}, \ttt{"*"}, or \ttt{"/"}. You may assume that any inputs that are not binary operators are operands, i.e., numbers. Then, write a method that applies a given binary operator to a list of operands, i.e., an \ttt{ArrayList<Double>}.}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{double postfixEvaluator(List<String> l)} method that, when given a list of binary operators and numeric operands represents as strings, returns the result of evaluating the postfix-notation expression. You will need to write a few helper methods to solve this problem, and it is best to break it down into steps. First, write a method that determines if a given string is one of the four binary operators: \ttt{"+"}, \ttt{"-"}, \ttt{"*"}, or \ttt{"/"}. You may assume that any inputs that are not binary operators are operands, i.e., numbers. Then, write a method that applies a given binary operator to a list of operands, i.e., an \ttt{ArrayList<Double>}.}
 
 \par{
 \begin{verbatim}
@@ -274,9 +274,9 @@ unifiesAll(M4, G4) => false
 \end{verbatim}
 }
 
-\exercise{3}{chapter-arrays-collections}{Two strings $s_1$ and $s_2$ are isomorphic if we can create a mapping from $s_1$ from $s_2$. For example, the strings \ttt{"DCBA"} and \ttt{"ZYXW"} are isomorphic because we can map $D$ to $Z$, $C$ to $Y$, and so forth. Another example is \ttt{"ABACAB"} and \ttt{"XYXZXY"} for similar reasons. A non-example is \ttt{"PROXY"} and \ttt{"ALPHA"}, because once we map \ttt{"A"} to \ttt{"P"}, we cannot create a map between \ttt{"A"} and \ttt{"Y"}. Write the \ttt{isIsomorphic} method, which determines whether or not two strings are isomorphic. }
+\exercise{3}{chapter-arrays-collections}{Two strings $s_1$ and $s_2$ are isomorphic if we can create a mapping from $s_1$ from $s_2$. For example, the strings \ttt{"DCBA"} and \ttt{"ZYXW"} are isomorphic because we can map $D$ to $Z$, $C$ to $Y$, and so forth. Another example is \ttt{"ABACAB"} and \ttt{"XYXZXY"} for similar reasons. A non-example is \ttt{"PROXY"} and \ttt{"ALPHA"}, because once we map \ttt{"A"} to \ttt{"P"}, we cannot create a map between \ttt{"A"} and \ttt{"Y"}. Design the \ttt{boolean isIsomorphic(String s1, String s2)} method, which determines whether or not two strings are isomorphic. }
 
-\exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Write the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> ls)} method, which maps all alphabetized anagrams to the strings in $\textit{ls}$ using the above criteria.}
+\exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Design the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> ls)} method, which maps all alphabetized anagrams to the strings in $\textit{ls}$ using the above criteria.}
     
 \par{
 \begin{verbatim}
@@ -324,32 +324,34 @@ classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
 
 Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet string $A$, a cipher-text string $K$, and a string $s$ to encode, \ttt{substitutionCipher} should return a string $s'$ using the aforementioned substitution cipher algorithm. You must follow the ``design recipe'' laid out in class. That is, you must write the method purpose statement comment, tests, and the implementation.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that takes a \ttt{List<Integer>} and filters out even numbers and then calculates the sum of the remaining odd numbers.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{int sumOdd(List<Integer> l)} that, when given a \ttt{List<Integer>} $l$, filters out even numbers and then calculates the sum of the remaining odd numbers.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that, given a \ttt{List<String>}, concatenates all the strings together into a single string, separated by a comma.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{String conjoin(List<String> l)} method that, when given a \ttt{List<String>} $l$, concatenates all the strings together into a single string, separated by a comma.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that, given a \ttt{List<String>}, groups the words by their length and counts how many words are there for each length. This means that the return value should be a \ttt{Map<String, Integer>}. There are a couple of ways to do this, and any way that correctly utilizes the Stream API is fine.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{Map<String, Integer> groupLength(List<String> l)} that, when given a \ttt{List<String>} $l$, groups the words by their length and counts how many words are there for each length. This means that the return value should be a \ttt{Map<String, Integer>}. There are a couple of ways to do this, and any way that correctly utilizes the Stream API is fine.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that, given a \ttt{List<String>}, returns a list where each string has \ttt{"y"} added at its end, omitting any resulting strings that contain \ttt{"yy"} as a substring anywhere.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<String> addYRemoveYY(List<String> l)} that, when given a \ttt{List<String>} $l$, returns a list where each string has \ttt{"y"} added at its end, omitting any resulting strings that contain \ttt{"yy"} as a substring anywhere.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, write a method that, given a \ttt{List<Integer>}, returns a list of those numbers squared and adds ten to the result, omitting any of the resulting numbers that end in $5$ or $6$.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<Integer> squareAddTenOmit(List<Integer> l)} that, when given a \ttt{List<Integer>} $l$, returns a list of those numbers squared and adds ten to the result, omitting any of the resulting numbers that end in $5$ or $6$.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{removeDups} method that removes all duplicate integers from a given \ttt{List<Integer>}. Return this result as a new list.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<Integer> removeDups(List<Integer> l)} method that, when given a \ttt{List<Integer>} $l$, removes all duplicate integers. Return this result as a new list.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{removeLongerThan} method that removes all strings that are longer than a given integer $n$, from a given \ttt{List<String>}. Return this result as a new list.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<String> removeLongerThan(List<String> l, int n)} method that, when given a \ttt{List<String>} $l$, removes all strings that are longer than a given integer $n$. Return this result as a new list.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{filterThenSquare} method that, when given a \ttt{List<Double>} $L$, removes all odd values, and squares the remaining values. Return this result as a new list.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<Double> filterThenSquare(List<Double> l)} method that, when given a \ttt{List<Double>} $l$, removes all odd values, and squares the remaining values. Return this result as a new list.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{filterDoubleAvg} method that, when given a \ttt{List\-<Integer>} $L$, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a value.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{double filterDoubleAvg(List<Integer> l)} method that, when given a \ttt{List\-<Integer>} $l$, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a \ttt{double} value.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{min} method that, when given a \ttt{List<Integer>} $L$, returns the minimum value in the list. Return this result as an \ttt{Optional<Integer>}. If there are no values in $L$, return \ttt{Optional.empty()}.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{Optional<Integer> min(List<Integer> l)} method that, when given a \ttt{List<Integer>} $l$, returns the minimum value in the list. Return this result as an \ttt{Optional<Integer>}. If there are no values in $l$, return \ttt{Optional.empty()}.}
 
-\exercise{1}{chapter-arrays-collections}{Design the generic \ttt{lookup} method that, when given an \ttt{Map<K, V>} $M$ and a value $k$ of type \ttt{K}, returns the corresponding value (of type \ttt{V}) associated with the key $k$. If the key does not exist, return \ttt{null}. You will need to use the \ttt{.equals} method.}
+\exercise{1}{chapter-arrays-collections}{Design the generic \ttt{<K, V> V lookup(Map<K, V> m)} method that, when given an \ttt{Map<K, V>} $m$ and a value $k$ of type \ttt{K}, returns the corresponding value (of type \ttt{V}) associated with the key $k$. If the key does not exist, return \ttt{null}. You will need to use the \ttt{.equals} method.}
 
-\exercise{1}{chapter-arrays-collections}{Design the generic \ttt{stringifyList} method that, when given an \ttt{ArrayList<T>} $L$, returns a \ttt{String} of comma-separated values where each value is an element of $L$, but converted into a \ttt{String}. You'll need to use the \ttt{.toString} method.}
+\exercise{1}{chapter-arrays-collections}{Design the generic \ttt{<T> String stringifyList(List<T> l)} method that, when given an list of values $l$, returns a \ttt{String} of comma-separated values where each value is an element of $l$, but converted into a \ttt{String}. You'll need to use the \ttt{.toString} method implementation of the generic type \ttt{T}.}
 
-\exercise{2}{chapter-arrays-collections}{Design the generic \ttt{min} method, which receives a list of integers and returns the minimum element in the list. It should return an \ttt{Optional} value of type \ttt{T}, where \ttt{T} is the type of the list. If the list is empty, return an empty \ttt{Optional}. Remember that \ttt{T} must be a type that implements the \ttt{Comparable} interface.}
+\exercise{2}{chapter-arrays-collections}{Design the generic \ttt{<T extends Comparable<T>> Optional<T> min(List<T> ls)} method, which receives a list of comparable elements and returns the minimum element in the list. It should return an \ttt{Optional} value of type \ttt{T}, where \ttt{T} is the type of the list. If the list is empty, return an empty \ttt{Optional}. Remember that \ttt{T} must be a type that implements the \ttt{Comparable} interface.}
 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends List<Integer>> boolean areParallelLists(T t, T u)} method that, when given two types of lists $t$ and $u$ that store integer values, determines whether or not they are ``parallel''. In this context, Two integer lists are parallel if they differ by a single constant factor. For example, where $t=\{5, 10, 15, 20\}$ and $u=\{20, 40, 60, 80\}$, $t$ and $u$ are parallel because every element in $t$ multiplied by four gets us a parallel element in $u$. This factorization is bidirectional, meaning that $t$ could be $\{100, 200, 300, 200\}$ and $u$ could be $\{10, 20, 30, 20\}$.}
 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends Set<U>, U extends Comparable<U>> boolean areEqualSets(T t, T u)} m\-ethod that, when given two types of sets $t$ and $u$ that store comparable elements, returns whether they are equal to one another. Two sets are equivalent if they are subsets of each other. You must traverse over the sets; you \textbf{cannot} use the built-in \ttt{.equals} method provided by the \ttt{Set} implementations.}
 %f(a, b) and f(3, 4) produces {<a : 3>, <b : 4>}
 %f(a, a) and f(3, 4) produces {<>}
