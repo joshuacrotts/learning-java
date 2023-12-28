@@ -1,17 +1,17 @@
 \section*{Chapter Exercises}
 \addcontentsline{toc}{section}{Exercises}
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{celsiusToFahrenheit} method, which converts a temperature from Celsius to Fahrenheit.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double celsiusToFahrenheit(double c)} method, which converts a temperature from Celsius to Fahrenheit.}
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{fiToCm} method, which receives two quantities in feet and inches respectively, and returns the amount in centimeters.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double fiToCm(double f, double in)} method, which receives two quantities in feet and inches respectively, and returns the amount in centimeters.}
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{combineDigits} method, which receives two \ttt{int} values between 0 and 9, and combines them into a two-digit number.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{int combineDigits(int a, int b)} method, which receives two \ttt{int} values between 0 and 9, and combines them into a two-digit number.}
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{gigameterToLightsecond} method, which converts a distance in gigameters to light seconds (i.e., distance light travels in one nano second). There are $1,000,000,000$ meters in a gigameter, and light travels $3,000,000$ meters per second.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double gigameterToLightsecond(double gm)} method, which converts a distance in gigameters to light seconds (i.e., distance light travels in one nanosecond). There are $1,000,000,000$ meters in a gigameter, and light travels $3,000,000$ meters per second.}
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{billTotal} method, which computes the total for a bill. The total is the given subtotal $t$, plus $6.75\%$ of $t$ for the tax, and $20\%$ of the taxed total for the tip.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double billTotal(double t)} method, which computes the total for a bill. The total is the given subtotal $t$, plus $6.75\%$ of $t$ for the tax, and $20\%$ of the taxed total for the tip.}
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{grocery} method, which receives five integers representing the number of apples, bananas, oranges, bunches of grapes, and pineapples purchased at a store. Use the following table to compute the total purchase cost in US dollars.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double grocery(int a, int b, int o, int g, int p)} method, which receives five integers representing the number of apples, bananas, oranges, bunches of grapes, and pineapples purchased at a store. Use the following table to compute the total purchase cost in US dollars.}
 
 \begin{center}
 \begin{tabular}{c|c}
@@ -25,21 +25,21 @@
 \end{tabular}
 \end{center}
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{pointDistance} method, which receives four double values representing two Cartesian coordinates. The method should return the distance between these points.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double pointDistance(double px, double py, double qx, double qy)} method, which receives four double values representing two Cartesian coordinates. The method should return the distance between these points.}
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{sumOfSquares} method, which computes and returns the sum of the squares of two integers $x$ and $y$.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{int sumOfSquares(int x, int y)} method, which computes and returns the sum of the squares of two integers $x$ and $y$.}
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{octagonArea} method, which computes the area of an octagon with a given side length $s$. The formula is}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double octagonArea(double s)} method, which computes the area of an octagon with a given side length $s$. The formula is}
 \[
 A = 2(1 + \sqrt{2})s^2
 \]
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{pyramidSurfaceArea} method, which computes the surface area of a pyramid with a given base length $l$, base width $w$, and height $h$. The formula is}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double pyramidSurfaceArea(double l, double w, double h)} method, which computes the surface area of a pyramid with a given base length $l$, base width $w$, and height $h$. The formula is}
 \[
 A = lw + l\sqrt{\left(\dfrac{w}{2}\right)^2 + h^2} + w\sqrt{\left(\dfrac{l}{2}\right)^2 + h^2}
 \]
 
-\exercise{1}{chapter-testingandjava}{Write the \ttt{crazyMath} method, which receives a value of $x$ and computes the value of the following expression:}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double crazyMath(double x)} method, which receives a value of $x$ and computes the value of the following expression:}
 
 \[
     (1 - e^{-x})^{xe^{-x}} \cdot \dfrac{x\pi\cdot\cos{(4\pi{x})}}{\log_2{|x|}\cdot{\log_4{|x|} \cdot \ln{|x|}}}
@@ -65,11 +65,11 @@ Infinity
 \end{lstlisting}
 \end{clrr}
 
-\exercise{1}{chapter-testingandjava}{Write a method that, when given an integer from $1$ to $7$, returns the corresponding day of the week, with $1$ corresponding to \ttt{"Monday"} and \ttt{"Sunday"} corresponding to $7$. You cannot use any conditionals or data structures to solve this problem. Hint: declare a string containing each day of the week, with spaces to pad the days, and use \ttt{indexOf} and \ttt{substring}.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{String weekday(int d)} method that, when given an integer $d$ from $1$ to $7$, returns the corresponding day of the week, with $1$ corresponding to \ttt{"Monday"} and \ttt{"Sunday"} corresponding to $7$. You \textbf{cannot} use any conditionals or data structures to solve this problem. Hint: declare a string containing each day of the week, with spaces to pad the days, and use \ttt{indexOf} and \ttt{substring}.}
 
-\exercise{1}{chapter-testingandjava}{Write a method that, when given a string, returns a new string with the first and last characters stripped. You may assume that the input string contains at least two characters.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{String flStrip(String s)} method that, when given a string, returns a new string with the first and last characters stripped. You may assume that the input string contains at least two characters.}
 
-\exercise{1}{chapter-testingandjava}{Write a method that receives two \ttt{double} parameters, and returns a \ttt{String} containing the following information: the sum, product, difference, the average, the maximum, and the minimum. The string should be formatted as follows, where each category is separated by a newline \ttt{'\textbackslash n'} character. Assume that \ttt{XX} is a placeholder for the calculated result.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{double stats(double x, double y)} method that receives two \ttt{double} parameters, and returns a \ttt{String} containing the following information: the sum, product, difference, the average, the maximum, and the minimum. The string should be formatted as follows, where each category is separated by a newline \ttt{'\textbackslash n'} character. Assume that \ttt{XX} is a placeholder for the calculated result.}
 \par{
 \begin{verbatim}
 "sum=XX
@@ -81,7 +81,7 @@ min=XX"
 \end{verbatim}
 }
 
-\exercise{1}{chapter-testingandjava}{Write a method that computes a user ID based on three given values: a first name, a last name, and a birth year. A user ID is calculated by taking the the first five letters of their last name, the first letter of their first name, and the last two digits of their birth year, and combining the result. Your method should, therefore, receive two \ttt{String} parameters and an \ttt{int}. Do not convert the year to a \ttt{String}. Below are some test cases.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{String userId(String f, String l, int y)} method that computes a user ID based on three given values: a first name, a last name, and a birth year. A user ID is calculated by taking the the first five letters of their last name, the first letter of their first name, and the last two digits of their birth year, and combining the result. Your method should, therefore, receive two \ttt{String} parameters and an \ttt{int}. Do not convert the year to a \ttt{String}. Below are some test cases.}
 
 \par{
 \begin{verbatim}
@@ -91,8 +91,8 @@ userId("Fred", "Fu", 1957) => "FuF57"
 \end{verbatim}
 }
 
-\exercise{1}{chapter-testingandjava}{Write a method that receives an email address of the form \ttt{x@y.z} and returns the username. The username of an email address is \ttt{x}.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{String cutUsername(String email)} method that receives an email address of the form \ttt{x@y.z} and returns the username. The username of an email address is \ttt{x}.}
 
-\exercise{1}{chapter-testingandjava}{Write a method that returns the domain name of a website URL of the form \ttt{www.x.Z}, where \ttt{X} is the domain name and \ttt{Z} is the top-level domain.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{String cutDomain(String url)} method that returns the domain name of a website URL of the form \ttt{www.x.Z}, where \ttt{X} is the domain name and \ttt{Z} is the top-level domain.}
 
-\exercise{1}{chapter-testingandjava}{Given two positive (non-zero) integers $m$ and $n$, find the closest positive integer $z$ to $m$ such that $z$ is a multiple of $n$ and $z \leq m$. For example, if $m=67$ and $n=15$, then $z=60$.}
+\exercise{1}{chapter-testingandjava}{Design the \ttt{int nextClosest(int m, int n)} method that, when given two positive (non-zero) integers $m$ and $n$, finds the closest positive integer $z$ to $m$ such that $z$ is a multiple of $n$ and $z \leq m$. For example, if $m=67$ and $n=15$, then $z=60$.}

@@ -144,13 +144,13 @@ isValidIpv4("192.168.1A6.201") -> false
 \end{verbatim}
 }
 
-\exercise{1}{chapter-crl}{Write a method that receives a temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{`C'} or \ttt{`F'} for Celsius and Fahrenheit respectively. Return a string representing whether the temperature is a liquid, solid, or gas at sea level.}
+\exercise{1}{chapter-crl}{Design the \ttt{String stateOfMatter(double t, char u))} method that receives a temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{`C'} or \ttt{`F'} for Celsius and Fahrenheit respectively. Return a string representing whether the temperature is a liquid, solid, or gas at sea level.}
 
-\exercise{1}{chapter-crl}{Write a method that translates a letter grade into a number grade. Letter grades are A, B, C, D, and F, possibly followed by + or -. Their numeric values are 4, 3, 2, 1, and 0. There is no F+ or F-. A+ increases the numeric value by 0.3, a - decreases it by 0.3. However, an A+ has value 4.0.}
+\exercise{1}{chapter-crl}{Design the \ttt{double computeGpa(String grade)} method that translates a letter grade into a number grade. Letter grades are A, B, C, D, and F, possibly followed by + or -. Their numeric values are 4, 3, 2, 1, and 0. There is no F+ or F-. A+ increases the numeric value by 0.3, a - decreases it by 0.3. However, an A+ has value 4.0.}
 
-\exercise{1}{chapter-crl}{Write a method that receives three strings and sorts them lexicographically. Return the sorted set of strings as a string itself, separated by commas. For example, if the input is \ttt{Charlie}, \ttt{Able}, \ttt{Baker}, you should return \ttt{Able,Baker,Charlie}.}
+\exercise{1}{chapter-crl}{Design the \ttt{String sortThreeStrings(String a, String b, String c)} method that receives three strings and sorts them lexicographically. Return the sorted set of strings as a string itself, separated by commas. For example, if the input is \ttt{Charlie}, \ttt{Able}, \ttt{Baker}, you should return \ttt{Able,Baker,Charlie}.}
 
-\exercise{1}{chapter-crl}{A year with $366$ days is called a leap year. Leap years are necessary to keep the calendar synchronized with the sun because the earth revolves around the sun once every $365.25$ days. Actually, that figure is not entirely precise, and for all dates after $1582$ the Gregorian correction applies. Usually years that are divisible by 4 are leap years, for example $1996$. However, years that are divisible by $100$ (for example, $1900$) are not leap years, but years that are divisible by $400$ are leap years (for example, $2000$). Design the \ttt{boolean isLeapYear(int y)} that receives a year (as an integer) $y$ and computes whether $y$ is a leap year. Use a single \ttt{if} statement and Boolean operators.}
+\exercise{1}{chapter-crl}{A year with $366$ days is called a leap year. Leap years are necessary to keep the calendar synchronized with the sun because the earth revolves around the sun once every $365.25$ days. Actually, that figure is not entirely precise, and for all dates after $1582$ the Gregorian correction applies. Usually years that are divisible by 4 are leap years, for example $1996$. However, years that are divisible by $100$ (for example, $1900$) are not leap years, but years that are divisible by $400$ are leap years (for example, $2000$). Design the \ttt{boolean isLeapYear(int y)} method that receives a year (as an integer) $y$ and computes whether $y$ is a leap year. Use a single \ttt{if} statement and Boolean operators.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{double computeDiscount(double c, int age, boolean isStudent)} met\-hod that computes a discount for some item cost $c$ based on their age $\mathit{age}$ and student status according to the following criteria:}
 \begin{itemize}
@@ -183,6 +183,14 @@ Your method should return the total cost of the item after applying the discount
 \exercise{1}{chapter-crl}{Elephants have two ears, right? Design the recursive \ttt{int countElephantEars(int n)} that returns the total number of elephant ears that are in a group of $n$ elephants.}
 
 \exercise{1}{chapter-crl}{Rewrite the \ttt{countElephantEars} method to use tail recursion. Name this new version of the method \ttt{countElephantEarsTR}. Hint: you will need to design a \ttt{private static} helper method. The \ttt{countElephantEarsTR} method should only have one parameter.}
+
+\exercise{1}{chapter-trl}{This question has two parts.}
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{raiseLowerToUpperTR} tail recursive method, which receives a string and returns the number of lowercase characters raised to the number of uppercase characters, ignoring any other character. If there are no lowercase or uppercase characters, return zero. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
+    \item Design the \ttt{raiseLowerToUpperLoop} method that solves this problem using a loop.
+
+    If you write tests for one of these methods, you should be able to propagate it through the other, so write plenty!
+\end{enumerate}
 
 \exercise{2}{chapter-crl}{This question has two parts.}
 \begin{enumerate}[label=(\alph*)]
