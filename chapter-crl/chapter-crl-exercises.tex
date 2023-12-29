@@ -9,6 +9,10 @@
 
 \exercise{1}{chapter-crl}{Design the \ttt{int max(int x, int y, int z)} that returns the maximum of three integers $x$, $y$, and $z$. Do not use any built-in (\ttt{Math} library) methods.}
 
+\exercise{1}{chapter-crl}{Design the \ttt{int computeRoundSum(int x, int y, int z)} method that computes the sum of the rounded values of three integers $x$, $y$, and $z$. By ``rounded values'', we mean that we round their least significant digit, i.e., the rightmost digit either up or down depending on its value. For instance, 12 rounds down to 10, 59 rounds up to 60, and 1009 rounds up to 1010.}
+
+\exercise{1}{chapter-crl}{Design the \ttt{boolean lessThan20(int x, int y, int z)} method that, when given three integers $x$, $y$, and $z$, returns whether or not one of them is less than twenty away from another. For example, \ttt{lessThan20(19, 2, 412)} returns true because $2$ is less than $20$ away from $19$. Another example is \ttt{lessThan20(999, 888, 777)}, which returns false because none of the numbers have a difference less than twenty.}
+
 \exercise{1}{chapter-crl}{Design the \ttt{boolean isEvenlySpaced(int x, int y, int z} method, which receives three integers $x, y,$ and $z$, and returns whether they are evenly spaced. Evenly spaced means that the difference between the smallest and medium number is the same as the difference between the medium and largest number.}
 
 \exercise{1}{chapter-crl}{In propositional logic, there are several \textit{connectives} that act on boolean truth values. These include logical conjunction $\land$, disjunction $\lor$, conditional $\to$, biconditional $\leftrightarrow$, and negation $\lnot$. We can represent \textit{schemata} as a series of composed method calls. For example, an evaluation of}
