@@ -59,7 +59,7 @@ class ReflectiveCalculator {
 \end{lstlisting}
 \end{cl}
 
-\example{The Python programming language, including many others, offer a REPL, or a read-evaluate-print-loop, that users can run at the terminal to evaluate expressions and programs. This is done to alleviate the need to open a source file in a text editor, type the code, then run the file with the respective command. Java is not one of these languages out-of-the-box, unfortunately. There is an application, namely JShell, which introduces this functionality. In this example, we will write our own version of JShell, where the programmer can type and evaluate expressions and statements at the terminal.\footnote{Credit goes to Terence Parr for this example and ``assignment'' from his graduate course on programming languages at the University of San Francisco. That's right--this is a graduate-level example!.}}
+\example{The Python programming language, including many others, offer a REPL, or a read-evaluate-print-loop, that users can run at the terminal to evaluate expressions and programs. This is done to alleviate the need to open a source file in a text editor, type the code, then run the file with the respective command. Java is not one of these languages out-of-the-box, unfortunately. There is an application, namely JShell, which introduces this functionality. In this example, we will write our own version of JShell, where the programmer can type and evaluate expressions and statements at the terminal.\footnote{Credit goes to Terence Parr for this example and ``assignment'' from his graduate course on programming languages at the University of San Francisco. That's right--this is a graduate-level programming example!}}
 
 First, we need to establish a few details. Our program will read, from standard input, a subset of Java code. After reading, we spin up an instance of the Java compiler and compile the source code into a \ttt{.class} file. Finally, using reflection, we search for and execute that code. While this is the goal at a high level, we certainly need to break this down into sub-components. Let's see some examples of what we will be able to do in due time:
 
@@ -97,20 +97,23 @@ class Interpret1 extends Interpret0 {
 
 The \ttt{execute} method is generated all the time, but we only care about its contents (i.e., we only populate its body) when we write something that is not a declaration. For example, if we write a class definition or a variable, it is nonsensical to place it inside the \ttt{execute} method body, since in the former case it would not compile, and in the latter case it would be local to only that version of \ttt{execute}. So, we need a way of determining whether or not a piece of code \textit{is} a declaration/definition. All declarations in our subset of Java will be restricted to the following grammar:
 
+\setlength{\grammarparsep}{20pt plus 1pt minus 1pt} % increase separation between rules
+\setlength{\grammarindent}{12em} % increase separation between LHS/RHS 
 \begin{figure}[H]
-    \begin{tcolorbox}
-        \begin{bnfgrammar}[lllll]
-            expr ::= varDecl || methodDecl || classDecl
-            ;;
-            varDecl ::= type ` ' id `;'
-                      | type `[]' ` ' id `;'
-            ;;
-            methodDecl ::= type ` ' id(params) `\{' body `\}'
-            ;;
-            classDecl ::= `class ' id `\{' body `\}'
-                        | `class ' id ` extends ' id `\{' body `\}'
-        \end{bnfgrammar}
-    \end{tcolorbox}
+        \begin{grammar}
+            <expr> ::= <varDecl> 
+                    \alt <methodDecl> 
+                    \alt <classDecl>
+
+            <varDecl> ::= <type> ` ' <id> `;'
+                      \alt <type> `[]' ` ' <id> `;'
+
+            <methodDecl> ::= <type> ` ' <id> `(' <params> `)' `{' <body> `}'
+
+            <classDecl> ::= `class ' <id> `{' <body> `}'
+                        \alt `class ' <id> ` extends ' <id> `{' <body> `}'
+
+        \end{grammar}
     \caption{ Extended BNF Grammar for Declarations }
 \end{figure}
 

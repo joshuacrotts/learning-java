@@ -474,5 +474,8 @@ class ConcatenateFiles {
 \end{lstlisting}
 \end{cl}
 
+% \example{Our last example is a recreation of the Unix ``ls'' command, which lists all files and directories from a given path. We can make use of the methods provided by the \ttt{File} class in this example. In particular, we want to write a (untestable) program that prints the file permissions, last-modified dates, owners, byte-size, and names of all files and directories in a given directory. Note the similarity to the ``ls'' command when the ``-la'' flag is passed.}
+
+% First, let's assume that the path-to-search is passed via terminal arguments. From here, we need a few pieces of information: whether the given content is a directory or a file, its permissions, its size in bytes, the last-modified date, and of course its name. We can obtain all these data points via a \ttt{File} instance. To retrieve the last-modified date, we can use the \ttt{.lastModified} method, then convert this from the seconds since epoch (January 1, 1970). But, to print this in a recognizable format, we will use the \ttt{SimpleDateFormat} class: it shall be printed in the ``day/month/year hh:mm:ss'' format.
 
 % \example{Our last example is to mimic a ``find/replace'' program. We will write a program that receives a file name, a string to find, and a string to replace. The program will then output a file with the replaced string. For example, if the user passes the following arguments:
