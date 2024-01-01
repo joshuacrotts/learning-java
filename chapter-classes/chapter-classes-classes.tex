@@ -5,7 +5,7 @@ From the first page, we have made prolific use of classes, but in this section w
 
 To create a class, we use the \ttt{class} keyword, followed by the name of the class. The name of the class should be capitalized, and should, in general, describe a noun. All Java files describe a class and must be named accordingly. We, of course, have seen this repeatedly before, but we omitted the details.
 
-Classes can \textit{inherit} methods from other classes, a relationship called the superclass/subclass hierarchy. For now we will only mention that the \ttt{Object} class is the ``ultimate'' superclass, in which all classes are implicit subclasses. The \ttt{Object} class, in particular, has two methods that we will override in almost every class that we write: \ttt{equals}, for comparing two classes for equality, and \ttt{toString}, a means of ``stringifying'' an object. In subsequent chapters we will dive more into inheritance and hierarchies.
+Classes can \textit{inherit} methods from other classes, a relationship called the superclass/subclass hierarchy. For now we will only mention that the \ttt{Object} class is the ``ultimate'' superclass, in which all classes are implicit subclasses. The \ttt{Object} class, in particular, has three methods that we will override in almost every class that we write: \ttt{equals}, for comparing two classes for equality, \ttt{toString}, a means of ``stringifying'' an object, and a third: \ttt{hashCode}, the significance of which we will return to soon. In subsequent chapters we will dive more into inheritance and hierarchies.
 
 \example{Let's create a class called \ttt{Point}, which stores two \ttt{int} values representing a Cartesian coordinate $x$ and $y$. By ``store'', we mean to say that $x$ and $y$ are \textit{instance variables}\index{instance variables} of the \ttt{Point} class, also sometimes called \textit{attributes}, \textit{fields}, or \textit{members} (in Java, we conventionally use the ``instance variables'' term). Instance variables denote the values associated with an arbitrary \textit{instance} of that object (an instance may also be defined as an entity). For example, if we have a \ttt{Point} object \ttt{p}, then \ttt{p} has two instance variables, \ttt{x} and \ttt{y}, which are the $x$ and $y$ coordinates of \ttt{p}. Then, if we declare another point \ttt{p2}, then \ttt{p2} will have its own instance variables \ttt{x} and \ttt{y}, which are independent of \ttt{p}'s instance variables. In almost all circumstances, instance variables of a class should be marked as \ttt{private}. Instance variables that are \ttt{private} denotes that direct access to their values is granted only within the class definition. Lastly, for the time being, instance variables are immutable and cannot change. Thus, every instance variable will use the \ttt{final} keyword in its declaration, alongside the \ttt{UPPER\_CASE} naming convention.}
 
@@ -318,6 +318,84 @@ class Point {
 \end{cl}
 
 Notice that, inside the \ttt{getCount} method, we do not refer to \ttt{count} with \ttt{this}, since \ttt{count} is a static variable and not an instance variable. Prefixing the \ttt{count} variable with \ttt{this} results in a compiler error.
+
+\example{Imagine we want to store a collection of \ttt{Point} objects in a data structure such as a \ttt{HashSet}. The question that arises from this decision is apparent: how do we determine if a \ttt{Point} is already inside the set? We need to override two important methods from \ttt{Object}: \ttt{equals} and \ttt{hashCode}. The \ttt{equals} method of an object determines how we wish to compare two instances of the class. In this circumstance, let's say that two points are equal according to \ttt{equals} if and only if they share the same $x$ and $y$ coordinates. Overriding the \ttt{equals} method from the \ttt{Object} class requires correctly copying the signature, the sole parameter being an \ttt{Object} that we want to check for type equality. In other words, we first want to verify that the passed object to the \ttt{equals} method is, in fact, a \ttt{Point}, otherwise they cannot possibly be equal. We can use the \ttt{instanceof} operator to our advantage. From here, if the input parameter is a \ttt{Point}, we can cast the parameter to a \ttt{Point}, then check whether or not the coordinates match.}
+
+\begin{cl}[]{Testing Equality Over Points}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static Assertions.assertNotEquals;
+
+class PointTester {
+
+  @Test
+  void testEquals() {
+    assertAll(
+      () -> assertEquals(new Point(3, 3), new Point(3, 3)),
+      () -> assertNotEquals(new Point(3, 4), new Point(3, 7)),
+      () -> assertNotEquals(new Point(7, 4), new Point(10, 4)),
+      () -> assertNotEquals(new Point(10, 30), new Point(3, 7)));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Overriding the Equals Method in Point}
+\begin{lstlisting}[language=MyJava]
+class Point {
+
+  // ... other methods not shown.
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Point)) { return false; }
+    else {
+      Point othPt = (Point) obj;
+      return this.x == othPt.x && this.y == othPt.y;
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Let's try to create an instance of a \ttt{HashSet}, then iterate over the elements of the set after adding two of the same \ttt{Point} instances, i.e., points that share coordinates. Doing so demonstrates a glaring flaw: the set appears to have added both \ttt{Point} instances to the set despite their sharing of coordinates! The reason is incredibly subtle and easy to miss: the \ttt{Object} class invariant states that, if two objects are equal according to \ttt{equals}, then their hash codes must also be equal. The hash code of an object is simply an integer used for quick access/lookup in hashable data structures such as \ttt{HashSet} and \ttt{HashMap}. Indeed, the problem is that we forgot to override \ttt{hashCode} after overriding the \ttt{equals} method. Bloch~\ref{bloch} states, as a principle, that whenever we override \ttt{equals}, we should accompanyingly override the \ttt{hashCode} implementation. Now, you might wonder: ``How can I hash an object?'' Fortunately Java has a method in the \ttt{Objects} class called \ttt{hash}, which receives any number of arguments and runs them through a hashing algorithm, thereby returning the hash of the parameters. When overriding \ttt{hashCode} we should include all instance variables of the object to designate that all of the properties affect the object's hash code. After fixing the issue, we see that our \ttt{HashSet} now correctly contains only one of the \ttt{Point} objects that we add.
+
+\begin{cl}[]{Testing Hash Code Implementation for Point}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertTrue;
+
+import java.util.Set;
+import java.util.HashSet;
+
+class PointTester {
+
+  @Test
+  void testHashSetPoint() {
+    Set<Point> p = new HashSet<>();
+    p.add(new Point(3, 3));
+    p.add(new Point(3, 3));
+    assertTrue(p.size() == 1);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Adding Hash Code Implementation for Point}
+\begin{lstlisting}[language=MyJava]
+import java.util.Objects;
+
+class Point {
+
+  // ... other methods not shown.
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.x, this.y);
+  }
+}
+\end{lstlisting}
+\end{cl}
 
 \example{Let's amplify the complexity a bit by designing a ``21'' card game, which is a card game where the players try to get a card value total of $21$ without going over. We should think about the design process of this game, namely what classes we need to create. It makes sense to start off with a \ttt{Card} class, which stores its suit and its numeric value. Because a suit is one of four possibilities, each of which uses a different symbol, we can create another class called \ttt{Suit}. In \ttt{Suit} we instantiate four static instances of \ttt{Suit}, each of which represents one of the four valid suits. Its constructor is privatized because we, as the programmers, define the four possible suits; it should not be possible for the user to define their own custom suit, at least for this particular game. The notion of \ttt{Suit} being an instance variable of \ttt{Card}, and only exists due to \ttt{Card} is called \textit{object composition}. Lastly, we will provide a method that returns an \ttt{Iterator<Suit>} over the four suit possibilities to make our lives easier when designing the \ttt{Deck} class. The method should be static so it is accessible through the class.}
 
