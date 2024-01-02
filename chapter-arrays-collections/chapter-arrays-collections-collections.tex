@@ -1,4 +1,4 @@
-z\section{Collections}
+\section{Collections}
 
 In this section we will introduce the \textit{Java Collections API}. In doing so we will discuss three broad classifications of data structures provided by the API:
 \begin{enumerate}
@@ -97,7 +97,6 @@ class DIntArray {
   static int[] addToList(int[] list, int v) {
     boolean added = false;
     int[] newList = makeList(list.length);
-    // First, check to see if 
     for (int i = 0; i < list.length; i++) {
       // If we haven't inserted the value yet and we found
       // a free slot, insert it and mark added as true.
@@ -109,11 +108,8 @@ class DIntArray {
         newList[i] = list[i];
       }
     }
-    if (!added) {
-      return addToList(resize(newList), v);
-    } else {
-      return newList;
-    }
+    if (!added) { return addToList(resize(newList), v); } 
+    else { return newList; }
   }
 }
 \end{lstlisting}
@@ -210,7 +206,7 @@ List<T> A = new ArrayList<>();
 This initializes a \ttt{List} $A$, but instantiates it as a new \ttt{ArrayList}.\footnote{The reason behind this \textit{polymorphic} choice will become apparent in subsequent chapters.} Notice that we do not specify the number of elements to store like we would an array. Indeed, because lists are dynamic in size, there is no need to specify a default. Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this can be changed by passing a size argument between the parentheses.
 \par{
 \begin{verbatim}
-ArrayList<T> A = new ArrayList<>(100);
+List<T> A = new ArrayList<>(100);
 \end{verbatim}
 }
 You might be tempted to ask, ``Why might that be necessary?'', which is a great question. Remember that resizing an array depends on the number of pre-existing elements. Thus, the fewer resizes there are, the better, hence why we double the array capacity in our functional list implementation. If we know that we might have a lot of elements to add to the list from the start, it is a good idea to specify this as a parameter to the \ttt{ArrayList}. On average, adding a value to the end of an \ttt{ArrayList} is a \textit{constant cost}\index{constant cost}, or occurs instantaneously, because we know exactly where the next free spot is located. We cannot forget the time it takes to resize, however, so we declare that the \ttt{.add} method takes constant time with respect to \textit{amortized analysis}\index{amortized analysis}. In essence, sometimes we have to perform a resize-and-copy operation, but on average, we do not need to consider the cost thereof.
@@ -442,7 +438,7 @@ Imagine you are in line at an amusement park for the most intense roller coaster
 
 What we have described is a practical example of the queue data structure. In a queue, elements are enqueued, or inserted, to the back of the line and are dequeued, or removed, from the front. Queues operate on the principle of first-in-first-out, or FIFO\index{first-in-first-out}. The implementation of a queue data structure may contain different names for their operations, but at their core should contain operations for inserting an element to the back of the queue (e.g., \textsc{enqueue}\index{enqueue}) and removing an element from the front of the queue (e.g., \textsc{dequeue}\index{dequeue}). 
 
-Like the operations on a stack, these are also constant-time, since we may always keep a reference to the front and rear elements of a stack. Queues share similar drawbacks to stacks in that elements are not randomly accessible, in that we only know what exists at the front of a queue. Figure~\ref{fig:printerqueue} demonstrates the task queue of a printer, which has a sequence of files to print one after the other.
+Like the operations of a stack, these are also constant-time, since we keep a reference to the front and rear elements of a queue. Queues, consequently, share similar drawbacks to stacks in that elements are not randomly accessible, i.e., we only know what exists at the front and rear of a queue instantaneously. Figure~\ref{fig:printerqueue} demonstrates the task queue of a printer, which has a sequence of files to print one after the other.
 
 \begin{figure}[ht]
 \begin{center}
@@ -475,8 +471,7 @@ Like the operations on a stack, these are also constant-time, since we may alway
 \label{fig:printerqueue}
 \end{figure}
 
-Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. Instead, \texttt{Queue} is an \textit{interface}\index{interface} that other classes implement whose structure resembles a queue. To create a first-in-first-out queue data structure, we may declare a variable as a \texttt{Queue} then instantiate it as a \texttt{LinkedList}. Thankfully the \texttt{LinkedList} class contains all relevant methods for operating a FIFO-based queue.
-
+Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. Instead, \texttt{Queue} is an \textit{interface}\index{interface} that other classes implement whose structure resembles a queue. To create a first-in-first-out queue data structure, we may initialize a variable to be a \texttt{Queue} then instantiate it as a \texttt{LinkedList}. Thankfully, the \texttt{LinkedList} class contains all relevant methods for operating a FIFO-based queue.
 \par{
 \begin{verbatim}
 Queue<Integer> q = new LinkedList<>();

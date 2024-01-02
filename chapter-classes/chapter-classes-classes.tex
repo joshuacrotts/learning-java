@@ -189,7 +189,7 @@ class Point {
    * @return the distance between this point and p.
    */
   public double distance(Point p) {
-    int dx = this.X - p.Y;
+    int dx = this.X - p.X;
     int dy = this.Y - p.Y;
     return Math.sqrt(dx * dx + dy * dy);
   }
@@ -359,7 +359,7 @@ class Point {
 \end{lstlisting}
 \end{cl}
 
-Let's try to create an instance of a \ttt{HashSet}, then iterate over the elements of the set after adding two of the same \ttt{Point} instances, i.e., points that share coordinates. Doing so demonstrates a glaring flaw: the set appears to have added both \ttt{Point} instances to the set despite their sharing of coordinates! The reason is incredibly subtle and easy to miss: the \ttt{Object} class invariant states that, if two objects are equal according to \ttt{equals}, then their hash codes must also be equal. The hash code of an object is simply an integer used for quick access/lookup in hashable data structures such as \ttt{HashSet} and \ttt{HashMap}. Indeed, the problem is that we forgot to override \ttt{hashCode} after overriding the \ttt{equals} method. Bloch~\ref{bloch} states, as a principle, that whenever we override \ttt{equals}, we should accompanyingly override the \ttt{hashCode} implementation. Now, you might wonder: ``How can I hash an object?'' Fortunately Java has a method in the \ttt{Objects} class called \ttt{hash}, which receives any number of arguments and runs them through a hashing algorithm, thereby returning the hash of the parameters. When overriding \ttt{hashCode} we should include all instance variables of the object to designate that all of the properties affect the object's hash code. After fixing the issue, we see that our \ttt{HashSet} now correctly contains only one of the \ttt{Point} objects that we add.
+Let's try to create an instance of a \ttt{HashSet}, then iterate over the elements of the set after adding two of the same \ttt{Point} instances, i.e., points that share coordinates. Doing so demonstrates a glaring flaw: the set appears to have added both \ttt{Point} instances to the set despite their sharing of coordinates! The reason is incredibly subtle and easy to miss: the \ttt{Object} class invariant states that, if two objects are equal according to \ttt{equals}, then their hash codes must also be equal. The hash code of an object is simply an integer used for quick access/lookup in hashable data structures such as \ttt{HashSet} and \ttt{HashMap}. Indeed, the problem is that we forgot to override \ttt{hashCode} after overriding the \ttt{equals} method. Bloch~\cite{effectivejava} states, as a principle, that whenever we override \ttt{equals}, we should accompanyingly override the \ttt{hashCode} implementation. Now, you might wonder: ``How can I hash an object?'' Fortunately Java has a method in the \ttt{Objects} class called \ttt{hash}, which receives any number of arguments and runs them through a hashing algorithm, thereby returning the hash of the parameters. When overriding \ttt{hashCode} we should include all instance variables of the object to designate that all of the properties affect the object's hash code. After fixing the issue, we see that our \ttt{HashSet} now correctly contains only one of the \ttt{Point} objects that we add.
 
 \begin{cl}[]{Testing Hash Code Implementation for Point}
 \begin{lstlisting}[language=MyJava]
