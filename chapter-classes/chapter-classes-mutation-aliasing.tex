@@ -452,3 +452,370 @@ class F {
 }
 \end{lstlisting}
 \end{cl}
+
+\example{Recall the \ttt{LinkedList} class from Chapter~\ref{chapter-arrays-collections}. If you have ever wondered how it works under the hood, now is the time to find out! We will design a \textit{doubly-linked list} data structure that stores arbitrarily-typed elements.}
+
+First, remember the structure of a linked list: they are composed of nodes, which hold the data and a pointer to the next element in the chain/sequence. These types of linked lists are \textit{singly-linked}, because nodes only refer to the successive element. In contrast, our class models a doubly-linked list, since its nodes point to their predecessor and their successor. 
+
+We need a generic class that stores references to the first and last elements of the list. Let's create the \ttt{DoublyLinkedList} class to receive a type parameter \ttt{T} and store the first and last nodes as instance variables. It's important to realize that, whoever uses this class will not be exposed to the innards of the class, i.e., how the links are established/constructed/altered/removed. We wish to preserve the idea of encapsulation, after all.
+
+We run into an eminent problem when declaring the types of the instance variables: what should they be? We need to design a class that encapsulates the value of the node, and holds references to its previous and successor nodes. Some programmers may consider designing a separate \ttt{.java} file for this class, but remember the encapsulation methodology: nobody outside of this class should even be aware that nodes exist in the first place. So, we can create a private and static \ttt{Node<T>} class, which is local to the definition of \ttt{DoublyLinkedList}. A privatized class can only ever be static, because it does not make sense to say that a private class definition belongs to an arbitrary instance of the class in which it resides. We also override the \ttt{toString} to output the underlying stringified data of the node.
+
+\begin{cl}[]{Doubly-Linked List Class}
+\begin{lstlisting}[language=MyJava]
+class DoublyLinkedList<T> {
+
+  private static class Node<T> {
+
+    private T value;
+    private Node<T> prev;
+    private Node<T> next;
+
+    private Node(T value) { 
+      this.value = value; 
+    }
+
+    @Override
+    public String toString() {
+      return this.value.toString();
+    }
+  }
+
+  private Node<T> head;
+  private Node<T> tail;
+
+  public DoublyLinkedList() {
+    this.last = this.first = null;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Notice that, in the constructor of \ttt{DoublyLinkedList}, we assign the first and last references to each other, which both point to \ttt{null}. This is because, when the list is empty, there is no first or last element.
+
+To test the methods that we are about to design, we will override the \ttt{toString} method (of \ttt{DoublyLinkedList}) to print the elements inside brackets, separated by commas and a space. To traverse over the list, however, we should use a custom-defined \ttt{Iterator}, which will be its own localized class definition. We have seen iterators before, but until now we have not implemented one on our own. The idea is, fortunately, very simple: we keep track of the current node, and upon calling \ttt{hasNext}, we return whether or not the node is \ttt{null}. Similarly, invoking \ttt{next} returns the value of the stored node and moves the pointer forward via the ``next'' instance. Finally, we create the \ttt{.iterator} method, which returns an instance of the iterator superclass. We do not want to expose how this particular iterator works, because the caller does not need to be aware of this logic; they are only concerned with iterating over the structure, in this case, a doubly-linked list.
+
+\begin{cl}[]{Doubly-Linked List Iterator}
+\begin{lstlisting}[language=MyJava]
+import java.util.Iterator;
+
+class DoublyLinkedList<T> {
+  // ... previous code omitted ...
+
+  public Iterator<T> iterator() {
+    return new DoublyLinkedListIterator<>(this.first);
+  }
+
+  private static class DoublyLinkedListIterator<T> implements Iterator<T> {
+    
+    private Node<T> current;
+
+    private DoublyLinkedListIterator(Node<T> first) {
+      this.current = first;
+    }
+
+    @Override
+    public boolean hasNext() { 
+      return this.current != null; 
+    }
+
+    @Override
+    public T next() {
+      T value = this.current.value;
+      this.current = this.current.next;
+      return value;
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Using the iterator in \ttt{toString} is straightforward: we have a while loop that continues until no more elements are present. We complete two tasks at the same time by having an iterator, which then makes subsequent traversals over the list easier.
+
+Now we can write methods to add, retrieve, and remove elements from the list. To add an elemenet, we need to take the links of \ttt{first} and \ttt{last}, and reassign them accordingly to remain consistent with our doubly-linked list property. If the list is empty, then we just have to assign the new node $n$ to both the \ttt{first} and \ttt{last} references. Otherwise, we set the ``next'' pointer of \ttt{last} to $n$, and set the ``previous'' pointer of $n$ to \ttt{last}. 
+
+\begin{cl}[]{Testing the Doubly-Linked List Add Method}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class DoublyLinkedListTester {
+
+  @Test
+  void testAdd() {
+    DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
+    assertAll(
+      () -> assertEquals("[]", list.toString()),
+      () -> list.add(1),
+      () -> list.add(2),
+      () -> list.add(3),
+      () -> assertEquals("[1, 2, 3]", list.toString()),
+      () -> list.add(4),
+      () -> list.add(1),
+      () -> list.add(5),
+      () -> assertEquals("[1, 2, 3, 4, 1, 5]", list.toString()));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Doubly-Linked List Add Method}
+\begin{lstlisting}[language=MyJava]
+class DoublyLinkedList<T> {
+  // ... previous code omitted ...
+
+  /**
+  * Adds a new node to the end of the list.
+  * @param data The data to be stored in the new node.
+  */
+  public void add(T data) {
+    Node<T> newNode = new Node<>(data);
+
+    // If the list is empty, make the new node the first and last node.
+    if (this.first == null) {
+      this.first = newNode;
+    } else {
+      // Otherwise, add the new node to the end of the list.
+      newNode.prev = this.last;
+      this.last.next = newNode;
+    }
+    this.last = newNode;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Retrieving an element is trivial, as it's just a matter of traversing over the list and returning the data at the index of a node. If the index is out of bounds, we return an empty \ttt{Optional}.\footnote{It is, in general, a better idea to use exceptions, but we have not covered them yet.}
+
+\begin{cl}[]{Testing the Doubly-Linked List Get Method}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class DoublyLinkedListTester {
+
+  @Test
+  void testGet() {
+    DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
+    assertAll(
+      () -> assertEquals(Optional.empty(), list.get(0)),
+      () -> list.add(50),
+      () -> list.add(25),
+      () -> list.add(100),
+      () -> assertEquals(Optional.of(50), list.get(0)),
+      () -> assertEquals(Optional.of(25), list.get(1)),
+      () -> assertEquals(Optional.of(100), list.get(2)),
+      () -> assertEquals(Optional.empty(), list.get(3)),
+      () -> list.add(1000),
+      () -> list.add(10000),
+      () -> list.add(50),
+      () -> assertEquals(Optional.of(1000), list.get(3)),
+      () -> assertEquals(Optional.of(10000), list.get(4)),
+      () -> assertEquals(Optional.of(50), list.get(5)),
+      () -> assertEquals(Optional.empty(), list.get(6)));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Doubly-Linked List Get Method}
+\begin{lstlisting}[language=MyJava]
+import java.util.Optional;
+
+class DoublyLinkedList<T> {
+  // ... previous code omitted ...
+
+  /**
+   * Returns the element at a given index as an Optional.
+   * @param idx index to retrieve.
+   * @return Optional.empty() if the index is out of bounds,
+   *         the data at that node's index otherwise.
+   */
+  public Optional<T> get(int idx) {
+    Node<T> curr = this.first;
+    int i = 0;
+    while (curr != null && i < idx) {
+      curr = curr.next;
+      i++;
+    }
+    return idx >= 0 && curr != null
+            ? Optional.of(curr.data)
+            : Optional.empty();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Finally we arrive at element removal, which is not as cut-and-dry. We want to pass the element-to-remove (compared via \ttt{equals}), but we need to adjust the pointers accordingly. In particular, there are four cases to consider:
+
+\begin{enumerate}[label=(\alph*)]
+  \item If the element-to-remove $e$ is the first of the list, then its successor is now the first. Its previous pointer is adjusted to now point to \ttt{null}.
+  \item If the element-to-remove $e$ is the last of the list, then its predecessor is now the last. Its next pointer is adjusted to now point to \ttt{null}.
+  \item If the element to remove $e$ is neither the first nor the last, we retrieve its previous node $p$, its next node $n$, and assign $p_\textit{next} = n$, and $n_\textit{prev} = p$. This, in effect, ``delinks'' $e$ from the list, which gets consumed by the garbage collector.
+  \item If the element-to-remove $e$ is not in the list, do nothing.
+\end{enumerate}
+
+\begin{cl}[]{Testing the Doubly-Linked List Remove Method}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class DoublyLinkedListTester {
+
+  @Test
+  void testRemove() {
+    DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
+    assertAll(
+      () -> list.add(50),
+      () -> list.add(25),
+      () -> list.add(100),
+      () -> list.remove(50),
+      () -> assertEquals("[25, 100]", list.toString()),
+      () -> list.remove(100),
+      () -> assertEquals("[25]", list.toString()),
+      () -> list.remove(25),
+      () -> assertEquals("[]", list.toString()),
+      () -> list.remove(25),
+      () -> assertEquals("[]", list.toString()));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Doubly-Linked List Remove Method}
+\begin{lstlisting}[language=MyJava]
+class DoublyLinkedList<T> {
+  // ... previous code omitted ...
+
+  /**
+   * Removes an element from the linked list, if it exists.
+   * @param data value to be removed, compared via .equals.
+   */
+  public void remove(T data) {
+    Node<T> curr = this.first;
+    while (curr != null) {
+      if (curr.data.equals(data)) {
+        // Case 1: if it's the first.
+        if (curr == this.first) {
+          curr.next = this.first.next;
+          this.first = curr.next;
+        }
+        // Case 2: if it's the last.
+        else if (curr == this.last) {
+          curr.prev.next = null;
+          this.last = curr.prev;
+        }
+        // Case 3: if it's anything else.
+        else {
+          curr.prev.next = curr.next;
+          curr.next.prev = curr.prev;
+        }
+        break;
+      } else {
+        curr = curr.next;
+      }
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example{Some programming languages do not come standard with data structures such as \ttt{Map} or, if they do, they are cumbersome to utilize. A substitute for the common mapping data structure is called an \textit{association list}, originating with the Lisp programming language. Its desired purpose is nearly identical to that of a map, but with worse performance implications. In this example we will design such a structure, as if \ttt{Map} did not exist in Java.}
+
+Associations lists, as their name implies, associate values to other values, just like a map. In dynamically-typed languages, e.g., Scheme, association lists accept any type as their key and any type as their value. Therefore, we could have an association list that maps a string to an integer, or an integer to a list of strings, and so on. Should we want to use truly arbitrary types in the list, we can assign \ttt{Object} to both key and value types.
+
+Our association list will support several methods that are related to their functional programming eqiuvalents. In particular, we want a \ttt{lookup} method to retrieve the associated value of some element and an an \ttt{extend} method to add a new association. Note that the \ttt{extend} method will, rather than modifying the current association list, return a new association list with the new association added. This is because we want to preserve the idea of immutability, which is a common theme in functoinal programming. Association lists, therefore, need to have a ``parent'' pointer to keep track of those associations in the list that we extend from.\footnote{In the next section on abstract classes and interpreters, we will revisit this idea in greater detail.} We will also override the \ttt{toString} method to print the associations in a readable format. 
+
+\begin{cl}[]{Association List Tester}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AssociationListTester {
+
+  @Test
+  void testAssociationList() {
+    AssociationList<String, Integer> list = new AssociationList<>();
+    assertAll(
+      () -> assertEquals("[]", list.toString()),
+      () -> list = list.extend("a", 1),
+      () -> assertEquals("[(a, 1)]", list.toString()),
+      () -> list = list.extend("b", 2),
+      () -> assertEquals("[(b, 2), (a, 1)]", list.toString()),
+      () -> list = list.extend("c", 3),
+      () -> assertEquals("[(c, 3), (b, 2), (a, 1)]", list.toString()),
+      () -> assertEquals(Optional.of(3), list.lookup("c")),
+      () -> assertEquals(Optional.of(2), list.lookup("b")),
+      () -> assertEquals(Optional.of(1), list.lookup("a")),
+      () -> assertEquals(Optional.empty(), list.lookup("d")));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Association List Class}
+\begin{lstlisting}[language=MyJava]
+import java.util.Optional;
+
+class AssociationList<K, V> {
+  
+  private final K key;
+  private final V value;
+  private final AssociationList<K, V> parent;
+  
+  public AssociationList() {
+    this.key = null;
+    this.value = null;
+    this.parent = null;
+  }
+
+  private AssociationList(K key, V value, AssociationList<K, V> parent) {
+    this.key = key;
+    this.value = value;
+    this.parent = parent;
+  }
+  
+  /**
+   * Returns the value associated with a given key.
+   * @param key the key to lookup.
+   * @return the value associated with the key, if it exists.
+   */
+  public Optional<V> lookup(K key) {
+    AssociationList<K, V> curr = this;
+    while (curr != null) {
+      if (curr.key.equals(key)) {
+        return Optional.of(curr.value);
+      } else {
+        curr = curr.parent;
+      }
+    }
+    return Optional.empty();
+  }
+  
+  /**
+   * Adds a new association to the list.
+   * @param key the key to associate.
+   * @param value the value to associate.
+   * @return a new association list with the new association.
+   */
+   public AssociationList<K, V> extend(K key, V value) {
+    return new AssociationList<>(key, value, this);
+   }
+  
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder("[");
+    AssociationList<K, V> curr = this;
+    while (curr != null) {
+      sb.append(String.format("(%s, %s)", curr.key, curr.value));
+      curr = curr.parent;
+      if (curr != null) { sb.append(", "); }
+    }
+    sb.append("]");
+    return sb.toString();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Each association list in our representation stores exactly one association. Each time we extend the association, we create a new list that points to the previous list. This is a very inefficient way to store associations, but it is a common functional way of extending bindings in a programming language, most often in simple interpreted languages.
