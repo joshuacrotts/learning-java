@@ -4,11 +4,12 @@ Presumably this section discusses file input and output syntax and semantics. Wh
 
 \subsection*{Primitive I/O Classes}
 
-
 \example{Let's write a program that reads data from a file and echos it to standard output.}
 
 \begin{cl}[FileInputStreamExample.java]{Reading File Data Example}
 \begin{lstlisting}[language=MyJava]
+import java.io.*;
+
 class FileInputStreamExample {
 
   public static void main(String[] args) {
@@ -39,6 +40,8 @@ When reading from an input source that is not \ttt{System.in}, it is imperative 
 
 \begin{cl}[FileCopyExample.java]{Copying File Data Example with Try-With-Resources}
 \begin{lstlisting}[language=MyJava]
+import java.io.*;
+
 class FileCopyExample {
 
   public static void main(String[] args) {
@@ -62,9 +65,7 @@ The file input and output stream classes read data as raw bytes from their sourc
 
 \begin{cl}[FileReaderWriterExamples.java]{Examples of File Reader and Writer}
 \begin{lstlisting}[language=MyJava]
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 class FileReaderWriterExamples {
 
@@ -99,8 +100,7 @@ The problem with the file input and output stream classes, as well as the file r
 
 \begin{cl}[BufferedReaderWriterExample.java]{Buffered Reader and Writer Example}
 \begin{lstlisting}[language=MyJava]
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.*;
 
 class BufferedReaderWriterExample {
 
@@ -150,7 +150,7 @@ The classes that we have explored thus far are primarily for reading/writing eit
 
 \begin{cl}[PrintWriterExample.java]{Using the \ttt{PrintWriter} Class}
 \begin{lstlisting}[language=MyJava]
-import java.io.PrintWriter;
+import java.io.*;
 
 class PrintWriterExample {
   
@@ -322,11 +322,8 @@ At this point we have seen several methods and classes for reading data from dif
 
 \begin{cl}[EvenIntegers.java]{Reading and Writing Even Integers}
 \begin{lstlisting}[language=MyJava]
+import java.io.*;
 import java.util.Scanner;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
 
 class EvenIntegers {
 
@@ -385,6 +382,7 @@ class LineWordCharCounterTester {
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 import java.util.File;
+import java.io.IOException;
 
 class LineWordCharCounter {
 
@@ -419,6 +417,9 @@ then the program should output a file \ttt{output-file.txt} that contains the co
 
 \begin{cl}[ConcatenateFiles.java]{Concatenating Files}
 \begin{lstlisting}[language=MyJava]
+import java.io.*;
+import java.util.Arrays;
+
 class ConcatenateFiles {
  
   /**

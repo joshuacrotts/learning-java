@@ -375,6 +375,8 @@ An \ttt{Lvalue} is the left-hand side of the evaluation of an abstract syntax tr
 
 \begin{cl}[]{Abstract Syntax Tree Class}
 \begin{lstlisting}[language=MyJava]
+import java.util.List;
+
 public abstract class AstNode implements Evaluable {
 
   private final List<AstNode> CHILDREN;  
@@ -438,6 +440,7 @@ From here, the simplest three abstract syntax tree nodes are \ttt{VarNode}, \ttt
 \begin{cl}[]{Environment Class Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
+import java.util.Map;
 
 final class Environment {
   
@@ -636,6 +639,7 @@ class EnvironmentTester {
 \begin{cl}[]{Environment Class}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
+import java.util.Map;
 
 final class Environment {
 

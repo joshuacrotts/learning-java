@@ -15,6 +15,9 @@ First, let's create an interface for designing linear search algorithms. Recall 
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
+import java.util.AbstractList;
+import java.util.NoSuchElementException;
+
 class ILinearSearchTest {
 
   private static final AbstractList<Integer> LS1 
@@ -74,6 +77,7 @@ class ILinearSearchTest {
 
 \begin{cl}[]{Linear Search Interface}
 \begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
 import java.util.AbstractList;
 
 interface ILinearSearch<V extends Comparable<V>> {
@@ -85,6 +89,7 @@ interface ILinearSearch<V extends Comparable<V>> {
 
 \begin{cl}[]{Standard-Recursive Linear Search with Exceptions}
 \begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
 import java.util.AbstractList;
 import java.util.NoSuchElementException;
   
@@ -111,6 +116,7 @@ The tail recursive linear search is much more intuitive to understand compared t
 
 \begin{cl}[]{Tail-Recursive Linear Search}
 \begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
 import java.util.AbstractList;
 
 class TailRecursiveLinearSearch<V extends Comparable<V>> 
@@ -135,6 +141,7 @@ Even though the tail recursive linear search is relatively straightforward to un
 
 \begin{cl}[]{Iterative Linear Search}
 \begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
 import java.util.AbstractList;
 
 class LoopLinearSearch<V extends Comparable<V>> implements ILinearSearch<V> {
@@ -163,6 +170,8 @@ When we state that binary search is faster than linear search, this is of course
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+
+import java.util.AbstractList;
 
 class IBinarySearchTest {
   
@@ -206,6 +215,7 @@ class IBinarySearchTest {
 
 \begin{cl}[]{Binary Search Interface}
 \begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
 import java.util.AbstractList;
 
 interface IBinarySearch<V extends Comparable<V>> {
@@ -219,6 +229,7 @@ interface IBinarySearch<V extends Comparable<V>> {
 
 \begin{cl}[]{Tail-Recursive Binary Search}
 \begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
 import java.util.AbstractList;
 
 class TailRecursiveBinarySearch<V extends Comparable<V>> 
@@ -250,6 +261,7 @@ class TailRecursiveBinarySearch<V extends Comparable<V>>
 
 \begin{cl}[]{Iterative Binary Search}
 \begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
 import java.util.AbstractList;
   
 class LoopBinarySearch<V extends Comparable<V>> implements IBinarySearch<V> {
@@ -277,7 +289,8 @@ Recall the use of comparators from~\ref{chapter-arrays-collections} when discuss
 
 \begin{cl}[]{Adding a Comparator-Based Binary Search}
 \begin{lstlisting}[language=MyJava]
-import java.util.Comparable;
+import java.lang.Comparable;
+import java.util.Comparator;
 import java.util.AbstractList;
 
 interface IBinarySearch {
@@ -320,6 +333,7 @@ class IBinarySearchTester {
 
 \begin{cl}[]{Comparator-Based Tail Recursive Binary Search}
 \begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
 import java.util.AbstractList;
 import java.util.Comparator;
 

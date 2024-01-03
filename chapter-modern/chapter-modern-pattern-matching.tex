@@ -6,6 +6,9 @@ Pattern matching is a powerful tool for working with data. It allows the program
 
 \begin{cl}[]{Example of Pattern Matching}
 \begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
 class PatternMatchingTester {
 
   @Test
@@ -27,6 +30,8 @@ The definitions of \ttt{Rectangle}, \ttt{Circle}, \ttt{Triangle}, and \ttt{IShap
 
 \begin{cl}[]{Pattern Matching}
 \begin{lstlisting}[language=MyJava]
+imoprt java.lang.IllegalArgumentException;
+
 class PatternMatching {
 
   /**
@@ -52,6 +57,9 @@ We can also use ``guard expressions'' when constructing patterns to only match a
 
 \begin{cl}[]{Example of Guard Expressions} 
 \begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
 class FactorialTester {
 
   @Test
@@ -70,6 +78,8 @@ class FactorialTester {
 
 \begin{cl}[]{Factorial}
 \begin{lstlisting}[language=MyJava]
+import java.lang.IllegalStateException;
+
 class Factorial {
 
   public static Integer fact(Integer n) {
@@ -178,6 +188,7 @@ Our perimeter pattern matcher is helpful and convenient, but what is not-so-conv
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import java.lang.BigDecimal;
 
 class EvaluatorTest {
 
@@ -201,6 +212,8 @@ interface IExpr {}
 
 \begin{cl}[]{``Number'' Record Type}
 \begin{lstlisting}[language=MyJava]
+import java.lang.BigDecimal;
+
 record Number(BigDecimal value) implements IExpr {
   
   public Number(int value) { this(new BigDecimal(value)); }
@@ -216,6 +229,9 @@ record Add(IExpr left, IExpr right) implements IExpr {}
 
 \begin{cl}[]{Evaluator}
 \begin{lstlisting}[language=MyJava]
+import java.lang.IllegalArgumentException;
+import java.lang.BigDecimal;
+
 class Evaluator {
 
   /**

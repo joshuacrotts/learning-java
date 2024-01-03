@@ -13,7 +13,7 @@
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean lessThan20(int x, int y, int z)} method that, when given three integers $x$, $y$, and $z$, returns whether or not one of them is less than twenty away from another. For example, \ttt{lessThan20(19, 2, 412)} returns true because $2$ is less than $20$ away from $19$. Another example is \ttt{lessThan20(999, 888, 777)}, which returns false because none of the numbers have a difference less than twenty.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{boolean isEvenlySpaced(int x, int y, int z} method, which receives three integers $x, y,$ and $z$, and returns whether they are evenly spaced. Evenly spaced means that the difference between the smallest and medium number is the same as the difference between the medium and largest number.}
+\exercise{1}{chapter-crl}{Design the \ttt{boolean isEvenlySpaced(int x, int y, int z)} method, which receives three integers $x, y,$ and $z$, and returns whether they are evenly spaced. Evenly spaced means that the difference between the smallest and medium number is the same as the difference between the medium and largest number.}
 
 \exercise{1}{chapter-crl}{In propositional logic, there are several \textit{connectives} that act on boolean truth values. These include logical conjunction $\land$, disjunction $\lor$, conditional $\to$, biconditional $\leftrightarrow$, and negation $\lnot$. We can represent \textit{schemata} as a series of composed method calls. For example, an evaluation of}
 
@@ -116,11 +116,11 @@ cond(P, not(bicond(Q, not(R))))
 \captionsetup[subfigure]{labelformat=simple}
 \captionsetup[figure]{labelformat=simple}%
 
-\exercise{1}{chapter-crl}{Write the \ttt{isInsideCircle} method that, when given a circle centered at $(c_x, c_y)$ and radius $r$ as well as a point at $(p_x, p_y)$, returns whether the point is located strictly inside the circle.}
+\exercise{1}{chapter-crl}{Design the \ttt{boolean isInsideCircle(double cx, double cy, double r, double px, double py)} method that, when given a circle centered at $(c_x, c_y)$ and radius $r$ as well as a point at $(p_x, p_y)$, returns whether the point is located strictly inside the circle.}
 
-\exercise{1}{chapter-crl}{Write the \ttt{isInsideRectangle} method that, when given a rectangle centered at $(r_x, r_y)$, width $w$ and height $h$ as well as a point $(p_x, p_y)$, returns whether the point is located strictly inside the rectangle.}
+\exercise{1}{chapter-crl}{Design the \ttt{boolean isInsideRectangle(double rx, double ry, double w, double h, double px, double py)} method that, when given a rectangle centered at $(r_x, r_y)$, width $w$ and height $h$ as well as a point $(p_x, p_y)$, returns whether the point is located strictly inside the rectangle.}
 
-\exercise{2}{chapter-crl}{Carlo is shipping out orders of candy to local grocery stores. Boxes have a maximum weight defined by \ttt{maxSize}, and we can (potentially) fit both small and large bars of candy in a box. Write the \ttt{fitCandy} method that, when given a number of small bars, large bars, and maximum weight, determines the number of small candy bars he can fit in the box. Large bars weigh five kilograms, and small bars weigh one kilogram. Note that Carlo always tries to fit large candies first before small. Return \ttt{-1} if it is impossible to fill the box with the given criteria. Below are some test examples. Hint: consider this as an analysis of three cases.}
+\exercise{2}{chapter-crl}{Carlo is shipping out orders of candy to local grocery stores. Boxes have a maximum weight defined by a value $w$, and we can (potentially) fit both small and large bars of candy in a box. Design the \ttt{int fitCandy(int s, int l, int w)} method that, when given a number of small bars $s$, large bars $l$, and maximum weight $w$, determines the number of small candy bars he can fit in the box. Large bars weigh five kilograms, and small bars weigh one kilogram. Note that Carlo always tries to fit large candies first before small. Return \ttt{-1} if it is impossible to fill the box with the given criteria. Below are some test examples. Hint: consider this as an analysis of three cases.}
 
 \par{
 \begin{verbatim}
@@ -134,7 +134,7 @@ fitCandy(7, 1, 13) -> -1
 \end{verbatim}
 }
 
-\exercise{2}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{isValidIpv4} method that, when given a \ttt{String}, determines whether it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid.}
+\exercise{2}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{boolean isValidIpv4(String ip)} method that, when given a string, determines whether or not it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid.}
 
 \par{
 \begin{verbatim}

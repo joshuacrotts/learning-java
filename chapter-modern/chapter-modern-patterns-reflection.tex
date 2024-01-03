@@ -238,6 +238,9 @@ Here we run into our first of two roadblocks: how to compile the file at runtime
 
 \begin{cl}[]{Using the Java Compiler API}
 \begin{lstlisting}[language=MyJava]
+import javax.tools.*;
+import java.lang.StringBuilder;
+
 class JavaRepl {
 
   // ... other instance variables not shown.

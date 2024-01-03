@@ -41,13 +41,13 @@ fizzBuzz(15, 18) => {"FizzBuzz", "16", "17", "Fizz"}
 
 \exercise{2}{chapter-arrays-collections}{Using only arrays, design the \ttt{int[] findIntersection(int[] A, int[] B)} method that returns an array containing the \textit{intersection} of two arrays. The intersection of two arrays is the set of elements that are common to both arrays. For example, the intersection of $\{7, 4, 8, 0, 2, 1\}$ and $\{8, 6, 4, 9, 26, 4, 0\}$ is $\{7, 8, 0\}$. Do not assume that the arrays are sorted, and you cannot sort them yourself.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{double sumYucky(ArrayList<Integer> vals)} method that returns the average of the numbers in the list with the following caveat: The number $9$ should not be counted towards the average, nor should the following number, should one exist.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{double sumNasty(ArrayList<Integer> vals)} method that returns the average of the numbers in the list with the following caveat: The number $9$ should not be counted towards the average, nor should the following number, should one exist.}
 \par{
 \begin{verbatim}
-sumYucky({8, 7, 11, 9, 12, 10}) => 9.0
-sumYucky({120, 99, 9})          => 109.5
-sumYucky({9})                   => 0.0
-sumYucky({})                    => 0.0
+sumNasty({8, 7, 11, 9, 12, 10}) => 9.0
+sumNasty({120, 99, 9})          => 109.5
+sumNasty({9})                   => 0.0
+sumNasty({})                    => 0.0
 \end{verbatim}
 }
 
@@ -320,7 +320,7 @@ classifyVars("\(\lambda\)x.\(\lambda\)y.xyz") => {<"x" : "B">, <"y" : "B">, <"z"
 classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
 \end{alltt}
 
-\exercise{2}{chapter-arrays-collections}{The \textit{substitution cipher} is a text cipher that encodes an alphabet string $A$ (also called the \textit{plain-text alphabet}) with a key string $K$ (also called the \textit{cipher-text alphabet}). The $A$ string is defined as \ttt{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, and $K$ is any permutation of $A$. We can encode a string $s$ using $K$ as a mapping from $A$. For example, if $K$ is the string \ttt{"ZEBRASCDFGHIJKLMNOPQTUVWXY"} and $s$ is \ttt{"FLEE AT ONCE. WE ARE DISCOVERED!"}, the result of encoding $s$ produces \ttt{"SIAA ZQ LKBA. VA ZOA RFPBLUAOAR!"}
+\exercise{2}{chapter-arrays-collections}{The \textit{substitution cipher} is a text cipher that encodes an alphabet string $A$ (also called the \textit{plain-text alphabet}) with a key string $K$ (also called the \textit{cipher-text alphabet}). The $A$ string is defined as \ttt{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, and $K$ is any permutation of $A$. We can encode a string $s$ using $K$ as a mapping from $A$. For example, if $K$ is the string \ttt{"ZEBRASCDFGHIJKLMNOPQTUVWXY"} and $s$ is \ttt{"WE MIGHT AS WELL SURRENDER!"}, the result of encoding $s$ produces \ttt{"VN IDBCY JZ VNHH ZXRRNFMNR!"}
 
 Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet string $A$, a cipher-text string $K$, and a string $s$ to encode, \ttt{substitutionCipher} should return a string $s'$ using the aforementioned substitution cipher algorithm. You must follow the ``design recipe'' laid out in class. That is, you must write the method purpose statement comment, tests, and the implementation.}
 
@@ -353,5 +353,3 @@ Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends List<Integer>> boolean areParallelLists(T t, T u)} method that, when given two types of lists $t$ and $u$ that store integer values, determines whether or not they are ``parallel''. In this context, Two integer lists are parallel if they differ by a single constant factor. For example, where $t=\{5, 10, 15, 20\}$ and $u=\{20, 40, 60, 80\}$, $t$ and $u$ are parallel because every element in $t$ multiplied by four gets us a parallel element in $u$. This factorization is bidirectional, meaning that $t$ could be $\{100, 200, 300, 200\}$ and $u$ could be $\{10, 20, 30, 20\}$.}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends Set<U>, U extends Comparable<U>> boolean areEqualSets(T t, T u)} m\-ethod that, when given two types of sets $t$ and $u$ that store comparable elements, returns whether they are equal to one another. Two sets are equivalent if they are subsets of each other. You must traverse over the sets; you \textbf{cannot} use the built-in \ttt{.equals} method provided by the \ttt{Set} implementations.}
-%f(a, b) and f(3, 4) produces {<a : 3>, <b : 4>}
-%f(a, a) and f(3, 4) produces {<>}
