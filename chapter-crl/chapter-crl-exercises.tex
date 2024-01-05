@@ -25,9 +25,9 @@
 
 \par{
 \begin{verbatim}
-public static final boolean P = false;
-public static final boolean Q = true;
-public static final boolean R = false;
+static final boolean P = false;
+static final boolean Q = true;
+static final boolean R = false;
 
 cond(P, not(bicond(Q, not(R))))
 \end{verbatim}
@@ -124,13 +124,13 @@ cond(P, not(bicond(Q, not(R))))
 
 \par{
 \begin{verbatim}
-fitCandy(4, 1, 9) -> 4
-fitCandy(4, 1, 4) -> 4
-fitCandy(1, 2, 6) -> 1
-fitCandy(6, 1, 13) -> -1
-fitCandy(60, 100, 550) -> 50
-fitCandy(7, 1, 12) -> 7
-fitCandy(7, 1, 13) -> -1
+fitCandy(4, 1, 9)      => 4
+fitCandy(4, 1, 4)      => 4
+fitCandy(1, 2, 6)      => 1
+fitCandy(6, 1, 13)     => -1
+fitCandy(60, 100, 550) => 50
+fitCandy(7, 1, 12)     => 7
+fitCandy(7, 1, 13)     => -1
 \end{verbatim}
 }
 
@@ -138,13 +138,13 @@ fitCandy(7, 1, 13) -> -1
 
 \par{
 \begin{verbatim}
-isValidIpv4("192.168.1.244") -> true
-isValidIpv4("149.165.192.52") -> true
-isValidIpv4("192.168.1.256") -> false
-isValidIpv4("192.168.1201.23") -> false
-isValidIpv4("192.168.1201.ABC") -> false
-isValidIpv4("ABC.DEF.GHI") -> false
-isValidIpv4("192.168.1A6.201") -> false
+isValidIpv4("192.168.1.244")    => true
+isValidIpv4("149.165.192.52")   => true
+isValidIpv4("192.168.1.256")    => false
+isValidIpv4("192.168.1201.23")  => false
+isValidIpv4("192.168.1201.ABC") => false
+isValidIpv4("ABC.DEF.GHI")      => false
+isValidIpv4("192.168.1A6.201")  => false
 \end{verbatim}
 }
 
@@ -245,7 +245,7 @@ Your method should return the total cost of the item after applying the discount
 \exercise{1}{chapter-crl}{This question has three parts.}
 
 \begin{enumerate}[label=(\alph*)]
-    \item The \textit{subfactorial} of a number, namely $!n$, is the number of permutations of $n$ objects such that no object appears in its natural spot. For example, take the collection of objects $\{a, b, c\}$. There are $3!=6$ possible permutations: $\{a, b, c\}, \{a, c, b\}, \\\{b, c, a\}, \{c, b, a\}, \{c, a, b\}, \{b, a, c\}$, but only two of these are \textit{derangements}: $\{b, c, a\}$ and $\{c, a, b\}$, because no element is in the same spot as the original collection. Therefore, we say that $!3=2$. We can describe subfactorial as a recursive formula:
+    \item The \textit{subfactorial} of a number, namely $!n$, is the number of permutations of $n$ objects such that no object appears in its natural spot. For example, take the collection of objects $\{a, b, c\}$. There are $6$ possible permutations (because we choose arrangements for three items, and $3!=6$): $\{a, b, c\}, \{a, c, b\}, \{b, c, a\}, \{c, b, a\}, \{c, a, b\}, \{b, a, c\}$, but only two of these are \textit{derangements}: $\{b, c, a\}$ and $\{c, a, b\}$, because no element is in the same spot as the original collection. Therefore, we say that $!3=2$. We can describe subfactorial as a recursive formula:
 \begin{align*}
     !0 &= 1\\
     !1 &= 0\\

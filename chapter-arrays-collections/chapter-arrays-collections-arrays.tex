@@ -472,7 +472,7 @@ class SumOf2DArrayTester {
 \end{lstlisting}
 \end{cl}
 
-We need to know both the number of rows and the number of columns to traverse over a two-dimensional array. To retrieve the number of rows, we simply refer to the array's length via \texttt{$A$.length}. To get the number of columns, again, because we know that $A$ is an array of one-dimensional arrays, we use \ttt{$A[0]$.length}, or in general, \ttt{$A[i]$.length} for any $i$ such that $0 \leq i < $\ttt{$A$.length}.\footnote{This generalization applies because arrays in Java cannot be \textit{ragged}, or where different rows/columns have different lengths.}
+We need to know both the number of rows and the number of columns to traverse over a two-dimensional array. To retrieve the number of rows, we simply refer to the array's length via \texttt{$A$.length}. To get the number of columns, again, because we know that $A$ is an array of one-dimensional arrays, we use \ttt{$A[0]$.length}, or in general, \ttt{$A[i]$.length} for any $i$ such that $0 \leq i< $ \ttt{$A$.length}.\footnote{This generalization applies because arrays in Java cannot be \textit{ragged}, or where different rows/columns have different lengths.}
 
 \begin{cl}[]{Sum of a Two-Dimensional Array}
 \begin{lstlisting}[language=MyJava]

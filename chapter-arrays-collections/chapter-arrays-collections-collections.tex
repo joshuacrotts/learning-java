@@ -115,7 +115,7 @@ class DIntArray {
 \end{lstlisting}
 \end{cl}
 
-We have two methods to go: \ttt{getFromList} and \ttt{setInList}. The former retrieves an element at a given index and the latter replaces the element at a given index. Both methods receive an index $i$ that must be in-bounds, where in-bounds refers to not only the bounds of the array, i.e., neither negative nor exceeding the length of the list, but also the logical indices. The \textit{logical indices} of a list are the indices in which elements exist. For our purposes, these indices are from zero up until and excluding the first instance of $-1$. We will also write a helper method that retrieves the index of the first ``free'' slot of a list, which corresponds to the first occurrence of $-1$.
+We have two methods to go: \ttt{getFromList} and \ttt{setInList}. The former retrieves an element at a given index and the latter replaces the element at a given index. Both methods receive an index $i$ that must be in-bounds, where in-bounds refers to not only the bounds of the array, i.e., neither negative nor exceeding the length of the list, but also the logical indices. The \textit{logical indices} of a list are the indices in which elements exist. For our purposes, these indices are from zero up until and excluding the first instance of $-1$. We will also write a helper method that retrieves the index of the first ``free'' slot of a list, i.e., the first occurrence of $-1$.
 
 \begin{cl}[]{``Get From List'' Dynamic Array Implementation}
 \begin{lstlisting}[language=MyJava]
@@ -221,11 +221,11 @@ ls1.add(439);
 ls1.add(311);
 ls1.add(654);
 ls1.add(523);
-ls1.toString();  -> {439, 311, 654, 523}
-ls1.get(0);      -> 439
+ls1.toString();  => {439, 311, 654, 523}
+ls1.get(0);      => 439
 ls1.set(1, 212);
 ls1.add(677);
-ls1.toString()   -> {439, 212, 654, 523, 677}
+ls1.toString()   => {439, 212, 654, 523, 677}
 \end{verbatim}
 }
 Finally, we can remove an element, when given its index, using \ttt{.remove}. Be aware that removing elements is not as simple as adding. Suppose that, from the previous example, we invoke $\ttt{ls1.remove}(2)$, which removes the value $654$. We cannot simply have a slot/index with a missing value. So, Java compensates by shifting all values to the right of the removed value over by one.
@@ -662,11 +662,12 @@ Why is this what the priority queue outputs? If we reason about this with our co
 A \textit{Set} in Java is an interface rather than a class. This is because Java has a hierarchy for differing implementations of sets. We will discuss three: \textit{HashSet}, \textit{TreeSet}, and \textit{LinkedHashSet}. While all three disallow duplicate elements, the latter two impose an ordering on their elements, which goes against the standard mathematical definition, but for practical reasons.
 
 \subsubsection*{\ttt{HashSet} Class}
-The \textit{HashSet} implementation of sets determines existence of objects in the set by the \textit{hash code} of the object. We can think of hash codes as unique identifiers for objects, similar to memory locations. In fact, in our discussion on strings and arrays, a comparison using \ttt{==} compares the hash codes of the objects to see if they are identical, rather than containing the same content. Hash sets are convenient and fast to work with due to the underlying implementation, whose details are beyond the scope of this text. Use hash sets when you do not care about element ordering or ``position'' in the set, but want to ensure no duplicates exist.
+The \textit{HashSet} implementation of sets determines existence of objects in the set by the \textit{hashcode} of the object. Recall that we can think of hashcodes as an association for objects. In fact, in our discussion on strings and arrays, a comparison using \ttt{==} compares the hashcodes of the objects to see if they are identical, rather than containing the same content.
+ Hash sets are convenient and fast to work with due to the underlying implementation, whose details are beyond the scope of this text. Use hash sets when you do not care about element ordering or ``position'' in the set, but want to ensure no duplicates exist.
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Hash Sets]
-    A \textit{HashSet} is a set of non-duplicate elements with no defined ordering. Elements are inserted into the set by their hash code.
+    A \textit{HashSet} is a set of non-duplicate elements with no defined ordering. Elements are inserted into the set by their hashcode.
     \vspace{2ex}
   \begin{description}
     \item [\ttt{Set<$T$> $S=$ new HashSet<>()}] creates a \ttt{HashSet} of type $T$, named $S$.
@@ -693,11 +694,11 @@ Dictionaries maps elements from one type $K$ to elements of another type $V$. Th
 Java has an interface called \ttt{Map} rather than a class because, like sets, there is a hierarchy for differing implementations of maps. We will discuss three: \textit{HashMap}, \textit{TreeMap}, and \textit{LinkedHashMap}. Maps contain keys and values; the keys are mapped to values in the map. Additionally, maps cannot contain duplicate keys.
 
 \subsubsection*{\ttt{HashMap} Class}
-\textit{HashMaps} base existence of keys in the map by their hash code, identical to a HashSet. 
+\textit{HashMaps} base existence of keys in the map by their hashcode, identical to a HashSet. 
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Hash Maps]
-    A \textit{HashMap} is a dictionary-based data structure wherein we map \textit{keys} to \textit{values}. The position of these pairs in the map is according to the hash code of the key.
+    A \textit{HashMap} is a dictionary-based data structure wherein we map \textit{keys} to \textit{values}. The position of these pairs in the map is according to the hashcode of the key.
     \vspace{2ex}
   \begin{description}
     \item [\ttt{Map<$K, V$> $M=$ new HashMap<>()}] creates a \ttt{HashMap} named $M$ whose keys are of type $K$ and whose values are of type $V$. Namely, the keys map to the values.
