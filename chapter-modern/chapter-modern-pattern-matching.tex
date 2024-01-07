@@ -381,3 +381,104 @@ class Lexer {
 As we see, we can make use of streams and collectors to populate the queue of tokens. The \ttt{createToken} method is responsible for creating the respective token type from the input. Subsequent updates to the grammar of the language would result in only needing to update \ttt{createToken} rather than requiring a change to the internals of the lexer algorithm itself. Suppose that we want to add boolean literals into the language. Thus, we need two modifications: 1) add a boolean \ttt{TokenType} and 2) add a clause in the switch expression to return a \ttt{Token} that represents a \ttt{TokenType.BOOLEAN} or something similar.
 
 \example{We will break the mini-project into two separate examples since both the lexer and parser are complicated pieces of the puzzle. The parser receives tokens and, in general, creates an abstract syntax tree to represent the input data.\footnote{We say ``in general'' because a parser might also forego an AST and go straight to an interpreter or program instructions.}}
+
+Our parser implementation contains a single static method: \ttt{parse}, which receives a queue of tokens and returns the root of an abstract syntax tree. We need to create three kinds of abstract syntax trees: \ttt{NumNode}, \ttt{SymbolNode}, and \ttt{SExprNode}, all of which extend the abstract \ttt{AstNode} class. An \ttt{AstNode}, like the one presented from Chapter~\ref{chapter:chapter-advanced-oop}, contains a list of children, as well as a way to add children to that list. The former two subclasses, namely \ttt{NumNode} and \ttt{SymbolNode}, store their data, i.e., the number and symbol respectively, as instance variables inside their class definitions. Because we have seen these two class definitions previously, we will omit their implementation. What we have not seen before, however, is \ttt{SExprNode}. Because our language is so small, an \ttt{SExprNode} is identical to an \ttt{AstNode} aside from the fact that it is not abstract.
+
+To parse the list of tokens, we peek at the head of the queue and match on its type. If it is a number or a symbol, we instantiate an instance of the appropriate subclass type. If we encounter a left parenthesis, then we must do more work, that work being to parse the contents inside the parentheses. We traverse over the tokens until we encounter a right parenthesis, recursively parsing and adding each abstract syntax tree node to a running \ttt{SExprNode} instance. Because the process is recursive, we handle the cases in which an s-expression is nested inside another, which was the case in the third test case from the lexer tester.
+
+\begin{cl}[ParserTester.java]{Testing the Parser}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static Lexer.lex;
+import static Parser.parse;
+
+class ParserTester {
+
+  @Test
+  void testParse() {
+    String in1 = "42";
+    String in2 = "(+ 2 40)";
+    String in3 = "(+ 27 (* 5 3) 10)";
+
+    assertAll(
+      () -> assertEquals(new NumNode(42), 
+                         parse(lex(in1))),
+      () -> assertEquals(new SExprNode(
+                          new SymbolNode("+"),
+                          new NumNode(2),
+                          new NumNode), 
+                         parse(lex(in2))),
+      () -> assertEquals(new SExprNode(
+                          new SymbolNode("+"),
+                          new NumNode(27),
+                          new SExprNode(
+                           new SymbolNode("*"),
+                           new NumNode(5),
+                           new NumNode(3)),
+                          new NumNode(10)), 
+                         parse(lex(in3))));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[Parser.java]{Parser Implementation}
+\begin{lstlisting}[language=MyJava]
+import java.util.Objects;
+import java.util.Queue;
+
+class Parser {
+
+  /**
+   * Parses a list of tokens into an AST.
+   * @param tokenList queue of tokens to parse.
+   * @return constructed AST from the tokens.
+   */
+  public static AstNode parse(Queue<Token> tokenList) {
+    if (!tokenList.isEmpty()) {
+      return switch (tokenList.peek().type()) {
+        case NUMBER -> new NumberNode(tokenList.remove().data());
+        case SYMBOL -> new SymbolNode(tokenList.remove().data());
+        case BOOLEAN -> new BooleanNode(tokenList.remove().data());
+        case L_PAREN -> parseSExpression(tokenList);
+        default -> throw new IllegalArgumentException("parse: unexpected token " + tokenList.peek().type());
+      };
+    } else { return null; }
+  }
+
+  /**
+   * Constructs an s-expression from a list of tokens. The precondition
+   * for entering this method is that the first token in the queue is
+   * the opening parenthesis of the s-expression, i.e., an L_PAREN.
+   * @param tokenList queue of tokens to parse as the sexpr.
+   * @return constructed SExpressionNode from the tokens.
+   */
+  private static AstNode parseSExpression(Queue<Token> tokenList) {
+    if (tokenList.isEmpty()) { throw new IllegalArgumentException("Empty token list"); }
+    else {
+      // Remove the left parenthesis.
+      tokenList.remove();
+      SExpressionNode sexpr = null;
+
+      // Parse the tokens until we reach the right parenthesis.
+      while (!tokenList.isEmpty() && tokenList.peek().type() != TokenType.R_PAREN) {
+        // Get the first token.
+        sexpr = sexpr == null ? parseFirstToken(tokenList) : sexpr;
+        sexpr.addChild(parse(tokenList));
+      }
+
+      // Remove the right parenthesis.
+      tokenList.remove();
+      return sexpr;
+    }
+  }
+
+  private static SExpressionNode parseFirstToken(Queue<Token> tokenList) {
+    switch (Objects.requireNonNull(tokenList.peek()).type()) {
+      default: { return new SExpressionNode(); }
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
