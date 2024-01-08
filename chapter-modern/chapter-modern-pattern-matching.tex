@@ -277,9 +277,7 @@ Before we write the lexer and test cases, we need to determine what comprises a 
 
 \begin{cl}[TokenType.java]{Token Type Enumeration}
 \begin{lstlisting}[language=MyJava]
-enum TokenType {
-  L_PAREN, R_PAREN, NUMBER, SYMBOL
-}
+enum TokenType { L_PAREN, R_PAREN, NUMBER, SYMBOL }
 \end{lstlisting}
 \end{cl}
 
@@ -306,7 +304,6 @@ class LexerTester {
     String in1 = "42";
     String in2 = "(+ 2 40)";
     String in3 = "(+ 27 (* 5 3) 10)";
-
     assertAll(
       () -> assertEquals(new LinkedList<>(List.of(new Token(TokenType.NUMBER, "42"))),
                          Lexer.lex(in1)),
@@ -346,8 +343,7 @@ class Lexer {
    */
   public static Queue<Token> lex(String s) {
     // First, we need to add a space after each left parenthesis and before each right parenthesis.
-    String sWithSpaces = s.replaceAll("\\(", "( ")
-            .replaceAll("\\)", " )");
+    String sWithSpaces = s.replaceAll("\\(", "( ").replaceAll("\\)", " )");
     // First, we need to split the string into tokens.
     String[] rawTokens = sWithSpaces.split(" ");
     return Arrays.stream(rawTokens)
@@ -390,8 +386,6 @@ To parse the list of tokens, we peek at the head of the queue and match on its t
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static Lexer.lex;
-import static Parser.parse;
 
 class ParserTester {
 
@@ -403,12 +397,12 @@ class ParserTester {
 
     assertAll(
       () -> assertEquals(new NumNode(42), 
-                         parse(lex(in1))),
+                         Parser.parse(Lexer.lex(in1))),
       () -> assertEquals(new SExprNode(
                           new SymbolNode("+"),
                           new NumNode(2),
                           new NumNode), 
-                         parse(lex(in2))),
+                         Parser.parse(Lexer.lex(in2))),
       () -> assertEquals(new SExprNode(
                           new SymbolNode("+"),
                           new NumNode(27),
@@ -417,7 +411,7 @@ class ParserTester {
                            new NumNode(5),
                            new NumNode(3)),
                           new NumNode(10)), 
-                         parse(lex(in3))));
+                         Parser.parse(Lexer.lex(in3))));
   }
 }
 \end{lstlisting}
@@ -442,7 +436,8 @@ class Parser {
         case SYMBOL -> new SymbolNode(tokenList.remove().data());
         case BOOLEAN -> new BooleanNode(tokenList.remove().data());
         case L_PAREN -> parseSExpression(tokenList);
-        default -> throw new IllegalArgumentException("parse: unexpected token " + tokenList.peek().type());
+        default -> throw new IllegalArgumentException("parse: unexpected token " 
+                                                      + tokenList.peek().type());
       };
     } else { return null; }
   }
@@ -455,7 +450,7 @@ class Parser {
    * @return constructed SExpressionNode from the tokens.
    */
   private static AstNode parseSExpression(Queue<Token> tokenList) {
-    if (tokenList.isEmpty()) { throw new IllegalArgumentException("Empty token list"); }
+    if (tokenList.isEmpty()) { return null; }
     else {
       // Remove the left parenthesis.
       tokenList.remove();
