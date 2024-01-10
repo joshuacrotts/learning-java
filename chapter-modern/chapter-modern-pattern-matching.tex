@@ -469,6 +469,10 @@ class Parser {
     }
   }
 
+  /**
+   * Instantiates a subclass of SExpressionNode to the type defined by the first
+   * token in the queue. This can be anything represented as an s-expression.
+   */
   private static SExpressionNode parseFirstToken(Queue<Token> tokenList) {
     switch (Objects.requireNonNull(tokenList.peek()).type()) {
       default: { return new SExpressionNode(); }
@@ -477,3 +481,7 @@ class Parser {
 }
 \end{lstlisting}
 \end{cl}
+
+Fortunately the parser is also not to difficult to understand. We perform a case analysis on the token and either return an abstract syntax tree node or create one from an s-expression.
+
+We decided to write a helper method, \ttt{parseFirstToken}, as a precursor to more advanced features in the language. Many special forms are represented as s-expressions and should be converted into appropriate abstract syntax tree nodes. As an example, we can write a conditional expression, i.e., \ttt{(cond pred cons alt)} via an s-expression. Therefore it makes logical sense to have a separate method that reads the first token and instantiates the correct node for that token, whether it be a \ttt{CondNode} or something else. Our implementation simply has one case, \ttt{default}, since we do not have conditional expressions, but we encourage the readers to add them as language features!

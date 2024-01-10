@@ -140,14 +140,16 @@ class FunctionalLazyListTester {
 
 What's awesome about this exercise is that it allows us to define the elements of the lazy list as any arbitrary lambda expression, meaning that we could redefine \ttt{FactorialLazyList} and \ttt{FibonacciLazyList} in terms of \ttt{FunctionLazyList}. We can generate infinitely many ones, squares, triples, or whatever else we desire.
 
+\exercise{2}{chapter-advanced-oop}{Design the generic \ttt{CyclicLazyList} class, which implements \ttt{ILazyList}, whose constructor is variadic and receives any number of values. Upon calling \ttt{next}, the cyclic lazy list should return the first item received from the constructor, then the second, and so forth until reaching the end. After returning all the values, cycle back to the front and continue. For instance, if we invoke \ttt{new CyclicLazyList<Integer>(1, 2, 3)}, invoking \ttt{.next} five times will produce \ttt{1}, \ttt{2}, \ttt{3}, \ttt{1}, \ttt{2}.}
+
 \exercise{1}{chapter-advanced-oop}{This exercise involves the doubly-linked list we wrote in the chapter.}
-Design the \ttt{public int size()} method, which returns the number of elements in the list. You can do this either recursively or with a loop. For better practice, try (and thoroughly test) both implementations.
+Design the \ttt{int size()} method, which returns the number of elements in the list. You can do this either recursively or with a loop. For better practice, try (and thoroughly test) both implementations.
 
 \exercise{2}{chapter-advanced-oop}{This exercise involves the doubly-linked list we wrote in the chapter.}
-Design the \ttt{public void set(int i, T v)} method, which overwrites/assigns, at index $i$, the value $v$. If the provided index is out-of-bounds, do nothing.
+Design the \ttt{void set(int i, T v)} method, which overwrites/assigns, at index $i$, the value $v$. If the provided index is out-of-bounds, do nothing.
 
 \exercise{2}{chapter-advanced-oop}{This exercise involves the doubly-linked list we wrote in the chapter.}
-Design the \ttt{public void insert(int i, T v)} method, which inserts the value $v$ at index $i$. As an example, if we insert $4$ into the list $[20, 5, 100, 25]$ at index $2$, the list then becomes $[20, 5, 4, 100, 25]$. If the provided index is out-of-bounds, do nothing.
+Design the \ttt{void insert(int i, T v)} method, which inserts the value $v$ at index $i$. As an example, if we insert $4$ into the list $[20, 5, 100, 25]$ at index $2$, the list then becomes $[20, 5, 4, 100, 25]$. If the provided index is out-of-bounds, do nothing.
 
 \exercise{1}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
 Add the \ttt{"read-number"} and \ttt{"print"} primitive operations to the language. The latter is polymorphic, meaning it can print both numbers and booleans.
@@ -272,6 +274,16 @@ Design a parser for the language described by the interpreter. The idea is to to
 
 \exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
 The Scheme programming language and its derivatives support \textit{code quotation}, i.e., the ability to convert an evaluable expression into data. As an example, if we evaluate \ttt{new QuoteNode(new VarNode("x"))}, we receive a symbol as the output, rather than the evaluated symbol via environment lookup. Add the \ttt{QuoteNode} class to your interpreter.
+
+\exercise{3}{chapter-arrays-collections}{Recall the unification exercise from Chapter~\ref{chapter-arrays-collections}. We can take the idea of unification a step further, which is the basis for almost all logic programming languages such as Prolog. For instance, take the expression \ttt{p(X, f(Y))}; attempting to unify this with \ttt{p(q(r(x)), f(b(x)))} returns a unification assignment of \ttt{X : q(r(x)), Y : b(x)}. It is possible for a unification to not return any possible assignment. As an example, unifying \ttt{p(a, b)} with \ttt{p(Y, Y)} returns an empty assignment because it is not possible to unify \ttt{a} with \ttt{Y}, then unify \ttt{b} with \ttt{Y}.}
+
+Design three classes: \ttt{Variable}, \ttt{Constant}, and \ttt{Predicate}. Each of these should implement the \ttt{IUnifiable} interface, which supplies one method: \ttt{Assignment unify(IUnifiable u, Assignment as)}. An \ttt{Assignment} is simply a mapping of \ttt{IUnifiable} objects to \ttt{IUnifiable} objects, resembling a map data structure. Variables in this small language will be represented as uppercased letters, whereas constants are lowercase. If two \ttt{IUnifiable} objects cannot be unified, then \ttt{unify} should return \ttt{null}.
+
+Constants are straightforward: constants can only be unified with other constants if they are equivalent. Constants can only be unified with variables if that variable does not have an existing assignment and, if it does, it must be equal to \ttt{this} constant. Constants cannot be unified with predicates.
+
+Variables can only be unified with constants if the variable does not have an existing assignment and, if it does, it must be equal to the constant passed as an argument. Variables can only be unified with other variables if at least one is bound to a constant; if they are both bound, then they must be equivalent constants. 
+
+Predicates can only be unified with variables if the variable does not have an existing assignment and, if it does, it must be equal to \ttt{this} predicate. Predicates can only be unified with predicates if it is possible to successfully unify all of its arguments. E.g., \ttt{p(a, z(b), c)} unifies with \ttt{p(X, Y, Z)} because we return the assignment \ttt{X : a, Y : b, Z : c}. 
 
 \exercise{3}{chapter-advanced-oop}{In this series of exercises, you will design several methods that act on very large natural numbers resembling the \ttt{BigInteger} class. You cannot use any methods from the class, or the class itself.}
 In this problem you will design several methods that act on very large \textit{natural numbers} resembling the \ttt{BigInteger} class. You \textit{\textbf{cannot}} use any methods from this class, or the class itself. 
