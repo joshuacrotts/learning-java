@@ -9,7 +9,7 @@
 
 \exercise{1}{chapter-crl}{Design the \ttt{int max(int x, int y, int z)} that returns the maximum of three integers $x$, $y$, and $z$. Do not use any built-in (\ttt{Math} library) methods.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{int computeRoundSum(int x, int y, int z)} method that computes the sum of the rounded values of three integers $x$, $y$, and $z$. By ``rounded values'', we mean that we round their least significant digit, i.e., the rightmost digit either up or down depending on its value. For instance, 12 rounds down to 10, 59 rounds up to 60, and 1009 rounds up to 1010.}
+\exercise{1}{chapter-crl}{Design the \ttt{int computeRoundSum(int x, int y, int z)} method that computes the sum of the rounded values of three integers $x$, $y$, and $z$. By ``rounded values'', we mean that we round their least significant digit, i.e., the rightmost digit either up or down depending on its value. For instance, 12 rounds down to 10, 59 rounds up to 60, and 1009 rounds up to 1010. If the number is negative, round towards zero when necessary, e.g., $-7$ rounds down to $-10$, $-2$ rounds up to zero.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean lessThan20(int x, int y, int z)} method that, when given three integers $x$, $y$, and $z$, returns whether or not one of them is less than twenty away from another. For example, \ttt{lessThan20(19, 2, 412)} returns true because $2$ is less than $20$ away from $19$. Another example is \ttt{lessThan20(999, 888, 777)}, which returns false because none of the numbers have a difference less than twenty.}
 
@@ -148,7 +148,7 @@ isValidIpv4("192.168.1A6.201")  => false
 \end{verbatim}
 }
 
-\exercise{1}{chapter-crl}{Design the \ttt{String stateOfMatter(double t, char u))} method that receives a temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{`C'} or \ttt{`F'} for Celsius and Fahrenheit respectively. Return a string representing whether the temperature is a liquid, solid, or gas at sea level.}
+\exercise{1}{chapter-crl}{Design the \ttt{String stateOfMatter(double t, char u)} method that receives a water temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{`C'} or \ttt{`F'} for Celsius and Fahrenheit respectively. Return a string representing whether the water is a liquid, solid, or gas at sea level.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{double computeGpa(String grade)} method that translates a letter grade into a number grade. Letter grades are A, B, C, D, and F, possibly followed by + or -. Their numeric values are 4, 3, 2, 1, and 0. There is no F+ or F-. A+ increases the numeric value by 0.3, a - decreases it by 0.3. However, an A+ has value 4.0.}
 
