@@ -588,8 +588,8 @@ class TemperatureComputer {
         String[] arr = x.split(";");
         String location = arr[0];
         double temp = Double.parseDouble(arr[1]);
-        Measurement meas = measurementMap.putIfAbsent(location, new Measurement(temp));
-        if (meas != null) { meas.add(temp); }
+        Measurement ms = measurementMap.putIfAbsent(location, new Measurement(temp));
+        if (ms != null) { ms.add(temp); }
       });
     } catch (IOException e) {
       throw new RuntimeException(e);
