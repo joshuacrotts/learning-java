@@ -475,8 +475,138 @@ class ConcatenateFiles {
 \end{lstlisting}
 \end{cl}
 
+
+
 % \example{Our last example is a recreation of the Unix ``ls'' command, which lists all files and directories from a given path. We can make use of the methods provided by the \ttt{File} class in this example. In particular, we want to write a (untestable) program that prints the file permissions, last-modified dates, owners, byte-size, and names of all files and directories in a given directory. Note the similarity to the ``ls'' command when the ``-la'' flag is passed.}
 
 % First, let's assume that the path-to-search is passed via terminal arguments. From here, we need a few pieces of information: whether the given content is a directory or a file, its permissions, its size in bytes, the last-modified date, and of course its name. We can obtain all these data points via a \ttt{File} instance. To retrieve the last-modified date, we can use the \ttt{.lastModified} method, then convert this from the seconds since epoch (January 1, 1970). But, to print this in a recognizable format, we will use the \ttt{SimpleDateFormat} class: it shall be printed in the ``day/month/year hh:mm:ss'' format.
+
+
+\section{Modern I/O Classes \& Methods}
+Aside from the aforementioned classes for working with files and I/O, Java's later versions provide methods and classes that achieve the same task as those that we might otherwise need to write several lines of code. 
+
+\example{To read the lines from a given file, we might open the file using a \ttt{BufferedReader} and \ttt{FileReader} object, read the values into some collection, e.g., a list, then process those lines accordingly. This gets repetitive, so it might be a good idea to write a method that does this for us, and is an exercise that we provide to the reader. Java 8 introduced two classes: \ttt{Files} and \ttt{Path} that work with files and paths respectively. Let's use a handy method from \ttt{Files}, namely \ttt{readAllLines}, to, as its name implies, read the lines from an input file. }
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.nio.file.Files;
+import java.util.List;
+
+class ReadAllLines {
+
+  public static void main(String[] args) {
+    try {
+      List<String> lines = Files.readAllLines(Path.of("test.txt")));
+      // Some processing with lines...
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+We still need to catch an \ttt{IOException} because \ttt{readAllFiles} might throw one in the event of some I/O error. What may be slightly disappointing is the fact that we cannot wrap this in a try-with-resources block because \ttt{readAllLines} opens and closes the file it receives, resulting in what might appear to be less succinct code. Moreover, the method receives a \ttt{Path}, rather than a \ttt{String}, which we believe to be an attempt made by Java to prevent the programmer from needing to mess with strings and other input resources directly. 
+
+\example{Unfortunately, \ttt{readAllLines} is extremely memory-inefficient, requiring us to store a list of every line in the file. Of course, this seems self-explanatory; why would we not want this in the first place? Consider an extremely large dataset, where the input contains one billion rows. Storing this data directly into running memory is not a particularly viable option, at least at the time of writing this text. A solution is to process each line one at a time, similar to how we work with a \ttt{BufferedReader} instance. As the section title suggests, though, there is a better way that incorporates streams into the mix. The \ttt{Files} class provides the \ttt{lines} method, which returns a stream of the lines in the file. Therefore, appealing to the lazy nature of streams, if we never actually use the data from the stream, nothing happens at all. This is a meaningless exercise, so let's write a method that solves the \ttt{1BR} challenge: given a file of data points representing measurements of temperatures in differing locations, return an alphabetized string containing the location and, separated by an equals sign, the minimum, maximum, and average temperatures across all data points for that location.}
+
+To start this problem, let's consider our options: we have one billion rows of text in the following format: \ttt{"LOCATION;TEMP"}, so storing this in direct memory is a challenge that we will not overcome. Instead, let's create a \ttt{Map} that maps location identifiers to \ttt{Measurement} objects. A \ttt{Measurement} stores a number of occurrences, its minimum, maximum, and total-accrued temperature. Each line we read will either update an existing \ttt{Measurement} in the map or insert a new key/value pair.
+
+To start, let's design the skeleton for our method, which we will name \ttt{computeTemperatures}, as well as the \ttt{Measurement} private class. Moreover, when instantiating a new \ttt{Measurement} instance, its current minimum, maximum, and total are all equal to the value on the current line.
+
+\begin{cl}[TemperatureComputer.java]{}
+\begin{lstlisting}[language=MyJava]
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.*;
+
+class TemperatureComputer {
+  
+  /**
+   * Returns a string with the locations and their 
+   * minimum, maximum, and average temperatures.
+   * @param filename - input file with locations and 
+   *                   temperature separated by ';'.
+   * @return String formatted as aforementioned.
+   */
+  public static String computeMeasurement(String filename) {
+    // TODO.
+    return null;
+  }
+
+  private static class Measurement {
+  
+    private double min, max, total;
+    private int noOccurrences;
+
+    public Measurement(double t) {
+      this.numOccurrences = 1;
+      this.min = t;
+      this.max = t;
+      this.total = t;
+    }
+
+    /**
+     * Adds a temperature to this measurement's total.
+     * We update the minimum, maximum, total, and 
+     * number of occurrences respectively.
+     */
+    public void add(double t) {
+      this.noOccurrences++;
+      this.total += t;
+      this.min = Math.min(this.min, t);
+      this.max = Math.max(this.max, t);
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+As stated, using a map is the appropriate data structure, so let's instantiate a \ttt{HashMap} due to its quick lookup times.\footnote{In a couple of paragraphs, we will explain this decision instead of using a \ttt{TreeMap}.} Then, we declare, inside a try-with-resources, a \ttt{Stream<String>}, returned by the \ttt{lines} method. Once either the stream is fully consumed, the stream is closed, or the program execution finishes the try block, the file is also closed. From the stream, we could use a traditional for-each loop, but let's use stream operations instead. For every line $l$, we want to split it on the semicolon, retrieve the location and temperature, then update the map as necessary. Because we need to update the state of an object if it exists in the map, we will utilize the \ttt{putIfAbsent} method, which returns the associating \ttt{Measurement} if the key-to-put already exists.
+
+Lastly, we must conjoin the sorted pairs in the map with commas, which we can do via the \ttt{sorted()} and \ttt{Collectors.joining()} methods. In addition to this, we added a \ttt{toString} method to \ttt{Measurement} that returns a formatted string containing the minimum, average, and maximum temperatures floated to one decimal. Due to how trivial this is, we omit it in the listing.
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.io.IOException;
+import java.util.stream.Stream;
+import java.nio.file.*;
+import java.util.*;
+
+class TemperatureComputer {
+
+  /**
+   * Returns a string with the locations and their 
+   * minimum, maximum, and average temperatures.
+   * @param filename - input file with locations and 
+   *                   temperature separated by ';'.
+   * @return String formatted as aforementioned.
+   */
+  public static String computeMeasurement(String filename) {
+    Map<String, Measurement> measurementMap = new HashMap<>();
+    try (Stream<String> lines = Files.lines(Path.of(filename))) {
+      lines.forEach(x -> {
+        String[] arr = x.split(";");
+        String location = arr[0];
+        double temp = Double.parseDouble(arr[1]);
+        Measurement meas = measurementMap.putIfAbsent(location, new Measurement(temp));
+        if (meas != null) { meas.add(temp); }
+      });
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  return measurementMap.keySet()
+                       .stream()
+                       .sorted()
+                       .map(s -> String.format("%s=%s", s, measurementMap.get(s)))
+                       .collect(Collectors.joining(", "));
+  }
+
+  // ... other class not shown.
+}
+\end{lstlisting}
+\end{cl}
+
+
+With inputs as large as what we assume them to be, we must make reasonable considerations with our choice of data structure. We could, theoretically, use a \ttt{TreeMap} and have the program autosort the measurement map pairs, but this is a performance penalty that is greater than using the \ttt{sorted} method as provided by the stream API over the map keys. In our tests, using a \ttt{TreeMap} amounted to a forty second performance penalty.
 
 % \example{Our last example is to mimic a ``find/replace'' program. We will write a program that receives a file name, a string to find, and a string to replace. The program will then output a file with the replaced string. For example, if the user passes the following arguments:
