@@ -100,6 +100,17 @@ Strings are \textit{indexed from zero}, which means that the characters in the s
 
 \example{A \textit{substring} of a string $s$ is a sequence of existing characters inside $s$. We can extract a substring from some string $s$ using the \ttt{substring} method: \ttt{"abcde".substring(2, 4)} returns \ttt{"cd"}. Note that the last index is exclusive, meaning that, as a rule of thumb, the number of characters returned in the substring is equal to the second argument minus the first argument. There is also a handy second version of this method that receives only one argument: it returns the substring from the given index up to the end of the string. E.g., \ttt{"abcdefg".substring(1)} returns everything but the first character, i.e., \ttt{"bcdefg"}.}
 
+\example{We can convert between datatypes, such as an integer to a string and vice versa, using the \ttt{String.valueOf} and \ttt{Integer.parseInt} methods respectively. Passing any non-string primitive value as an argument to \ttt{valueOf} converts it into a string. Oppositely, if we pass a string that represents an integer to \ttt{parseInt}, we obtain the corresponding integer. The \ttt{Double.parseDouble} and \ttt{Boolean.parseBoolean} methods behave similarly. Passing an invalid string, i.e., one that does not represent the respective datatype, results in Java throwing a \ttt{NumberFormatException} error.}
+
+\par{
+\begin{verbatim}
+String s1 = String.valueOf(1234);
+String s2 = String.valueOf(Math.PI);
+int n1 = Integer.parseInt(s1);
+double s2 = Double.parseDouble(s2);
+\end{verbatim}
+}
+
 \begin{figure}[tp]
 %\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
   \small
@@ -115,6 +126,8 @@ Strings are \textit{indexed from zero}, which means that the characters in the s
     \item[\ttt{int $S$.indexOf($S'$)}] returns the index of the first instance of $S'$ in $S$, or $-1$ if $S' \not\sqsubseteq S$.
     \item[\ttt{boolean $S$.contains($S'$)}] returns \ttt{true} if $S' \sqsubseteq S$; \ttt{false} otherwise.
     \item[\ttt{String $S$.repeat($n$)}] returns a new string containing $n$ copies of $S$.
+    \item[\ttt{String String.valueOf($v$)} returns a stringified version of $v$, where $v$ is some primitive value.]
+    \item[\ttt{int Integer.parseInt($S$)} returns the integer representation of a string $S$, if it can be parsed as such.]
   \end{description}
 \end{tcolorbox}
   \caption{Useful String Methods.}

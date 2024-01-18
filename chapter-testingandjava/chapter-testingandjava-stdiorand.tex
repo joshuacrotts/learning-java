@@ -205,9 +205,9 @@ Admittedly, the above test is somewhat useless since it only tests the efficacy 
 
 \example{Java provides the \ttt{random} method from the \ttt{Math} class, which receives no arguments. To do anything significant, we must understand how this method works, i.e., what values it can return. The \ttt{Math.random()} method returns a random \ttt{double} between $[0, 1)$, where the upper-bound is exclusive. So, we could receive results such as \ttt{0.391283114421}, \ttt{0}, \ttt{0.999999999999}, but never exactly one. We can use basic multiplicative offsets to convert this range into what we might want. For example, to generate a random double value between $[0, 10)$, we can multiply the output by ten, e.g., \ttt{Math.random() * 10}.}
 
-\example{To generate a random integer between $-5$ and $15$ using \ttt{Math.random}, however, we need to do something similar to our \ttt{Random} example. First, we multiply the result by $21$ to produce a double between $[0, 21)$. Then, we subtract five to get the interval $[-5, 16)$. This is almost what we want, but our specification says that the result should be an integer rather than a double. So, we can cast the value accordingly.}
+\example{To generate a random integer between $-5$ and $15$, inclusive, using \ttt{Math.random}, we need to do something similar to our \ttt{Random} example. First, we multiply the result of \ttt{Math.random()} by $21$ to generate a floating-point value between $[0, 21)$. Casting this expression to an integer gives us an integer between $[0, 20]$. Finally, subtracting five gets us the desired range.}
 \par{
 \begin{verbatim}
-int x = (int) ((Math.random() * 21 - 5))
+int x = ((int) (Math.random() * 21)) - 5;
 \end{verbatim}
 }
