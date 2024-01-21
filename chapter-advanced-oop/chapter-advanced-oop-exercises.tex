@@ -283,7 +283,7 @@ Constants are straightforward: constants can only be unified with other constant
 
 Variables can only be unified with constants if the variable does not have an existing assignment and, if it does, it must be equal to the constant passed as an argument. Variables can only be unified with other variables if at least one is bound to a constant; if they are both bound, then they must be equivalent constants. 
 
-Predicates can only be unified with variables if the variable does not have an existing assignment and, if it does, it must be equal to \ttt{this} predicate. Predicates can only be unified with predicates if it is possible to successfully unify all of its arguments. E.g., \ttt{p(a, z(b), c)} unifies with \ttt{p(X, Y, Z)} because we return the assignment \ttt{X : a, Y : b, Z : c}. 
+Predicates can only be unified with variables if the variable does not have an existing assignment and, if it does, it must be equal to \ttt{this} predicate. Predicates can only be unified with predicates if it is possible to successfully unify all of its arguments. E.g., \ttt{p(a, z(b), c)} unifies with \ttt{p(X, z(Y), Z)} because we return the assignment \ttt{X : a, Y : b, Z : c}. 
 
 \exercise{3}{chapter-advanced-oop}{In this series of exercises, you will design several methods that act on very large natural numbers resembling the \ttt{BigInteger} class. You cannot use any methods from the class, or the class itself.}
 In this problem you will design several methods that act on very large \textit{natural numbers} resembling the \ttt{BigInteger} class. You \textit{\textbf{cannot}} use any methods from this class, or the class itself. 

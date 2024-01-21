@@ -206,7 +206,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \exercise{1}{chapter-crl}{This question has two parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{isPalindromeTR} tail recursive method, which receives a string and determines if it is a palindrome. Recall that a palindrome is a string that is the same backwards as it is forwards. E.g., ``racecar''. \textbf{Do not} use a (character) array, \ttt{StringBuilder}/\ttt{StringBuffer}, or similar, to solve this problem. It \textit{must} be naturally recursive.
+    \item Design the \ttt{isPalindromeTR} tail recursive method, which receives a string and determines if it is a palindrome. Recall that a palindrome is a string that is the same backwards as it is forwards. E.g., ``racecar''. \textbf{Do not} use a (character) array, \ttt{StringBuilder}, \ttt{StringBuffer}, or similar, to solve this problem. It \textit{must} be naturally recursive.
     \item Design the \ttt{isPalindromeLoop} method that solves the problem using a loop. The same restrictions from the previous problem hold true for this one.
 \end{enumerate}
 
@@ -252,11 +252,11 @@ If you write tests for one of these methods, you should be able to propagate it 
     !n &= (n-1) \cdot (!(n - 1)\;+\;!(n - 2))
 \end{align*}
 
-    Design the standard recursive \ttt{subfactorial} method, which receives an integer $n$ and returns its subfactorial.
+    Design the standard recursive \ttt{subfactorial} method, which receives an long integer $n$ and returns its subfactorial. Because the resulting subfactorial values can grow insanely large, we will use the \ttt{long} datatype instead of \ttt{int}.
 
     \item Then, design the \ttt{subfactorialTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
 
-    \item Finally, design the \ttt{subfactorial} method that solves the problem using a loop.
+    \item Finally, design the \ttt{subfactorialLoop} method that solves the problem using a loop.
 \end{enumerate}
 
 If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
