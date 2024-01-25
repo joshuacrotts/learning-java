@@ -142,6 +142,8 @@ What's awesome about this exercise is that it allows us to define the elements o
 
 \exercise{2}{chapter-advanced-oop}{Design the generic \ttt{CyclicLazyList} class, which implements \ttt{ILazyList}, whose constructor is variadic and receives any number of values. Upon calling \ttt{next}, the cyclic lazy list should return the first item received from the constructor, then the second, and so forth until reaching the end. After returning all the values, cycle back to the front and continue. For instance, if we invoke \ttt{new CyclicLazyList<Integer>(1, 2, 3)}, invoking \ttt{.next} five times will produce \ttt{1}, \ttt{2}, \ttt{3}, \ttt{1}, \ttt{2}.}
 
+\exercise{1}{chapter-advanced-oop}{Design the \ttt{static <T> Predicate<T> orEquals(Predicate<T> p, T x)} method that, when given a predicate $p$ and an object $x$, returns a \textit{new} predicate that returns true if its argument $x'$ is equal (using \ttt{.equals}) to $x$ or satisfies $p(x)$.}
+
 \exercise{1}{chapter-advanced-oop}{This exercise involves the doubly-linked list we wrote in the chapter.}
 Design the \ttt{int size()} method, which returns the number of elements in the list. You can do this either recursively or with a loop. For better practice, try (and thoroughly test) both implementations.
 
