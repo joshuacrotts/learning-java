@@ -572,7 +572,7 @@ class RookPath {
    * @param m number of columns of the board.
    * @return number of possible paths.
    */
-  public static int rook(int x, int y, int n, int m) {
+  static int rook(int x, int y, int n, int m) {
     int[][] dp = new int[n + 1][m + 1];
 
     // Compose the initial bottom-row solutions.

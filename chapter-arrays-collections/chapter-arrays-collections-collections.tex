@@ -913,7 +913,7 @@ class BigIntFibStream {
    * Computes a stream of BigInteger values computing the nth Fibonacci value.
    * @return stream containing arrays of the next sequential BigIntegers.
    */
-  public static Stream<BigInteger[]> fibonacciStream() {
+  static Stream<BigInteger[]> fibonacciStream() {
     BigInteger[] vals = new BigInteger[]{new BigInteger("0"), 
                                          new BigInteger("1")};
     return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])});
@@ -995,7 +995,7 @@ class BigIntFibStream {
    * Computes a stream of BigInteger values computing the nth Fibonacci value.
    * @return stream containing arrays of the next sequential Fibonacci BigIntegers.
    */
-  public static Stream<BigInteger> fibonacciStream() {
+  static Stream<BigInteger> fibonacciStream() {
     BigInteger[] vals = new BigInteger[]{new BigInteger("0"),
                                          new BigInteger("1")};
     return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])})
@@ -1088,7 +1088,7 @@ class RemoveVowelsStreamTester {
 \end{lstlisting}
 \end{cl}
 
-Onto the definition; we start by writing the method signature and purpose. Then, we need to complete step one: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. Step two involves us converting each integer into a ``one-string'', which we can do via the constructor for a \ttt{String} object. Step three requires the use of \ttt{filter}, which is another higher-order function. It receives a lambda expression and returns those objects from the stream that satisfy the filter. Since we want to filter \textit{out} the vowels, we should write a method that determines if a character is vowel, then negate the expression as part of the lambda definition. Lastly we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. The reduce function receives an initial value, i.e., an accumulator $a$ and a binary function $f$. It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly how reduce works; It folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} Due to the simplicity of the \ttt{isVowel} predicate, we omit its definition.
+Onto the definition; we start by writing the method signature and purpose. Then, we need to complete step one: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. Step two involves us converting each integer into a ``one-string'', which we can do via the constructor for a \ttt{String} object. Step three requires the use of \ttt{filter}, which is another higher-order function. It receives a lambda expression and returns those objects from the stream that satisfy the filter. Since we want to filter \textit{out} the vowels, we should write a method that determines if a character is vowel, then negate the expression as part of the lambda definition. Lastly we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. The reduce function receives an initial value, i.e., an accumulator $a$ and a binary function $f$. It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly how reduce works; It folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} Due to the simplicity of the \ttt{isVowel} predicate and its implementation in Chapter~\ref{chapter-crl}, we omit its definition.
 
 \begin{cl}[]{Definition of \ttt{removeVowels} Using Streams}
 \begin{lstlisting}[language=MyJava]
