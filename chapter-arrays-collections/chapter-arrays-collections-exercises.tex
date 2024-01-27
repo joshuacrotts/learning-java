@@ -13,13 +13,11 @@
 \end{enumerate}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{int[] accSum(int[] A)} method, which receives an array of integers and returns a new array of integers that corresponds to the accumulated sum between each integer. We present some examples below.}
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 accSum({1, 7, 2, 9})                => {1, 8, 10, 19}
 accSum({1, 3, 3, 4, 5, 5, 6, 6, 2}) => {1, 4, 7, 11, 16, 21, 27, 33, 35}
 accSum({5, 5, 5, 5, 5, 5, 5, 1, 5}) => {5, 10, 15, 20, 25, 30, 35, 36, 41}
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{String[] fizzBuzz(int min, int max)} method that iterates over the interval $[\textit{min}, \textit{max}]$ (you may assume $\textit{max} \geq \textit{min}$) and returns an array containing strings that meet the following criteria:}
 
@@ -30,36 +28,30 @@ accSum({5, 5, 5, 5, 5, 5, 5, 1, 5}) => {5, 10, 15, 20, 25, 30, 35, 36, 41}
         \item Otherwise, insert \ttt{"i"}, where \ttt{i} is the current number.
     \end{itemize}
 
-    \par{
-\begin{verbatim}
+    \begin{verbnobox}[\footnotesize]
 fizzBuzz(1, 12)  => {"1", "2", "Fizz", "4", "Buzz",
                      "Fizz", "7", "8", "Fizz", "Buzz",
                      "11", "Fizz"}
 fizzBuzz(15, 18) => {"FizzBuzz", "16", "17", "Fizz"}
-    \end{verbatim}
-}
+    \end{verbnobox}
 
 \exercise{2}{chapter-arrays-collections}{Using only arrays, design the \ttt{int[] findIntersection(int[] A, int[] B)} method that returns an array containing the \textit{intersection} of two arrays. The intersection of two arrays is the set of elements that are common to both arrays. For example, the intersection of $\{7, 4, 8, 0, 2, 1\}$ and $\{8, 6, 4, 9, 26, 4, 0\}$ is $\{7, 8, 0\}$. Do not assume that the arrays are sorted, and you cannot sort them yourself.}
 
 \exercise{2}{chapter-arrays-collections}{Desing the \ttt{int median(int[] A, int[] B)} that, when given two sorted (in increasing order) arrays of integers $A$ and $B$, returns the median value of those two lists. You can use auxiliary data structures to help in solving the problem, but they are not necessary.}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{double sumNasty(ArrayList<Integer> vals)} method that returns the average of the numbers in the list with the following caveat: The number $9$ should not be counted towards the average, nor should the following number, should one exist.}
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 sumNasty({8, 7, 11, 9, 12, 10}) => 9.0
 sumNasty({120, 99, 9})          => 109.5
 sumNasty({9})                   => 0.0
 sumNasty({})                    => 0.0
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] countEvenOdds(int[] vals)} method that returns a tuple (an array of two values) where index zero stores the amount of even values and index one stores the amount of odd values.}
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 countEvenOdds({11, 9, 2, 3, 7, 10, 12, 114}) => {4, 4}
 countEvenOdds({11, 13, 15, 17})              => {0, 4}
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{2}{chapter-arrays-collections}{This question has two parts.}
 \begin{enumerate}[label=(\alph*)]
@@ -80,11 +72,9 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \noindent can be represented as the two-dimensional array
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-\end{verbatim}
-}
+\end{verbnobox}
 
 \noindent Design the \ttt{int[][] transpose(int[][] matrix)} method that returns the transpose of a given matrix. The transpose of a matrix is the matrix where the rows and columns are swapped. For example, the transpose of the above matrix is
 
@@ -147,22 +137,19 @@ Walking through this with the example from before, we get the following sequence
 \end{itemize}
     
 This method is harder than it may appear at first glance, so write plenty of tests!
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 shift({11, 12, 13, 14}, -1)          => {12, 13, 14, 11}
 shift({120, 120, 140, 140}, 2)       => {140, 140, 120, 120}
 shift({99999999}, 1000)              => {99999999}
 shift({}, -9999999)                  => {}
 shift({120, 80, 70, 50, 40, 20}, -3) => {50, 40, 20, 120, 80, 70}
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{2}{chapter-arrays-collections}{For this problem you are not allowed to use an \ttt{ArrayList} or any helper methods, e.g., \ttt{.contains}, or methods from the \ttt{Arrays} class. You \textit{may} (and should!) use a \ttt{HashSet<Integer>} to keep track of previously-seen peaks.}
 
 Joe the mountain climber has come across a large mountain range. He wants to climb only the tallest mountains in the range. Design the \ttt{peakFinder} method that returns an array $H'$ of all the peaks in an \ttt{int[]} of mountain heights $H$. A peak $p$ is defined as an element of $h$ at index $i$ such that $p[i - 1] < p[i]$ and $p[i] > p[i + 1]$. If $i = 0$ or $i = |H| - 1$, Joe will not climb $p[i]$. Joe doesn't want to climb a mountain of the same height more than once, so you should not add any peaks that have already been added to $H'$. We present some test cases below. Hint: reuse the linear search algorithm from problem 1, except switch the \ttt{String} parameter for integers.
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 peakFinder({9, 13, 7, 2, 8})                        => {13}
 peakFinder({8, 7, 8, 7, 8, 7, 8, 7})                => {8}
 peakFinder({111, 27, 84, 31, 5, 9, 4, 3, 2, 1, 64}) => {84, 9}
@@ -171,26 +158,22 @@ peakFinder({1})                                     => {}
 peakFinder({1, 2})                                  => {}
 peakFinder({1, 2, 1})                               => {2}
 peakFinder({1, 2, 3, 2, 1})                         => {3}
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{1}{chapter-arrays-collections}{A professor gives their students extra credit on an exam if they can guess the average within five percent of the actual average. Design the \ttt{boolean isGivenExtraCredit(ArrayList<Double> D, double g)} method that, when given a list of scores $D$ and a guess $g$, returns whether a student is given extra credit.}
 
 \exercise{1}{chapter-arrays-collections}{A village has members where each has a partner. These members are grouped in pairs inside an \ttt{ArrayList<Integer>} where each pair of indices represents a relationship of the village. I.e., \ttt{A.get($2i$)} and \ttt{A.get($2i + 1$)} are in a relationship. A couple is considered the wisest if they have the highest combined age. Design the \ttt{ArrayList<Integer> wisest(ArrayList<Integer> A)} method that, when given a list of (integer) ages $A$, return a new \ttt{ArrayList<Integer>} containing the ages of the wisest pair. If there is a tie, return the pair that has the highest age overall. The order is not significant. We present a few test cases below. You can assume that there will always be an even number of village members.}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 wisest({31, 42, 43, 35, 21, 27, 24, 44}) => {43, 35} or {35, 43}
 wisest({47, 51, 52, 48, 33, 67, 45, 35}) => {33, 67} or {67, 33}
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{ArrayList<String> tokenize(String s, char d)} method that, when given a string $s$ and a \ttt{char} delimiter $d$, returns an \ttt{ArrayList} of tokens split at the delimiter. You must do this by hand; you \textbf{cannot} call any \ttt{String} methods (except \ttt{.length} and \ttt{.charAt}).}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{HashMap<String, Integer> wordCount(String s)} method that, when given a string $s$, counts the number of words in the list. Store the results in a \ttt{HashMap<String, Integer>}. Assume that $s$ is not cleaned. That is, you should first remove all punctuation (periods, commas, exclamation points, question marks, semi-colons, dashes, hashes, ampersands, asterisks, and parentheses) from $s$, producing a new string $s'$. Then, split the string based on spaces (remember \ttt{tokenize}?), and produce a map of the words to their respective counts. Do not factor case into your total; i.e., \ttt{"fAcToR"} and \ttt{"factor"} count as the same word. The ordering of the returned map is not significant.}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 String s = "Hello world, the world is healthy, is 
             it not? I certainly agree that the world 
             is #1 and healthy."
@@ -198,13 +181,11 @@ wordCount(s) => [{"hello", 1}, {"world", 3}, {"the", 2}
                  {"is", 3}, {"healthy", 2}, {"it", 1},
                  {"i", 1}, {"certainly", 1} {"agree", 1}
                  {"that", 1}, {"1", 1}, {"and", 1}, {"not", 1}]
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{LinkedHashSet<String>largeToSmall(HashMap<String, Integer> M)} method that, when given a \ttt{HashMap<String, Integer>} $M$, returns a \ttt{LinkedHashSet} of \ttt{String} values where the words are inserted into the set in order of decreasing count. Words that have the same count do not need to be inserted in any particular order. E.g., \ttt{"is"} may come before \ttt{"world"}. You cannot sort $M$. Hint: create an array of size $c$ (where $c$ is the highest word count) where each element is a \ttt{LinkedHashSet<String>}. For every element $e$ in $M$, add $e$ to the set at index $M[i]$, where $i$ is the count of $e$ in $M$. Then, append these sets in reverse order according to their index. We provide some pseudocode below.}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 largeToSmall(M):
   // |M| is M.size().
   c = Get Highest Count Word in M
@@ -218,16 +199,13 @@ largeToSmall(M):
 
   // Append all linkedhashsets in reverse order.
   return array[c-1] appended to array[c-2] ... appended to array[0]
-\end{verbatim}
-}
+\end{verbnobox}
     
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy", 
                                "hello", "it", "i", "certainly", 
                                "agree", "that", "1", "and", "not"}
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> addLast(LinkedList<Integer> l, int v)} method that, when given a \ttt{LinkedList<Integer>} $l$ and an \ttt{int} $v$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements plus $v$ added to the end of $l$.}
 
@@ -243,28 +221,23 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{double postfixEvaluator(List<String> l)} method that, when given a list of binary operators and numeric operands represents as strings, returns the result of evaluating the postfix-notation expression. You will need to write a few helper methods to solve this problem, and it is best to break it down into steps. First, write a method that determines if a given string is one of the four binary operators: \ttt{"+"}, \ttt{"-"}, \ttt{"*"}, or \ttt{"/"}. You may assume that any inputs that are not binary operators are operands, i.e., numbers. Then, write a method that applies a given binary operator to a list of operands, i.e., an \ttt{ArrayList<Double>}.}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 postfixEvaluator({"5", "2", "*", "5", "+"}) => 17
 postfixEvaluator({"1", "2", "3", "4", "+"}) => 10
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{substitute} method that, when given a \ttt{String} $\mathit{exp}$ and an environment $\mathit{env}$ \ttt{HashMap<String, Integer>}, substitutes each occurrence of an ``identifier'' for its value counterpart from the map.}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 substitute("f(x) = 3 * a + b", {<"a" : 10>, <"b" : 13>})
            => "f(x) = 3 * 10 + 13"
 substitute("g(h, f(x)) = y + x", {<"q" : 200>})          
            => "g(h, f(x)) = y + x" 
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{unifiesAll} method, which receives a \ttt{HashMap<String, Integer>} $M$ of unification assignments and a list of goals \ttt{ArrayList<LinkedList<String>>}} $\mathcal{G}$. Each goal $G \in \mathcal{G}$ is a tuple represented as a \ttt{LinkedList}; goals consist of two values $x, y$, and if it is possible for these to be the same value, then we say we can unify $x$ with $y$. Any successful unifications that occur with variables not present in $M$ should be added to $M$. We present some examples below (assume all values are strings; we omit the quotes out of conciseness). Hint: you might want to write an \ttt{isVar} predicate, which determines if a value is a variable or not, i.e., a value that does not start with a number.
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 M1 = {<x : 5>, <y : 10>, <z : 15>, <w : 5>}
 G1  = {{x, x}, {10, 10}, {z, 15}, {x, w}}
 unifiesAll(M1, G1) => true
@@ -280,15 +253,13 @@ unifiesAll(M3, G3) => true
 M4 = {<x : 5>, <y : 10>, <z : 15>, <w : 5>}
 G4 = {{q, x}, {q, 10}}
 unifiesAll(M4, G4) => false
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{3}{chapter-arrays-collections}{Two strings $s_1$ and $s_2$ are isomorphic if we can create a mapping from $s_1$ from $s_2$. For example, the strings \ttt{"DCBA"} and \ttt{"ZYXW"} are isomorphic because we can map $D$ to $Z$, $C$ to $Y$, and so forth. Another example is \ttt{"ABACAB"} and \ttt{"XYXZXY"} for similar reasons. A non-example is \ttt{"PROXY"} and \ttt{"ALPHA"}, because once we map \ttt{"A"} to \ttt{"P"}, we cannot create a map between \ttt{"A"} and \ttt{"Y"}. Design the \ttt{boolean isIsomorphic(String s1, String s2)} method, which determines whether or not two strings are isomorphic. }
 
 \exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Design the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> ls)} method, which maps all alphabetized anagrams to the strings in $\textit{ls}$ using the above criteria.}
     
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 ls = ["presorting", "plea", "introduces", "anger", "leap", "petals",
       "donate", "plates", "range", "reductions", "rediscount", 
       "tapers", "pale", "atoned", "staple", "repast", "reportings"]
@@ -302,8 +273,7 @@ alphaAnagramGroups(ls)
       {"adenot", ["donate", "atoned"]}, 
       {"eginoprrst", ["presorting", "reportings"]}}
     
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{3}{chapter-arrays-collections}{A SLC (simplified lambda calculus) expression takes one of the two forms: $\mathit{varList}$ or $\lambda{\mathit{var}}.\mathit{expr}$, where $\mathit{var}$ is a lower-case letter from $u$ to $z$, $\mathit{varList}$ is a sequence of variables, and $\mathit{expr}$ is either a $\mathit{var}$ or another SLC expression. We provide some examples below.}
 
@@ -341,7 +311,7 @@ Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet 
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<String> addYRemoveYY(List<String> l)} that, when given a \ttt{List<String>} $l$, returns a list where each string has \ttt{"y"} added at its end, omitting any resulting strings that contain \ttt{"yy"} as a substring anywhere.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<Integer> squareAddTenOmit(List<Integer> l)} that, when given a \ttt{List<Integer>} $l$, returns a list of those numbers squared and adds ten to the result, omitting any of the resulting numbers that end in $5$ or $6$.}
+\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<Integer> squareAddFiveOmit(List<Integer> l)} that, when given a \ttt{List<Integer>} $l$, returns a list of those numbers squared and adds five to the result, omitting any of the resulting numbers that end in $5$ or $6$.}
 
 \exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<Integer> removeDups(List<Integer> l)} method that, when given a \ttt{List<Integer>} $l$, removes all duplicate integers. Return this result as a new list.}
 

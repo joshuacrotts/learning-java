@@ -4,6 +4,7 @@
 \usepackage{geometry}
 \usepackage{amsthm}
 \usepackage{xspace}
+\usepackage{verbatimbox}
 \usepackage{transparent}
 \usepackage{tocloft}% http://ctan.org/pkg/tocloft (for fixing section title in toc
 \usepackage{pgfornament} % FOR NEW COVER PAGE STUFF
@@ -11,11 +12,12 @@
 
 
 \newcommand{\mathtime}{} % uncomment to use Times New Roman fonts
+\newcommand{\libertine}{}
 % fonts
 
 %% Times New Roman Fonts
 \ifdefined\mathtime
-  \usepackage{newtxtext} 
+  \usepackage{libertine} 
 \fi
 % \usepackage[htt]{hyphenat}
 \usepackage{tikz}

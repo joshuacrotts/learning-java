@@ -13,15 +13,15 @@
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean lessThan20(int x, int y, int z)} method that, when given three integers $x$, $y$, and $z$, returns whether or not one of them is less than twenty away from another. For example, \ttt{lessThan20(19, 2, 412)} returns true because $2$ is less than $20$ away from $19$. Another example is \ttt{lessThan20(999, 888, 777)}, which returns false because none of the numbers have a difference less than twenty.}
 
-% \exercise{1}{chapter-crl}{Design the \ttt{boolean canSleepIn(String d, boolean onVacation)} method, which determines whether or not someone can sleep in. Someone is able to sleep in if it is a weekend or they are on vacation. The input $d$ is passed as a day of the week, e.g., \ttt{"Monday"}, ..., \ttt{"Sunday"}.
+\exercise{1}{chapter-crl}{Design the \ttt{boolean canSleepIn(String d, boolean onVacation)} method, which determines whether or not someone can sleep in. Someone is able to sleep in if it is a weekend or they are on vacation. The input $d$ is passed as a day of the week, e.g., \ttt{"Monday"}, ..., \ttt{"Sunday"}.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean isEvenlySpaced(int x, int y, int z)} method, which receives three integers $x$, $y$, and $z$, and returns whether they are evenly spaced. Evenly spaced means that the difference between the smallest and medium number is the same as the difference between the medium and largest number.}
 
-% \exercise{1}{chapter-crl}{Design the \ttt{String cutTry(String s)} method, which receives a string $s$ and, if $s$ ends with \ttt{"try"}, it is removed. Otherwise, the original string is returned.}
+\exercise{1}{chapter-crl}{Design the \ttt{String cutTry(String s)} method, which receives a string $s$ and, if $s$ ends with \ttt{"try"}, it is removed. Otherwise, the original string is returned.}
 
-% \exercise{1}{chapter-crl}{Design the \ttt{String popChars(String s, char c, char d)} method, which receives a string $s$ and two characters $c, d$. The method removes $c$ if $s$ starts with $c$, and removes $d$ if the second character of $s$ is $d$. The remainder of the string is the same.
+\exercise{1}{chapter-crl}{Design the \ttt{String popChars(String s, char c, char d)} method, which receives a string $s$ and two characters $c, d$. The method removes $c$ if $s$ starts with $c$, and removes $d$ if the second character of $s$ is $d$. The remainder of the string is the same.}
 
-% \exercise{1}{chapter-crl}{Design the \ttt{String middleString(String a, String b, String c)} method, which receives three strings $a$, $b$, and $c$, and returns the string that is ``in between'' the others in terms of their lexicographical content. You cannot sort the strings or use an array.}
+\exercise{1}{chapter-crl}{Design the \ttt{String middleString(String a, String b, String c)} method, which receives three strings $a$, $b$, and $c$, and returns the string that is ``in between'' the others in terms of their lexicographical content. You cannot sort the strings or use an array.}
 
 \exercise{1}{chapter-crl}{In propositional logic, there are several \textit{connectives} that act on boolean truth values. These include logical conjunction $\land$, disjunction $\lor$, conditional $\to$, biconditional $\leftrightarrow$, and negation $\lnot$. We can represent \textit{schemata} as a series of composed method calls. For example, an evaluation of}
 
@@ -31,15 +31,13 @@
 
 \noindent where `$P$' and `$R$' are assigned to \ttt{false} and `$Q$' is assigned to \ttt{true}, is equivalent to
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 static final boolean P = false;
 static final boolean Q = true;
 static final boolean R = false;
 
 cond(P, not(bicond(Q, not(R))))
-\end{verbatim}
-}
+\end{verbnobox}
 
 \noindent The presented schema resolves to \ttt{true}.
 
@@ -130,8 +128,7 @@ cond(P, not(bicond(Q, not(R))))
 
 \exercise{2}{chapter-crl}{Carlo is shipping out orders of candy to local grocery stores. Boxes have a maximum weight defined by a value $w$, and we can (potentially) fit both small and large bars of candy in a box. Design the \ttt{int fitCandy(int s, int l, int w)} method that, when given a number of small bars $s$, large bars $l$, and maximum weight $w$, determines the number of small candy bars he can fit in the box. Large bars weigh five kilograms, and small bars weigh one kilogram. Note that Carlo always tries to fit large candies first before small. Return \ttt{-1} if it is impossible to fill the box with the given criteria. Below are some test examples. Hint: consider this as an analysis of three cases.}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 fitCandy(4, 1, 9)      => 4
 fitCandy(4, 1, 4)      => 4
 fitCandy(1, 2, 6)      => 1
@@ -139,13 +136,11 @@ fitCandy(6, 1, 13)     => -1
 fitCandy(60, 100, 550) => 50
 fitCandy(7, 1, 12)     => 7
 fitCandy(7, 1, 13)     => -1
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{2}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{boolean isValidIpv4(String ip)} method that, when given a string, determines whether or not it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid.}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 isValidIpv4("192.168.1.244")    => true
 isValidIpv4("149.165.192.52")   => true
 isValidIpv4("192.168.1.256")    => false
@@ -153,8 +148,7 @@ isValidIpv4("192.168.1201.23")  => false
 isValidIpv4("192.168.1201.ABC") => false
 isValidIpv4("ABC.DEF.GHI")      => false
 isValidIpv4("192.168.1A6.201")  => false
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{1}{chapter-crl}{Design the \ttt{String stateOfMatter(double t, char u)} method that receives a water temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{`C'} or \ttt{`F'} for Celsius and Fahrenheit respectively. Return a string representing whether the water is a liquid, solid, or gas at sea level.}
 
@@ -363,14 +357,12 @@ cutN("1[bbbbb]3[a]") => "[bbbbb]3[a]"
 \exercise{1}{chapter-crl}{Design the \ttt{String trimSpace(String s)} method, which receives a string \ttt{s} and returns a new string with all leading and trailing spaces removed. You cannot use the \ttt{trim} method provided by the \ttt{String} class.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean containsMiddleABC(String s)} method, which receives a string $s$ and returns whether $s$ contains the substring \ttt{"ABC"} in the ``middle''. We define the ``middle'' as the point where number of characters on the left and right differ by at most one. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
-    \par{
-\begin{verbatim}
+    \begin{verbnobox}[\footnotesize]
 assertTrue(middleABC("helloABChiya!"));
 assertTrue(middleABC("ABC"));
 assertTrue(middleABC("aABCc!"));
 assertFalse(middleABC("notInTheMiddleABCmid!"));
-\end{verbatim}
-}
+\end{verbnobox}
 \exercise{1}{chapter-crl}{Design the \ttt{String censor(String s, String c)} method, which receives a string $s$ and another string $c$. It should return a ``censored'' version of $s$, wherein each instance of $c$ in $s$ is replaced by asterisks. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean isSelfDividing(int n)} method, which receives an integer $n$ and returns whether the sum of its digits evenly divide $n$. You must perform the arithmetic manually; you \textbf{cannot} convert the value to a \ttt{String} or use an array.}
@@ -378,15 +370,13 @@ assertFalse(middleABC("notInTheMiddleABCmid!"));
 \exercise{1}{chapter-crl}{Design the \ttt{boolean allSelfDividing(int n)} method, which receives an integer $n$ and returns whether each digit evenly divides $n$. If any digit is zero, then return \ttt{false}. You must perform the arithmetic manually; you \textbf{cannot} convert the value to a \ttt{String} or use an array.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{int strSumNums(String s)} that computes the sum of each \textit{positive integer} ($\geq 0$) in a string $s$. See the below test cases for examples. You may assume that each integer in $s$, should there be any, is in the bounds of a positive \ttt{int}, i.e., $0$ and $2^{31}-1$. Hint: use \ttt{Character.isDigit} to test whether a character $c$ is a digit, and \ttt{Integer.parseInt} to convert a \ttt{String} to an \ttt{int}.}
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 assertEquals(100, strSumNums("hello50how20are30you?"));
 assertEquals(10, strSumNums("t1h1i1s1i1s1e1a1s1y1!"));
 assertEquals(0, strSumNums("there are no numbers :(")));
 assertEquals(0, strSumNums("still 0 just 0 zero0!"));
 assertEquals(500000, strSumNums("500000"));
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{2}{chapter-crl}{Design the \ttt{String stripComments(String s)} method that, when given a string $s$ representing a (valid) Java program, returns a string where all comments (single-line, multi-line, and Java documentation) have been removed. You \textbf{cannot} use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
@@ -398,38 +388,32 @@ That is, given an input number $n$, compute that many terms of the above sequenc
 
 \exercise{1}{chapter-crl}{Design the \ttt{String toBinary(int n)} that converts a positive integer $n$ into a \ttt{String} that represents its binary counterpart. We present some examples below.}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 toBinary(13)  => "1101"
 toBinary(144) => "10010000"
 toBinary(25)  => "11001"
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{1}{chapter-crl}{Design the \ttt{int countPairs(int n)} method that computes the number of pairs $(a, b)$ that satisfy the equation $(a^2 + b^2 + 1)/(ab)$ such that $1 \leq a \leq b < n$. To ``satisfy the equation'', in this context, means that the quotient is an integer.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{String mirrorEnds(String s)} method that, when given a string $s$, looks for a mirror image (backwards) string at both the beginning and end of the
 given string. In other words, zero or more characters at the very beginning of the given string, and at the very end of the string in reverse order (possibly overlapping). For example, the string \ttt{"abXYZba"} has the mirror end \ttt{"ab"}. If there is no such string, return \ttt{null}.}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 mirrorEnds("abXYZba") => "ab"
 mirrorEnds("abca")    => "a"
 mirrorEnds("aba")     => "aba"
 mirrorEnds("abc")     => null
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{2}{chapter-crl}{Design the \ttt{String multTable(int a, int b)} method that, when given two integers $a$ and $b$ such that $a \leq b$, computes the ``multiplication table'' from $a$ to $b$. We provide some test cases below. Note that the newline is just for formatting purposes.}
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 multTable(3, 3) => "1*1=1,1*2=2,1*3=3,2*1=2,2*2=4,
                     2*3=6,3*1=3,3*2=6,3*3=9"
 multTable(2, 6) => "1*1=1,1*2=2,1*3=3,1*4=4,1*5=5,
                     1*6=6,2*1=2,2*2=4,2*3=6,2*4=8,
                     2*5=10,2*6=12"
-\end{verbatim}
-}
+\end{verbnobox}
 
 \exercise{3}{chapter-crl}{The \textit{definite integral} of a function $f$, defined as $\int_{a}^{b} f(x)\;\text{d}x$, produces the area under the curve of $f$ on the interval $[a, b]$. The thing is, though, integrals are defined in terms of \textit{Riemann summations}, which provide estimations on the area under a curve.} Riemann sums approximate the area by creating rectangles of a fixed width $\Delta$, as shown in ~\ref{fig:riemannf} for an arbitrary function $f$. Left-Riemann, right-Riemann, and midpoint-Riemann approximations define the focal point, i.e., the height, of the rectangle. Notice that, in Figure ~\ref{fig:riemannf}, we use a midpoint-Riemann sum with $\Delta = 0.2$, in which the collective sum of all the rectangle areas is the Riemann approximation. Your job is to use this idea to approximate the area of a circle.
 

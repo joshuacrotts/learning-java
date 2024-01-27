@@ -168,13 +168,11 @@ class PrintWriterExample {
 
 And thus the contents of \ttt{file4.out} are, as we might expect:
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 3.141592653589793
 false
 This is a formatted string with & and 42 and 2.718282 and true
-\end{verbatim}
-}
+\end{verbnobox}
 
 We now have methods for reading strings and raw bytes, as well as methods for outputting all primitives and formatted strings to data destinations. We still have one problem: how can we output the representation of an object? For example, take the \ttt{BigInteger} class; it has associated instance variables and fields that we also need to store. For this particular class, it might be tempting to store a stringified representation, but this is not an optimal solution because, what if a class has a field that itself is an object? We would need to recursively stringify the object, which is not a good idea. Instead, we can use the \ttt{ObjectOutputStream} and \ttt{ObjectInputStream} classes, which allow us to \textit{serialize} and \textit{deserialize} objects. Serialization is the process of converting an object into a stream of (transmittable) bytes, whereas deserialization is the opposite process. In summary, when we serialize objects, we save the object itself, alongside any relevant information about the object, e.g., its fields, instance variables, and so forth. Upon deserializing said object, we can restore the object to its original state, initializing its fields. Suppose, on the contrary,
 
@@ -250,13 +248,11 @@ Our method will return a list of \ttt{Employee} instances that has been populate
 
 To test, we will create a file containing the following contents:
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 123 John Smith 100000.00 false
 456 Jane Doe 75000.00 true
 789 Bob Jones 50000.00 false
-\end{verbatim}
-}
+\end{verbnobox}
 
 \begin{cl}[EmployeeScannerTester.java]{Testing the \ttt{EmployeeScanner} Class}
 \begin{lstlisting}[language=MyJava]
@@ -350,13 +346,11 @@ class EvenIntegers {
 
 \example{Let's write a program that returns an array containing the number of lines, words, and characters (including whitespaces but excluding newlines) in a given file. The array indices correspond to those quantities respectively. To simplify the program, words will be considered strings as separated by spaces. For example, if the file contains the following contents:}
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 This is a test file.
 It contains three lines.
 Here is the last line.
-\end{verbatim}
-}
+\end{verbnobox}
 The returned array should be \ttt{[3, 14, 46]}. This way we can write JUnit tests to verify that our program works as intended.
 
 \begin{cl}[LineWordCharCounterTester.java]{Testing the \ttt{LineWordCharCounter} Class}
@@ -408,11 +402,9 @@ class LineWordCharCounter {
 \end{cl}
 
 \example{Going further with terminal arguments, let's write a program that receives multiple file names from the terminal, and outputs a file with all of the data concatenated into one. We will throw an exception if the user passes in files that do not all share the same extension. As an example, should the user input}
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 java ConcatenateFiles file1.txt file2.txt file3.txt output-file.txt
-\end{verbatim}
-}
+\end{verbnobox}
 then the program should output a file \ttt{output-file.txt} that contains the contents of \ttt{file1.txt}, \ttt{file2.txt}, and \ttt{file3.txt} in that order. 
 
 \begin{cl}[ConcatenateFiles.java]{Concatenating Files}

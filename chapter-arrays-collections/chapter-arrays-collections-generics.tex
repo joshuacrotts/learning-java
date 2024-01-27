@@ -136,7 +136,9 @@ class GenericMax {
     else {
       T max = t.get(0);
       for (int i = 1; i < t.size(); i++) {
-        if (t.get(i).compareTo(max) > 0) { max = t.get(i); }
+        if (t.get(i).compareTo(max) > 0) { 
+          max = t.get(i); 
+        }
       }
       return max;
     }

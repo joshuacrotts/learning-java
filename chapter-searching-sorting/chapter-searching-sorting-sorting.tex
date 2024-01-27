@@ -3,16 +3,14 @@ In this section we will begin our discussion on the analysis and implementation 
 
 For each algorithm, we will assume the same three lists are declared and properly instantiated within the respective unit testing files. To conserve space, we will list their values below only once.
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 AbstractList<Integer> LS1 = 
   new ArrayList<>(List.of(5, 4, 2, 1, 3));
 AbstractList<Integer> LS2 = 
   new ArrayList<>(List.of());
 AbstractList<Integer> LS3 = 
   new ArrayList<>(List.of(10, 8, 6, 7, 2, 10, 3, 3, 3, 10));
-\end{verbatim}
-}
+\end{verbnobox}
 
 \subsection*{Insertion Sort}
 Our sorting adventure begins with the \textit{insertion sort}. Insertion sort, in general, works by taking an element from the unsorted list and inserting it into the correct position in a sorted list. We can implement insertion sort in two ways: functionally and in-place. The functional variant will return a new list that is sorted, while the in-place variant will sort the list in-place. The functional variant is, in principle, easier to implement, but the in-place variant is more efficient in terms of memory usage. Figure~\ref{fig:insertion-sort} illustrates the in-place insertion sort algorithm; each iteration of the outer loop is represented by a row in the figure, with the red underbars representing the now-sorted sublist.

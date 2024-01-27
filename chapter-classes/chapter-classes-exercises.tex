@@ -75,8 +75,7 @@
     \item Change each card to use the Unicode symbol counterpart rather than the \ttt{"X of Y"} \ttt{toString} model, where \ttt{X} is the value and \ttt{Y} is the suit. The Unicode symbols are available on the second page of this PDF: \url{https://www.unicode.org/charts/PDF/U1F0A0.pdf}. This will be a little tedious, but it makes the game look cooler!
     \item Add the Ace, Jack, Queen, and King cards, instead of the previous implementation of using four cards whose values were all ten. A simple solution is to use a \ttt{String} that keeps track of the ``name'' of a card alongside the other instance variables. 
     \item Add an AI to the game (you do not need to test this class). This involves writing the \ttt{AI} class and designing the \ttt{boolean play(Deck deck)} method. An \ttt{AI} has a \ttt{ArrayList<Card>}, similar to \ttt{Player}, but makes decisions autonomously using the following algorithm (written in a pseudocode-like language):
-    \par{
-\begin{verbatim}
+    \begin{verbnobox}[\footnotesize]
 boolean play(Deck d) {
   score = getScore()
   if score < 16 then:
@@ -90,8 +89,7 @@ boolean play(Deck d) {
   } 
   return false;
 }
-\end{verbatim}
-}
+\end{verbnobox}
 The method returns whether or not the AI drew a card. If they did not draw a card, then their turn is over. When playing the game, the player can see the first two cards dealt to an AI, but nothing more. You might want to add a static variable to the \ttt{Card} class representing the ``covered card''. Note that the AI knows only the context of its deck of cards; it is not aware of any other \ttt{Player} or \ttt{AI}.
 \item After designing the \ttt{AI} class and adding one to your game, create an \ttt{ArrayList<AI>} simulating multiple computer players in the game.
 \end{enumerate}

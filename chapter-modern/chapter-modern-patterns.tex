@@ -324,14 +324,12 @@ class Staff extends Person {
 
 If we assume that our input records are line-separated and comma-delimited, then we can write a simple test case to verify that the \ttt{PersonDatabase} class correctly reads the file and creates the appropriate \ttt{Person} objects. The following file (titled \ttt{"records1.dat"}) will be used for testing purposes.
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 Willard Van Orman Quine,faculty
 Alan Mathison Turing,student
 John von Neumann,staff
 Stephen Cole Kleene,faculty
-\end{verbatim}
-}
+\end{verbnobox}
 
 \begin{cl}[PersonDatabaseTester.java]{Person Database Tester}
 \begin{lstlisting}[language=MyJava]

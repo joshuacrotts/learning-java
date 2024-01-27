@@ -173,15 +173,13 @@ class ISuitTester {
 
 One extra piece of information that we should share is that we can instantiate objects in different ways. To demonstrate why this matters, suppose we initialize an object $s_1$ to type \ttt{ISuit}, but instantiate it as type \ttt{Diamond}. Then, we initialize another object $s_2$ to type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. We would expect that $s_1$ and $s_2$ are equivalent, but this is not the case. Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. Because $s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. Should we want to be able to invoke \ttt{diamondCount} on $s_1$, we need to \textit{downcast}\index{downcast} $s_1$ to type \ttt{Diamond}.
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 ISuit s1 = new Diamond();
 s1.diamondCount();             // Compile-time error!
 Diamond s2 = new Diamond();
 s2.diamondCount();             // Works but not polymorphic.
 ((Diamond) s1).diamondCount(); // Works but downcasts.
-\end{verbatim}
-}
+\end{verbnobox}
 
 \example{Animals are a common example of an interface. Imagine that, in our domain of animals, every animal can speak one way or another. Speaking involves returning a string representing the sound that the animal makes. By designing the \ttt{IAnimal} interface, we can group all animals that can speak together. We can then design classes that implement the \ttt{IAnimal} interface and provide an implementation of the \ttt{speak} method. When testing the latter, we can write tests that instantiate a collection of \ttt{IAnimal} instances, and invoke \ttt{speak} on each of them polymorphically. In doing so we get a refresher of the Java stream API.}
 
@@ -478,9 +476,9 @@ class FunctionMap {
    * @return the list of elements after applying f to each element.
    */
   public static <T, V> List<V> map(List<T> l, Function<T, V> f) {
-    List<V> result = new ArrayList<>();
-    for (T t : l) { result.add(f.apply(t)); }
-    return result;
+    return l.stream()
+            .map(t -> f.apply(t))
+            .collect(Collectors.toList());
   }
 }
 \end{lstlisting}
@@ -604,7 +602,7 @@ Thus we have a programming language that interprets numbers and addition express
 
 The formal definition of the derivative of a function is not a necessary detail to concern ourselves of; but in short, it measures the instantaneous rate-of-change at a given point of the function, i.e., the slope of the line tangent to the point. There are several rules for computing derivatives of functions, all of which are common exercises in an introductory calculus course. We want to be able to construct expressions in such a way that it is trivial to differentiate their components. As an example, the derivative of the expression $3x^2 - 16x + 100$ is $6x - 6$ due to specific rules that we will explain shortly. The idea, however, is that we have a large expression to find the derivative of, and by differentiating its subcomponents, we obtain the derivative of the larger. Let's see what all we need to do.
 
-First, let's design the \ttt{Expression} interface, which contains one method: \ttt{Expression derivative(String var)}. Expressions in calculus are differentiated with respect to a given variable, e.g., $x$, so we need to pass that to any expression that we wish to differentiate. Now, any class that implements \ttt{Expression} must override \ttt{derivative}. 
+First, let's design the \ttt{Expression} interface, which contains one method to compute the derivative of an \ttt{Expression}: \ttt{Expression derivative(String var)}. Expressions in calculus are differentiated with respect to a given variable, e.g., $x$, so we need to pass that to any expression that we wish to differentiate. Now, any class that implements \ttt{Expression} must override \ttt{derivative}. 
 
 Using some basic calculus derivative shortcuts/rules, we can easily think of two more types of expressions: constants (e.g., $3$, $0$, $27$) and monomials (e.g., $ax^n$ where $a, n$ are integers). So, let's design the \ttt{ConstantExpression} and \ttt{MonomialExpression} classes, the former of which has a constructor that receives a single integer $c$, whereas the latter stores the variable, the coefficient $a$, and finally the exponent $n$. To make working with these expressions easier, as well as ensuring testibility, we will override the \ttt{equals}, \ttt{hashCode}, and \ttt{toString} methods.
 
@@ -690,7 +688,8 @@ class MonomialExpression implements Expression {
       if (this.EXPT == 1) {
         return new ConstantExpression(this.COEFFICIENT);
       } else {
-        return new MonomialExpression(this.VAR, this.COEFFICIENT * this.EXPT, this.EXPT - 1);
+        return new MonomialExpression(this.VAR, this.COEFFICIENT * this.EXPT, 
+                                      this.EXPT - 1);
       }
     } else {
       return new ConstantExpression(0);
@@ -710,7 +709,9 @@ class MonomialExpression implements Expression {
   }
 
   @Override
-  public int hashCode() { return Objects.hash(this.VAR, this.COEFFICIENT, this.EXPT); }
+  public int hashCode() { 
+    return Objects.hash(this.VAR, this.COEFFICIENT, this.EXPT); 
+  }
 
   @Override
   public String toString() { 
@@ -772,8 +773,7 @@ class AddExpression implements Expression {
   private final List<Expression> EXPR_LIST;
 
   public AddExpression(Expression... exprs) {
-    this.EXPR_LIST = new ArrayList<>();
-    this.EXPR_LIST.addAll(Arrays.asList(exprs));
+    this.EXPR_LIST = Arrays.asList(exprs);
   }
 
   public AddExpression(List<Expression> exprs) { this.EXPR_LIST = exprs; }
@@ -781,7 +781,7 @@ class AddExpression implements Expression {
   @Override
   public Expression derivative(String var) {
     List<Expression> exprs = new ArrayList<>();
-    for (Expression e : this.EXPR_LIST) { exprs.add(e.derivative(var)); }
+    this.EXPR_LIST.forEach(e -> exprs.add(e.derivative(var)));
     return new AddExpression(exprs);
   }
 
@@ -792,7 +792,9 @@ class AddExpression implements Expression {
     } else { 
       AddExpression expr = (AddExpression) obj;
       for (int i = 0; i < this.EXPR_LIST.size(); i++) {
-        if (!this.EXPR_LIST.get(i).equals(expr.EXPR_LIST.get(i))) { return false; }
+        if (!this.EXPR_LIST.get(i).equals(expr.EXPR_LIST.get(i))) { 
+          return false; 
+        }
       }
       return true;
     }
@@ -803,8 +805,9 @@ class AddExpression implements Expression {
 
   @Override
   public String toString() { 
-    return this.EXPR_LIST.stream().map(Object::toString)
-                                  .collect(Collectors.joining(" + "));
+    return this.EXPR_LIST.stream()
+                         .map(Object::toString)
+                         .collect(Collectors.joining(" + "));
   }
 }
 \end{lstlisting}

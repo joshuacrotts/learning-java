@@ -90,8 +90,7 @@ The term ``asymptotic analysis'' stems from the fact that ``asymptotic'' behavio
 Programmers often conflate Big-Oh as meaning the ``worst-case'' of an algorithm, Big-Omega as the ``best case'', and Theta as the ``average case''. In actuality, these have no precise and deterministic relation to one another. Remember that Big-Oh is the upper-bound, Big-Omega is the lower-bound, and Theta exists if and only if the function is Big-Oh and Big-Omega of the same function.
 
 \example{Consider the following function.}
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 // foo receives an array of integers.
 foo(ls) {
   // v is a random integer between 0 and 100, with equal probability.
@@ -108,8 +107,7 @@ foo(ls) {
       n := n + i;
   return n;
 }
-\end{verbatim}
-}
+\end{verbnobox}
 
 The best-case for this algorithm is for $v$ to be $100$, meaning we immediately return $42$. Therefore, we are upper-bounded by $\mathcal{O}(1)$, since this is a constant-time operation. We are similarly lower-bounded by this operation, meaning it is $\Omega{(1)}$. Therefore it is also $\Theta(1)$ in the best case.
 

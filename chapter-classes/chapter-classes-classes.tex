@@ -72,19 +72,15 @@ Creating an instance of the \ttt{Point} class is identical to creating an instan
 
 Declaring, or initializing, an object refers to typing the class name followed by the variable name. For instance, the following code declares a \ttt{Point} object \ttt{p}.
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 Point p;
-\end{verbatim}
-}
+\end{verbnobox}
 
 By default, $p$ points to \ttt{null}, since we have not yet created an instance of the \ttt{Point} class. We can create an instance of the \ttt{Point} class by invoking its constructor, an action otherwise called \textit{object instantiation}\index{object instantiation}. We use the \ttt{new} keyword and pass the desired $x$ and $y$ coordinates. 
 
-\par{
-\begin{verbatim}
+\begin{verbnobox}[\footnotesize]
 Point p = new Point(3, 4);
-\end{verbatim}
-}
+\end{verbnobox}
 
 We should write some tests to ensure that our \ttt{Point} class is working as expected. We note that this may seem redundant for such a simple class and the fact that the accessor methods do nothing more than retrieve instance variable values, but it is a good habit for beginning object-oriented programmers.
 
