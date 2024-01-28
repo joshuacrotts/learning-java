@@ -60,6 +60,27 @@ countEvenOdds({11, 13, 15, 17})              => {0, 4}
 \end{enumerate}
 If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{boolean isSubArray(int[] A, int[] B)} method, which receives two arrays of integers $A$ and $B$, and determines if $B$ is a ``sub-array'' of $A$. This means that all elements of $B$ are elements of $A$.}
+
+\exercise{3}{chapter-arrays-collections}{Design the \ttt{boolean canBalanceArray(int[] A)} method, which determines whether or not an array of integers $A$ can be split into a partition that balances each side. Use the following examples as motivation.}
+
+\begin{verbnobox}[\footnotesize]
+canBalanceArray(new int[]{1, 1, 1, 1, 5})    => false
+canBalanceArray(new int[]{2, 3, 5})          => true
+canBalanceArray(new int[]{-10, 2, -58, 50})  => true
+canBalanceArray(new int[]{3, -1, -1, -1, 0}) => true
+canBalanceArray(new int[]{3, 2, 1, 0})       => true
+canBalanceArray(new int[]{10})               => false
+\end{verbnobox}
+
+\exercise{3}{chapter-arrays-collections}{A \textit{span} is the distance between a value and another, distinct occurrence of the same value. Design the \ttt{int largestSpan(int[] A)} method that, when given a non-empty array of integers $A$, returns the largest span. It may be beneficial to write the \ttt{firstIndexOf} and \ttt{lastIndexOf} methods to help in your design process. Use the following examples as motivation.}
+
+\begin{verbnobox}[\footnotesize]
+largestSpan(new int[]{4, 2, 3, 2, 5})             => 3
+largestSpan(new int[]{1, 2, 3, 4, 5})             => 1
+largestSpan(new int[]{5, 4, 4, 4, 3, 4, 1, 4, 1}) => 7
+\end{verbnobox} 
+
 \exercise{2}{chapter-arrays-collections}{We can represent matrices as two-dimensional arrays. For example, the matrix}
 
 \[
@@ -331,4 +352,4 @@ Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet 
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends List<Integer>> boolean areParallelLists(T t, T u)} method that, when given two types of lists $t$ and $u$ that store integer values, determines whether or not they are ``parallel''. In this context, Two integer lists are parallel if they differ by a single constant factor. For example, where $t=\{5, 10, 15, 20\}$ and $u=\{20, 40, 60, 80\}$, $t$ and $u$ are parallel because every element in $t$ multiplied by four gets us a parallel element in $u$. This factorization is bidirectional, meaning that $t$ could be $\{100, 200, 300, 200\}$ and $u$ could be $\{10, 20, 30, 20\}$.}
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends Set<U>, U extends Comparable<U>> boolean areEqualSets(T t, T u)} m\-ethod that, when given two types of sets $t$ and $u$ that store comparable elements, returns whether they are equal to one another. Two sets are equivalent if they are subsets of each other. You must traverse over the sets; you \textbf{cannot} use the built-in \ttt{.equals} method provided by the \ttt{Set} implementations.}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends Set<U>, U extends Comparable<U>> boolean areEqualSets(T t, T u)} m\-ethod that, when given two types of sets $t$ and $u$ that store comparable elements, returns whether they are equal to one another. Two sets are equivalent if they are subsets of each other. You must traverse over the sets; you \textbf{cannot} use the built-in \ttt{.equals} method provided by the \ttt{Set} implementations.}2
