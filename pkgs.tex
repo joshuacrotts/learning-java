@@ -12,12 +12,15 @@
 
 
 \newcommand{\mathtime}{} % uncomment to use Times New Roman fonts
-\newcommand{\libertine}{}
+% \newcommand{\libertine}{}
 % fonts
 
 %% Times New Roman Fonts
 \ifdefined\mathtime
-  \usepackage{libertine} 
+  \usepackage{newtxtext} 
+\fi
+\ifdefined\libretine
+  \usepackage{libretine}
 \fi
 % \usepackage[htt]{hyphenat}
 \usepackage{tikz}
