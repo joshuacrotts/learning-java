@@ -277,6 +277,66 @@ Design a parser for the language described by the interpreter. The idea is to to
 \exercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
 The Scheme programming language and its derivatives support \textit{code quotation}, i.e., the ability to convert an evaluable expression into data. As an example, if we evaluate \ttt{new QuoteNode(new VarNode("x"))}, we receive a symbol as the output, rather than the evaluated symbol via environment lookup. Add the \ttt{QuoteNode} class to your interpreter.
 
+\exercise{3}{chapter-advanced-oop}{In Chapter~\ref{chapter-crl}, we discussed tail recursion and an action performed by some programming languages known as tail-call optimization. We know that we can convert any (tail) recursive algorithm into one that uses a loop, and we described said process in the chapter. There is yet another approach that we can mimic in Java with a bit of trickery and interfaces.}
+
+The problem with tail recursion (and recursion in general) in Java is the fact that it does not convert tail calls into iteration, which means the stack quickly overflows with activation records. We can make use of a \textit{trampoline} to force the recursion into iteration through \textit{thunks}. In essence, we have a tail recursive method that returns either a value or makes a tail recursive call, such as the factorial example below.\footnote{We omit the driver method to shorten the code, as the important part lies inside the recursive implementation.} Inside our base case, we invoke the \ttt{done} method with the accumulator value. Otherwise, we invoke the \ttt{call} method containing a lambda expression of no arguments, whose right-hand side is a recursive call to \ttt{factTR}. Functions, or lambda expressions, that receive no arguments are called thunks.
+
+\begin{cl}[FactorialTailRecursiveTester.java]{}
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static FactorialTailRecursive.factTailCall;
+
+class FactorialTailRecursiveTester {
+  
+  @Test 
+  void testFactTailRecursiveTrampoline() {
+    assertAll(
+      () -> assertEquals(BigInteger.valueOf(1), factTailCall(BigInteger.valueOf(0), BigInteger.ONE)),
+      () -> assertEquals(BigInteger.valueOf(120), factTailCall(BigInteger.valueOf(5), BigInteger.ONE)),
+      () -> assertDoesNotThrow(StackOverflowException.class,
+                               () -> factTailCall(BigInteger.valueOf(50000), BigInteger.ONE)),
+    )
+  }
+}
+\end{cl}
+
+\begin{cl}[FactorialTailRecursive.java]{}
+\begin{lstlisting}[language=MyJava]
+import java.lang.BigInteger;
+
+class FactorialTailRecursive {
+ 
+  /**
+   * Tail-recursive factorial function. Uses BigInteger to avoid number overflow and
+   * thunks to avoid stack overflow.
+   * @param n - the number to compute the factorial of.
+   * @param acc - the accumulator.
+   * @return a tail call that is either done or not done.
+   */
+  public static ITailCall<BigInteger> factTailCall(BigInteger n, BigInteger acc) {
+    if (n.equals(BigInteger.ZERO)) {
+      return TailCallUtils.done(acc);
+    } else {
+      return TailCallUtils.call(() -> factTailCall(n.subtract(BigInteger.ONE), acc.multiply(n)));
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+The idea is that we have a helper class and method, namely \ttt{invoke}, that continuously applies the thunks, \textbf{inside a while loop}, until the computation is done. The trampoline analogy is used because we bounce on the trampoline while invoking thunks and jump off when we are ``done''.
+
+First, design the generic \ttt{ITailCall<T>} interface. It should contain only one (non-default) method: \ttt{ITailCall<T> apply()}, which is necessary for the \ttt{invoke} method. The remaining methods are all default, meaning they must have a body. Design the \ttt{boolean isDone()} method to always return false. Design the \ttt{T getValue()} method to simply return \ttt{null}. Finally, design the \ttt{T invoke()} method that stores a local variable and constantly calls \ttt{apply} on itself until it is ``done''. 
+
+Second, design the \ttt{TailCallUtils} final class to contain a private constructor (this class will only utilize and define two static methods). The two methods are as follows:
+
+\begin{itemize}
+  \item \ttt{public static <T> ITailCall<T> call(ITailCall next)}, which receives and returns the next tail call to apply. This definition should be exactly one line long and as simple as it seems.
+  \item \ttt{public static <T> ITailCall<T> done(T val)}, which receives the value to return from the trampoline. We need to create an instance of an interface, which sounds bizarre, but is possible only when we provide an implementation of its methods. So, return a \ttt{new ITailCall<>()}, and inside its body, override the \ttt{isDone} and \ttt{getValue} methods with the correct bodies.
+\end{itemize}
+
+Finally, run the factorial test that we provided earlier in its JUnit suite. It should pass and not stack overflow, hence the inclusion of an \ttt{assertDoesNotThrow} call.
+
 \exercise{3}{chapter-arrays-collections}{Recall the unification exercise from Chapter~\ref{chapter-arrays-collections}. We can take the idea of unification a step further, which is the basis for almost all logic programming languages such as Prolog. For instance, take the expression \ttt{p(X, f(Y))}; attempting to unify this with \ttt{p(q(r(x)), f(b(x)))} returns a unification assignment of \ttt{X : q(r(x)), Y : b(x)}. It is possible for a unification to not return any possible assignment. As an example, unifying \ttt{p(a, b)} with \ttt{p(Y, Y)} returns an empty assignment because it is not possible to unify \ttt{a} with \ttt{Y}, then unify \ttt{b} with \ttt{Y}.}
 
 Design three classes: \ttt{Variable}, \ttt{Constant}, and \ttt{Predicate}. Each of these should implement the \ttt{IUnifiable} interface, which supplies one method: \ttt{Assignment unify(IUnifiable u, Assignment as)}. An \ttt{Assignment} is simply a mapping of \ttt{IUnifiable} objects to \ttt{IUnifiable} objects, resembling a map data structure. Variables in this small language will be represented as uppercased letters, whereas constants are lowercase. If two \ttt{IUnifiable} objects cannot be unified, then \ttt{unify} should return \ttt{null}.
