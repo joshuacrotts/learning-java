@@ -191,11 +191,7 @@ class BankAccountRunner {
 
 Running the program may produce the following output:
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 withdraw: insufficient funds
 withdraw: insufficient funds
 0
@@ -203,11 +199,7 @@ withdraw: insufficient funds
 
 It seems that we have an unpredictable problem: rerunning the program produces different results each time, but the error stems from the fact that our accesses to the bank account are not \textit{synchronized}. To understand why, let's expand out the code for performing a withdraw.
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 public void withdraw(int less) {
   int currAmt = this.amt;
   if (currAmt >= less) {
@@ -607,11 +599,7 @@ class ConditionVariableExample {
 
 If we fix our input seed to \ttt{212}, the output is deterministically as follows:
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 Consumed: 1
 Consumed: 6
 Consumed: 1

@@ -13,11 +13,7 @@
 \end{enumerate}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{int[] accSum(int[] A)} method, which receives an array of integers and returns a new array of integers that corresponds to the accumulated sum between each integer. We present some examples below.}
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 accSum({1, 7, 2, 9})                => {1, 8, 10, 19}
 accSum({1, 3, 3, 4, 5, 5, 6, 6, 2}) => {1, 4, 7, 11, 16, 21, 27, 33, 35}
 accSum({5, 5, 5, 5, 5, 5, 5, 1, 5}) => {5, 10, 15, 20, 25, 30, 35, 36, 41}
@@ -32,11 +28,7 @@ accSum({5, 5, 5, 5, 5, 5, 5, 1, 5}) => {5, 10, 15, 20, 25, 30, 35, 36, 41}
         \item Otherwise, insert \ttt{"i"}, where \ttt{i} is the current number.
     \end{itemize}
 
-<<<<<<< Updated upstream
-    \begin{verbnobox}[\footnotesize]
-=======
     \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 fizzBuzz(1, 12)  => {"1", "2", "Fizz", "4", "Buzz",
                      "Fizz", "7", "8", "Fizz", "Buzz",
                      "11", "Fizz"}
@@ -48,11 +40,7 @@ fizzBuzz(15, 18) => {"FizzBuzz", "16", "17", "Fizz"}
 \exercise{2}{chapter-arrays-collections}{Desing the \ttt{int median(int[] A, int[] B)} that, when given two sorted (in increasing order) arrays of integers $A$ and $B$, returns the median value of those two lists. You can use auxiliary data structures to help in solving the problem, but they are not necessary.}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{double sumNasty(ArrayList<Integer> vals)} method that returns the average of the numbers in the list with the following caveat: The number $9$ should not be counted towards the average, nor should the following number, should one exist.}
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 sumNasty({8, 7, 11, 9, 12, 10}) => 9.0
 sumNasty({120, 99, 9})          => 109.5
 sumNasty({9})                   => 0.0
@@ -60,11 +48,7 @@ sumNasty({})                    => 0.0
 \end{verbnobox}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] countEvenOdds(int[] vals)} method that returns a tuple (an array of two values) where index zero stores the amount of even values and index one stores the amount of odd values.}
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 countEvenOdds({11, 9, 2, 3, 7, 10, 12, 114}) => {4, 4}
 countEvenOdds({11, 13, 15, 17})              => {0, 4}
 \end{verbnobox}
@@ -80,11 +64,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{boolean canBalanceArray(int[] A)} method, which determines whether or not an array of integers $A$ can be split into a partition that balances each side. Use the following examples as motivation.}
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 canBalanceArray(new int[]{1, 1, 1, 1, 5})    => false
 canBalanceArray(new int[]{2, 3, 5})          => true
 canBalanceArray(new int[]{-10, 2, -58, 50})  => true
@@ -95,11 +75,7 @@ canBalanceArray(new int[]{10})               => false
 
 \exercise{3}{chapter-arrays-collections}{A \textit{span} is the distance between a value and another, distinct occurrence of the same value. Design the \ttt{int largestSpan(int[] A)} method that, when given a non-empty array of integers $A$, returns the largest span. It may be beneficial to write the \ttt{firstIndexOf} and \ttt{lastIndexOf} methods to help in your design process. Use the following examples as motivation.}
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 largestSpan(new int[]{4, 2, 3, 2, 5})             => 3
 largestSpan(new int[]{1, 2, 3, 4, 5})             => 1
 largestSpan(new int[]{5, 4, 4, 4, 3, 4, 1, 4, 1}) => 7
@@ -117,11 +93,7 @@ largestSpan(new int[]{5, 4, 4, 4, 3, 4, 1, 4, 1}) => 7
 
 \noindent can be represented as the two-dimensional array
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 \end{verbnobox}
 
@@ -186,11 +158,8 @@ Walking through this with the example from before, we get the following sequence
 \end{itemize}
     
 This method is harder than it may appear at first glance, so write plenty of tests!
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
+
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 shift({11, 12, 13, 14}, -1)          => {12, 13, 14, 11}
 shift({120, 120, 140, 140}, 2)       => {140, 140, 120, 120}
 shift({99999999}, 1000)              => {99999999}
@@ -202,11 +171,7 @@ shift({120, 80, 70, 50, 40, 20}, -3) => {50, 40, 20, 120, 80, 70}
 
 Joe the mountain climber has come across a large mountain range. He wants to climb only the tallest mountains in the range. Design the \ttt{peakFinder} method that returns an array $H'$ of all the peaks in an \ttt{int[]} of mountain heights $H$. A peak $p$ is defined as an element of $h$ at index $i$ such that $p[i - 1] < p[i]$ and $p[i] > p[i + 1]$. If $i = 0$ or $i = |H| - 1$, Joe will not climb $p[i]$. Joe doesn't want to climb a mountain of the same height more than once, so you should not add any peaks that have already been added to $H'$. We present some test cases below. Hint: reuse the linear search algorithm from problem 1, except switch the \ttt{String} parameter for integers.
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 peakFinder({9, 13, 7, 2, 8})                        => {13}
 peakFinder({8, 7, 8, 7, 8, 7, 8, 7})                => {8}
 peakFinder({111, 27, 84, 31, 5, 9, 4, 3, 2, 1, 64}) => {84, 9}
@@ -221,11 +186,7 @@ peakFinder({1, 2, 3, 2, 1})                         => {3}
 
 \exercise{1}{chapter-arrays-collections}{A village has members where each has a partner. These members are grouped in pairs inside an \ttt{ArrayList<Integer>} where each pair of indices represents a relationship of the village. I.e., \ttt{A.get($2i$)} and \ttt{A.get($2i + 1$)} are in a relationship. A couple is considered the wisest if they have the highest combined age. Design the \ttt{ArrayList<Integer> wisest(ArrayList<Integer> A)} method that, when given a list of (integer) ages $A$, return a new \ttt{ArrayList<Integer>} containing the ages of the wisest pair. If there is a tie, return the pair that has the highest age overall. The order is not significant. We present a few test cases below. You can assume that there will always be an even number of village members.}
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 wisest({31, 42, 43, 35, 21, 27, 24, 44}) => {43, 35} or {35, 43}
 wisest({47, 51, 52, 48, 33, 67, 45, 35}) => {33, 67} or {67, 33}
 \end{verbnobox}
@@ -234,11 +195,7 @@ wisest({47, 51, 52, 48, 33, 67, 45, 35}) => {33, 67} or {67, 33}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{HashMap<String, Integer> wordCount(String s)} method that, when given a string $s$, counts the number of words in the list. Store the results in a \ttt{HashMap<String, Integer>}. Assume that $s$ is not cleaned. That is, you should first remove all punctuation (periods, commas, exclamation points, question marks, semi-colons, dashes, hashes, ampersands, asterisks, and parentheses) from $s$, producing a new string $s'$. Then, split the string based on spaces (remember \ttt{tokenize}?), and produce a map of the words to their respective counts. Do not factor case into your total; i.e., \ttt{"fAcToR"} and \ttt{"factor"} count as the same word. The ordering of the returned map is not significant.}
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 String s = "Hello world, the world is healthy, is 
             it not? I certainly agree that the world 
             is #1 and healthy."
@@ -250,9 +207,6 @@ wordCount(s) => [{"hello", 1}, {"world", 3}, {"the", 2}
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{LinkedHashSet<String>largeToSmall(HashMap<String, Integer> M)} method that, when given a \ttt{HashMap<String, Integer>} $M$, returns a \ttt{LinkedHashSet} of \ttt{String} values where the words are inserted into the set in order of decreasing count. Words that have the same count do not need to be inserted in any particular order. E.g., \ttt{"is"} may come before \ttt{"world"}. You cannot sort $M$. Hint: create an array of size $c$ (where $c$ is the highest word count) where each element is a \ttt{LinkedHashSet<String>}. For every element $e$ in $M$, add $e$ to the set at index $M[i]$, where $i$ is the count of $e$ in $M$. Then, append these sets in reverse order according to their index. We provide some pseudocode below.}
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
 >>>>>>> Stashed changes
 largeToSmall(M):
@@ -270,9 +224,6 @@ largeToSmall(M):
   return array[c-1] appended to array[c-2] ... appended to array[0]
 \end{verbnobox}
     
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
 >>>>>>> Stashed changes
 largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy", 
@@ -294,22 +245,14 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{double postfixEvaluator(List<String> l)} method that, when given a list of binary operators and numeric operands represents as strings, returns the result of evaluating the postfix-notation expression. You will need to write a few helper methods to solve this problem, and it is best to break it down into steps. First, write a method that determines if a given string is one of the four binary operators: \ttt{"+"}, \ttt{"-"}, \ttt{"*"}, or \ttt{"/"}. You may assume that any inputs that are not binary operators are operands, i.e., numbers. Then, write a method that applies a given binary operator to a list of operands, i.e., an \ttt{ArrayList<Double>}.}
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 postfixEvaluator({"5", "2", "*", "5", "+"}) => 17
 postfixEvaluator({"1", "2", "3", "4", "+"}) => 10
 \end{verbnobox}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{substitute} method that, when given a \ttt{String} $\mathit{exp}$ and an environment $\mathit{env}$ \ttt{HashMap<String, Integer>}, substitutes each occurrence of an ``identifier'' for its value counterpart from the map.}
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 substitute("f(x) = 3 * a + b", {<"a" : 10>, <"b" : 13>})
            => "f(x) = 3 * 10 + 13"
 substitute("g(h, f(x)) = y + x", {<"q" : 200>})          
@@ -318,11 +261,7 @@ substitute("g(h, f(x)) = y + x", {<"q" : 200>})
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{unifiesAll} method, which receives a \ttt{HashMap<String, Integer>} $M$ of unification assignments and a list of goals \ttt{ArrayList<LinkedList<String>>}} $\mathcal{G}$. Each goal $G \in \mathcal{G}$ is a tuple represented as a \ttt{LinkedList}; goals consist of two values $x, y$, and if it is possible for these to be the same value, then we say we can unify $x$ with $y$. Any successful unifications that occur with variables not present in $M$ should be added to $M$. We present some examples below (assume all values are strings; we omit the quotes out of conciseness). Hint: you might want to write an \ttt{isVar} predicate, which determines if a value is a variable or not, i.e., a value that does not start with a number.
 
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 M1 = {<x : 5>, <y : 10>, <z : 15>, <w : 5>}
 G1  = {{x, x}, {10, 10}, {z, 15}, {x, w}}
 unifiesAll(M1, G1) => true
@@ -344,11 +283,7 @@ unifiesAll(M4, G4) => false
 
 \exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Design the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> ls)} method, which maps all alphabetized anagrams to the strings in $\textit{ls}$ using the above criteria.}
     
-<<<<<<< Updated upstream
-\begin{verbnobox}[\footnotesize]
-=======
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 ls = ["presorting", "plea", "introduces", "anger", "leap", "petals",
       "donate", "plates", "range", "reductions", "rediscount", 
       "tapers", "pale", "atoned", "staple", "repast", "reportings"]
