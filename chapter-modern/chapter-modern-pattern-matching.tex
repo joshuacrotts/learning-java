@@ -97,7 +97,11 @@ Notice that we have to use the wrapper class, since Java permits only special ty
 
 Pattern matching is not restricted to switch-case expressions. We can also use pattern matching in cases where we check the instance of an object, namely in the \ttt{equals} method. As an example, traditional \ttt{equals} methods look like the following:
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 @Override
 public boolean equals(Object o) {
   if (o instanceof MyClass) {
@@ -112,7 +116,11 @@ public boolean equals(Object o) {
 
 The need to cast the object to the type of the class on its own separate line is tedious. Pattern matching allows us to write the \ttt{equals} method in a more concise manner by providing an identifier to the pattern that is bound to the object being tested. We can wrap this in either an \ttt{if} statement or as a logical AND, because the pattern matching expression returns a boolean and fails to match if the object is not an instance of the stated class.
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 @Override
 public boolean equals(Object o) {
   return (o instanceof MyClass other)     &&
@@ -249,14 +257,22 @@ class Evaluator {
 In the interpreter, we pattern match on the constructors of our record types. For example, in the \ttt{eval} method, when pattern matching on the \ttt{Add} constructor. We create temporary bindings for the identifiers \ttt{left} and \ttt{right} that are bound to the respective \ttt{Expr} objects that are passed into the constructor. We then recursively call \ttt{eval} on these objects and add the results together. We do the same for the other constructors of \ttt{Expr}. To make testing the program easier, we designed a secondary constructor for \ttt{Number} that receives an integer and converts it to a \ttt{BigDecimal}. Note that self-defined constructors of a record can only reference other constructors via \ttt{this(...)}.
 
 \example{Let's use some of Java's modern features to write a lexer and parser for the interpreter that we designed in Chapter~\ref{chapter:advanced-oop}. We presented this as an exercise to the readers at the end, but we imagine it was quite a hassle, if the readers restrict themselves to older versions of Java. In particular, we can use of records and pattern matching to greatly reduce the amount of necessary boilerplate code. Our language capabilities will be greatly reduced for the time being, however, since our focus is the lexing and parsing of the raw language rather than its evaluation. Therefore, let's restrict the language to supporting numbers, symbols, and s-expressions, i.e., expressions enclosed by parentheses. Below we present some examples of strings within this language.}
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 7
 (+ 2 40)
 (+ 10 (* 4 5) 30)
 \end{verbnobox}
 
 For the uninformed, a \textit{lexer}\index{lexer} is a program that converts input into \textit{tokens}, also called a tokenizer. Tokens are components of an input string. For example, we might convert the string \ttt{"(+ 2 3)"} into five tokens: 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 L_PAREN "("
 SYMBOL "+"
 NUMBER "2"

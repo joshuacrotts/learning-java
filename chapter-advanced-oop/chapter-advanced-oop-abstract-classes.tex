@@ -604,7 +604,11 @@ final class PrimNode extends AstNode {
 
 We need a way of binding variables, so we shall take a hint from functional programming languages via the \ttt{LetNode} class. The \ttt{LetNode} class has three children: a variable name, a value, and a body. The variable name will be a string, with the value and body both being abstract syntax tree nodes. The \ttt{LetNode} class will have a \ttt{toString} method that will return a string in the form of \ttt{(let ([<var> <exp>]) <body>)}. The \ttt{eval} method will evaluate the value, extend the environment with the new binding, and then evaluate the body with the extended environment. To do this, we need to understand what environment extension entails. Reconsidering our \ttt{Environment} class, we know that it contains a \ttt{HashMap} to designate that environments use maps by design. We may be tempted to write a \ttt{set} method in our \ttt{Environment} class to add an identifier binding to the current environment. While this works (and will be a necessity in due time), it means that we can only \textit{modify}, or \textit{change}, the environment, which isn't desired. The alternative approach would be to utilize \textit{environment extension}. That is, create a new environment with the old bindings, followed by an insertion of the new binding. Environment extension brings up the issue of variable scope, because different variables are live at different locations in the program. Consider the following program described by the abstract syntax tree:
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 new LetNode("x", new NumberNode(5), 
  new LetNode("y", new PrimNode("+", new NumberNode(6), new VarNode("x")), 
   new VarNode("y")))

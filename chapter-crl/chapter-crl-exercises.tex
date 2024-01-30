@@ -31,7 +31,11 @@
 
 \noindent where `$P$' and `$R$' are assigned to \ttt{false} and `$Q$' is assigned to \ttt{true}, is equivalent to
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 static final boolean P = false;
 static final boolean Q = true;
 static final boolean R = false;
@@ -128,7 +132,11 @@ cond(P, not(bicond(Q, not(R))))
 
 \exercise{2}{chapter-crl}{Carlo is shipping out orders of candy to local grocery stores. Boxes have a maximum weight defined by a value $w$, and we can (potentially) fit both small and large bars of candy in a box. Design the \ttt{int fitCandy(int s, int l, int w)} method that, when given a number of small bars $s$, large bars $l$, and maximum weight $w$, determines the number of small candy bars he can fit in the box. Large bars weigh five kilograms, and small bars weigh one kilogram. Note that Carlo always tries to fit large candies first before small. Return \ttt{-1} if it is impossible to fill the box with the given criteria. Below are some test examples. Hint: consider this as an analysis of three cases.}
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 fitCandy(4, 1, 9)      => 4
 fitCandy(4, 1, 4)      => 4
 fitCandy(1, 2, 6)      => 1
@@ -140,7 +148,11 @@ fitCandy(7, 1, 13)     => -1
 
 \exercise{2}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{boolean isValidIpv4(String ip)} method that, when given a string, determines whether or not it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid.}
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 isValidIpv4("192.168.1.244")    => true
 isValidIpv4("149.165.192.52")   => true
 isValidIpv4("192.168.1.256")    => false
@@ -357,7 +369,11 @@ cutN("1[bbbbb]3[a]") => "[bbbbb]3[a]"
 \exercise{1}{chapter-crl}{Design the \ttt{String trimSpace(String s)} method, which receives a string \ttt{s} and returns a new string with all leading and trailing spaces removed. You cannot use the \ttt{trim} method provided by the \ttt{String} class.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean containsMiddleABC(String s)} method, which receives a string $s$ and returns whether $s$ contains the substring \ttt{"ABC"} in the ``middle''. We define the ``middle'' as the point where number of characters on the left and right differ by at most one. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
+<<<<<<< Updated upstream
     \begin{verbnobox}[\footnotesize]
+=======
+    \begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 assertTrue(middleABC("helloABChiya!"));
 assertTrue(middleABC("ABC"));
 assertTrue(middleABC("aABCc!"));
@@ -370,7 +386,11 @@ assertFalse(middleABC("notInTheMiddleABCmid!"));
 \exercise{1}{chapter-crl}{Design the \ttt{boolean allSelfDividing(int n)} method, which receives an integer $n$ and returns whether each digit evenly divides $n$. If any digit is zero, then return \ttt{false}. You must perform the arithmetic manually; you \textbf{cannot} convert the value to a \ttt{String} or use an array.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{int strSumNums(String s)} that computes the sum of each \textit{positive integer} ($\geq 0$) in a string $s$. See the below test cases for examples. You may assume that each integer in $s$, should there be any, is in the bounds of a positive \ttt{int}, i.e., $0$ and $2^{31}-1$. Hint: use \ttt{Character.isDigit} to test whether a character $c$ is a digit, and \ttt{Integer.parseInt} to convert a \ttt{String} to an \ttt{int}.}
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 assertEquals(100, strSumNums("hello50how20are30you?"));
 assertEquals(10, strSumNums("t1h1i1s1i1s1e1a1s1y1!"));
 assertEquals(0, strSumNums("there are no numbers :(")));
@@ -388,7 +408,11 @@ That is, given an input number $n$, compute that many terms of the above sequenc
 
 \exercise{1}{chapter-crl}{Design the \ttt{String toBinary(int n)} that converts a positive integer $n$ into a \ttt{String} that represents its binary counterpart. We present some examples below.}
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 toBinary(13)  => "1101"
 toBinary(144) => "10010000"
 toBinary(25)  => "11001"
@@ -399,7 +423,11 @@ toBinary(25)  => "11001"
 \exercise{1}{chapter-crl}{Design the \ttt{String mirrorEnds(String s)} method that, when given a string $s$, looks for a mirror image (backwards) string at both the beginning and end of the
 given string. In other words, zero or more characters at the very beginning of the given string, and at the very end of the string in reverse order (possibly overlapping). For example, the string \ttt{"abXYZba"} has the mirror end \ttt{"ab"}. If there is no such string, return \ttt{null}.}
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 mirrorEnds("abXYZba") => "ab"
 mirrorEnds("abca")    => "a"
 mirrorEnds("aba")     => "aba"
@@ -407,7 +435,11 @@ mirrorEnds("abc")     => null
 \end{verbnobox}
 
 \exercise{2}{chapter-crl}{Design the \ttt{String multTable(int a, int b)} method that, when given two integers $a$ and $b$ such that $a \leq b$, computes the ``multiplication table'' from $a$ to $b$. We provide some test cases below. Note that the newline is just for formatting purposes.}
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 multTable(3, 3) => "1*1=1,1*2=2,1*3=3,2*1=2,2*2=4,
                     2*3=6,3*1=3,3*2=6,3*3=9"
 multTable(2, 6) => "1*1=1,1*2=2,1*3=3,1*4=4,1*5=5,

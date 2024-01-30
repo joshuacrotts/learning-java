@@ -234,7 +234,11 @@ class PrimNode extends AstNode {
   \item Call \ttt{eval} on the function body and pass the new (extended) environment.
   \end{enumerate}
   This seems like a lot of work (because it is), but it means you can write really cool programs, including those that use recursion!
+<<<<<<< Updated upstream
   \begin{verbnobox}[\footnotesize]
+=======
+  \begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 new ProgramNode(
   new DefNode("!", 
     new FuncNode(
@@ -260,7 +264,11 @@ new ProgramNode(
 \exercise{3}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
 Data structures are a core and fundamental feature of programming languages. A language without them, or at least one to build others on top of, suffers severely in terms of usability. We will implement a \textit{cons}-like data structure for our interpreter. In functional programming, we often use three operations to act on data structures akin to linked lists: \textit{cons}, \textit{first}, and \textit{rest}, to construct a new list, retrieve the first element, and retrieve the rest of the list respectively. We can inductively define a cons list as follows:
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 A ConsList is one of:
  - new ConsList()
  - new ConsList(x, ConsList)

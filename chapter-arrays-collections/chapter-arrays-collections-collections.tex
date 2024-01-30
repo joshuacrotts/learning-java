@@ -198,11 +198,19 @@ What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation
 \end{figure}
 
 To declare an \ttt{ArrayList} called $A$, we write the following, where $T$ is a class representing the type of elements contained within:
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
 List<T> A = new ArrayList<>();
 \end{verbnobox}
 This initializes a \ttt{List} $A$, but instantiates it as a new \ttt{ArrayList}.\footnote{The reason behind this \textit{polymorphic} choice will become apparent in subsequent chapters.} Notice that we do not specify the number of elements to store like we would an array. Indeed, because lists are dynamic in size, there is no need to specify a default. Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this can be changed by passing a size argument between the parentheses.
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+List<T> A = new ArrayList<>();
+\end{verbnobox}
+This initializes a \ttt{List} $A$, but instantiates it as a new \ttt{ArrayList}.\footnote{The reason behind this \textit{polymorphic} choice will become apparent in subsequent chapters.} Notice that we do not specify the number of elements to store like we would an array. Indeed, because lists are dynamic in size, there is no need to specify a default. Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this can be changed by passing a size argument between the parentheses.
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 List<T> A = new ArrayList<>(100);
 \end{verbnobox}
 You might be tempted to ask, ``Why might that be necessary?'', which is a great question. Remember that resizing an array depends on the number of pre-existing elements. Thus, the fewer resizes there are, the better, hence why we double the array capacity in our functional list implementation. If we know that we might have a lot of elements to add to the list from the start, it is a good idea to specify this as a parameter to the \ttt{ArrayList}. On average, adding a value to the end of an \ttt{ArrayList} is a \textit{constant cost}\index{constant cost}, or occurs instantaneously, because we know exactly where the next free spot is located. We cannot forget the time it takes to resize, however, so we declare that the \ttt{.add} method takes constant time with respect to \textit{amortized analysis}\index{amortized analysis}. In essence, sometimes we have to perform a resize-and-copy operation, but on average, we do not need to consider the cost thereof.
@@ -210,7 +218,11 @@ You might be tempted to ask, ``Why might that be necessary?'', which is a great 
 Like arrays, modifying elements in-place and retrieval also has a constant cost; the underlying data structure is an array after all. We retrieve a value at a given index using \ttt{.get}, and we replace an existing value at a given index using \ttt{.set}.
 
 \example{If we instantiate an \ttt{ArrayList} of integers $\ttt{ls1}$, we can perform several operations to demonstrate our understanding.}
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 List<Integer> ls1 = new ArrayList<>();
 ls1.add(439);
 ls1.add(311);
@@ -244,7 +256,11 @@ Therefore, to remove $1,000,000$ elements from the front of an \ttt{ArrayList}, 
 \example{We made a big deal about growing the underlying array when we run out of room to add new elements. We could ask a similar question about what to do when we, say, remove a ton of elements from a large list. If our list contains one million elements and we then clear the list, it makes little sense, at first glance, to have space allocated for one million non-existent values. Though, Java's implementation of \ttt{ArrayList} does not decrease the size of the backing array, preferring performance over memory usage. The reasoning behind this choice is straightforward: suppose we have an \ttt{ArrayList} of $500$ elements and we remove $250$ elements. Is it fair to decrease the size of the list by a factor of two? If so, what happens when we add one more element, totaling to $251$? We then have to grow the list, again, wasting valuable time.}
 
 \example{Consider the following code. What does $s$ contain after execution?}
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 List<Integer> ls1 = new ArrayList<>();
 ls1.add(10);
 List<Integer> ls2 = ls1;
@@ -255,12 +271,20 @@ String s = ls1.toString() + " " + ls2.toString();
 Should you unaware of aliasing, you might say it resolves to \ttt{"[10, 30] [20]"}. \textit{Aliasing}\index{aliasing} is a form of object-sharing. When allocating any type of \textit{object}, whether that object is an array, an \ttt{ArrayList}, a \ttt{String}, or something else, we assign a reference \textit{to} that object in memory via the variable declaration. That is, in the preceding code, \ttt{ls1} references the location, in memory, of an \ttt{ArrayList}. Correspondingly, when we declare \ttt{ls2} and assign to it \ttt{ls1}, we are not copying over the values from \ttt{ls1} into \ttt{ls2}; we are expressing that \ttt{ls2} should reference the same list as referenced by \ttt{ls1}. Therefore by asserting \ttt{ls2} as an alias of \ttt{ls1}, any modifications made to either is reflected when referencing the other. In this instance, $s$ resolves to \ttt{"[10, 20, 30] [10, 20, 30]"}
 
 We have seen the repeated use of the \ttt{Integer} and \ttt{Double} classes when parameterizing the types for \ttt{ArrayList}, but what is the point? Could we not instead opt for \ttt{int} and \ttt{double}, as we have traditionally? The answer is a resounding no; we must take advantage of the luxury that is \textit{autoboxing} and \textit{autounboxing} through the \textit{wrapper classes}. The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Char}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. Parameterized types only work with class types; primitive datatypes are disallowed. So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. We can, of course, declare an \ttt{Integer} using the following overly-verbose syntax:
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 Integer x = new Integer(42);
 int y = x.getValue(); // y = 42.
 \end{verbnobox}
 We explicitly wrap the primitive integer $42$ in $x$, which is of the \ttt{Integer} type, then unwrap its value to be stored in $y$. Manually wrapping and unwrapping primitives is tiresome and only introduces redundant code, hence why Java autoboxes and autounboxes as needed. For example, if we declare an \ttt{ArrayList} of \ttt{Integer} values, then add the primitive integer literal \ttt{42} to the list, Java will autobox the literal into its \ttt{Integer} wrapper. Going the other direction, if we want to iterate over the values in the list, we might use the enhanced-for loop. If Java did not support autounboxing, we would instead have to use \ttt{Integer} as opposed to \ttt{int} in the loop variable declaration. 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 ArrayList<Integer> al = new ArrayList<>();
 al.add(42);
 for (int e : al) {
@@ -270,7 +294,11 @@ for (int e : al) {
 
 Testing is always important when writing programs, as this text has emphasized from the first page. Writing test cases for lists, naively, is cumbersome due to the repetition of \ttt{.add} method calls when populating the list. Instead, Java has the convenient \ttt{List.of} method, which receives any number of arguments. Let us see an example of this method.
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 // Old way:
 List<Integer> ls1 = new ArrayList<>();
 ls1.add(5);
@@ -458,7 +486,11 @@ Like the operations of a stack, these are also constant-time, since we keep a re
 \end{figure}
 
 Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. Instead, \texttt{Queue} is an \textit{interface}\index{interface} that other classes implement whose structure resembles a queue. To create a first-in-first-out queue data structure, we may initialize a variable to be a \texttt{Queue} then instantiate it as a \texttt{LinkedList}. Thankfully, the \texttt{LinkedList} class contains all relevant methods for operating a FIFO-based queue.
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 Queue<Integer> q = new LinkedList<>();
 \end{verbnobox}
 Treating \texttt{q} as a queue rather than a linked list is easy thanks to the methods supplied by the \texttt{LinkedList} implementation. Figure~\ref{fig:queues} shows some of these handy methods. 
@@ -626,7 +658,11 @@ class PriorityQueueByP {
 \end{lstlisting}
 \end{cl}
 The output is as follows:
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 park
 pecking
 peek
@@ -703,7 +739,11 @@ A \textit{LinkedHashMap} is a map with an ordering based on the insertion order 
 \section*{Iterators}
 We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 static int sum(int[] arr) {
   int sum = 0;
   for (int i = 0; i < arr.size; i++) { sum += arr[i]; }
@@ -782,7 +822,11 @@ class EnhancedForLoopTester {
 \textit{Streams} are, in effect, a \textit{lazy} collection of ``things''. By lazy, we mean to say that, if a result is not necessary, or requested, then it is not computed.
 
 \example{Consider a situation in which we call \ttt{fib(1000)} as the argument to the \ttt{foo} method, giving us \ttt{foo(fib(1000))}. In Java, all arguments are evaluated \textit{eagerly}, which means that, in effect, takes an eternity to terminate. Unfortunately for the caller of \ttt{foo}, we do not even use the value of $x$, meaning we computed \ttt{fib(1000)} for absolutely no reason whatsoever.}\footnote{We assume that \ttt{fib} is a non-side-effect-inducing method, and is the naive exponential version of the algorithm.} 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 static int foo(int x) {
   return 5;
 }
@@ -796,7 +840,11 @@ Therefore $S$ is a set containing countably-infinite values. Implementing $S$ in
 
 To create a stream of infinite data is to recreate our inductive set definition inside a \ttt{IntStream} instance and the \ttt{iterate} static method.
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 IntStream is = IntStream.iterate(0, x -> x + 2);
 \end{verbnobox}
 

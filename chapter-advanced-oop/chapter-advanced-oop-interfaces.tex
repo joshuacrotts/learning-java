@@ -173,7 +173,11 @@ class ISuitTester {
 
 One extra piece of information that we should share is that we can instantiate objects in different ways. To demonstrate why this matters, suppose we initialize an object $s_1$ to type \ttt{ISuit}, but instantiate it as type \ttt{Diamond}. Then, we initialize another object $s_2$ to type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. We would expect that $s_1$ and $s_2$ are equivalent, but this is not the case. Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. Because $s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. Should we want to be able to invoke \ttt{diamondCount} on $s_1$, we need to \textit{downcast}\index{downcast} $s_1$ to type \ttt{Diamond}.
 
+<<<<<<< Updated upstream
 \begin{verbnobox}[\footnotesize]
+=======
+\begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 ISuit s1 = new Diamond();
 s1.diamondCount();             // Compile-time error!
 Diamond s2 = new Diamond();

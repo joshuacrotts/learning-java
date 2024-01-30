@@ -75,7 +75,11 @@
     \item Change each card to use the Unicode symbol counterpart rather than the \ttt{"X of Y"} \ttt{toString} model, where \ttt{X} is the value and \ttt{Y} is the suit. The Unicode symbols are available on the second page of this PDF: \url{https://www.unicode.org/charts/PDF/U1F0A0.pdf}. This will be a little tedious, but it makes the game look cooler!
     \item Add the Ace, Jack, Queen, and King cards, instead of the previous implementation of using four cards whose values were all ten. A simple solution is to use a \ttt{String} that keeps track of the ``name'' of a card alongside the other instance variables. 
     \item Add an AI to the game (you do not need to test this class). This involves writing the \ttt{AI} class and designing the \ttt{boolean play(Deck deck)} method. An \ttt{AI} has a \ttt{ArrayList<Card>}, similar to \ttt{Player}, but makes decisions autonomously using the following algorithm (written in a pseudocode-like language):
+<<<<<<< Updated upstream
     \begin{verbnobox}[\footnotesize]
+=======
+    \begin{verbnobox}[\small]
+>>>>>>> Stashed changes
 boolean play(Deck d) {
   score = getScore()
   if score < 16 then:
