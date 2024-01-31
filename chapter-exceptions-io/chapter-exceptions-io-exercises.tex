@@ -78,6 +78,21 @@ Hi [hwo] are you [donig] I am [dioing] [jsut] fine if I say so
 [puncutiation]
     \end{verbnobox}
 
+\exercise{2}{chapter-exceptions-io}{A common use for file input and output is data analysis. Design a class \ttt{StatisticsDescriptor} that has the following methods:}
+\begin{itemize}
+    \item \ttt{void read(String fileName)}, which reads in a list of numbers from a file into a collection. These numbers can be integers or floating-point values.
+    \item \ttt{double mean()}, which returns the mean of the dataset.
+    \item \ttt{double stddev()}, which returns the standard deviation of the dataset.
+    \item \ttt{double quantile(double q)}, which receives a quantile value $q \in [0, 1]$ and returns the value such that there are $q$, as a percentage, values below said value. As an example, if our dataset contains \ttt{3, 2, 1, 4, 5, 10, 20}, and we call \ttt{quantile(0.30)}, then we return $2.8$ to indicate that $30\%$ of the values in the dataset are below $2.8$. 
+    \item \ttt{double median()}, which returns the median, or the middle value, of the dataset.
+    \item \ttt{double mode()}, which returns the mode, or the most-frequent value, of the dataset.
+    \item \ttt{double range()}, which returns the range, or the difference between the maximum and minimum values of the dataset.
+    \item \ttt{List<Double> outliers()}, which returns the numbers that are outliers of the dataset. We consider a value an outlier if it is greater than three standard deviations away from the mean. Refer to the formula for z-score calculation in the exercises from Chapter~\ref{chapter-testingandjava}.
+    \item \ttt{void output(String fileName)}, which outputs all of the above statistics to the file specified by the parameter (the order is irrelevant). You should output these as a series of ``key-value'' pairs separated by an equals sign, e.g., \ttt{mean=X}. Put each pair on a separate line.
+\end{itemize}
+
+For all methods (except \ttt{read}), if the data has yet to be read, throw an \ttt{IllegalStateException}. 
+
 \exercise{2}{chapter-exceptions-io}{Recall the \ttt{Optional} class and its purpose. In this exercise you will reimplement its behavior with the \ttt{IMaybe} interface with two subtypes \ttt{Just} and \ttt{Nothing}, representing the existence and absence of a value, respectively. Design the generic \ttt{IMaybe} interface, which contains the following three metohds: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The constructors of these subtypes receive either an object of type \ttt{T} or no parameter, depending on whether it is a \ttt{Just} or a \ttt{Nothing}. Throw an \ttt{UnsupportedOperationException} when trying to get the value from an instance of \ttt{Nothing}}.
 
 \exercise{2}{chapter-exceptions-io}{Redo the ``\ttt{Maybe}'' exercise, only this time implement it as an abstract class/subclass hierarchy. That is, \ttt{Maybe} should be an abstract class containing three abstract methods: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The \ttt{Just} and \ttt{Nothing} classes should be subclasses of \ttt{Maybe} and override these methods accordingly. Do not create constructors for these classes. Instead, create static factory methods \ttt{Just.of(T t)} and \ttt{Nothing.of()} that return an instance of the appropriate class.}
