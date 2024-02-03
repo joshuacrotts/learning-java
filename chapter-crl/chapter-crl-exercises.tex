@@ -41,7 +41,7 @@ cond(P, not(bicond(Q, not(R))))
 
 \noindent The presented schema resolves to \ttt{true}.
 
-\noindent Design methods for the five connectives according to the following truth tables. These methods should be called \ttt{cond}, \ttt{bicond}, \ttt{and}, \ttt{or}, and \ttt{not}. Assume that $\top$ is \ttt{true} and $\bot$ is \ttt{false}.
+\noindent Design methods for the five connectives according to the following truth tables. These methods should be called \ttt{cond}, \ttt{bicond}, \ttt{and}, \ttt{or}, and \ttt{not}. Assume that $\mathrm{T}$ is \ttt{true} and $\mathrm{F}$ is \ttt{false}.
 \captionsetup[subfigure]{labelformat=empty}
 \captionsetup[figure]{labelformat=empty}%
 \begin{figure}[H]
@@ -49,8 +49,8 @@ cond(P, not(bicond(Q, not(R))))
     \begin{tabular}{c|c}
          $P$&$\lnot{P}$\\
          \hline
-         $\top$&$\bot$\\
-         $\bot$&$\top$
+         $\mathrm{T}$&$F$\\
+         $\mathrm{F}$&$\mathrm{T}$
     \end{tabular}
 \end{center}
 \caption{Truth Table of `$\lnot{P}$'}
@@ -63,10 +63,10 @@ cond(P, not(bicond(Q, not(R))))
     \begin{tabular}{cc|c}
          $P$&$Q$&$P \land {Q} $\\
          \hline
-         $\top$&$\top$&$\top$\\
-         $\top$&$\bot$&$\bot$\\
-         $\bot$&$\top$&$\bot$\\
-         $\bot$&$\bot$&$\bot$
+         $\mathrm{T}$&$\mathrm{T}$&$\mathrm{T}$\\
+         $\mathrm{T}$&$\mathrm{F}$&$\mathrm{F}$\\
+         $\mathrm{F}$&$\mathrm{T}$&$\mathrm{F}$\\
+         $\mathrm{F}$&$\mathrm{F}$&$\mathrm{F}$
     \end{tabular}
 \end{center}
 \caption{Truth Table of `$P \land Q$'.}
@@ -77,10 +77,10 @@ cond(P, not(bicond(Q, not(R))))
     \begin{tabular}{cc|c}
          $P$&$Q$&$P\lor{Q} $\\
          \hline
-         $\top$&$\top$&$\top$\\
-         $\top$&$\bot$&$\top$\\
-         $\bot$&$\top$&$\top$\\
-         $\bot$&$\bot$&$\bot$
+         $\mathrm{T}$&$\mathrm{T}$&$\mathrm{T}$\\
+         $\mathrm{T}$&$\mathrm{F}$&$\mathrm{T}$\\
+         $\mathrm{F}$&$\mathrm{T}$&$\mathrm{T}$\\
+         $\mathrm{F}$&$\mathrm{F}$&$\mathrm{F}$
     \end{tabular}
 \end{center}
 \caption{Truth Table of `$P \lor Q$'.}
@@ -94,10 +94,10 @@ cond(P, not(bicond(Q, not(R))))
     \begin{tabular}{cc|c}
          $P$&$Q$&$P\to{Q} $\\
          \hline
-         $\top$&$\top$&$\top$\\
-         $\top$&$\bot$&$\bot$\\
-         $\bot$&$\top$&$\top$\\
-         $\bot$&$\bot$&$\top$
+         $\mathrm{T}$&$\mathrm{T}$&$\mathrm{T}$\\
+         $\mathrm{T}$&$\mathrm{F}$&$\mathrm{F}$\\
+         $\mathrm{F}$&$\mathrm{T}$&$\mathrm{T}$\\
+         $\mathrm{F}$&$\mathrm{F}$&$\mathrm{T}$
     \end{tabular}
 \end{center}
 \caption{Truth Table of `$P \to Q$'.}
@@ -108,10 +108,10 @@ cond(P, not(bicond(Q, not(R))))
     \begin{tabular}{cc|c}
          $P$&$Q$&$P\liff{Q} $\\
          \hline
-         $\top$&$\top$&$\top$\\
-         $\top$&$\bot$&$\bot$\\
-         $\bot$&$\top$&$\bot$\\
-         $\bot$&$\bot$&$\top$
+         $\mathrm{T}$&$\mathrm{T}$&$\mathrm{T}$\\
+         $\mathrm{T}$&$\mathrm{F}$&$\mathrm{F}$\\
+         $\mathrm{F}$&$\mathrm{T}$&$\mathrm{F}$\\
+         $\mathrm{F}$&$\mathrm{F}$&$\mathrm{T}$
     \end{tabular}
 \end{center}
 \caption{Truth Table of `$P \liff Q$'.}
@@ -138,7 +138,7 @@ fitCandy(7, 1, 12)     => 7
 fitCandy(7, 1, 13)     => -1
 \end{verbnobox}
 
-\exercise{2}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{boolean isValidIpv4(String ip)} method that, when given a string, determines whether or not it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid.}
+\exercise{3}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{boolean isValidIpv4(String ip)} method that, when given a string, determines whether or not it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid. Below the examples is a method to determine whether or not a string is ``numeric''. Understanding \textit{how} this helper method works is unimportant for the time being. You \textbf{cannot} use arrays, loops, or regular expressions to solve this problem. Finally, you will need to use \ttt{Integer.parseInt}.}
 
 \begin{verbnobox}[\small]
 isValidIpv4("192.168.1.244")    => true
@@ -148,6 +148,23 @@ isValidIpv4("192.168.1201.23")  => false
 isValidIpv4("192.168.1201.ABC") => false
 isValidIpv4("ABC.DEF.GHI")      => false
 isValidIpv4("192.168.1A6.201")  => false
+\end{verbnobox}
+
+\begin{verbnobox}[\small]
+/**
+ * Determines whether or not we can convert a given string into 
+ * an integer datatype.
+ * @param n - input string.
+ * @return true if the string is convertable to an integer, false otherwise.
+ */
+static boolean isNumeric(String n) {
+  try {
+    Integer.parseInt(n);
+    return true;  
+  } catch (NumberFormatException ex) {
+    return false;
+  }
+}
 \end{verbnobox}
 
 \exercise{1}{chapter-crl}{Design the \ttt{String stateOfMatter(double t, char u)} method that receives a water temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{`C'} or \ttt{`F'} for Celsius and Fahrenheit respectively. Return a string representing whether the water is a liquid, solid, or gas at sea level.}
@@ -304,7 +321,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \exercise{2}{chapter-crl}{This question has three parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the standard recursive \ttt{chickenCounter} method, which receives a string $s$ and returns the number of times the substring \ttt{"chicken"} appears in $s$. You must account for overlapping instances of \ttt{"chicken"}. For example, calling the method with \ttt{chickenCounter("abcchickechickenn")} returns $2$ because, after removing the substring \ttt{"chicken"} from the original string, we are left with \ttt{"abcchicken"}, which itself contains another instance of \ttt{"chicken"}.
+    \item Design the standard recursive \ttt{chickenCounter} method, which receives a string $s$ and returns the number of times the substring \ttt{"chicken"} appears in $s$. You must account for overlapping instances of \ttt{"chicken"}. For example, calling the method with \ttt{"abcchickechickenn"} returns $2$ because, after removing the substring \ttt{"chicken"} from the original string, we are left with \ttt{"abcchicken"}, which itself contains another instance of \ttt{"chicken"}.
 
     \item Then, design the \ttt{chickenCounterTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
 
@@ -356,20 +373,20 @@ cutN("1[bbbbb]3[a]") => "[bbbbb]3[a]"
 
 \exercise{1}{chapter-crl}{Design the \ttt{String trimSpace(String s)} method, which receives a string \ttt{s} and returns a new string with all leading and trailing spaces removed. You cannot use the \ttt{trim} method provided by the \ttt{String} class.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{boolean containsMiddleABC(String s)} method, which receives a string $s$ and returns whether $s$ contains the substring \ttt{"ABC"} in the ``middle''. We define the ``middle'' as the point where number of characters on the left and right differ by at most one. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
+\exercise{2}{chapter-crl}{Design the \ttt{boolean containsMiddleABC(String s)} method, which receives a string $s$ and returns whether $s$ contains the substring \ttt{"ABC"} in the ``middle''. We define the ``middle'' as the point where number of characters on the left and right differ by at most one. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
     \begin{verbnobox}[\small]
 assertTrue(middleABC("helloABChiya!"));
 assertTrue(middleABC("ABC"));
 assertTrue(middleABC("aABCc!"));
 assertFalse(middleABC("notInTheMiddleABCmid!"));
 \end{verbnobox}
-\exercise{1}{chapter-crl}{Design the \ttt{String censor(String s, String c)} method, which receives a string $s$ and another string $c$. It should return a ``censored'' version of $s$, wherein each instance of $c$ in $s$ is replaced by asterisks. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
+\exercise{3}{chapter-crl}{Design the \ttt{String censor(String s, String c)} method, which receives a string $s$ and another string $c$. It should return a ``censored'' version of $s$, wherein each instance of $c$ in $s$ is replaced by asterisks. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}. This problem is harder than it looks due to these limitations.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean isSelfDividing(int n)} method, which receives an integer $n$ and returns whether the sum of its digits evenly divide $n$. You must perform the arithmetic manually; you \textbf{cannot} convert the value to a \ttt{String} or use an array.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean allSelfDividing(int n)} method, which receives an integer $n$ and returns whether each digit evenly divides $n$. If any digit is zero, then return \ttt{false}. You must perform the arithmetic manually; you \textbf{cannot} convert the value to a \ttt{String} or use an array.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{int strSumNums(String s)} that computes the sum of each \textit{positive integer} ($\geq 0$) in a string $s$. See the below test cases for examples. You may assume that each integer in $s$, should there be any, is in the bounds of a positive \ttt{int}, i.e., $0$ and $2^{31}-1$. Hint: use \ttt{Character.isDigit} to test whether a character $c$ is a digit, and \ttt{Integer.parseInt} to convert a \ttt{String} to an \ttt{int}.}
+\exercise{2}{chapter-crl}{Design the \ttt{int strSumNums(String s)} that computes the sum of each \textit{positive integer} ($\geq 0$) in a string $s$. See the below test cases for examples. You may assume that each integer in $s$, should there be any, is in the bounds of a positive \ttt{int}, i.e., $0$ and $2^{31}-1$. Hint: use \ttt{Character.isDigit} to test whether a character $c$ is a digit, and \ttt{Integer.parseInt} to convert a \ttt{String} to an \ttt{int}.}
 \begin{verbnobox}[\small]
 assertEquals(100, strSumNums("hello50how20are30you?"));
 assertEquals(10, strSumNums("t1h1i1s1i1s1e1a1s1y1!"));
@@ -378,7 +395,7 @@ assertEquals(0, strSumNums("still 0 just 0 zero0!"));
 assertEquals(500000, strSumNums("500000"));
 \end{verbnobox}
 
-\exercise{2}{chapter-crl}{Design the \ttt{String stripComments(String s)} method that, when given a string $s$ representing a (valid) Java program, returns a string where all comments (single-line, multi-line, and Java documentation) have been removed. You \textbf{cannot} use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
+\exercise{3}{chapter-crl}{Design the \ttt{String stripComments(String s)} method that, when given a string $s$ representing a (valid) Java program, returns a string where all comments (single-line, multi-line, and Java documentation) have been removed. You \textbf{cannot} use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{double approxPi(int n)} that approximates $\pi$ using the following formula:}
 \[

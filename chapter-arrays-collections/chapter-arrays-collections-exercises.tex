@@ -135,7 +135,7 @@ To rotate a matrix, take its transposition, then reverse each row. You may assum
 
 There is a simple recursive algorithm to solve this problem: if you have searched through the entire array, return whether or not the target is zero. Otherwise, make two recursive calls: one for where you choose the current number and a second for where you do not. By ``choose'', we mean to say that the current number is subtracted from the target value. By ``current number'', we mean to suggest a design that resemble the tail recursive linear search algorithm. You'll need to design a helper method to solve this problem using this approach.
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{Set<List<Integer>> twoSum(int[] A, int t)} method that, when given an array of integers $A$ and a target $t$, returns all possible pairs of numbers in $A$ that sum to $t$. For example, if $A=\{2, 2, 4, 10, 6, -2\}$ and $t=4$, we return a set containing two two-element lists: $\{2, 2\}$ and $\{6, -2\}$. DO not add a pair that already exists in the set or a pair that, by reversing the pair, we get a pair in the existing set. E.g., $\{-2, 6\}$ should not be added to the set. 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{Set<List<Integer{>}{>} twoSum(int[] A, int t)} method that, when given an array of integers $A$ and a target $t$, returns all possible pairs of numbers in $A$ that sum to $t$. For example, if $A=\{2, 2, 4, 10, 6, -2\}$ and $t=4$, we return a set containing two two-element lists: $\{2, 2\}$ and $\{6, -2\}$. DO not add a pair that already exists in the set or a pair that, by reversing the pair, we get a pair in the existing set. E.g., $\{-2, 6\}$ should not be added to the set. 
 
 There is a simple brute-force algorithm to solve this problem via two loops, but by incorporating a second set for lookups, we can do much better: for every number $n$ in $A$, add $n$ to a set $S$, and if $t-n=m$ for some $m\in{S}$, then we know that $m+n$ must equal $t$, therefore we add $\{n, m\}$ to the resulting set of integer arrays.}
 Walking through this with the example from before, we get the following sequence of actions:
@@ -150,7 +150,7 @@ Walking through this with the example from before, we get the following sequence
     \item Because $4-(-2)\in{S}$, the two-element array $\{6, -2\}$ is added to $L$. We add $-2$ to $S$. $S=\{2, 4, 10, 6, -2\}$.
 \end{itemize}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{ArrayList<String> shift(ArrayList<String> ls, int i)} method that, when given a list of strings $s$ and an index $i$, returns a new list where each element is shifted  by $i$ spots. Negative values correspond to left shifts, and positive values correspond to right shifts. If a shift is nonsensical, do not shift at all. A nonsensical shift is one of the following:}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{ArrayList<String> shift(ArrayList<String> ls, int i)} method that, when given a list of strings $s$ and an index $i$, returns a new list where each element is shifted  by $i$ spots. Negative values correspond to left shifts, and positive values correspond to right shifts. If a shift is nonsensical, do not shift at all. A nonsensical shift is one of the following:}
 \begin{itemize}
     \item If there are no elements in the list.
     \item If there is only one element in the list.
@@ -208,7 +208,6 @@ wordCount(s) => [{"hello", 1}, {"world", 3}, {"the", 2}
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{LinkedHashSet<String>largeToSmall(HashMap<String, Integer> M)} method that, when given a \ttt{HashMap<String, Integer>} $M$, returns a \ttt{LinkedHashSet} of \ttt{String} values where the words are inserted into the set in order of decreasing count. Words that have the same count do not need to be inserted in any particular order. E.g., \ttt{"is"} may come before \ttt{"world"}. You cannot sort $M$. Hint: create an array of size $c$ (where $c$ is the highest word count) where each element is a \ttt{LinkedHashSet<String>}. For every element $e$ in $M$, add $e$ to the set at index $M[i]$, where $i$ is the count of $e$ in $M$. Then, append these sets in reverse order according to their index. We provide some pseudocode below.}
 
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 largeToSmall(M):
   // |M| is M.size().
   c = Get Highest Count Word in M
@@ -225,7 +224,6 @@ largeToSmall(M):
 \end{verbnobox}
     
 \begin{verbnobox}[\small]
->>>>>>> Stashed changes
 largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy", 
                                "hello", "it", "i", "certainly", 
                                "agree", "that", "1", "and", "not"}
