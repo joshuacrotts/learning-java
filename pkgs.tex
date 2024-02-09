@@ -13,20 +13,25 @@
 
 % \newcommand{\timesnewroman}{} % uncomment to use Times New Roman fonts
 \newcommand{\mathtime}{}
-\newcommand{\palatino}{}
+% \newcommand{\palatino}{}
+% \newcommand{\baskerville}{}
 
-% \newcommand{\libertine}{}
+\newcommand{\libertine}{}
 % fonts
 
 %% Times New Roman Fonts
 \ifdefined\timesnewroman
   \usepackage{newtxtext} 
 \fi
-\ifdefined\libretine
-  \usepackage{libretine}
+\ifdefined\libertine
+  \usepackage{libertine}
 \fi
 \ifdefined\palatino
   \usepackage{newpxtext}
+\fi
+\ifdefined\baskerville
+  \usepackage{librebaskerville}
+  \usepackage[T1]{fontenc}
 \fi
 % \usepackage[htt]{hyphenat}
 \usepackage{tikz}

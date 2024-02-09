@@ -367,7 +367,7 @@ cutN("1[bbbbb]3[a]") => "[bbbbb]3[a]"
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean isEqualTo(String s1, String s2)} method, which receives two strings $s_1$ and $s_2$, and determines whether they are lexicographically equal. You cannot use the built-in \ttt{equals} or \ttt{compareTo} methods.}
 
-\exercise{2}{chapter-crl}{Design the \ttt{int compareTo(String s1, String s2)} method, which receives two strings \ttt{s1}, \ttt{s2}, and compares their contents lexicographically. If \ttt{s1} is less than \ttt{s2}, return \ttt{-1}. If \ttt{s1} is greater than \ttt{s2}, return \ttt{1}. Otherwise, return \ttt{0}. Note that our implementation of \ttt{compareTo} will differ from Java's in that, if \ttt{s1} has less characters than \ttt{s2}, we return \ttt{-1}; if \ttt{s2} has less characters than \ttt{s1}, we return \ttt{1}. Otherwise, we do the character-by-character comparison.}
+\exercise{2}{chapter-crl}{Design the \ttt{int compareTo(String s1, String s2)} method that receives two strings $s_1$ and $s_2$, and compares their contents lexicographically. If \ttt{s1} is less than \ttt{s2}, return \ttt{-1}. If \ttt{s1} is greater than \ttt{s2}, return \ttt{1}. Otherwise, return \ttt{0}. Note that our implementation of \ttt{compareTo} will differ from Java's in that, if \ttt{s1} has less characters than \ttt{s2}, we return \ttt{-1}; if \ttt{s2} has less characters than \ttt{s1}, we return \ttt{1}. Otherwise, we do the character-by-character comparison.}
 
 \exercise{2}{chapter-crl}{Design the \ttt{String trim(String s)} method, which receives a string $s$ and a character \ttt{ch}, and returns a string with all leading and trailing occurrences of \ttt{ch} removed. For instance, \ttt{trim("aaHelloa", \textquotesingle{}a\textquotesingle)} returns \ttt{"Hello"}. Hint: while you cannot use Java's \ttt{substring} method, you can certainly use the one you wrote previously to solve this problem!}
 
@@ -514,8 +514,8 @@ Design the \ttt{double circleArea(double r, double delta)} method, which receive
 \end{tikzpicture}
 
 \end{center}
-\caption{Right-Riemann Approximation of a Function}
+\caption{Left-Riemann Approximation of a Function}
 \label{fig:circlearea}
 \end{figure}
 
-\exercise{3}{chapter-crl}{Speech-to-text software plays a significant role in accessibility for those who may not be able to type quickly or at all. Design the \ttt{String speechToText(String s)} method that, when given a ``speech string', returns the corresponding text. A speech string, in this context, is a string spoken, in English, by a person, which may or may not contain punctuation. If a speech string contains a word that represents punctuation, e.g., \ttt{"period"}, \ttt{"question mark"}, encode this punctuation in the returned text. For example, \ttt{speechToText("hello period how are you question mark")} returns the string \ttt{"Hello. How are you?"}. You should also account for quotations, e.g., \ttt{speechToText("hello quote how are you question mark unquote")} returns the string \ttt{Hello. "how are you?"}.}
+\exercise{3}{chapter-crl}{Speech-to-text software plays a significant role in accessibility for those who may not be able to type quickly or at all. Design the \ttt{String speechToText(String s)} method that, when given a ``speech string', returns the corresponding text. A speech string, in this context, is a string spoken, in English, by a person, which may or may not contain punctuation. If a speech string contains a word that represents punctuation, e.g., \ttt{"period"}, \ttt{"question mark"}, encode this punctuation in the returned text. For example, \ttt{speechToText("hello period how are you question mark")} returns the string \ttt{"Hello. How are you?"}. You should also account for quotations, e.g., \ttt{speechToText\-("hello quote how are you question mark unquote")} returns the string \ttt{Hello. "how are you?"}.}

@@ -252,14 +252,46 @@ ls2.add(20);
 ls1.add(30);
 String s = ls1.toString() + " " + ls2.toString();
 \end{verbnobox}
-Should you unaware of aliasing, you might say it resolves to \ttt{"[10, 30] [20]"}. \textit{Aliasing}\index{aliasing} is a form of object-sharing. When allocating any type of \textit{object}, whether that object is an array, an \ttt{ArrayList}, a \ttt{String}, or something else, we assign a reference \textit{to} that object in memory via the variable declaration. That is, in the preceding code, \ttt{ls1} references the location, in memory, of an \ttt{ArrayList}. Correspondingly, when we declare \ttt{ls2} and assign to it \ttt{ls1}, we are not copying over the values from \ttt{ls1} into \ttt{ls2}; we are expressing that \ttt{ls2} should reference the same list as referenced by \ttt{ls1}. Therefore by asserting \ttt{ls2} as an alias of \ttt{ls1}, any modifications made to either is reflected when referencing the other. In this instance, $s$ resolves to \ttt{"[10, 20, 30] [10, 20, 30]"}
+Should you be unaware of aliasing, you might say it resolves to \ttt{"[10, 30] [20]"}. \textit{Aliasing}\index{aliasing} is a form of object-sharing. When allocating any type of \textit{object}, whether that object is an array, an \ttt{ArrayList}, a \ttt{String}, or something else, we assign a reference \textit{to} that object in memory via the variable declaration. That is, in the preceding code, \ttt{ls1} references the location, in memory, of an \ttt{ArrayList}. Correspondingly, when we declare \ttt{ls2} and assign to it \ttt{ls1}, we are not copying over the values from \ttt{ls1} into \ttt{ls2}; we are expressing that \ttt{ls2} should reference the same list as referenced by \ttt{ls1}. Therefore by asserting \ttt{ls2} as an alias of \ttt{ls1}, any modifications made to either is reflected when referencing the other. In this instance, $s$ resolves to \ttt{"[10, 20, 30] [10, 20, 30]"}
 
-We have seen the repeated use of the \ttt{Integer} and \ttt{Double} classes when parameterizing the types for \ttt{ArrayList}, but what is the point? Could we not instead opt for \ttt{int} and \ttt{double}, as we have traditionally? The answer is a resounding no; we must take advantage of the luxury that is \textit{autoboxing} and \textit{autounboxing} through the \textit{wrapper classes}. The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Char}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. Parameterized types only work with class types; primitive datatypes are disallowed. So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. We can, of course, declare an \ttt{Integer} using the following overly-verbose syntax:
+\example{Consider two methods \ttt{void increment(int x)}, which increments an integer variable, and \ttt{void increment(ArrayList<Integer> ls, int idx)}, which increments the value at a given index in a list of integers.}
+
+\begin{verbnobox}[\small]
+static void incrementInt(int x) {
+  x = x + 1;
+}
+
+static void incrementList(ArrayList<Integer> ls, int idx) {
+  ls.set(idx, ls.get(idx) + 1);
+}
+\end{verbnobox}
+
+If we then pass a variable to the \ttt{incrementInt} method, we might expect the resulting value, outside of the method, to also be incremented. Unfortunately, that is not what happens--in the following code segment, we see that the primitive variable \ttt{y} remains unchanged outside of the method invocation. This happens because primitive values are \textit{passed by value}. In essence, methods receive a copy of the value, which means that the original variable is not modified, and the change made inside the scope of \ttt{incrementInt} is rendered useless. Compare this to what happens if we pass an \ttt{ArrayList<Integer>} to \ttt{incrementList}: we see that the change occurs both inside and outside the scope of the method body. Objects, e.g., \ttt{String}, \ttt{ArrayList}, arrays, and so forth, when supplied as arguments to methods, are passed by a paradigm that we will call \textit{pseudo-reference}.\footnote{The emphasis on calling this ``pseudo-reference'' is to provide an intuition for those readers who may know about true pass-by-reference, while satisfying those who want to angrily shout that Java is strictly pass-by-value.} Passing by pseudo-reference means to suggest that we are not truly passing the argument by reference, and this is correct. Objects in Java are still passed by value, but instead of creating a copy of the object, the object's corresponding hashcode is supplied to the method, which is roughly equivalent to a memory reference. Therefore, any changes made to the value inside the method are reflected outside.
+
+\begin{verbnobox}[\small]
+int y = 5;
+assertEquals(5, y);         // Assertion before increment.
+incrementInt(y);
+assertEquals(5, y);         // Assertion after increment.
+\end{verbnobox}
+
+\begin{verbnobox}[\small]
+List<Integer> ls = new ArrayList<>();
+ls.add(5);
+assertEquals(5, ls.get(0)); // Assertion before increment.
+incrementList(ls, 0);
+assertEquals(6, ls.get(0)); // Assertion after increment.
+\end{verbnobox}
+
+\example{We have seen the repeated use of the \ttt{Integer} and \ttt{Double} classes when parameterizing the types for \ttt{ArrayList}, but what is the point? Could we not instead opt for \ttt{int} and \ttt{double}, as we have traditionally? The answer is a resounding no; we must take advantage of the luxury that is \textit{autoboxing} and \textit{autounboxing} through the \textit{wrapper classes}. The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Char}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. Parameterized types only work with class types; primitive datatypes are disallowed. So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. We can, of course, declare an \ttt{Integer} using the following overly-verbose syntax:}
+
 \begin{verbnobox}[\small]
 Integer x = new Integer(42);
 int y = x.getValue(); // y = 42.
 \end{verbnobox}
+
 We explicitly wrap the primitive integer $42$ in $x$, which is of the \ttt{Integer} type, then unwrap its value to be stored in $y$. Manually wrapping and unwrapping primitives is tiresome and only introduces redundant code, hence why Java autoboxes and autounboxes as needed. For example, if we declare an \ttt{ArrayList} of \ttt{Integer} values, then add the primitive integer literal \ttt{42} to the list, Java will autobox the literal into its \ttt{Integer} wrapper. Going the other direction, if we want to iterate over the values in the list, we might use the enhanced-for loop. If Java did not support autounboxing, we would instead have to use \ttt{Integer} as opposed to \ttt{int} in the loop variable declaration. 
+
 \begin{verbnobox}[\small]
 ArrayList<Integer> al = new ArrayList<>();
 al.add(42);
@@ -268,7 +300,7 @@ for (int e : al) {
 }
 \end{verbnobox}
 
-Testing is always important when writing programs, as this text has emphasized from the first page. Writing test cases for lists, naively, is cumbersome due to the repetition of \ttt{.add} method calls when populating the list. Instead, Java has the convenient \ttt{List.of} method, which receives any number of arguments. Let us see an example of this method.
+\example{Testing is always important when writing programs, as this text has emphasized from the first page. Writing test cases for lists, naively, is cumbersome due to the repetition of \ttt{.add} method calls when populating the list. Instead, Java has the convenient \ttt{List.of} method, which receives any number of arguments. Let us see an example of this method.}
 
 \begin{verbnobox}[\small]
 // Old way:
@@ -638,7 +670,7 @@ shrub
 Why is this what the priority queue outputs? If we reason about this with our comparator, it becomes clear. \ttt{park} has the highest priority because it starts with `p' and has a substring that comes before the rest of those strings starting with `p'. The strings \ttt{pecking}, \ttt{peek}, and \ttt{pool} come next for similar reasons. Finally, none of the strings \ttt{barks}, \ttt{hello}, and \ttt{shrub} start with `p', so we simply compare based on the strings themselves. The underlying implementation of how the priority queue works is beyond the scope of this textbook. These details are generally reserved for a textbook or course on advanced data structures, which follows the course designed for the audience of this text.
 
 \subsection*{Set-Based Data Structures}
-\textit{Sets} are unordered collections of non-duplicate elements. Does this definition sound familiar? It should; it perfectly mirrors the mathematical definition of a set. Java has a few nuances to its definition of sets that we will now see. We consider these data structures \textit{set-based} since they all rely on the ``non-duplicate'' philosophy.
+\textit{Sets} are unordered collections of non-duplicate elements. Does this definition sound familiar? It should; it perfectly mirrors the mathematical definition of a set. Java has a few nuances to its definition of sets that we will now see. We consider these data structures \textit{set-based} since they all rely on the ``no-duplicate'' philosophy.
 
 \subsubsection*{\ttt{Set} Interface}
 A \textit{Set} in Java is an interface rather than a class. This is because Java has a hierarchy for differing implementations of sets. We will discuss three: \textit{HashSet}, \textit{TreeSet}, and \textit{LinkedHashSet}. While all three disallow duplicate elements, the latter two impose an ordering on their elements, which goes against the standard mathematical definition, but for practical reasons.
@@ -750,7 +782,7 @@ class IteratorTester {
 
 Should we want to traverse over the data again, we need to produce yet another instance of the iterator because there is no way to reset the ``position'' of an iterator; they are a type of one-time use objects.
 
-It should be stated that the enhanced \ttt{for} loop is nearly identical to the job of an \ttt{Iterator}, so a programmer may wonder why not use the former over the latter. Inside an enhanced \ttt{for} loop, we cannot modify the data structure, meaning that we cannot add, insert, remove, or change elements. On the other hand, the use of iterators allows structural modification. We would not recommend altering the data structure, even if it is permissible by Java, since doing so can result in unforeseen bugs. 
+It should be stated that the enhanced \ttt{for} loop is nearly identical to the job of an \ttt{Iterator}, so a programmer may wonder why not use the former over the latter. Inside an enhanced \ttt{for} loop, we cannot modify the data structure, meaning that we cannot add, insert, remove, or change elements. On the other hand, iterators allow structural modification. We would not recommend altering the data structure, even if it is permissible by Java, since doing so can result in irksome bugs. 
 
 \example{Let's now iterate over the \ttt{LinkedHashSet} using an enhanced \ttt{for} loop. We can do so by placing the type on the left-hand side of the element declaration. Our test will simply subtract the elements from left-to-right, since subtraction is not commutative, we can quickly verify the correctness of our result.}
 
@@ -781,18 +813,26 @@ class EnhancedForLoopTester {
 \section*{Streams}
 \textit{Streams} are, in effect, a \textit{lazy} collection of ``things''. By lazy, we mean to say that, if a result is not necessary, or requested, then it is not computed.
 
-\example{Consider a situation in which we call \ttt{fib(1000)} as the argument to the \ttt{foo} method, giving us \ttt{foo(fib(1000))}. In Java, all arguments are evaluated \textit{eagerly}, which means that, in effect, takes an eternity to terminate. Unfortunately for the caller of \ttt{foo}, we do not even use the value of $x$, meaning we computed \ttt{fib(1000)} for absolutely no reason whatsoever.}\footnote{We assume that \ttt{fib} is a non-side-effect-inducing method, and is the naive exponential version of the algorithm.} 
+\example{Consider a situation in which we invoke a method called \ttt{omega()}, which is defined as an infinite loop, as the argument to the \ttt{foo} method, giving us \ttt{foo(omega())}. In Java, all arguments are evaluated \textit{eagerly}, which means that, in effect, takes an eternity to terminate. Unfortunately for the caller of \ttt{foo}, we do not even use the value of $x$, meaning we computed \ttt{omega()} for absolutely no reason whatsoever. This means that, because \ttt{omega} never terminates, \ttt{foo} similarly never returns a result.} 
+
+\begin{verbnobox}[\small]
+static int omega() {
+  while (true) {}
+  return 10;
+}
+\end{verbnobox}
 \begin{verbnobox}[\small]
 static int foo(int x) {
   return 5;
 }
 \end{verbnobox}
-If we were in a language that supported \textit{lazy evaluation}, we would not be in this predicament. Our discussion is not driven by a desire for lazy evaluation, but rather the desire for easily-composable operations; lazy evaluation is a perk, in that it allows us to design infinite data structures! An ``infinite'' data structure raises some important questions about how to store ``infinite'' data. Imagine we want to compute a list that contains every positive even integer. We can represent this as the following inductive set:
+
+If Java supported \textit{lazy evaluation} for method calls, we would not be in this predicament. Our discussion is not entirely driven by a desire for lazy evaluation, but rather the desire for easily-composable operations; lazy evaluation is a perk in that it allows us to design infinite data structures! An ``infinite'' data structure raises some important questions about how to store ``infinite'' data. Imagine that we want to compute a list that contains every positive even integer. We can represent this as the following inductive set:
 \begin{align*}
     &0 \in S\\
     &\text{If } x \in S,\text{ then }x + 2 \in S
 \end{align*}
-Therefore $S$ is a set containing countably-infinite values. Implementing $S$ in Java, as an \ttt{ArrayList}, might contain a \ttt{for} loop with a condition that we do not know how to solve! In this case, since we do not know how many values to add, we might design an infinite loop via \ttt{while (true)}, but then the loop never ends. Eventually the program runs out of memory due to adding values to the never-ending list. The solution, as we have suggested, is to use streams.
+Therefore $S$ is a set containing countably-infinite values. Implementing $S$ in Java, as an \ttt{ArrayList}, might contain a \ttt{for} loop with a condition that we do not know how to solve! In this case, since we do not know how many values to add, we might design an infinite loop via \ttt{while (true)}, but then the loop never ends. Eventually the program runs out of memory due to adding values to the never-ending list. The solution, as we have suggested, is to use streams.\footnote{For those coming from another language such as Python, a stream is equivalent to a \textit{generator}.}
 
 To create a stream of infinite data is to recreate our inductive set definition inside a \ttt{IntStream} instance and the \ttt{iterate} static method.
 
@@ -800,7 +840,7 @@ To create a stream of infinite data is to recreate our inductive set definition 
 IntStream is = IntStream.iterate(0, x -> x + 2);
 \end{verbnobox}
 
-Let us explain this method, but to do so we must introduce \textit{lambda expressions}. A lambda expression is an anonymous function, i.e., a function definition without a name. In the above code snippet, we define a function that receives a value $x$ and returns $x$ plus two. It would be identical to defining a \ttt{private static} method to add two to some integer, but we like lambda expressions due to their locality; it seems superfluous to design a method that is used in only one context. Should we want to pass a method reference rather than a lambda expression, this is easily achievable.
+Let us explain this method, but to do so we must introduce \textit{lambda expressions}. A lambda expression is an anonymous function, i.e., a function definition without a name. In the above code snippet, we define a function that receives a value $x$ and returns $x$ plus two. It would be identical to defining a \ttt{private static} method to add two to some integer, but we like lambda expressions due to their locality; it might come across as superfluous to design a method that is used in only one context. Should we want to pass a method reference instead of a lambda expression, this is easily attainable.
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;

@@ -93,6 +93,30 @@ Hi [hwo] are you [donig] I am [dioing] [jsut] fine if I say so
 
 For all methods (except \ttt{read}), if the data has yet to be read, throw an \ttt{IllegalStateException}. 
 
+\exercise{3}{chapter-exceptions-io}{A binary relation $\mathcal{R}$ is a subset of the cartesian product of two sets $A$ and $B$. That is, $\mathcal{R} \subseteq A \times B$ such that $A \times B = \{\langle{x, y}\rangle \mid x \in A \text{ and } y \in B\}$. There are several ways that we can describe binary relations, including reflexive, symmetric, transitive, antisymmetric, asymmetric, irreflexive, and serial.}
+
+Design the generic \ttt{BinaryRelation<T, U>} class to represent a mathematical binary relation. It should store a \ttt{Set<Pair<String, String>{>}}, where the inner pair is the associated tuples of the set. Its constructor should instantiate the set instance variable. 
+
+Then, design the following methods:
+
+\begin{itemize}
+    \item \ttt{void addTuple(T x, U y)} receives two values $x$ and $y$ of types $T$ and $U$ respectively, and adds them as a tuple to the underlying set.
+    
+    \item \ttt{boolean isReflexive()} returns true if the relation is reflexive. A relation $\mathcal{R}$ is reflexive if, for all $x \in S$, $\langle{x, x}\rangle \in \mathcal{R}$.
+    
+    \item \ttt{boolean isSymmetric()} returns true if the relation is symmetric. A relation $\mathcal{R}$ is symmetric if, for all $x, y \in S$, $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, x}\rangle \in \mathcal{R}$.
+    
+    \item \ttt{boolean isTransitive()} returns true if the relation is reflexive. A relation $\mathcal{R}$ is transitive if, for all $x, y, z \in S$, if $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, z}\rangle \in \mathcal{R}$, then $\langle{x, z}\rangle \in \mathcal{R}$.
+
+    \item \ttt{boolean isIrreflexive()} returns true if the relation is irreflexive. A relation $\mathcal{R}$ is irreflexive if, for all $x \in S$, $\langle{x, x}\rangle \not\in \mathcal{R}$.
+    
+    \item \ttt{boolean isAntisymmetric()} returns true if the relation is antisymmetric. A relation $\mathcal{R}$ is antisymmetric if, for all $x, y \in S$, if $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, x}\rangle \in \mathcal{R}$, then $x \neq y$.
+    
+    \item \ttt{boolean isAsymmetric()} returns true if the relation is asymmetric. A relation is asymmetric if it is both antisymmetric and irreflexive.
+
+    \item \ttt{boolean isSerial()} returns true if the relation is serial. A relation $\mathcal{R}$ is serial if, for all $x \in S$, there exists a $y \in S$ such that $\langle{x, y}\rangle \in \mathcal{R}$.
+\end{itemize}
+
 \exercise{2}{chapter-exceptions-io}{Recall the \ttt{Optional} class and its purpose. In this exercise you will reimplement its behavior with the \ttt{IMaybe} interface with two subtypes \ttt{Just} and \ttt{Nothing}, representing the existence and absence of a value, respectively. Design the generic \ttt{IMaybe} interface, which contains the following three metohds: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The constructors of these subtypes receive either an object of type \ttt{T} or no parameter, depending on whether it is a \ttt{Just} or a \ttt{Nothing}. Throw an \ttt{UnsupportedOperationException} when trying to get the value from an instance of \ttt{Nothing}}.
 
 \exercise{2}{chapter-exceptions-io}{Redo the ``\ttt{Maybe}'' exercise, only this time implement it as an abstract class/subclass hierarchy. That is, \ttt{Maybe} should be an abstract class containing three abstract methods: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The \ttt{Just} and \ttt{Nothing} classes should be subclasses of \ttt{Maybe} and override these methods accordingly. Do not create constructors for these classes. Instead, create static factory methods \ttt{Just.of(T t)} and \ttt{Nothing.of()} that return an instance of the appropriate class.}

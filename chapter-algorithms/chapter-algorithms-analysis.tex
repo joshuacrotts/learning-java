@@ -363,7 +363,7 @@ T(n) &= T(n - 1) + \Theta(n)\\
      &= 1 + 2 + 3 + ... + (n - 1) + n
 \end{align*}
 
-The result is an arithmetic series $\sum_{n=1}^{n}=\frac{n(n+1)}{2}$, which resolves to $\Theta(n^2)$ after dropping constants and lower-order terms. Therefore, in the worst case, the quicksort time complexity is $\Theta(n^2)$.
+The result is an arithmetic series $\sum_{i=1}^{n}{i}=\frac{n(n+1)}{2}$, which resolves to $\Theta(n^2)$ after dropping constants and lower-order terms. Therefore, in the worst case, the quicksort time complexity is $\Theta(n^2)$.
 
 The average case is significantly harder to analyze and the full proof goes beyond the scope of this book. It is known that, in the average case, quicksort is $\Theta(n\lg{n})$. 
 
