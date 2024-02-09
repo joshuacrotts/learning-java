@@ -125,7 +125,7 @@ class BankAccount {
 
   public void withdraw(int less) {
     if (amt >= less) { this.amt -= less; }
-    else { System.err.printf("withdraw: insufficient funds\n", less); }
+    else { System.err.printf("withdraw: insufficient funds %d\n", less); }
   }
 
   public int getAmount() { return this.amt; }
@@ -568,7 +568,7 @@ class Producer implements Runnable {
 \end{lstlisting}
 \end{cl}
 
-Further note that awaiting on a condition variable potentially throws an \ttt{InterruptedException}, meaning we must surround the call with a \ttt{try/catch} block.\footnote{Should we not want to do this, we can instead invoke the \ttt{awaitUninterruptibly} method.} An important fact to consider is that, if a thread that issues a signal on a condition variable does not own the respective lock, Java will throw an \ttt{IllegalMonitorStateException}.
+Further note that awaiting on a condition variable may throw an \ttt{InterruptedException}, meaning we must surround the call with a \ttt{try/catch} block.\footnote{Should we not want to do this, we can instead invoke the \ttt{awaitUninterruptibly} method.} An important fact to also consider is that, if a thread that issues a signal on a condition variable does not own the respective lock, Java will throw an \ttt{IllegalMonitorStateException}.
 
 \begin{cl}[ConditionVariableExample.java]{Producer/Consumer Thread Behavior}
 \begin{lstlisting}[language=MyJava]
@@ -800,7 +800,6 @@ import java.io.PrintWriter;
 import java.lang.Runnable;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 
 class Client implements Runnable {
 

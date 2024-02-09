@@ -17,10 +17,18 @@ class ReflectiveCalculatorTester {
   @Test
   void testCalculator() {
     assertAll(
-      () -> assertEquals(5, calculate(new String[] {"add", "2", "3"}), DELTA),
-      () -> assertEquals(5, calculate(new String[] {"subtract", "10", "5"}), DELTA),
-      () -> assertEquals(10, calculate(new String[] {"multiply", "2", "5"}), DELTA),
-      () -> assertEquals(2, calculate(new String[] {"divide", "10", "5"}), DELTA));
+      () -> assertEquals(5, 
+                         calculate(new String[] {"add", "2", "3"}), 
+                         DELTA),
+      () -> assertEquals(5, 
+                         calculate(new String[] {"subtract", "10", "5"}), 
+                         DELTA),
+      () -> assertEquals(10, 
+                         calculate(new String[] {"multiply", "2", "5"}), 
+                         DELTA),
+      () -> assertEquals(2, 
+                         calculate(new String[] {"divide", "10", "5"}), 
+                         DELTA));
   }
 }
 \end{lstlisting}
@@ -63,7 +71,7 @@ class ReflectiveCalculator {
 
 First, we need to establish a few details. Our program will read, from standard input, a subset of Java code. After reading, we spin up an instance of the Java compiler and compile the source code into a \ttt{.class} file. Finally, using reflection, we search for and execute that code. This is the goal at a high level, but we certainly need to break this down into sub-components. Let's see some examples of what we will be able to do in due time:
 
-\begin{verbatim}
+\begin{verbnobox}[\small]
 > int i = 5;
 > System.out.println(i)
 5
@@ -76,24 +84,24 @@ First, we need to establish a few details. Our program will read, from standard 
 [5, 7]
 > System.out.println(IntStream.iterate(0, i -> i + 5).limit(10));
 [0, 5, 10, 15, 20, 25, 30, 35, 40, 45]
-\end{verbatim}
+\end{verbnobox}
 
 As we can see, powerful programs are a possibility only by using the REPL. The question now is, how do we get to that point?
 
-The idea with this project is to output our lines of source code into a temporary Java class. In essence, we create a temporary directory on the system that that stores a separate class (file), enumerated from zero, containing whatever we enter at the REPL. Each time we enter code, we wrap it inside a class called \ttt{"InterpretX"} where \ttt{X} is the current class identifier, so to speak. These classes are extended with each new segment of code received to allow access to prior declarations/definitions. As an example, consider the following class definitions generated after inputting the first two lines that we showed earlier:
+The idea with this project is to output our lines of source code into a temporary Java class. In essence, we create a temporary directory on the system that that stores a separate class (file), enumerated from zero, containing whatever we enter at the REPL. Each time we enter code, we wrap it inside a class called \ttt{"InterpX"} where \ttt{X} is the current class identifier, so to speak. These classes are extended with each new segment of code received to allow access to prior declarations/definitions. As an example, consider the following class definitions generated after inputting the first two lines that we showed earlier:
 
-\begin{verbatim}
-class Interpret0 {
+\begin{verbnobox}[\small]
+class Interp0 {
   public static int i = 5;
   public static void execute() {}
 }
 
-class Interpret1 extends Interpret0 {
+class Interp1 extends Interp0 {
   public static void execute() {
     System.out.println(i);  
   }
 }
-\end{verbatim}
+\end{verbnobox}
 
 The \ttt{execute} method is generated all the time, but we only care about its contents (i.e., we only populate its body) when we write something that is not a declaration. For example, if we write a class definition or a variable, it is nonsensical to place it inside the \ttt{execute} method body, since in the former case it would not compile, and in the latter case it would be local to only that version of \ttt{execute}. So, we need a way of determining whether or not a piece of code \textit{is} a declaration/definition. All declarations in our subset of Java will be restricted to the following grammar:
 
@@ -161,13 +169,14 @@ class JavaRepl {
    */
   private boolean isClassDeclaration(String s) {
     return s.matches("class\\s+[a-zA-Z_<>]+\\s+\\{.*?\\}") 
-        || s.matches("class\\s+[a-zA-Z_<>]+\\s+extends\\s+[a-zA-Z_<>]+\\s*\\{.*?\\}");
+        || s.matches("class\\s+[a-zA-Z_<>]+\\s+extends\\s+[a-zA-Z_<>]+\\s
+                     *\\{.*?\\}");
   }
 }
 \end{lstlisting}
 \end{cl}
 
-Anything that is not a declaration is something else that belongs inside the body of \ttt{execute}, and is executed accordingly. For instance, if we declare $i$ to be zero, then use a post-increment operator on $i$, the \ttt{i++} statement is stored inside \ttt{Interpret1}'s \ttt{execute} body, and is invoked prior to the next standard input reading. 
+Anything that is not a declaration is something else that belongs inside the body of \ttt{execute}, and is executed accordingly. For instance, if we declare $i$ to be zero, then use a post-increment operator on $i$, the \ttt{i++} statement is stored inside \ttt{Interp1}'s \ttt{execute} body, and is invoked prior to the next standard input reading. 
 
 Now, onto the main event. We know how to read lines/data from standard input, so that's nothing more than a rehashing of what we've seen before. We create an infinite loop, read in a single string (line), and create a \ttt{File} object out of that string by storing it in a temporary class file. Where do we create that temporary class file? In a temporary directory, which is created by a static method in the\ttt{Files} class. Let's set this up in the constructor of \ttt{JavaRepl}, since the temporary directory (path) won't change for the lifetime of the program. Let's also instantiate the standard input reading mechanism, i.e., a \ttt{BufferedReader} that operates over an \ttt{InputStreamReader}.
 
@@ -207,15 +216,17 @@ class JavaRepl {
   // ... other methods not shown.
   
   private File createJavaFile(String src) {
-    File f = new File(String.format("%s/Interpret%d.java", this.TMP_DIR, this.classNo));
+    File f = new File(String.format("%s/Interp%d.java",
+                                    this.TMP_DIR, 
+                                    this.classNo));
     try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
       pw.println("import java.io.*;");
       pw.println("import java.util.*;");
       // If it is the starting class we do not have it extend anything.
-      pw.println(String.format("public class Interpret%d %s", this.classNo,
+      pw.println(String.format("class Interp%d %s", this.classNo,
                                this.classNo == 0
                                ? "{" 
-                               : "extends Interpret" + (this.classNo - 1) + " {"));
+                               : "extends Interp" + (this.classNo - 1) + " {"));
 
       // If it's a declaration, it cannot be inside a method.
       if (this.isDeclaration(src)) {
@@ -260,9 +271,9 @@ class JavaRepl {
 
   /**
    * Continuously loops, reading in lines of input representing valid Java
-   * programs. These are converted into statements/expressions that are
-   * fed into a skeleton Java class file. We use Java's runtime compiler to
-   * execute these, and the reflection API to dynamically load the class at runtime.
+   * programs. These are converted into statements/expressions that are fed into
+   * a skeleton Java class file. We use Java's runtime compiler to execute
+   * these, and the reflection API to dynamically load the class at runtime.
    */
   private void executeRepl() throws Exception {
     List<File> programs = new ArrayList<>();
@@ -275,9 +286,9 @@ class JavaRepl {
       programs.add(this.createJavaFile(sb.toString()));
 
       // Create the compiler from these files.
-      var compilationUnits = this.FILE_MANAGER.getJavaFileObjectsFromFiles(programs);
+      var units = this.FILE_MANAGER.getJavaFileObjectsFromFiles(programs);
       this.task = (JavacTask) this.JAVAC.getTask(null, this.FILE_MANAGER, this.DS,
-                                                 null, null, compilationUnits);
+                                                 null, null, units);
 
       // Compile the list of programs.
       boolean ok = this.task.call();
@@ -309,7 +320,8 @@ class JavaRepl {
   public JavaRepl() {
     // ... other instantiations not shown.
     try {
-      this.CLASS_LOADER = URLClassLoader.newInstance(new URL[]{this.TMP_DIR.toUri().toURL()});
+      this.CLASS_LOADER = URLClassLoader.newInstance(
+                            new URL[]{this.TMP_DIR.toUri().toURL()});
     } catch (MalformedURLException e) {
       throw new RuntimeException(e);
     }

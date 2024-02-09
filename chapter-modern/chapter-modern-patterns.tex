@@ -65,7 +65,7 @@ class JumpCommand implements Command {
 
 Lastly, we must implement a ``command dispatch handler,'' of sorts, which we might envision to be a controller. In particular, we will write \ttt{InputHandler} to store two commands that respond to presses to an `X button' and presses to a `Y button'. The methods to `press' each button correspond to invoking \ttt{execute} on the respective commands. The general idea behind the command pattern is that we can pass any arbitrary implementation of a command to this handler to change/update the behavior of a button press or action in the handler. 
 
-\begin{cl}[Command.java]{...}
+\begin{cl}[Command.java]{Input Handler/Command Controller}
 \begin{lstlisting}[language=MyJava]
 class InputHandler {
 
@@ -96,7 +96,8 @@ class CommandTester {
   @Test
   void testCommand() {
     Player p = new Player();
-    InputHandler handler = new InputHandler(new MoveCommand(p), new JumpCommand(p));
+    InputHandler handler = new InputHandler(new MoveCommand(p), 
+                                            new JumpCommand(p));
     assertAll(
       () -> assertEquals(0, p.getX()),
       () -> assertEquals(0, p.getY()),
@@ -165,7 +166,6 @@ In designing the \ttt{FractionFactory} class, we declare a five-hundred element 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static Assertions.assertTrue;
 
 class FractionFactoryTester {
 
@@ -182,7 +182,7 @@ class FractionFactoryTester {
     Fraction f1 = ff.create(1, 2);
     for (int i = 0; i < 500_000; i++) {
       assertEquals("1/2", ff.create(1, 2).toString());
-      assertTrue(f1 == ff.create(1, 2));
+      assertEquals(true, f1 == ff.create(1, 2));
     }
   }
 }
@@ -208,7 +208,8 @@ class FractionFactory {
    * @return a new instance of Fraction, or a shared instance if it was cached.
    */
   public Fraction create(int num, int den) {
-    return den >= 1 && den <= LIMIT ? this.CACHE[den - 1] : new Fraction(num, den);
+    return den >= 1 && den <= LIMIT ? this.CACHE[den - 1] 
+                                    : new Fraction(num, den);
   }
 }
 \end{lstlisting}
@@ -264,7 +265,7 @@ class PersonFactory {
       case "student" -> new Student(name);
       case "faculty" -> new Faculty(name);
       case "staff" -> new Staff(name);
-      default -> throw new IllegalArgumentException("create: invalid role: " + role);
+      default -> throw new IllegalArgumentException("create: invalid role");
     };
   }
 }
@@ -602,7 +603,9 @@ The subtypes of \ttt{IGroceryItem}, as we stated, are \ttt{Fruit}, \ttt{Milk}, a
 record Fruit(String name, int oz) implements IGroceryItem {
 
   @Override
-  public <R> R visit(IGroceryItemVisitor<R> visitor) { return visitor.visit(this); }
+  public <R> R visit(IGroceryItemVisitor<R> visitor) { 
+    return visitor.visit(this); 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -612,7 +615,9 @@ record Fruit(String name, int oz) implements IGroceryItem {
 record Milk(boolean skim, int fluidOz) implements IGroceryItem {
   
   @Override
-  public <R> R visit(IGroceryItemVisitor<R> visitor) { return visitor.visit(this); }
+  public <R> R visit(IGroceryItemVisitor<R> visitor) {
+    return visitor.visit(this); 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -622,7 +627,9 @@ record Milk(boolean skim, int fluidOz) implements IGroceryItem {
 record Cereal(String mascot, int oz) implements IGroceryItem {
     
   @Override
-  public <R> R visit(IGroceryItemVisitor<R> visitor) { return visitor.visit(this); }
+  public <R> R visit(IGroceryItemVisitor<R> visitor) {
+    return visitor.visit(this); 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -648,14 +655,16 @@ class GroceryListTotalVisitorTester {
     );
 
     assertAll(
-      () -> assertEquals(0, List.of().stream()
-                                     .mapToDouble(item -> 
-                                       item.visit(new GroceryListTotalVisitor()))
-                                     .sum()),
-      () -> assertEquals(5.60, groceryList.stream()
-                                          .mapToDouble(item -> 
-                                            item.visit(new GroceryListTotalVisitor()))
-                                          .sum()));
+      () -> assertEquals(0, 
+                         List.of().stream()
+                                  .mapToDouble(item -> 
+                                   item.visit(new GroceryListTotalVisitor()))
+                                  .sum()),
+      () -> assertEquals(5.60, 
+                         groceryList.stream()
+                                    .mapToDouble(item -> 
+                                     item.visit(new GroceryListTotalVisitor()))
+                                    .sum()));
   }
 }
 \end{lstlisting}
