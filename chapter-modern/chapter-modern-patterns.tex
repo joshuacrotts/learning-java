@@ -63,7 +63,7 @@ class JumpCommand implements Command {
 \end{lstlisting}
 \end{cl}
 
-Lastly, we must implement a ``command dispatch handler'', of sorts, which we might envision to be a controller. In particular, we will write \ttt{InputHandler} to store two commands that respond to presses to an `X button' and presses to a `Y button'. The methods to `press' each button correspond to invoking \ttt{execute} on the respective commands. The general idea behind the command pattern is that we can pass any arbitrary implementation of a command to this handler to change/update the behavior of a button press or action in the handler. 
+Lastly, we must implement a ``command dispatch handler,'' of sorts, which we might envision to be a controller. In particular, we will write \ttt{InputHandler} to store two commands that respond to presses to an `X button' and presses to a `Y button'. The methods to `press' each button correspond to invoking \ttt{execute} on the respective commands. The general idea behind the command pattern is that we can pass any arbitrary implementation of a command to this handler to change/update the behavior of a button press or action in the handler. 
 
 \begin{cl}[Command.java]{...}
 \begin{lstlisting}[language=MyJava]
@@ -159,7 +159,7 @@ class Fraction {
 
 Notice that one of our test cases loops five hundred thousand times, repeatedly allocating the same fraction, namely $1/2$. It is almost certainly true that, whatever application uses the \ttt{Fraction} class, will not need separate/distinct instances of a fraction. Accordingly, we are unnecessarily allocating \ttt{Fraction} instances, taking a lot of CPU time and memory. The solution is to introduce a form of caching, wherein we create a lookup table of the most ``common'' fractions and, whenever someone wants to construct a \ttt{Fraction}, we first determine if it can be polled from the table. If not, we have no choice but to allocate the fraction. We call this the \textit{factory} pattern, because we have a class that represents and processes the creation of \ttt{Fraction} objects, rather than allowing the user to directly instantiate one themselves. 
 
-In designing the \ttt{FractionFactory} class, we declare a five-hundred element array to store the fractions $1/n$, where $n$ is an integer such that $1 \leq n \leq 500$. Its constructor allocates the fraction ``cache''. We now need a method to take the role of building fractions; namely a \ttt{Fraction create(int num, int den)} method, which either looks up and returns the shared instance of a common fraction, or allocates a new instance.
+In designing the \ttt{FractionFactory} class, we declare a five-hundred element array to store the fractions $1/n$, where $n$ is an integer such that $1 \leq n \leq 500$. Its constructor allocates the fraction ``cache.'' We now need a method to take the role of building fractions; namely a \ttt{Fraction create(int num, int den)} method, which either looks up and returns the shared instance of a common fraction, or allocates a new instance.
 
 \begin{cl}[FractionFactoryTester.java]{}
 \begin{lstlisting}[language=MyJava]
@@ -214,7 +214,7 @@ class FractionFactory {
 \end{lstlisting}
 \end{cl}
 
-\example{Imagine that we have a file of data containing information about a ``Person'', which entails their university records. A person can be a student, faculty, or staff member, and each type of person contains a name. For the purposes of this example, this is the only information that we care about, but we could easily extend it to include other datapoints. The idea is that we want to read in these records and create a \ttt{Person} object for each record. We could store `type' of person as, say, an enum, or a string, but this is not ideal. Instead, we will use the \textit{factory} pattern to create a \ttt{Person} object for each record, and the factory will determine the subclass of person based on the record.}
+\example{Imagine that we have a file of data containing information about a ``Person,'' which entails their university records. A person can be a student, faculty, or staff member, and each type of person contains a name. For the purposes of this example, this is the only information that we care about, but we could easily extend it to include other datapoints. The idea is that we want to read in these records and create a \ttt{Person} object for each record. We could store `type' of person as, say, an enum, or a string, but this is not ideal. Instead, we will use the \textit{factory} pattern to create a \ttt{Person} object for each record, and the factory will determine the subclass of person based on the record.}
 
 Namely, let's create the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{public String getRole()} method to-be overridden in each subclass. We will also write the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that takes a \ttt{name} and \ttt{role} as arguments, and returns the relevant subclass of \ttt{Person}.
 
@@ -356,7 +356,7 @@ As expected, all tests pass.
 
 \subsection*{Builder}
 
-When creating instances of classes, it is not always feasible or possible to pass all of the necessary arguments to a constructor. The \textit{builder} pattern allows us to write ``partial constructors'', i.e., methods that take a subset of the arguments and return an object that contains the partial arguments. 
+When creating instances of classes, it is not always feasible or possible to pass all of the necessary arguments to a constructor. The \textit{builder} pattern allows us to write ``partial constructors,'' i.e., methods that take a subset of the arguments and return an object that contains the partial arguments. 
 
 \example{Suppose that we are designing a \ttt{URL} class to represent a URL, which contains a schema, host, port, and path. We want to write a \ttt{URLBuilder} class that allows us to construct a \ttt{URL} object by passing arguments one-at-a-time to a series of methods. In particular, each instance variable, namely \ttt{\_schema}, \ttt{\_host}, \ttt{\_port}, and \ttt{\_path}, has a corresponding method of the same name sans the underscore. Each method returns \ttt{this}, which allows us to chain method calls together. Moreover, returning \ttt{this} and forgoing the constructor means we do not need to unnecessarily allocate a new \ttt{Url} object for every method call.}
 

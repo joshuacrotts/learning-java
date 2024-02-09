@@ -328,9 +328,9 @@ class FactorialTailRecursive {
 \end{lstlisting}
 \end{cl}
 
-The idea is that we have a helper class and method, namely \ttt{invoke}, that continuously applies the thunks, \textbf{inside a while loop}, until the computation is done. The trampoline analogy is used because we bounce on the trampoline while invoking thunks and jump off when we are ``done''.
+The idea is that we have a helper class and method, namely \ttt{invoke}, that continuously applies the thunks, \textbf{inside a while loop}, until the computation is done. The trampoline analogy is used because we bounce on the trampoline while invoking thunks and jump off when we are ``done.''
 
-First, design the generic \ttt{ITailCall<T>} interface. It should contain only one (non-default) method: \ttt{ITailCall<T> apply()}, which is necessary for the \ttt{invoke} method. The remaining methods are all default, meaning they must have a body. Design the \ttt{boolean isDone()} method to always return false. Design the \ttt{T getValue()} method to simply return \ttt{null}. Finally, design the \ttt{T invoke()} method that stores a local variable and constantly calls \ttt{apply} on itself until it is ``done''. 
+First, design the generic \ttt{ITailCall<T>} interface. It should contain only one (non-default) method: \ttt{ITailCall<T> apply()}, which is necessary for the \ttt{invoke} method. The remaining methods are all default, meaning they must have a body. Design the \ttt{boolean isDone()} method to always return false. Design the \ttt{T getValue()} method to simply return \ttt{null}. Finally, design the \ttt{T invoke()} method that stores a local variable and constantly calls \ttt{apply} on itself until it is ``done.'' 
 
 Second, design the \ttt{TailCallUtils} final class to contain a private constructor (this class will only utilize and define two static methods). The two methods are as follows:
 

@@ -32,7 +32,7 @@ final int SIZE = 11;
 int[] A = new int[SIZE];
 for (int i = 0; i < A.length; i++) { A[i] = i * 10; }
 \end{verbnobox}
-We use $i$ to iterate over the possible indices of our array. Before we explained that $i$ is used out of standard convention, but we now say that $i$, in general, stands for either ``iteration'' or ``index''. We assign, to $A$, the value of $i$ multiplied by ten. We can convert the array to a \ttt{String} using a utility method from the \ttt{Arrays} class (note the plural!); a ``string-ified'' array separates each element by commas and surrounds them with braces.
+We use $i$ to iterate over the possible indices of our array. Before we explained that $i$ is used out of standard convention, but we now say that $i$, in general, stands for either ``iteration'' or ``index.'' We assign, to $A$, the value of $i$ multiplied by ten. We can convert the array to a \ttt{String} using a utility method from the \ttt{Arrays} class (note the plural!); a ``string-ified'' array separates each element by commas and surrounds them with braces.
 \begin{verbnobox}[\small]
 String s1 = Arrays.toString(A);
 s1 => {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
@@ -83,7 +83,7 @@ class SumOfDoubleArrayTester {
 \end{lstlisting}
 \end{cl}
 
-Our method uses a local variable to accumulate the ``running sum'', so to speak, of the values seen so far from the given array.
+Our method uses a local variable to accumulate the ``running sum,'' so to speak, of the values seen so far from the given array.
 
 \begin{cl}[]{Sum of Double Array Implementation}
 \begin{lstlisting}[language=MyJava]
@@ -103,7 +103,7 @@ class SumOfDoubleArray {
 \end{lstlisting}
 \end{cl}
 
-While our code works and the tests that we wrote pass without question, there is a bit of verbosity with our loop; all we ever use the iteration variable, $i$, is for accessing a variable. In such circumstances, we may prefer using the enhanced \ttt{for} loop, which abstracts away the index and provides an iteration construct for accessing elements sequentially.
+Even though our code works and the tests that we wrote pass without question, there is a bit of verbosity with our loop; all we ever use the iteration variable, $i$, is for accessing a variable. In such circumstances, we may prefer using the enhanced \ttt{for} loop, which abstracts away the index and provides an iteration construct for accessing elements sequentially.
 
 \begin{cl}[]{Sum of Double Array Enhanced \ttt{for} Loop}
 \begin{lstlisting}[language=MyJava]
@@ -120,7 +120,7 @@ class SumOfDoubleArray {
 
 Why might someone want to use the enhanced \ttt{for} loop over a standard \ttt{for}? In general, when we only want to access the elements themselves and not care about their position, the enhanced counterpart is favored; not having to concern ourselves with indices completely removes the possibility of accessing an out-of-bounds index. 
 
-\example{Let us write a method that returns the largest integer in an array of integers. This is straightforward, but can be a little tricky to get right due to how we determine the ``largest''. Some programmers may choose to declare a value \ttt{largest} and assign it, say, $-1$, then if we encounter a larger value, overwrite its value. This works well when the provided array contains only positive values, but what if our array contains only negative numbers? This approach falls apart in such instances. To simplify the implementation, we will assume that the given array contains at least one value.}
+\example{Let us write a method that returns the largest integer in an array of integers. This is straightforward, but can be a little tricky to get right due to how we determine the ``largest.'' Some programmers may choose to declare a value \ttt{largest} and assign it, say, $-1$, then if we encounter a larger value, overwrite its value. This works well when the provided array contains only positive values, but what if our array contains only negative numbers? This approach falls apart in such instances. To simplify the implementation, we will assume that the given array contains at least one value.}
 
 \begin{cl}[]{Largest Integer in Array Tests}
 \begin{lstlisting}[language=MyJava]
@@ -161,7 +161,7 @@ class LargestInt {
 
 A slightly more efficient and compact solution would be to wrap the conditional inside a call to \ttt{Math.max}, since the logic located within is effectively identical: \ttt{max = Math.max(arr[i], max)}.
 
-Java arrays are rather primitive compared to other more-complex data structures.\footnote{Do not conflate this use of the ``primitive'' term with its use in describing ``primitive datatypes''.} The \ttt{Arrays} class provides a few convenient methods for working with arrays directly, but for the most part, arrays are used as the backbone of other data structures. In general, we use arrays when we want constant access times for elements. That is, if we know the index of an element $e$, we retrieve it using the aforementioned array bracket syntax. This idea holds true for modifying elements. If we want to know whether an array contains a value, we need to write our own method to check. 
+Java arrays are rather primitive compared to other more-complex data structures.\footnote{Do not conflate this use of the ``primitive'' term with its use in describing ``primitive datatypes.''} The \ttt{Arrays} class provides a few convenient methods for working with arrays directly, but for the most part, arrays are used as the backbone of other data structures. In general, we use arrays when we want constant access times for elements. That is, if we know the index of an element $e$, we retrieve it using the aforementioned array bracket syntax. This idea holds true for modifying elements. If we want to know whether an array contains a value, we need to write our own method to check. 
 
 \example{Suppose we want to write a method that returns the index of an element $e$ of an array of \ttt{String} values $S$. Doing so is straightforward: check each element, one by one, until we find the desired element, or return $-1$. Note the similarity to the \ttt{indexOf} method, which is part of the \ttt{String} class. To gain practice using both recursion and iteration, we will write three versions of this method: one using standard recursion, the second using tail recursion, and the third using a loop. Our standard recursive method will recurse on the length of the array minus one until it is a negative number. The tail recursive method is almost identical to the former, with the exception that upon finding the element, we return the index itself rather than relying on the recursion to unwind. The tests for these two are both trivial to design.}
 

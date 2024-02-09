@@ -29,9 +29,9 @@ static int factTR(int n, int acc) {
 \end{lstlisting}
 \end{clrr}
 The first step in converting a recursive method into its iterative counterpart is to rewrite it using tail recursion. Something we, of course, already know how to do from the previous section. 
-Notice that, in order to ``tail-recursify'' \texttt{fact}, we had to add an extra parameter that keeps track of the ``current result''.\footnote{Some tail recursive methods need more than one extra parameter---it is a case-by-case basis.} The reason for converting recursive methods into tail recursion is because of their direct relation to iteration.\footnote{A method definition may already be tail recursive depending on the circumstance.} Let us look a little deeper into this and find out why.
+Notice that, in order to ``tail-recursify'' \texttt{fact}, we had to add an extra parameter that keeps track of the ``current result.''\footnote{Some tail recursive methods need more than one extra parameter---it is a case-by-case basis.} The reason for converting recursive methods into tail recursion is because of their direct relation to iteration.\footnote{A method definition may already be tail recursive depending on the circumstance.} Let us look a little deeper into this and find out why.
 
-Our iterative version of \texttt{fact} should move all ``accumulator'' variables into the method body. E.g., \texttt{acc} will now be declared locally to the \texttt{fact} method. In addition to this movement, all accumulator-to-local variables should have an ``iterative purpose statement'', which mimics the documentation comment for the accumulator parameter.
+Our iterative version of \texttt{fact} should move all ``accumulator'' variables into the method body. E.g., \texttt{acc} will now be declared locally to the \texttt{fact} method. In addition to this movement, all accumulator-to-local variables should have an ``iterative purpose statement,'' which mimics the documentation comment for the accumulator parameter.
 
 \begin{cl}[]{Localizing Accumulator Variables}
 \begin{lstlisting}[language=MyJava]
@@ -156,7 +156,7 @@ Of course, the goal, in due time, is to work our way from $TR$ to $I$, but there
 
 $TR$ is the tail recursive method derived either from the problem statement $P$ or the standard recursive step $R$. From here, we make our way to \textit{$TR_\mathbf{H}$}, denoting the ``color-coding'' phase, where we mark the three sub components of a tail recursive method, those being the base case(s), updated variables in the tail recursive call, and returned values from the base case. 
 
-\textit{$TR_\mathbf{IVP}$}, or ``Iterative Variable Purpose'', is a step following the method signature, but preceding the loop definition. In this step, we examine the updated variables/accumulators marked in \textit{$TR_\mathbf{H}$} and localize them into variables not passed as arguments to a method, but rather as a sequence of value updates. Moreover, we add comments to these variable declarations explaining their purpose.
+\textit{$TR_\mathbf{IVP}$}, or ``Iterative Variable Purpose,'' is a step following the method signature, but preceding the loop definition. In this step, we examine the updated variables/accumulators marked in \textit{$TR_\mathbf{H}$} and localize them into variables not passed as arguments to a method, but rather as a sequence of value updates. Moreover, we add comments to these variable declarations explaining their purpose.
 
 \textit{$TR_\mathbf{C}$} is the step wherein we write the \ttt{while} keyword, followed by the negated base case condition(s) as a series of conjunctions.
 
@@ -237,7 +237,7 @@ static int fact(int n, int acc) {
 \end{lstlisting}
 \end{cl}
 
-In the translation to a loop, we move $\textit{acc}$ to the body of the method, and write a similar iterative variable purpose.\footnote{By ``move'', we mean ``remove'' but not ``delete''.} Note that the value the initialized variable receives depends on the problem/context, but it always matches whatever value is passed to a tail recursive helper method.
+In the translation to a loop, we move $\textit{acc}$ to the body of the method, and write a similar iterative variable purpose.\footnote{By ``move,'' we mean ``remove'' but not ``delete.''} Note that the value the initialized variable receives depends on the problem/context, but it always matches whatever value is passed to a tail recursive helper method.
 
 \begin{cl}[]{Iterative Variable Purpose Statement}
 \begin{lstlisting}[language=MyJava]
@@ -362,9 +362,9 @@ Perhaps the related equivalence to tail recursion is too abstract for some to di
 
 As we stated, loops are statements in Java, meaning they do not, themselves, resolve to a value. Therefore any and all lines of code executed inside the body of a loop must be statements rather than expressions.
 
-\example{Suppose we want to print the first one hundred prime integers. Recall the definition of primality: a positive integer $n$ is prime if it is divisible by only one and itself. Without loops, we would otherwise solve this task using recursion. While summing prime values is not a too terribly complicated task, it requires a bit of a verbose set of methods, should we choose to do it tail recursively. Instead, let us try and use loops to our advantage. We want to continue looping until we have summed one hundred prime values. Fortunately there is exactly one correct test case for this method, so writing an elaborate test suite is superfluous.}
+\example{Suppose we want to print the first one hundred prime integers. Recall the definition of primality: a positive integer $n$ is prime if it is divisible by only one and itself. Without loops, we would otherwise solve this task using recursion. Although summing prime values is not a too terribly complicated task, it requires a bit of a verbose set of methods, should we choose to do it tail recursively. Instead, let us try and use loops to our advantage. We want to continue looping until we have summed one hundred prime values. Fortunately there is exactly one correct test case for this method, so writing an elaborate test suite is superfluous.}
 
-Declaring an integer counter $c$ is mandatory. Our loop condition, therefore, is to continue so long as we have not reached one hundred prime values. When designing loop conditions, we ask ourselves the question, ``What should be true after the loop?'', and design the condition around the answer. Our counter $c$ will be exactly one hundred upon loop completion, so the condition is the negated version of this expression.\footnote{Rather than \ttt{(!(c == 100))}, we can write \ttt{(c != 100)} to achieve the same effect.}
+Declaring an integer counter $c$ is mandatory. Our loop condition, therefore, is to continue so long as we have not reached one hundred prime values. When designing loop conditions, we ask ourselves the question, ``What should be true after the loop?,'' and design the condition around the answer. Our counter $c$ will be exactly one hundred upon loop completion, so the condition is the negated version of this expression.\footnote{Rather than \ttt{(!(c == 100))}, we can write \ttt{(c != 100)} to achieve the same effect.}
 
 Up next we need a method to determine if a value is prime. We presented the definition of primality before, and it is also known that we only need to check up to the square root of $n$ for primality. Let us design such a method, writing the appropriate tests. Our condition is to continue so long as a variable, $i$, is less than or equal to the square root of our input number. The variable $i$ serves as a counter towards our number; if we find that $n$ is not divisible by any numbers from two up to the square root of $n$, then it must be prime.\footnote{We cast the result of \ttt{Math.sqrt} to an integer because it returns a \ttt{double} rather than an \ttt{int} datatype.} Note the edge cases of zero and one, which are both non-prime.
 
@@ -588,7 +588,7 @@ class SumInterval {
     g_{x+1} = \dfrac{\left(g_x + \dfrac{n}{g_x}\right)}{2}
 \]
 
-Where $g_x$ is called a ``guess''. The idea is to continuously apply this formula until we are ``close enough'' to the square root. Close-enough is a heuristic whose value, when very small, increases the running time of our loop. Small values of $g_x$ indicate a closer approximation to the true square root of $n$. For instance, suppose $n=64$ and $\Delta=0.1$. Applying the formula (initializing $g_0$ to $n$) gets us the following trace:
+Where $g_x$ is called a ``guess.'' The idea is to continuously apply this formula until we are ``close enough'' to the square root. Close-enough is a heuristic whose value, when very small, increases the running time of our loop. Small values of $g_x$ indicate a closer approximation to the true square root of $n$. For instance, suppose $n=64$ and $\Delta=0.1$. Applying the formula (initializing $g_0$ to $n$) gets us the following trace:
 
 \begin{align*}
 g_1 &= \dfrac{\left(64 + \dfrac{64}{64}\right)}{2} &= 32.500\\
@@ -695,7 +695,7 @@ class Fibonacci {
 \end{lstlisting}
 \end{cl}
 
-Our method works and tests pass, which is great, but we can do better by using tail recursion. The tail recursive variant, however, is slightly more complicated than prior tail recursive definitions due to the use of two accumulators. We use two values to compute the ``next'' Fibonacci number: the previous, and the previous' previous. So, storing these as values, say, $a$ and $b$, is sensible, where $a$ is the ``previous' previous'', and $b$ is the previous. Thus, when making a tail recursive call, we assign $b$ as $a + b$, and $a$ as $b$. We must not forget the driver method!
+Our method works and tests pass, which is great, but we can do better by using tail recursion. The tail recursive variant, however, is slightly more complicated than prior tail recursive definitions due to the use of two accumulators. We use two values to compute the ``next'' Fibonacci number: the previous, and the previous' previous. So, storing these as values, say, $a$ and $b$, is sensible, where $a$ is the ``previous' previous,'' and $b$ is the previous. Thus, when making a tail recursive call, we assign $b$ as $a + b$, and $a$ as $b$. We must not forget the driver method!
 
 \begin{cl}[]{Tail Recursive Fibonacci Implementation}
 \begin{lstlisting}[language=MyJava]
@@ -898,7 +898,7 @@ class RandomNumbers {
 \end{lstlisting}
 \end{cl}
 
-\example{Let's write one more example of a loop where we go directly from the problem statement to the code in question. Suppose we're writing a method that receives some string $s$, a ``search string'' $f$, and a replacement string $r$, and our goal is to replace all occurrences of $f$ with $r$ without helper methods in the \ttt{String} class, e.g., \ttt{indexOf}, \ttt{contains}, and certainly not \ttt{replace}. Of course, we start by writing the signature, documentation comments, and a handful of tests. We emphasize writing more tests than perhaps normal for this specific problem due to its complexity and number of ``edge cases'', i.e., cases in which a method might not account for because of their obscurity.}
+\example{Let's write one more example of a loop where we go directly from the problem statement to the code in question. Suppose we're writing a method that receives some string $s$, a ``search string'' $f$, and a replacement string $r$, and our goal is to replace all occurrences of $f$ with $r$ without helper methods in the \ttt{String} class, e.g., \ttt{indexOf}, \ttt{contains}, and certainly not \ttt{replace}. Of course, we start by writing the signature, documentation comments, and a handful of tests. We emphasize writing more tests than perhaps normal for this specific problem due to its complexity and number of ``edge cases,'' i.e., cases in which a method might not account for because of their obscurity.}
 
 \begin{cl}[FindReplaceTester.java]{Find \& Replace Tester}
 \begin{lstlisting}[language=MyJava]

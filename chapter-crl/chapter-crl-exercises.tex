@@ -3,13 +3,13 @@
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean isStrictlyIncreasing(int x, int y, int z)} that determines if three integers $x$, $y$, and $z$ are strictly increasing. By this, we mean that $x < y < z$.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{String numStuff(int n)} that determines if an integer $n$ is greater than $100$. If so, return the string of $n$ divided by two. If the number is less than 50, return the string of $n$ divided by five. In any other case, return the string ``N/A''.}
+\exercise{1}{chapter-crl}{Design the \ttt{String numStuff(int n)} that determines if an integer $n$ is greater than $100$. If so, return the string of $n$ divided by two. If the number is less than 50, return the string of $n$ divided by five. In any other case, return the string ``N/A.''}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean canVote(int age)} that, when given an integer variable \textit{age} in years, returns whether or not someone who is that age is able to legally vote in the United States. For reference, someone may legally vote once they turn eighteen years old.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{int max(int x, int y, int z)} that returns the maximum of three integers $x$, $y$, and $z$. Do not use any built-in (\ttt{Math} library) methods.}
 
-\exercise{1}{chapter-crl}{Design the \ttt{int computeRoundSum(int x, int y, int z)} method that computes the sum of the rounded values of three integers $x$, $y$, and $z$. By ``rounded values'', we mean that we round their least significant digit, i.e., the rightmost digit either up or down depending on its value. For instance, 12 rounds down to 10, 59 rounds up to 60, and 1009 rounds up to 1010. If the number is negative, round towards zero when necessary, e.g., $-7$ rounds down to $-10$, $-2$ rounds up to zero.}
+\exercise{1}{chapter-crl}{Design the \ttt{int computeRoundSum(int x, int y, int z)} method that computes the sum of the rounded values of three integers $x$, $y$, and $z$. By ``rounded values,'' we mean that we round their least significant digit, i.e., the rightmost digit either up or down depending on its value. For instance, 12 rounds down to 10, 59 rounds up to 60, and 1009 rounds up to 1010. If the number is negative, round towards zero when necessary, e.g., $-7$ rounds down to $-10$, $-2$ rounds up to zero.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean lessThan20(int x, int y, int z)} method that, when given three integers $x$, $y$, and $z$, returns whether or not one of them is less than twenty away from another. For example, \ttt{lessThan20(19, 2, 412)} returns true because $2$ is less than $20$ away from $19$. Another example is \ttt{lessThan20(999, 888, 777)}, which returns false because none of the numbers have a difference less than twenty.}
 
@@ -138,7 +138,7 @@ fitCandy(7, 1, 12)     => 7
 fitCandy(7, 1, 13)     => -1
 \end{verbnobox}
 
-\exercise{3}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{boolean isValidIpv4(String ip)} method that, when given a string, determines whether or not it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid. Below the examples is a method to determine whether or not a string is ``numeric''. Understanding \textit{how} this helper method works is unimportant for the time being. You \textbf{cannot} use arrays, loops, or regular expressions to solve this problem. Finally, you will need to use \ttt{Integer.parseInt}.}
+\exercise{3}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{boolean isValidIpv4(String ip)} method that, when given a string, determines whether or not it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid. Below the examples is a method to determine whether or not a string is ``numeric.'' Understanding \textit{how} this helper method works is unimportant for the time being. You \textbf{cannot} use arrays, loops, or regular expressions to solve this problem. Finally, you will need to use \ttt{Integer.parseInt}.}
 
 \begin{verbnobox}[\small]
 isValidIpv4("192.168.1.244")    => true
@@ -225,7 +225,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \exercise{1}{chapter-crl}{This question has two parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{isPalindromeTR} tail recursive method, which receives a string and determines if it is a palindrome. Recall that a palindrome is a string that is the same backwards as it is forwards. E.g., ``racecar''. \textbf{Do not} use a (character) array, \ttt{StringBuilder}, \ttt{StringBuffer}, or similar, to solve this problem. It \textit{must} be naturally recursive.
+    \item Design the \ttt{isPalindromeTR} tail recursive method, which receives a string and determines if it is a palindrome. Recall that a palindrome is a string that is the same backwards as it is forwards. E.g., ``racecar.'' \textbf{Do not} use a (character) array, \ttt{StringBuilder}, \ttt{StringBuffer}, or similar, to solve this problem. It \textit{must} be naturally recursive.
     \item Design the \ttt{isPalindromeLoop} method that solves the problem using a loop. The same restrictions from the previous problem hold true for this one.
 \end{enumerate}
 
@@ -241,7 +241,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \exercise{1}{chapter-crl}{This question has two parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{isNestedParenthesesTR} tail recursive method, which receives a string and determines if its parentheses pairs are ``balanced''. A pair of parentheses is balanced if it is a nesting of zero or more pairs of parenthesis, like ``(())'' or ``((()))''. Note that pairs like ``(()())'' will not be tested.
+    \item Design the \ttt{isNestedParenthesesTR} tail recursive method, which receives a string and determines if its parentheses pairs are ``balanced.'' A pair of parentheses is balanced if it is a nesting of zero or more pairs of parenthesis, like ``(())'' or ``((())).'' Note that pairs like ``(()())'' will not be tested.
 
     \item Design the \ttt{isNestedParenthesesLoop} method that solves the problem using a loop.
 \end{enumerate}
@@ -359,7 +359,23 @@ cutN("1[bbbbb]3[a]") => "[bbbbb]3[a]"
 
 \exercise{2}{chapter-crl}{Design the \ttt{boolean isNumberPalindrome(int n)} method that, when given an integer $n$, returns whether or not that number is a palindrome. You cannot convert the number to a string.}
 
-\exercise{2}{chapter-crl}{The C programming language contains the \ttt{atoi} ``ascii-to-integer'' function, which receives a string and, if the string represents some integer, returns the number converted to an integer. Design the \ttt{int atoi(String s)} method that, when given a string $s$, returns its value as an integer if it can be parsed as an integer. If it cannot be parsed as an integer, or exceeds the bounds of an integer, return zero. Leading zeroes should be ignored, as well as leading and trailing space characters. Upon reading a non-digit after reading the first, return immediately with that value. E.g., \ttt{atoi("0043Hi")} returns \ttt{43}. Writing enough tests is \textit{crucial} to getting this correct.}
+\exercise{3}{chapter-crl}{The C programming language contains the \ttt{atoi} ``ascii-to-integer'' function, which receives a string and, if the string represents some integer, returns the number converted to an integer. Design the \ttt{int atoi(String s)} method that, when given a string $s$, returns its value as an integer if it can be parsed as an integer. When parsing the integer, ignore all leading zeroes and leading non-digits. Upon finding the first non-zero digit, if it exists, begin interpreting the string as a number. At any point thereafter, if a non-digit is encountered, return the number parsed up to that point. The given integer can also contain a sign, e.g., $+$ or $-$. If the value exceeds the bounds of an integer (i.e., \ttt{Integer.MAX_VALUE} or \ttt{Integer.MIN_VALUE}), return zero. Writing enough tests is \textit{crucial} to getting this correct! We provide some examples below.}
+
+\begin{verbnobox}[\small]
+atoi("ABCD")           => 0
+atoi("42")             => 42
+atoi("000042")         => 42
+atoi("004200")         => 4200
+atoi("ABCD42ABCD)      => 42
+atoi("ABCD-+42ABCD)    => 42
+atoi("ABCD+-42ABCD)    => -42
+atoi("9999999999999")  => 0
+atoi("-9999999999999") => 0
+atoi("000-42000")      => -42000
+atoi("000-ABCD)        => 0
+atoi("000+42ABCD)      => 42
+atoi("8080*8080)       => 8080
+\end{verbnobox}
 
 \exercise{2}{chapter-crl}{Design the \ttt{int indexOf(String s, String k)} method, which receives two strings $s$, $k$, and returns the first index of $k$ in $s$. Note that $k$ may be any arbitrary string and not just a a single character. If $k$ is not in $s$, return \ttt{-1}. You \textbf{cannot} use the \ttt{indexOf} method provided by the \ttt{String} class.}
 
@@ -373,7 +389,7 @@ cutN("1[bbbbb]3[a]") => "[bbbbb]3[a]"
 
 \exercise{1}{chapter-crl}{Design the \ttt{String trimSpace(String s)} method, which receives a string \ttt{s} and returns a new string with all leading and trailing spaces removed. You cannot use the \ttt{trim} method provided by the \ttt{String} class.}
 
-\exercise{2}{chapter-crl}{Design the \ttt{boolean containsMiddleABC(String s)} method, which receives a string $s$ and returns whether $s$ contains the substring \ttt{"ABC"} in the ``middle''. We define the ``middle'' as the point where number of characters on the left and right differ by at most one. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
+\exercise{2}{chapter-crl}{Design the \ttt{boolean containsMiddleABC(String s)} method, which receives a string $s$ and returns whether $s$ contains the substring \ttt{"ABC"} in the ``middle.'' We define the ``middle'' as the point where number of characters on the left and right differ by at most one. You \textbf{cannot} use any \ttt{String} methods to solve this problem except \ttt{.length} and \ttt{.charAt}.}
     \begin{verbnobox}[\small]
 assertTrue(middleABC("helloABChiya!"));
 assertTrue(middleABC("ABC"));
@@ -413,7 +429,7 @@ toBinary(25)  => "11001"
 
 \exercise{2}{chapter-crl}{Design the \ttt{String toBase(int n, int u, int v)} method that converts a positive integer $n_u$ in base $u$ to base $v$, as a \ttt{String}. You may assume that $2 \leq u, v \leq 16$. Any base above ten uses $\mathrm{A}, \mathrm{B}, ..., \mathrm{F}$ for $11, 12, ..., 15$ respectively. Hint: multiply when going down in bases ($v < u$), divide when going up $(v > u$).}
 
-\exercise{1}{chapter-crl}{Design the \ttt{int countPairs(int n)} method that computes the number of pairs $(a, b)$ that satisfy the equation $(a^2 + b^2 + 1)/(ab)$ such that $1 \leq a \leq b < n$. To ``satisfy the equation'', in this context, means that the quotient is an integer.}
+\exercise{1}{chapter-crl}{Design the \ttt{int countPairs(int n)} method that computes the number of pairs $(a, b)$ that satisfy the equation $(a^2 + b^2 + 1)/(ab)$ such that $1 \leq a \leq b < n$. To ``satisfy the equation,'' in this context, means that the quotient is an integer.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{String mirrorEnds(String s)} method that, when given a string $s$, looks for a mirror image (backwards) string at both the beginning and end of the
 given string. In other words, zero or more characters at the very beginning of the given string, and at the very end of the string in reverse order (possibly overlapping). For example, the string \ttt{"abXYZba"} has the mirror end \ttt{"ab"}. If there is no such string, return \ttt{null}.}

@@ -1,6 +1,6 @@
 \section{Strings}
 
-\textit{Strings}, as you might recall, are a sequence of characters. Characters, of course, are enclosed by single quotes, e.g., \ttt{\q{}x\q{}}. A Java \ttt{String} is enclosed by double quotes. e.g., \ttt{"Hello!"}. Strings may contain any number of characters and any kind of character, including no characters at all or only a single character. There is an apparent distinction between \ttt{\q{}x\q{}} and \ttt{"x"}: the former is a \ttt{char} and the latter is a \ttt{String}! Note the capitalization on the word \ttt{String}; this is a significant detail, because a \ttt{String} is not one of the primitive datatypes that we described in the previous section. Instead, it is several \ttt{char} values combined together ``under-the-hood'', so to speak. We can declare a \ttt{String} as a variable using the keyword combined with a variable name, just as we might for primitives. 
+\textit{Strings}, as you might recall, are a sequence of characters. Characters, of course, are enclosed by single quotes, e.g., \ttt{\q{}x\q{}}. A Java \ttt{String} is enclosed by double quotes. e.g., \ttt{"Hello!"}. Strings may contain any number of characters and any kind of character, including no characters at all or only a single character. There is an apparent distinction between \ttt{\q{}x\q{}} and \ttt{"x"}: the former is a \ttt{char} and the latter is a \ttt{String}! Note the capitalization on the word \ttt{String}; this is a significant detail, because a \ttt{String} is not one of the primitive datatypes that we described in the previous section. Instead, it is several \ttt{char} values combined together ``under-the-hood,'' so to speak. We can declare a \ttt{String} as a variable using the keyword combined with a variable name, just as we might for primitives. 
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
@@ -71,7 +71,7 @@ class NewStringTests {
 \end{lstlisting}
 \end{cl}
 
-Now, what if we want to compare strings for their content, i.e., their characters? The \ttt{String} class provides a handy \ttt{.equals} method that we invoke on instances of strings. Two strings $s_1$ and $s_2$ are equal if they are \textit{lexicographically equal}. In essence, this is a long and scary word to represent the concept of ``containing the same characters''. Lexicographical comparisons are case-sensitive, meaning that uppercase and lowercase letters are different according to Java.
+Now, what if we want to compare strings for their content, i.e., their characters? The \ttt{String} class provides a handy \ttt{.equals} method that we invoke on instances of strings. Two strings $s_1$ and $s_2$ are equal if they are \textit{lexicographically equal}. In essence, this is a long and scary word to represent the concept of ``containing the same characters.'' Lexicographical comparisons are case-sensitive, meaning that uppercase and lowercase letters are different according to Java.
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
