@@ -173,7 +173,7 @@ shift({120, 80, 70, 50, 40, 20}, -3) => {50, 40, 20, 120, 80, 70}
 
 \exercise{2}{chapter-arrays-collections}{For this problem you are not allowed to use an \ttt{ArrayList} or any helper methods, e.g., \ttt{.contains}, or methods from the \ttt{Arrays} class. You \textit{may} (and should!) use a \ttt{HashSet<Integer>} to keep track of previously-seen peaks.}
 
-Joe the mountain climber has come across a large mountain range. He wants to climb only the tallest mountains in the range. Design the \ttt{peakFinder} method that returns an array $H'$ of all the peaks in an \ttt{int[]} of mountain heights $H$. A peak $p$ is defined as an element of $h$ at index $i$ such that $p[i - 1] < p[i]$ and $p[i] > p[i + 1]$. If $i = 0$ or $i = |H| - 1$, Joe will not climb $p[i]$. Joe doesn't want to climb a mountain of the same height more than once, so you should not add any peaks that have already been added to $H'$. We present some test cases below. Hint: reuse the linear search algorithm from problem 1, except switch the \ttt{String} parameter for integers.
+Joe the mountain climber has come across a large mountain range. He wants to climb only the tallest mountains in the range. Design the \ttt{int[] peakFinder(int[] H)} method that returns an array $H'$ of all the peaks in an \ttt{int[]} of mountain heights $H$. A peak $p$ is defined as an element of $h$ at index $i$ such that $p[i - 1] < p[i]$ and $p[i] > p[i + 1]$. If $i = 0$ or $i = |H| - 1$, Joe will not climb $p[i]$. Joe doesn't want to climb a mountain of the same height more than once, so you should not add any peaks that have already been added to $H'$. We present some test cases below. Hint: reuse the linear search algorithm from problem 1, except switch the \ttt{String} parameter for integers.
 
 \begin{verbnobox}[\small]
 peakFinder({9, 13, 7, 2, 8})                        => {13}
@@ -247,11 +247,30 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> collectComments(String s)} method that, when given a string representing a (valid) Java program, returns an list containing all comments from the input program string. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> removeSideBySideDups(List<String> ls)} that, when given a list of strings, returns a new list where all side-by-side duplicates are removed.}
+
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{double postfixEvaluator(List<String> l)} method that, when given a list of binary operators and numeric operands represents as strings, returns the result of evaluating the postfix-notation expression. You will need to write a few helper methods to solve this problem, and it is best to break it down into steps. First, write a method that determines if a given string is one of the four binary operators: \ttt{"+"}, \ttt{"-"}, \ttt{"*"}, or \ttt{"/"}. You may assume that any inputs that are not binary operators are operands, i.e., numbers. Then, write a method that applies a given binary operator to a list of operands, i.e., an \ttt{ArrayList<Double>}.}
 
 \begin{verbnobox}[\small]
 postfixEvaluator({"5", "2", "*", "5", "+"}) => 17
 postfixEvaluator({"1", "2", "3", "4", "+"}) => 10
+\end{verbnobox}
+
+\exercise{3}{chapter-arrays-collections}{Design the \ttt{List<List<String>> displayOrders(List<List<String>> orderInfo)} method that, when given an array of orders, returns a series of order specifications by customer table.}
+
+To be more specific, an order is a \ttt{List<String>} whose first element is the customer name, whose second element is the table number, and whose third element is the food that the customer is ordering. 
+
+Return the data as a list of rows of information. The first row displays the table headers. The first table header should be \ttt{"Table"}, followed by the food in alphabetical order. Each successive row represents a table in increasing numerical order. Below is an input and output example.
+
+\begin{verbnobox}[\small]
+{{"John", "2", "Chicken"}, {"Samantha", "3", "Pasta"}, 
+ {"Tim", "2", "BBQ Chicken"}, {"Christina", "8", "Grilled Cheese"}, 
+ {"Tymberlyn", "2", "Chicken"}, {"TJ", "3", "Water"}}
+=> 
+{{"Table", "BBQ Chicken", "Chicken", "Grilled Cheese", "Pasta", "Water"},
+ {"2", "1", "2", "0", "0", "0"},
+ {"3", "0", "0", "0", "1", "1"},
+ {"8", "0", "0", "1", "0", "0"}}
 \end{verbnobox}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{substitute} method that, when given a \ttt{String} $\mathit{exp}$ and an environment $\mathit{env}$ \ttt{HashMap<String, Integer>}, substitutes each occurrence of an ``identifier'' for its value counterpart from the map.}
