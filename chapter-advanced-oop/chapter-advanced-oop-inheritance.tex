@@ -2,25 +2,6 @@
 
 Classes may relate to other classes by a hierarchy. In particular, one class, called the \textit{subclass}, can extend another class, called the \textit{superclass}. A subclass inherits all the public methods and fields from its superclass. Classes can only extend one class at a time, unlike other programming languages such as C++. 
 
-% \example{Imagine we are working on an employee hierarchy for a company. Everyone at this company is, by definition, an employee, meaning they each have a unique employee identification number. To simplify things, we will say that each time a new employee is hired, they are assigned the next available employee identification number using a private and static counter variable. We can define an \ttt{Employee} class as follows:}\footnote{We will be extending \ttt{Employee} in subsequent paragraphs, so we will hold off on testing for the time being.}
-
-% \begin{cl}[Employee.java]{Employee Class Definition}
-% \begin{lstlisting}[language=MyJava]
-% class Employee {
-
-%   private static int nextID = 0;
-
-%   private final int ID;
-
-%   public Employee() { this.ID = Employee.nextID++; }
-
-%   public int getId() { return this.ID; }
-
-%   public String toString() { return this.ID; }
-% }
-% \end{lstlisting}
-% \end{cl}
-
 \example{Suppose we have the \ttt{Alien} class defined as follows, which can move forward by one unit and turn left by 90 degrees in some world that it resides within.\footnote{We base this example off of Karel J. Robot from~\cite{kareljrobot} and~\cite{pattiskarel}.}}
 
 \begin{cl}[AlienTester.java]{Alien Tester}

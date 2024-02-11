@@ -19,7 +19,7 @@
     \item Design the \ttt{void addEmployee(Employee e)} method, which adds an employee to the \ttt{Job}.
     \item Design the \ttt{void removeEmployee(Employee e)} method, which removes an employee from the \ttt{Job}.
     \item Design the \ttt{Optional<Double> computeAverageSalary()} method, which returns the average salary of all employees in the \ttt{Job}. If there are no employees, return an empty \ttt{Optional}.
-    \item Design the \ttt{Optional<Employee> highestPaid()} method, which returns the \ttt{Employee} whose salary is the highest of all employees in the \ttt{Job}. If there are no employees, return an empty \ttt{Optional}.
+    \item Design the \ttt{Optional<Employee> highestPaid()} method, which returns the employee whose salary is the highest of all employees in the \ttt{Job}. If there are no employees, return an empty \ttt{Optional}.
     \item Override the \ttt{toString} method to print out the list of employees in the \ttt{Job}. You can use the default \ttt{toString} implementation of the \ttt{ArrayList} class.
 \end{enumerate}
 
@@ -119,14 +119,15 @@ A \textit{chunked array list} data structure avoids the overhead of copying the 
 \end{enumerate}
 
 \exercise{3}{chapter-classes}{This exercise has seven parts.}
+
 A \textit{persistent data structure}\index{persistent data structure} is one that saves intermittent data structures after applying operations that would otherwise alter the contents of the data structure. Take, for instance, a standard FIFO queue. When we invoke its `enqueue' method, we modify the underlying data structure to now contain the new element. If this were a persistent queue, then enqueueing a new element would, instead, return a new queue that contains all elements and the newly-enqueued value, thereby leaving the original queue unchanged.
 
 \begin{enumerate}[label=(\alph*)]
-    \item First, design the generic, private, and static class \ttt{Node} inside a generic \ttt{PersistentQueue} class skeleton. It should store, as instance variables, a pointer to its next element as well as its associated value.
-    \item Then, design the \ttt{PersistentQueue} class, which represents a persistent queue data structure. As instance variables, store ``first'' and ``last'' pointers as \ttt{Node} objects, as well as an integer to represent the number of existing elements. In the constructor, instantiate the pointers to \ttt{null} and the number of elements to zero.
-    \item Design the \ttt{Persistent<T> enqueue(T t)} method that enqueues a value onto the end of a new queue containing all the old elements, in addition to the new value.
+    \item First, design the generic, private, and static class \ttt{Node} inside a generic \ttt{PQueue} class skeleton. It should store, as instance variables, a pointer to its next element as well as its associated value.
+    \item Then, design the \ttt{PQueue} class, which represents a persistent queue data structure. As instance variables, store ``first'' and ``last'' pointers as \ttt{Node} objects, as well as an integer to represent the number of existing elements. In the constructor, instantiate the pointers to \ttt{null} and the number of elements to zero.
+    \item Design the \ttt{PQueue<T> enqueue(T t)} method that enqueues a value onto the end of a new queue containing all the old elements, in addition to the new value.
     \item Design the \ttt{T dequeue()} method that removes the first element of the queue, returning a new queue without this first value.
     \item Design the \ttt{T peek()} method that returns the first element of the queue.
-    \item Design the \ttt{PersistentQueue<T> of(T... vals)} method that creates a queue with the values passed as \ttt{vals}. Note that this must be a variadic method. Do not create a series of \ttt{PersistentQueue} objects by enqueueing each element into a distinct queue; this is incredibly inefficient. Instead, allocate each \ttt{Node} one-by-one, thereby never calling \ttt{enqueue}.
+    \item Design the \ttt{PQueue<T> of(T... vals)} method that creates a queue with the values passed as \ttt{vals}. Note that this must be a variadic method. Do not create a series of \ttt{PQueue} objects by enqueueing each element into a distinct queue; this is incredibly inefficient. Instead, allocate each \ttt{Node} one-by-one, thereby never calling \ttt{enqueue}.
     \item Design the \ttt{int size()} method that returns the number of elements in the queue. You should not traverse the queue to compute this value. 
 \end{enumerate}
