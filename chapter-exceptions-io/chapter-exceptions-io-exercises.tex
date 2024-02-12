@@ -107,6 +107,8 @@ Then, design the following methods:
     \item \ttt{boolean isSymmetric()} returns true if the relation is symmetric. A relation $\mathcal{R}$ is symmetric if, for all $x, y \in S$, $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, x}\rangle \in \mathcal{R}$.
     
     \item \ttt{boolean isTransitive()} returns true if the relation is reflexive. A relation $\mathcal{R}$ is transitive if, for all $x, y, z \in S$, if $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, z}\rangle \in \mathcal{R}$, then $\langle{x, z}\rangle \in \mathcal{R}$.
+    
+    \item \ttt{boolean isEquivalence()} returns true if the relation is an equivalence relation. A relation $\mathcal{R}$ is an equivalence relation if it is reflexive, symmetric, and transitive.
 
     \item \ttt{boolean isIrreflexive()} returns true if the relation is irreflexive. A relation $\mathcal{R}$ is irreflexive if, for all $x \in S$, $\langle{x, x}\rangle \not\in \mathcal{R}$.
     
@@ -115,6 +117,12 @@ Then, design the following methods:
     \item \ttt{boolean isAsymmetric()} returns true if the relation is asymmetric. A relation is asymmetric if it is both antisymmetric and irreflexive.
 
     \item \ttt{boolean isSerial()} returns true if the relation is serial. A relation $\mathcal{R}$ is serial if, for all $x \in S$, there exists a $y \in S$ such that $\langle{x, y}\rangle \in \mathcal{R}$.
+
+    \item \ttt{Set<Pair<String, String>{>} reflexiveClosure()} returns a set representing the reflexive closure of a binary relation, which is $\mathcal{R} \cup r(\mathcal{R})$, where $r$ returns a reflexive set over $S$.
+    
+    \item \ttt{Set<Pair<String, String>{>} isSymmetricClosure()} returns a set representing the symmetric closure of a binary relation, which is $\mathcal{R} \cup s(\mathcal{R})$, where $r$ returns a symmetric set over $S$.
+
+    \item \ttt{Set<Pair<String, String>{>} transitiveClosure()} returns a set representing the transitive closure of a binary relation, which is $\mathcal{R} \cup t(\mathcal{R})$, where $t$ returns a transitive set over $S$.
 \end{itemize}
 
 As an added optimization, we should cache whether the current relation is one of these properties when prompted. If we do not add a pair to the relation, then it makes little sense to recompute whether or not is, say, reflexive. Implement this as an optimization, however you wish, into the class.

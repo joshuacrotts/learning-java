@@ -131,3 +131,19 @@ A \textit{persistent data structure}\index{persistent data structure} is one tha
     \item Design the \ttt{PQueue<T> of(T... vals)} method that creates a queue with the values passed as \ttt{vals}. Note that this must be a variadic method. Do not create a series of \ttt{PQueue} objects by enqueueing each element into a distinct queue; this is incredibly inefficient. Instead, allocate each \ttt{Node} one-by-one, thereby never calling \ttt{enqueue}.
     \item Design the \ttt{int size()} method that returns the number of elements in the queue. You should not traverse the queue to compute this value. 
 \end{enumerate}
+
+\exercise{3}{chapter-classes}{This exercise has three parts.}
+
+A \textit{deterministic finite state automaton} is an extremely primitive machine that represents transitions between the different states of a system. Think, as an example, of a light switch; there is an ``OFF'' state and an ``ON'' state, where flipping the switch flops between the two. The switch flip represents the input that causes a transition from one state to another. Programming languages most often use finite automata for character recognition, i.e., what characters are valid in the language grammar. The following is an example of a DFA diagram that accepts input strings that contain an odd number of \ttt{'a'} characters from an input alphabet $\Sigma = \{a, b\}$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, begin by designing the skeleton for the \ttt{DFA} class, which contains the following private and static class definitions:
+    \begin{itemize}
+        \item \ttt{State}, which stores a string identifier, an \ttt{"isStart"} boolean flag and an \ttt{"isFinal"} flag. The class should contain appropriate accessors but no mutators.
+        \item \ttt{Transition}, which stores two \ttt{State} objects $a$ and $b$ representing the ``from'' and ``to'', as well as the required input to transition from $a$ to $b$. 
+    \end{itemize}
+    \item The \ttt{DFA} constructor should be empty, and the class definition should store a \ttt{Set<Transition>} as well as a \ttt{Set<State>}. 
+    \item Design the \ttt{void addState(State s)} method, which adds a new \ttt{State} to the finite automaton.
+    \item Design the \ttt{State transition(State s, String i)} method, which returns the state arrived after making the transition from $s$ via input $i$.
+    \item Finally, design the \ttt{boolean accepts(String v)} method, which receives an input string $v$ and traverses over the automaton to determine if it accepts or rejects the input. We accept $v$ if the last state we end on is marked as a final state.
+\end{enumerate}

@@ -260,7 +260,7 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> set(LinkedList<Integer> l, int v, int i)} method that, when given a \ttt{LinkedList<Integer>} $l$, an \ttt{int} $v$, and an index $i$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index $i$ is, instead, the value $v$. If $i$ is less than zero or exceeds the length of $l$, return \ttt{null}.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] toArray(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns an array containing the values from $l$.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] toArray(LinkedList<Integer> l)} method, which receives a linked list of integers $l$, returns an array containing the values from $l$.}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> reverse(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns a \textit{new} linked list containing the elements of $l$, but reversed.}
 
@@ -268,9 +268,9 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> collectComments(String s)} method that, when given a string representing a (valid) Java program, returns an list containing all comments from the input program string. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> removeSideBySideDups(List<String> ls)} that, when given a list of strings, returns a new list where all side-by-side duplicates are removed.}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> removeSideBySideDups(List<String> ls)} that receives a list of strings, returns a new list where all side-by-side duplicates are removed.}
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{boolean isPalindromeList(LinkedList<Integer> ls)} method that, when given a linked list of integers, determines if it is a palindrome list. You cannot use \ttt{.get} to solve the problem, nor can you use a \ttt{for} loop. Think about how you can use a \ttt{while} loop, an \ttt{Iterator}, and a \ttt{Stack} to do this.}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{boolean isPalindromeList(LinkedList<Integer> ls)} method, which receives a linked list of integers, determines if it is a palindrome list. You cannot use \ttt{.get} to solve the problem, nor can you use a \ttt{for} loop. Think about how you can use a \ttt{while} loop, an \ttt{Iterator}, and a \ttt{Stack} to do this.}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{double postfixEvaluator(List<String> l)} method that, when given a list of binary operators and numeric operands represents as strings, returns the result of evaluating the postfix-notation expression. You will need to write a few helper methods to solve this problem, and it is best to break it down into steps. First, write a method that determines if a given string is one of the four binary operators: \ttt{"+"}, \ttt{"-"}, \ttt{"*"}, or \ttt{"/"}. You may assume that any inputs that are not binary operators are operands, i.e., numbers. Then, write a method that applies a given binary operator to a list of operands, i.e., an \ttt{ArrayList<Double>}.}
 
@@ -327,14 +327,14 @@ unifiesAll(M4, G4) => false
 
 \exercise{3}{chapter-arrays-collections}{Two strings $s_1$ and $s_2$ are isomorphic if we can create a mapping from $s_1$ from $s_2$. For example, the strings \ttt{"DCBA"} and \ttt{"ZYXW"} are isomorphic because we can map $D$ to $Z$, $C$ to $Y$, and so forth. Another example is \ttt{"ABACAB"} and \ttt{"XYXZXY"} for similar reasons. A non-example is \ttt{"PROXY"} and \ttt{"ALPHA"}, because once we map \ttt{"A"} to \ttt{"P"}, we cannot create a map between \ttt{"A"} and \ttt{"Y"}. Design the \ttt{boolean isIsomorphic(String s1, String s2)} method, which determines whether or not two strings are isomorphic. }
 
-\exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Design the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> ls)} method, which maps all alphabetized anagrams to the strings in $\textit{ls}$ using the above criteria.}
+\exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Design the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> los)} method, which maps all alphabetized anagrams to the strings in $\textit{ls}$ using the above criteria.}
     
 \begin{verbnobox}[\small]
-ls = ["presorting", "plea", "introduces", "anger", "leap", "petals",
-      "donate", "plates", "range", "reductions", "rediscount", 
-      "tapers", "pale", "atoned", "staple", "repast", "reportings"]
+los = ["presorting", "plea", "introduces", "anger", "leap", "petals",
+       "donate", "plates", "range", "reductions", "rediscount", 
+       "tapers", "pale", "atoned", "staple", "repast", "reportings"]
       
-alphaAnagramGroups(ls) 
+alphaAnagramGroups(los) 
   => {{"aegnr", ["anger", "range"]}, 
       {"aelp", ["plea", "leap", "pale"]}, 
       {"aelpst", ["petals", "plates", "staple"]}, 
@@ -345,7 +345,7 @@ alphaAnagramGroups(ls)
     
 \end{verbnobox}
 
-\exercise{3}{chapter-arrays-collections}{A SLC (simplified lambda calculus) expression takes one of the two forms: $\mathit{varList}$ or $\lambda{\mathit{var}}.\mathit{expr}$, where $\mathit{var}$ is a lower-case letter from $u$ to $z$, $\mathit{varList}$ is a sequence of variables, and $\mathit{expr}$ is either a $\mathit{var}$ or another SLC expression. We provide some examples below.}
+\exercise{2}{chapter-arrays-collections}{A SLC (simplified lambda calculus) expression takes one of the two forms: $\mathit{varList}$ or $\lambda{\mathit{var}}.\mathit{E}$, where $\mathit{var}$ is a lower-case letter from `$u$' to `$z$', $\mathit{varList}$ is a sequence of variables, and $\mathit{E}$ is either a $\mathit{var}$ or another SLC expression. We provide some examples below.}
 
 \begin{align*}
   & \lambda{}x.\lambda{y}.xyz\\
@@ -356,13 +356,13 @@ alphaAnagramGroups(ls)
 
 Your job is to determine which variables are bound, which are free, and which are neither.
 
-A bound variable is a variable that is bound by a $\lambda$ and occurs in its expression. For example, in the expression $\lambda{x}.x$, $x$ is bound.
+A bound variable is a variable that is bound by a $\lambda$ and occurs in its expression. For example, in the expression $\lambda{x}.x$, `$x$' is bound.
 
-A free variable is a variable that is \textit{not} bound by a $\lambda$ but does occur in an expression. For example, in the expression $\lambda{y}.\lambda{x}.zwv$, $z$, $w$, and $v$ are free variables.
+A free variable is a variable that is \textit{not} bound by a $\lambda$ but does occur in an expression. For example, in the expression $\lambda{y}.\lambda{x}.zwv$, `$z$', `$w$', and `$v$' are free variables.
 
-A variable that is neither free nor bound is a variable that is bound by a $\lambda$ but does not occur in its expression. For example, in the expression $\lambda{}x.\lambda{}y.yz$, $x$ is neither free nor bound.
+A variable that is neither free nor bound is a variable that is bound by a $\lambda$ but does not occur in its expression. For example, in the expression $\lambda{}x.\lambda{}y.yz$, `$x$' is neither free nor bound.
 
-Write the \ttt{static HashMap<String, String> classifyVars(String expr)} method, which returns a map of variables to their classification. We provide some examples below. You may assume that the input is a valid SLC expression and that no variables shadow one another. Use the values \ttt{V}, \ttt{B}, and \ttt{N} to represent free, bound, and neither, respectively.
+Design the \ttt{static HashMap<String, String> classifyVars(String E)} method, which returns a map of variables to their classification. We provide some examples below. You may assume that the input is a valid SLC expression and that no variables shadow one another. Use the values \ttt{V}, \ttt{B}, and \ttt{N} to represent free, bound, and neither, respectively.
 \begin{alltt}
 classifyVars("xyz")       => {<"x" : "F">, <"y" : "F">, <"z" : "F">}
 classifyVars("\(\lambda\)x.\(\lambda\)y.xyz") => {<"x" : "B">, <"y" : "B">, <"z" : "F">}
@@ -373,25 +373,25 @@ classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
 
 Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet string $A$, a cipher-text string $K$, and a string $s$ to encode, \ttt{substitutionCipher} should return a string $s'$ using the aforementioned substitution cipher algorithm. You must follow the ``design recipe'' laid out in class. That is, you must write the method purpose statement comment, tests, and the implementation.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{int sumOdd(List<Integer> l)} that, when given a \ttt{List<Integer>} $l$, filters out even numbers and then calculates the sum of the remaining odd numbers.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{int sumOdd(List<Integer> l)} that, when given a  list of integers, filters out even numbers and then calculates the sum of the remaining odd numbers. You must use the Stream API.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{String conjoin(List<String> l)} method that, when given a \ttt{List<String>} $l$, concatenates all the strings together into a single string, separated by a comma.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{String conjoin(List<String> los)} method that, when given a list of strings, concatenates all the strings together into a single string, separated by a comma. You must use the Stream API.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{Map<String, Integer> groupLength(List<String> l)} that, when given a \ttt{List<String>} $l$, groups the words by their length and counts how many words are there for each length. This means that the return value should be a \ttt{Map<String, Integer>}. There are a couple of ways to do this, and any way that correctly utilizes the Stream API is fine.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{Map<String, Integer> groupLength(List<String> los)} that, when given a list of strings, groups the words by their length and counts how many words are there for each length. This means that the return value should be a \ttt{Map<String, Integer>}. There are a couple of ways to do this, and any way that correctly utilizes the Stream API is fine.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<String> addYRemoveYY(List<String> l)} that, when given a \ttt{List<String>} $l$, returns a list where each string has \ttt{"y"} added at its end, omitting any resulting strings that contain \ttt{"yy"} as a substring anywhere.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{List<String> addYRemoveYY(List<String> los)} that, when given a list of strings, returns a list where each string has \ttt{"y"} added at its end, omitting any resulting strings that contain \ttt{"yy"} as a substring anywhere. You must use the Stream API.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<Integer> squareAddFiveOmit(List<Integer> l)} that, when given a \ttt{List<Integer>} $l$, returns a list of those numbers squared and adds five to the result, omitting any of the resulting numbers that end in $5$ or $6$.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{List<Integer> sqAddFiveOmit(List<Integer> lon)} that, when given a list of numbers, returns a list of those numbers squared and adds five to the result, omitting any of the resulting numbers that end in $5$ or $6$. You must use the Stream API.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<Integer> removeDups(List<Integer> l)} method that, when given a \ttt{List<Integer>} $l$, removes all duplicate integers. Return this result as a new list.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{List<Integer> remvDups(List<Integer> lon)} method, which receives a list of integers, removes all duplicate integers. Return this result as a new list. You must use the Stream API.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<String> removeLongerThan(List<String> l, int n)} method that, when given a \ttt{List<String>} $l$, removes all strings that are longer than a given integer $n$. Return this result as a new list.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{List<String> removeLongerThan(List<String> los, int n)} method, which receives a list of strings, then removes all strings that contain more characters than a given integer~$n$. Return this result as a new list. You must use the Stream API.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{List<Double> filterThenSquare(List<Double> l)} method that, when given a \ttt{List<Double>} $l$, removes all odd values, and squares the remaining values. Return this result as a new list.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{List<Double> filterThenSquare(List<Double> lon)} method, which receives a list of doubles, removes all odd values, and squares the remaining values. Return this result as a new list. You must use the Stream API.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{double filterDoubleAvg(List<Integer> l)} method that, when given a \ttt{List\-<Integer>} $l$, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a \ttt{double} value.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{double filterDoubleAvg(List<Integer> lon)} method that, when given a list of integers, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a \ttt{double} value. You must use the Stream API.}
 
-\exercise{1}{chapter-arrays-collections}{Using the Stream API, design the \ttt{Optional<Integer> min(List<Integer> l)} method that, when given a \ttt{List<Integer>} $l$, returns the minimum value in the list. Return this result as an \ttt{Optional<Integer>}. If there are no values in $l$, return \ttt{Optional.empty()}.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{Optional<Integer> min(List<Integer> lon)} method that, when given a list of integers, returns the minimum value in the list as an \ttt{Optional<Integer>}. If there are no values in the given list, return \ttt{Optional.empty()}. You must use the Stream API.}
 
 \exercise{1}{chapter-arrays-collections}{Design the generic \ttt{<K, V> V lookup(Map<K, V> m)} method that, when given an \ttt{Map<K, V>} $m$ and a value $k$ of type \ttt{K}, returns the corresponding value (of type \ttt{V}) associated with the key $k$. If the key does not exist, return \ttt{null}. You will need to use the \ttt{.equals} method.}
 
