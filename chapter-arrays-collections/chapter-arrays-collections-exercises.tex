@@ -83,6 +83,27 @@ largestSpan(new int[]{1, 2, 3, 4, 5})             => 1
 largestSpan(new int[]{5, 4, 4, 4, 3, 4, 1, 4, 1}) => 7
 \end{verbnobox} 
 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{String[][] computeBowlingScores(String[] S, int[][][] scores)} method that ocmputes the bowling score for each player name in $S$. The scores are separated by rows, where the $i^\text{th}$ row corresponds to the $i^\text{th}$ name in $S$. Each row contains ten arrays of 3-element arrays. These triples, as we will call them, correspond to a bowling frame. The first nine frames only use the first two slots of the triple, whereas the last may use all three.}
+
+To compute the score of a player, there are a few rules. Note that, in bowling, the objective is to knock down all ten pins.
+
+For frames 1 to 9:
+\begin{itemize}
+    \item If the player scores a strike, meaning they hit all ten pins with one throw, it is worth ten points plus the sum of the next two frames, if they exist.
+    \item If the player scores a spare, meaning they hit all ten points with exactly two throws, it is worth ten points, plus the sum of the next frame, if it exists.
+    \item If the player does not score a strike nor a spare, they earn as many points as pins knocked down.
+\end{itemize}
+
+For frame 10:
+\begin{itemize}
+    \item If the player scores a strike on the first throw, they get two more attempts.
+    \item If the player scores a spare resulting from the first two throws, they get one more attempt.
+    \item If the player does not score a strike nor a spare from the first two shots, they earn as many points as pins knocked down.
+\end{itemize}
+
+The resulting array contains $n$ rows to represent $n$ players, where the first element of a row is the player name alpabetized, and the second is their score.
+
+
 \exercise{2}{chapter-arrays-collections}{We can represent matrices as two-dimensional arrays. For example, the matrix}
 
 \[
@@ -249,11 +270,13 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> removeSideBySideDups(List<String> ls)} that, when given a list of strings, returns a new list where all side-by-side duplicates are removed.}
 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{boolean isPalindromeList(LinkedList<Integer> ls)} method that, when given a linked list of integers, determines if it is a palindrome list. You cannot use \ttt{.get} to solve the problem, nor can you use a \ttt{for} loop. Think about how you can use a \ttt{while} loop, an \ttt{Iterator}, and a \ttt{Stack} to do this.}
+
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{double postfixEvaluator(List<String> l)} method that, when given a list of binary operators and numeric operands represents as strings, returns the result of evaluating the postfix-notation expression. You will need to write a few helper methods to solve this problem, and it is best to break it down into steps. First, write a method that determines if a given string is one of the four binary operators: \ttt{"+"}, \ttt{"-"}, \ttt{"*"}, or \ttt{"/"}. You may assume that any inputs that are not binary operators are operands, i.e., numbers. Then, write a method that applies a given binary operator to a list of operands, i.e., an \ttt{ArrayList<Double>}.}
 
 \begin{verbnobox}[\small]
-postfixEvaluator({"5", "2", "*", "5", "+"}) => 17
-postfixEvaluator({"1", "2", "3", "4", "+"}) => 10
+postfixEvaluator({"5", "2", "*", "5", "+", "2", "+"}) => 17
+postfixEvaluator({"1", "2", "3", "4", "+", "+", "+"}) => 10
 \end{verbnobox}
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{List<List<String>> displayOrders(List<List<String>> orderInfo)} method that, when given an array of orders, returns a series of order specifications by customer table.}
