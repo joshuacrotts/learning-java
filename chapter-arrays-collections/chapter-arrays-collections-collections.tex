@@ -266,7 +266,7 @@ static void incrementList(ArrayList<Integer> ls, int idx) {
 }
 \end{verbnobox}
 
-If we then pass a variable to the \ttt{incrementInt} method, we might expect the resulting value, outside of the method, to also be incremented. Unfortunately, that is not what happens--in the following code segment, we see that the primitive variable \ttt{y} remains unchanged outside of the method invocation. This happens because primitive values are \textit{passed by value}. In essence, methods receive a copy of the value, which means that the original variable is not modified, and the change made inside the scope of \ttt{incrementInt} is rendered useless. Compare this to what happens if we pass an \ttt{ArrayList<Integer>} to \ttt{incrementList}: we see that the change occurs both inside and outside the scope of the method body. Objects, e.g., \ttt{String}, \ttt{ArrayList}, arrays, and so forth, when supplied as arguments to methods, are passed by a paradigm that we will call \textit{pseudo-reference}.\footnote{The emphasis on calling this ``pseudo-reference'' is to provide an intuition for those readers who may know about true pass-by-reference, while satisfying those who want to angrily shout that Java is strictly pass-by-value.} Passing by pseudo-reference means to suggest that we are not truly passing the argument by reference, and this is correct. Objects in Java are still passed by value, but instead of creating a copy of the object, the object's corresponding hashcode is supplied to the method, which is roughly equivalent to a memory reference.\footnote{In Chapter~\ref{chapter-classes}, we will discuss object hashcodes in greater detail.} Therefore, any changes made to the value inside the method are reflected outside.
+If we then pass a variable to the \ttt{incrementInt} method, we might expect the resulting value, outside of the method, to also be incremented. Unfortunately, that is not what happens--in the following code segment, we see that the primitive variable \ttt{y} remains unchanged outside of the method invocation. This happens because primitive values are \textit{passed by value}. In essence, methods receive a copy of the value, which means that the original variable is not modified, and the change made inside the scope of \ttt{incrementInt} is rendered useless. Compare this to what happens if we pass an \ttt{ArrayList<Integer>} to \ttt{incrementList}: we see that the change occurs both inside and outside the scope of the method body. Objects, e.g., \ttt{String}, \ttt{ArrayList}, arrays, and so forth, when supplied as arguments to methods, are passed by a paradigm that we will call \textit{pseudo-reference}.\footnote{The emphasis on calling this ``pseudo-reference'' is to provide an intuition for those readers who may know about true pass-by-reference, while satisfying those who want to angrily shout that Java is strictly pass-by-value.} Passing by pseudo-reference means to suggest that we are not truly passing the argument by reference, and this is correct. Objects in Java are still passed by value, but instead of creating a copy of the object, the method receives an object reference value, which points to the location in memory where the object is allocated. Therefore, any changes made to the value inside the method are reflected outside.
 
 \begin{verbnobox}[\small]
 int y = 5;
@@ -676,12 +676,15 @@ Why is this what the priority queue outputs? If we reason about this with our co
 A \textit{Set} in Java is an interface rather than a class. This is because Java has a hierarchy for differing implementations of sets. We will discuss three: \textit{HashSet}, \textit{TreeSet}, and \textit{LinkedHashSet}. While all three disallow duplicate elements, the latter two impose an ordering on their elements, which goes against the standard mathematical definition, but for practical reasons.
 
 \subsubsection*{\ttt{HashSet} Class}
-The \textit{HashSet} implementation of sets determines existence of objects in the set by the \textit{hashcode} of the object. Recall that we can think of hashcodes as an association for objects. In fact, in our discussion on strings and arrays, a comparison using \ttt{==} compares the hashcodes of the objects to see if they are identical, rather than containing the same content.
- Hash sets are convenient and fast to work with due to the underlying implementation, whose details are beyond the scope of this text. Use hash sets when you do not care about element ordering or ``position'' in the set, but want to ensure no duplicates exist.
+In the implementation of a \ttt{HashSet}, the existence of objects in the set is primarily determined by the \ttt{hashCode()} method of the objects, which computes their hash codes. These hash codes are used to decide in which 'bucket' within the hash table an object should be placed. It's important, though, to note that hash codes are not used for comparing the equality of the content of objects. Unlike the \ttt{==} operator, which checks if two references point to the same object in memory, the respective \ttt{equals()} method is used to compare the actual content of the objects. When adding an object to a \ttt{HashSet}, if the hash code of the object matches the hash code of any existing object in the corresponding bucket, the equals() method is then used to check for actual content equality to ensure that no duplicate objects (in terms of content) are added to the set. In other words, two objects that are equal in terms of \ttt{equals()} must have the same hashcode, but the converse is not necessarily true. Anything more than these details goes beyond the scope of this textbook, but we will provide a small synopsis of hashable data structures.
+
+A hashable data structure most often comes with a hash table, which is similar to an array, where elements are stored. Hashable data structures are known for their fast lookup times thanks to something called a \textit{hash function}, which is a mathematical function used to compute the location to store a value in a hash table. Consider a hash function $H(v)$, whose range is the set of integers $[0, n)$ where $n$ is the number of elements of the hash table. Running $v$ (which is some arbitrary value to insert) through the hash function $H$ returns an index of the hash table. Evaluating $H$ is, in optimal conditions, a constant-time algorithm, hence determining if a value exists in such a data structure is also constant-time. This begs the question of what happens if there exists an output of $H$ such that $H(v') = H(v)$ for distinct inputs $v, v'$. In subsequent computer science courses, students learn how to resolve these conflicts that are called \textit{hash collisions}, through approaches such as linear and quadratic probling, as well as chaining. The previous paragraph briefly discussed this through the `buckets' analogy and \ttt{equals}, but e will ignore such complexities and use hashable data structures at face value.  
+
+Use hashsets when you do not care about element ordering or ``position'' in the set, but want to ensure no duplicates exist.
 \begin{figure}[tp]
   \small
-  \begin{tcolorbox}[title=Java Hash Sets]
-    A \textit{HashSet} is a set of non-duplicate elements with no defined ordering. Elements are inserted into the set by their hashcode.
+  \begin{tcolorbox}[title=Java Sets]
+    A \textit{Set} is a data structure of non-duplicate elements, with \ttt{HashSet} being the most common implementation/usage of sets.
     \vspace{2ex}
   \begin{description}
     \item [\ttt{Set<$T$> $S=$ new HashSet<>()}] creates a \ttt{HashSet} of type $T$, named $S$.
@@ -691,15 +694,15 @@ The \textit{HashSet} implementation of sets determines existence of objects in t
     \item [\ttt{$S$.size$()$}] returns the number of logical elements in the set.
   \end{description}
 \end{tcolorbox}
-  \caption{Useful \ttt{HashSet}-based Methods.}
+  \caption{Useful \ttt{Sets}-based Methods.}
   \label{fig:hashsets}
 \end{figure}
 
 \subsubsection*{\ttt{TreeSet} Class}
-A \textit{TreeSet} is a set with a determined order, either by a natural ordering or that defined by a \ttt{Comparator}, like a priority queue. All methods in a \ttt{Set} are implemented by a \ttt{TreeSet}. Those listed from the \ttt{HashSet} figure are also implemented.
+A \textit{TreeSet} is a set with a determined order, either by a natural ordering or that defined by a \ttt{Comparator}, like a priority queue. All methods in a \ttt{Set} are definitionally implemented by a \ttt{TreeSet}.
 
 \subsubsection*{\ttt{LinkedHashSet} Class}
-A \textit{LinkedHashSet} is a set with an ordering based on the insertion order of the elements. All methods in a \ttt{Set} are implemented by a \ttt{LinkedHashSet}. Those listed from the \ttt{HashSet} figure are also implemented.
+A \textit{LinkedHashSet} is a set with an ordering based on the insertion order of the elements. All methods in a \ttt{Set} are definitionally implemented by a \ttt{LinkedHashSet}.
 
 \subsection*{Dictionary-Based Data Structures}
 Dictionaries maps elements from one type $K$ to elements of another type $V$. These types $K$ and $V$ do not necessarily need to be distinct. 
@@ -708,11 +711,11 @@ Dictionaries maps elements from one type $K$ to elements of another type $V$. Th
 Java has an interface called \ttt{Map} rather than a class because, like sets, there is a hierarchy for differing implementations of maps. We will discuss three: \textit{HashMap}, \textit{TreeMap}, and \textit{LinkedHashMap}. Maps contain keys and values; the keys are mapped to values in the map. Additionally, maps cannot contain duplicate keys.
 
 \subsubsection*{\ttt{HashMap} Class}
-\textit{HashMaps} base existence of keys in the map by their hashcode, identical to a HashSet. 
+\textit{HashMaps} base existence of keys in the map by their hashcode and a hashtable, identical to a hashset. For a greater detail of how hashable data structures work, please refer to that subsection.
 \begin{figure}[tp]
   \small
-  \begin{tcolorbox}[title=Java Hash Maps]
-    A \textit{HashMap} is a dictionary-based data structure wherein we map \textit{keys} to \textit{values}. The position of these pairs in the map is according to the hashcode of the key.
+  \begin{tcolorbox}[title=Java Maps]
+    A \textit{Map} is a dictionary-based data structure wherein we map \textit{keys} to \textit{values}, with \ttt{HashMap} being the most common implementation/usage of maps.
     \vspace{2ex}
   \begin{description}
     \item [\ttt{Map<$K, V$> $M=$ new HashMap<>()}] creates a \ttt{HashMap} named $M$ whose keys are of type $K$ and whose values are of type $V$. Namely, the keys map to the values.
@@ -727,10 +730,10 @@ Java has an interface called \ttt{Map} rather than a class because, like sets, t
 \end{figure}
 
 \subsection*{\ttt{TreeMap} Class}
-A \textit{TreeMap} is a map with a determined order, either by a natural ordering of the keys or that defined by a comparator. All method sin a \texttt{Map} are implemented by a \texttt{TreeMap}.
+A \textit{TreeMap} is a map with a determined order, either by a natural ordering of the keys or that defined by a comparator. All methods in \texttt{Map} are definitionally implemented by a \texttt{TreeMap}.
 
 \subsection*{\ttt{LinkedHashMap} Class}
-A \textit{LinkedHashMap} is a map with an ordering based on the insertion order of the key/value pairs. All methods in a \ttt{Map} are implemented by a \ttt{LinkedHashMap}. Those listed from the \ttt{HashMap} figure are also implemented.
+A \textit{LinkedHashMap} is a map with an ordering based on the insertion order of the key/value pairs. All methods in a \ttt{Map} are definitionally implemented by a \ttt{LinkedHashMap}.
 
 \section*{Iterators}
 We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
