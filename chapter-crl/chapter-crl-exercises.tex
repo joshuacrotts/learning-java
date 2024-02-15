@@ -385,6 +385,15 @@ atoi("8080*8080)       => 8080
 
 \exercise{2}{chapter-crl}{Design the \ttt{int compareTo(String s1, String s2)} method that receives two strings $s_1$ and $s_2$, and compares their contents lexicographically. If \ttt{s1} is less than \ttt{s2}, return \ttt{-1}. If \ttt{s1} is greater than \ttt{s2}, return \ttt{1}. Otherwise, return \ttt{0}. Note that our implementation of \ttt{compareTo} will differ from Java's in that, if \ttt{s1} has less characters than \ttt{s2}, we return \ttt{-1}; if \ttt{s2} has less characters than \ttt{s1}, we return \ttt{1}. Otherwise, we do the character-by-character comparison.}
 
+\exercise{2}{chapter-crl}{File names are often compared lexicographically. For example, a file with name \ttt{"File12.txt"} is greater than \ttt{"File1.txt"} because \ttt{'.'} is less than \ttt{'2'}. Design the \ttt{int compareFiles(String f1, String f2)} method that would fix this ordering to return the more sensible ordering. That is, if a file has a prefix and a suffix, where the only differing piece is the number, then make the file with the lower number return a negative number. Take the following examples as motivation.}
+
+\begin{verbnobox}[\small]
+compareFiles("File12.txt", "File1.txt")  => 1
+compareFiles("File10.txt", "File11.txt") => -1
+compareFiles("File1.txt", "File12.txt")  => -1
+compareFiles("File1.txt", "File1.txt")   => 0
+\end{verbnobox}
+
 \exercise{2}{chapter-crl}{Design the \ttt{String trim(String s)} method, which receives a string $s$ and a character \ttt{ch}, and returns a string with all leading and trailing occurrences of \ttt{ch} removed. For instance, \ttt{trim("aaHelloa", \textquotesingle{}a\textquotesingle)} returns \ttt{"Hello"}. Hint: while you cannot use Java's \ttt{substring} method, you can certainly use the one you wrote previously to solve this problem!}
 
 \exercise{1}{chapter-crl}{Design the \ttt{String trimSpace(String s)} method, which receives a string \ttt{s} and returns a new string with all leading and trailing spaces removed. You cannot use the \ttt{trim} method provided by the \ttt{String} class.}
