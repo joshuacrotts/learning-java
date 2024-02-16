@@ -494,10 +494,10 @@ class RookPathTester {
   @Test
   void testRookPath() {
     assertAll(
-      () -> assertEquals(1, rook(0, 0, 1, 1)),
-      () -> assertEquals(2, rook(0, 0, 2, 2)),
-      () -> assertEquals(6, rook(0, 0, 3, 3)),
-      () -> assertEquals(10, rook(0, 0, 4, 4)));
+      () -> assertEquals(2, rook(0, 0, 1, 1)),
+      () -> assertEquals(6, rook(0, 0, 2, 2)),
+      () -> assertEquals(10, rook(0, 0, 2, 3)),
+      () -> assertEquals(70, rook(0, 0, 4, 4)));
   }
 }
 \end{lstlisting}
@@ -549,10 +549,10 @@ class RookPathTester {
   @Test
   void testRookPathDP() {
     assertAll(
-      () -> assertEquals(1, RookPath.rook(2, 3, 2, 3)),
-      () -> assertEquals(2, RookPath.rook(1, 2, 2, 3)),
-      () -> assertEquals(6, RookPath.rook(0, 1, 2, 3)),
-      () -> assertEquals(10, RookPath.rook(0, 0, 2, 3)));
+      () -> assertEquals(2, rookDp(0, 0, 1, 1)),
+      () -> assertEquals(6, rookDp(0, 0, 2, 2)),
+      () -> assertEquals(10, rookDp(0, 0, 2, 3)),
+      () -> assertEquals(70, rookDp(0, 0, 4, 4)));
   }
 }
 \end{lstlisting}
@@ -572,7 +572,7 @@ class RookPath {
    * @param m number of columns of the board.
    * @return number of possible paths.
    */
-  static int rook(int x, int y, int n, int m) {
+  static int rookDp(int x, int y, int n, int m) {
     int[][] dp = new int[n + 1][m + 1];
 
     // Compose the initial bottom-row solutions.
