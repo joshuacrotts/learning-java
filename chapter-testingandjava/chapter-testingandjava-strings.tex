@@ -15,6 +15,29 @@ class NewStringTests {
 \end{lstlisting}
 \end{cl}
 
+\begin{figure}[tp]
+  %\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
+    \small
+    \begin{tcolorbox}[title=String Class]
+      A \textit{string}\index{string} is an immutable sequence of characters. Strings are indexed from $0$ to $|S|-1$, where $|S|$ is the number of characters of $S$.
+      \vspace{2ex}
+    \begin{description}
+      \item[\ttt{$S_1$ + $S_2$}] adds the characters from $S_2$ onto the end of $S_1$, producing a new string.
+      \item[\ttt{int $S$.length()}] returns the number of characters in $S$.
+      \item[\ttt{char $S$.charAt($i$)}] retrieves the $(i + 1)^\text{th}$ character in $S$. We can also say that this retrieves the character at index $i$ of $S$.
+      \item[\ttt{String $S$.substring($i$, $j$)}] returns a new string containing the characters from index $i$, inclusive, to index $j$, exclusive. The number of extracted characters is $j - i$. We will use the notation $S' \sqsubseteq S$ to denote that $S'$ is a substring of $S$.
+      \item[\ttt{String $S$.substring($i$)}] returns a new string from index $i$ to the end of $S$.
+      \item[\ttt{int $S$.indexOf($S'$)}] returns the index of the first instance of $S'$ in $S$, or $-1$ if $S' \not\sqsubseteq S$.
+      \item[\ttt{boolean $S$.contains($S'$)}] returns \ttt{true} if $S' \sqsubseteq S$; \ttt{false} otherwise.
+      \item[\ttt{String $S$.repeat($n$)}] returns a new string containing $n$ copies of $S$.
+      \item[\ttt{String String.valueOf($v$)}] returns a stringified version of $v$, where $v$ is some primitive value.
+      \item[\ttt{int Integer.parseInt($S$)}] returns the integer representation of a string $S$, if it can be parsed as such.
+    \end{description}
+  \end{tcolorbox}
+    \caption{Useful String Methods.}
+    \label{fig:strings}
+  \end{figure}
+
 We can conjoin, or \textit{concatenate}\index{concatenation}, strings together with the \ttt{+} operator. Concatenating one string $s_2$ onto the end of another string $s_1$ creates a new string $s_3$, copies the characters from $s_1$ as well as the characters from $s_2$, in that order. 
 
 To retrieve the number of characters in a string, invoke \ttt{.length} on the string. Note that the empty string has length zero, and spaces count towards the length of a string, since spaces are characters. For instance, the length of \ttt{"  a  "} is five because there are two spaces, followed by a lowercase `\ttt{a}', followed by two more spaces.
@@ -109,25 +132,24 @@ int n1 = Integer.parseInt(s1);
 double s2 = Double.parseDouble(s2);
 \end{verbnobox}
 
-\begin{figure}[tp]
-%\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
-  \small
-  \begin{tcolorbox}[title=String Class]
-    A \textit{string}\index{string} is an immutable sequence of characters. Strings are indexed from $0$ to $|S|-1$, where $|S|$ is the number of characters of $S$.
-    \vspace{2ex}
-  \begin{description}
-    \item[\ttt{$S_1$ + $S_2$}] adds the characters from $S_2$ onto the end of $S_1$, producing a new string.
-    \item[\ttt{int $S$.length()}] returns the number of characters in $S$.
-    \item[\ttt{char $S$.charAt($i$)}] retrieves the $(i + 1)^\text{th}$ character in $S$. We can also say that this retrieves the character at index $i$ of $S$.
-    \item[\ttt{String $S$.substring($i$, $j$)}] returns a new string containing the characters from index $i$, inclusive, to index $j$, exclusive. The number of extracted characters is $j - i$. We will use the notation $S' \sqsubseteq S$ to denote that $S'$ is a substring of $S$.
-    \item[\ttt{String $S$.substring($i$)}] returns a new string from index $i$ to the end of $S$.
-    \item[\ttt{int $S$.indexOf($S'$)}] returns the index of the first instance of $S'$ in $S$, or $-1$ if $S' \not\sqsubseteq S$.
-    \item[\ttt{boolean $S$.contains($S'$)}] returns \ttt{true} if $S' \sqsubseteq S$; \ttt{false} otherwise.
-    \item[\ttt{String $S$.repeat($n$)}] returns a new string containing $n$ copies of $S$.
-    \item[\ttt{String String.valueOf($v$)}] returns a stringified version of $v$, where $v$ is some primitive value.
-    \item[\ttt{int Integer.parseInt($S$)}] returns the integer representation of a string $S$, if it can be parsed as such.
-  \end{description}
-\end{tcolorbox}
-  \caption{Useful String Methods.}
-  \label{fig:strings}
-\end{figure}
+\subsection*{Quick Check Questions}
+\begin{enumerate}[label=(\arabic*)]
+  \item \mcq{What is the correct way to declare a string in Java?}{\texttt{char s = 'Hello'},\texttt{String s = 'Hello'},\texttt{String s = "Hello"},\texttt{char[] s = "Hello"}}
+
+  \item \mcq{How do you concatenate two strings in Java?}{Using the \texttt{conjoin()} method,Using the \texttt{+} operator,Using the \texttt{append()} method,Using the \texttt{++} operator}
+  \item \mcq{How can you compare two strings for content character equality in Java?}{Using the \texttt{==} operator,Using the \texttt{equals()} method,Using the \texttt{compare()} method,Using the \texttt{compareTo()} method}
+
+  \item \mcq{What does the \texttt{length()} method of a String return?}{The size in bytes of the string,The number of characters in the string,The number of bytes in the string,The capacity of the string buffer}
+
+  \item \mcq{What is the result of using \texttt{new String("hello") == new String("hello")}?}{\texttt{true}, because the contents of the strings are the same,\texttt{false}, because they are two different objects in memory,\texttt{true}, because of string interning,\texttt{false}, because the \texttt{==} operator checks for value equality}
+
+  \item \mcq{What does the \texttt{charAt(int index)} method of a String do?}{Returns the character at the specified index, starting from 1,Returns the ASCII value of the character at the specified index,Returns the character at the specified index, starting from 0,Changes the character at the specified index}
+
+  \item \mcq{How does the \texttt{substring(int beginIndex, int endIndex)} method work in Java?}{It returns a new string that starts from \texttt{beginIndex} and ends at \texttt{endIndex}, inclusive,It returns a new string that starts from \texttt{beginIndex} and ends at \texttt{endIndex}, exclusive,It modifies the original string to contain only the specified range of characters,It throws an exception if \texttt{endIndex} is less than \texttt{beginIndex}}
+
+  \item \mcq{What is the return type of the \texttt{indexOf(String str)} method when the specified string is not found?}{\texttt{null},\texttt{0},An empty string,\texttt{-1}}
+
+  \item \mcq{What is the purpose of the \texttt{String.valueOf(int value)} method?}{To convert an integer value to its corresponding ASCII character string,To find the string representation of the integer value in a string array,To convert an integer value to its string representation,To parse an integer value from a string}
+
+  \item \mcq{What exception is thrown when an invalid string is passed to the \texttt{Integer.parseInt(String s)} method?}{\texttt{IllegalArgumentException},\texttt{InputMismatchException},\texttt{NumberFormatException},\texttt{ParseException}}
+\end{enumerate}

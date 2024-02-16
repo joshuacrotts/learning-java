@@ -191,3 +191,29 @@ Admittedly, the above test is somewhat useless since it only tests the efficacy 
 \begin{verbnobox}[\small]
 int x = ((int) (Math.random() * 21)) - 5;
 \end{verbnobox}
+
+\subsection*{Quick Check Questions}
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \mcq{Which class in Java is commonly used for accessing the standard output stream?}{\texttt{System.out},\texttt{System.err},\texttt{OutputStream},\texttt{System.in}}
+
+  \item \mcq{What is the purpose of the \texttt{System.err} stream in Java?}{To read input from the console,To write output to the console,To handle exceptions in the program,To write error messages and logs}
+
+  \item \mcq{Which method is used in Java to format and print output to the standard output stream?}{\texttt{print()},\texttt{println()},\texttt{printf()},\texttt{format()}}
+
+  \item \mcq{How do you read an integer from the standard input stream in Java?}{Using \texttt{System.in.readInt()},Using \texttt{BufferedReader.readInt()},Using \texttt{InputStream.readInt()},Using \texttt{Scanner.nextInt()}}
+
+  \item \mcq{What is the result of using \texttt{nextInt()} followed by \texttt{nextLine()} on a \texttt{Scanner} object when reading from standard input?}{The \texttt{nextLine()} method reads the remaining part of the line after the integer.,The \texttt{nextLine()} method reads the next line of input.,The \texttt{nextLine()} method is skipped.,The \texttt{nextLine()} method throws an exception.}
+  
+  \item \mcq{Which class in Java is used for generating pseudorandom numbers?}{\texttt{Math},\texttt{Random},\texttt{Pseudorandom},\texttt{Generator}}
+
+  \item \mcq{How do you generate a random integer within a specific range using the \texttt{Random} class in Java?}{By using the \texttt{nextInt()} method without arguments.,By using the \texttt{nextInt(range)} method.,By multiplying \texttt{nextDouble()} with the range.,By using \texttt{nextInt()} and adding a minimum value.}
+
+  \item \mcq{What is the purpose of providing a seed to a \texttt{Random} object in Java?}{To specify the range of random numbers generated.,To generate only positive random numbers.,To ensure the sequence of random numbers is unpredictable.,To determine the sequence of pseudorandom numbers generated.}
+
+  \item \mcq{Which method from the \texttt{Math} class is used to generate a random double between 0 (inclusive) and 1 (exclusive)?}{\texttt{randomInt()},\texttt{randomDouble()},\texttt{nextInt()},\texttt{random()}}
+
+  \item \mcq{How can you generate a random integer between two specific values using \texttt{Math.random()}?}{By adding the minimum value to the result of \texttt{Math.random()},By multiplying \texttt{Math.random()} with the maximum value,By casting the result of \texttt{Math.random()} multiplied by the range to an integer and adding the minimum value,By using the \texttt{Random} class instead of \texttt{Math.random()}}
+\end{enumerate}
+
+

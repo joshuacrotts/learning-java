@@ -454,6 +454,20 @@
   arn c/.append style={text=black, font=\sffamily, draw=black, fill=green, text width=1em},
 }
 
+\NewDocumentCommand{\mcq}{m m}{
+    \par\noindent #1 % Print the question
+    \begin{enumerate}[label=(\alph*), itemsep=0ex]
+        \clistmap{#2}{\item} % Iterate over each item in the comma-separated list and create an \item for it
+    \end{enumerate}
+}
+
+% Helper command to process each item in the comma-separated list
+\ExplSyntaxOn
+\NewDocumentCommand{\clistmap}{ m m }{
+    \clist_map_inline:nn { #1 } { #2 { ##1 } }
+}
+\ExplSyntaxOff
+
 \raggedbottom % Avoids stretching the vertical space between paragraphs
 
 % \flushbottom

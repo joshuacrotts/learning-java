@@ -336,3 +336,26 @@ class MainMethod {
 \end{cl}
 
 Yikes, that is a lot of required code to output some text to the console; what does \ttt{public} mean, and what are those \ttt{[]} brackets after the \ttt{String} word? Once again, we will not detail of their importance but view them as more mandatory characters to type when writing a \ttt{main} method. The only word we will explain is \ttt{void}, which means that the method does not return a value. If the readers are coming from a functional programming language, e.g., Scheme/Racket or OCaml, then it is almost certainly the case that they never worked with methods that did not return a value nor received no arguments. The \ttt{println} method in particular has no return value; its significance is the fact that it outputs some text to the terminal/console, which is a side-effect of the method. We'll come back to what all of this means in subsequent chapters, but we could not avoid at least briefly discussing it and its existence in the Java language.
+
+\subsection*{Quick Check Questions}
+\begin{enumerate}[label=(\arabic*)]
+  \item \mcq{In Java, what is the term used to describe functions that belong to a class?}{Procedures,Subroutines,Methods,Functions}
+
+  \item \mcq{Which keyword is used in Java to define a class member that can be accessed without needing an instance of the class?}{\texttt{public},\texttt{private},\texttt{static},\texttt{final}}
+
+  \item \mcq{What is the return type of the \texttt{fahrenheitToCelsius} method in the provided example?}{\texttt{int},\texttt{float},\texttt{double},\texttt{String}}
+
+  \item \mcq{What type of comment is used to document a method in Java?}{Single-line comment (\texttt{//}),Multi-line comment (\texttt{/* /}),JavaDoc comment (\texttt{/* */}),Inline comment}
+  
+  \item \mcq{What does the \texttt{@Test} annotation indicate in a Java class?}{The method is the main entry point of the program.,The method is to be executed as a test case.,The method is deprecated.,The method is thread-safe.}
+
+  \item \mcq{What is the purpose of the \texttt{assertEquals} method in JUnit testing?}{To check if a variable is initialized,To compare two values for equality,To verify if an exception is thrown,To ensure a loop executes a specific number of times}
+
+  \item \mcq{What is the significance of using \texttt{Math.pow} in the method implementation for computing distance between vectors?}{It converts integers to double.,It performs square root calculation.,It raises a number to the power of another number.,It rounds off decimal values to a set precision.}
+
+  \item \mcq{What is the primitive datatype for a variable that can hold decimal values in Java?}{\texttt{char},\texttt{int},\texttt{double},\texttt{boolean}}
+
+  \item \mcq{How are floating-point arithmetic operations handled in Java when involving both integers and floating-point numbers?}{The operation is not allowed and causes a compilation error.,The result is always rounded down to the nearest integer.,The operation must be explicitly cast to a floating-point operation.,The operation automatically promotes to a floating-point operation.}
+
+  \item \mcq{In the context of the \texttt{main} method in Java, what does \texttt{void} indicate?}{The method returns an integer.,The method returns nothing.,The method must return a string.,The method returns an array of strings.}
+\end{enumerate}

@@ -377,6 +377,19 @@ atoi("000+42ABCD)      => 42
 atoi("8080*8080)       => 8080
 \end{verbnobox}
 
+\exercise{3}{chapter-crl}{Similar to \ttt{atoi}, the C programming language also has a way of converting floating-point values represented as strings to double values via \ttt{atof}. Design the \ttt{double atof(String s)} method, which receives a string and converts it into a double if the input can be interpreted as such. To make this a bit easier, assume that only valid floating-point values can be passed to the method. Below are some examples. Due to potential inaccuracies with floating-point precision, as long as you are close to the given number, that is fine.}
+
+\begin{verbnobox}[\small]
+atof("3.1415")    => 3.1415
+atof("+3.1415")   => -3.1415
+atof("-3.1415")   => -3.1415
+atof("100.0005")  => 100.0005
+atof("6.28")      => 6.28
+atof("3")         => 3.0
+atof("0")         => 0.0
+atof("-0.000000") => -0.000000
+\end{verbnobox}
+
 \exercise{2}{chapter-crl}{Design the \ttt{int indexOf(String s, String k)} method, which receives two strings $s$, $k$, and returns the first index of $k$ in $s$. Note that $k$ may be any arbitrary string and not just a a single character. If $k$ is not in $s$, return \ttt{-1}. You \textbf{cannot} use the \ttt{indexOf} method provided by the \ttt{String} class.}
 
 \exercise{2}{chapter-crl}{Design the \ttt{String substring(String s, int a, int b)} method, which receives a string and two integers $a$, $b$, and returns the substring between these indices. If either are out of bounds of the string, return \ttt{null}. You \textbf{cannot} use the \ttt{substring} method(s) provided by the \ttt{String} class.}
