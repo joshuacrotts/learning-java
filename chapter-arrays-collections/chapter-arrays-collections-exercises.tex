@@ -221,18 +221,28 @@ wisest({47, 51, 52, 48, 33, 67, 45, 35}) => {33, 67} or {67, 33}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{int missingNumber(Set<Integer> s)} method that, when given a set of integers whose values range from $1..n$ with one missing, return the number that is missing. }
 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Integer> updateTransactions(Map<String, Integer> inv, List<String> transactions)} method that, when given a map of product names to product quantities, as well as a list of transactions, returns a new inventory map of item counts. The given list of transactions contains product names, and when a product goes out of stock, it should be removed from the returned map.}
+
+\exercise{3}{chapter-arrays-collections}{File permissions are denoted in octal notation. That is, consider a file that has three sets of permissions: owner $o$, group $g$, and users $u$ (representing other users). There are three ways to work with a file: reading from it $R$, writing to it $W$, or execution $X$. We might represent this as a bit string of $R_oW_oX_oR_gW_gX_gR_uW_uX_u$. We use a $1$ or $0$ to denote the permissions of a file. For example, $111001000$ denotes that the file owner can read, write, and execute the file, those who are in the same group as the owner can execute the file, and anyone else cannot interact at all with the file. Design the \ttt{Set<String> availableFiles(Map<int[], Integer> F, String u, int g, boolean r, boolean w, boolean x)} method that, when given a map of files to permissions $F$, a username $u$ and the group identifier $g$ for the given user, returns a list of files that satisfy the flags passed to the method. The key for the map of files to permissions is itself a 3-element array, where the first element is the file name, the second element is the username of the file owner, and the third element is the group identifier of the owner, as a string.}
+
+\exercise{2}{chapter-arrays-collections}{You're given a \ttt{HashMap} $M$ of \ttt{String} keys to \ttt{Integer} values corresponding to their length. Design the \ttt{ArrayList<TreeSet<String>{>} categorize(HashMap<String, Integer> M)} that receives $M$ and converts it to an \ttt{ArrayList} of \ttt{TreeSet} values. Each element of the \ttt{ArrayList}, therefore, is itself a \ttt{TreeSet}. These \ttt{TreeSet} elements should store the strings whose mapped value matches the index of the \ttt{TreeSet}. The order of the resulting sets, therefore, \textbf{does} matter! Below is an example test case.}
+\begin{verbnobox}[\small]
+[<"x" : 1>, <"hello" : 5>, <"world" : 5>, <"hi" : 2>]
+  => [{}, {"x"}, {"hi"}, {}, {}, {"hello", "world"}]
+\end{verbnobox}
+
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{ArrayList<String> tokenize(String s, char d)} method that, when given a string $s$ and a \ttt{char} delimiter $d$, returns an \ttt{ArrayList} of tokens split at the delimiter. You must do this by hand; you \textbf{cannot} call any \ttt{String} methods (except \ttt{.length} and \ttt{.charAt}).}
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{HashMap<String, Integer> wordCount(String s)} method that, when given a string $s$, counts the number of words in the list, and stores the results in a \ttt{HashMap<String, Integer>}. Assume that $s$ is not cleaned. That is, you should first remove all punctuation (periods, commas, exclamation points, question marks, semi-colons, dashes, hashes, ampersands, asterisks, and parentheses) from $s$, producing a new string $s'$. Then, split the string based on spaces (remember \ttt{tokenize}?), and produce a map of the words to their respective counts. Do not factor case into your total; i.e., \ttt{"fAcToR"} and \ttt{"factor"} count as the same word. The ordering of the returned map is not significant.}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{HashMap<String, Integer> wordCount(String s)} method that, when given a string $s$, counts the number of words in the list, then stores the resulting frequencies in a \ttt{HashMap<String, Integer>}. Assume that $s$ is not cleaned. That is, you should first remove all punctuation (periods, commas, exclamation points, question marks, semi-colons, dashes, hashes, ampersands, asterisks, and parentheses) from $s$, producing a new string $s'$. Then, split the string based on spaces (remember \ttt{tokenize}?), and produce a map of the words to their respective counts. Do not factor case into your total; i.e., \ttt{"fAcToR"} and \ttt{"factor"} count as the same word. The ordering of the returned map is not significant.}
 
 \begin{verbnobox}[\small]
 String s = "Hello world, the world is healthy, is 
             it not? I certainly agree that the world 
             is #1 and healthy."
-wordCount(s) => [{"hello", 1}, {"world", 3}, {"the", 2}
-                 {"is", 3}, {"healthy", 2}, {"it", 1},
-                 {"i", 1}, {"certainly", 1} {"agree", 1}
-                 {"that", 1}, {"1", 1}, {"and", 1}, {"not", 1}]
+wordCount(s) => [<"hello" : 1>, <"world" : 3>, <"the" : 2>
+                 <"is" : 3>, <"healthy" : 2>, <"it" : 1>,
+                 <"i" : 1>, <"certainly" : 1> <"agree" : 1>
+                 <"that" : 1>, <"1" : 1>, <"and" : 1>, <"not" : 1>]
 \end{verbnobox}
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{LinkedHashSet<String>largeToSmall(HashMap<String, Integer> M)} method that, when given a \ttt{HashMap<String, Integer>} $M$, returns a \ttt{LinkedHashSet} of \ttt{String} values where the words are inserted into the set in order of decreasing count. Words that have the same count do not need to be inserted in any particular order. E.g., \ttt{"is"} may come before \ttt{"world"}. You cannot sort $M$. Hint: create an array of size $c$ (where $c$ is the highest word count) where each element is a \ttt{LinkedHashSet<String>}. For every element $e$ in $M$, add $e$ to the set at index $M[i]$, where $i$ is the count of $e$ in $M$. Then, append these sets in reverse order according to their index. We provide some pseudocode below.}
@@ -257,6 +267,17 @@ largeToSmall(M):
 largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy", 
                                "hello", "it", "i", "certainly", 
                                "agree", "that", "1", "and", "not"}
+\end{verbnobox}
+
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{Set<Integer> symmetricDifference(Set<Integer> s1, Set<Integer> s2)} method that, when given two sets of integers $s_1$ and $s_2$, returns a new set $s_3$ such that all elements of $s_3$ are in either of the sets, but not in their intersection. That is, it is the set of elements that are in either $s_1$ or $s_2$, but not both.}
+
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Set<String>> identifyTrendingTopics(Map<String, Set<String>> regionTopics, Set<String> gTrending)} method that, when given a map of regions to topics that are trending in that region, returns a map of topics to regions such that the keys are topics and the values are regions where that topic is trending. A topic is trending in a region if it is not a globally-trending topic and it is trending in at least two regions simultaneously. We provide an example below.}
+
+\begin{verbnobox}[\small]
+identifyTrendingTopics([<"North America" : {"Tech", "Comedy", "Sports"}>, 
+                        <"Europe" : {"Comedy", "Music", "Sports"}>, 
+                        <"Asia" : {"Fashion, "Music"}>], {"Tech"})
+  => [<"Comedy" : {"North America", "Europe"}>, <"Music" : {"Europe, "Asia"}>]
 \end{verbnobox}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> pushLast(LinkedList<Integer> lon, int v)} method that, when given a \ttt{LinkedList<Integer>} $l$ and an \ttt{int} $v$, returns a newly-instantiated \ttt{LinkedList<Integer>} with the same elements plus $v$ added to the end of $l$.}
