@@ -735,6 +735,143 @@ A \textit{TreeMap} is a map with a determined order, either by a natural orderin
 \subsection*{\ttt{LinkedHashMap} Class}
 A \textit{LinkedHashMap} is a map with an ordering based on the insertion order of the key/value pairs. All methods in a \ttt{Map} are definitionally implemented by a \ttt{LinkedHashMap}.
 
+\example{Perhaps one of the most common use cases for a dictionary-based data structure is to compute the frequency, or count, of some values. Suppose we want to write the \ttt{Set<Integer> mode(List<Integer> ls)} method that, when given a list of integers, returns the mode(s), i.e., the most-frequent value(s). We can use a map to keep track of the numbers seen so far, which are the keys, and their respective frequencies being the values. Because a list of numbers may have multiple modes, we will need to use a three-step algorithm:}
+
+\begin{enumerate}
+  \item Compute the frequencies of each number.
+  \item Find the highest frequency.
+  \item Find all numbers that match this frequency.
+\end{enumerate}
+
+Traversing over a map is straightforward: we can obtain a \textit{keyset}, which is a set of keys, and each corresponding value takes one call to the \ttt{.get} method.
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+class ComputeModeTester {
+
+  @Test
+  void testMode() {
+    assertAll(
+      () -> assertEquals(Set.of(), mode(List.of())),  
+      () -> assertEquals(Set.of(3), mode(List.of(4, 5, 3, 2, 1, 3, 3, 4, 3))),
+      () -> assertEquals(Set.of(2, 3), mode(List.of(2, 3, 2, 3, 2, 3, 1, 3, 2))),
+      () -> assertEquals(Set.of(2), mode(List.of(2, 2, 2, 2, 2, 2, 2, 2, 2))))
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+class ComputeMode {
+
+  /**
+   * Computes the mode of a list of numbers, which is the most-frequent
+   * value, or values.
+   * @param ls - list of numbers.
+   * @return set of mode values, if they exist.
+   */
+  static Set<Integer> mode(List<Integer> ls) {
+    Set<Integer> s = new HashSet<>();
+    if (ls.isEmpty()) {
+      return s;
+    } else {
+      // First, compute the frequencies.
+      Map<Integer, Integer> frequencies = new HashMap<>();
+      for (int v : ls) {
+        if (!frequencies.containsKey(v)) {
+          frequencies.put(v, 1);
+        } else {
+          frequencies.put(v, frequencies.get(v) + 1);
+        }
+      } 
+
+      // Find the highest frequency.
+      int highestFreq = -1;
+      for (int k : frequencies.keySet()) {
+        highestFreq = Math.max(highestFreq, frequencies.get(k));
+      }
+
+      // Now, find the values that match that frequency.
+      for (int k : frequencies.keySet()) {
+        if (frequencies.get(k) == highestFreq) {
+          s.add(k);
+        }
+      }
+      return s;
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example{Let's design the \ttt{sharesFirstChar} method that, when given an array of strings, returns a \ttt{Map<Character, Set<String>{>}} such that each alphabetized character maps to a set of alphabetized strings that start with that character. We will further assume that this is a case-insensitive mapping. Consider the following input and output example:}
+
+\begin{verbnobox}[\small]
+sharesFirstChar(["she", "sells", "sea", "shells", "by", "the", "sea", "shore"])
+  => [<'b' : {"by"}>, 
+      <'s' : {"sea", "sells", "she", "shells", "shore"}>
+      <'t' : {"the"}>]
+\end{verbnobox}
+
+Because we want both the sets and maps to be alphabetized, the use of a \ttt{TreeSet} and \ttt{TreeMap} is appropriate. So, we will first traverse over the input list and instantiate a map whose keys are the first letters of each word and whose value is a new instance of a \ttt{TreeSet}. A second traversal is then used to populate those sets.
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class ShareFirstCharacterTester {
+  
+  @Test
+  void testShareFirstChar() {
+    Map<Character, Set<String>> exp1 = new TreeMap<>();
+    assertEquals(exp1, shareFirstChar(List.of()));
+
+    Map<Character, Set<String>> exp2 = new TreeMap<>();
+    exp2.put('b', new TreeSet<>());
+    exp2.put('s', new TreeSet<>());
+    exp2.put('t', new TreeSet<>());
+    exp2.get('s').addAll(Set.of("she", "sells", "sea", "shells", "shore"));
+    exp2.get('t').addAll(Set.of("the"));
+    exp2.get('b').addAll(Set.of("by"));
+    assertEquals(exp2, shareFirstChar(List.of("she", "sells", "sea", "shells", "by",
+                                              "the", "sea", "shore")));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+class ShareFirstCharacter {
+
+  /**
+   *
+   * @param ls - 
+   * @return 
+   */
+  static Map<Character, Set<String>> shareFirstChar(List<String> ls) {
+    Map<Character, Set<String>> M = new HashMap<>();
+    // Populate the map with the initial TreeSets.
+    for (String s : ls) {
+      char lc = Character.toLowerCase(s.charAt(0));
+      if (!M.containsKey(lc)) {
+        M.put(lc, new TreeSet<>());
+      }
+    }
+
+    // Add the strings to each set.
+    for (String s : ls) {
+      M.get(Character.toLowerCase(s.charAt(0))).add(s);
+    }
+    return M;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+
 \section*{Iterators}
 We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
 
@@ -746,7 +883,7 @@ static int sum(int[] arr) {
 }
 \end{verbnobox}
 
-The problem is that not all data structures, as we have undoubtedly seen, are sequential; sets and maps are two examples of non-sequential data structures, so how do we traverse over those? Stacks and queues are another example of data structures that are not necessarily sequential. \textit{Iterator} objects are the answer to this problem. Iterators provide a mechanism for traversing over a generalized data structure. Any data structure whose class definition implements \ttt{Iterator} must define at least two methods: \ttt{boolean hasNext} and \ttt{T next}, which determines whether or not we are at the end of the traversal and retrieves the next element respectively. Note that \ttt{T}, for the time being, simply means ``any type.'' All of the Java collections implement \ttt{Iterator}, we can retrieve the corresponding \ttt{Iterator} object via the \ttt{.iterator} method. 
+The problem is that not all data structures, as we have undoubtedly seen, are sequential; sets and maps are two examples of non-sequential data structures, so how do we traverse over those? One option is the enhanced-for loop, but as we will show later this approach has its drawbacks, even though its syntax is straightforward. Stacks and queues are another example of data structures that are not necessarily sequential. \textit{Iterator} objects are the answer to this problem. Iterators provide a mechanism for traversing over a generalized data structure. Any data structure whose class definition implements \ttt{Iterator} must define at least two methods: \ttt{boolean hasNext} and \ttt{T next}, which determines whether or not we are at the end of the traversal and retrieves the next element respectively. Note that \ttt{T}, for the time being, simply means ``any type.'' All of the Java collections implement \ttt{Iterator}, we can retrieve the corresponding \ttt{Iterator} object via the \ttt{.iterator} method. 
 
 Upon retrieving an iterator, we can use a \ttt{while} loop to continuously traverse over the data structure until no more elements remain to be visited. The elements of the iterator are generated on-the-fly; only upon calling \ttt{next} is the value truly read from the data structure itself. Much like the rest of the Collections API, we must pass the parameterized type to the \ttt{Iterator} initialization so that it knows what to substitute for \ttt{T} in the \ttt{next} method.
 
