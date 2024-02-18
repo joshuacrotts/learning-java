@@ -704,6 +704,170 @@ A \textit{TreeSet} is a set with a determined order, either by a natural orderin
 \subsubsection*{\ttt{LinkedHashSet} Class}
 A \textit{LinkedHashSet} is a set with an ordering based on the insertion order of the elements. All methods in a \ttt{Set} are definitionally implemented by a \ttt{LinkedHashSet}.
 
+\example{The canonical usage of a set is to remove duplicates from a list. Indeed, let's write the \ttt{removeDuplicatesList} method that receives a list of integers and returns a new list without any duplicates. We will assume that the output order must match the input order. To solve this problem we will create an auxiliary linked hash set data structure, add all elements from the list into the set, then add those values from the set to a new list. When adding a value into a set, if it already exists, it is not added again, as we stated above.}
+
+\begin{cl}[]{}
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+
+class RemoveDuplicatesListTester {
+
+  @Test
+  void testRemoveDuplicatesList() {
+    assertAll(
+      () -> assertEquals(List.of(), removeDuplicatesList(List.of())),
+      () -> assertEquals(List.of(1, 2, 3, 4), removeDuplicatesList(List.of(1, 1, 2, 2, 3, 3, 4, 4))),
+      () -> assertEquals(List.of(3, 1, 4), removeDuplicatesList(List.of(3, 1, 1, 3, 4, 4, 3, 1, 4))))
+  }
+}
+\end{cl}
+
+\begin{cl}[]{}
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.LinkedHashSet;
+
+class RemoveDuplicatesList {
+
+  /**
+   *
+   * @param
+   * @return
+   */
+  static List<Integer> removeDuplicatesList(List<Integer> ls) {
+    List<Integer> newLs = new ArrayList<>();
+    Set<Integer> set = new LinkedHashSet<>();
+    for (int x : ls) { set.add(x); }
+    for (int x : s) { newLs.add(x); }
+    return newLs;
+  }
+}
+\end{cl}
+
+\example{Suppose we want to find all common elements shared between two linked lists of elements, which are unordered. Let's write the \ttt{commonValues} method that, when given two linked lists of integers, returns a sorted ordered list of values that occur in both lists. We should not count values twice, e.g., if the value \ttt{2} occurs twice in the first list, then the resulting output list should only contain one occurrence of \ttt{2}. Because we want the output to be sorted, we can take advantage of a tree set.}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.TreeSet;
+
+class CommonValuesTester {
+
+  @Test
+  void testCommonValues() {
+    assertAll(
+      () -> assertEquals(List.of(1, 3, 4), commonValues(List.of(2, 4, 1, 3, 5, 6),
+                                                        List.of(1, 4, 3, 10, 20))),
+      () -> assertEquals(List.of(), commonValues(List.of(10, 20, 30, 40, 50),
+                                                 List.of(5, 4, 3, 2, 1))),
+      () -> assertEquals(List.of(), commonValues(List.of(),
+                                                 List.of(5, 4, 3, 2, 1))),
+      () -> assertEquals(List.of(-2, 0, 2), commonValues(List.of(2, -2, 0, 0, -2, 2),
+                                                         List.of(-2, 2, 0))))
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.TreeSet;
+
+class CommonValuesTester {
+
+  /**
+   *
+   * @param ls1 - 
+   * @param ls2 - 
+   * @return
+   */
+  static List<Integer> commonValues(LinkedList<Integer> ls1, LinkedList<Integer> ls2) {
+    Set<Integer> set = new TreeSet<>();
+    for (int x : ls1) {
+      if (ls2.contains(x)) { set.add(x); }
+    }
+    List<Integer> newLs = new LinkedList<>();
+    newLs.addAll(set);
+    return newLs;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example{We are given an array of numbers from $1$ to $n$ where one number is missing and one is duplicated. Let's design the \ttt{findDupMissing} method that returns an array of two elements: the first of which is the missing number and the second of which is the duplicate value. It makes sense to use a \ttt{TreeSet} since, that way, we can store the numbers in order and find out which one is omitted through one traversal, and find the only duplicate.}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertArrayEquals;
+
+class FindDupMissingTester {
+
+  @Test
+  void testFindDupMissing() {
+    assertAll(
+      () -> assertArrayEquals(new int[]{2, 3}, 
+                              findDupMissing(new int[]{1, 3, 3, 4})),
+      () -> assertArrayEquals(new int[]{5, 1}, 
+                              findDupMissing(new int[]{8, 1, 4, 1, 3, 2, 6, 7})),
+      () -> assertArrayEquals(new int[]{6, 7}, 
+                              findDupMissing(new int[]{3, 2, 7, 7, 4, 5, 1})));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.util.Set;
+import java.util.TreeSet;
+
+class FindDupMissing {
+
+  /**
+   * Finds a duplicate number and a missing number from an array of numbers
+   * from a specific interval.
+   * @param A - array of integers where each number is in [1, n],
+   *            with one missing and one duplicate.
+   * @return two-element array where [0] is the missing number
+   *         and [1] is the duplicate number.
+   */
+  static int[] findDupMissing(int[] A) {
+    Set<Integer> set = new TreeSet<>();
+    int[] res = new int[2];
+    // Add the values to the set and find the duplicate one.
+    for (int x : A) {
+      if (set.contains(x)) { res[1] = x; } 
+      else { set.add(x); }
+    }
+
+    // Now find the missing number.
+    int prev = 0;
+    for (int x : set) {
+      if (x != prev + 1) {
+        res[0] = prev + 1;
+        break;
+      } else {
+        prev = x;
+      }
+    }
+    return res;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
 \subsection*{Dictionary-Based Data Structures}
 Dictionaries maps elements from one type $K$ to elements of another type $V$. These types $K$ and $V$ do not necessarily need to be distinct. 
 
@@ -871,6 +1035,23 @@ class ShareFirstCharacter {
 \end{lstlisting}
 \end{cl}
 
+\example{Let's design the \ttt{firstUniqueLetter} method that, when given a string, returns the first non-repeated letter. If there is no non-repeated letter, we will return the empty string. Because we care about the insertion order, we should use a \ttt{LinkedHashMap} whose keys are characters in the string and whose values are frequency counts. The idea is to count the frequency of each (letter) character, when lowercased, then traverse over the linked map and find the first key whose (value) frequency is one.\footnote{This problem comes courtesy of \ttt{frew@mclean.com} on \ttt{codingbat.com}. Thanks!}}
+
+\begin{cl}[]{}
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class FirstUniqueLetterTester {
+
+  @Test
+  void testFirstUniqueLetter() {
+    assertAll(
+      () -> assertEquals("m", firstUniqueLetter("Morning")),
+      () -> assertEquals("w", firstUniqueLetter("sweeps")),
+      () -> assertEquals("", firstUniqueLetter("Abra-cadabracad!)));
+  }
+}
+\end{cl}
 
 \section*{Iterators}
 We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
