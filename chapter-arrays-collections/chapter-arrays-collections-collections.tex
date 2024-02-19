@@ -733,9 +733,9 @@ import java.util.LinkedHashSet;
 class RemoveDuplicatesList {
 
   /**
-   *
-   * @param
-   * @return
+   * Removes duplicates from a list of integers.
+   * @param ls - list of integers.
+   * @return new list without duplicates.
    */
   static List<Integer> removeDuplicatesList(List<Integer> ls) {
     List<Integer> newLs = new ArrayList<>();
@@ -787,10 +787,10 @@ import java.util.TreeSet;
 class CommonValuesTester {
 
   /**
-   *
-   * @param ls1 - 
-   * @param ls2 - 
-   * @return
+   * Finds all common values between two linked lists of integers.
+   * @param ls1 - first linked list.
+   * @param ls2 - second linked list.
+   * @return list of (distinct) common values.
    */
   static List<Integer> commonValues(LinkedList<Integer> ls1, LinkedList<Integer> ls2) {
     Set<Integer> set = new TreeSet<>();
@@ -1011,9 +1011,10 @@ class ShareFirstCharacterTester {
 class ShareFirstCharacter {
 
   /**
-   *
-   * @param ls - 
-   * @return 
+   * Returns a map whose keys are the first characters of the strings
+   * and whose values are sets of strings that start with that character.
+   * @param ls - list of strings.
+   * @return map of sets of strings.
    */
   static Map<Character, Set<String>> shareFirstChar(List<String> ls) {
     Map<Character, Set<String>> M = new HashMap<>();
@@ -1052,6 +1053,40 @@ class FirstUniqueLetterTester {
   }
 }
 \end{cl}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+class FirstUniqueLetter {
+
+  /**
+   * Returns the first unique letter in a string. If there is no unique
+   * letter, then the empty string is returned.
+   * @param s - string.
+   * @return first unique letter as a string.
+   */
+  static String firstUniqueLetter(String s) {
+    Map<Character, Integer> M = new LinkedHashMap<>();
+    // Count the frequency of each lowercased letter.
+    for (int i = 0; i < s.length(); i++) {
+      String c = s.substring(i, i + 1).toLowerCase();
+      if (Character.isLetter(c.charAt(0))) {
+        if (!M.containsKey(c)) {
+          M.put(c, 1);
+        } else {
+          M.put(c, M.get(c) + 1);
+        }
+      }
+    }
+
+    // Find the first unique letter.
+    for (char c : M.keySet()) {
+      if (M.get(c) == 1) {
+        return c;
+      }
+    }
+    return "";
+  }
+}
 
 \section*{Iterators}
 We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
