@@ -148,6 +148,10 @@ What's awesome about this exercise is that it allows us to define the elements o
 
 \exercise{1}{chapter-advanced-oop}{Design the \ttt{static <T> boolean andMap(List<T> ls, Predicate<T> p)} method that returns whether or not all elements of the input list satisfy the given predicate. Use the stream API to solve this problem, but do \textit{not} use the \ttt{allMatch} method, as that method solves the problem we want \textit{you} to solve!}
 
+\exercise{2}{chapter-advanced-oop}{Design the \ttt{static <T, U> U foldr(List<T> ls, BiFunction<T, U, U> f, U u)} method that receives a list of values $ls$, a function $f$, and an initial value $u$. The method should return the result of folding the list from the right with the given function and initial value. By ``folding,'' we mean that we apply $f$ to the last element of the list and the initial value, then apply $f$ to the second-to-last element and the result of the previous application, and so forth. To think of this in terms of infix notation over some list, consider the list $[a, b, c, d]$. Folding it over the function $\circ$ and initial value $u$ is $a \circ (b \circ (c \circ (d \circ u)))$. Do \textit{not} use the \ttt{reduce} method, as that method solves the problem we want \textit{you} to solve!}
+
+\exercise{1}{chapter-advanced-oop}{Design the \ttt{static <T, U> List<U> buildList(int n, Function<T, U> f)} method that receives an integer $n$ and a function $f$ and returns a list of $n$ elements, where the $i^\text{th}$ element is $f(i)$. For example, if we invoke \ttt{buildList(5, x -> x * x)}, we should receive the list $[1, 4, 9, 16, 25]$.}
+
 \exercise{1}{chapter-advanced-oop}{This exercise involves the doubly-linked list we wrote in the chapter.}
 Design the \ttt{int size()} method, which returns the number of elements in the list. You can do this either recursively or with a loop. For better practice, try (and thoroughly test) both implementations.
 

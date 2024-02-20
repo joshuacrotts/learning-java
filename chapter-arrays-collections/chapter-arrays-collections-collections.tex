@@ -931,7 +931,7 @@ class ComputeModeTester {
       () -> assertEquals(Set.of(), mode(List.of())),  
       () -> assertEquals(Set.of(3), mode(List.of(4, 5, 3, 2, 1, 3, 3, 4, 3))),
       () -> assertEquals(Set.of(2, 3), mode(List.of(2, 3, 2, 3, 2, 3, 1, 3, 2))),
-      () -> assertEquals(Set.of(2), mode(List.of(2, 2, 2, 2, 2, 2, 2, 2, 2))))
+      () -> assertEquals(Set.of(2), mode(List.of(2, 2, 2, 2, 2, 2, 2, 2, 2))));
   }
 }
 \end{lstlisting}
@@ -1084,14 +1084,14 @@ class FirstUniqueLetter {
     for (int i = 0; i < s.length(); i++) {
       String c = s.substring(i, i + 1).toLowerCase();
       if (Character.isLetter(c.charAt(0))) {
-        M.put(c, M.getOrDefault(c, 0) + 1);
+        M.put(c.charAt(0), M.getOrDefault(c.charAt(0), 0) + 1);
       }
     }
 
     // Find the first unique letter.
     for (char c : M.keySet()) {
       if (M.get(c) == 1) {
-        return c;
+        return String.valueOf(c);
       }
     }
     return "";
@@ -1322,8 +1322,7 @@ class BigIntFibStream {
    * @return stream containing arrays of the next sequential BigIntegers.
    */
   static Stream<BigInteger[]> fibonacciStream() {
-    BigInteger[] vals = new BigInteger[]{new BigInteger("0"), 
-                                         new BigInteger("1")};
+    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),new BigInteger("1")};
     return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])});
   }
 }
@@ -1337,11 +1336,11 @@ class BigIntFibStream {
     \vspace{2ex}
   \begin{description}
     \item [\ttt{int $S$.count$()$}] returns the number of elements in the stream.
-    \item [\ttt{Stream<$T$> $S$.map($f$)}] returns a new stream whose elements are the result of applying $f$ to each element of $S$.
-    \item [\ttt{Stream<$T$> $S$.filter($p$)}] returns a new stream of values in $S$ that satisfy the predicate $p$.
+    \item [\ttt{Stream<$T$> $S$.map($f$)}] returns a new stream whose elements are the result of applying $f$ to each element of~$S$.
+    \item [\ttt{Stream<$T$> $S$.filter($p$)}] returns a new stream of values in $S$ that satisfy the predicate~$p$.
     \item [\ttt{Stream<$T$> $S$.reduce($a$, $f$)}] returns the result of applying the binary function $f$ to each element of $S$, starting from $a$, which serves as the accumulator's initial value.
-    \item [\ttt{Stream<$T$> $S$.limit($n$)}] returns a new stream containing the first $n$ elements of $S$.
-    \item [\ttt{Stream<$T$> $S$.skip($n$)}] returns a new stream containing the elements of $S$ after the first $n$.
+    \item [\ttt{Stream<$T$> $S$.limit($n$)}] returns a new stream containing the first $n$ elements of~$S$.
+    \item [\ttt{Stream<$T$> $S$.skip($n$)}] returns a new stream containing the elements of $S$ after the first~$n$.
     \item [\ttt{Optional<$T$> $S$.min/max($c$)}] returns the minimum/maximum element of $S$ according to the comparator $c$. If $S$ is empty, returns \ttt{Optional.empty()}.
   \end{description}
 \end{tcolorbox}
@@ -1404,8 +1403,7 @@ class BigIntFibStream {
    * @return stream containing arrays of the next sequential Fibonacci BigIntegers.
    */
   static Stream<BigInteger> fibonacciStream() {
-    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),
-                                         new BigInteger("1")};
+    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),new BigInteger("1")};
     return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])})
                  .map(v -> v[0]);
   }
