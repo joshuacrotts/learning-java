@@ -111,6 +111,50 @@ Charlie
     \item \ttt{void output(String fileName)} outputs the seating chart to a file specified by the parameter. The file should contain the students' names and their seat numbers, one per line, separated by a comma. The output list should be in the order of the seating chart.
 \end{itemize}
 
+\exercise{3}{chapter-exceptions-io}{A maze is a grid of cells, each of which is either open or blocked. We can move from one free cell to another if they are adjacent. Design the \ttt{MazeSolver} class, which has the following methods:}
+
+\begin{itemize}
+    \item \ttt{MazeSolver(String fileName)} is the constructor, which reads a description of a maze from a file. The file contains a grid of characters, where \ttt{`.'} represents an open cell and \ttt{`\#'} represents a blocked cell. The file is formatted such that each line is the same length. Read the data into a \ttt{char[][]} instance variable. You may assume that the maze dimensions are on the first line of the file, separated by a space.
+
+    \item \ttt{char[][] solve()} returns a \ttt{char[][]} that represents the solution to the maze. The solution should be the same as the input maze, but with the path from the start to the end marked with \ttt{`*'} characters. The start is the top-left cell, and the end is the bottom-right cell. If there is no solution, return \ttt{null}.
+
+    We can use a backtracking algorithm to solve this problem: start at a cell and mark it as visited. Then, recursively try to move to each of its neighbors, marking the path with a \ttt{`*'} character. If you reach the maze exit, then return \ttt{true}. Otherwise, backtrack and try another path. By ``backtrack,'' we mean that you should remove the \ttt{`*'} character from the path. If you have tried all possible paths from a cell and none of them lead to the exit, then return \ttt{false}. We provide a skeleton of the class below.
+
+    \item \ttt{void output(String fileName, char[][] soln)} outputs the given solution to the maze to a file specified by the parameter. Refer to the above descriptoin for the format of the output file and the input \ttt{char[][]} solution.
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+class MazeSolver {
+
+  private final char[][] MAZE;
+
+  public MazeSolver(String fileName) { /* TODO read maze from file. */ }
+
+  /**
+   * Recursively solves the maze, returning a solution if it exists, and 
+   * null otherwise. We use a simple backtracking algorithm in the helper.
+   * @return a solution to the maze, or null if it does not exist.
+   */
+  public char[][] solve() {
+    char[][] soln = new char[MAZE.length][MAZE[0].length];
+    return this.solveHelper(0, 0, soln) ? soln : null;
+  }
+
+  /**
+   * Recursively solves the maze, returning true if we ever reach
+   * the exit. We try all possible paths from the current cell, if
+   * they are reachable. If a path ends up being a dead end, we backtrack
+   * and try another path.
+   * @param r - the row of the current cell.
+   * @param c - the column of the current cell.
+   * @param sol - the current solution to the maze.
+   * @return true if we are at the exit, false otherwise.
+   */
+  private boolean solveHelper(int r, int c, char[][] sol) { /* TODO. */ }
+}
+\end{lstlisting}
+\end{cl}
+\end{itemize}
 
 \exercise{3}{chapter-exceptions-io}{A binary relation $\mathcal{R}$ is a subset of the cartesian product of two sets $A$ and $B$. That is, $\mathcal{R} \subseteq A \times B$ such that $A \times B = \{\langle{x, y}\rangle \mid x \in A \text{ and } y \in B\}$. There are several ways that we can describe binary relations, including reflexive, symmetric, transitive, antisymmetric, asymmetric, irreflexive, and serial.}
 
