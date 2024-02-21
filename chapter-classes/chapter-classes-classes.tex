@@ -101,7 +101,7 @@ class PointTester {
 \end{lstlisting}
 \end{cl}
 
-Of course, testing the accessor methods is a little boring, so let's override the \ttt{toString} method to print a stringified representation of the \ttt{Point} class. Every object in Java has a \ttt{toString} method, which returns a string representation of the object. By default, the \ttt{toString} method returns the class name followed by the object's hashcode. We can override the \ttt{toString} method by declaring a \ttt{public} method with the signature \ttt{public String toString()}. We can then return a string representation of the object. In this case, we will return a string of the form \ttt{"(x=$x$, y=$y$)"}, where $x$ and $y$ refer to the respecitve instance variables.
+Of course, testing the accessor methods is a little boring, so let's override the \ttt{toString} method to print a stringified representation of the \ttt{Point} class. Every object in Java has a \ttt{toString} method, which returns a string representation of the object. By default, the \ttt{toString} method returns the class name followed by the object's hashcode. We can override the \ttt{toString} method by declaring a \ttt{public} method with the signature \ttt{public String toString()}. We can then return a string representation of the object. In this case, we will return a string of the form \ttt{"(x=$x$, y=$y$)"}, where $x$ and~$y$ refer to the respecitve instance variables.
 
 \begin{cl}[]{Overriding the \ttt{toString} Method}
 \begin{lstlisting}[language=MyJava]
@@ -313,7 +313,7 @@ class Point {
 \end{lstlisting}
 \end{cl}
 
-Notice that, inside the \ttt{getCount} method, we do not refer to \ttt{count} with \ttt{this}, since \ttt{count} is a static variable and not an instance variable. Prefixing the \ttt{count} variable with \ttt{this} results in a compiler error.
+Notice that, inside the \ttt{getCount} method, we do not refer to \ttt{count} with \ttt{this}, since \ttt{count} is a static variable and not an instance variable. Prefixing the \ttt{count} variable with \ttt{this} results in a compiler error. Further note that the variable is not marked as \ttt{final}, since it is not immutable and changes with every newly-instantiated \ttt{Point} object.
 
 \example{Imagine we want to store a collection of \ttt{Point} objects in a data structure such as a \ttt{HashSet}. The question that arises from this decision is apparent: how do we determine if a \ttt{Point} is already inside the set? We need to override two important methods from \ttt{Object}: \ttt{equals} and \ttt{hashCode}. The \ttt{equals} method of an object determines how we wish to compare two instances of the class. In this circumstance, let's say that two points are equal according to \ttt{equals} if and only if they share the same $x$ and $y$ coordinates. Overriding the \ttt{equals} method from the \ttt{Object} class requires correctly copying the signature, the sole parameter being an \ttt{Object} that we want to check for type equality. In other words, we first want to verify that the passed object to the \ttt{equals} method is, in fact, a \ttt{Point}, otherwise they cannot possibly be equal. We can use the \ttt{instanceof} operator to our advantage. From here, if the input parameter is a \ttt{Point}, we can cast the parameter to a \ttt{Point}, then check whether or not the coordinates match.}
 

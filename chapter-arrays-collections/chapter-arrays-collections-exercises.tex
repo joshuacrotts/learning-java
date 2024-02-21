@@ -271,7 +271,7 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{Set<Integer> symmetricDifference(Set<Integer> s1, Set<Integer> s2)} method that, when given two sets of integers $s_1$ and $s_2$, returns a new set $s_3$ such that all elements of $s_3$ are in either of the sets, but not in their intersection. That is, it is the set of elements that are in either $s_1$ or $s_2$, but not both.}
 
-\exercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Set<String>> identifyTrendingTopics(Map<String, Set<String>> regionTopics, Set<String> gTrending)} method that, when given a map of regions to topics that are trending in that region, returns a map of topics to regions such that the keys are topics and the values are regions where that topic is trending. A topic is trending in a region if it is not a globally-trending topic and it is trending in at least two regions simultaneously. We provide an example below.}
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Set<String>> identifyTrendingTopics(Map<String, \\Set<String>> regionTopics, Set<String> gTrending)} method that, when given a map of regions to topics that are trending in that region, returns a map of topics to regions such that the keys are topics and the values are regions where that topic is trending. A topic is trending in a region if it is not a globally-trending topic and it is trending in at least two regions simultaneously. We provide an example below.}
 
 \begin{verbnobox}[\small]
 identifyTrendingTopics([<"North America" : {"Tech", "Comedy", "Sports"}>, 
@@ -280,15 +280,15 @@ identifyTrendingTopics([<"North America" : {"Tech", "Comedy", "Sports"}>,
   => [<"Comedy" : {"North America", "Europe"}>, <"Music" : {"Europe, "Asia"}>]
 \end{verbnobox}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> pushLast(LinkedList<Integer> lon, int v)} method that, when given a \ttt{LinkedList<Integer>} $l$ and an \ttt{int} $v$, returns a newly-instantiated \ttt{LinkedList<Integer>} with the same elements plus $v$ added to the end of $l$.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> pushLast(LinkedList<Integer> lon, int v)} method that, when given a \ttt{LinkedList<Integer>}~$l$ and an \ttt{int}~$v$, returns a newly-instantiated \ttt{LinkedList<Integer>} with the same elements plus~$v$ added to the end of~$l$.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> set(LinkedList<Integer> l, int v, int i)} method that, when given a \ttt{LinkedList<Integer>} $l$, an \ttt{int} $v$, and an index $i$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index $i$ is, instead, the value $v$. If $i$ is less than zero or exceeds the length of $l$, return \ttt{null}.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> set(LinkedList<Integer> l, int v, int i)} method that, when given a \ttt{LinkedList<Integer>}~$l$, an \ttt{int}~$v$, and an index~$i$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index~$i$ is, instead, the value~$v$. If $i$ is less than zero or exceeds the length of~$l$, return \ttt{null}.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] toArray(LinkedList<Integer> l)} method, which receives a linked list of integers $l$, returns an array containing the values from $l$.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] toArray(LinkedList<Integer> l)} method, which receives a linked list of integers~$l$, returns an array containing the values from~$l$.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> reverse(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns a \textit{new} linked list containing the elements of $l$, but reversed.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> reverse(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns a \textit{new} linked list containing the elements of~$l$, but reversed.}
 
-\exercise{2}{chapter-arrays-collections}{Design the \texttt{HashSet<Integer> moreThanThree(int[] A)} method that, when given an \texttt{int[]} $A$, returns a new \texttt{HashSet\-<Integer>} of values containing those values from $A$ that occur strictly more than three times.}
+\exercise{2}{chapter-arrays-collections}{Design the \texttt{HashSet<Integer> moreThanThree(int[] A)} method that, when given an \texttt{int[]}~$A$, returns a new \texttt{HashSet\-<Integer>} of values containing those values from~$A$ that occur strictly more than three times.}
 
 \exercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> collectComments(String s)} method that, when given a string representing a (valid) Java program, returns an list containing all comments from the input program string. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
@@ -349,7 +349,7 @@ G4 = {{q, x}, {q, 10}}
 unifiesAll(M4, G4) => false
 \end{verbnobox}
 
-\exercise{3}{chapter-arrays-collections}{Two strings $s_1$ and $s_2$ are isomorphic if we can create a mapping from $s_1$ from $s_2$. For example, the strings \ttt{"DCBA"} and \ttt{"ZYXW"} are isomorphic because we can map $D$ to $Z$, $C$ to $Y$, and so forth. Another example is \ttt{"ABACAB"} and \ttt{"XYXZXY"} for similar reasons. A non-example is \ttt{"PROXY"} and \ttt{"ALPHA"}, because once we map \ttt{"A"} to \ttt{"P"}, we cannot create a map between \ttt{"A"} and \ttt{"Y"}. Design the \ttt{boolean isIsomorphic(String s1, String s2)} method, which determines whether or not two strings are isomorphic. }
+\exercise{3}{chapter-arrays-collections}{Two strings $s_1$ and $s_2$ are isomorphic if we can create a mapping from $s_1$ from $s_2$. For example, the strings \ttt{"DCBA"} and \ttt{"ZYXW"} are isomorphic because we can map $D$~to~$Z$, $C$~to~$Y$, and so forth. Another example is \ttt{"ABACAB"} and \ttt{"XYXZXY"} for similar reasons. A~non-example is \ttt{"PROXY"} and \ttt{"ALPHA"}, because once we map \ttt{"A"} to \ttt{"P"}, we cannot create a map between \ttt{"A"} and \ttt{"Y"}. Design the \ttt{boolean isIsomorphic(String s1, String s2)} method, which determines whether or not two strings are isomorphic. }
 
 \exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Design the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> los)} method, which maps all alphabetized anagrams to the strings in $\textit{ls}$ using the above criteria.}
     
@@ -380,9 +380,9 @@ alphaAnagramGroups(los)
 
 Your job is to determine which variables are bound, which are free, and which are neither.
 
-A bound variable is a variable that is bound by a $\lambda$ and occurs in its expression. For example, in the expression $\lambda{x}.x$, `$x$' is bound.
+A \textit{bound variable} is a variable that is bound by a $\lambda$ and occurs in its expression. For example, in the expression $\lambda{x}.x$, `$x$' is bound.
 
-A free variable is a variable that is \textit{not} bound by a $\lambda$ but does occur in an expression. For example, in the expression $\lambda{y}.\lambda{x}.zwv$, `$z$', `$w$', and `$v$' are free variables.
+A \textit{free variable} is a variable that is \textit{not} bound by a $\lambda$ but does occur in an expression. For example, in the expression $\lambda{y}.\lambda{x}.zwv$, `$z$', `$w$', and `$v$' are free variables.
 
 A variable that is neither free nor bound is a variable that is bound by a $\lambda$ but does not occur in its expression. For example, in the expression $\lambda{}x.\lambda{}y.yz$, `$x$' is neither free nor bound.
 
@@ -393,9 +393,9 @@ classifyVars("\(\lambda\)x.\(\lambda\)y.xyz") => {<"x" : "B">, <"y" : "B">, <"z"
 classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
 \end{alltt}
 
-\exercise{2}{chapter-arrays-collections}{The \textit{substitution cipher} is a text cipher that encodes an alphabet string $A$ (also called the \textit{plain-text alphabet}) with a key string $K$ (also called the \textit{cipher-text alphabet}). The $A$ string is defined as \ttt{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, and $K$ is any permutation of $A$. We can encode a string $s$ using $K$ as a mapping from $A$. For example, if $K$ is the string \ttt{"ZEBRASCDFGHIJKLMNOPQTUVWXY"} and $s$ is \ttt{"WE MIGHT AS WELL SURRENDER!"}, the result of encoding $s$ produces \ttt{"VN IDBCY JZ VNHH ZXRRNFMNR!"}
+\exercise{2}{chapter-arrays-collections}{The \textit{substitution cipher} is a text cipher that encodes an alphabet string $A$ (also called the \textit{plain-text alphabet}) with a key string $K$ (also called the \textit{cipher-text alphabet}). The $A$ string is defined as \ttt{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, and $K$ is any permutation of~$A$. We can encode a string $s$ using $K$ as a mapping from~$A$. For example, if $K$ is the string \ttt{"ZEBRASCDFGHIJKLMNOPQTUVWXY"} and $s$ is \ttt{"WE MIGHT AS WELL SURRENDER!"}, the result of encoding $s$ produces \ttt{"VN IDBCY JZ VNHH ZXRRNFMNR!"}
 
-Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet string $A$, a cipher-text string $K$, and a string $s$ to encode, \ttt{substitutionCipher} should return a string $s'$ using the aforementioned substitution cipher algorithm. You must follow the ``design recipe'' laid out in class. That is, you must write the method purpose statement comment, tests, and the implementation.}
+Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet string $A$, a cipher-text string $K$, and a string $s$ to encode, \ttt{substitutionCipher} should return a string~$s'$ using the aforementioned substitution cipher algorithm. You must follow the ``design recipe'' laid out in class. That is, you must write the method purpose statement comment, tests, and the implementation.}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{int sumOdd(List<Integer> l)} that, when given a  list of integers, filters out even numbers and then calculates the sum of the remaining odd numbers. You must use the Stream API.}
 
@@ -417,7 +417,7 @@ Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet 
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{Optional<Integer> min(List<Integer> lon)} method that, when given a list of integers, returns the minimum value in the list as an \ttt{Optional<Integer>}. If there are no values in the given list, return \ttt{Optional.empty()}. You must use the Stream API.}
 
-\exercise{1}{chapter-arrays-collections}{Design the generic \ttt{<K, V> V lookup(Map<K, V> m)} method that, when given an \ttt{Map<K, V>} $m$ and a value $k$ of type \ttt{K}, returns the corresponding value (of type \ttt{V}) associated with the key $k$. If the key does not exist, return \ttt{null}. You will need to use the \ttt{.equals} method.}
+\exercise{1}{chapter-arrays-collections}{Design the generic \ttt{<K, V> V lookup(Map<K, V> m)} method that, when given an \ttt{Map<K, V>} $M$ and a value $k$ of type \ttt{K}, returns the corresponding value (of type \ttt{V}) associated with the key $k$ in~$M$. If the key does not exist, return \ttt{null}. You will need to use the \ttt{.equals} method.}
 
 \exercise{1}{chapter-arrays-collections}{Design the generic \ttt{<T> String stringifyList(List<T> l)} method that, when given an list of values $l$, returns a \ttt{String} of comma-separated values where each value is an element of $l$, but converted into a \ttt{String}. You'll need to use the \ttt{.toString} method implementation of the generic type \ttt{T}.}
 

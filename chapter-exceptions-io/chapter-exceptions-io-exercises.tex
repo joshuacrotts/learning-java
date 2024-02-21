@@ -93,6 +93,25 @@ Hi [hwo] are you [donig] I am [dioing] [jsut] fine if I say so
 
 For all methods (except \ttt{read}), if the data has yet to be read, throw an \ttt{IllegalStateException}. 
 
+\exercise{2}{chapter-exceptions-io}{You are teaching an introductory programming course and you want to keep a seating chart for your students. A seating chart is an arrangement of numbers $1..n$, the location in the classroom of which is defined by the instructor. Numbers that are lower in the range are closer to the front of the room. Design the \ttt{SeatingChart} class, which has the following methods:}
+
+\begin{itemize}
+    \item \ttt{SeatingChart()} is the constructor, which initializes the seating chart to be empty. The seating chart is represented as a \ttt{List<Student>}, where \ttt{Student} is a private and static class, inside \ttt{SeatingChart}, that you design. Students should have a name, a seat number, and an accommodation parameter. The seat number is an integer, and the accommodation parameter is a boolean.
+
+    \item \ttt{void read(String fileName)} reads in a list of students from a file into the seating chart. The file contains a list of students, one per line, with their name. A student also has an optional accommodation parameter, which means they should sit in a seat closer to the front of the room. The file is comma-separated, and if the student has an accommodation, it is represented by \ttt{true} after the student's name.
+    \begin{verbnobox}[\small]
+Alice
+Bob,true
+Charlie
+    \end{verbnobox}
+    \item \ttt{void scramble()} scrambles the seating chart. That is, it randomly shuffles the students in the seating chart. This also accounts for the accommodations, so that students with accommodations are closer to the front of the room.
+    \item \ttt{void alphabetize()} sorts the seating chart alphabetically by the students' names. This mode does not account for accommodations, and is strictly alphabetical.
+    \item \ttt{List<Student> getStudents()} returns the seating chart as a list of students.
+    \item \ttt{List<Student> getAccommodationStudents()} returns the students with accommodations as a list.
+    \item \ttt{void output(String fileName)} outputs the seating chart to a file specified by the parameter. The file should contain the students' names and their seat numbers, one per line, separated by a comma. The output list should be in the order of the seating chart.
+\end{itemize}
+
+
 \exercise{3}{chapter-exceptions-io}{A binary relation $\mathcal{R}$ is a subset of the cartesian product of two sets $A$ and $B$. That is, $\mathcal{R} \subseteq A \times B$ such that $A \times B = \{\langle{x, y}\rangle \mid x \in A \text{ and } y \in B\}$. There are several ways that we can describe binary relations, including reflexive, symmetric, transitive, antisymmetric, asymmetric, irreflexive, and serial.}
 
 Design the generic \ttt{BinaryRelation<T, U>} class to represent a mathematical binary relation. It should store a \ttt{Set<Pair<String, String>{>}}, where the inner pair is the associated tuples of the set. Its constructor should instantiate the set instance variable. 
