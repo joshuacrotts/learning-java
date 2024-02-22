@@ -56,7 +56,7 @@ import static DIntArray.add;
 class DIntArrayTester {
 
   @Test
-  void addTest() {
+  void testAdd() {
     int[] arr1 = makeList(5);
     int[] arr2 = addToList(arr1, 20);
     int[] arr3 = addToList(arr2, 350);
@@ -326,7 +326,7 @@ import static NumAverage.numAverage;
 class NumAverageTester {
 
   @Test
-  void numAverageTest() {
+  void testNumAverage() {
     assertAll(
       () -> assertEquals(0, numAverage()),
       () -> assertEquals(5.66, numAverage(5, 2, 10)),
@@ -1289,7 +1289,7 @@ import java.util.BigInteger;
 class BigIntFibStreamTester {
 
   @Test
-  void bigIntFibStreamTest() {
+  void testBigIntFibStream() {
     // Get the stream, test ten values, make sure the lists are the same
     // length, then test each subarray.
     Stream<BigInteger[]> s = StreamExample.fibonacciStream();
@@ -1338,7 +1338,7 @@ class BigIntFibStream {
     \item [\ttt{int $S$.count$()$}] returns the number of elements in the stream.
     \item [\ttt{Stream<$T$> $S$.map($f$)}] returns a new stream whose elements are the result of applying $f$ to each element of~$S$.
     \item [\ttt{Stream<$T$> $S$.filter($p$)}] returns a new stream of values in $S$ that satisfy the predicate~$p$.
-    \item [\ttt{Stream<$T$> $S$.reduce($a$, $f$)}] returns the result of applying the binary function $f$ to each element of $S$, starting from $a$, which serves as the accumulator's initial value.
+    \item [$T$ $S$.reduce($a$, $f$)] returns the result of applying the binary function $f$ to each element of $S$, starting from $a$, which serves as the accumulator's initial value. The type of $a$ is $T$, which matches the elements of the stream.
     \item [\ttt{Stream<$T$> $S$.limit($n$)}] returns a new stream containing the first $n$ elements of~$S$.
     \item [\ttt{Stream<$T$> $S$.skip($n$)}] returns a new stream containing the elements of $S$ after the first~$n$.
     \item [\ttt{Optional<$T$> $S$.min/max($c$)}] returns the minimum/maximum element of $S$ according to the comparator $c$. If $S$ is empty, returns \ttt{Optional.empty()}.
@@ -1429,7 +1429,7 @@ import java.util.ArrayList;
 class SqListTester {
 
   @Test
-  void sqListTest() {
+  void testSqList() {
     List<Integer> ls1 = new ArrayList<>(List.of(1, 4, 9, 16, 25));
     List<Integer> ls2 = new ArrayList<>(List.of(0, 100, 81, 81));
     List<Integer> ls3 = new ArrayList<>();

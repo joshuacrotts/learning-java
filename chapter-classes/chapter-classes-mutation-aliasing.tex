@@ -97,9 +97,9 @@ class PointTester {
   private final Point P3 = new Point(1, 8);
 
   @Test
-  void pointArrayListAliasingTest() {
-    ArrayList<Point> list1 = new ArrayList<>(List.of(P1, P2, P3));
-    ArrayList<Point> list2 = list1;
+  void testPointArrayListAliasing() {
+    List<Point> list1 = new ArrayList<>(List.of(P1, P2, P3));
+    List<Point> list2 = list1;
     list1.add(new Point(5, 6));
 
     // First we can verify that the lists are actually the same.

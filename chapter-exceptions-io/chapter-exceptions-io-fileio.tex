@@ -14,14 +14,14 @@ class FileInputStreamExample {
 
   public static void main(String[] args) {
     FileInputStream fis = null;
-    String inputFile = "file1.in";
+    String inFile = "file1.in";
     try {
-      fis = new FileInputStream(inputFile);
+      fis = new FileInputStream(inFile);
       // Read in data byte-by-byte.
       int val = -1;
       while ((val = fis.read()) != -1) { System.out.print(val); }
     } catch (FileNotFoundException ex) {
-      System.err.printf("main: could not find %s\n", inputFile);
+      System.err.printf("main: could not find %s\n", inFile);
     } catch (IOException ex) {
       System.err.printf("main: an I/O error occurred: %s\n", ex.getMessage());
     } finally {
@@ -50,7 +50,7 @@ class FileCopyExample {
       int val = -1;
       while ((val = fis.read()) != -1) { fos.write(val); }
     } catch (FileNotFoundException ex) {
-      System.err.printf("main: could not find %s\n", inputFile);
+      System.err.printf("main: could not find file1.in\n");
     } catch (IOException ex) {
       System.err.printf("main: an I/O error occurred: %s\n", ex.getMessage());
     }
@@ -95,6 +95,37 @@ class FileReaderWriterExamples {
 If we open the \ttt{file2.out}, we see that it outputs \ttt{"Here is a string"} on one line, followed by \ttt{"Here is another string"} on the next line. Then, we might expect it to output the numeric strings \ttt{"9"}, \ttt{"71"}, and \ttt{"33"} all on the same line. The \ttt{write} method will coerce (valid) numbers into their ASCII character counterparts, meaning that the file contains the tab character, an uppercase \ttt{`G'}, and the exclamation point \ttt{`!'}. As we will soon demonstrate, working directly with \ttt{FileReader} and \ttt{FileWriter} is rarely advantageous. 
 
 The problem with the file input and output stream classes, as well as the file reader and writer classes, is that they interact directly with the operating system using low-level operations. Constantly invoking these low-level operations is expensive on the CPU for various reasons, and these classes read/write byte-after-byte of data, which is horribly inefficient. The \ttt{BufferedReader} and \ttt{BufferedWriter} classes aim to alleviate this problem by instantiating buffers for data. Then, when the buffer is full, the data is flushed to either the source or destination. This way, the program makes fewer operating system-level calls, improving overall program performance. To read from a stream, as suggested, we use \ttt{BufferedReader}. Its constructor receives an instance of the \ttt{Reader} class, which may be one of several classes. For example, to read from a file, we wrap a \ttt{FileReader} inside the constructor of \ttt{BufferedReader}. Wrapping a \ttt{FileReader} inside a \ttt{BufferedReader} allows the buffered reader to interplay (using its optimization techniques) with the file reader, which in turn interacts with the operating system. To output data using buffered I/O, we use the analogous \ttt{BufferedWriter} class, which receives a \ttt{Writer} instance. 
+
+\begin{figure}[tp]
+  \small
+  \begin{tcolorbox}[title=BufferedReader Methods]
+    The \ttt{BufferedReader} class provides methods for reading from a data source using a buffered mechanism.
+    \vspace{2ex}
+  \begin{description}
+    \item [\ttt{$R$ = new BufferedReader(new FileReader($f$))}] creates a new buffered reader instance that reads from the file $f$, where $f$ is either a \ttt{String} or a \ttt{File} object.
+    \item [\ttt{int $R$.read()}] reads a single character from the input stream $R$. Calling \ttt{read} advances the location of the file pointer by one byte. If the stream is empty or reads an \ttt{EOF} character, returns $-1$.
+    \item [\ttt{String $R$.readLine()}] reads a line of text from the input stream $R$. Calling \ttt{readLine} advances the location of the file pointer to the next line. If the stream is empty or has no further lines to consume, returns \ttt{null}.
+    \item [\ttt{void $R$.close()}] closes the input stream $R$.
+  \end{description}
+\end{tcolorbox}
+  \caption{Useful \ttt{BufferedReader} Methods.}
+  \label{fig:br}
+\end{figure}
+
+\begin{figure}[tp]
+  \small
+  \begin{tcolorbox}[title=BufferedWriter Methods]
+    The \ttt{BufferedWriter} class provides methods for writing to a data source using a buffered mechanism.
+    \vspace{2ex}
+  \begin{description}
+    \item [\ttt{$W$ = new BufferedWriter(new FileWriter($f$))}] creates a new buffered writer instance that writes to the file $f$, where $f$ is either a \ttt{String} or a \ttt{File} object.
+    \item [\ttt{void $W$.write($s$)}] writes a string $s$ to the output stream $W$.
+    \item [\ttt{void $W$.close()}] closes the output stream $W$.
+  \end{description}
+\end{tcolorbox}
+  \caption{Useful \ttt{BufferedWriter} Methods.}
+  \label{fig:bw}
+\end{figure}
 
 \example{Using \ttt{BufferedReader} and \ttt{BufferedWriter}, we will write a program that reads data from a file and outputs it to another file.}
 
@@ -145,6 +176,23 @@ class PerformanceExamples {
 \end{cl}  
 
 The classes that we have explored thus far are primarily for reading/writing either binary or text data. Perhaps we want to output values that are not strictly strings or raw bytes, e.g., integers, doubles, floats, and other primitives datatypes. To do so, we can instantiate a \ttt{PrintWriter} instance, which itself receives an instance of the \ttt{Writer} class. A concern for some programmers may be that we lose the benefits of buffered I/O, but this is not the case; the constructor for \ttt{PrintWriter} wraps the writer object that it receives in an instantiation of a \ttt{BufferedWriter} object. Therefore, we do not forgo any performance gains from buffered writing, while gaining the ability to write non-strictly-text data.
+
+\begin{figure}[tp]
+  \small
+  \begin{tcolorbox}[title=PrintWriter Methods]
+    The \ttt{PrintWriter} class provides utility methods for writing different types of data to a data destination.
+    \vspace{2ex}
+  \begin{description}
+    \item [\ttt{$P$ = new PrintWriter(new FileWriter($f$))}] creates a new print writer instance that writes to a file $f$, where $f$ is either a \ttt{String} or a \ttt{File} object.
+    \item [\ttt{void $P$.print($x$)}] writes the string representation of $x$ to the output stream $P$.
+    \item [\ttt{void $P$.println($x$)}] writes the string representation of $x$ to the output stream $P$, followed by a newline character.
+    \item [\ttt{void $P$.printf($f$, $x$)}] writes a formatted string to the output stream $P$, where $f$ is a format string and $x$ is the value to be formatted.
+    \item [\ttt{void $P$.close()}] closes the output stream $P$.
+  \end{description}
+\end{tcolorbox}
+  \caption{Useful \ttt{BufferedReader} and \ttt{BufferedWriter} Methods.}
+  \label{fig:bwbr}
+\end{figure}
 
 \example{Using \ttt{PrintWriter}, let's output some arbitrary constants and formatted strings to a file.}
 
@@ -211,6 +259,21 @@ class ObjectStreamExample {
 \end{cl}
 
 Suppose, on the contrary, that we store objects as strings in a file. This has two problems: first, as we said before, we would need to recursively serialize all compositional objects of the object that we are serializing. Second, we would need to write a parser to read the stringified object and reinitialize its fields. In essence, we have to reinvent worse versions of preexisting classes.
+
+\begin{figure}[tp]
+  \small
+  \begin{tcolorbox}[title=Scanner Constructor Methods]
+    The \ttt{Scanner} class has several constructors for reading from different data sources.
+    \vspace{2ex}
+  \begin{description}
+    \item [\ttt{$S$ = new Scanner(System.in)}] creates a new scanner instance that reads from the standard input stream.
+    \item [\ttt{$S$ = new Scanner($f$)}] creates a new scanner instance that reads from the file $f$, where $f$ is a \ttt{File} object.
+    \item [\ttt{void $S$.close()}] closes the input scanner $S$.
+  \end{description}
+\end{tcolorbox}
+\caption{Useful \ttt{Scanner} Constructors.}
+\label{fig:sccons}
+\end{figure}
 
 \example{In the first chapter we saw how to use the \ttt{Scanner} class to read from standard input. Indeed, standard input is a source of data input, but we can wrap any instance of \ttt{InputStream} or \ttt{File} inside a \ttt{Scanner} to take advantage of its helpful data-parsing methods. Let's design a method that reads a series of values that represent \ttt{Employee} data for a company. We just saw that we can take advantage of \ttt{Serializable} to do this for us, but it is helpful to see how we can also use a \ttt{Scanner} to solve a similar problem.}
 
@@ -314,6 +377,40 @@ class EmployeeScanner {
 
 At this point we have seen several methods and classes for reading data from different data sources. Let's now write a few more meaningful programs.
 
+\begin{figure}[tp]
+  \small
+  \begin{tcolorbox}[title=Scanner Querying Methods]
+    The \ttt{Scanner} class has several methods for determining the type of data that is next in the input stream.
+    \vspace{2ex}
+  \begin{description}
+    \item [\ttt{boolean $S$.hasNext()}] returns \ttt{true} if the scanner has another token in its input.
+    \item [\ttt{boolean $S$.hasNextInt()}] returns \ttt{true} if the scanner has another integer in its input.
+    \item [\ttt{boolean $S$.hasNextDouble()}] returns \ttt{true} if the scanner has another double in its input.
+    \item [\ttt{boolean $S$.hasNextBoolean()}] returns \ttt{true} if the scanner has another boolean in its input.
+    \item [\ttt{boolean $S$.hasNextLine()}] returns \ttt{true} if the scanner has another line in its input.
+  \end{description}
+\end{tcolorbox}
+\caption{Useful \ttt{Scanner} Querying Methods.}
+\label{fig:scq}
+\end{figure}
+
+\begin{figure}[tp]
+  \small
+  \begin{tcolorbox}[title=Scanner Methods]
+    The \ttt{Scanner} class has several methods for reading different types of data from its input stream.
+    \vspace{2ex}
+  \begin{description}
+    \item [\ttt{String $S$.next()}] returns the next token from the scanner. Any leading whitespace is skipped. Generally, this method should not be used, instead opting for one of the four methods below.
+    \item [\ttt{int $S$.nextInt()}] returns the next integer from the scanner. If there is a newline character following the integer, it is left in the buffer. If there is no integer to be read, throws an \ttt{InputMismatchException}. 
+    \item [\ttt{double $S$.nextDouble()}] returns the next double from the scanner. If there is a newline character following the double, it is left in the buffer. If there is no double to be read, throws an \ttt{InputMismatchException}.
+    \item [\ttt{boolean $S$.nextBoolean()}] returns the next boolean from the scanner. The same rules apply as for \ttt{nextInt} and \ttt{nextDouble}.
+    \item [\ttt{String $S$.nextLine()}] returns the next line from the scanner. The newline character is removed from the input buffer, but \textit{not} included in the returned string. 
+  \end{description}
+\end{tcolorbox}
+  \caption{Useful \ttt{Scanner} Methods.}
+  \label{fig:scin}
+\end{figure}
+
 \example{Let's write a program that reads a file containing integers and outputs, to another file, the even integers. Because our input file has only integers, we can use the \ttt{Scanner} class for reading the data and \ttt{PrintWriter} to output those even integers. To make the program a bit more interesting, we will read the input file from the terminal arguments, and output the even integers to a file whose name is the same as the input file, but instead with the \ttt{.out} extension.}
 
 \begin{cl}[EvenIntegers.java]{Reading and Writing Even Integers}
@@ -329,11 +426,11 @@ class EvenIntegers {
       System.exit(1);
     }
 
-    String inputFile = args[0];
-    String outputFile = inputFile.substring(0, inputFile.lastIndexOf('.')) + ".out";
+    String inFile = args[0];
+    String outFile = inFile.substring(0, inFile.lastIndexOf('.')) + ".out";
 
-    try (Scanner f = new Scanner(new File(inputFile));
-         PrintWriter pw = new PrintWriter(new FileWriter(outputFile))) {
+    try (Scanner f = new Scanner(new File(inFile));
+         PrintWriter pw = new PrintWriter(new FileWriter(outFile))) {
       while (f.hasNextInt()) {
         int val = f.nextInt();
         if (val % 2 == 0) { pw.println(val); }
@@ -434,10 +531,10 @@ class ConcatenateFiles {
   /**
    * Concatenates the contents of a list of files into a single file.
    * @param files array of file names.
-   * @param outputFile name of output file.
+   * @param outFile name of output file.
    */
-  private static void concatenate(String[] files, String outputFile) {
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile))) {
+  private static void concatenate(String[] files, String outFile) {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(outFile))) {
       for (String file : files) {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
           String line = null;
@@ -453,15 +550,15 @@ class ConcatenateFiles {
       System.exit(1);
     }
 
-    String[] inputFiles = Arrays.copyOfRange(args, 0, args.length - 1);
-    String outputFile = args[args.length - 1];
+    String[] inFiles = Arrays.copyOfRange(args, 0, args.length - 1);
+    String outFile = args[args.length - 1];
 
-    if (!sameExtension(inputFiles)) {
+    if (!sameExtension(inFiles)) {
       System.err.println("ConcatenateFiles: all files must have same extension");
       System.exit(1);
     }
 
-    concatenate(inputFiles, outputFile);
+    concatenate(inFiles, outFile);
   }
 }
 \end{lstlisting}
@@ -553,7 +650,7 @@ class TemperatureComputer {
 \end{lstlisting}
 \end{cl}
 
-As stated, using a map is the appropriate data structure, so let's instantiate a \ttt{HashMap} due to its quick lookup times.\footnote{In a couple of paragraphs, we will explain this decision instead of using a \ttt{TreeMap}.} Then, we declare, inside a try-with-resources, a \ttt{Stream<String>}, returned by the \ttt{lines} method. Once either the stream is fully consumed, the stream is closed, or the program execution finishes the try block, the file is also closed. From the stream, we could use a traditional for-each loop, but let's use stream operations instead. For every line $l$, we want to split it on the semicolon, retrieve the location and temperature, then update the map as necessary. Because we need to update the state of an object if it exists in the map, we will utilize the \ttt{putIfAbsent} method, which returns the associating \ttt{Measurement} if the key-to-put already exists.
+As stated, using a map is the appropriate data structure, so let's instantiate a \ttt{HashMap} due to its quick lookup times. Then, we declare, inside a try-with-resources, a \ttt{Stream<String>}, returned by the \ttt{lines} method. Once either the stream is fully consumed, the stream is closed, or the program execution finishes the try block, the file is also closed. From the stream, we could use a traditional for-each loop, but let's use stream operations instead. For every line $l$, we want to split it on the semicolon, retrieve the location and temperature, then update the map as necessary. Because we need to update the state of an object if it exists in the map, we will utilize the \ttt{putIfAbsent} method, which returns the associating \ttt{Measurement} if the key-to-put already exists.
 
 Lastly, we must conjoin the sorted pairs in the map with commas, which we can do via the \ttt{sorted()} and \ttt{Collectors.joining()} methods. In addition to this, we added a \ttt{toString} method to \ttt{Measurement} that returns a formatted string containing the minimum, average, and maximum temperatures floated to one decimal. Due to how trivial this is, we omit it in the listing.
 
@@ -574,23 +671,23 @@ class TemperatureComputer {
    * @return String formatted as aforementioned.
    */
   public static String computeMeasurement(String filename) {
-    Map<String, Measurement> measurementMap = new HashMap<>();
+    Map<String, Measurement> mMap = new HashMap<>();
     try (Stream<String> lines = Files.lines(Path.of(filename))) {
       lines.forEach(x -> {
         String[] arr = x.split(";");
         String location = arr[0];
         double temp = Double.parseDouble(arr[1]);
-        Measurement ms = measurementMap.putIfAbsent(location, new Measurement(temp));
+        Measurement ms = mMap.putIfAbsent(location, new Measurement(temp));
         if (ms != null) { ms.add(temp); }
       });
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-  return measurementMap.keySet()
-                       .stream()
-                       .sorted()
-                       .map(s -> String.format("%s=%s", s, measurementMap.get(s)))
-                       .collect(Collectors.joining(", "));
+    return mMap.keySet()
+               .stream()
+               .sorted()
+               .map(s -> String.format("%s=%s", s, mMap.get(s)))
+               .collect(Collectors.joining(", "));
   }
 
   // ... other class not shown.
@@ -598,7 +695,188 @@ class TemperatureComputer {
 \end{lstlisting}
 \end{cl}
 
-
 With inputs as large as what we assume them to be, we must make reasonable considerations with our choice of data structure. We could, theoretically, use a \ttt{TreeMap} and have the program autosort the measurement map pairs, but this is a performance penalty that is greater than using the \ttt{sorted} method as provided by the stream API over the map keys. In our tests, using a \ttt{TreeMap} amounted to a forty second performance penalty.
 
-% \example{Our last example is to mimic a ``find/replace'' program. We will write a program that receives a file name, a string to find, and a string to replace. The program will then output a file with the replaced string. For example, if the user passes the following arguments:
+\example{Our last example of working with File I/O is a simple Sudoku solver. \textit{Sudoku} is a game where the objective is to fill each row, column, and sub-grid with exactly one of possible entries, generally from $1$ to $9$. There are nine $3\times{3}$ subgrids that form a square, which results in a $9\times{9}$ grid.}
+
+The most straightforward algorithm to solve a Sudoku puzzle is via a backtracking algorithm. That is, we try to place a number in a cell and, if it leads to success, we continue with the solution. Otherwise, we undo the placement and try again. We will use File I/O to read in a partial Sudoku puzzle and to write the solution out to another file.
+
+Let's write the \ttt{SudokuSolver} class, whose constructor receives a file that represents a partial Sudoku puzzle. The input specification contains nine rows and nine columns, with dots to denote a missing number. From here, we will design the \ttt{boolean solve()} method, which returns whether or not a solution exists. If there is one, it is stored in an instance variable of the class. We will also design the \ttt{void output(String fileName)} method to output the solution to a file. If there is no solution, the program will throw an \ttt{IllegalStateException} to indicate a failure.
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.*;
+
+class SudokuSolver {
+
+  private static final int N = 9;
+  private int[][] board;
+  private int[][] solution;
+
+  public SudokuSolver(String filename) {
+    this.board = new int[N][N];
+    this.solution = new int[N][N];
+    try (Stream<String> lines = Files.lines(Path.of(filename))) {
+      int row = 0;
+      lines.forEach(x -> {
+        for (int i = 0; i < x.length(); i++) {
+          this.board[row][i] = x.charAt(i) == '.' ? 0 : x.charAt(i) - '0';
+          this.solution[row][i] = this.board[row][i];
+        }
+        row++;
+      });
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public boolean solve() { /* TODO. */ }
+
+  public void output(String filename) { /* TODO. */ }
+}
+\end{lstlisting}
+\end{cl}
+
+Our \ttt{solve} method jump-starts a backtracking algorithm that attempts to solve the puzzle using recursion. Let's design a private helper method to receive the row $r$ and column $c$ of the cell to fill. If $r$ and $c$ are both equal to $N$, then we have reached the end of the board and therefore have a solution. Otherwise, we need to find the next empty cell to fill. This is a three-step process:
+\begin{enumerate}[label=(\roman*)]
+  \item First, if the $y$ coordinate is equal to $N$, then we have reached the end of the row and need to move onto the next.
+  \item If the cell is not empty, we move onto the next cell.
+  \item If the cell is empty, we try to place a number in the cell. If the number is valid, we continue with the solution. Otherwise, we undo the placement and try again.
+\end{enumerate}
+
+What does it mean for a number to be valid? A number is valid in its placement if it does not already exist in the row, column, or subgrid. Let's write another private helper method that, when given a cell at row $r$ and column $c$, and a number $n$, determines whether or not the number is valid.
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.*;
+
+class SudokuSolver {
+
+  /* ... other variables and methods not shown. */
+
+  public SudokuSolver(String filename) { /* Implementation omitted. */ }
+
+  /**
+   * Returns whether or not a number is valid in a given cell.
+   * @param r - row of cell.
+   * @param c - column of cell.
+   * @param n - number to place in cell.
+   * @return true if number is valid, false otherwise.
+   */ 
+  private boolean isValid(int r, int c, int n) {
+    // Check the row and column simultaneously.
+    for (int i = 0; i < N; i++) {
+      if (this.board[r][i] == n || this.board[i][c] == n) { return false; }
+    }
+
+    // Check the subgrid.
+    int sr = (r / 3) * 3;
+    int sc = (c / 3) * 3;
+    for (int i = sr; i < sr + 3; i++) {
+      for (int j = sc; j < sc + 3; j++) {
+        if (this.board[i][j] == n) { return false; }
+      }
+    }
+    return true;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+From this we can begin to work on the recursive backtracking algorithm, using the outline we provided earlier. 
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.*;
+
+class SudokuSolver {
+
+  /* ... other variables and methods not shown. */
+
+  public SudokuSolver(String filename) { /* Implementation omitted. */ }
+
+  /**
+   * Returns whether or not a solution exists. If a solution does not exist,
+   * the variable that stores the solution is set to null.
+   * @return true if a solution exists, false otherwise.
+   */
+  private boolean solve() {
+    if (solve(0, 0, this.solution)) { 
+      return true; 
+    } else { 
+      this.solution = null; 
+      return false;
+    }
+  }
+
+  /**
+   * Recursive backtracking algorithm to solve the puzzle. 
+   * @param r - row of cell.
+   * @param c - column of cell.
+   * @param sol - solution array.
+   * @return true if we have a solution, and false if the current
+   *         placement is invalid or leads to a "dead end".
+   */ 
+  private boolean solve(int r, int c, int[][] sol) {
+    if (r == N) { return true; }
+    else if (c == N) { return solve(r + 1, 0, sol); }
+    else if (this.board[r][c] != 0) { return solve(r, c + 1, sol); }
+    else {
+      for (int i = 1; i <= N; i++) {
+        if (isValid(r, c, i)) {
+          this.sol[r][c] = i;
+          if (solve(r, c + 1, sol)) { return true; }
+          this.sol[r][c] = 0;
+        }
+      }
+    }
+    return false;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+Finally, the \ttt{output} method is straightforward. We use a \ttt{PrintWriter} to write the solution to a file. If there is no solution, meaning the solution instance variable is set to \ttt{null}, we throw an \ttt{IllegalStateException}.
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.*;
+
+class SudokuSolver {
+
+  /* ... other variables and methods not shown. */
+
+  public SudokuSolver(String filename) { /* Implementation omitted. */ }
+
+  /**
+   * Outputs the solution to a file. The solution is just a 9x9 grid of 
+   * numbers, and does not attempt to format the output in any way.
+   * @param filename - name of output file.
+   */
+  public void output(String filename) {
+    try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
+      if (this.solution == null) { 
+        throw new IllegalStateException("No solution exists."); 
+      } else {
+        for (int i = 0; i < N; i++) {
+          for (int j = 0; j < N; j++) {
+            pw.print(this.solution[i][j]);
+          }
+          pw.println();
+        }
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+}
+\end{lstlisting}
+\end{cl}

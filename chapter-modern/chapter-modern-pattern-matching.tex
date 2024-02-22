@@ -12,7 +12,7 @@ import static Assertions.assertEquals;
 class PatternMatchingTester {
 
   @Test
-  void patternMatchingTest() {
+  void testPatternMatching() {
     IShape circle = new Circle(5);
     IShape rectangle = new Rectangle(5, 10);
     IShape triangle = new Triangle(5);
@@ -63,7 +63,7 @@ import static Assertions.assertEquals;
 class FactorialTester {
 
   @Test
-  void factorialTest() {
+  void testFactorial() {
     assertAll(
       () -> assertEquals(1, factorial(0)),
       () -> assertEquals(1, factorial(1)),
@@ -133,7 +133,7 @@ import static Assertions.assertEquals;
 class RectangleTester {
 
   @Test
-  void equalsTest() {
+  void testEquals() {
     Rectangle r1 = new Rectangle(5, 10);
     Rectangle r2 = new Rectangle(5, 10);
     Rectangle r3 = new Rectangle(10, 5);
