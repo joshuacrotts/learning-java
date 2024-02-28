@@ -2,7 +2,7 @@
 
 Looping is a fundamental concept in computer programming. Loops allow for repetition of actions or tasks. As we stated in the previous section on recursion, any tail recursive algorithm may be translated into an algorithm that uses loops. In this section, we will describe this translation pipeline as a sequence of steps, then begin to distance ourselves from recursion when it is suboptimal.
 
-\subsection*{Translation Pipeline for Tail Recursive Methods}
+\subsection{Translation Pipeline for Tail Recursive Methods}
 \subsubsection*{A Coarse-Grained Approach}
 What follows is a high-level introduction to converting from tail recursive methods to iteration. While you may not understand everything at first, we supplement this with a comprehensive translation schema.
 
@@ -164,7 +164,7 @@ $TR$ is the tail recursive method derived either from the problem statement $P$ 
 
 Finally, in \textit{$TR_\mathbf{Ret}$}, we add the line to return the accumulated local variable(s). $I$ is the output translation.
 
-\subsection*{\textit{$TR_\mathbf{H}$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. Each of these play a crucial role in the transition to $I$, and quickly yet correctly identifying these as they fit in tail recursive methods is paramount. Let us re-look at our old factorial friend to see what this entails.
+\subsection{\textit{$TR_\mathbf{H}$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. Each of these play a crucial role in the transition to $I$, and quickly yet correctly identifying these as they fit in tail recursive methods is paramount. Let us re-look at our old factorial friend to see what this entails.
 
 \begin{cl}[]{Tail Recursive Factorial}
 \begin{lstlisting}[language=MyJava]
@@ -220,7 +220,7 @@ static int fact(int n, int acc) {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{\textit{$TR_\mathbf{IVP}$}:} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $\textit{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
+\subsection{\textit{$TR_\mathbf{IVP}$}:} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $\textit{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
 
 \begin{cl}[]{Accumulator Statement for Factorial}
 \begin{lstlisting}[language=MyJava]
@@ -250,7 +250,7 @@ static int fact(int n) {
 
 Writing these imperative variable purposes, akin to accumulator statements, helps us organize what variables change and, more importantly, when and how they change. 
 
-\subsection*{\textit{$TR_\mathbf{C}$}:} Up next is where we take our base case condition, highlighted in red, and insert it as the negated condition for our loop. First, we add the \ttt{while} keyword to our method, then follow this with a set of parentheses and an exclamation point immediately after the opening parenthesis but before the closing. Inside these parentheses we insert the base case condition. To be safe, you should also insert parentheses for the base case, which ensures that the correct expression is negated by the logical `not' operator. Follow this with an opening and closing brace set.
+\subsection{\textit{$TR_\mathbf{C}$}:} Up next is where we take our base case condition, highlighted in red, and insert it as the negated condition for our loop. First, we add the \ttt{while} keyword to our method, then follow this with a set of parentheses and an exclamation point immediately after the opening parenthesis but before the closing. Inside these parentheses we insert the base case condition. To be safe, you should also insert parentheses for the base case, which ensures that the correct expression is negated by the logical `not' operator. Follow this with an opening and closing brace set.
 
 \begin{cl}[]{Adding Condition to Loop}
 \begin{lstlisting}[language=MyJava]
@@ -264,7 +264,7 @@ static int fact(int n) {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{\textit{$TR_\mathbf{B}$}:} Finally we get to the fun part of this translation process: the body of our loop. Here we need to make a design choice of what variables to update and when they should be updated. We take the \textcolor{darkyellow}{yellow} highlighted tail recursive arguments, create assignment statements out of them, and insert them into the body of our loop. To do so, we need to follow two principles:
+\subsection{\textit{$TR_\mathbf{B}$}:} Finally we get to the fun part of this translation process: the body of our loop. Here we need to make a design choice of what variables to update and when they should be updated. We take the \textcolor{darkyellow}{yellow} highlighted tail recursive arguments, create assignment statements out of them, and insert them into the body of our loop. To do so, we need to follow two principles:
 
 \textbf{Rule of Reassignment}: In any tail recursive call, if we pass an expression $e$ which updates parameter $p$, then in the loop body, we directly reassign $p$ to $e$.
 
@@ -332,7 +332,7 @@ This results in $120$, which matches our recursive trace. Therefore, without los
 
 Determining the correct order of update, according to the rules we specify, may take a few tries to get right. The idea is to match the result of a tail recursive trace done previously that is known to be correct.
 
-\subsection*{\textit{$TR_\mathbf{Ret}$}:}
+\subsection{\textit{$TR_\mathbf{Ret}$}:}
 In our final stage of translation, we add the necessary return statement(s) that serve to return the accumulated result from our loop. We highlighted these values in \textcolor{darkgreen}{green} during the highlighting/color-coding stage.
 \begin{cl}[]{Adding Accumulator Return Statement to Loop}
 \begin{lstlisting}[language=MyJava]
@@ -356,7 +356,7 @@ Recall the benefit of tail recursion over standard recursion: it uses only one (
 
 From here we might ask a similar question: can we translate any standard recursive method into one that uses tail recursion (and by transitivity, iteration)? In general, the answer is yes, through a concept called \textit{continuation-passing style}\index{continuation-passing style}. Because of how difficult it is to implement continuations in Java, we will omit any further discussion, but interested readers should delve into functional programming if this equivalence is intriguing.
 
-\section*{Iteration Constructs}
+\section{Iteration Constructs}
 
 Perhaps the related equivalence to tail recursion is too abstract for some to digest. Indeed, we believe the relationship is somewhat far-fetched at first glance, but after enough practice, it becomes clear. We will now discuss loops from a non-translation perspective. That is, if we assume the translation diagram from before, we are going straight from the problem statement $P$ to the iterative solution $I$.
 
@@ -985,7 +985,7 @@ class FindReplace {
 \end{lstlisting}
 \end{cl}
 
-% \subsection*{Quick Check Questions}
+% \subsection{Quick Check Questions}
 % \begin{enumerate}
 %   \item \mcq{What is the primary purpose of loops in programming?}{To execute a block of code only once,To execute a block of code a fixed number of times based on a condition,To execute a block of code multiple times based on a condition,To check the validity of data before processing}
 

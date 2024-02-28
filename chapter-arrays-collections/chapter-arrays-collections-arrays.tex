@@ -213,11 +213,11 @@ Funnily enough, the standard recursive solution uses an accumulator like its tai
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
 
-  static String indexOf(String[] arrS, String k) {
-    return indexOf(arrS, k, 0);
+  static int indexOf(String[] arrS, String k) {
+    return indexOfHelper(arrS, k, 0);
   }
 
-  private static String indexOfHelper(String[] arrS, String k, int i) {
+  private static int indexOfHelper(String[] arrS, String k, int i) {
     if (i >= arrS.length) { return -1; } 
     else if (arrS[i].equals(k)) { return 0; } 
     else { return 1 + indexOfHelper(arrS, k, i + 1); }
@@ -230,11 +230,11 @@ class ArrayFinder {
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
 
-  static String indexOfTR(String[] arrS, String k) {
+  static int indexOfTR(String[] arrS, String k) {
     return indexOf(arrS, k, 0);
   }
 
-  private static String indexOfTRHelper(String[] arrS, String k, int i) {
+  private static int indexOfTRHelper(String[] arrS, String k, int i) {
     if (i >= arrS.length) { return -1; } 
     else if (arrS[i].equals(k)) { return i; } 
     else { return indexOfHelper(arrS, k, i + 1); }
@@ -249,7 +249,7 @@ In converting the tail recursive solution to use iteration, we will make use of 
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
 
-  static String indexOfLoop(String[] arrS, String k) {
+  static int indexOfLoop(String[] arrS, String k) {
     int i = 0;
     while (!(i >= arrS.length)) {
       if (arrS[i].equals(k)) { 
@@ -268,7 +268,7 @@ Of course, the conventional solution to this problem, especially since we know t
 \begin{lstlisting}[language=MyJava]
 class ArrayFinder {
   
-  static String indexOfLoop(String[] arrS, String k) {
+  static int indexOfLoop(String[] arrS, String k) {
     for (int i = 0; i < arrS.length; i++) {
       if (arrS[i].equals(k)) { 
         return i; 

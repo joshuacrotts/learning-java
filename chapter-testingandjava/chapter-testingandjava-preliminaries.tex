@@ -321,7 +321,7 @@ class QuarticFormulaSolver {
 
 And, as expected, all tests pass. With only methods and math operations at our disposal, the capabilities of said methods is quite limited. Let us start revamping our tool set by reintroducing strings.
 
-\subsection*{The Main Method}
+\subsection{The Main Method}
 Java programming tutorials are quick to throw a lot of information at the reader/viewer, and our textbook is no exception to this practice. Unfortunately, Java is one of the more verbose programming languages, and to get up and running with a method, we must wrap its definition inside a class. From there we can, of course, begin to write our \ttt{static} method. The question, of course, is what does the static keyword mean? For the first few chapters, we will intentionally omit the definition, as it would almost certainly confuse the reader coming from another language. Therefore, for the time being, simply view it as six characters, plus a space, that must be typed in order to write a method to then test with JUnit. Though, imagine a case in which we want to output the result of some value without using a test, as we will do in many examples. Java requires a \ttt{main} method in any executable Java class that does not use tests. For the sake of completeness, let's now write the traditional ``Hello, world!'' program, but in Java using the \ttt{main} method and not tests.
 
 \begin{cl}[]{Example of the Main Method}
@@ -337,7 +337,7 @@ class MainMethod {
 
 Yikes, that is a lot of required code to output some text to the console; what does \ttt{public} mean, and what are those \ttt{[]} brackets after the \ttt{String} word? Once again, we will not detail of their importance but view them as more mandatory characters to type when writing a \ttt{main} method. The only word we will explain is \ttt{void}, which means that the method does not return a value. If the readers are coming from a functional programming language, e.g., Scheme/Racket or OCaml, then it is almost certainly the case that they never worked with methods that did not return a value nor received no arguments. The \ttt{println} method in particular has no return value; its significance is the fact that it outputs some text to the terminal/console, which is a side-effect of the method. We'll come back to what all of this means in subsequent chapters, but we could not avoid at least briefly discussing it and its existence in the Java language.
 
-% \subsection*{Quick Check Questions}
+% \subsection{Quick Check Questions}
 % \begin{enumerate}[label=(\arabic*)]
 %   \item \mcq{In Java, what is the term used to describe functions that belong to a class?}{Procedures,Subroutines,Methods,Functions}
 

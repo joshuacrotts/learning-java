@@ -1,4 +1,4 @@
-\section*{Chapter Exercises}
+\section{Chapter Exercises}
 \addcontentsline{toc}{section}{Exercises}
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean isStrictlyIncreasing(int x, int y, int z)} that determines if three integers $x$, $y$, and $z$ are strictly increasing. By this, we mean that $x < y < z$.}
@@ -173,6 +173,8 @@ static boolean isNumeric(String n) {
 
 \exercise{1}{chapter-crl}{Design the \ttt{String sortThreeStrings(String a, String b, String c)} method that receives three strings and sorts them lexicographically. Return the sorted set of strings as a string itself, separated by commas. For example, if the input is \ttt{Charlie}, \ttt{Able}, \ttt{Baker}, you should return \ttt{Able,Baker,Charlie}.}
 
+\exercise{1}{chapter-crl}{Design the \ttt{int trickSum(int x, int y, int z)} method that sums the three integer inputs. If one of those values is $17$, however, it and any numbers to its right should not be included in the sum. For example, \ttt{trickSum(13, 17, 3)} resolves to \ttt{13} because, when $y=\ttt{17}$, we add neither $y$ nor $z$ to the resulting sum.}
+
 \exercise{1}{chapter-crl}{A year with $366$ days is called a leap year. Leap years are necessary to keep the calendar synchronized with the sun because the earth revolves around the sun once every $365.25$ days. Actually, that figure is not entirely precise, and for all dates after $1582$ the Gregorian correction applies. Usually years that are divisible by 4 are leap years, for example $1996$. However, years that are divisible by $100$ (for example, $1900$) are not leap years, but years that are divisible by $400$ are leap years (for example, $2000$). Design the \ttt{boolean isLeapYear(int y)} method that receives a year (as an integer) $y$ and computes whether $y$ is a leap year. Use a single \ttt{if} statement and Boolean operators.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{double computeDiscount(double c, int age, boolean isStudent)} met\-hod that computes a discount for some item cost $c$ based on their age $\mathit{age}$ and student status according to the following criteria:}
@@ -193,6 +195,15 @@ Your method should return the total cost of the item after applying the discount
     \item \ttt{"VA"}: $6.25\%$
     \item \ttt{"WA"}: $6.5\%$
     \item \ttt{"IN"}: $8.0\%$
+\end{itemize}
+
+\exercise{1}{chapter-crl}{Design the \ttt{double computeOvertimePay(double hrRate, double noHrs, boolean onVacation, double taxRate)} method that computes the amount of overtime pay (note: \textbf{only} the overtime pay) given to an employee under the following conditions:}
+\begin{itemize}
+    \item An employee's base overtime pay rate is $1.5$ times their hourly rate.
+    \item If the employee is on vacation, their pay rate is $2$ times their hourly rate rather than $1.5$.
+    \item If the number of hours is less than or equal to $40$, then no overtime pay is given.
+    \item If the number of hours is greater than $70$, then the resulting gross pay (before taxes) is increased by $15\%$.
+    \item The gross pay is subject to the tax \textit{percentage} passed to the method. 
 \end{itemize}
 
 \exercise{1}{chapter-crl}{Design the recursive \ttt{int countStr(String s)} that counts the number of times the substring \ttt{"str"} appears in a given string $s$.}

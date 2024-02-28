@@ -6,7 +6,7 @@ So, by having a class implement the \ttt{Comparable} interface, we group it into
 
 In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List}, \ttt{Queue}, and \ttt{Map} interfaces, which all have a set of methods that must be implemented by any class that implements the interface. Recall that \ttt{ArrayList} and \ttt{LinkedList} are both types of \ttt{List} objects, and this interface describes several methods that all lists, by definition, must override. To \textit{override} a method means that we provide a new implementation of the method that is different from the default implementation provided by the interface.
 
-\subsection*{Defining an Interface}
+\subsection{Defining an Interface}
 
 \example{Imagine that we want to design an interface that describes a shape. All (two-dimensional) shapes have an area and a perimeter, so we can define an interface that, when implemented by a class, requires that the class provide an implementation of the \ttt{area} and \ttt{perimeter} methods. A common convention for user-defined interfaces is to prefix the names with \ttt{I} to distinguish them from classes. Moreover, the names of interfaces are either nouns or, more traditionally, verbs, since they describe behaviors or characteristics of a class.}\footnote{We do not add the \ttt{public} keyword to the interface definition because all interface methods are implicitly public.}
 

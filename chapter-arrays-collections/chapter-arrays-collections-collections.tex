@@ -8,7 +8,7 @@ In this section we will introduce the \textit{Java Collections API}. In doing so
 \end{enumerate}
 Note that our discussion is not all-inclusive of every data structure in the API, but we present those that we feel are most valuable to this course.
 
-\subsection*{Sequential-Based Data Structures}
+\subsection{Sequential-Based Data Structures}
 We categorize data structures that have an ordering over the natural numbers as \textit{sequential-based}. That is, each element has an index where it ``lives'' for its lifetime. Each index is, similar to standard arrays, numbered from zero to the size of the collection minus one. Let us now take a dive into these different collections.
 \subsubsection*{\ttt{ArrayList} Class}
 Arrays are fixed-size data structures; once they are initialized, they cannot, themselves, be resized. A solution to this problem is to create a new array $A'$ of the same type with a new size and copy the elements from the old array to $A'$. Doing so is not difficult but cumbersome to repeatedly implement. Consider a situation in which the number of elements to store is unknown at compile-time. We, therefore, cannot use an array without repeated resizing. The correct and colloquial solution involves the \ttt{ArrayList} class.
@@ -185,12 +185,12 @@ What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation
     % \vspace{2ex}
   \begin{description}
     \item [\ttt{List<$T$> $A=$ new ArrayList<>()}] creates an \ttt{ArrayList} of type $T$ named~$A$.
-    \item [\ttt{$A$.get$(i)$}] retrieves the element at index $i^{\text{th}}$ of $A$. We refer to this as position $i + 1$. 
-    \item [\ttt{$A$.set$(i, v)$}] assigns $v$ to index $i$ of $A$.
-    \item [\ttt{$A$.size$()$}] returns the number of logical elements in the list, i.e., the logical size.
-    \item [\ttt{$A_1$.equals}$(A_2)$] returns whether or not the elements of $A_1$ are equal to the elements of $A_2$, using the \ttt{.equals} method implementation of $A_1$.
-    \item [\ttt{$A$.toString$()$}] returns a string representation of the elements in $A$, separated by commas and enclosed by brackets.
-    \item [\ttt{Collections.sort}$(A)$] performs an in-place sort of $A$, meaning the contents of $A$ are modified.
+    \item [\ttt{$T$ $A$.get$(i)$}] retrieves the element at index $i^{\text{th}}$ of $A$. We refer to this as position $i + 1$. 
+    \item [\ttt{void $A$.set$(i, v)$}] assigns $v$ to index $i$ of $A$.
+    \item [\ttt{int $A$.size$()$}] returns the number of logical elements in the list, i.e., the logical size.
+    \item [\ttt{boolean $A_1$.equals}$(A_2)$] returns whether or not the elements of $A_1$ are equal to the elements of $A_2$, using the \ttt{.equals} method implementation of $A_1$.
+    \item [\ttt{String $A$.toString$()$}] returns a string representation of the elements in $A$, separated by commas and enclosed by brackets.
+    \item [\ttt{void Collections.sort}$(A)$] performs an in-place sort of $A$, meaning the contents of $A$ are modified.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{ArrayList}-based Methods.}
@@ -381,9 +381,9 @@ Of course, these advantages are not without their disadvantages. Reading and mod
     % \vspace{2ex}
   \begin{description}
     \item [\ttt{List<$T$> $A=$ new LinkedList<>()}] creates a \ttt{LinkedList} of type $T$ named~$A$.
-    \item [\ttt{$A$.get$(i)$}] retrieves the element at index $i^{\text{th}}$ of $A$. We refer to this as position $i + 1$. 
-    \item [\ttt{$A$.set$(i, v)$}] assigns $v$ to index $i$ of $A$.
-    \item [\ttt{$A$.size$()$}] returns the number of logical elements in the list, i.e., the logical size.
+    \item [\ttt{$T$ $A$.get$(i)$}] retrieves the element at index $i^{\text{th}}$ of $A$. We refer to this as position $i + 1$. 
+    \item [\ttt{void $A$.set$(i, v)$}] assigns $v$ to index $i$ of $A$.
+    \item [\ttt{int $A$.size$()$}] returns the number of logical elements in the list, i.e., the logical size.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{LinkedList}-based Methods.}
@@ -402,10 +402,10 @@ Of course, these advantages are not without their disadvantages. Reading and mod
     % \vspace{2ex}
   \begin{description}
     \item [\ttt{Stack<$T$> $S=$ new Stack<>()}] creates a \ttt{Stack} of type $T$, named $S$.
-    \item [\ttt{$S$.peek$()$}] returns, but does not remove, the top element of $S$.
-    \item [\ttt{$S$.pop$()$}] returns and removes the top element of $S$.
-    \item [\ttt{$S$.push$(e)$}] pushes $e$ to the top of $S$, making $e$ the element on the top of the stack.
-    \item [\ttt{$S$.size$()$}] returns the number of logical elements in the stack.
+    \item [\ttt{$T$ $S$.peek$()$}] returns, but does not remove, the top element of $S$.
+    \item [\ttt{$T$ $S$.pop$()$}] returns and removes the top element of $S$.
+    \item [\ttt{void $S$.push$(e)$}] pushes $e$ to the top of $S$, making $e$ the element on the top of the stack.
+    \item [\ttt{int $S$.size$()$}] returns the number of logical elements in the stack.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{Stack}-based Methods.}
@@ -493,18 +493,18 @@ Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. Instead
 \begin{verbnobox}[\small]
 Queue<Integer> q = new LinkedList<>();
 \end{verbnobox}
-Treating \texttt{q} as a queue rather than a linked list is easy thanks to the methods supplied by the \texttt{LinkedList} implementation. Figure~\ref{fig:queues} shows some of these handy methods. 
+Treating \texttt{q} as a queue rather than a linked list is easy thanks to the methods supplied by the \texttt{LinkedList}\index{\ttt{LinkedList}} implementation. Figure~\ref{fig:queues} shows some of these handy methods. 
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Queue]
-    A \textit{Queue} is a first-in-first-out (FIFO) sequential data structure where each element is linked to the element immediately after.
+    A \textit{Queue}\index{queue}\index{\ttt{Queue}} is a first-in-first-out (FIFO) sequential data structure where each element is linked to the element immediately after.
     \vspace{2ex}
   \begin{description}
     \item [\ttt{Queue<$T$> $Q=$ new LinkedList<>()}] creates a \ttt{Queue} of type $T$, named $Q$.
-     \item [\ttt{$Q$.addLast$(e)$}] adds $e$ to the end of $Q$, placing it at the end of the queue structure.
-     \item [\ttt{$Q$.poll$()$}] returns and removes the element from the front of the queue.
-     \item [\ttt{$Q$.peek$()$}] returns the front-most element in the queue.
-    \item [\ttt{$Q$.size$()$}] returns the number of logical elements in the queue.
+     \item [\ttt{void $Q$.addLast$(e)$}] adds $e$ to the end of $Q$, placing it at the end of the queue structure.
+     \item [\ttt{$T$ $Q$.poll$()$}] returns and removes the element from the front of the queue.
+     \item [\ttt{$T$ $Q$.peek$()$}] returns the front-most element in the queue.
+    \item [\ttt{int $Q$.size$()$}] returns the number of logical elements in the queue.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{Queue}-based Methods.}
@@ -515,33 +515,32 @@ Treating \texttt{q} as a queue rather than a linked list is easy thanks to the m
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java PriorityQueue]
-    A \textit{Priority queue} is a rank/score-based data structure wherein the ordering of elements is determined by either their natural ordering or a \ttt{Comparator}.
+    A \textit{Priority queue}\index{priority queue} is a rank/score-based data structure wherein the ordering of elements is determined by either their natural ordering or a \ttt{Comparator}.
     \vspace{2ex}
   \begin{description}
-    \item [\ttt{Queue<$T$> $PQ=$ new PriorityQueue<>($c$)}] creates a \ttt{PriorityQueue} of type $T$, named $PQ$, with a \ttt{Comparator} $c$ that is used to compare objects of type $T$ within the priority queue.
-     \item [\ttt{$PQ$.add$(e)$}] inserts $e$ into $PQ$, whose position in the priority queue depends on the currently-existing elements.
-     \item [\ttt{$PQ$.poll$()$}] returns and removes the element with the highest priority.
-     \item [\ttt{$PQ$.peek$()$}] returns the element with the highest priority.
-    \item [\ttt{$PQ$.size$()$}] returns the number of logical elements in the priority queue.
+    \item [\ttt{PriorityQueue<$T$> $PQ=$ new PriorityQueue<>($c$)}] creates a \ttt{PriorityQueue} of type $T$, named $PQ$, with a \ttt{Comparator} $c$ that is used to compare objects of type $T$ within the priority queue.
+     \item [\ttt{void $PQ$.add$(e)$}] inserts $e$ into $PQ$, whose position in the priority queue depends on the currently-existing elements.
+     \item [\ttt{$T$ $PQ$.poll$()$}] returns and removes the element with the highest priority.
+     \item [\ttt{$T$ $PQ$.peek$()$}] returns the element with the highest priority.
+    \item [\ttt{int $PQ$.size$()$}] returns the number of logical elements in the priority queue.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{PriorityQueue}-based Methods.}
   \label{fig:priorityqueues}
 \end{figure}
 
-\textit{Priority queues} are the final sequential data structure that we will discuss from the Collections API\@. Though, placing it in this section is slightly disingenuous because, while priority queues have an ordering in their underlying data structure, saying that elements correspond to an index is largely incorrect. Priority queues, as their name suggests, rank items in the queue by a score called the \textit{priority}. Elements with the highest priority are at the ``front'' of the priority queue. Inserting elements into a priority queue potentially alters the positioning of preexisting elements.
+\textit{Priority queues}\index{priority queues} are the final sequential data structure that we will discuss from the Collections API\@. Though, placing it in this section is slightly disingenuous because, while priority queues have an ordering in their underlying data structure, saying that elements correspond to an index is largely incorrect. Priority queues, as their name suggests, rank items in the queue by a score called the \textit{priority}\index{priority}. Elements with the highest priority are at the ``front'' of the priority queue. Inserting elements into a priority queue potentially alters the positioning of preexisting elements.
 
-Priority queues base priority on one of two contributing factors: either the \textit{natural ordering} of elements, or a \textit{comparator object}. The natural ordering of elements is straightforward: natural ordering for numbers is their standard numeric ordering. For strings, the natural ordering is by lexicographical ordering. These, however, are not as interesting as comparators, which we will now discuss.
+Priority queues base priority on one of two contributing factors: either the \textit{natural ordering}\index{natural ordering} of elements, or a \textit{comparator object}\index{comparator object}. The natural ordering of elements is straightforward: natural ordering for numbers is their standard numeric ordering. For strings, the natural ordering is by lexicographical ordering. These, however, are not as interesting as comparators, which we will now discuss.
 
-A \textit{comparator} is a way of comparing two arbitrary ``things,'' whether these things are numbers (i.e., the wrapper classes), strings, or another kind of object, we can define custom ways of comparing \textit{any} non-primitive datatype.
+A \textit{comparator}\index{comparator} is a way of comparing two arbitrary ``things,'' whether these things are numbers (i.e., the wrapper classes), strings, or another kind of object, we can define custom ways of comparing \textit{any} non-primitive datatype.
 
-\example{Let us design a \ttt{Comparator} for prioritizing strings that start with the lowercase letter \ttt{`p'}. Comparators are constructed like other objects via \ttt{new}, but something interesting about their implementation is that we must specify \textit{how} to compare two objects. Therefore when we create a new instance of \ttt{Comparator} we must also override its \ttt{compare} method. This method's signature varies based on the parameterized type provided to the comparator, but since we want to compare strings, we should declare it as follows:\footnote{Again, we are labeling the return type as a \textit{Queue} because priority queues are a type of queue. Upon instantiating a new priority queue, Java will typecheck the return value against the signature of the method to verify that we are returning something that is, in fact, a queue.}}
+\example{Let us design a \ttt{Comparator}\index{\ttt{Comparator}} for prioritizing strings that start with the lowercase letter \ttt{`p'}. Comparators are constructed like other objects via \ttt{new}, but something interesting about their implementation is that we must specify \textit{how} to compare two objects. Therefore when we create a new instance of \ttt{Comparator} we must also override its \ttt{compare} method. This method's signature varies based on the parameterized type provided to the comparator, but since we want to compare strings, we should declare it as follows:}
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 class PriorityQueueByP {
 
@@ -549,7 +548,7 @@ class PriorityQueueByP {
    * Returns a priority queue that prioritizes strings that start with `p'.
    * @return priority queue instance.
    */
-  static Queue<String> priorityByP() {
+  static PriorityQueue<String> priorityByP() {
     Comparator<String> c = new Comparator<>(
       @Override
       public int compare(String s1, String s2) { 
@@ -561,7 +560,9 @@ class PriorityQueueByP {
 \end{lstlisting}
 \end{cl}
 
-We now must specify how to compare \ttt{s1} and \ttt{s2} to achieve our goal. Strangely enough, if we want to say that \ttt{s1} has a higher priority than \ttt{s2}, we must return a negative value, similar to the natural ordering of strings (this idea extends to any type we wish to compare, however). So, we perform a case analysis on the strings. If both strings are non-empty, we grab their first character. If both start with `p', then their ordering depends on a standard lexicographical comparison of the rest of the strings. If the first character of $s_1$ is `p', however, we return $-1$ to designate that $s_1$ has a higher priority than $s_2$. Conversely, if $s_2$ starts with `p', then we return $1$ to designate the opposite. If neither start with $p$, then again we perform a lexicographical comparison on the entire strings. Algorithm~\ref{alg:pseudocodepriority} displays the pseudocode for the comparator, but as we will see, we can translate this, verbatim, into Java syntax. The last line of \ttt{priorityByP} instantiates a new \ttt{PriorityQueue} whose constructor receives the \ttt{Comparator} that we just designed. 
+We now must specify how to compare \ttt{s1} and \ttt{s2} to achieve our goal. Strangely enough, if we want to say that \ttt{s1} has a higher priority than \ttt{s2}, we must return a negative value, similar to the natural ordering of strings (this idea extends to any type we wish to compare, however). Fortunately this is not as strange once we understand \textit{why} the negative value is required. A value of $-1$ comes prior to $1$ when placing numbers in ascending order. This means that, when comparing an arbitrary value $t_1$ against $t_2$, to say that $t_1$ comes before $t_2$, we return a negative value. Conversely, to say that $t_1$ comes after $t_2$, we return a positive number.  
+
+Let's perform a case analysis on the input strings. If both strings are non-empty, we grab their first character. If both start with `p', then their ordering depends on a standard lexicographical comparison of the rest of the strings. If the first character of $s_1$ is `p', however, we return $-1$ to designate that $s_1$ has a higher priority than $s_2$. Conversely, if $s_2$ starts with `p', then we return $1$ to designate the opposite. If neither start with $p$, then again we perform a lexicographical comparison on the entire strings. Algorithm~\ref{alg:pseudocodepriority} displays the pseudocode for the comparator, but as we will see, we can translate this, verbatim, into Java syntax. The last line of \ttt{priorityByP} instantiates a new \ttt{PriorityQueue}\index{\ttt{PriorityQueue}} whose constructor receives the \ttt{Comparator}\index{\ttt{Comparator}} that we just designed. 
 \begin{algorithm}[H]
 \begin{algorithmic}
 \Procedure{Compare}{$s_1$, $s_2$}
@@ -592,12 +593,11 @@ We now must specify how to compare \ttt{s1} and \ttt{s2} to achieve our goal. St
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 class PriorityQueueByP {
 
-  static Queue<String> priorityByP() {
-    Comparator<String> c = new Comparator<>(
+  static PriorityQueue<String> priorityByP() {
+    Comparator<String> c = new Comparator<>() {
       @Override
       public int compare(String s1, String s2) {
         if (!s1.isEmpty() && !s2.isEmpty()) {
@@ -616,8 +616,7 @@ class PriorityQueueByP {
           return s1.compareTo(s2);
         }
       }
-    );
-
+    };
     return new PriorityQueue<String>(c);
   }
 }
@@ -630,29 +629,19 @@ Let us add a few elements to a priority queue with our custom comparator to exem
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 class PriorityQueueByP {
 
-  static Queue<String> priorityByP() {
-    // Implementation not shown.
-  }
+  static PriorityQueue<String> priorityByP() { /* Implementation hidden. */ }
 
   public static void main(String[] args) {
-    Queue<String> pq1 = priorityByP();
+    PriorityQueue<String> pq1 = priorityByP();
     // Add a few values.
-    pq1.add("pool");
-    pq1.add("peek");
-    pq1.add("hello");
-    pq1.add("barks");
-    pq1.add("park");
-    pq1.add("pecking");
-    pq1.add("shrub");
+    pq1.add("pool"); pq1.add("peek"); pq1.add("hello"); pq1.add("barks");
+    pq1.add("park"); pq1.add("pecking"); pq1.add("shrub");
 
-    // Poll each from the queue.
-    while (!pq1.isEmpty()) {
-      System.out.println(pq1.poll());
-    }
+    // Poll each from the queue and print them out.
+    while (!pq1.isEmpty()) { System.out.println(pq1.poll()); }
   }
 }
 \end{lstlisting}
@@ -669,29 +658,29 @@ shrub
 \end{verbnobox}
 Why is this what the priority queue outputs? If we reason about this with our comparator, it becomes clear. \ttt{park} has the highest priority because it starts with `p' and has a substring that comes before the rest of those strings starting with `p'. The strings \ttt{pecking}, \ttt{peek}, and \ttt{pool} come next for similar reasons. Finally, none of the strings \ttt{barks}, \ttt{hello}, and \ttt{shrub} start with `p', so we simply compare based on the strings themselves. The underlying implementation of how the priority queue works is beyond the scope of this textbook. These details are generally reserved for a textbook or course on advanced data structures, which follows the course designed for the audience of this text.
 
-\subsection*{Set-Based Data Structures}
+\subsection{Set-Based Data Structures}
 \textit{Sets} are unordered collections of non-duplicate elements. Does this definition sound familiar? It should; it perfectly mirrors the mathematical definition of a set. Java has a few nuances to its definition of sets that we will now see. We consider these data structures \textit{set-based} since they all rely on the ``no-duplicate'' philosophy.
 
 \subsubsection*{\ttt{Set} Interface}
-A \textit{Set} in Java is an interface rather than a class. This is because Java has a hierarchy for differing implementations of sets. We will discuss three: \textit{HashSet}, \textit{TreeSet}, and \textit{LinkedHashSet}. While all three disallow duplicate elements, the latter two impose an ordering on their elements, which goes against the standard mathematical definition, but for practical reasons.
+A \textit{Set}\index{set}\index{\ttt{Set}} in Java is an interface rather than a class. This is because Java has a hierarchy for differing implementations of sets. We will discuss three: \textit{HashSet}, \textit{TreeSet}, and \textit{LinkedHashSet}. While all three disallow duplicate elements, the latter two impose an ordering on their elements, which goes against the standard mathematical definition, but for practical reasons.
 
 \subsubsection*{\ttt{HashSet} Class}
-In the implementation of a \ttt{HashSet}, the existence of objects in the set is primarily determined by the \ttt{hashCode()} method of the objects, which computes their hash codes. These hash codes are used to decide in which 'bucket' within the hash table an object should be placed. It's important, though, to note that hash codes are not used for comparing the equality of the content of objects. Unlike the \ttt{==} operator, which checks if two references point to the same object in memory, the respective \ttt{equals()} method is used to compare the actual content of the objects. When adding an object to a \ttt{HashSet}, if the hash code of the object matches the hash code of any existing object in the corresponding bucket, the equals() method is then used to check for actual content equality to ensure that no duplicate objects (in terms of content) are added to the set. In other words, two objects that are equal in terms of \ttt{equals()} must have the same hashcode, but the converse is not necessarily true. Anything more than these details goes beyond the scope of this textbook, but we will provide a small synopsis of hashable data structures.
+In the implementation of a \ttt{HashSet}\index{hash set}\index{\ttt{HashSet}}, the existence of objects in the set is primarily determined by the \ttt{hashCode()} method of the objects, which computes their hash codes. These hash codes are used to decide in which 'bucket' within the hash table an object should be placed. It's important, though, to note that hash codes are not used for comparing the equality of the content of objects. Unlike the \ttt{==} operator, which checks if two references point to the same object in memory, the respective \ttt{equals()} method is used to compare the actual content of the objects. When adding an object to a \ttt{HashSet}, if the hash code of the object matches the hash code of any existing object in the corresponding bucket, the equals() method is then used to check for actual content equality to ensure that no duplicate objects (in terms of content) are added to the set. In other words, two objects that are equal in terms of \ttt{equals()} must have the same hashcode, but the converse is not necessarily true. Anything more than these details goes beyond the scope of this textbook, but we will provide a small synopsis of hashable data structures.
 
-A hashable data structure most often comes with a hash table, which is similar to an array, where elements are stored. Hashable data structures are known for their fast lookup times thanks to something called a \textit{hash function}, which is a mathematical function used to compute the location to store a value in a hash table. Consider a hash function $H(v)$, whose range is the set of integers $[0, n)$ where $n$ is the number of elements of the hash table. Running $v$ (which is some arbitrary value to insert) through the hash function $H$ returns an index of the hash table. Evaluating $H$ is, in optimal conditions, a constant-time algorithm, hence determining if a value exists in such a data structure is also constant-time. This begs the question of what happens if there exists an output of $H$ such that $H(v') = H(v)$ for distinct inputs $v, v'$. In subsequent computer science courses, students learn how to resolve these conflicts that are called \textit{hash collisions}, through approaches such as linear and quadratic probling, as well as chaining. The previous paragraph briefly discussed this through the `buckets' analogy and \ttt{equals}, but e will ignore such complexities and use hashable data structures at face value.  
+A hashable data structure most often comes with a hash table, which is similar to an array, where elements are stored. Hashable data structures are known for their fast lookup times thanks to something called a \textit{hash function}\index{hash function}, which is a mathematical function used to compute the location to store a value in a hash table. Consider a hash function $H(v)$, whose range is the set of integers $[0, n)$ where $n$ is the number of elements of the hash table. Running $v$ (which is some arbitrary value to insert) through the hash function $H$ returns an index of the hash table. Evaluating $H$ is, in optimal conditions, a constant-time algorithm, hence determining if a value exists in such a data structure is also constant-time. This begs the question of what happens if there exists an output of $H$ such that $H(v') = H(v)$ for distinct inputs $v, v'$. In subsequent computer science courses, students learn how to resolve these conflicts that are called \textit{hash collisions}\index{hash collisions}, through approaches such as linear and quadratic probling, as well as chaining. The previous paragraph briefly discussed this through the `buckets' analogy and \ttt{equals}, but e will ignore such complexities and use hashable data structures at face value.  
 
 Use hashsets when you do not care about element ordering or ``position'' in the set, but want to ensure no duplicates exist.
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Sets]
-    A \textit{Set} is a data structure of non-duplicate elements, with \ttt{HashSet} being the most common implementation/usage of sets.
+    A \textit{Set}\index{set}\index{\ttt{Set}} is a data structure of non-duplicate elements, with \ttt{HashSet} being the most common implementation/usage of sets.
     \vspace{2ex}
   \begin{description}
     \item [\ttt{Set<$T$> $S=$ new HashSet<>()}] creates a \ttt{HashSet} of type $T$, named $S$.
-     \item [\ttt{$S$.contains$(e)$}] returns whether or not $e$ is in the set $S$.
-     \item [\ttt{$S$.add$(e)$}] adds $e$ to the set $S$ only if it is not present. If $e$ is in $S$, nothing happens.
-     \item [\ttt{$S$.remove$(e)$}] removes $e$ from the set $S$ only if it is present. If $e$ is not in $S$, it returns \ttt{false}; otherwise, it returns \ttt{true}.
-    \item [\ttt{$S$.size$()$}] returns the number of logical elements in the set.
+     \item [\ttt{boolean $S$.contains$(e)$}] returns whether or not $e$ is in the set $S$.
+     \item [\ttt{boolean $S$.add$(e)$}] adds $e$ to the set $S$ only if it is not present. If $e$ is not in $S$, it returns \ttt{false}; otherwise, it returns \ttt{true}.
+     \item [\ttt{boolean $S$.remove$(e)$}] removes $e$ from the set $S$ only if it is present. If $e$ is not in $S$, it returns \ttt{false}; otherwise, it returns \ttt{true}.
+    \item [\ttt{int $S$.size$()$}] returns the number of logical elements in the set.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{Sets}-based Methods.}
@@ -699,10 +688,10 @@ Use hashsets when you do not care about element ordering or ``position'' in the 
 \end{figure}
 
 \subsubsection*{\ttt{TreeSet} Class}
-A \textit{TreeSet} is a set with a determined order, either by a natural ordering or that defined by a \ttt{Comparator}, like a priority queue. All methods in a \ttt{Set} are definitionally implemented by a \ttt{TreeSet}.
+A \textit{TreeSet}\index{tree set}\index{\ttt{TreeSet}} is a set with a determined order, either by a natural ordering or that defined by a \ttt{Comparator}, like a priority queue. All methods in a \ttt{Set} are definitionally implemented by a \ttt{TreeSet}.
 
 \subsubsection*{\ttt{LinkedHashSet} Class}
-A \textit{LinkedHashSet} is a set with an ordering based on the insertion order of the elements. All methods in a \ttt{Set} are definitionally implemented by a \ttt{LinkedHashSet}.
+A \textit{LinkedHashSet}\index{linked hash set}\index{\ttt{LinkedHashSet}} is a set with an ordering based on the insertion order of the elements. All methods in a \ttt{Set} are definitionally implemented by a \ttt{LinkedHashSet}.
 
 \example{The canonical usage of a set is to remove duplicates from a list. Indeed, let's write the \ttt{removeDuplicatesList} method that receives a list of integers and returns a new list without any duplicates. We will assume that the output order must match the input order. To solve this problem we will create an auxiliary linked hash set data structure, add all elements from the list into the set, then add those values from the set to a new list. When adding a value into a set, if it already exists, it is not added again, as we stated above.}
 
@@ -718,9 +707,12 @@ class RemoveDuplicatesListTester {
   @Test
   void testRemoveDuplicatesList() {
     assertAll(
-      () -> assertEquals(List.of(), removeDuplicatesList(List.of())),
-      () -> assertEquals(List.of(1, 2, 3, 4), removeDuplicatesList(List.of(1, 1, 2, 2, 3, 3, 4, 4))),
-      () -> assertEquals(List.of(3, 1, 4), removeDuplicatesList(List.of(3, 1, 1, 3, 4, 4, 3, 1, 4))))
+      () -> assertEquals(List.of(), 
+                         removeDuplicatesList(List.of())),
+      () -> assertEquals(List.of(1, 2, 3, 4), 
+                         removeDuplicatesList(List.of(1, 1, 2, 2, 3, 3, 4, 4))),
+      () -> assertEquals(List.of(3, 1, 4), 
+                         removeDuplicatesList(List.of(3, 1, 1, 3, 4, 4, 3, 4))));
   }
 }
 \end{lstlisting}
@@ -879,37 +871,38 @@ class FindDupMissing {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{Dictionary-Based Data Structures}
+\subsection{Dictionary-Based Data Structures}
 Dictionaries maps elements from one type $K$ to elements of another type $V$. These types $K$ and $V$ do not necessarily need to be distinct. 
 
 \subsubsection*{\ttt{Map} Interface}
-Java has an interface called \ttt{Map} rather than a class because, like sets, there is a hierarchy for differing implementations of maps. We will discuss three: \textit{HashMap}, \textit{TreeMap}, and \textit{LinkedHashMap}. Maps contain keys and values; the keys are mapped to values in the map. Additionally, maps cannot contain duplicate keys.
+Java has an interface called \ttt{Map}\index{map}\index{\ttt{Map}} rather than a class because, like sets, there is a hierarchy for differing implementations of maps. We will discuss three: \textit{HashMap}, \textit{TreeMap}, and \textit{LinkedHashMap}. Maps contain keys and values; the keys are mapped to values in the map. Additionally, maps cannot contain duplicate keys.
 
 \subsubsection*{\ttt{HashMap} Class}
-\textit{HashMaps} base existence of keys in the map by their hashcode and a hashtable, identical to a hashset. For a greater detail of how hashable data structures work, please refer to that subsection.
+\textit{HashMaps}\index{hash map}\index{\ttt{HashMap}} base existence of keys in the map by their hashcode and a hashtable, identical to a hashset. For a greater detail of how hashable data structures work, please refer to that subsection.
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Maps]
-    A \textit{Map} is a dictionary-based data structure wherein we map \textit{keys} to \textit{values}, with \ttt{HashMap} being the most common implementation/usage of maps.
+    A \textit{Map}\index{map} is a dictionary-based data structure wherein we map \textit{keys} to \textit{values}, with \ttt{HashMap} being the most common implementation/usage of maps.
     \vspace{2ex}
   \begin{description}
     \item [\ttt{Map<$K, V$> $M=$ new HashMap<>()}] creates a \ttt{HashMap} named $M$ whose keys are of type $K$ and whose values are of type $V$. Namely, the keys map to the values.
      \item [\ttt{$M$.containsKey$(k)$}] returns whether or not $k$ is a key in the map $M$.
-     \item [\ttt{$M$.put$(k, v)$}] maps the key $k$ to the value $v$ in $M$.
-     \item [\ttt{$M$.get$(k)$}] returns the value associated with $k$ in $M$, or \ttt{null} if $k$ has no association.
-     \item [\ttt{$M$.getOrDefault($k$, $x$)}] returns the value associated with $k$ in $M$, or $x$ if $k$ does not have an association.
-    \item [\ttt{$M$.size$()$}] returns the number of logical elements in the set.
+     \item [\ttt{void $M$.put$(k, v)$}] maps the key $k$ to the value $v$ in $M$.
+     \item [\ttt{$V$ $M$.get$(k)$}] returns the value associated with $k$ in $M$, or \ttt{null} if $k$ has no association.
+     \item [\ttt{$V$ $M$.getOrDefault($k$, $x$)}] returns the value associated with $k$ in $M$, or $x$ if $k$ does not have an association.
+    \item [\ttt{int $M$.size$()$}] returns the number of logical elements in the set.
+    \item [\ttt{Set<$K$> keySet$()$}] returns a set of the keys in the map.
   \end{description}
 \end{tcolorbox}
-  \caption{Useful \ttt{HashMap}-based Methods.}
+  \caption{Useful \ttt{Map}-based Methods.}
   \label{fig:hashmap}
 \end{figure}
 
-\subsection*{\ttt{TreeMap} Class}
-A \textit{TreeMap} is a map with a determined order, either by a natural ordering of the keys or that defined by a comparator. All methods in \texttt{Map} are definitionally implemented by a \texttt{TreeMap}.
+\subsubsection{\ttt{TreeMap} Class}
+A \textit{TreeMap}\index{tree map}\index{\ttt{TreeMap}} is a map with a determined order, either by a natural ordering of the keys or that defined by a comparator. All methods in \texttt{Map} are definitionally implemented by a \texttt{TreeMap}.
 
-\subsection*{\ttt{LinkedHashMap} Class}
-A \textit{LinkedHashMap} is a map with an ordering based on the insertion order of the key/value pairs. All methods in a \ttt{Map} are definitionally implemented by a \ttt{LinkedHashMap}.
+\subsubsection{\ttt{LinkedHashMap} Class}
+A \textit{LinkedHashMap}\index{linked hash map}\index{\ttt{LinkedHashMap}} is a map with an ordering based on the insertion order of the key/value pairs. All methods in a \ttt{Map} are definitionally implemented by a \ttt{LinkedHashMap}.
 
 \example{Perhaps one of the most common use cases for a dictionary-based data structure is to compute the frequency, or count, of some values. Suppose we want to write the \ttt{Set<Integer> mode(List<Integer> ls)} method that, when given a list of integers, returns the mode(s), i.e., the most-frequent value(s). We can use a map to keep track of the numbers seen so far, which are the keys, and their respective frequencies being the values. Because a list of numbers may have multiple modes, we will need to use a three-step algorithm:}
 
@@ -919,7 +912,7 @@ A \textit{LinkedHashMap} is a map with an ordering based on the insertion order 
   \item Find all numbers that match this frequency.
 \end{enumerate}
 
-Traversing over a map is straightforward: we can obtain a \textit{keyset}, which is a set of keys, and each corresponding value takes one call to the \ttt{.get} method.
+Traversing over a map is straightforward: we can obtain a \textit{key set}\index{key set}, which is a set of keys, and each corresponding value takes one call to the \ttt{.get} method.
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
@@ -1062,7 +1055,7 @@ class FirstUniqueLetterTester {
     assertAll(
       () -> assertEquals("m", firstUniqueLetter("Morning")),
       () -> assertEquals("w", firstUniqueLetter("sweeps")),
-      () -> assertEquals("", firstUniqueLetter("Abra-cadabracad!)));
+      () -> assertEquals("", firstUniqueLetter("Abra-cadabracad!")));
   }
 }
 \end{lstlisting}
@@ -1100,7 +1093,95 @@ class FirstUniqueLetter {
 \end{lstlisting}
 \end{cl}
 
-\section*{Iterators}
+\example{One final example that we will consider is the \ttt{nthMostUniqueChar} method that, when given a string $s$ and an integer $n$, returns the $n^\text{th}$ most unique character in the string, or \ttt{null} if there is no such character. If there are multiple characters that share the same position, we return the first one in terms of lexicographical ordering.}
+
+For example, consider the string \ttt{"abbabdcaadaababcdcc"} and $n=3$. The most unique characters are \ttt{'a', 'b', 'c'}, so the third most unique character is \ttt{'c'}.
+
+Another example is the string \ttt{"aabbcc"} and $n=2$. The most unique characters are \ttt{'a', 'b', 'c'}, but all three have the same frequency of two, meaning they are all equally unique. In this case, we return the empty string.
+
+A third example is the string \ttt{"aaaabccccc"} and $n=2$. The most unique characters are \ttt{'c', 'a', 'b'}, so the second most unique character is \ttt{'a'}.
+
+First, we will count the frequency of each character, then use a \ttt{PriorityQueue} to store the characters in order of their frequency from greatest to least. We will then remove the first $n-1$ characters from the queue and return the first character of the remaining queue. This approach should raise some eyebrows, because if the frequency is the value in a map, how can we construct a comparator? In other circumstances you need access to a particular key to obtain its corresponding value. In this instance, though, we can generate the \textit{entry set} for the map of characters to frequencies, which is a set of \ttt{Map.Entry<K, V>} objects where $K$ is the key type and $V$ is the value type. Our priority queue comparator receives two such entries $e$ and $f$, and performs the following comparison:
+
+\begin{itemize}
+  \item If $e_k \neq f_k$, return $f_v - e_v$.
+  \item Else, return the lesser of $e_k$ and $f_k$.
+\end{itemize}
+
+Of course, we know that $K$ is \ttt{Character} and $V$ is \ttt{Integer} representing the characters mapped to their frequencies. To retrieve the key and value from an \ttt{Map.Entry} object, we use the \ttt{getKey()} and \ttt{getValue()} methods respectively. 
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class NthMostUniqueCharTester {
+
+  @Test
+  void testNthMostUniqueChar() {
+    assertAll(
+      () -> assertEquals("a", nthMostUniqueChar("abacab", 1)),
+      () -> assertEquals("d", nthMostUniqueChar("aaaadddcccccbbee", 3)),
+      () -> assertEquals("q", nthMostUniqueChar("ppqrrss", 2)),
+      () -> assertEquals(null, nthMostUniqueChar("aabbccdd", 2)));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+class NthMostUniqueChar {
+
+  /**
+   * Given a string, returns the nth most frequent character in that string.
+   * @param s - string to examine.
+   * @param n - int n >= 0.
+   * @return the nth most frequent character as a String or null if nonexistent.
+   */
+  static String nthMostUniqueChar(String s, int n) {
+    // Step 1: compute the frequencies.
+    Map<Character, Integer> M = new HashMap<>();
+    for (char c : s.toCharArray()) { M.put(c, M.getOrDefault(c, 0)); }
+
+    // Step 2: build the comparator.
+    Comparator<Entry<Character, Integer>> cmp = new Comparator<>() {
+      @Override
+      public int compare(Map.Entry<Character, Integer> e, 
+                         Map.Entry<Character, Integer> f) {
+        if (e.getKey() != f.getKey()) {
+          return Character.compare(e.getKey(), f.getKey());
+        } else {
+          return f.getValue() - e.getValue();
+        }
+      }
+    };
+
+    // Step 3: populate the priority queue with entry objects.
+    PriorityQueue<Map.Entry<Character, Integer>> Q = new PriorityQueue<>(cmp);
+    for (Map.Entry<Character, Integer> e : M.entrySet()) { Q.add(e); }
+
+    // Step 4: poll n - 1 items from the queue.
+    while (!Q.isEmpty()) {
+      n--;
+      if (n == 0) {
+        return String.valueOf(Q.peek().getKey());
+      } else {
+        Q.poll();
+      }
+    }
+    return null;
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\section{Iterators}
 We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
 
 \begin{verbnobox}[\small]
@@ -1131,10 +1212,7 @@ class IteratorTester {
   @Test
   void testIterator() {
     Set<Integer> lhs = new LinkedHashSet<>();
-    lhs.add(8);
-    lhs.add(10);
-    lhs.add(0);
-    lhs.add(90);
+    lhs.add(8); lhs.add(10); lhs.add(0); lhs.add(90);
     Iterator<Integer> it = lhs.iterator();
     assertAll(
       () -> assertTrue(it.hasNext());
@@ -1164,12 +1242,9 @@ import java.util.LinkedHashSet;
 class EnhancedForLoopTester {
 
   @Test
-  testEnhancedForLoop() {
+  void testEnhancedForLoop() {
     Set<Integer> lhs = new LinkedHashSet<>();
-    lhs.add(1);
-    lhs.add(2);
-    lhs.add(3);
-    lhs.add(4);
+    lhs.add(1); lhs.add(2); lhs.add(3); lhs.add(4);
     int diff = 0;
     for (Integer e : lhs) { diff -= e; }
     assertEquals(-10, diff);
@@ -1178,7 +1253,85 @@ class EnhancedForLoopTester {
 \end{lstlisting}
 \end{cl}
 
-\section*{Streams}
+\example{Not only does the use of an enhanced \ttt{for} loop disallow structural modification, it also does not preserve the order of stacks. For example, suppose we have a stack $S=[10, 20, 30, 40, 50]$, where $50$ is the top of the stack. If we want to print each element of $S$ without iterators or modifying the stack itself, the obvious option is to use an enhanced \ttt{for} loop. Unfortunately, this does not go as expected: it prints the elements in the order they are inserted, i.e., first-in-first-out. Intuitively we may expect the program to output the values via last-in-first-out, i.e., $50, 40, 30, 20, 10$. What's worse is that its \ttt{Iterator} implementation also makes this mistake. The solution proposed by Oracle is to instead use the \ttt{ArrayDeque} class, which is a type of \ttt{Deque} object.\footnote{A \textit{deque}, pronounced as `deck,' is a double-ended queue, meaning we can insert and remove elements from either the front or the rear.}\footnote{See the note listed on Oracle's \ttt{Stack} documentation: \url{https://docs.oracle.com/javase/8/docs/api/java/util/Stack.html}}}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.util.Stack;
+import java.util.Iterator;
+import java.util.Deque;
+import java.util.ArrayDeque;
+
+class StackPrinter {
+
+  public static void main(String[] args) {
+    Stack<Integer> S = new Stack<>();
+    S.push(10); S.push(20); S.push(30); S.push(40); S.push(50);
+
+    // Enhanced for loop prints them "incorrectly!"
+    // An Iterator also has this issue.
+    // We get "10, 20, 30, 40, 50" separated by newlines.
+    for (int x : S) { System.out.println(x); }
+
+    Deque<Integer> D = new ArrayDeque<>();
+    D.push(10); D.push(20); D.push(30); D.push(40); D.push(50);    
+    // An ArrayDeque corrects this problem.
+    // We correctly get "50, 40, 30, 20, 10" separated by newlines.
+    for (int x : D) { System.out.println(x); }
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example{The unintuitive nature of the enhanced \ttt{for} loop and certain iterators does not stop with stacks, unfortunately. Priority queues are also afflicted as a consequence of their implementation. Let's see what happens when we create a priority queue whose comparator prioritizes the string \ttt{"Joshua"} over all strings and makes the string \ttt{"Jack"} have the lowest priority.} 
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Comparator;
+
+class PriorityQueuePrinting {
+
+  private static PriorityQueue<String> initPriorityQueue() {
+    Comparator<String> S = new Comparator<>() {
+      @Override
+      public int compare(String s1, String s2) {
+        // If Joshua comes first or Jack comes last, then s1 is prioritized.
+        if (s1.equals("Joshua") || s2.equals("Jack")) { return -1; } 
+        // If Jack comes first or Joshua comes last, then s2 is prioritized.
+        else if (s1.equals("Jack") || s2.equals("Joshua")) { return 1; } 
+        // All other strings take standard priority (natural ordering).
+        else { return s1.compareTo(s2); }
+      }
+    };
+    return new PriorityQueue(S);
+  }
+
+  public static void main(String[] args) {
+    PriorityQueue<String> pq = initPriorityQueue();
+    pq.add("Peter"); pq.add("Joshua"); pq.add("Gautam"); pq.add("Siobahn");
+    pq.add("Jack"); pq.add("Ratan"); pq.add("Dharmik"); pq.add("Sakshi");
+
+    // Prints a seemingly random order!
+    for (String s : pq) { System.out.println(s); }
+
+    // Uses arrays to sort the elements according to the PQ's comparator.
+    String[] elements = pq.toArray(new String[0]);
+    Arrays.sort(elements, pq.comparator());
+    System.out.println(Arrays.toString(elements));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+By traversing over the elements with an enhanced \ttt{for} loop, we notice that the elements are printed in a seemingly random order that does not obey our comparator. One solution here is to convert the priority queue to an array, sort the array using \ttt{Arrays.sort}, then print the contents of the array using \ttt{Arrays.toString}. Remember that if we only pass the array itself to \ttt{println}, we see the hash code of the array is printed instead of its elements. 
+
+One complication to concern ourselves with is how we convert the priority queue (or any collection) to an array using \ttt{.toArray(...)}. This method receives an array of some type \ttt{T} and, if it is large enough to store all the elements of the collection, it is populated. Otherwise, an array of the same type \ttt{T} is returned. To summarize, if we want to convert the priority queue of strings to an array, we must pass \ttt{new String[0]} to the \ttt{.toArray} method. The returned array is then sorted and printed.\footnote{In the next section we will discuss a much easier way to mimic this using a new collection type called \textit{streams}.} 
+
+A final intricacy of this process is that we need to pass the comparator of the priority queue to \ttt{Arrays.sort}, otherwise it will sort the elements based on the natural ordering, which is certainly undesired. We do not have direct access to the comparator that we created in the \ttt{initPriorityQueue} method, but we can retrieve the comparator used by the priority queue via \ttt{.comparator}. 
+
+\section{Streams}
 \textit{Streams} are, in effect, a \textit{lazy} collection of ``things.'' By lazy, we mean to say that, if a result is not necessary, or requested, then it is not computed.
 
 \example{Consider a situation in which we invoke a method called \ttt{omega()}, which is defined as an infinite loop, as the argument to the \ttt{foo} method, giving us \ttt{foo(omega())}. In Java, all arguments are evaluated \textit{eagerly}, which means that, in effect, takes an eternity to terminate. Unfortunately for the caller of \ttt{foo}, we do not even use the value of $x$, meaning we computed \ttt{omega()} for absolutely no reason whatsoever. This means that, because \ttt{omega} never terminates, \ttt{foo} similarly never returns a result.} 
@@ -1338,7 +1491,7 @@ class BigIntFibStream {
     \item [\ttt{int $S$.count$()$}] returns the number of elements in the stream.
     \item [\ttt{Stream<$T$> $S$.map($f$)}] returns a new stream whose elements are the result of applying $f$ to each element of~$S$.
     \item [\ttt{Stream<$T$> $S$.filter($p$)}] returns a new stream of values in $S$ that satisfy the predicate~$p$.
-    \item [$T$ $S$.reduce($a$, $f$)] returns the result of applying the binary function $f$ to each element of $S$, starting from $a$, which serves as the accumulator's initial value. The type of $a$ is $T$, which matches the elements of the stream.
+    \item [\ttt{$T$ $S$.reduce($a$, $f$)}] returns the result of applying the binary function $f$ to each element of $S$, starting from $a$, which serves as the accumulator's initial value. The type of $a$ is $T$, which matches the elements of the stream.
     \item [\ttt{Stream<$T$> $S$.limit($n$)}] returns a new stream containing the first $n$ elements of~$S$.
     \item [\ttt{Stream<$T$> $S$.skip($n$)}] returns a new stream containing the elements of $S$ after the first~$n$.
     \item [\ttt{Optional<$T$> $S$.min/max($c$)}] returns the minimum/maximum element of $S$ according to the comparator $c$. If $S$ is empty, returns \ttt{Optional.empty()}.

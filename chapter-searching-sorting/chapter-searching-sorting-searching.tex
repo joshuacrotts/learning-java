@@ -1,6 +1,6 @@
 \section{Searching}
 
-\subsection*{Linear Search}
+\subsection{Linear Search}
 The \textit{linear search} algorithm is a sequential searching algorithm. That is, we check element-by-element to determine if the element we are looking for is in the list. If the element is in the list, we return the index of the element. If the element is not in the list, we (generally) return $-1$. Linear search is nonsensical for non-constant-time access data structures, such as linked lists, because the whole point of linear search is to retrieve an element at its index quickly, then determine if it is the element we are searching. 
 
 \subsubsection*{Standard Recursive Linear Search}
@@ -158,7 +158,7 @@ class LoopLinearSearch<V extends Comparable<V>> implements ILinearSearch<V> {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{Binary Search}
+\subsection{Binary Search}
 
 Binary search is the alternative to linear search, and fortunately proves to be significantly faster, but with a catch: the data must be sorted in order to correctly use a binary searching algorithm. Here's how it works: we check the middle element $e$ of the list against our target value $k$ and, if they are equal, we return the middle element index. If $e < k$, we know that $k$ is greater than all elements to the left of $e$ because the data is in sorted order. Therefore, we can check exclusively on the right-half. This idea applies to the left-half as well; if $e > k$, then $k$ must be less than all elements to the right of the middle. 
 
@@ -282,7 +282,7 @@ class LoopBinarySearch<V extends Comparable<V>> implements IBinarySearch<V> {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{Using Comparators for Searching}
+\subsection{Using Comparators for Searching}
 Recall the use of comparators from~\ref{chapter-arrays-collections} when discussing priority queues. Our implementations of linear and binary search, at the moment, require the generic class we parameterize over to be \ttt{Comparable}, which can be slightly limiting on the types of classes we can search through, because it is not feasible to modify a class that already exists in the Java library. Plus, having to go back and write a definition of \ttt{compareTo} in a Java source file is cumbersome. The solution to this problem is to define a custom \ttt{Comparator} object and pass that to the search methods. Namely, we can add a second method to the binary search generic interface that receives an instance of \ttt{Comparator}, which is then internally utilized by our search algorithms. 
 
 \example{Let's amend our definition of \ttt{IBinarySearch} to also include a method that receives the \ttt{Comparator} object. Note that we need to specify in the definition of the comparator that the type it receives should be a superclass of the list element type. Therefore we will use the dual to \ttt{extends}: namely \ttt{super}, in the parameterized type. Note that we do not necessarily care about the type variable of this element, so we can use a wildcard `\ttt{?}' instead of using another letter from the alphabet. With this modification, however, it no longer makes as much sense to quantify that \ttt{V} extends \ttt{Comparable<V>}, because the latter method does not require its type to implement that interface. So, let's remove it from the interface signature and move it down to the type quantification.}

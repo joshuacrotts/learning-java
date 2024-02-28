@@ -4,7 +4,7 @@ Part of the reason that we have spent so much time discussing object-oriented de
 
 In this section we will discuss several \textit{design patterns}\index{design patterns}, which are common solutions to specific problems that arise largely in the context of object-oriented design. Design patterns are, of course, not specific to Java and can be implemented in any reasonable object-oriented language. 
 
-\subsection*{Command}
+\subsection{Command}
 
 The \textit{command}\index{command pattern} pattern is a simple pattern that encapsulates a request, of sorts, to some type of handler. The handler knows nothing about the request itself, only that the handler acts as a dispatch for invoking the request.
 
@@ -112,7 +112,7 @@ class CommandTester {
 
 As shown, we have decoupled the player from the handler, and the handler from the implementation of the commands. This, consequently, allows us to alter or modify the behavior of commands without redesigning the handler or player classes.
 
-\subsection*{Factory}
+\subsection{Factory}
 
 \example{To showcase our next pattern, we will design the \ttt{Fraction} class to represent mathematical fractions containing integer numerators and denominators. This example greatly resembles the rational number class in a previous chapter, but we introduce a twist to exemplify the benefits of the \textit{factory}\index{factory pattern} pattern.}
 
@@ -355,7 +355,7 @@ class PersonDatabaseTester {
 
 As expected, all tests pass.
 
-\subsection*{Builder}
+\subsection{Builder}
 
 When creating instances of classes, it is not always feasible or possible to pass all of the necessary arguments to a constructor. The \textit{builder} pattern allows us to write ``partial constructors,'' i.e., methods that take a subset of the arguments and return an object that contains the partial arguments. 
 
@@ -437,7 +437,7 @@ class Url {
 
 Partially-constructed objects may seem odd at first, but they are useful in situations where we want to instantiate an object piecemeal, i.e., one instance variable at a time. Plus, we can reuse the same builder with multiple objects. As an example, suppose that we want to create a \ttt{Url} for a particular host and schema, but without a specific port or path. We can then reuse this object repeatedly to populate an partially-constructed instance with differing ports and paths, rather than having to unnecessarily repeat the known schema and host.
 
-\subsection*{Visitor}
+\subsection{Visitor}
 
 The \textit{visitor} pattern is the most complex pattern that we will work with, but it offers a host of benefits. Consider a situation in which we do not have access to classes, but want to modify their implementation to add some functionality. In particular, if those classes support the use of visitors, then we can design almost any type of functionality without needing to modify those classes at all.
 

@@ -56,7 +56,7 @@ We can simulate the concurrency/parallelism distinction with two queues of peopl
 \caption{Diagram of Parallelism}
 \end{figure}
 
-\subsection*{Threads}
+\subsection{Threads}
 Java supports concurrent programming through its Thread API, but what is a thread? In essence, a \textit{thread} is a single lightweight process that executes a task, or a sequential set of tasks. 
 
 \example{Multiple threads may access shared data at the same time, which is convenient. The problem is the fact that threads can \textit{context switch} at arbitrary points, which may include during an \textit{atomic operation}. Atomic operations are operations that must be executed in their entirety, without interruption. For example, suppose that we have a variable \ttt{counter} that we want to increment. We might write the following code:}
@@ -611,7 +611,7 @@ Consumed: 4
 Consumed: 5
 \end{verbnobox}
 
-\subsection*{Networking \& Sockets}
+\subsection{Networking \& Sockets}
 
 Computers that communicate with one another is not a revolutionary idea, but being able to write programs that act as \textit{clients} and \textit{servers} is certainly cool. A server is a program that listens for incoming connections over a network and processes them accordingly. Clients connect to servers to do different things, e.g., receive information from a server, talk to other connected clients, and so on. In this section we will demonstrate the Java networking/socket API and how to write a few programs that incorporate a server.
 

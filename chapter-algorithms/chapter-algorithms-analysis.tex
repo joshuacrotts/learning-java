@@ -125,7 +125,7 @@ In the average case, we land somewhere in the middle of finding the element imme
 
 In the worst-case, the list is in reversed order. So, we must insert each element in the correct position, with respect to every other element. Therefore we are upper and lower-bounded by $\mathcal{O}(n^2)$ and $\Omega(n^2)$ respectively.
 
-\subsection*{Formalizing Big-Oh, Big-Omega, and Theta}
+\subsection{Formalizing Big-Oh, Big-Omega, and Theta}
 We have described the Big-Oh, Big-Omega, and Theta notations informally. When proving the asymptotic bounds of a mathematical function, we often need a formal proof thereof. We will now describe the formalism of these notations.
 
 \subsubsection*{Big-Oh}
@@ -256,7 +256,7 @@ A function $f(n) = \Theta(g(n))$ if there exists constants $c_0, c_1 > 0$ and a 
     }%
 }
 
-\subsection*{Misconceptions About Asymptotic Analyses}
+\subsection{Misconceptions About Asymptotic Analyses}
 
 As we mentioned before, many programmers conflate best, average, and worst-cases with Big-Omega, Theta, and Big-Oh respectively. There is no discernible relationship between these concepts.
 
@@ -266,7 +266,7 @@ As we mentioned before, many programmers conflate best, average, and worst-cases
 
 \example{Consider the statement, ``The worst-case running time of selection sort is $\mathcal{O}(n^2)$ and the worst-case running time of merge sort is $\mathcal{O}(n\lg{n})$; therefore, merge sort is asymptotically faster in the worst-case.'' Is this statement correct? Unfortuntately, it is not, and we can fix it by changing only the asymptotic functions. It is incorrect because Big-Oh only describes the upper-bound of a function. We cannot conclude that merge sort is asymptotically faster in the worst-case because we do not know the lower-bound of either algorithm. To correct the statement, we can ascribe a tight-bound on the growth of the functions via $\Theta(n^2)$ and $\Theta(n\lg{n})$ respectively. We could also just place the tight-bound on only $\Theta(n^2)$, which then provides the lower-bound of selection sort, but as we stated before, using tight-bounds is the preferred option.}
 
-\subsection*{Analysis of the Sorting Algorithms}
+\subsection{Analysis of the Sorting Algorithms}
 
 We can analyze the five sorting algorithms described in Chapter~\ref{chapter-searching-sorting} in terms of their asymptotic behavior in the best, average, and worst cases.
 
@@ -368,7 +368,7 @@ The result is an arithmetic series $\sum_{i=1}^{n}{i}=\frac{n(n+1)}{2}$, which r
 The average case is significantly harder to analyze and the full proof goes beyond the scope of this book. It is known that, in the average case, quicksort is $\Theta(n\lg{n})$. 
 
 %% Cite a reference??
-\subsection*{Lower Bound for Comparison-Based Sorting Algorithms}
+\subsection{Lower Bound for Comparison-Based Sorting Algorithms}
 The performance and time complexity of sorting algorithms largely depend on the underlying implementation. We will now prove that, for any comparison-based sorting algorithm, i.e., a sorting algorithm that answers ``YES'' or ``NO'' to the question, ``Is $a_i < a_j$?'' for any list $a$ and indices $i$ and $j$, it must perform $\Omega(n \lg n)$ comparisons to sort $n$ elements.
 
 \begin{proof}

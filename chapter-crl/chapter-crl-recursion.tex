@@ -1,6 +1,6 @@
 \section{Recursion}
 
-\subsection*{Standard Recursion}
+\subsection{Standard Recursion}
 You may or may not have seen recursion before, but in theory the concept is quite simple: a method $f$ is \textit{recursive} if, somewhere in the definition of \textit{f}, it invokes itself. For example, in the following code segment, we define $f$ to be a method of arbitrary arguments that calls itself from its body. 
 \begin{verbnobox}[\small]
 static int f(...) {
@@ -170,7 +170,7 @@ Upon arriving at the base case, we begin to unwind the recursive calls.
 \end{align*}
 Voil\`a, we get our desired solution.
 
-\subsection*{Tail Recursion and Accumulators}
+\subsection{Tail Recursion and Accumulators}
 In the previous section we discussed recursion, or what we will refer to as \textit{standard recursion}. This style of recursion is popular because of its ease-of-use and relative correlation to mathematical definitions. Aside from this, unfortunately, there is a significant problem with standard recursion: it is a memory hog and potential recipe for disaster. The reason does not easily present itself to the programmer, and we have to dive deeper into how Java makes method calls.
 
 Each time Java invokes a method, it pushes an \textit{activation record} to its \textit{method call stack}. The call stack is a location in memory where all method invocations reside. Activation records contain information about the method that was called, such as the arguments, the number of locally-defined variables, and other miscellaneous data. More importantly, activation records designate the ``return location'' of a method. When a method call returns, it is popped off the call stack. The stack memory, or lack thereof, is the root cause of problems with our standard recursion. Let us demonstrate this predicament with an example trace of \ttt{add} whose second argument, namely $n$, is incredibly large; over two million.

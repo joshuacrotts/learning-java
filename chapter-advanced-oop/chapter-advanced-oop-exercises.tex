@@ -1,5 +1,15 @@
-\section*{Chapter Exercises}
+\section{Chapter Exercises}
 \addcontentsline{toc}{section}{Exercises}
+
+\exercise{1}{chapter-classes}{This exercise has 3 parts.}
+
+The \textit{Kotlin} programming language supports customized \textit{ranges}. That is, we can define an interval using dot notation, e.g., \ttt{1..10}, then query a value over that interval. For instance, \ttt{x in 1..10} returns whether or not \ttt{x} is between \ttt{1} and \ttt{10}, inclusive. This comparison, however, extends beyond primitive datatypes; ranges may operate over classes. For example, we can create a range \ttt{"hi".."howdy"}, which defines the range of strings in between \ttt{"hi"} and \ttt{"howdy"}.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the generic \ttt{Range} class. It should store, as instance variables, a minimum and a maximum value, both of which are of type \ttt{<T extends Comparable<T>>}, meaning \ttt{T} must be a comparable type.
+    \item The \ttt{Range} constructor should receive these two values as parameters and assign them to the instance variables accordingly. 
+    \item Design the \ttt{public boolean contains(T v)} method that returns whether or not $v$ is between the interval that this range operates over. 
+\end{enumerate}
 
 \exercise{2}{chapter-advanced-oop}{Design the generic static method \ttt{T validateInput(String prompt, String errResp, U extends Predicate<T> p)} that receives a prompt, an error response, and an object that implements the \ttt{Predicate} interface to test whether or not the received value, received through standard input, is valid. If the value is invalid according to the predicate, print the error response and re-prompt the user. Otherwise, return the entered value.}
 

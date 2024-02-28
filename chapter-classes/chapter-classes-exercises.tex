@@ -1,4 +1,4 @@
-\section*{Chapter Exercises}
+\section{Chapter Exercises}
 \addcontentsline{toc}{section}{Exercises}
 
 \exercise{1}{chapter-classes}{Design the \ttt{Car} class, which stores a \ttt{String} representing the car's make, a \ttt{String} representing the car's model, and an \ttt{int} representing the car's year. Its constructor should receive these three values and store them in the instance variables. Be sure to write instance accessor and mutator methods for modifying all three fields. That is, you should write \ttt{getMake()}, \ttt{setMake(String s)}, and so forth, to access and modify the fields directly.}
@@ -126,7 +126,7 @@ A \textit{persistent data structure}\index{persistent data structure} is one tha
     \item First, design the generic, private, and static class \ttt{Node} inside a generic \ttt{PQueue} class skeleton. It should store, as instance variables, a pointer to its next element as well as its associated value.
     \item Then, design the \ttt{PQueue} class, which represents a persistent queue data structure. As instance variables, store ``first'' and ``last'' pointers as \ttt{Node} objects, as well as an integer to represent the number of existing elements. In the constructor, instantiate the pointers to \ttt{null} and the number of elements to zero.
     \item Design the \ttt{PQueue<T> enqueue(T t)} method that enqueues a value onto the end of a new queue containing all the old elements, in addition to the new value.
-    \item Design the \ttt{T dequeue()} method that removes the first element of the queue, returning a new queue without this first value.
+    \item Design the \ttt{PQueue<T> dequeue()} method that removes the first element of the queue, returning a new queue without this first value.
     \item Design the \ttt{T peek()} method that returns the first element of the queue.
     \item Design the \ttt{PQueue<T> of(T... vals)} method that creates a queue with the values passed as \ttt{vals}. Note that this must be a variadic method. Do not create a series of \ttt{PQueue} objects by enqueueing each element into a distinct queue; this is incredibly inefficient. Instead, allocate each \ttt{Node} one-by-one, thereby never calling \ttt{enqueue}.
     \item Design the \ttt{int size()} method that returns the number of elements in the queue. You should not traverse the queue to compute this value. 

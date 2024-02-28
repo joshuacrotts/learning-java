@@ -2,7 +2,7 @@
 
 Exceptions, at their code, are effect handlers. We use exceptions to identify and respond to events that occur at runtime. Java uses objects to implement an exception type hierarchy, with \ttt{Throwable} being the highest class in the chain. Any subclass or instance of \ttt{Throwable} can be thrown by Java. We will discuss several different exception types by categorizing them into one of two categories: unchecked versus checked checked exceptions.
 
-\subsection*{Unchecked Exceptions}
+\subsection{Unchecked Exceptions}
 In general, we handle exceptions at either compile time or runtime. The exceptions, themselves, are thrown at runtime, but certain exceptions must be explicitly handled and referenced by the program. An \textit{unchecked exception} is a form of exception whose behavior is dictated by the runtime system, or is caught by the programmer manually. A convenience factor of unchecked exceptions is that we do not \textit{have} to explicitly state what happens when one is thrown. It should also note that the \ttt{RuntimeException} class serves as the superclass of all unchecked exceptions.
 
 \example{Consider what happens when a program contains code that may or may not invoke a division-by-zero. If the divide-by-zero operation occurs, Java automatically throws an \ttt{ArithmeticException} with a relevant explanation of the problem. The exception halts the program at the point thereof, but what's interesting is that we can control the behavior of an unchecked exception via the \ttt{try/catch} combination. Inside a \ttt{try} block we place the code that might throw the exception. Inside the corresponding \ttt{catch} block, we initialize an exception variable to whatever the desired caught exception is, e.g., \ttt{ArithmeticException}, and we handle it inside of the block. Let's write a method that does nothing more than divides the sum of two numbers by the third.}
@@ -122,11 +122,11 @@ Scanner in = new Scanner(System.in);
 in.close();
 String s = in.nextLine(); // Throws IllegalStateException!
 \end{verbnobox}
-\subsection*{Checked Exceptions}
+\subsection{Checked Exceptions}
 
 A checked exception is one that the programmer must explicitly handle. The compiler will not allow the program to compile if the code that may throw the exception is not wrapped in either a \ttt{try/catch} block, or the method signature does not specify that it throws the exception. Many checked exceptions arise from I/O operations, such as reading from or to a data source. Considering this, we will discuss checked exceptions in the context of I/O operations in the following (non-sub)section.
 
-\subsection*{User-Defined Exceptions}
+\subsection{User-Defined Exceptions}
 The programmer can define their own exceptions in terms of other exceptions. Exceptions are nothing more than class definitions, which may be extended and inherited. 
 
 \example{Consider defining the \ttt{BadStringInputException} class, which inherits from \ttt{RuntimeException}. We might define this as an exception that is thrown when, after reading the user's input, we find that the input is not a ``alpha string,'' i.e., a string that contains only letters. We can define a constructor that takes a string as an argument, which serves as the message that is passed to the exception.\footnote{We note that, in general, creating new exceptions is rarely beneficial, since Java provides a plethora of exception definitions that cover most use cases.}}

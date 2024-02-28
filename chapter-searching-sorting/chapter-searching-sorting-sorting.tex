@@ -12,7 +12,7 @@ AbstractList<Integer> LS3 =
   new ArrayList<>(List.of(10, 8, 6, 7, 2, 10, 3, 3, 3, 10));
 \end{verbnobox}
 
-\subsection*{Insertion Sort}
+\subsection{Insertion Sort}
 Our sorting adventure begins with the \textit{insertion sort}. Insertion sort, in general, works by taking an element from the unsorted list and inserting it into the correct position in a sorted list. We can implement insertion sort in two ways: functionally and in-place. The functional variant will return a new list that is sorted, while the in-place variant will sort the list in-place. The functional variant is, in principle, easier to implement, but the in-place variant is more efficient in terms of memory usage. Figure~\ref{fig:insertion-sort} illustrates the in-place insertion sort algorithm; each iteration of the outer loop is represented by a row in the figure, with the red underbars representing the now-sorted sublist.
 
 \begin{cl}[]{Insertion Sort Tester}
@@ -189,7 +189,7 @@ class InPlaceInsertionSort<V extends Comparable<V>> implements IInsertionSort<V>
 \end{figure}
 
 
-\subsection*{Selection Sort}
+\subsection{Selection Sort}
 The selection sort is the next sorting algorithm that we will analyze. It works by first searching for the smallest element in the list, then swapping it with the first element. Then we search for the second smallest element, and swap it with the second element. We continue this process until the list is sorted. Being that we always search the entire list for the smallest element, this is a horrendously slow sorting algorithm and should be avoided in favor of faster approaches. Nevertheless, we show both the functional and in-place versions. Figure~\ref{fig:selection-sort} illustrates the in-place selection sort algorithm. We admit that the figure is a bit misleading since it gives the false impression that it requires the same number of traversals as insertion sort, but the figures do not represent the number of comparisons made in between each element.
 
 \begin{cl}[]{Selection Sort Tester}
@@ -367,7 +367,7 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
 \caption{In-Place Selection Sort Illustration}
 \end{figure}
 
-\subsection*{Bubble Sort}
+\subsection{Bubble Sort}
 The bubble sort is the last of the poor-performing sorts that we will discuss. With bubble sort we repeatedly swap adjacent elements if they are in the wrong order. We repeat this process until the list is sorted, which is guaranteed after at most $n^2$ iterations, where $n$ is the size of the input list. Figure~\ref{fig:bubble-sort} illustrates the in-place bubble sort algorithm. Note the use of two iteration variables $i$ and $j$, where $i$ represents the outer loop and $j$ represents the inner loop. The inner loop is responsible for the actual swapping of elements, whereas the outer controls the number of traversals over the list. The idea is to ``bubble'' the elements to the top/end of the list via repeated comparisons and swapping, hence the name. There are optimizations that can be made to the bubble sort algorithm. For example, if we traverse through the entire list without swapping at all, then the list must be in sorted order and we can terminate early. We will not implement this optimization, but it is worth considering.
 
 \begin{cl}[]{Bubble Sort Tester}
@@ -538,7 +538,7 @@ class InPlaceBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
 \label{fig:bubble-sort}
 \end{figure}
 
-\subsection*{Merge Sort}
+\subsection{Merge Sort}
 
 The \textit{merge sort}\index{merge sort} is one of the first explicitly divide-and-conquer algorithms that programmers encounter. We divide the sorted list into halves and recursively sort those halves. The base case is when the list is a singleton, since we certainly know how to sort a list that contains less than or equal to one element. After dividing comes the conquering, which consists of taking two now-sorted lists and combining their elements to create yet another sorted list. Recall that, at the base case, we know the singletons are sorted, because they have to be by definition. Because of this \textit{invariant}\index{invariant}, we know that merging the contents of two sorted lists is trivial; we compare each element one-by-one, putting the smaller of the two before the subsequent value.
 
@@ -716,7 +716,7 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
 \end{lstlisting}
 \end{cl}
 
-\subsection*{Quick Sort}
+\subsection{Quick Sort}
 At last we arrive at the \ttt{quick sort} algorithm. Quick sort works by choosing a \textit{pivot}, which is some value in the list. We then recursively sort all elements that are less than the pivot and all those that are greater than the pivot. Our implementation of the in-place quicksort works slightly differently, which is why we favor the functional version over the in-place counterpart. 
 
 Quick sort performs optimally when the median is selected as the pivot because roughly half of the elements are less than the pivot and roughly half are greater than the pivot, allowing for a performance similar to that of merge sort. Unfortunately, finding the median a priori to sorting ultimately defeats the point. In the subsequent chapter we will analyze the sorting algorithms in more detail.
