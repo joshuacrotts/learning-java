@@ -14,7 +14,7 @@ Indiana University Bloomington}
 \begin{document}
 
 
-\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}\textit{}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}emph{}
 
 % Include prevents a page break before
 \input{intro/titlepage.tex}
@@ -125,7 +125,6 @@ Joshua Crotts
 \setcounter{examplecounter}{1}
 \input{chapter-modern/chapter-modern}
 
-\backmatter
 % \thispagestyle{chapterstart}
 % \pagestyle{otherpages}
 % \label{epilogue}
@@ -137,6 +136,7 @@ Joshua Crotts
 \pagestyle{otherpages}
 \label{appendix-junit}
 \input{appendices/appendix-junit}
+\backmatter
 
 \addcontentsline{toc}{chapter}{Bibliography}
 \footnotesize

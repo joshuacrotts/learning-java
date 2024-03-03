@@ -103,7 +103,7 @@ class Interp1 extends Interp0 {
 }
 \end{verbnobox}
 
-The \ttt{execute} method is generated all the time, but we only care about its contents (i.e., we only populate its body) when we write something that is not a declaration. For example, if we write a class definition or a variable, it is nonsensical to place it inside the \ttt{execute} method body, since in the former case it would not compile, and in the latter case it would be local to only that version of \ttt{execute}. So, we need a way of determining whether or not a piece of code \textit{is} a declaration/definition. All declarations in our subset of Java will be restricted to the following grammar:
+The \ttt{execute} method is generated all the time, but we only care about its contents (i.e., we only populate its body) when we write something that is not a declaration. For example, if we write a class definition or a variable, it is nonsensical to place it inside the \ttt{execute} method body, since in the former case it would not compile, and in the latter case it would be local to only that version of \ttt{execute}. So, we need a way of determining whether or not a piece of code emph{is} a declaration/definition. All declarations in our subset of Java will be restricted to the following grammar:
 
 \setlength{\grammarparsep}{20pt plus 1pt minus 1pt} % increase separation between rules
 \setlength{\grammarindent}{12em} % increase separation between LHS/RHS 

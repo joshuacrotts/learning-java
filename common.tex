@@ -10,19 +10,19 @@
   \usepackage{fmtcount}
 \newcommand{\hsp}{\hspace{20pt}}
 \titleformat{\chapter}[block]
-  {\LARGE\rmfamily\bfseries}
+  {\Huge\rmfamily\bfseries}
   {}{0em}
   {\hfill\thechapter{.}\hspace{1em}}
 \titlespacing{\chapter}{0pt}{50pt}{100pt} 
 
 \titleformat{name=\chapter, numberless}[block]
-  {\LARGE\rmfamily\bfseries}
+  {\Huge\rmfamily\bfseries}
   {}{0em}
   {\hfill{}\hspace{1em}}
 \titlespacing{\chapter}{0pt}{50pt}{100pt} 
 
-\renewcommand{\cftloftitlefont}{\hspace*{\fill}\Large\rmfamily\bfseries}
-\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\Large\rmfamily\bfseries}
+\renewcommand{\cftloftitlefont}{\hspace*{\fill}\Huge\rmfamily\bfseries}
+\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\Huge\rmfamily\bfseries}
 
 
 % \titleformat{\chapter}[block]
@@ -169,7 +169,7 @@
 {#3} \stepcounter{excounter}}
 
 \newcommand{\example}[1]
-{\noindent\textbf{\textit{Example {\thechapter}.{\theexamplecounter}.}} {#1}
+{\noindent\textbf{emph{Example {\thechapter}.{\theexamplecounter}.}} {#1}
 \stepcounter{examplecounter}}
 
 

@@ -6,12 +6,14 @@
 \geometry {
   %     % HEIN MARGINS:
   %     % 7.25" x 9.125"
-  % paperheight=11in, paperwidth=8.5in,
+%  paperheight=9in, paperwidth=6in,
+%   % paperheight=11in, paperwidth=8.5in,
   % paperheight=11in, paperwidth=8.5in,
   % top=1in, bottom=.5in, left=.75in, right=0.50in,
   % top=1in, bottom=1in, left=1.25in, right=1.00in,
   paperheight=10in, paperwidth=7in,
   % paperheight=9.25in, paperwidth=6.75in,
+  % top=1in, bottom=1in, left=0.5in, right=0.5in,
   top=1in, bottom=1in, left=1in, right=1in,
 }
 % \usepackage[cam,center,letter]{crop}
@@ -132,7 +134,7 @@
   toptitle=1mm,
   bottomtitle=0.7mm,
   lefthand width={0.60\textwidth},
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
 }
 
 \newtcolorbox[use counter from=clo, number within=chapter]{clohalfast}[2][]{
@@ -169,7 +171,7 @@
   toptitle=1mm,
   bottomtitle=0.7mm,
   lefthand width={0.525\textwidth},
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
 }
 
 \newtcolorbox[use counter from=clo, number within=chapter]{clonarrow}[2][]{
@@ -206,7 +208,7 @@
   toptitle=1mm,
   bottomtitle=0.7mm,
   lefthand width={0.65\textwidth},
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
 }
 
 \newtcolorbox[use counter from=clo, number within=chapter]{cloverynarrow}[2][]{
@@ -239,7 +241,7 @@
   toptitle=1mm,
   bottomtitle=0.7mm,
   lefthand width={0.80\textwidth},
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
 }
 
 \newtcolorbox[use counter from=clo,number within=chapter]{cloast}[2][]{
@@ -273,7 +275,7 @@
   bottom=-5pt,
   toptitle=1mm,
   bottomtitle=0.7mm,
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
 }
 
 \newtcolorbox[use counter from=clo,number within=chapter]{clobigast}[2][]{
@@ -306,7 +308,7 @@
   toptitle=1mm,
   bottomtitle=0.7mm,
   lefthand width={0.35\textwidth},
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
 }
 
 \newtcolorbox[use counter from=clo,number within=chapter]{cloverywide}[2][]{
@@ -339,7 +341,7 @@
   toptitle=1mm,
   bottomtitle=0.7mm,
   lefthand width={0.20\textwidth},
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
 }
 
 % recognizer-reducer pair
@@ -375,7 +377,7 @@
   toptitle=1mm,
   bottomtitle=0.7mm,
   lefthand width={0.46\textwidth},
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
 }
 
 % Code Listing (JUST a code listing; no output or anything).
@@ -407,7 +409,7 @@
   bottom=-5pt,
   toptitle=1mm,
   bottomtitle=0.7mm,
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}}}
 }
 
 % BREAKABLE code listing - usually only for very, VERY long listings.
@@ -439,7 +441,7 @@
   bottom=-5pt,
   toptitle=1mm,
   bottomtitle=0.7mm,
-  title={\textcolor{black}{\textit{Listing \thetcbcounter}\ifstrempty{#2}{}{---\textit{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
+  title={\textcolor{black}{emph{Listing \thetcbcounter}\ifstrempty{#2}{}{---emph{#2}}\ifstrempty{#1}{}{~(\texttt{#1})}}}
 }
 
 \tikzset{%
@@ -484,7 +486,7 @@
 %     \vspace*{\fill}
 %     \hfill
 %     \begin{center}
-%       % \textit{This page intentionally left blank.}
+%       % emph{This page intentionally left blank.}
 %     \end{center}
 %     \vspace{\fill}
 %     \thispagestyle{empty}

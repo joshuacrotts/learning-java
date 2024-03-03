@@ -1,9 +1,8 @@
-\section{Chapter Exercises}
-\addcontentsline{toc}{section}{Exercises}
+\section{Exercises}
 
 \exercise{2}{chapter-exceptions-io}{Design the \ttt{EchoOdds} class, which reads a file of line-separated integers specified by the user (using standard input), and writes only the odd numbers out to a file of the same name, just with the \ttt{.out} extension. If there is a non-number in the file, throw an \ttt{InputMismatchException}.} 
 
-\textit{Example Run.} If the user types \ttt{"file1a.in"} into the running program, and \ttt{file1a.in} contains the following:
+emph{Example Run.} If the user types \ttt{"file1a.in"} into the running program, and \ttt{file1a.in} contains the following:
 
 \begin{verbnobox}[\small]
 5
@@ -25,7 +24,7 @@
 13
     \end{verbnobox}
 
-\textit{Example Run.}  If the user types \ttt{"file1b.in"} into the running program, and \ttt{file1b.in} contains the following:
+emph{Example Run.}  If the user types \ttt{"file1b.in"} into the running program, and \ttt{file1b.in} contains the following:
 
     \begin{verbnobox}[\small]
 5
@@ -43,7 +42,7 @@ THIS_IS_NOT_AN_INTEGER!
 
     \exercise{2}{chapter-exceptions-io}{Design the \ttt{Capitalize} class, which reads a file of strings (that are not necessarily line-separated) specified by the user (using standard input), and outputs the capitalized versions of the sentences to a file of the same name, just with the \ttt{.out} extension. You may assume that a sentence is a string that is terminated by a period and only a period. This problem is harder than it looks because you need to correctly print the string out to the file. If you use a splitting method, e.g., \ttt{.split}, you must remember to reinsert the period in the resulting string. There are many ways to solve this problem!}
 
-    \textit{Example Run.} If the user types \ttt{"file2a.in"} into the running program, and \ttt{file2a.in} contains the following \textit{(note that if you copy and paste this input data, you will need to remove the newline before the \ttt{"hopefully"} token):}
+    emph{Example Run.} If the user types \ttt{"file2a.in"} into the running program, and \ttt{file2a.in} contains the following emph{(note that if you copy and paste this input data, you will need to remove the newline before the \ttt{"hopefully"} token):}
 
     \begin{verbnobox}[\small]
 hi, it's a wonderful day. i am doing great, how are you doing. it's 
@@ -63,7 +62,7 @@ This sentence should also be capitalized.
 
     \exercise{2}{chapter-exceptions-io}{Design the \ttt{SpellChecker} class, which reads two files: \ttt{"dictionary.txt"} and a file specified by the user (through standard input). The specified flie contains a single sentence that may or may not have misspelled words. Your job is to check each word in the file and determine whether or not they are spelled correctly, according to the dictionary of words. If it is not spelled correctly, wrap it inside brackets \ttt{[]}. Output the modified sentences to a file of the same name, just with the \ttt{.out} extension instead. You may assume that words are space-separated and that no punctuation exist. Hint: use a \ttt{HashSet}! Another hint: words that are different cases are not misspelled; e.g., \ttt{"Hello"} is spelled the same as \ttt{"hello"}; how can your program check this?}
 
-    \textit{Example Run.} Assuming \ttt{dictionary.txt} contains a list of words, if the user types \ttt{"file3a.in"} into the running program, and \ttt{file3a.in} contains the following:
+    emph{Example Run.} Assuming \ttt{dictionary.txt} contains a list of words, if the user types \ttt{"file3a.in"} into the running program, and \ttt{file3a.in} contains the following:
 
     \begin{verbnobox}[\small]
 Hi hwo are you donig I am dioing jsut fine if I say so mysefl but I 
@@ -193,23 +192,22 @@ As an added optimization, we should cache whether the current relation is one of
 \exercise{3}{chapter-arrays-collections}{The \ttt{cut} program is a command-line tool for extracting pieces of text from data. For this exercise, you will implement a very basic version of the program that reads data from the terminal.}
 
 \begin{itemize}
-    \item First, ... \ttt{-c X,Y,Z}
-    \item ... \ttt{-c X-Y}
-    \item ... \ttt{-c X-Y,Z-W}
-    \item ... \ttt{-c 1-} end of line, \ttt{-b -5} up to fifth char
-    \item ... \ttt{-dD} \ttt{-fX} flags. \ttt{-d$D$} means $D$ is a single-char delimiter, \ttt{-f$X$} means $X$ is either an interval or a range of fields to print. The fields are delimited by $D$. These cannot be used without the other.
+    \item First, add support for the \ttt{-c $X,Y,\ldots,Z$} flag, which outputs the characters at positions $X,Y,\ldots,Z$ in each line. If any number is less than $1$, throw an \ttt{IllegalArgumentException}.
+    \item Second, add support for the \ttt{-c $X$-$Y$} flag, which outputs the characters between and including positions $X$ and $Y$. This option should also work with comma separators.
+    \item Third, add support for the \ttt{-c $X$-} and \ttt{-c -$Y$} flags, which print the characters from $X$ to the end of the line, and all characters up to $Y$.
+    \item Fourth, Add support for the \ttt{-d$D$} and \ttt{-f$X$} flags. The former serves as a single character delimiter, and the latter indicates that $X$ is either an interval or a range of fields to print. The fields are delimited by $D$. Note that these two flags cannot be used without the other. The format of $X$ mirrors that of the input to the $-c$ flag. If $D$ does not exist on a line, then the entire line is printed.
 \end{itemize}
 
 \exercise{3}{chapter-arrays-collections}{The \ttt{sort} program is a command-line tool for sorting input from a data source. For this exercise, you will implement a very basic version of the program that reads data from the terminal.}
 
 \begin{itemize}
     \item First, allow the sort command to receive either a file or a list of data. If the \ttt{-d$D$} flag is passed, use $D$ as the delimiter. The default for a file is a newline, and the default for a non-file is the space.
-    \item Add \ttt{-r} for reversed sorting.
-    \item Add \ttt{-i} for case-insensitive sorting.
-    \item Add \ttt{-c} for checking to see if a file is sorted. Reports the first occurrence of out-of-order sort.
-    \item Add \ttt{-n} for sorting the values as if they are numbers. Notice the difference between sorting \ttt{9, 10, 8} with and without this flag.
-    \item Add \ttt{-u} for removing duplicate values.
-    \item Add \ttt{-o} for outputting to the file specified immediately after.
+    \item Second, add support for the \ttt{-r} flag for reversed sorting.
+    \item Third, add support for the \ttt{-i} flag for case-insensitive sorting.
+    \item Fourth, add support for the \ttt{-c} flag for checking to see if a file is sorted. Reports the first occurrence of out-of-order sort.
+    \item Fifth, add support the the \ttt{-n} flag for sorting the values as if they are numbers. Notice the difference between sorting \ttt{9, 10, 8} with and without this flag.
+    \item Sixth, add support for the \ttt{-u} flag for removing duplicate values.
+    \item Seventh, add support for the \ttt{-o} flag for outputting to the file specified immediately after.
 \end{itemize}
 Any of these flags should be composable with another, with the exception of \ttt{-o} whose output file is the next argument, and \ttt{-c}, which outputs any disorders to standard out.
 
@@ -221,7 +219,7 @@ Any of these flags should be composable with another, with the exception of \ttt
     \item Next, add the \ttt{'{print ...}'} command. That is, the user should be able to type an open brace, followed by \ttt{print}, then some data, then a closing brace, all enclosed by single quotes. The \ttt{print} command receives multiple possible values, including `column labels', i.e., \ttt{$N$}, where $N$ is a column number. For example, \ttt{awk -F, '{print \$1}' input.csv} should print the first column of each row in the input file. 
     \item After getting the previous command to work, add support for inlined prefix operations in the \ttt{print} command. That is, suppose we want to print the sum of the second and fourth column of each row. To do this, we might write \ttt{awk -h -F, '{print (+ \$2 \$4)}' input.csv}. For simplicity, you may assume that there are only four operations: \ttt{'+'}, \ttt{'-'}, \ttt{'*'}, and \ttt{'/'}. 
     \item After getting the previous command to work, add multiple-argument support for \ttt{print}. That is, if we want to compute the product of the first three columns, output a string saying \ttt{" multiplied is " }, followed by the product, we could write \ttt{"awk -h -F, '{print \$1,\$2,\$3 " multiplied is " (* \$1 \$2 \$3) }'}. Note that the delimiter between the column labels must match that passed by \ttt{-F}, otherwise there is no separator.
-    \item After getting the previous command to work, add support for conditional expressions. That is, suppose we want to print the second column of a row only if it has a value greater than $200$. We can achieve this via \ttt{"awk -h -F, '{print \$2(> \$2 200)}'}. If you \textit{really} want a challenge, you can add support for inlining other arithmatic expressions into a conditional. For example, if we want to print the third column only if the sum of the first two columns exceeds $1000$, we might write \ttt{awk -h -F, '{print \$3(> (+ \$1 \$2) 1000)}'}.
+    \item After getting the previous command to work, add support for conditional expressions. That is, suppose we want to print the second column of a row only if it has a value greater than $200$. We can achieve this via \ttt{"awk -h -F, '{print \$2(> \$2 200)}'}. If you emph{really} want a challenge, you can add support for inlining other arithmatic expressions into a conditional. For example, if we want to print the third column only if the sum of the first two columns exceeds $1000$, we might write \ttt{awk -h -F, '{print \$3(> (+ \$1 \$2) 1000)}'}.
     \item Finally, add the \ttt{-v=N:V} flag that acts as a variable map that can be used in a print command. That is, suppose we want to create a variable called \ttt{val} and assign to it \ttt{30}. We can do this via \ttt{-v=val:30}, then reference it in a \ttt{print} via \ttt{\$}, e.g., \ttt{awk -F, '{print \$val}'}.
 \end{itemize}
 

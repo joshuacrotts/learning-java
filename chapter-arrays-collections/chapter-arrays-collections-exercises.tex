@@ -1,5 +1,4 @@
-\section{Chapter Exercises}
-\addcontentsline{toc}{section}{Exercises}
+\section{Exercises}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] operate(int[] A)} method that, when given an array of integers, returns a new array where the elements are the result of applying the following operation to each element: if the $i^{\text{th}}$ element is odd, multiply it by its index $i$ plus one. Otherwise, divide it by its index $i$ plus one.}
 
@@ -21,7 +20,7 @@ accSum({1, 3, 3, 4, 5, 5, 6, 6, 2}) => {1, 4, 7, 11, 16, 21, 27, 33, 35}
 accSum({5, 5, 5, 5, 5, 5, 5, 1, 5}) => {5, 10, 15, 20, 25, 30, 35, 36, 41}
 \end{verbnobox}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{String[] fizzBuzz(int min, int max)} method that iterates over the interval $[\textit{min}, \textit{max}]$ (you may assume $\textit{max} \geq \textit{min}$) and returns an array containing strings that meet the following criteria:}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{String[] fizzBuzz(int min, int max)} method that iterates over the interval $[emph{min}, emph{max}]$ (you may assume $emph{max} \geq emph{min}$) and returns an array containing strings that meet the following criteria:}
 
     \begin{itemize}
         \item If $i$ is divisible by $3$, insert \ttt{"Fizz"}.
@@ -37,7 +36,7 @@ fizzBuzz(1, 12)  => {"1", "2", "Fizz", "4", "Buzz",
 fizzBuzz(15, 18) => {"FizzBuzz", "16", "17", "Fizz"}
     \end{verbnobox}
 
-\exercise{2}{chapter-arrays-collections}{Using only arrays, design the \ttt{int[] findIntersection(int[] A, int[] B)} method that returns an array containing the \textit{intersection} of two arrays. The intersection of two arrays is the set of elements that are common to both arrays. For example, the intersection of $\{7, 4, 8, 0, 2, 1\}$ and $\{8, 6, 4, 9, 26, 4, 0\}$ is $\{7, 8, 0\}$. Do not assume that the arrays are sorted, and you cannot sort them yourself.}
+\exercise{2}{chapter-arrays-collections}{Using only arrays, design the \ttt{int[] findIntersection(int[] A, int[] B)} method that returns an array containing the emph{intersection} of two arrays. The intersection of two arrays is the set of elements that are common to both arrays. For example, the intersection of $\{7, 4, 8, 0, 2, 1\}$ and $\{8, 6, 4, 9, 26, 4, 0\}$ is $\{7, 8, 0\}$. Do not assume that the arrays are sorted, and you cannot sort them yourself.}
 
 \exercise{2}{chapter-arrays-collections}{Desing the \ttt{int median(int[] A, int[] B)} that, when given two sorted (in increasing order) arrays of integers $A$ and $B$, returns the median value of those two lists. You can use auxiliary data structures to help in solving the problem, but they are not necessary.}
 
@@ -78,7 +77,7 @@ canBalanceArray(new int[]{3, 2, 1, 0})       => true
 canBalanceArray(new int[]{10})               => false
 \end{verbnobox}
 
-\exercise{3}{chapter-arrays-collections}{A \textit{span} is the distance between a value and another, distinct occurrence of the same value. Design the \ttt{int largestSpan(int[] A)} method that, when given a non-empty array of integers $A$, returns the largest span. It may be beneficial to write the \ttt{firstIndexOf} and \ttt{lastIndexOf} methods to help in your design process. Use the following examples as motivation.}
+\exercise{3}{chapter-arrays-collections}{A emph{span} is the distance between a value and another, distinct occurrence of the same value. Design the \ttt{int largestSpan(int[] A)} method that, when given a non-empty array of integers $A$, returns the largest span. It may be beneficial to write the \ttt{firstIndexOf} and \ttt{lastIndexOf} methods to help in your design process. Use the following examples as motivation.}
 
 \begin{verbnobox}[\small]
 largestSpan(new int[]{4, 2, 3, 2, 5})             => 3
@@ -195,7 +194,7 @@ shift({}, -9999999)                  => {}
 shift({120, 80, 70, 50, 40, 20}, -3) => {50, 40, 20, 120, 80, 70}
 \end{verbnobox}
 
-\exercise{2}{chapter-arrays-collections}{For this problem you are not allowed to use an \ttt{ArrayList} or any helper methods, e.g., \ttt{.contains}, or methods from the \ttt{Arrays} class. You \textit{may} (and should) use a \ttt{Set<Integer>} to keep track of previously-seen peaks.}
+\exercise{2}{chapter-arrays-collections}{For this problem you are not allowed to use an \ttt{ArrayList} or any helper methods, e.g., \ttt{.contains}, or methods from the \ttt{Arrays} class. You emph{may} (and should) use a \ttt{Set<Integer>} to keep track of previously-seen peaks.}
 
 Joe the mountain climber has come across a large mountain range. He wants to climb only the tallest mountains in the range. Design the \ttt{int[] peakFinder(int[] H)} method that returns an array $H'$ of all the peaks in an \ttt{int[]} of mountain heights $H$. A peak $p$ is defined as an element of $h$ at index $i$ such that $p[i - 1] < p[i]$ and $p[i] > p[i + 1]$. If $i = 0$ or $i = |H| - 1$, Joe will not climb $p[i]$. Joe doesn't want to climb a mountain of the same height more than once, so you should not add any peaks that have already been added to $H'$. We present some test cases below.
 
@@ -284,11 +283,11 @@ identifyTrendingTopics([<"North America" : {"Tech", "Comedy", "Sports"}>,
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> pushLast(LinkedList<Integer> lon, int v)} method that, when given a \ttt{LinkedList<Integer>}~$l$ and an \ttt{int}~$v$, returns a newly-instantiated \ttt{LinkedList<Integer>} with the same elements plus~$v$ added to the end of~$l$.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> set(LinkedList<Integer> l, int v, int i)} method that, when given a \ttt{LinkedList<Integer>}~$l$, an \ttt{int}~$v$, and an index~$i$, returns a \textit{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index~$i$ is, instead, the value~$v$. If $i$ is less than zero or exceeds the length of~$l$, return \ttt{null}.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> set(LinkedList<Integer> l, int v, int i)} method that, when given a \ttt{LinkedList<Integer>}~$l$, an \ttt{int}~$v$, and an index~$i$, returns a emph{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index~$i$ is, instead, the value~$v$. If $i$ is less than zero or exceeds the length of~$l$, return \ttt{null}.}
 
 \exercise{1}{chapter-arrays-collections}{Design the \ttt{int[] toArray(LinkedList<Integer> l)} method, which receives a linked list of integers~$l$, returns an array containing the values from~$l$.}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> reverse(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns a \textit{new} linked list containing the elements of~$l$, but reversed.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> reverse(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns a emph{new} linked list containing the elements of~$l$, but reversed.}
 
 \exercise{2}{chapter-arrays-collections}{Design the \texttt{HashSet<Integer> moreThanThree(int[] A)} method that, when given an \texttt{int[]}~$A$, returns a new \texttt{HashSet\-<Integer>} of values containing those values from~$A$ that occur strictly more than three times.}
 
@@ -353,7 +352,7 @@ unifiesAll(M4, G4) => false
 
 \exercise{3}{chapter-arrays-collections}{Two strings $s_1$ and $s_2$ are isomorphic if we can create a mapping from $s_1$ from $s_2$. For example, the strings \ttt{"DCBA"} and \ttt{"ZYXW"} are isomorphic because we can map $D$~to~$Z$, $C$~to~$Y$, and so forth. Another example is \ttt{"ABACAB"} and \ttt{"XYXZXY"} for similar reasons. A~non-example is \ttt{"PROXY"} and \ttt{"ALPHA"}, because once we map \ttt{"A"} to \ttt{"P"}, we cannot create a map between \ttt{"A"} and \ttt{"Y"}. Design the \ttt{boolean isIsomorphic(String s1, String s2)} method, which determines whether or not two strings are isomorphic. }
 
-\exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Design the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> los)} method, which maps all alphabetized anagrams to the strings in $\textit{ls}$ using the above criteria.}
+\exercise{2}{chapter-arrays-collections}{Anagrams are strings that are formed by rearranging the letters of another string. For example, \ttt{"plea"} is an anagram for \ttt{"leap"}, but we consider an alphabetized anagram to be the alphabetized arrangement of letters for an anagram. As an example, \ttt{"aelrst"} is the alphabetized anagram for \ttt{"alerts"}, \ttt{"alters"}, \ttt{"slater"}, and \ttt{"staler"}. Design the \ttt{static Map<String, List<String>> alphaAnagramGroups(List<String> los)} method, which maps all alphabetized anagrams to the strings in $emph{ls}$ using the above criteria.}
     
 \begin{verbnobox}[\small]
 los = ["presorting", "plea", "introduces", "anger", "leap", "petals",
@@ -382,9 +381,9 @@ alphaAnagramGroups(los)
 
 Your job is to determine which variables are bound, which are free, and which are neither.
 
-A \textit{bound variable} is a variable that is bound by a $\lambda$ and occurs in its expression. For example, in the expression $\lambda{x}.x$, `$x$' is bound.
+A emph{bound variable} is a variable that is bound by a $\lambda$ and occurs in its expression. For example, in the expression $\lambda{x}.x$, `$x$' is bound.
 
-A \textit{free variable} is a variable that is \textit{not} bound by a $\lambda$ but does occur in an expression. For example, in the expression $\lambda{y}.\lambda{x}.zwv$, `$z$', `$w$', and `$v$' are free variables.
+A emph{free variable} is a variable that is emph{not} bound by a $\lambda$ but does occur in an expression. For example, in the expression $\lambda{y}.\lambda{x}.zwv$, `$z$', `$w$', and `$v$' are free variables.
 
 A variable that is neither free nor bound is a variable that is bound by a $\lambda$ but does not occur in its expression. For example, in the expression $\lambda{}x.\lambda{}y.yz$, `$x$' is neither free nor bound.
 
@@ -395,7 +394,7 @@ classifyVars("\(\lambda\)x.\(\lambda\)y.xyz") => {<"x" : "B">, <"y" : "B">, <"z"
 classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
 \end{alltt}
 
-\exercise{2}{chapter-arrays-collections}{The \textit{substitution cipher} is a text cipher that encodes an alphabet string $A$ (also called the \textit{plain-text alphabet}) with a key string $K$ (also called the \textit{cipher-text alphabet}). The $A$ string is defined as \ttt{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, and $K$ is any permutation of~$A$. We can encode a string $s$ using $K$ as a mapping from~$A$. For example, if $K$ is the string \ttt{"ZEBRASCDFGHIJKLMNOPQTUVWXY"} and $s$ is \ttt{"WE MIGHT AS WELL SURRENDER!"}, the result of encoding $s$ produces \ttt{"VN IDBCY JZ VNHH ZXRRNFMNR!"}
+\exercise{2}{chapter-arrays-collections}{The emph{substitution cipher} is a text cipher that encodes an alphabet string $A$ (also called the emph{plain-text alphabet}) with a key string $K$ (also called the emph{cipher-text alphabet}). The $A$ string is defined as \ttt{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, and $K$ is any permutation of~$A$. We can encode a string $s$ using $K$ as a mapping from~$A$. For example, if $K$ is the string \ttt{"ZEBRASCDFGHIJKLMNOPQTUVWXY"} and $s$ is \ttt{"WE MIGHT AS WELL SURRENDER!"}, the result of encoding $s$ produces \ttt{"VN IDBCY JZ VNHH ZXRRNFMNR!"}
 
 Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet string $A$, a cipher-text string $K$, and a string $s$ to encode, \ttt{substitutionCipher} should return a string~$s'$ using the aforementioned substitution cipher algorithm. You must follow the ``design recipe'' laid out in class. That is, you must write the method purpose statement comment, tests, and the implementation.}
 
