@@ -4,7 +4,7 @@
 
 \exercise{1}{chapter-crl}{Design the \ttt{String numStuff(int n)} that determines if an integer $n$ is greater than $100$. If so, return the string of $n$ divided by two. If the number is less than 50, return the string of $n$ divided by five. In any other case, return the string ``N/A.''}
 
-\exercise{1}{chapter-crl}{Design the \ttt{boolean canVote(int age)} that, when given an integer variable emph{age} in years, returns whether or not someone who is that age is able to legally vote in the United States. For reference, someone may legally vote once they turn eighteen years old.}
+\exercise{1}{chapter-crl}{Design the \ttt{boolean canVote(int age)} that, when given an integer variable \emph{age} in years, returns whether or not someone who is that age is able to legally vote in the United States. For reference, someone may legally vote once they turn eighteen years old.}
 
 \exercise{1}{chapter-crl}{Design the \ttt{int max(int x, int y, int z)} that returns the maximum of three integers $x$, $y$, and $z$. Do not use any built-in (\ttt{Math} library) methods.}
 
@@ -22,7 +22,7 @@
 
 \exercise{1}{chapter-crl}{Design the \ttt{String middleString(String a, String b, String c)} method, which receives three strings $a$, $b$, and $c$, and returns the string that is ``in between'' the others in terms of their lexicographical content. You cannot sort the strings or use an array.}
 
-\exercise{1}{chapter-crl}{In propositional logic, there are several emph{connectives} that act on boolean truth values. These include logical conjunction $\land$, disjunction $\lor$, conditional $\to$, biconditional $\leftrightarrow$, and negation $\lnot$. We can represent emph{schemata} as a series of composed method calls. For example, an evaluation of}
+\exercise{1}{chapter-crl}{In propositional logic, there are several \emph{connectives} that act on boolean truth values. These include logical conjunction $\land$, disjunction $\lor$, conditional $\to$, biconditional $\leftrightarrow$, and negation $\lnot$. We can represent \emph{schemata} as a series of composed method calls. For example, an evaluation of}
 
 \[
     `P \to \lnot (Q \leftrightarrow \lnot R)\textrm'
@@ -137,7 +137,7 @@ fitCandy(7, 1, 12)     => 7
 fitCandy(7, 1, 13)     => -1
 \end{verbnobox}
 
-\exercise{3}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{boolean isValidIpv4(String ip)} method that, when given a string, determines whether or not it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid. Below the examples is a helper method, \ttt{isNumeric}, to determine whether or not a string is ``numeric.'' Understanding emph{how} this helper method works is unimportant for the time being. You \textbf{cannot} use arrays, loops, or regular expressions to solve this problem. Finally, you will need to use \ttt{Integer.parseInt}, \ttt{substring}, and \ttt{indexOf}.}
+\exercise{3}{chapter-crl}{An IPv4 address contains four integer values stored in four octets, separated by dots. For instance, \ttt{192.168.1.244} is a valid IPv4 address. Another example is \ttt{149.165.192.52}. Design the \ttt{boolean isValidIpv4(String ip)} method that, when given a string, determines whether or not it represents a valid IPv4 address. Each octet must be an integer between zero and 255 inclusive. Note that some IPv4 addresses are, in reality, nonsensical, e.g., \ttt{0.0.0.0}, but we will not consider these as invalid. Below the examples is a helper method, \ttt{isNumeric}, to determine whether or not a string is ``numeric.'' Understanding \emph{how} this helper method works is unimportant for the time being. You \textbf{cannot} use arrays, loops, or regular expressions to solve this problem. Finally, you will need to use \ttt{Integer.parseInt}, \ttt{substring}, and \ttt{indexOf}.}
 
 \begin{verbnobox}[\small]
 isValidIpv4("192.168.1.244")    => true
@@ -202,7 +202,7 @@ Your method should return the total cost of the item after applying the discount
     \item If the employee is on vacation, their pay rate is $2$ times their hourly rate rather than $1.5$.
     \item If the number of hours is less than or equal to $40$, then no overtime pay is given.
     \item If the number of hours is greater than $70$, then the resulting gross pay (before taxes) is increased by $15\%$.
-    \item The gross pay is subject to the tax emph{percentage} passed to the method. 
+    \item The gross pay is subject to the tax \emph{percentage} passed to the method. 
 \end{itemize}
 
 \exercise{1}{chapter-crl}{Design the recursive \ttt{int countStr(String s)} that counts the number of times the substring \ttt{"str"} appears in a given string $s$.}
@@ -235,7 +235,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \exercise{1}{chapter-crl}{This question has two parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{isPalindromeTR} tail recursive method, which receives a string and determines if it is a palindrome. Recall that a palindrome is a string that is the same backwards as it is forwards. E.g., ``racecar.'' \textbf{Do not} use a (character) array, \ttt{StringBuilder}, \ttt{StringBuffer}, or similar, to solve this problem. It emph{must} be naturally recursive.
+    \item Design the \ttt{isPalindromeTR} tail recursive method, which receives a string and determines if it is a palindrome. Recall that a palindrome is a string that is the same backwards as it is forwards. E.g., ``racecar.'' \textbf{Do not} use a (character) array, \ttt{StringBuilder}, \ttt{StringBuffer}, or similar, to solve this problem. It \emph{must} be naturally recursive.
     \item Design the \ttt{isPalindromeLoop} method that solves the problem using a loop. The same restrictions from the previous problem hold true for this one.
 \end{enumerate}
 
@@ -261,7 +261,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 \exercise{1}{chapter-crl}{This question has three parts.}
 
 \begin{enumerate}[label=(\alph*)]
-    \item The emph{hyperfactorial} of a number, namely $H(n)$, is the value of $1^1 \cdot 2^2 \cdot ... \cdot n^n$. As you might imagine, the resulting numbers from a hyperfactorial are outrageously large. Therefore we will make use of the \ttt{long} datatype rather than \ttt{int} for this problem. 
+    \item The \emph{hyperfactorial} of a number, namely $H(n)$, is the value of $1^1 \cdot 2^2 \cdot ... \cdot n^n$. As you might imagine, the resulting numbers from a hyperfactorial are outrageously large. Therefore we will make use of the \ttt{long} datatype rather than \ttt{int} for this problem. 
     
     Design the standard recursive \ttt{hyperfactorial} method, which receives a long integer $n$ and returns its hyperfactorial.
     \item Then, design the \ttt{hyperfactorialTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
@@ -274,7 +274,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 \exercise{1}{chapter-crl}{This question has three parts.}
 
 \begin{enumerate}[label=(\alph*)]
-    \item The emph{subfactorial} of a number, namely $!n$, is the number of permutations of $n$ objects such that no object appears in its natural spot. For example, take the collection of objects $\{a, b, c\}$. There are $6$ possible permutations (because we choose arrangements for three items, and $3!=6$): $\{a, b, c\}, \{a, c, b\}, \{b, c, a\}, \{c, b, a\}, \{c, a, b\}, \{b, a, c\}$, but only two of these are emph{derangements}: $\{b, c, a\}$ and $\{c, a, b\}$, because no element is in the same spot as the original collection. Therefore, we say that $!3=2$. We can describe subfactorial as a recursive formula:
+    \item The \emph{subfactorial} of a number, namely $!n$, is the number of permutations of $n$ objects such that no object appears in its natural spot. For example, take the collection of objects $\{a, b, c\}$. There are $6$ possible permutations (because we choose arrangements for three items, and $3!=6$): $\{a, b, c\}, \{a, c, b\}, \{b, c, a\}, \{c, b, a\}, \{c, a, b\}, \{b, a, c\}$, but only two of these are \emph{derangements}: $\{b, c, a\}$ and $\{c, a, b\}$, because no element is in the same spot as the original collection. Therefore, we say that $!3=2$. We can describe subfactorial as a recursive formula:
 \begin{align*}
     !0 &= 1\\
     !1 &= 0\\
@@ -340,7 +340,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
 
-\exercise{3}{chapter-crl}{This question has five parts. We need to provide some background for the question first. An emph{encoded string} $S$ is one of the form:}
+\exercise{3}{chapter-crl}{This question has five parts. We need to provide some background for the question first. An \emph{encoded string} $S$ is one of the form:}
 \begin{align*}
 S &= G^{*}\\
 G &= NL\\
@@ -362,14 +362,14 @@ cutN("3[a]2[b]")     => "[a]2[b]
 cutN("47[abcd]")     => "[abcd]"
 cutN("1[bbbbb]3[a]") => "[bbbbb]3[a]"
 \end{verbatim}
-    \item Design the emph{standard recursive} \ttt{decode} method, which receives an encoded string and performs a decoding operation.
+    \item Design the \emph{standard recursive} \ttt{decode} method, which receives an encoded string and performs a decoding operation.
     \item Design the \texttt{decodeTR} and \texttt{decodeTRHelper} methods. The former acts as the driver to the latter; the latter solves the same problem that \texttt{decode} does, but it instead uses tail recursion. Remember to include the relevant access modifiers!
     \item Design the \texttt{decodeLoop} method, which solves the problem using either a \texttt{while} or \texttt{for} loop.
 \end{enumerate}
 
 \exercise{2}{chapter-crl}{Design the \ttt{boolean isNumberPalindrome(int n)} method that, when given an integer $n$, returns whether or not that number is a palindrome. You cannot convert the number to a string.}
 
-\exercise{3}{chapter-crl}{The C programming language contains the \ttt{atoi} ``ascii-to-integer'' function, which receives a string and, if the string represents some integer, returns the number converted to an integer. Design the \ttt{int atoi(String s)} method that, when given a string $s$, returns its value as an integer if it can be parsed as an integer. When parsing the integer, ignore all leading zeroes and leading non-digits. Upon finding the first non-zero digit, if it exists, begin interpreting the string as a number. At any point thereafter, if a non-digit is encountered, return the number parsed up to that point. The given integer can also contain a sign, e.g., $+$ or $-$. If the value exceeds the bounds of an integer (i.e., \ttt{Integer.MAX_VALUE} or \ttt{Integer.MIN_VALUE}), return zero. Writing enough tests is emph{crucial} to getting this correct! We provide some examples below.}
+\exercise{3}{chapter-crl}{The C programming language contains the \ttt{atoi} ``ascii-to-integer'' function, which receives a string and, if the string represents some integer, returns the number converted to an integer. Design the \ttt{int atoi(String s)} method that, when given a string $s$, returns its value as an integer if it can be parsed as an integer. When parsing the integer, ignore all leading zeroes and leading non-digits. Upon finding the first non-zero digit, if it exists, begin interpreting the string as a number. At any point thereafter, if a non-digit is encountered, return the number parsed up to that point. The given integer can also contain a sign, e.g., $+$ or $-$. If the value exceeds the bounds of an integer (i.e., \ttt{Integer.MAX_VALUE} or \ttt{Integer.MIN_VALUE}), return zero. Writing enough tests is \emph{crucial} to getting this correct! We provide some examples below.}
 
 \begin{verbnobox}[\small]
 atoi("ABCD")           => 0
@@ -434,7 +434,7 @@ assertFalse(middleABC("notInTheMiddleABCmid!"));
 
 \exercise{1}{chapter-crl}{Design the \ttt{boolean allSelfDividing(int n)} method, which receives an integer $n$ and returns whether each digit evenly divides $n$. If any digit is zero, then return \ttt{false}. You must perform the arithmetic manually; you \textbf{cannot} convert the value to a \ttt{String} or use an array.}
 
-\exercise{2}{chapter-crl}{Design the \ttt{int strSumNums(String s)} that computes the sum of each emph{positive integer} ($\geq 0$) in a string $s$. See the below test cases for examples. You may assume that each integer in $s$, should there be any, is in the bounds of a positive \ttt{int}, i.e., $0$ and $2^{31}-1$. Hint: use \ttt{Character.isDigit} to test whether a character $c$ is a digit, and \ttt{Integer.parseInt} to convert a \ttt{String} to an \ttt{int}.}
+\exercise{2}{chapter-crl}{Design the \ttt{int strSumNums(String s)} that computes the sum of each \emph{positive integer} ($\geq 0$) in a string $s$. See the below test cases for examples. You may assume that each integer in $s$, should there be any, is in the bounds of a positive \ttt{int}, i.e., $0$ and $2^{31}-1$. Hint: use \ttt{Character.isDigit} to test whether a character $c$ is a digit, and \ttt{Integer.parseInt} to convert a \ttt{String} to an \ttt{int}.}
 \begin{verbnobox}[\small]
 assertEquals(100, strSumNums("hello50how20are30you?"));
 assertEquals(10, strSumNums("t1h1i1s1i1s1e1a1s1y1!"));
@@ -482,7 +482,7 @@ multTable(2, 6) => "1*1=1,1*2=2,1*3=3,1*4=4,1*5=5,
                     2*5=10,2*6=12"
 \end{verbnobox}
 
-\exercise{3}{chapter-crl}{The emph{definite integral} of a function $f$, defined as $\int_{a}^{b} f(x)\;\text{d}x$, produces the area under the curve of $f$ on the interval $[a, b]$. The thing is, though, integrals are defined in terms of emph{Riemann summations}, which provide estimations on the area under a curve.} Riemann sums approximate the area by creating rectangles of a fixed width $\Delta$, as shown in ~\ref{fig:riemannf} for an arbitrary function $f$. Left-Riemann, right-Riemann, and midpoint-Riemann approximations define the focal point, i.e., the height, of the rectangle. Notice that, in Figure ~\ref{fig:riemannf}, we use a midpoint-Riemann sum with $\Delta = 0.2$, in which the collective sum of all the rectangle areas is the Riemann approximation. Your job is to use this idea to approximate the area of a circle.
+\exercise{3}{chapter-crl}{The \emph{definite integral} of a function $f$, defined as $\int_{a}^{b} f(x)\;\text{d}x$, produces the area under the curve of $f$ on the interval $[a, b]$. The thing is, though, integrals are defined in terms of \emph{Riemann summations}, which provide estimations on the area under a curve.} Riemann sums approximate the area by creating rectangles of a fixed width $\Delta$, as shown in ~\ref{fig:riemannf} for an arbitrary function $f$. Left-Riemann, right-Riemann, and midpoint-Riemann approximations define the focal point, i.e., the height, of the rectangle. Notice that, in Figure ~\ref{fig:riemannf}, we use a midpoint-Riemann sum with $\Delta = 0.2$, in which the collective sum of all the rectangle areas is the Riemann approximation. Your job is to use this idea to approximate the area of a circle.
 
 \begin{figure}[H]
 \begin{center}
@@ -505,8 +505,8 @@ multTable(2, 6) => "1*1=1,1*2=2,1*3=3,1*4=4,1*5=5,
     axis line style = thick,
     xlabel style={at={(.5,0)},above right,yshift=-30pt},
     ylabel style={at={(0,.5)},above right,xshift=-40pt},
-    xlabel={$emph{\textbf{x}}$},
-    ylabel={$emph{\textbf{y}}$},
+    xlabel={$\emph{\textbf{x}}$},
+    ylabel={$\emph{\textbf{y}}$},
     % extra x ticks={1.3,1.85,2.2,2.7,3.2,3.75}
 ]
 
@@ -548,8 +548,8 @@ Design the \ttt{double circleArea(double r, double delta)} method, which receive
     xmax = 2.5,
     x=1cm,y=1cm,
     axis line style = thick,
-    xlabel={$emph{\textbf{x}}$},
-    ylabel={$emph{\textbf{y}}$},
+    xlabel={$\emph{\textbf{x}}$},
+    ylabel={$\emph{\textbf{y}}$},
     % extra x ticks={1.3,1.85,2.2,2.7,3.2,3.75}
 ]
 \end{axis}

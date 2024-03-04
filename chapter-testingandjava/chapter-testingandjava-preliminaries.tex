@@ -1,5 +1,5 @@
 \section{A First Glimpse at Java}
-It makes little sense to avoid the topic at hand, so let us jump right in and write a program! We have seen emph{functions}\index{function} before, as well as some mathematics operations, perhaps in a different (language) context. 
+It makes little sense to avoid the topic at hand, so let us jump right in and write a program! We have seen \emph{functions}\index{function} before, as well as some mathematics operations, perhaps in a different (language) context. 
 
 \example{Our program will convert a given temperature in Fahrenheit to Celsius.}
 
@@ -19,15 +19,15 @@ class TempConverter {
 \end{lstlisting}
 \end{cl}
 
-All code, in Java, belongs to a emph{class}\index{class}. Classes have much more complex and concrete definitions that we will investigate in due time, but for now, we may think of them as the homes of our functions. By the way, functions in Java are called emph{methods}\index{method}.\footnote{The reasoning is simple: a method belongs to a class. Other programming languages, e.g., C++ or Python, do not restrict the programmer to writing code only within a class. Thus, there is a distinction between functions, which do not reside within a class, and methods.} Again, this slight terminology differentiation is not without its reasons, but for all intents and purposes, functions are methods and vice versa. The class we have defined in the previous listing is called \ttt{TempConverter}, giving rise to believe that the class does something related to temperature conversion.
+All code, in Java, belongs to a \emph{class}\index{class}. Classes have much more complex and concrete definitions that we will investigate in due time, but for now, we may think of them as the homes of our functions. By the way, functions in Java are called \emph{methods}\index{method}.\footnote{The reasoning is simple: a method belongs to a class. Other programming languages, e.g., C++ or Python, do not restrict the programmer to writing code only within a class. Thus, there is a distinction between functions, which do not reside within a class, and methods.} Again, this slight terminology differentiation is not without its reasons, but for all intents and purposes, functions are methods and vice versa. The class we have defined in the previous listing is called \ttt{TempConverter}, giving rise to believe that the class does something related to temperature conversion.
 
-We write the \ttt{fahrenheitToCelsius} method, whose emph{return type}\index{return type} is a \ttt{double}, and has one emph{parameter}\index{parameter}, which is also a \ttt{double}. A \ttt{double} is a floating-point value, meaning it potentially has decimals. For our method, this choice makes sense, because if we were to instead receive an \ttt{int}, we would not be able to convert temperatures such as \ttt{35.5} degrees Fahrenheit to Celsius. 
+We write the \ttt{fahrenheitToCelsius} method, whose \emph{return type}\index{return type} is a \ttt{double}, and has one \emph{parameter}\index{parameter}, which is also a \ttt{double}. A \ttt{double} is a floating-point value, meaning it potentially has decimals. For our method, this choice makes sense, because if we were to instead receive an \ttt{int}, we would not be able to convert temperatures such as \ttt{35.5} degrees Fahrenheit to Celsius. 
 
 The \ttt{static} keyword that we wrote has significance, but for now, consider it a series of six mandatory key presses (plus one for the space thereafter).
 
-Above this method emph{signature}\index{signature} is a Java documentation comment, providing a brief summary of the method's purpose, as well as the data it receives as parameters and its return value, should it be necessary. 
+Above this method \emph{signature}\index{signature} is a Java documentation comment, providing a brief summary of the method's purpose, as well as the data it receives as parameters and its return value, should it be necessary. 
 
-Inside its method body lies a single \ttt{return}, in which we return \ttt{0.0}. Returning a value is what a emph{method call}\index{method call}, or emph{method invocation}\index{method invocation}, resolves to. For example, if we were to call \ttt{fahrenheitToCelsius} with any arbitrary \ttt{double} value, the call would be substituted with \ttt{0.0}. This is otherwise called emph{method application}\index{method application}.
+Inside its method body lies a single \ttt{return}, in which we return \ttt{0.0}. Returning a value is what a \emph{method call}\index{method call}, or \emph{method invocation}\index{method invocation}, resolves to. For example, if we were to call \ttt{fahrenheitToCelsius} with any arbitrary \ttt{double} value, the call would be substituted with \ttt{0.0}. This is otherwise called \emph{method application}\index{method application}.
 
 \begin{verbnobox}[\small]
 fahrenheitToCelsius(5)     -> 0.0
@@ -35,7 +35,7 @@ fahrenheitToCelsius(78)    -> 0.0
 fahrenheitToCelsius(-3123) -> 0.0
 \end{verbnobox}
 
-Of course, this method is meaningless without an implementation. We want to design emph{test cases}\index{test cases} to ensure the method works as expected. Test cases verify the correctness (or incorrectness) of a method. We, as the readers, know how to convert a temperature from Fahrenheit to Celsius, but telling a computer to do such a conversion is not as obvious at first glance. To test our methods, we will use the emph{JUnit} testing framework\index{JUnit}. To create a test for \ttt{fahrenheitToCelsius}, we will make a second class called \ttt{TempConverterTester} to house a single method: \ttt{fahrenheitToCelsiusTest}.
+Of course, this method is meaningless without an implementation. We want to design \emph{test cases}\index{test cases} to ensure the method works as expected. Test cases verify the correctness (or incorrectness) of a method. We, as the readers, know how to convert a temperature from Fahrenheit to Celsius, but telling a computer to do such a conversion is not as obvious at first glance. To test our methods, we will use the \emph{JUnit} testing framework\index{JUnit}. To create a test for \ttt{fahrenheitToCelsius}, we will make a second class called \ttt{TempConverterTester} to house a single method: \ttt{fahrenheitToCelsiusTest}.
 
 \begin{cl}[TempConverterTester.java]{}
 \begin{lstlisting}[language=MyJava]
@@ -52,7 +52,7 @@ class TempConverterTester {
 
 We want JUnit to recognize that \ttt{fahrenheitToCelsius} contains testing code, so we prepend the \ttt{@Test} annotation to the method signature. In its body, we call \ttt{Assertions\-.assertAll}, which receives a series of methods that are ran in succession. In our case, we want to assert that our \ttt{fahrenheitToCelsius} method should return \ttt{0} degrees Celsius when given a temperature of \ttt{32} degrees Fahrenheit. The first parameter to \ttt{assertEquals} is the expected value of the test, i.e., what we want it to produce. The second parameter is the actual value of the test, i.e., what our code produces. 
 
-When writing tests, it is important to consider emph{edge cases}\index{edge case} and all possible branches of a method implementation. Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. So, let us add a few more test cases.\footnote{To condense our code, we use a \ttt{static} import of our \ttt{fahrenheitToCelsius} method, which allows us to call the method without specifying the full class name. We apply this same idea to those methods used from the \ttt{Assertions} class.}
+When writing tests, it is important to consider \emph{edge cases}\index{edge case} and all possible branches of a method implementation. Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. So, let us add a few more test cases.\footnote{To condense our code, we use a \ttt{static} import of our \ttt{fahrenheitToCelsius} method, which allows us to call the method without specifying the full class name. We apply this same idea to those methods used from the \ttt{Assertions} class.}
 
 \begin{cl}[TempConverterTester.java]{}
 \begin{lstlisting}[language=MyJava]
@@ -75,7 +75,7 @@ class TempConverterTester {
 \end{lstlisting}
 \end{cl}
 
-Floating-point arithmetic can cause precision/rounding errors. So, as an optional third argument to \ttt{assertEquals}, we might provide a emph{delta}\index{delta argument}, which allows for precision up to a certain amount to be accepted as a valid answer. For example, our tolerance for the fourth and fifth test cases is \ttt{0.01}, meaning that if our actual value is less than $\pm 0.01$ away from the expected value, the test case succeeds.
+Floating-point arithmetic can cause precision/rounding errors. So, as an optional third argument to \ttt{assertEquals}, we might provide a \emph{delta}\index{delta argument}, which allows for precision up to a certain amount to be accepted as a valid answer. For example, our tolerance for the fourth and fifth test cases is \ttt{0.01}, meaning that if our actual value is less than $\pm 0.01$ away from the expected value, the test case succeeds.
 
 Now that we have copious amounts of tests, we can write our method definition. Of course, it is trivial to write.
 
@@ -97,7 +97,7 @@ class TempConverter {
 
 This definition brings up a few points about Java's type system. The primitive mathematics operations account for the types of its arguments. So, for instance, subtracting two integers will produce another integer. More noteworthy, perhaps, a division of two integers produces another integer, even if that result seems to be incorrect. Thus, \ttt{5 / 9} results in the integer \ttt{0}. If, however, we treat at least one of the operands as a floating-point value, we receive a correct result of approximately \ttt{0.555555}: \ttt{5.0 / 9}. Java by default uses the standard order of operations when evaluating mathematics expressions, so we force certain operations to occur first via parentheses.\footnote{By ``standard,'' we mean the widely-accepted paradigm of parentheses first, then exponents, followed by left-to-right multiplication/division, and finally left-to-right addition/subtraction.}
 
-Unlike some programming languages that are emph{dynamically-typed}, e.g., Scheme, Python, JavaScript, the Java programming language requires the programmer to specify the types of variables.\footnote{In Java 10, the \ttt{var} keyword was introduced, which automatically infers the type of a given expression.} Java has several default emph{primitive datatypes}\index{primitive datatypes}, which are the simplest reducible form of a variable. Such types include \ttt{int}, \ttt{char}, \ttt{double}, \ttt{boolean}, and others. Integers, or \ttt{int}, are any positive or negative number without decimals. Doubles, or \ttt{double}, are values with decimals. Characters, or \ttt{char}, are a single character enclosed by single quotes, e.g., \ttt{\q{X}\q}. Finally, booleans, or \ttt{boolean}, are either \ttt{true} or \ttt{false}. There are other Java data types that specify varying levels of precision for given values. Integers are 32-bit signed values, meaning they have a range of $[-2^{31}, 2^{31})$. The \ttt{short} data type, on the contrary, is 16-bit signed. Beyond this is the \ttt{byte} data type that, as its name suggests, stores 8-bit signed integers. Floating-point values are more tricky, but while \ttt{double} uses 64 bits of precision, the \ttt{float} data type uses 32 bits of precision.
+Unlike some programming languages that are \emph{dynamically-typed}, e.g., Scheme, Python, JavaScript, the Java programming language requires the programmer to specify the types of variables.\footnote{In Java 10, the \ttt{var} keyword was introduced, which automatically infers the type of a given expression.} Java has several default \emph{primitive datatypes}\index{primitive datatypes}, which are the simplest reducible form of a variable. Such types include \ttt{int}, \ttt{char}, \ttt{double}, \ttt{boolean}, and others. Integers, or \ttt{int}, are any positive or negative number without decimals. Doubles, or \ttt{double}, are values with decimals. Characters, or \ttt{char}, are a single character enclosed by single quotes, e.g., \ttt{\q{X}\q}. Finally, booleans, or \ttt{boolean}, are either \ttt{true} or \ttt{false}. There are other Java data types that specify varying levels of precision for given values. Integers are 32-bit signed values, meaning they have a range of $[-2^{31}, 2^{31})$. The \ttt{short} data type, on the contrary, is 16-bit signed. Beyond this is the \ttt{byte} data type that, as its name suggests, stores 8-bit signed integers. Floating-point values are more tricky, but while \ttt{double} uses 64 bits of precision, the \ttt{float} data type uses 32 bits of precision.
 
 \example{Let us write a method that receives two three-dimensional vectors and returns the distance between the two. We can, effectively, think of this as the distance between two points in a three-dimensional plane. Therefore because each vector contains three components, we need six parameters, where each triplet represents the vectors $v_1$ and $v_2$.}
 
@@ -278,7 +278,7 @@ class QuarticFormulaSolver {
 \end{lstlisting}
 \end{cl}
 
-Test cases are certainly warranted, but may be a bit tedious to compute by hand, so we recommend using a verified calculator to compute expected solutions!\footnote{Remember that the coefficient is applied emph{after} applying the exponent to the variable. That is, if $x=3$, then $4x^3$ is equal to $4 \cdot (3)^3$, which resolves to $4 \cdot 27$, which resolves to $108$.}
+Test cases are certainly warranted, but may be a bit tedious to compute by hand, so we recommend using a verified calculator to compute expected solutions!\footnote{Remember that the coefficient is applied \emph{after} applying the exponent to the variable. That is, if $x=3$, then $4x^3$ is equal to $4 \cdot (3)^3$, which resolves to $4 \cdot 27$, which resolves to $108$.}
 
 \begin{cl}[QuarticFormulaSolverTester.java]{}
 \begin{lstlisting}[language=MyJava]
@@ -300,7 +300,7 @@ class QuarticFormulaSolverTester {
 \end{lstlisting}
 \end{cl}
 
-Again, we write tests emph{before} the method implementation because we know, intuitively, how to solve an equation for a variable, but a computer has to be told how to solve this task. Fortunately for us, a quartic equation solver is nothing more than returning the result of the expression. We, of course, have to use the exponential \ttt{Math.pow} method again (or conjoin several multiplicatives of $x$), but otherwise, it is straightforward.
+Again, we write tests \emph{before} the method implementation because we know, intuitively, how to solve an equation for a variable, but a computer has to be told how to solve this task. Fortunately for us, a quartic equation solver is nothing more than returning the result of the expression. We, of course, have to use the exponential \ttt{Math.pow} method again (or conjoin several multiplicatives of $x$), but otherwise, it is straightforward.
 
 \begin{cl}[QuarticFormulaSolver.java]{}
 \begin{lstlisting}[language=MyJava]

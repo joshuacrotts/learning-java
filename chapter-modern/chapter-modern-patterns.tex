@@ -2,11 +2,11 @@
 
 Part of the reason that we have spent so much time discussing object-oriented design is because it is a fundamental aspect of software engineering. In particular, we have discussed the importance of designing classes that are cohesive, loosely coupled, and adhere to the single responsibility principle. We have also discussed the importance of designing classes that are extensible, and how to do so through the use of inheritance and polymorphism. As software engineers, we are responsible for designing and implementing software that is scalable and maintainable. Scalable software does not explode in complexity when adding new features/functionality, or as the user-base grows. Maintainable software, on the other hand, is simple to understand and make incremental changes and fixes as time passes. 
 
-In this section we will discuss several emph{design patterns}\index{design patterns}, which are common solutions to specific problems that arise largely in the context of object-oriented design. Design patterns are, of course, not specific to Java and can be implemented in any reasonable object-oriented language. 
+In this section we will discuss several \emph{design patterns}\index{design patterns}, which are common solutions to specific problems that arise largely in the context of object-oriented design. Design patterns are, of course, not specific to Java and can be implemented in any reasonable object-oriented language. 
 
 \subsection{Command}
 
-The emph{command}\index{command pattern} pattern is a simple pattern that encapsulates a request, of sorts, to some type of handler. The handler knows nothing about the request itself, only that the handler acts as a dispatch for invoking the request.
+The \emph{command}\index{command pattern} pattern is a simple pattern that encapsulates a request, of sorts, to some type of handler. The handler knows nothing about the request itself, only that the handler acts as a dispatch for invoking the request.
 
 \example{Suppose that we're writing a game that involves moving a player around an environment. We want to write a class that handles moving the player, but remains independent of the player implementation. First, we will say that the player executes some type of \ttt{Command}, which is an interface containing a sole \ttt{execute} method. Then, we will write a \ttt{Player} class containing \ttt{move} and \ttt{jump} methods, where the former increments their $x$ coordinate and jump increments their $y$ coordinate, starting from the origin.}
 
@@ -114,7 +114,7 @@ As shown, we have decoupled the player from the handler, and the handler from th
 
 \subsection{Factory}
 
-\example{To showcase our next pattern, we will design the \ttt{Fraction} class to represent mathematical fractions containing integer numerators and denominators. This example greatly resembles the rational number class in a previous chapter, but we introduce a twist to exemplify the benefits of the emph{factory}\index{factory pattern} pattern.}
+\example{To showcase our next pattern, we will design the \ttt{Fraction} class to represent mathematical fractions containing integer numerators and denominators. This example greatly resembles the rational number class in a previous chapter, but we introduce a twist to exemplify the benefits of the \emph{factory}\index{factory pattern} pattern.}
 
 \begin{cl}[FractionTester.java]{}
 \begin{lstlisting}[language=MyJava]
@@ -158,7 +158,7 @@ class Fraction {
 \end{lstlisting}
 \end{cl}
 
-Notice that one of our test cases loops five hundred thousand times, repeatedly allocating the same fraction, namely $1/2$. It is almost certainly true that, whatever application uses the \ttt{Fraction} class, will not need separate/distinct instances of a fraction. Accordingly, we are unnecessarily allocating \ttt{Fraction} instances, taking a lot of CPU time and memory. The solution is to introduce a form of caching, wherein we create a lookup table of the most ``common'' fractions and, whenever someone wants to construct a \ttt{Fraction}, we first determine if it can be polled from the table. If not, we have no choice but to allocate the fraction. We call this the emph{factory} pattern, because we have a class that represents and processes the creation of \ttt{Fraction} objects, rather than allowing the user to directly instantiate one themselves. 
+Notice that one of our test cases loops five hundred thousand times, repeatedly allocating the same fraction, namely $1/2$. It is almost certainly true that, whatever application uses the \ttt{Fraction} class, will not need separate/distinct instances of a fraction. Accordingly, we are unnecessarily allocating \ttt{Fraction} instances, taking a lot of CPU time and memory. The solution is to introduce a form of caching, wherein we create a lookup table of the most ``common'' fractions and, whenever someone wants to construct a \ttt{Fraction}, we first determine if it can be polled from the table. If not, we have no choice but to allocate the fraction. We call this the \emph{factory} pattern, because we have a class that represents and processes the creation of \ttt{Fraction} objects, rather than allowing the user to directly instantiate one themselves. 
 
 In designing the \ttt{FractionFactory} class, we declare a five-hundred element array to store the fractions $1/n$, where $n$ is an integer such that $1 \leq n \leq 500$. Its constructor allocates the fraction ``cache.'' We now need a method to take the role of building fractions; namely a \ttt{Fraction create(int num, int den)} method, which either looks up and returns the shared instance of a common fraction, or allocates a new instance.
 
@@ -215,7 +215,7 @@ class FractionFactory {
 \end{lstlisting}
 \end{cl}
 
-\example{Imagine that we have a file of data containing information about a ``Person,'' which entails their university records. A person can be a student, faculty, or staff member, and each type of person contains a name. For the purposes of this example, this is the only information that we care about, but we could easily extend it to include other datapoints. The idea is that we want to read in these records and create a \ttt{Person} object for each record. We could store `type' of person as, say, an enum, or a string, but this is not ideal. Instead, we will use the emph{factory} pattern to create a \ttt{Person} object for each record, and the factory will determine the subclass of person based on the record.}
+\example{Imagine that we have a file of data containing information about a ``Person,'' which entails their university records. A person can be a student, faculty, or staff member, and each type of person contains a name. For the purposes of this example, this is the only information that we care about, but we could easily extend it to include other datapoints. The idea is that we want to read in these records and create a \ttt{Person} object for each record. We could store `type' of person as, say, an enum, or a string, but this is not ideal. Instead, we will use the \emph{factory} pattern to create a \ttt{Person} object for each record, and the factory will determine the subclass of person based on the record.}
 
 Namely, let's create the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{public String getRole()} method to-be overridden in each subclass. We will also write the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that takes a \ttt{name} and \ttt{role} as arguments, and returns the relevant subclass of \ttt{Person}.
 
@@ -357,7 +357,7 @@ As expected, all tests pass.
 
 \subsection{Builder}
 
-When creating instances of classes, it is not always feasible or possible to pass all of the necessary arguments to a constructor. The emph{builder} pattern allows us to write ``partial constructors,'' i.e., methods that take a subset of the arguments and return an object that contains the partial arguments. 
+When creating instances of classes, it is not always feasible or possible to pass all of the necessary arguments to a constructor. The \emph{builder} pattern allows us to write ``partial constructors,'' i.e., methods that take a subset of the arguments and return an object that contains the partial arguments. 
 
 \example{Suppose that we are designing a \ttt{URL} class to represent a URL, which contains a schema, host, port, and path. We want to write a \ttt{URLBuilder} class that allows us to construct a \ttt{URL} object by passing arguments one-at-a-time to a series of methods. In particular, each instance variable, namely \ttt{\_schema}, \ttt{\_host}, \ttt{\_port}, and \ttt{\_path}, has a corresponding method of the same name sans the underscore. Each method returns \ttt{this}, which allows us to chain method calls together. Moreover, returning \ttt{this} and forgoing the constructor means we do not need to unnecessarily allocate a new \ttt{Url} object for every method call.}
 
@@ -439,7 +439,7 @@ Partially-constructed objects may seem odd at first, but they are useful in situ
 
 \subsection{Visitor}
 
-The emph{visitor} pattern is the most complex pattern that we will work with, but it offers a host of benefits. Consider a situation in which we do not have access to classes, but want to modify their implementation to add some functionality. In particular, if those classes support the use of visitors, then we can design almost any type of functionality without needing to modify those classes at all.
+The \emph{visitor} pattern is the most complex pattern that we will work with, but it offers a host of benefits. Consider a situation in which we do not have access to classes, but want to modify their implementation to add some functionality. In particular, if those classes support the use of visitors, then we can design almost any type of functionality without needing to modify those classes at all.
 
 \example{Let's write a visitor that prints out a programming language expression in a human-readable format. In particular, we will use a simplified version of the interpreter from Chapter~\ref{chapter-advanced-oop}. First, we need to write the visitor interface, which contains a \ttt{visit} method for each type of expression, namely \ttt{NumNode}, \ttt{PrimNode}, \ttt{VarNode}, and \ttt{LetNode}. Each \ttt{visit} method takes an expression of the corresponding type as an argument and returns a string.}
 

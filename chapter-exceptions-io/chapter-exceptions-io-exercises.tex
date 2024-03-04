@@ -2,7 +2,7 @@
 
 \exercise{2}{chapter-exceptions-io}{Design the \ttt{EchoOdds} class, which reads a file of line-separated integers specified by the user (using standard input), and writes only the odd numbers out to a file of the same name, just with the \ttt{.out} extension. If there is a non-number in the file, throw an \ttt{InputMismatchException}.} 
 
-emph{Example Run.} If the user types \ttt{"file1a.in"} into the running program, and \ttt{file1a.in} contains the following:
+\emph{Example Run.} If the user types \ttt{"file1a.in"} into the running program, and \ttt{file1a.in} contains the following:
 
 \begin{verbnobox}[\small]
 5
@@ -24,7 +24,7 @@ emph{Example Run.} If the user types \ttt{"file1a.in"} into the running program,
 13
     \end{verbnobox}
 
-emph{Example Run.}  If the user types \ttt{"file1b.in"} into the running program, and \ttt{file1b.in} contains the following:
+\emph{Example Run.}  If the user types \ttt{"file1b.in"} into the running program, and \ttt{file1b.in} contains the following:
 
     \begin{verbnobox}[\small]
 5
@@ -42,7 +42,7 @@ THIS_IS_NOT_AN_INTEGER!
 
     \exercise{2}{chapter-exceptions-io}{Design the \ttt{Capitalize} class, which reads a file of strings (that are not necessarily line-separated) specified by the user (using standard input), and outputs the capitalized versions of the sentences to a file of the same name, just with the \ttt{.out} extension. You may assume that a sentence is a string that is terminated by a period and only a period. This problem is harder than it looks because you need to correctly print the string out to the file. If you use a splitting method, e.g., \ttt{.split}, you must remember to reinsert the period in the resulting string. There are many ways to solve this problem!}
 
-    emph{Example Run.} If the user types \ttt{"file2a.in"} into the running program, and \ttt{file2a.in} contains the following emph{(note that if you copy and paste this input data, you will need to remove the newline before the \ttt{"hopefully"} token):}
+    \emph{Example Run.} If the user types \ttt{"file2a.in"} into the running program, and \ttt{file2a.in} contains the following \emph{(note that if you copy and paste this input data, you will need to remove the newline before the \ttt{"hopefully"} token):}
 
     \begin{verbnobox}[\small]
 hi, it's a wonderful day. i am doing great, how are you doing. it's 
@@ -62,7 +62,7 @@ This sentence should also be capitalized.
 
     \exercise{2}{chapter-exceptions-io}{Design the \ttt{SpellChecker} class, which reads two files: \ttt{"dictionary.txt"} and a file specified by the user (through standard input). The specified flie contains a single sentence that may or may not have misspelled words. Your job is to check each word in the file and determine whether or not they are spelled correctly, according to the dictionary of words. If it is not spelled correctly, wrap it inside brackets \ttt{[]}. Output the modified sentences to a file of the same name, just with the \ttt{.out} extension instead. You may assume that words are space-separated and that no punctuation exist. Hint: use a \ttt{HashSet}! Another hint: words that are different cases are not misspelled; e.g., \ttt{"Hello"} is spelled the same as \ttt{"hello"}; how can your program check this?}
 
-    emph{Example Run.} Assuming \ttt{dictionary.txt} contains a list of words, if the user types \ttt{"file3a.in"} into the running program, and \ttt{file3a.in} contains the following:
+    \emph{Example Run.} Assuming \ttt{dictionary.txt} contains a list of words, if the user types \ttt{"file3a.in"} into the running program, and \ttt{file3a.in} contains the following:
 
     \begin{verbnobox}[\small]
 Hi hwo are you donig I am dioing jsut fine if I say so mysefl but I 
@@ -76,6 +76,10 @@ Hi [hwo] are you [donig] I am [dioing] [jsut] fine if I say so
 [mysefl] but I will [aslo] [sya] that I am [thoroughlyy] [misssing] 
 [puncutiation]
     \end{verbnobox}
+
+\exercise{2}{chapter-exceptions-io}{Recall the \ttt{Optional} class and its purpose. In this exercise you will reimplement its behavior with the \ttt{IMaybe} interface with two subtypes \ttt{Just} and \ttt{Nothing}, representing the existence and absence of a value, respectively. Design the generic \ttt{IMaybe} interface, which contains the following three metohds: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The constructors of these subtypes receive either an object of type \ttt{T} or no parameter, depending on whether it is a \ttt{Just} or a \ttt{Nothing}. Throw an \ttt{UnsupportedOperationException} when trying to get the value from an instance of \ttt{Nothing}}.
+
+\exercise{2}{chapter-exceptions-io}{Redo the ``\ttt{Maybe}'' exercise, only this time implement it as an abstract class/subclass hierarchy. That is, \ttt{Maybe} should be an abstract class containing three abstract methods: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The \ttt{Just} and \ttt{Nothing} classes should be subclasses of \ttt{Maybe} and override these methods accordingly. Do not create constructors for these classes. Instead, create static factory methods \ttt{Just.of(T t)} and \ttt{Nothing.of()} that return an instance of the appropriate class.}
 
 \exercise{2}{chapter-exceptions-io}{A common use for file input and output is data analysis. Design a class \ttt{StatisticsDescriptor} that has the following methods:}
 \begin{itemize}
@@ -155,52 +159,18 @@ class MazeSolver {
 \end{cl}
 \end{itemize}
 
-\exercise{3}{chapter-exceptions-io}{A binary relation $\mathcal{R}$ is a subset of the cartesian product of two sets $A$ and $B$. That is, $\mathcal{R} \subseteq A \times B$ such that $A \times B = \{\langle{x, y}\rangle \mid x \in A \text{ and } y \in B\}$. There are several ways that we can describe binary relations, including reflexive, symmetric, transitive, antisymmetric, asymmetric, irreflexive, and serial.}
+\exercise{3}{chapter-exceptions-io}{The \ttt{cut} program is a command-line tool for extracting pieces of text from data. For this exercise, you will implement a very basic version of the program that reads data from the terminal.}
 
-Design the generic \ttt{BinaryRelation<T, U>} class to represent a mathematical binary relation. It should store a \ttt{Set<Pair<String, String>{>}}, where the inner pair is the associated tuples of the set. Its constructor should instantiate the set instance variable. 
-
-Then, design the following methods:
-
-\begin{itemize}
-    \item \ttt{void addTuple(T x, U y)} receives two values $x$ and $y$ of types $T$ and $U$ respectively, and adds them as a tuple to the underlying set.
-    
-    \item \ttt{boolean isReflexive()} returns true if the relation is reflexive. A relation $\mathcal{R}$ is reflexive if, for all $x \in S$, $\langle{x, x}\rangle \in \mathcal{R}$.
-    
-    \item \ttt{boolean isSymmetric()} returns true if the relation is symmetric. A relation $\mathcal{R}$ is symmetric if, for all $x, y \in S$, $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, x}\rangle \in \mathcal{R}$.
-    
-    \item \ttt{boolean isTransitive()} returns true if the relation is reflexive. A relation $\mathcal{R}$ is transitive if, for all $x, y, z \in S$, if $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, z}\rangle \in \mathcal{R}$, then $\langle{x, z}\rangle \in \mathcal{R}$.
-    
-    \item \ttt{boolean isEquivalence()} returns true if the relation is an equivalence relation. A relation $\mathcal{R}$ is an equivalence relation if it is reflexive, symmetric, and transitive.
-
-    \item \ttt{boolean isIrreflexive()} returns true if the relation is irreflexive. A relation $\mathcal{R}$ is irreflexive if, for all $x \in S$, $\langle{x, x}\rangle \not\in \mathcal{R}$.
-    
-    \item \ttt{boolean isAntisymmetric()} returns true if the relation is antisymmetric. A relation $\mathcal{R}$ is antisymmetric if, for all $x, y \in S$, if $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, x}\rangle \in \mathcal{R}$, then $x \neq y$.
-    
-    \item \ttt{boolean isAsymmetric()} returns true if the relation is asymmetric. A relation is asymmetric if it is both antisymmetric and irreflexive.
-
-    \item \ttt{boolean isSerial()} returns true if the relation is serial. A relation $\mathcal{R}$ is serial if, for all $x \in S$, there exists a $y \in S$ such that $\langle{x, y}\rangle \in \mathcal{R}$.
-
-    \item \ttt{Set<Pair<String, String>{>} reflexiveClosure()} returns a set representing the reflexive closure of a binary relation, which is $\mathcal{R} \cup r(\mathcal{R})$, where $r$ returns a reflexive set over $S$.
-    
-    \item \ttt{Set<Pair<String, String>{>} isSymmetricClosure()} returns a set representing the symmetric closure of a binary relation, which is $\mathcal{R} \cup s(\mathcal{R})$, where $r$ returns a symmetric set over $S$.
-
-    \item \ttt{Set<Pair<String, String>{>} transitiveClosure()} returns a set representing the transitive closure of a binary relation, which is $\mathcal{R} \cup t(\mathcal{R})$, where $t$ returns a transitive set over $S$.
-\end{itemize}
-
-As an added optimization, we should cache whether the current relation is one of these properties when prompted. If we do not add a pair to the relation, then it makes little sense to recompute whether or not is, say, reflexive. Implement this as an optimization, however you wish, into the class.
-
-\exercise{3}{chapter-arrays-collections}{The \ttt{cut} program is a command-line tool for extracting pieces of text from data. For this exercise, you will implement a very basic version of the program that reads data from the terminal.}
-
-\begin{itemize}
+\begin{enumerate}[label=(\alph*)]
     \item First, add support for the \ttt{-c $X,Y,\ldots,Z$} flag, which outputs the characters at positions $X,Y,\ldots,Z$ in each line. If any number is less than $1$, throw an \ttt{IllegalArgumentException}.
     \item Second, add support for the \ttt{-c $X$-$Y$} flag, which outputs the characters between and including positions $X$ and $Y$. This option should also work with comma separators.
     \item Third, add support for the \ttt{-c $X$-} and \ttt{-c -$Y$} flags, which print the characters from $X$ to the end of the line, and all characters up to $Y$.
     \item Fourth, Add support for the \ttt{-d$D$} and \ttt{-f$X$} flags. The former serves as a single character delimiter, and the latter indicates that $X$ is either an interval or a range of fields to print. The fields are delimited by $D$. Note that these two flags cannot be used without the other. The format of $X$ mirrors that of the input to the $-c$ flag. If $D$ does not exist on a line, then the entire line is printed.
-\end{itemize}
+\end{enumerate}
 
-\exercise{3}{chapter-arrays-collections}{The \ttt{sort} program is a command-line tool for sorting input from a data source. For this exercise, you will implement a very basic version of the program that reads data from the terminal.}
+\exercise{3}{chapter-exceptions-io}{The \ttt{sort} program is a command-line tool for sorting input from a data source. For this exercise, you will implement a very basic version of the program that reads data from the terminal.}
 
-\begin{itemize}
+\begin{enumerate}[label=(\alph*)]
     \item First, allow the sort command to receive either a file or a list of data. If the \ttt{-d$D$} flag is passed, use $D$ as the delimiter. The default for a file is a newline, and the default for a non-file is the space.
     \item Second, add support for the \ttt{-r} flag for reversed sorting.
     \item Third, add support for the \ttt{-i} flag for case-insensitive sorting.
@@ -208,21 +178,32 @@ As an added optimization, we should cache whether the current relation is one of
     \item Fifth, add support the the \ttt{-n} flag for sorting the values as if they are numbers. Notice the difference between sorting \ttt{9, 10, 8} with and without this flag.
     \item Sixth, add support for the \ttt{-u} flag for removing duplicate values.
     \item Seventh, add support for the \ttt{-o} flag for outputting to the file specified immediately after.
-\end{itemize}
+\end{enumerate}
 Any of these flags should be composable with another, with the exception of \ttt{-o} whose output file is the next argument, and \ttt{-c}, which outputs any disorders to standard out.
 
-\exercise{3}{chapter-arrays-collections}{The \ttt{awk} program is a command-line tool for text parsing and processing. For this exercise, you will implement a very basic version of the program that reads data from the terminal. Be aware that this exercise is more in line with a mini-project.}
+\exercise{3}{chapter-exceptions-io}{The \ttt{awk} program is a command-line tool for text parsing and processing. For this exercise, you will implement a very basic version of the program that reads data from the terminal. Be aware that this exercise is more in line with a mini-project.}
 
-\begin{itemize}
+\begin{enumerate}[label=(\alph*)]
     \item Add support for the \ttt{-F} flag that, when immediately followed by a delimiter, uses that delimiter as a ``field separator'' when parsing input lines. For example, \ttt{-F,} uses a comma as the delimiter.
     \item Add the \ttt{-h} flag that ignores the first row in all subsequent commands. This is particularly useful when working with files that have headers, e.g., comma-separated value files.
     \item Next, add the \ttt{'{print ...}'} command. That is, the user should be able to type an open brace, followed by \ttt{print}, then some data, then a closing brace, all enclosed by single quotes. The \ttt{print} command receives multiple possible values, including `column labels', i.e., \ttt{$N$}, where $N$ is a column number. For example, \ttt{awk -F, '{print \$1}' input.csv} should print the first column of each row in the input file. 
     \item After getting the previous command to work, add support for inlined prefix operations in the \ttt{print} command. That is, suppose we want to print the sum of the second and fourth column of each row. To do this, we might write \ttt{awk -h -F, '{print (+ \$2 \$4)}' input.csv}. For simplicity, you may assume that there are only four operations: \ttt{'+'}, \ttt{'-'}, \ttt{'*'}, and \ttt{'/'}. 
-    \item After getting the previous command to work, add multiple-argument support for \ttt{print}. That is, if we want to compute the product of the first three columns, output a string saying \ttt{" multiplied is " }, followed by the product, we could write \ttt{"awk -h -F, '{print \$1,\$2,\$3 " multiplied is " (* \$1 \$2 \$3) }'}. Note that the delimiter between the column labels must match that passed by \ttt{-F}, otherwise there is no separator.
-    \item After getting the previous command to work, add support for conditional expressions. That is, suppose we want to print the second column of a row only if it has a value greater than $200$. We can achieve this via \ttt{"awk -h -F, '{print \$2(> \$2 200)}'}. If you emph{really} want a challenge, you can add support for inlining other arithmatic expressions into a conditional. For example, if we want to print the third column only if the sum of the first two columns exceeds $1000$, we might write \ttt{awk -h -F, '{print \$3(> (+ \$1 \$2) 1000)}'}.
+    \item After getting the previous command to work, add multiple-argument support for \ttt{print}. That is, if we want to compute the product of the first three columns, output a string saying \ttt{" multiplied is " }, followed by the product, we could write \ttt{awk -h -F, '{print \$1,\$2,\$3 " multiplied is " (* \$1 \$2 \$3) }'}. Note that the delimiter between the column labels must match that passed by \ttt{-F}, otherwise there is no separator.
+    \item After getting the previous command to work, add support for conditional expressions. That is, suppose we want to print the second column of a row only if it has a value greater than $200$. We can achieve this via \ttt{"awk -h -F, '{print \$2(> \$2 200)}'}. If you \emph{really} want a challenge, you can add support for inlining other arithmatic expressions into a conditional. For example, if we want to print the third column only if the sum of the first two columns exceeds $1000$, we might write \ttt{awk -h -F, '{print \$3(> (+ \$1 \$2) 1000)}'}.
     \item Finally, add the \ttt{-v=N:V} flag that acts as a variable map that can be used in a print command. That is, suppose we want to create a variable called \ttt{val} and assign to it \ttt{30}. We can do this via \ttt{-v=val:30}, then reference it in a \ttt{print} via \ttt{\$}, e.g., \ttt{awk -F, '{print \$val}'}.
-\end{itemize}
+\end{enumerate}
 
-\exercise{2}{chapter-exceptions-io}{Recall the \ttt{Optional} class and its purpose. In this exercise you will reimplement its behavior with the \ttt{IMaybe} interface with two subtypes \ttt{Just} and \ttt{Nothing}, representing the existence and absence of a value, respectively. Design the generic \ttt{IMaybe} interface, which contains the following three metohds: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The constructors of these subtypes receive either an object of type \ttt{T} or no parameter, depending on whether it is a \ttt{Just} or a \ttt{Nothing}. Throw an \ttt{UnsupportedOperationException} when trying to get the value from an instance of \ttt{Nothing}}.
+\exercise{3}{chapter-exceptions-io}{A thesaurus is, in effect, a dataset of words/phrases and information about those words/phrases. For example, a thesaurus may contain a word's definition, synonyms, antonyms, part-of-speech, and more. There are hundreds of collections online that researchers use for sentiment analysis, natural language processing, and more. In this exercise you will create a mini-thesaurus parser that allows the user to lookup information about a word/phrase.}
 
-\exercise{2}{chapter-exceptions-io}{Redo the ``\ttt{Maybe}'' exercise, only this time implement it as an abstract class/subclass hierarchy. That is, \ttt{Maybe} should be an abstract class containing three abstract methods: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The \ttt{Just} and \ttt{Nothing} classes should be subclasses of \ttt{Maybe} and override these methods accordingly. Do not create constructors for these classes. Instead, create static factory methods \ttt{Just.of(T t)} and \ttt{Nothing.of()} that return an instance of the appropriate class.}
+\begin{enumerate}[label=(\alph*)]
+    \item First, design the skeleton for the \ttt{Thesaurus} class. It should store a \ttt{Set<Word>} $S$ as an instance variable.
+    \item Design the private and static \ttt{Word} class inside the \ttt{Thesaurus} class body. A \ttt{Word} stores a \ttt{String} $s$ and a \ttt{Map<String, List<String>>} $M$ as instance variables. The string is the word itself, and the map is an association of information ``categories'' to a list of content. For example, we can create a \ttt{Word} that represents \ttt{"happy"}, with an association of \ttt{"synonym"} to \ttt{List.of("content", "cheery", "jolly")}. Design the respective getters and setters for these two instance variables.
+    \item In the \ttt{Word} class, design the \ttt{boolean updateCategory(String c, String v)} method, which receives a category $c$ and a value $v$, and updates the list mapped by $c$ to now include $v$. If \ttt{c} did not previously exist for that \ttt{Word}, add it to the map and return \ttt{false}. On the other hand, if $c$ did previously exist for that \ttt{Word}, update its association and return \ttt{true}.
+    \item In the \ttt{Word} class, override the \ttt{equals} and \ttt{hashCode} methods to compare two \ttt{Word} objects for equality and generate the hash code respectively. Two \ttt{Word} objects are equal if they represent the same word.
+    \item In the \ttt{Thesaurus} class, design the \ttt{List<String> getInfo(String c)} and \ttt{List<String> getInfo(String w, String c, int n)} methods, where the former calls the latter with \ttt{Integer.MAX_VALUE} as \ttt{n}. The latter, on the other hand, looks up $w$ in $S$, and
+    \begin{itemize}
+        \item If $\ttt{w}\not\in{S}$, return \ttt{null}.
+        \item Otherwise, return $n$ items from the category $c$ of $w$. If $n$ is \ttt{Integer.MAX_VALUE}, return the entire list.
+    \end{itemize}
+    The list returned by both methods must be immutable and not a pointer to the reference in the map. Notice that we overload \ttt{getInfo} to perform different actions based on the number (and type) of received parameters.
+\end{enumerate}

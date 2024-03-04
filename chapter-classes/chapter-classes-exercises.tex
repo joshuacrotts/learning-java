@@ -22,10 +22,10 @@
     \item Override the \ttt{toString} method to print out the list of employees in the \ttt{Job}. You can use the default \ttt{toString} implementation of the \ttt{ArrayList} class.
 \end{enumerate}
 
-\exercise{2}{chapter-classes}{In this exercise you will design a emph{linear congruential generator}: a pseudorandom number generation algorithm. In particular, the C programming language standard library defines two functions: \ttt{rand} and \ttt{srand}. The latter sets the emph{seed} for the generator, and \ttt{rand} returns a random integer between $[0, 2^{15})$. The formula for this generator is a recurrence relation:}
+\exercise{2}{chapter-classes}{In this exercise you will design a \emph{linear congruential generator}: a pseudorandom number generation algorithm. In particular, the C programming language standard library defines two functions: \ttt{rand} and \ttt{srand}. The latter sets the \emph{seed} for the generator, and \ttt{rand} returns a random integer between $[0, 2^{15})$. The formula for this generator is a recurrence relation:}
 \begin{align*}
-    emph{next} &= |r_n \cdot 1103515245 + 12345|\\
-    r_{n+1} &= \left(\dfrac{emph{next}}{2^{16}}\right)\;\%\;2^{15};
+    \emph{next} &= |r_n \cdot 1103515245 + 12345|\\
+    r_{n+1} &= \left(\dfrac{\emph{next}}{2^{16}}\right)\;\%\;2^{15};
 \end{align*}
 
 \begin{enumerate}[label=(\alph*)]
@@ -49,7 +49,7 @@
 
 \exercise{2}{chapter-classes}{This exercise has five parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{GameObject} class, which stores a \ttt{Pair<Double, Double>} denoting its center $(x, y)$ position and a \ttt{Pair<Double, Double>} denoting its width and height respectively. Its constructor should receive four \ttt{double} values representing $x$, $y$, $emph{width}$, and $emph{height}$. Be sure to write instance accessor and mutator methods for modifying both fields. That is, you should write \ttt{double getLocationX()}, \ttt{void setLocationX(double d)}, and so forth, to access and modify the \ttt{Pair} values directly. 
+    \item Design the \ttt{GameObject} class, which stores a \ttt{Pair<Double, Double>} denoting its center $(x, y)$ position and a \ttt{Pair<Double, Double>} denoting its width and height respectively. Its constructor should receive four \ttt{double} values representing $x$, $y$, $\emph{width}$, and $\emph{height}$. Be sure to write instance accessor and mutator methods for modifying both fields. That is, you should write \ttt{double getLocationX()}, \ttt{void setLocationX(double d)}, and so forth, to access and modify the \ttt{Pair} values directly. 
 
     \item Design the \ttt{boolean collidesWith(GameObject obj)} method that returns if \ttt{this} \ttt{GameObject} collides with the parameter \ttt{obj}. You should design this solution as if the game objects are shaped like rectangles (which they are!).
 
@@ -93,7 +93,7 @@ The method returns whether or not the AI drew a card. If they did not draw a car
 \item After designing the \ttt{AI} class and adding one to your game, create an \ttt{ArrayList<AI>} simulating multiple computer players in the game.
 \end{enumerate}
 
-\exercise{1}{chapter-classes}{Add the \ttt{void set(T e, int idx)} method to the \ttt{MiniArrayList} class, which sets the element at $emph{idx}$ to the given $e$ element.}
+\exercise{1}{chapter-classes}{Add the \ttt{void set(T e, int idx)} method to the \ttt{MiniArrayList} class, which sets the element at $\emph{idx}$ to the given $e$ element.}
 
 \exercise{1}{chapter-classes}{Add the \ttt{void isEmpty()} method to the \ttt{MiniArrayList} class, which returns whether or not the list is empty.}
 
@@ -105,7 +105,7 @@ The method returns whether or not the AI drew a card. If they did not draw a car
 
 \exercise{3}{chapter-classes}{This exercise has seven parts.}
 
-A emph{chunked array list} data structure avoids the overhead of copying the underlying array upon running out of free spots. The idea is to break the collection into chunks, namely, as an \ttt{ArrayList} of arrays. Assuming that the underlying collection of chunks is adequately populated, this collection will seldom require a resizing operation. This data structure will not support arbitrary insertions or removals.
+A \emph{chunked array list} data structure avoids the overhead of copying the underlying array upon running out of free spots. The idea is to break the collection into chunks, namely, as an \ttt{ArrayList} of arrays. Assuming that the underlying collection of chunks is adequately populated, this collection will seldom require a resizing operation. This data structure will not support arbitrary insertions or removals.
 
 \begin{enumerate}[label=(\alph*)]
     \item Design the generic \ttt{ChunkedArrayList} class. It should store, as an instance variable, an \ttt{ArrayList<T[]>} of chunks, where $T$ is the parameterized type. Design two constructors: one that receives a chunk size $s$ and a number of preallocated chunks $n$, and another constructor that receives no parameters, defaulting $n$ to $10$ and $s$ to $50$.
@@ -119,7 +119,7 @@ A emph{chunked array list} data structure avoids the overhead of copying the und
 
 \exercise{3}{chapter-classes}{This exercise has seven parts.}
 
-A emph{persistent data structure}\index{persistent data structure} is one that saves intermittent data structures after applying operations that would otherwise alter the contents of the data structure. Take, for instance, a standard FIFO queue. When we invoke its `enqueue' method, we modify the underlying data structure to now contain the new element. If this were a persistent queue, then enqueueing a new element would, instead, return a new queue that contains all elements and the newly-enqueued value, thereby leaving the original queue unchanged.
+A \emph{persistent data structure}\index{persistent data structure} is one that saves intermittent data structures after applying operations that would otherwise alter the contents of the data structure. Take, for instance, a standard FIFO queue. When we invoke its `enqueue' method, we modify the underlying data structure to now contain the new element. If this were a persistent queue, then enqueueing a new element would, instead, return a new queue that contains all elements and the newly-enqueued value, thereby leaving the original queue unchanged.
 
 \begin{enumerate}[label=(\alph*)]
     \item First, design the generic, private, and static class \ttt{Node} inside a generic \ttt{PQueue} class skeleton. It should store, as instance variables, a pointer to its next element as well as its associated value.
@@ -133,7 +133,7 @@ A emph{persistent data structure}\index{persistent data structure} is one that s
 
 \exercise{3}{chapter-classes}{This exercise has three parts.}
 
-A emph{deterministic finite state automaton} is an extremely primitive machine that represents transitions between the different states of a system. Think, as an example, of a light switch; there is an ``OFF'' state and an ``ON'' state, where flipping the switch flops between the two. The switch flip represents the input that causes a transition from one state to another. Programming languages most often use finite automata for character recognition, i.e., what characters are valid in the language grammar. The following is an example of a DFA diagram that accepts input strings that contain an odd number of \ttt{'a'} characters from an input alphabet $\Sigma = \{a, b\}$.
+A \emph{deterministic finite state automaton} is an extremely primitive machine that represents transitions between the different states of a system. Think, as an example, of a light switch; there is an ``OFF'' state and an ``ON'' state, where flipping the switch flops between the two. The switch flip represents the input that causes a transition from one state to another. Programming languages most often use finite automata for character recognition, i.e., what characters are valid in the language grammar. The following is an example of a DFA diagram that accepts input strings that contain an odd number of \ttt{'a'} characters from an input alphabet $\Sigma = \{a, b\}$.
 
 \begin{enumerate}[label=(\alph*)]
     \item First, begin by designing the skeleton for the \ttt{DFA} class, which contains the following private and static class definitions:
@@ -146,3 +146,37 @@ A emph{deterministic finite state automaton} is an extremely primitive machine t
     \item Design the \ttt{State transition(State s, String i)} method, which returns the state arrived after making the transition from $s$ via input $i$.
     \item Finally, design the \ttt{boolean accepts(String v)} method, which receives an input string $v$ and traverses over the automaton to determine if it accepts or rejects the input. We accept $v$ if the last state we end on is marked as a final state.
 \end{enumerate}
+
+\exercise{3}{chapter-exceptions-io}{A binary relation $\mathcal{R}$ is a subset of the cartesian product of two sets $A$ and $B$. That is, $\mathcal{R} \subseteq A \times B$ such that $A \times B = \{\langle{x, y}\rangle \mid x \in A \text{ and } y \in B\}$. There are several ways that we can describe binary relations, including reflexive, symmetric, transitive, antisymmetric, asymmetric, irreflexive, and serial.}
+
+Design the generic \ttt{BinaryRelation<T, U>} class to represent a mathematical binary relation. It should store a \ttt{Set<Pair<String, String>{>}}, where the inner pair is the associated tuples of the set. Its constructor should instantiate the set instance variable. 
+
+Then, design the following methods:
+
+\begin{enumerate}[label=(\alph*)]
+    \item \ttt{void addTuple(T x, U y)} receives two values $x$ and $y$ of types $T$ and $U$ respectively, and adds them as a tuple to the underlying set.
+    
+    \item \ttt{boolean isReflexive()} returns true if the relation is reflexive. A relation $\mathcal{R}$ is reflexive if, for all $x \in S$, $\langle{x, x}\rangle \in \mathcal{R}$.
+    
+    \item \ttt{boolean isSymmetric()} returns true if the relation is symmetric. A relation $\mathcal{R}$ is symmetric if, for all $x, y \in S$, $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, x}\rangle \in \mathcal{R}$.
+    
+    \item \ttt{boolean isTransitive()} returns true if the relation is reflexive. A relation $\mathcal{R}$ is transitive if, for all $x, y, z \in S$, if $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, z}\rangle \in \mathcal{R}$, then $\langle{x, z}\rangle \in \mathcal{R}$.
+    
+    \item \ttt{boolean isEquivalence()} returns true if the relation is an equivalence relation. A relation $\mathcal{R}$ is an equivalence relation if it is reflexive, symmetric, and transitive.
+
+    \item \ttt{boolean isIrreflexive()} returns true if the relation is irreflexive. A relation $\mathcal{R}$ is irreflexive if, for all $x \in S$, $\langle{x, x}\rangle \not\in \mathcal{R}$.
+    
+    \item \ttt{boolean isAntisymmetric()} returns true if the relation is antisymmetric. A relation $\mathcal{R}$ is antisymmetric if, for all $x, y \in S$, if $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, x}\rangle \in \mathcal{R}$, then $x \neq y$.
+    
+    \item \ttt{boolean isAsymmetric()} returns true if the relation is asymmetric. A relation is asymmetric if it is both antisymmetric and irreflexive.
+
+    \item \ttt{boolean isSerial()} returns true if the relation is serial. A relation $\mathcal{R}$ is serial if, for all $x \in S$, there exists a $y \in S$ such that $\langle{x, y}\rangle \in \mathcal{R}$.
+
+    \item \ttt{Set<Pair<String, String>{>} reflexiveClosure()} returns a set representing the reflexive closure of a binary relation, which is $\mathcal{R} \cup r(\mathcal{R})$, where $r$ returns a reflexive set over $S$.
+    
+    \item \ttt{Set<Pair<String, String>{>} isSymmetricClosure()} returns a set representing the symmetric closure of a binary relation, which is $\mathcal{R} \cup s(\mathcal{R})$, where $r$ returns a symmetric set over $S$.
+
+    \item \ttt{Set<Pair<String, String>{>} transitiveClosure()} returns a set representing the transitive closure of a binary relation, which is $\mathcal{R} \cup t(\mathcal{R})$, where $t$ returns a transitive set over $S$.
+\end{enumerate}
+
+As an added optimization, we should cache whether the current relation is one of these properties when prompted. If we do not add a pair to the relation, then it makes little sense to recompute whether or not is, say, reflexive. Implement this as an optimization, however you wish, into the class.

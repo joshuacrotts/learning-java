@@ -2,7 +2,7 @@
 \label{sec:object-mutation-and-aliasing}
 A limitation that we have purposefully imposed on our object/class design is the inability to modify the values of instance variables. Value mutation is a foreign concept in some programming languages, but we have made extensive use of it throughout our time in the land of Java. In this section, we will discuss the implications of allowing instance variable mutation and how it can lead to some unexpected behavior.
 
-To access a \ttt{private} instance variable, we design a \ttt{public} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a \ttt{public} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns the instance variable to the parameter. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a point $p$ to $(7, 4)$, but we then want to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which we confirm through the accessor method. Another way of phrasing this is that, when testing a mutator, we care about the emph{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. Setter methods, or methods that modify outside values or data are definitionally emph{impure}\index{impure}. Because we want to be able to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove this keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we emph{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
+To access a \ttt{private} instance variable, we design a \ttt{public} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a \ttt{public} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns the instance variable to the parameter. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a point $p$ to $(7, 4)$, but we then want to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which we confirm through the accessor method. Another way of phrasing this is that, when testing a mutator, we care about the \emph{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. Setter methods, or methods that modify outside values or data are definitionally \emph{impure}\index{impure}. Because we want to be able to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove this keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we \emph{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
 
 \begin{cl}[]{Testing \ttt{Point} Setter Methods}
 \begin{lstlisting}[language=MyJava]
@@ -51,7 +51,7 @@ class Point {
 \end{lstlisting}
 \end{cl}
 
-What are some consequences to mutating an object? One comes through the notion of emph{object aliasing}. Recall that objects point to references in memory. Therefore if we instantiate a \ttt{Point} $p_1$, then initialize another \ttt{Point} $p_2$ to reference $p_1$, then both objects refer to the same \ttt{Point} instance in memory. If we modify $p_1$ through a setter method, then $p_2$ will reflect the change.
+What are some consequences to mutating an object? One comes through the notion of \emph{object aliasing}. Recall that objects point to references in memory. Therefore if we instantiate a \ttt{Point} $p_1$, then initialize another \ttt{Point} $p_2$ to reference $p_1$, then both objects refer to the same \ttt{Point} instance in memory. If we modify $p_1$ through a setter method, then $p_2$ will reflect the change.
 
 \begin{cl}[]{Object Aliasing}
 \begin{lstlisting}[language=MyJava]
@@ -119,7 +119,7 @@ class PointTester {
 
 \example{Now that we have classes, mutation, and accessibility, we can finally implement generic data structures such as an \ttt{ArrayList}. In this example we will implement the behavior of the \ttt{ArrayList} data structure, which means we finally understand what is going on under the hood in the Collections API. Let's design a class \ttt{MiniArrayList}, which operates over any type using generics. Like generic static methods, we must quantify the generic type, but unlike static methods, however, we quantify the type over the class declaration, meaning that all instance and static methods observe/respect the quantifier and do not need to be separately quantified.}
 
-In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements, is stored in \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is stored in \ttt{capacity}. Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class, an idea called emph{constructor chaining}. 
+In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements, is stored in \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is stored in \ttt{capacity}. Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class, an idea called \emph{constructor chaining}. 
 
 \begin{cl}[]{\ttt{MiniArrayList} Class}
 \begin{lstlisting}[language=MyJava]
@@ -139,7 +139,7 @@ class MiniArrayList<T> {
 \end{lstlisting}
 \end{cl}
 
-Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type. Recall that generics are a compile-time feature, and arrays are a runtime feature. Therefore, we cannot instantiate an array of a generic type. Instead, we must instantiate an array containing type \ttt{Object}, followed by a cast to contain type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an emph{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
+Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type. Recall that generics are a compile-time feature, and arrays are a runtime feature. Therefore, we cannot instantiate an array of a generic type. Instead, we must instantiate an array containing type \ttt{Object}, followed by a cast to contain type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \emph{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
 
 \begin{cl}[]{\ttt{MiniArrayList} Class Instantiating the Backing Array}
 \begin{lstlisting}[language=MyJava]
@@ -453,9 +453,9 @@ class F {
 \end{lstlisting}
 \end{cl}
 
-\example{Recall the \ttt{LinkedList} class from Chapter~\ref{chapter-arrays-collections}. If you have ever wondered how it works under the hood, now is the time to find out! We will design a emph{doubly-linked list} data structure that stores arbitrarily-typed elements.}
+\example{Recall the \ttt{LinkedList} class from Chapter~\ref{chapter-arrays-collections}. If you have ever wondered how it works under the hood, now is the time to find out! We will design a \emph{doubly-linked list} data structure that stores arbitrarily-typed elements.}
 
-First, remember the structure of a linked list: they are composed of nodes, which hold the data and a pointer to the next element in the chain/sequence. These types of linked lists are emph{singly-linked}, because nodes only refer to the successive element. In contrast, our class models a doubly-linked list, since its nodes point to their predecessor and their successor. 
+First, remember the structure of a linked list: they are composed of nodes, which hold the data and a pointer to the next element in the chain/sequence. These types of linked lists are \emph{singly-linked}, because nodes only refer to the successive element. In contrast, our class models a doubly-linked list, since its nodes point to their predecessor and their successor. 
 
 We need a generic class that stores references to the first and last elements of the list. Let's create the \ttt{DoublyLinkedList} class to receive a type parameter \ttt{T} and store the first and last nodes as instance variables. It's important to realize that, whoever uses this class will not be exposed to the innards of the class, i.e., how the links are established/constructed/altered/removed. We wish to preserve the idea of encapsulation, after all.
 
@@ -651,7 +651,7 @@ Finally we arrive at element removal, which is not as cut-and-dry. We want to pa
 \begin{enumerate}[label=(\alph*)]
   \item If the element-to-remove $e$ is the first of the list, then its successor is now the first. Its previous pointer is adjusted to now point to \ttt{null}.
   \item If the element-to-remove $e$ is the last of the list, then its predecessor is now the last. Its next pointer is adjusted to now point to \ttt{null}.
-  \item If the element to remove $e$ is neither the first nor the last, we retrieve its previous node $p$, its next node $n$, and assign $p_emph{next} = n$, and $n_emph{prev} = p$. This, in effect, ``delinks'' $e$ from the list, which gets consumed by the garbage collector.
+  \item If the element to remove $e$ is neither the first nor the last, we retrieve its previous node $p$, its next node $n$, and assign $p_\emph{next} = n$, and $n_\emph{prev} = p$. This, in effect, ``delinks'' $e$ from the list, which gets consumed by the garbage collector.
   \item If the element-to-remove $e$ is not in the list, do nothing.
 \end{enumerate}
 
@@ -720,7 +720,7 @@ class DoublyLinkedList<T> {
 \end{lstlisting}
 \end{cl}
 
-\example{Some programming languages do not come standard with data structures such as \ttt{Map} or, if they do, they are cumbersome to utilize. A substitute for the common mapping data structure is called an emph{association list}, originating with the Lisp programming language. Its desired purpose is nearly identical to that of a map, but with worse performance implications. In this example we will design such a structure, as if \ttt{Map} did not exist in Java.}
+\example{Some programming languages do not come standard with data structures such as \ttt{Map} or, if they do, they are cumbersome to utilize. A substitute for the common mapping data structure is called an \emph{association list}, originating with the Lisp programming language. Its desired purpose is nearly identical to that of a map, but with worse performance implications. In this example we will design such a structure, as if \ttt{Map} did not exist in Java.}
 
 Associations lists, as their name implies, associate values to other values, just like a map. In dynamically-typed languages, e.g., Scheme, association lists accept any type as their key and any type as their value. Therefore, we could have an association list that maps a string to an integer, or an integer to a list of strings, and so on. Should we want to use truly arbitrary types in the list, we can assign \ttt{Object} to both key and value types.
 
