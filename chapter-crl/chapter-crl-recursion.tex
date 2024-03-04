@@ -370,20 +370,20 @@ class DivByThree {
 
 So, we have explored both standard and tail recursive methods, and how a programming language might optimize tail recursive calls. The thing is, tail recursion has a direct correspondence to loops, i.e., \ttt{while}. In fact, some programming languages convert all tail recursive functions into their iterative counterparts, alleviating the need for a stack whatsoever. Replacing tail recursion, or tail recursive calls, with iteration is known as \emph{tail call optimization}.\footnote{Java is one of many imperative languages that does not support tail call optimization, meaning that tail calls, unfortunately, continue to blow up the procedure call stack.} In the next section, we will discuss a translation pipeline from tail recursion to loops in greater detail, as well as describe the syntax and semantics of Java iteration structures.
 
-\begin{enumerate}
-  \item \mcq{What is a recursive method in Java?}{A method that calls other methods exclusively,A method that never returns,A method that calls itself within its own body,A method that can only be called once}
+% \begin{enumerate}
+%   \item \mcq{What is a recursive method in Java?}{A method that calls other methods exclusively,A method that never returns,A method that calls itself within its own body,A method that can only be called once}
   
-  \item \mcq{Why is recursion used in programming?}{To make the code run faster,To reduce the memory usage of the program,To solve a large problem by breaking it down into smaller problems,To increase the complexity of the code}
+%   \item \mcq{Why is recursion used in programming?}{To make the code run faster,To reduce the memory usage of the program,To solve a large problem by breaking it down into smaller problems,To increase the complexity of the code}
   
-  \item \mcq{What is the base case in a recursive method?}{The most complex case to solve,The initial value from which recursion starts,The condition under which the method stops calling itself,The final step that combines all results}
+%   \item \mcq{What is the base case in a recursive method?}{The most complex case to solve,The initial value from which recursion starts,The condition under which the method stops calling itself,The final step that combines all results}
   
-  \item \mcq{What is tail recursion?}{A special form of recursion where the recursive call is the last operation in the method,Recursion that does not use any stack memory,Recursion that can only be used with tail data structures,Recursion where the method only calls itself once}
+%   \item \mcq{What is tail recursion?}{A special form of recursion where the recursive call is the last operation in the method,Recursion that does not use any stack memory,Recursion that can only be used with tail data structures,Recursion where the method only calls itself once}
   
-  \item \mcq{Why is tail recursion preferred over standard recursion in some cases?}{Because it is easier to understand,Because it can be optimized by the compiler to use less stack memory,Because it allows recursion to be used in more scenarios,Because it is faster in all cases}
+%   \item \mcq{Why is tail recursion preferred over standard recursion in some cases?}{Because it is easier to understand,Because it can be optimized by the compiler to use less stack memory,Because it allows recursion to be used in more scenarios,Because it is faster in all cases}
   
-  \item \mcq{What role does an accumulator play in tail recursion?}{It stores intermediate results and helps avoid stack overflow,It counts the number of recursive calls,It determines when the recursion should stop,It optimizes the recursion to run faster}
+%   \item \mcq{What role does an accumulator play in tail recursion?}{It stores intermediate results and helps avoid stack overflow,It counts the number of recursive calls,It determines when the recursion should stop,It optimizes the recursion to run faster}
   
-  \item \mcq{How can tail recursion typically be replaced in programming?}{With a \texttt{switch} statement,With a \texttt{for} loop,With a \texttt{while} loop or \texttt{for} loop,With an \texttt{if-else} structure}
+%   \item \mcq{How can tail recursion typically be replaced in programming?}{With a \texttt{switch} statement,With a \texttt{for} loop,With a \texttt{while} loop or \texttt{for} loop,With an \texttt{if-else} structure}
 
-  \item \mcq{What is the purpose of a driver method in the context of recursion?}{To initiate the recursive process with the correct initial values,To drive the program to use more stack memory,To convert recursion into iteration,To drive the recursion faster towards the base case}
-\end{enumerate}
+%   \item \mcq{What is the purpose of a driver method in the context of recursion?}{To initiate the recursive process with the correct initial values,To drive the program to use more stack memory,To convert recursion into iteration,To drive the recursion faster towards the base case}
+% \end{enumerate}

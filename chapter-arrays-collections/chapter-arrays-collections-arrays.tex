@@ -251,17 +251,16 @@ import static Assertions.assertEquals;
 
 class McqScoreCalculatorTester {
 
-  static String[] E = new String[]{"A", "C", "D", "A", "B", "B", "D", "C", "C"};
-
   @Test
   void testScore() {    
+    String[] E = new String[]{"A", "C", "D", "A", "B", "B", "D", "C", "C"};
+    String[] A1 = new String[]{"A", "C", "D", "C", "B", "B", "C", "C", "C"};
+    String[] A2 = new String[]{"A", "C", "D", "A", "B", "B", "D", "C", "C"};
+    String[] A3 = new String[]{"A", "C", "?", "C", "?", "B", "?", "C", "C"};
     assertAll(
-      () -> assertEquals(70.3, 
-                         score(E, new String[]{"A", "C", "D", "C", "B", "B", "C", "C", "C"})),
-      () -> assertEquals(100.0, 
-                         score(E, new String[]{"A", "C", "D", "A", "B", "B", "D", "C", "C"})),
-      () -> assertEquals(51.8,
-                         score(E, new String[]{"A", "C", "?", "C", "?", "B", "?", "C", "C"})));
+      () -> assertEquals(70.3, score(E, A1)),
+      () -> assertEquals(100.0, score(E, A2)),
+      () -> assertEquals(51.8, score(E, A3)));
   }
 }
 \end{lstlisting}
@@ -495,7 +494,9 @@ class ArrayArguments {
     } else {
       int n = Integer.parseInt(args[0]);
       double[] values = new double[n];
-      for (int i = 0; i < n; i++) { values[i] = Double.parseDouble(args[i + 1]); }
+      for (int i = 0; i < n; i++) { 
+        values[i] = Double.parseDouble(args[i + 1]); 
+      }
       if (isFlagPresent(args, "--sum")) { 
         System.out.printf("sum: %f\n", sum(values)); 
       }

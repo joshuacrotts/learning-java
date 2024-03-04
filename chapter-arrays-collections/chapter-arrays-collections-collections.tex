@@ -184,13 +184,13 @@ What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation
     % \hrule
     % \vspace{2ex}
   \begin{description}
-    \item [\ttt{List<$T$> $A=$ new ArrayList<>()}] creates an \ttt{ArrayList} of type $T$ named~$A$.
+    \item [\ttt{List<$T$> $A=$ new ArrayList<>$()$}] creates an \ttt{ArrayList} of type $T$ named~$A$.
     \item [\ttt{$T$ $A$.get$(i)$}] retrieves the element at index $i^{\text{th}}$ of $A$. We refer to this as position $i + 1$. 
     \item [\ttt{void $A$.set$(i, v)$}] assigns $v$ to index $i$ of $A$.
     \item [\ttt{int $A$.size$()$}] returns the number of logical elements in the list, i.e., the logical size.
-    \item [\ttt{boolean $A_1$.equals}$(A_2)$] returns whether or not the elements of $A_1$ are equal to the elements of $A_2$, using the \ttt{.equals} method implementation of $A_1$.
+    \item [\ttt{boolean $A_1$.equals$(A_2)$}] returns whether or not the elements of $A_1$ are equal to the elements of $A_2$, using the \ttt{.equals} method implementation of $A_1$.
     \item [\ttt{String $A$.toString$()$}] returns a string representation of the elements in $A$, separated by commas and enclosed by brackets.
-    \item [\ttt{void Collections.sort}$(A)$] performs an in-place sort of $A$, meaning the contents of $A$ are modified.
+    \item [\ttt{void Collections.sort$(A)$}] performs an in-place sort of $A$, meaning the contents of $A$ are modified.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{ArrayList}-based Methods.}
@@ -283,14 +283,14 @@ incrementList(ls, 0);
 assertEquals(6, ls.get(0)); // Assertion after increment.
 \end{verbnobox}
 
-\example{We have seen the repeated use of the \ttt{Integer} and \ttt{Double} classes when parameterizing the types for \ttt{ArrayList}, but what is the point? Could we not instead opt for \ttt{int} and \ttt{double}, as we have traditionally? The answer is a resounding no; we must take advantage of the luxury that is \emph{autoboxing} and \emph{autounboxing} through the \emph{wrapper classes}. The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Char}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. Parameterized types only work with class types; primitive datatypes are disallowed. So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. We can, of course, declare an \ttt{Integer} using the following overly-verbose syntax:}
+\example{We have seen the repeated use of the \ttt{Integer} and \ttt{Double} classes when parameterizing the types for \ttt{ArrayList}, but what is the point? Could we not instead opt for \ttt{int} and \ttt{double}, as we have traditionally? The answer is a resounding no; we must take advantage of the luxury that is \emph{autoboxing} and \emph{autounboxing} through the \emph{wrapper classes}. The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Character}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. Parameterized types only work with class types; primitive datatypes are disallowed. So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. We can, of course, declare an \ttt{Integer} using the following overly-verbose syntax:}
 
 \begin{verbnobox}[\small]
 Integer x = new Integer(42);
 int y = x.getValue(); // y = 42.
 \end{verbnobox}
 
-We explicitly wrap the primitive integer $42$ in $x$, which is of the \ttt{Integer} type, then unwrap its value to be stored in $y$. Manually wrapping and unwrapping primitives is tiresome and only introduces redundant code, hence why Java autoboxes and autounboxes as needed. For example, if we declare an \ttt{ArrayList} of \ttt{Integer} values, then add the primitive integer literal \ttt{42} to the list, Java will autobox the literal into its \ttt{Integer} wrapper. Going the other direction, if we want to iterate over the values in the list, we might use the enhanced-for loop. If Java did not support autounboxing, we would instead have to use \ttt{Integer} as opposed to \ttt{int} in the loop variable declaration. 
+We explicitly wrap the integer literal $42$ in $x$, which is of \ttt{Integer} type, then unwrap its value to be stored in $y$. Manually wrapping and unwrapping primitives is tiresome and only introduces redundant code, hence why Java autoboxes and autounboxes as needed. For example, if we declare an \ttt{ArrayList} of \ttt{Integer} values, then add the primitive integer literal \ttt{42} to the list, Java will autobox the literal into its \ttt{Integer} wrapper. Going the other direction, if we want to iterate over the values in the list, we might use the enhanced-for loop. If Java did not support autounboxing, we would instead have to use \ttt{Integer} as opposed to \ttt{int} in the loop variable declaration. 
 
 \begin{verbnobox}[\small]
 ArrayList<Integer> al = new ArrayList<>();
@@ -313,7 +313,7 @@ ls1.add(42);
 // New way:
 List<Integer> ls2 = new ArrayList<>(List.of(5, 40, 4, 42));
 \end{verbnobox}
-Using \ttt{List.of} raises a question: does \ttt{List.of} only receive five integer arguments? What if I want to specify more than five, or less than five? The answer to this excellent question is that \ttt{List.of} is a \emph{variadic-argument method}\index{variadic-argument method}. Methods may be written to receive any number of arguments, which are then collapsed into a data structure that is traversable.
+Using \ttt{List.of} raises a question: does \ttt{List.of} only receive four integer arguments? What if I want to specify more than four, or less than four? The answer to this excellent question is that \ttt{List.of} is a \emph{variadic-argument method}\index{variadic-argument method}. Methods may be written to receive any number of arguments, which are then collapsed into a traversable data structure.
 
 \example{Suppose we want to write a variadic method that computes the average of any number of given \ttt{double} values. Without variadic-argument methods, we must wrap these in a list or an array, then pass it to the method. Variadic arguments allow us to specify any desired number of arguments, and it is the responsibility of the method to interpret those values as a traversable data structure. So, to iterate over such a structure, we can use the enhanced-for loop.}
 
@@ -380,7 +380,7 @@ Of course, these advantages are not without their disadvantages. Reading and mod
     % \hrule
     % \vspace{2ex}
   \begin{description}
-    \item [\ttt{List<$T$> $A=$ new LinkedList<>()}] creates a \ttt{LinkedList} of type $T$ named~$A$.
+    \item [\ttt{List<$T$> $A=$ new LinkedList<>$()$}] creates a \ttt{LinkedList} of type $T$ named~$A$.
     \item [\ttt{$T$ $A$.get$(i)$}] retrieves the element at index $i^{\text{th}}$ of $A$. We refer to this as position $i + 1$. 
     \item [\ttt{void $A$.set$(i, v)$}] assigns $v$ to index $i$ of $A$.
     \item [\ttt{int $A$.size$()$}] returns the number of logical elements in the list, i.e., the logical size.
@@ -401,7 +401,7 @@ Of course, these advantages are not without their disadvantages. Reading and mod
     % \hrule
     % \vspace{2ex}
   \begin{description}
-    \item [\ttt{Stack<$T$> $S=$ new Stack<>()}] creates a \ttt{Stack} of type $T$, named $S$.
+    \item [\ttt{Stack<$T$> $S=$ new Stack<>$()$}] creates a \ttt{Stack} of type $T$, named $S$.
     \item [\ttt{$T$ $S$.peek$()$}] returns, but does not remove, the top element of $S$.
     \item [\ttt{$T$ $S$.pop$()$}] returns and removes the top element of $S$.
     \item [\ttt{void $S$.push$(e)$}] pushes $e$ to the top of $S$, making $e$ the element on the top of the stack.
@@ -500,7 +500,7 @@ Treating \texttt{q} as a queue rather than a linked list is easy thanks to the m
     A \emph{Queue}\index{queue}\index{\ttt{Queue}} is a first-in-first-out (FIFO) sequential data structure where each element is linked to the element immediately after.
     \vspace{2ex}
   \begin{description}
-    \item [\ttt{Queue<$T$> $Q=$ new LinkedList<>()}] creates a \ttt{Queue} of type $T$, named $Q$.
+    \item [\ttt{Queue<$T$> $Q=$ new LinkedList<>$()$}] creates a \ttt{Queue} of type $T$, named $Q$.
      \item [\ttt{void $Q$.addLast$(e)$}] adds $e$ to the end of $Q$, placing it at the end of the queue structure.
      \item [\ttt{$T$ $Q$.poll$()$}] returns and removes the element from the front of the queue.
      \item [\ttt{$T$ $Q$.peek$()$}] returns the front-most element in the queue.
@@ -518,7 +518,7 @@ Treating \texttt{q} as a queue rather than a linked list is easy thanks to the m
     A \emph{Priority queue}\index{priority queue} is a rank/score-based data structure wherein the ordering of elements is determined by either their natural ordering or a \ttt{Comparator}.
     \vspace{2ex}
   \begin{description}
-    \item [\ttt{PriorityQueue<$T$> $PQ=$ new PriorityQueue<>($c$)}] creates a \ttt{PriorityQueue} of type $T$, named $PQ$, with a \ttt{Comparator} $c$ that is used to compare objects of type $T$ within the priority queue.
+    \item [\ttt{PriorityQueue<$T$> $PQ=$ new PriorityQueue<>$(c)$}] creates a \ttt{PriorityQueue} of type $T$, named $PQ$, with a \ttt{Comparator} $c$ that is used to compare objects of type $T$ within the priority queue.
      \item [\ttt{void $PQ$.add$(e)$}] inserts $e$ into $PQ$, whose position in the priority queue depends on the currently-existing elements.
      \item [\ttt{$T$ $PQ$.poll$()$}] returns and removes the element with the highest priority.
      \item [\ttt{$T$ $PQ$.peek$()$}] returns the element with the highest priority.
@@ -676,7 +676,7 @@ Use hashsets when you do not care about element ordering or ``position'' in the 
     A \emph{Set}\index{set}\index{\ttt{Set}} is a data structure of non-duplicate elements, with \ttt{HashSet} being the most common implementation/usage of sets.
     \vspace{2ex}
   \begin{description}
-    \item [\ttt{Set<$T$> $S=$ new HashSet<>()}] creates a \ttt{HashSet} of type $T$, named $S$.
+    \item [\ttt{Set<$T$> $S=$ new HashSet<>$()$}] creates a \ttt{HashSet} of type $T$, named $S$.
      \item [\ttt{boolean $S$.contains$(e)$}] returns whether or not $e$ is in the set $S$.
      \item [\ttt{boolean $S$.add$(e)$}] adds $e$ to the set $S$ only if it is not present. If $e$ is not in $S$, it returns \ttt{false}; otherwise, it returns \ttt{true}.
      \item [\ttt{boolean $S$.remove$(e)$}] removes $e$ from the set $S$ only if it is present. If $e$ is not in $S$, it returns \ttt{false}; otherwise, it returns \ttt{true}.
