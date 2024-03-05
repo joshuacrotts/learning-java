@@ -43,6 +43,7 @@ To write the unit test, all we need is the \ttt{void testFahrenheitToCelsius()} 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+
 class MainMethod {
 
   @Test
@@ -50,8 +51,7 @@ class MainMethod {
     assertAll(
       () -> assertEquals(0, fahrenheitToCelsius(32));
       () -> assertEquals(-40, fahrenheitToCelsius(-40));
-      () -> assertEquals(100, fahrenheitToCelsius(212));
-    )
+      () -> assertEquals(100, fahrenheitToCelsius(212)));
   }
   
   /**

@@ -923,7 +923,7 @@ class ComputeModeTester {
     assertAll(
       () -> assertEquals(Set.of(), mode(List.of())),  
       () -> assertEquals(Set.of(3), mode(List.of(4, 5, 3, 2, 1, 3, 3, 4, 3))),
-      () -> assertEquals(Set.of(2, 3), mode(List.of(2, 3, 2, 3, 2, 3, 1, 3, 2))),
+      () -> assertEquals(Set.of(2, 3), mode(List.of(2, 3, 2, 3, 2, 3, 3, 2))),
       () -> assertEquals(Set.of(2), mode(List.of(2, 2, 2, 2, 2, 2, 2, 2, 2))));
   }
 }
@@ -1013,6 +1013,12 @@ class ShareFirstCharacterTester {
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 class ShareFirstCharacter {
 
   /**
@@ -1063,6 +1069,9 @@ class FirstUniqueLetterTester {
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import java.util.HashMap;
+import java.util.Map;
+
 class FirstUniqueLetter {
 
   /**
@@ -1489,12 +1498,12 @@ class BigIntFibStream {
     \vspace{2ex}
   \begin{description}
     \item [\ttt{int $S$.count$()$}] returns the number of elements in the stream.
-    \item [\ttt{Stream<$T$> $S$.map($f$)}] returns a new stream whose elements are the result of applying $f$ to each element of~$S$.
-    \item [\ttt{Stream<$T$> $S$.filter($p$)}] returns a new stream of values in $S$ that satisfy the predicate~$p$.
-    \item [\ttt{$T$ $S$.reduce($a$, $f$)}] returns the result of applying the binary function $f$ to each element of $S$, starting from $a$, which serves as the accumulator's initial value. The type of $a$ is $T$, which matches the elements of the stream.
-    \item [\ttt{Stream<$T$> $S$.limit($n$)}] returns a new stream containing the first $n$ elements of~$S$.
-    \item [\ttt{Stream<$T$> $S$.skip($n$)}] returns a new stream containing the elements of $S$ after the first~$n$.
-    \item [\ttt{Optional<$T$> $S$.min/max($c$)}] returns the minimum/maximum element of $S$ according to the comparator $c$. If $S$ is empty, returns \ttt{Optional.empty()}.
+    \item [\ttt{Stream<$T$> $S$.map$(f)$}] returns a new stream whose elements are the result of applying $f$ to each element of~$S$.
+    \item [\ttt{Stream<$T$> $S$.filter$(p)$}] returns a new stream of values in $S$ that satisfy the predicate~$p$.
+    \item [\ttt{$T$ $S$.reduce$(a, f)$}] returns the result of applying the binary function $f$ to each element of $S$, starting from $a$, which serves as the accumulator's initial value. The type of $a$ is $T$, which matches the elements of the stream.
+    \item [\ttt{Stream<$T$> $S$.limit$(n)$}] returns a new stream containing the first $n$ elements of~$S$.
+    \item [\ttt{Stream<$T$> $S$.skip$(n)$}] returns a new stream containing the elements of $S$ after the first~$n$.
+    \item [\ttt{Optional<$T$> $S$.min/max$(c)$}] returns the minimum/maximum element of $S$ according to the comparator $c$. If $S$ is empty, returns \ttt{Optional.empty()}.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{Stream}-based Methods.}
@@ -1507,9 +1516,9 @@ class BigIntFibStream {
     We can search for the existence of types of elements in a stream.
     \vspace{2ex}
   \begin{description}
-    \item [\ttt{boolean $S$.anyMatch($p$)}] returns \ttt{true} if \textbf{at least one} element of $S$ satisfies the predicate $p$; otherwise, returns \ttt{false}.
-    \item [\ttt{boolean $S$.allMatch($p$)}] returns \ttt{true} if \textbf{all} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
-    \item [\ttt{boolean $S$.noneMatch($p$)}] returns \ttt{true} if \textbf{no} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
+    \item [\ttt{boolean $S$.anyMatch$(p)$}] returns \ttt{true} if \textbf{at least one} element of $S$ satisfies the predicate $p$; otherwise, returns \ttt{false}.
+    \item [\ttt{boolean $S$.allMatch$(p)$}] returns \ttt{true} if \textbf{all} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
+    \item [\ttt{boolean $S$.noneMatch$(p)$}] returns \ttt{true} if \textbf{no} elements of $S$ satisfy the predicate $p$; otherwise, returns \ttt{false}.
   \end{description}
 \end{tcolorbox}
   \caption{Useful \ttt{Stream}-Searching Methods.}

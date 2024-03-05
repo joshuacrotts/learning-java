@@ -1,7 +1,9 @@
 \section{Classes}
 From the first page, we have made prolific use of classes, but in this section we will finally venture into the inner workings of a class, and how to create our own.
 
-\emph{Classes}\index{classes}\index{class} are blueprints for \emph{objects}\index{object}. When we create a class, we declare a new type of object. As we stated, we have repeatedly used classes, e.g., strings, arrays, \ttt{Scanner}, \ttt{Random}, as well as those classes from the Collections API. Until now, however, we viewed these as forms of abstraction, whose details were not important. 
+\emph{Classes}\index{classes}\index{class} are blueprints for \emph{objects}\index{object}. When we create a class, we declare a new type of object. We encapsulate data and methods inside class definitions for later usage.
+
+As we stated, we have repeatedly used classes, e.g., strings, arrays, \ttt{Scanner}, \ttt{Random}, as well as those classes from the Collections API. Until now, however, we viewed these as forms of abstraction, whose details were not important. 
 
 To create a class, we use the \ttt{class} keyword, followed by the name of the class. The name of the class should be capitalized, and should, in general, describe a noun. All Java files describe a class and must be named accordingly. We, of course, have seen this repeatedly before, but we omitted the details.
 
@@ -106,7 +108,7 @@ Of course, testing the accessor methods is a little boring, so let's override th
 \begin{cl}[]{Overriding the \ttt{toString} Method}
 \begin{lstlisting}[language=MyJava]
 class Point {
-  // ... previous code not shown.
+  // ... Previous code not shown.
 
   @Override
   public String toString() {
@@ -177,7 +179,7 @@ class PointTester {
 \begin{cl}[]{Distance Between Two Points}
 \begin{lstlisting}[language=MyJava]
 class Point {
-  // ... previous code not shown.
+  // ... Previous code not shown.
 
   /**
    * Determines the Euclidean distance between two points.
@@ -219,25 +221,69 @@ class Point {
 
 We could, if desired, overload the \ttt{Point} constructor as well. Though, it makes little sense to do so in this specific instance, since a point is defined by its two coordinate members. In subsequent sections, however, we will overload the constructor and demonstrate its utility/practicality.
 
-\example{Let's create the static method \ttt{random}, which returns a random \ttt{Point} object. We will use the \ttt{Random} class to generate a random radius and angle as a polar coordinate. Then, we will convert the polar coordinate to Cartesian coordinates. Let's also add a parameter that specifies the maximum radius.}
+\example{Let's design the static \ttt{averageDistance} method, which receives a \ttt{List<Point>} and computes the average distance away from the origin. We already have a method to compute the distance of a point to the origin, so let's take advantage of the stream API to map \ttt{distance} to every point, then find the average of those resulting double values. This method will return an \ttt{OptionalDouble} in the event that the provided list is empty, which serves as a wrapper around the \ttt{Optional<Double>} type.}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class PointTester {
+  // ... previous code not shown.
+
+  @Test
+  void testAverageDistance() {
+    List<Point> lop = List.of(
+            new Point(4, 0), new Point(0, 4),
+            new Point(-4, 0), new Point(0, -4),
+            new Point(2, 2), new Point(-2, 2),
+            new Point(-2, -2), new Point(2, -2));
+    assertAll(
+      () -> assertEquals(3.414, Point.averageDistance(lop).get(), 0.01),
+      () -> assertEquals(OptionalDouble.empty(), Point.averageDistance(List.of())));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+class Point {
+  // ... previous code not shown. 
+
+  /**
+   * Computes the average distance to the origin of a list of points.
+   * @param lop - list of points.
+   * @return empty Optional if the list is empty, or OptionalDouble otherwise.
+   */
+  public static Optional<Double> averageDistance(List<Point> lop) {
+    return lop.stream()
+              .map(p -> p.distance())
+              .mapToDouble(d -> d)
+              .average();
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example{Let's create the static \ttt{random} method, which returns a \ttt{Point} object with random $x$ and $y$ coordinates. We will use the \ttt{Random} class to generate a random radius and angle as a polar coordinate. Then, we will convert the polar coordinate to Cartesian coordinates. Let's also add a parameter that specifies the maximum radius.}
 
 Because the \ttt{random} method generates a random point, we cannot reasonably write a test that asserts the exact location of the point without prior knowledge of the random seed. Instead, we can write a test that asserts that the point is within a certain radius of the origin. 
 
 \begin{cl}[PointTester.java]{Testing the \ttt{random} Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
-import static Assertions.assertEquals;
+import static Assertions.assertTrue;
 
 class PointTester {
 
-  private static final double DELTA = 0.01;
-
   @Test
   void testPointRandom() {
-    assertTrue(Point.random(10).distance() <= 10);
-    assertTrue(Point.random(1).distance() <= 1);
-    assertTrue(Point.random(5).distance() <= 5);
-    assertTrue(Point.random(5000000).distance() <= 5000000);
+    assertAll(
+      () -> assertTrue(Point.random(10).distance() <= 10);
+      () -> assertTrue(Point.random(1).distance() <= 1);
+      () -> assertTrue(Point.random(5).distance() <= 5);
+      () -> assertTrue(Point.random(5000000).distance() <= 5000000));
   }
 }
 \end{lstlisting}
@@ -388,6 +434,52 @@ class Point {
   @Override
   public int hashCode() {
     return Objects.hash(this.x, this.y);
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\example{Let's design the static \ttt{removeLinearPoints(List<Point> lop)} method that, when given a \ttt{List<Point>}, filters out all points that are ``linear,'' meaning that they share an $x$ and $y$ coordinate. Fortunately, as with the previous example, streams make this exercise a walk in the park. Because we overrode the \ttt{equals} definition, the comparisons by \ttt{assertEquals} will work correctly. That is, we are comparing the elements of two lists of \ttt{Point} objects. The \ttt{assertEquals} method uses the object's \ttt{.equals} method implementation for object equivalence comparisons, meaning that it will check each element of both lists to determine if they are all equivalent.}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class PointTester {
+  // ... previous code not shown. 
+
+  @Test
+  void testRemoveLinearPoints() {
+    List<Point> lop = List.of(new Point(5, 10), new Point(7, 7),
+                              new Point(2, 3), new Point(4, 3),
+                              new Point(1, 1), new Point(-6, -10),
+                              new Point(-23, -23), new Point(1, 0));
+    List<Point> lopRes = List.of(new Point(5, 10), new Point(2, 3),
+                                 new Point(4, 3), new Point(-6, -10),
+                                 new Point(1, 0));
+    assertAll(
+      () -> assertEquals(List.of(), Point.removeLinearPoints(List.of())),
+      () -> assertEquals(lopRes, Point.removeLinearPoints(lop)));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{}
+\begin{lstlisting}[language=MyJava]
+class Point {
+  // ... previous code not shown. 
+
+  /**
+   * Returns a list of all points that are not "linear."
+   * @param lop - list of Point objects.
+   * @return list where linear points are removed.
+   */
+  public static List<Point> removeLinearPoints(List<Point> lop) {
+    return lop.stream()
+              .filter(p -> p.getX() != p.getY())
+              .toList();
   }
 }
 \end{lstlisting}
