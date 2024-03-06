@@ -396,7 +396,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 class ThreadSafeArrayList<T> {
-
   // ... other instance variables not shown.
   private Lock lock;
 
@@ -860,9 +859,7 @@ Our tasks will consist of a hierarchy of objects. Namely, a \ttt{Task} contains 
 
 \begin{cl}[]{Task Type Enumeration}
 \begin{lstlisting}[language=MyJava]
-enum TaskType {
-  BROADCAST
-}
+enum TaskType { BROADCAST }
 \end{lstlisting}
 \end{cl}
 
@@ -948,11 +945,9 @@ class Client {
       this.SOCKET.close();
       this.IN.close();
       this.OUT.close();
-    } catch (IOException e) { 
-      e.printStackTrace(); 
-    } finally {
-      return null;
-    }
+    } 
+    catch (IOException e) { e.printStackTrace(); }
+    finally { return null; }
   }
 }
 \end{lstlisting}

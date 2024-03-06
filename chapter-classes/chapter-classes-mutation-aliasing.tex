@@ -280,6 +280,15 @@ class MiniArrayList<T> {
     this.size--;
     return e;
   }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Shifting Left and Right}
+\begin{lstlisting}[language=MyJava]
+class MiniArrayList<T> {
+
+  // ... other details not shown.
 
   /**
    * Shifts all elements to the left of the given index one position leftwards.
@@ -694,26 +703,19 @@ class DoublyLinkedList<T> {
   public void remove(T data) {
     Node<T> curr = this.first;
     while (curr != null) {
-      if (curr.data.equals(data)) {
-        // Case 1: if it's the first.
+      if (curr.data.equals(data)) { // Case 1: if it's the first.
         if (curr == this.first) {
           curr.next = this.first.next;
           this.first = curr.next;
-        }
-        // Case 2: if it's the last.
-        else if (curr == this.last) {
+        } else if (curr == this.last) { // Case 2: if it's the last.
           curr.prev.next = null;
           this.last = curr.prev;
-        }
-        // Case 3: if it's anything else.
-        else {
+        } else { // Case 3: if it's anything else.
           curr.prev.next = curr.next;
           curr.next.prev = curr.prev;
         }
         break;
-      } else {
-        curr = curr.next;
-      }
+      } else { curr = curr.next; }
     }
   }
 }

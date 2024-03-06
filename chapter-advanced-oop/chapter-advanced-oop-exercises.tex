@@ -262,9 +262,7 @@ new ProgramNode(
           new ApplyNode("!", 
             new PrimNode("-", 
             new VarNode("n"), 
-            new NumberNode(1))))
-      )
-    )),
+            new NumberNode(1))))))),
   new PrimNode("print", new ApplyNode("!", new NumberNode(5)))
 )
 \end{verbnobox}
@@ -334,7 +332,8 @@ class FactorialTailRecursive {
     if (n.equals(BigInteger.ZERO)) {
       return TailCallUtils.done(acc);
     } else {
-      return TailCallUtils.call(() -> factTailCall(n.subtract(BigInteger.ONE), acc.multiply(n)));
+      return TailCallUtils.call(() -> factTailCall(n.subtract(BigInteger.ONE), 
+                                                   acc.multiply(n)));
     }
   }
 }

@@ -354,8 +354,9 @@ class ArgumentParser {
   // ... other methods not shown.
 
   /**
-   * ... 
-   * @return
+   * Determines whether or not all of the arguments in the stored
+   * instance variable are "valid".
+   * @return true if all arguments are valid, false otherwise.
    */
   public boolean parseArguments() {
     return this.arguments.stream()
@@ -577,19 +578,12 @@ final class PrimNode extends AstNode {
                                               .map(n -> n.eval(env))
                                               .toList();
     // Each primitive operator is handled differently.
-    // For basic things like addition and subtraction, we can simply
-    // map the values to their unwrapped types and collect the result.
     return new Lvalue(
       switch (op) {
-        case "+" -> new NumberNode(operands.stream()
-                                           .map(Lvalue::getNumberValue)
-                                           .reduce(0.0, Double::sum));
-        case "-" -> new NumberNode(primSub(operands));
-        case "*" -> new NumberNode(operands.stream()
-                                           .map(Lvalue::getNumberValue)
-                                           .reduce(1.0, (acc, c) -> acc * c));
-        case "eq?" ->
-                new BoolNode(operands.get(0).equals(operands.get(1)));
+        case "+" -> this.add(operands);
+        case "-" -> this.sub(operands);
+        case "*" -> this.mul(operands);
+        case "eq?" -> this.eq(operands);
         default -> null;
       });
   }
@@ -597,6 +591,60 @@ final class PrimNode extends AstNode {
   @Override
   public String toString() {
     return String.format("(%s %s)", this.OP, this.getChildren().toString());
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Addition Operator}
+\begin{lstlisting}[language=MyJava]
+final class PrimNode extends AstNode {
+  // ... other fields/methods not shown.
+
+  private AstNode add(List<Lvalue> operators) {
+    return new NumberNode(operands.stream()
+                                  .map(Lvalue::getNumberValue)
+                                  .reduce(0.0, Double::sum));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Subtraction Operator}
+\begin{lstlisting}[language=MyJava]
+final class PrimNode extends AstNode {
+  // ... other fields/methods not shown.
+
+  private AstNode sub(List<Lvalue> operators) {
+    return new NumberNode(operands.stream()
+                                  .map(Lvalue::getNumberValue)
+                                  .reduce(0.0, (acc, c) -> c - acc));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Multiplication Operator}
+\begin{lstlisting}[language=MyJava]
+final class PrimNode extends AstNode {
+  // ... other fields/methods not shown.
+
+  private AstNode mul(List<Lvalue> operators) {
+    return new NumberNode(operands.stream()
+                                  .map(Lvalue::getNumberValue)
+                                  .reduce(1.0, (acc, c) -> c * acc));
+  }
+}
+\end{lstlisting}
+\end{cl}
+
+\begin{cl}[]{Equality Operator}
+\begin{lstlisting}[language=MyJava]
+final class PrimNode extends AstNode {
+  // ... other fields/methods not shown.
+
+  private AstNode eq(List<Lvalue> operators) {
+    return new BooleanNode(operands.get(0).equals(operands.get(1)));
   }
 }
 \end{lstlisting}
@@ -644,7 +692,9 @@ final class Environment {
   private final Map<String, AstNode> ENV;
   private final Environment PARENT;
 
-  public Environment() { this(null); }
+  public Environment() { 
+    this(null); 
+  }
 
   public Environment(Environment parent) { 
     this.ENV = new HashMap<>(); 
@@ -658,9 +708,13 @@ final class Environment {
    */
   @Override
   public AstNode lookup(String var) {
-    if (this.ENV.containsKey(var)) { return this.ENV.get(var); }
-    else if (this.PARENT != null) { return this.PARENT.ENV.lookup(var); }
-    else { return null; }
+    if (this.ENV.containsKey(var)) { 
+      return this.ENV.get(var); 
+    } else if (this.PARENT != null) { 
+      return this.PARENT.ENV.lookup(var); 
+    } else { 
+      return null; 
+    }
   }
 
   /**

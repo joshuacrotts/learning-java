@@ -646,22 +646,33 @@ class ConstantExpression implements Expression {
 
   private final int CONSTANT;
 
-  public ConstantExpression(int c) { this.CONSTANT = c; }
-
-  @Override
-  public Expression derivative(String v) { return new ConstantExpression(0); }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof ConstantExpression)) { return false; }
-    else { return ((ConstantExpression) obj).CONSTANT == this.CONSTANT; }
+  public ConstantExpression(int c) { 
+    this.CONSTANT = c; 
   }
 
   @Override
-  public int hashCode() { return Objects.hash(this.CONSTANT); }
+  public Expression derivative(String v) { 
+    return new ConstantExpression(0); 
+  }
 
   @Override
-  public String toString() { return String.format("%d", this.CONSTANT); }
+  public boolean equals(Object obj) {
+    if (!(obj instanceof ConstantExpression)) { 
+      return false; 
+    } else { 
+      return ((ConstantExpression) obj).CONSTANT == this.CONSTANT; 
+    }
+  }
+
+  @Override
+  public int hashCode() { 
+    return Objects.hash(this.CONSTANT); 
+  }
+
+  @Override
+  public String toString() { 
+    return String.format("%d", this.CONSTANT); 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -688,7 +699,8 @@ class MonomialExpression implements Expression {
       if (this.EXPT == 1) {
         return new ConstantExpression(this.COEFFICIENT);
       } else {
-        return new MonomialExpression(this.VAR, this.COEFFICIENT * this.EXPT, 
+        return new MonomialExpression(this.VAR, 
+                                      this.COEFFICIENT * this.EXPT, 
                                       this.EXPT - 1);
       }
     } else {
@@ -776,7 +788,9 @@ class AddExpression implements Expression {
     this.EXPR_LIST = Arrays.asList(exprs);
   }
 
-  public AddExpression(List<Expression> exprs) { this.EXPR_LIST = exprs; }
+  public AddExpression(List<Expression> exprs) { 
+    this.EXPR_LIST = exprs; 
+  }
 
   @Override
   public Expression derivative(String var) {

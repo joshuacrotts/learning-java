@@ -112,7 +112,9 @@ class RightAlienTester {
 \begin{lstlisting}[language=MyJava]
 class RightAlien extends Alien {
 
-  public RightAlien() { super(); }
+  public RightAlien() { 
+    super(); 
+  }
 
   /**
    * Turns the Alien right by 90 degrees.
@@ -156,11 +158,15 @@ class MileMoverAlienTester {
 \begin{lstlisting}[language=MyJava]
 class MileMoverAlien extends Alien {
 
-  public MileMoverAlien() { super(); }
+  public MileMoverAlien() { 
+    super(); 
+  }
 
   @Override
   public void moveForward() {
-    for (int i = 0; i < 10; i++) { super.moveForward(); }
+    for (int i = 0; i < 10; i++) { 
+      super.moveForward(); 
+    }
   }
 }
 \end{lstlisting}

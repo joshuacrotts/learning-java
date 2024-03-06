@@ -205,7 +205,6 @@ class SelectionSortTester {
   void fSelSort() {
     ISelectionSort<Integer> ss = new FunctionalSelectionSort<>();
     assertAll(
-      () -> assertEquals(List.of(1, 2, 3, 4, 5), ss.selectionSort(LS1)),
       () -> assertEquals(List.of(), ss.selectionSort(LS2)),
       () -> assertEquals(List.of(2, 3, 3, 3, 6, 7, 8, 10, 10, 10), 
                          ss.selectionSort(LS3)));
@@ -215,8 +214,6 @@ class SelectionSortTester {
   void ipqsTester() {
     ISelectionSort<Integer> ss = new InPlaceSelectionSort<>();
     assertAll(
-      () -> ss.selectionSort(LS1),
-      () -> assertEquals(List.of(1, 2, 3, 4, 5), LS1),
       () -> ss.selectionSort(LS2),
       () -> assertEquals(List.of(), LS2),
       () -> ss.selectionSort(LS3),
@@ -426,8 +423,9 @@ class FunctionalBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
 
   @Override
   public AbstractList<V> bubbleSort(AbstractList<V> ls) {
-    if (ls.size() <= 1) { return ls; }
-    else {
+    if (ls.size() <= 1) { 
+      return ls; 
+    } else {
       // Find the largest element.
       V largest = getLargest(ls);
       boolean removed = false;
@@ -436,8 +434,11 @@ class FunctionalBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
       // one occurrence of the largest element.
       AbstractList<V> rest = new ArrayList<>();
       for (V v : ls) {
-        if (v.equals(largest) && !removed) { removed = true; }
-        else { rest.add(v); }
+        if (v.equals(largest) && !removed) { 
+          removed = true; 
+        } else { 
+          rest.add(v); 
+        }
       }
 
       // Bubble sort the rest, then add the largest as the last element.
