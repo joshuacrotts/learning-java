@@ -189,9 +189,7 @@ import java.nio.file.Path;
 class JavaRepl {
 
   private final Path TMP_DIR;
-
   private final BufferedReader IN; 
-
   private int classNo;
 
   public JavaRepl() {
@@ -253,13 +251,10 @@ import javax.tools.*;
 import java.lang.StringBuilder;
 
 class JavaRepl {
-
   // ... other instance variables not shown.
 
   private final JavaCompiler JAVAC;
-
   private final StandardJavaFileManager FILE_MANAGER;
-
   private final DiagnosticCollector<? super JavaFileObject> DS;
 
   public JavaRepl() {

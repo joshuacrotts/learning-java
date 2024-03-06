@@ -602,7 +602,7 @@ Thus we have a programming language that interprets numbers and addition express
 
 The formal definition of the derivative of a function is not a necessary detail to concern ourselves of; but in short, it measures the instantaneous rate-of-change at a given point of the function, i.e., the slope of the line tangent to the point. There are several rules for computing derivatives of functions, all of which are common exercises in an introductory calculus course. We want to be able to construct expressions in such a way that it is trivial to differentiate their components. As an example, the derivative of the expression $3x^2 - 16x + 100$ is $6x - 6$ due to specific rules that we will explain shortly. The idea, however, is that we have a large expression to find the derivative of, and by differentiating its subcomponents, we obtain the derivative of the larger. Let's see what all we need to do.
 
-First, let's design the \ttt{Expression} interface, which contains one method to compute the derivative of an \ttt{Expression}: \ttt{Expression derivative(String var)}. Expressions in calculus are differentiated with respect to a given variable, e.g., $x$, so we need to pass that to any expression that we wish to differentiate. Now, any class that implements \ttt{Expression} must override \ttt{derivative}. 
+First, let's design the \ttt{Expression} interface, which contains one method to compute the derivative of an \ttt{Expression}: \ttt{Expression derivative(String v)}. Expressions in calculus are differentiated with respect to a given variable, e.g., $x$, so we need to pass that to any expression that we wish to differentiate. Now, any class that implements \ttt{Expression} must override \ttt{derivative}. 
 
 Using some basic calculus derivative shortcuts/rules, we can easily think of two more types of expressions: constants (e.g., $3$, $0$, $27$) and monomials (e.g., $ax^n$ where $a, n$ are integers). So, let's design the \ttt{ConstantExpression} and \ttt{MonomialExpression} classes, the former of which has a constructor that receives a single integer $c$, whereas the latter stores the variable, the coefficient $a$, and finally the exponent $n$. To make working with these expressions easier, as well as ensuring testibility, we will override the \ttt{equals}, \ttt{hashCode}, and \ttt{toString} methods.
 
@@ -687,8 +687,8 @@ class MonomialExpression implements Expression {
   private final int EXPT;
   private final String VAR;
 
-  public MonomialExpression(String var, int a, int n) { 
-    this.VAR = var;
+  public MonomialExpression(String v, int a, int n) { 
+    this.VAR = v;
     this.COEFFICIENT = a;
     this.EXPT = n;
   }
@@ -793,9 +793,9 @@ class AddExpression implements Expression {
   }
 
   @Override
-  public Expression derivative(String var) {
+  public Expression derivative(String v) {
     List<Expression> exprs = new ArrayList<>();
-    this.EXPR_LIST.forEach(e -> exprs.add(e.derivative(var)));
+    this.EXPR_LIST.forEach(e -> exprs.add(e.derivative(v)));
     return new AddExpression(exprs);
   }
 

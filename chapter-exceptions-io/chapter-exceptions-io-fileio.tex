@@ -8,7 +8,9 @@ Presumably this section discusses file input and output syntax and semantics. Al
 
 \begin{cl}[FileInputStreamExample.java]{Reading File Data Example}
 \begin{lstlisting}[language=MyJava]
-import java.io.*;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 
 class FileInputStreamExample {
 
@@ -19,7 +21,9 @@ class FileInputStreamExample {
       fis = new FileInputStream(inFile);
       // Read in data byte-by-byte.
       int val = -1;
-      while ((val = fis.read()) != -1) { System.out.print(val); }
+      while ((val = fis.read()) != -1) { 
+        System.out.print(val); 
+      }
     } catch (FileNotFoundException ex) {
       System.err.printf("main: could not find %s\n", inFile);
     } catch (IOException ex) {
@@ -433,9 +437,13 @@ class EvenIntegers {
          PrintWriter pw = new PrintWriter(new FileWriter(outFile))) {
       while (f.hasNextInt()) {
         int val = f.nextInt();
-        if (val % 2 == 0) { pw.println(val); }
+        if (val % 2 == 0) { 
+          pw.println(val); 
+        }
       }
-    } catch (IOException ex) { ex.printStackTrace(); }
+    } catch (IOException ex) { 
+      ex.printStackTrace(); 
+    }
   }
 }
 \end{lstlisting}
@@ -491,7 +499,9 @@ class LineWordCharCounter {
         counts[1] += line.split(" ").length;
         counts[2] += line.length();
       }
-    } catch (IOException ex) { ex.printStackTrace(); }
+    } catch (IOException ex) { 
+      ex.printStackTrace(); 
+    }
     return counts;
   }
 }
@@ -517,15 +527,18 @@ class ConcatenateFiles {
    * @return true if all files have same extension, false otherwise.
    */
   private static boolean sameExtension(String[] files) {
-    if (files[0].lastIndexOf('.') == -1) { return false; }
-    String extension = files[0].substring(files[0].lastIndexOf('.'));
-    for (String file : files) {
-      if (file.lastIndexOf(".") == -1 || 
-          !file.substring(file.lastIndexOf('.')).equals(extension)) { 
-        return false; 
+    if (files[0].lastIndexOf('.') == -1) { 
+      return false; 
+    } else {
+      String extension = files[0].substring(files[0].lastIndexOf('.'));
+      for (String file : files) {
+        if (file.lastIndexOf(".") == -1 || 
+            !file.substring(file.lastIndexOf('.')).equals(extension)) { 
+          return false; 
+        }
       }
+      return true;
     }
-    return true;
   }
 
   /**
@@ -538,7 +551,9 @@ class ConcatenateFiles {
       for (String file : files) {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
           String line = null;
-          while ((line = br.readLine()) != null) { bw.write(line + "\n"); }
+          while ((line = br.readLine()) != null) { 
+            bw.write(line + "\n"); 
+          }
         }
       }
     } catch (IOException ex) { ex.printStackTrace(); }
@@ -732,9 +747,14 @@ class SudokuSolver {
     }
   }
 
-  public boolean solve() { /* TODO. */ }
+  public boolean solve() { 
+    /* TODO. */ 
+    return false;  
+  }
 
-  public void output(String filename) { /* TODO. */ }
+  public void output(String filename) { 
+    /* TODO. */ 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -755,10 +775,11 @@ import java.nio.file.*;
 import java.util.*;
 
 class SudokuSolver {
+  // ... other variables and methods not shown.
 
-  /* ... other variables and methods not shown. */
-
-  public SudokuSolver(String filename) { /* Implementation omitted. */ }
+  public SudokuSolver(String filename) { 
+    /* Implementation omitted. */ 
+  }
 
   /**
    * Returns whether or not a number is valid in a given cell.
@@ -770,7 +791,9 @@ class SudokuSolver {
   private boolean isValid(int r, int c, int n) {
     // Check the row and column simultaneously.
     for (int i = 0; i < N; i++) {
-      if (this.board[r][i] == n || this.board[i][c] == n) { return false; }
+      if (this.board[r][i] == n || this.board[i][c] == n) { 
+        return false; 
+      }
     }
 
     // Check the subgrid.
@@ -778,7 +801,9 @@ class SudokuSolver {
     int sc = (c / 3) * 3;
     for (int i = sr; i < sr + 3; i++) {
       for (int j = sc; j < sc + 3; j++) {
-        if (this.board[i][j] == n) { return false; }
+        if (this.board[i][j] == n) { 
+          return false; 
+        }
       }
     }
     return true;

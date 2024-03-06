@@ -497,8 +497,8 @@ final class VarNode extends AstNode {
   */
   @Override
   public Lvalue eval(Environment env) {
-    String var = this.NAME;
-    AstNode res = env.get(var);
+    String id = this.NAME;
+    AstNode res = env.get(id);
     return res.eval(env);
   }
 
@@ -578,14 +578,13 @@ final class PrimNode extends AstNode {
                                               .map(n -> n.eval(env))
                                               .toList();
     // Each primitive operator is handled differently.
-    return new Lvalue(
-      switch (op) {
-        case "+" -> this.add(operands);
-        case "-" -> this.sub(operands);
-        case "*" -> this.mul(operands);
-        case "eq?" -> this.eq(operands);
-        default -> null;
-      });
+    switch (op) {
+      case "+": return this.primPlus(operand, env);
+      case "-": return this.primMinus(operand, env);
+      case "*": return this.primProduct(operand, env);
+      case "eq?": return this.primEq(operand, env);
+      default: return null;
+    }
   }
 
   @Override
@@ -601,10 +600,10 @@ final class PrimNode extends AstNode {
 final class PrimNode extends AstNode {
   // ... other fields/methods not shown.
 
-  private AstNode add(List<Lvalue> operators) {
-    return new NumberNode(operands.stream()
-                                  .map(Lvalue::getNumberValue)
-                                  .reduce(0.0, Double::sum));
+  private Lvalue primPlus(List<Lvalue> args, Environment env) {
+    return new Lvalue(args.stream()
+                          .map(Lvalue::getNumberValue)
+                          .reduce(0.0, Double::sum));
   }
 }
 \end{lstlisting}
@@ -615,10 +614,10 @@ final class PrimNode extends AstNode {
 final class PrimNode extends AstNode {
   // ... other fields/methods not shown.
 
-  private AstNode sub(List<Lvalue> operators) {
-    return new NumberNode(operands.stream()
-                                  .map(Lvalue::getNumberValue)
-                                  .reduce(0.0, (acc, c) -> c - acc));
+  private Lvalue primMinus(List<Lvalue> args) {
+    return new Lvalue(args.stream()
+                          .map(Lvalue::getNumberValue)
+                          .reduce(0.0, (acc, c) -> c - acc));
   }
 }
 \end{lstlisting}
@@ -629,10 +628,10 @@ final class PrimNode extends AstNode {
 final class PrimNode extends AstNode {
   // ... other fields/methods not shown.
 
-  private AstNode mul(List<Lvalue> operators) {
-    return new NumberNode(operands.stream()
-                                  .map(Lvalue::getNumberValue)
-                                  .reduce(1.0, (acc, c) -> c * acc));
+  private Lvalue primProduct(List<Lvalue> args, Environment env) {
+    return new Lvalue(args.stream()
+                          .map(Lvalue::getNumberValue)
+                          .reduce(1.0, (acc, c) -> c * acc));
   }
 }
 \end{lstlisting}
@@ -643,8 +642,8 @@ final class PrimNode extends AstNode {
 final class PrimNode extends AstNode {
   // ... other fields/methods not shown.
 
-  private AstNode eq(List<Lvalue> operators) {
-    return new BooleanNode(operands.get(0).equals(operands.get(1)));
+  private Lvalue primEq(List<Lvalue> args, Environment env) {
+    return new Lvalue(args.get(0).equals(args.get(1)));
   }
 }
 \end{lstlisting}
@@ -703,15 +702,15 @@ final class Environment {
 
   /**
    * Looks up a variable in the current environment.
-   * @param var the variable name.
+   * @param id the variable name.
    * @return the value bound to the variable, or null if it does not exist.
    */
   @Override
-  public AstNode lookup(String var) {
-    if (this.ENV.containsKey(var)) { 
-      return this.ENV.get(var); 
+  public AstNode lookup(String id) {
+    if (this.ENV.containsKey(id)) { 
+      return this.ENV.get(id); 
     } else if (this.PARENT != null) { 
-      return this.PARENT.ENV.lookup(var); 
+      return this.PARENT.ENV.lookup(id); 
     } else { 
       return null; 
     }
@@ -719,13 +718,13 @@ final class Environment {
 
   /**
    * Extends the current environment to contain a new variable binding.
-   * @param var the variable name.
-   * @param value the value to bind to the variable.
+   * @param id - the variable name.
+   * @param value - the value to bind to the variable.
    * @return a new environment with the new binding.
    */
-  public Environment extend(String var, AstNode value) {
+  public Environment extend(String id, AstNode value) {
     Environment env = new Environment(this);
-    env.ENV.put(var, value);
+    env.ENV.put(id, value);
     return env;
   }
 }
@@ -738,22 +737,22 @@ Our modified version of the environment allows us to implement local/let binding
 \begin{lstlisting}[language=MyJava]
 final class LetNode extends AstNode {
 
-  private final String VAR;
+  private final String ID;
 
-  public LetNode(String var, AstNode exp, AstNode body) {
+  public LetNode(String id, AstNode exp, AstNode body) {
     super(exp, body);
-    this.VAR = var;
+    this.ID = id;
   }
 
   /**
    * Interpret a let statement. A new environment is introduced 
    * in which the let body is evaluated.
-   * @param env The environment in which to interpret the let binding.
+   * @param env - The environment in which to interpret the let binding.
    * @return The result of the let statement.
    */
   @Override
   public Lvalue eval(Environment env) {
-    String var = this.VAR;
+    String id = this.ID;
     AstNode exp = this.getChildren().get(0);
     AstNode body = return this.getChildren().get(1);
 

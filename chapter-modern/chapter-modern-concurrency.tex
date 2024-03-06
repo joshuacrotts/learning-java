@@ -80,7 +80,9 @@ class RaceConditionExample {
     try {
       t1.join();
       t2.join();
-    } catch (InterruptedException ex) { ex.printStackTrace(); }
+    } catch (InterruptedException ex) { 
+      ex.printStackTrace(); 
+    }
     
     System.out.println(counter);
   }
@@ -119,16 +121,25 @@ class BankAccount {
 
   private int amt;
 
-  public BankAccount(int amt) { this.amt = amt; }
-
-  public void deposit(int more) { this.amt += more; }
-
-  public void withdraw(int less) {
-    if (amt >= less) { this.amt -= less; }
-    else { System.err.printf("withdraw: insufficient funds %d\n", less); }
+  public BankAccount(int amt) { 
+    this.amt = amt; 
   }
 
-  public int getAmount() { return this.amt; }
+  public void deposit(int more) { 
+    this.amt += more; 
+  }
+
+  public void withdraw(int less) {
+    if (amt >= less) { 
+      this.amt -= less; 
+    } else { 
+      System.err.printf("withdraw: insufficient funds %d\n", less); 
+    }
+  }
+
+  public int getAmount() { 
+    return this.amt; 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -143,7 +154,9 @@ class TransactionThread implements Runnable {
 
   private BankAccount acc;
 
-  public TransactionThread(BankAccount acc) { this.acc = acc; }
+  public TransactionThread(BankAccount acc) { 
+    this.acc = acc; 
+  }
 
   @Override
   public void run() {
@@ -177,7 +190,9 @@ class BankAccountRunner {
       t1.join();
       t2.join();
       t3.join();
-    } catch (InterruptedException ex) { ex.printStackTrace(); }
+    } catch (InterruptedException ex) { 
+      ex.printStackTrace(); 
+    }
 
     System.out.printf("%d\n", acc.getAmount());
   }
@@ -242,7 +257,9 @@ class BankAccount {
 
   private int amt;
 
-  public BankAccount(int amt) { this.amt = amt; }
+  public BankAccount(int amt) { 
+    this.amt = amt; 
+  }
 
   /**
    * Transfers money from one account to another.
@@ -279,7 +296,9 @@ class TransferThread implements Runnable {
 
   @Override
   public void run() {
-    for (int i = 0; i < 1000; i++) { this.B1.transfer(this.B2, 500); }
+    for (int i = 0; i < 1000; i++) { 
+      this.B1.transfer(this.B2, 500); 
+    }
   }
 }
 \end{lstlisting}
@@ -303,7 +322,9 @@ class BankAccountRunner {
     try {
       t1.join();
       t2.join();
-    } catch (InterruptedException ex) { ex.printStackTrace(); }
+    } catch (InterruptedException ex) { 
+      ex.printStackTrace(); 
+    }
   }
 
   public static void main(String[] args) {
@@ -319,7 +340,9 @@ class BankAccount {
 
   private int amt;
 
-  public BankAccount(int amt) { this.amt = amt; }
+  public BankAccount(int amt) { 
+    this.amt = amt; 
+  }
 
   /**
    * Transfers money from one account to another.
@@ -474,7 +497,9 @@ class AtomicIntegerExample {
     try {
       t1.join();
       t2.join();
-    } catch (InterruptedException ex) { ex.printStackTrace(); }
+    } catch (InterruptedException ex) { 
+      ex.printStackTrace(); 
+    }
 
     System.out.println(counter);
   }
@@ -483,7 +508,9 @@ class AtomicIntegerExample {
 
     @Override
     public void run() {
-      for (int i = 0; i < 1_000_000; i++) { inc(); }
+      for (int i = 0; i < 1_000_000; i++) { 
+        inc(); 
+      }
     }
 
     public static synchronized void inc() {
@@ -649,7 +676,9 @@ class TimeEchoServer {
                           client.getInetAddress().toString());
         client.close();
       }
-    } catch (IOException ex) { ex.printStackTrace(); }
+    } catch (IOException ex) { 
+      ex.printStackTrace(); 
+    }
   }
 }
 \end{lstlisting}
@@ -681,8 +710,12 @@ class CountryPopulationRankServer {
     // Read in the words from the text file.
     try (BufferedReader br = new BufferedReader(new FileReader("clist.txt"))) {
       String line = null;
-      while ((line = br.readLine()) != null) { this.COUNTRIES.add(line); }
-    } catch (IOException ex) { ex.printStackTrace(); }
+      while ((line = br.readLine()) != null) { 
+        this.COUNTRIES.add(line); 
+      }
+    } catch (IOException ex) { 
+      ex.printStackTrace(); 
+    }
   }
 
   public void start() {
@@ -700,7 +733,9 @@ class CountryPopulationRankServer {
         pw.printf("%d country: %s\n", country + 1, this.COUNTRIES.get(country));
         socket.close();
       }
-    } catch (IOException ex) { ex.printStackTrace(); }
+    } catch (IOException ex) { 
+      ex.printStackTrace(); 
+    }
   }
 
   public static void main(String[] args) {
@@ -723,7 +758,9 @@ class Server {
 
     private final Server SERVER;
 
-    public TaskHandler(Server server) { this.SERVER = server; }
+    public TaskHandler(Server server) { 
+      this.SERVER = server; 
+    }
 
     @Override
     public void run() {
@@ -731,7 +768,9 @@ class Server {
         try {
           Task task = this.SERVER.TASKS.take();
           this.SERVER.CLIENTS.forEach(c -> c.send(task));
-        } catch (InterruptedException e) { e.printStackTrace(); }
+        } catch (InterruptedException e) { 
+          e.printStackTrace(); 
+        }
       }
     }
   }

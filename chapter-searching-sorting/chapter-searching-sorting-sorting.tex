@@ -283,6 +283,7 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
       V min = ls.get(i);
       int minIdx = 0;
       boolean needToSwap = false;
+      
       // Find the minimum value. If we get a value less than the current minimum,
       // we need to swap at the end.
       for (int j = i + 1; j < ls.size(); j++) {
@@ -292,8 +293,11 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
           needToSwap = true;
         }
       }
+
       // Swap the minimum value with the current index, if need be.
-      if(needToSwap) { Collections.swap(ls, minIdx, i); }
+      if(needToSwap) { 
+        Collections.swap(ls, minIdx, i); 
+      }
     }
     return ls;
   }
@@ -365,7 +369,7 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
 \end{figure}
 
 \subsection{Bubble Sort}
-The bubble sort is the last of the poor-performing sorts that we will discuss. With bubble sort we repeatedly swap adjacent elements if they are in the wrong order. We repeat this process until the list is sorted, which is guaranteed after at most $n^2$ iterations, where $n$ is the size of the input list. Figure~\ref{fig:bubble-sort} illustrates the in-place bubble sort algorithm. Note the use of two iteration variables $i$ and $j$, where $i$ represents the outer loop and $j$ represents the inner loop. The inner loop is responsible for the actual swapping of elements, whereas the outer controls the number of traversals over the list. The idea is to ``bubble'' the elements to the top/end of the list via repeated comparisons and swapping, hence the name. There are optimizations that can be made to the bubble sort algorithm. For example, if we traverse through the entire list without swapping at all, then the list must be in sorted order and we can terminate early. We will not implement this optimization, but it is worth considering.
+The bubble sort is the last of the poor-performing sorts that we will discuss. With bubble sort we repeatedly swap adjacent elements if they are in the wrong order. We repeat this process until the list is sorted, which is guaranteed after at most~$n^2$ iterations, where~$n$ is the size of the input list. Figure~\ref{fig:bubble-sort} illustrates the in-place bubble sort algorithm. Note the use of two iteration variables~$i$~and~$j$, where~$i$ represents the outer loop and~$j$ represents the inner loop. The inner loop is responsible for the actual swapping of elements, whereas the outer controls the number of traversals over the list. The idea is to ``bubble'' the elements to the top/end of the list via repeated comparisons and swapping, hence the name. There are optimizations that can be made to the bubble sort algorithm. For example, if we traverse through the entire list without swapping at all, then the list must be in sorted order and we can terminate early. We will not implement this optimization, but it is worth considering.
 
 \begin{cl}[]{Bubble Sort Tester}
 \begin{lstlisting}[language=MyJava]
@@ -718,7 +722,7 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
 \end{cl}
 
 \subsection{Quick Sort}
-At last we arrive at the \ttt{quick sort} algorithm. Quick sort works by choosing a \emph{pivot}, which is some value in the list. We then recursively sort all elements that are less than the pivot and all those that are greater than the pivot. Our implementation of the in-place quicksort works slightly differently, which is why we favor the functional version over the in-place counterpart. 
+At last we arrive at the \emph{quick sort} algorithm. Quick sort works by choosing a \emph{pivot}, which is some value in the list. We then recursively sort all elements that are less than the pivot and all those that are greater than the pivot. Our implementation of the in-place quicksort works slightly differently, which is why we favor the functional version over the in-place counterpart. 
 
 Quick sort performs optimally when the median is selected as the pivot because roughly half of the elements are less than the pivot and roughly half are greater than the pivot, allowing for a performance similar to that of merge sort. Unfortunately, finding the median a priori to sorting ultimately defeats the point. In the subsequent chapter we will analyze the sorting algorithms in more detail.
 
