@@ -19,7 +19,7 @@ Speaking of \emph{access modifiers}\index{access modifier}, we should mention th
   \item A class, variable, or method declared without an access modifier, also called the \emph{default access modifier}, behaves similarly to \ttt{public}, only that it is accessible only to/by classes in the same package. Packages are a means of organizing classes into groups, similar to directories.
 \end{itemize}
 
-The fourth and final access modifier is \ttt{protected}, which is similar to the default access modifier, but allows subclasses to access the variable or method.\footnote{If you have not heard of inheritance/subclasses yet, do not worry, as we will cover this in the next chapter; we explain it here to describe the relevant difference between the access modifiers.} We will not use \ttt{protected} in this text, but it is worth mentioning. As a corollary of sorts, any time that \ttt{protected} \emph{can} be used, there is almost certainly a better design alternative, whether that means marking the variable/method as \ttt{private} or \ttt{public}, we are of the opinion that \ttt{protected} has few benefits.
+The fourth and final access modifier is \ttt{protected}, which is similar to the default access modifier, but allows subclasses to access the variable or method.\footnote{If you have not heard of inheritance/subclasses yet, do not worry, as we will cover this in the next chapter; we explain it here to describe the relevant difference between the access modifiers.} We will not use \ttt{protected} in this text, but it is worth mentioning. As a corollary of sorts, any time that \ttt{protected} \emph{can} be used, there is almost certainly a better design alternative, whether that means marking the variable/method as \ttt{private} or \ttt{public}, we are of the opinion that \ttt{protected} has few benefits. Moreover, because we will not use \ttt{protected}, the use of \ttt{public} will be infrequent and only when necessary.\footnote{Some methods, as we will soon see and have seen previously, are required to be \ttt{public}. For example, the \ttt{main} method must be marked as \ttt{public}.}
 
 \begin{cl}[]{\ttt{Point} Class Skeleton}
 \begin{lstlisting}[language=MyJava]
@@ -31,7 +31,7 @@ class Point {
 \end{lstlisting}
 \end{cl}
 
-We now want a way to create an instance of a \ttt{Point}. We declare instances of objects using the \ttt{new} keyword followed by the class constructor. \emph{Constructors}\index{constructor} are special methods that are called when we wish to create a new object of that class. Our \ttt{Point} class constructor can receive parameters, which we can use to initialize the relevant $x$ and $y$ instance variables. So, let's declare the constructor for our \ttt{Point} class. Constructors, in general, should be \ttt{public}, as we will need to call them from outside the class definition. Constructors are also special in that they do not have a return type, although phrasing it in this way leads to some confusion, because constructors have implicit return types. By implicit, we mean that we do not directly specify the return type, but Java knows that constructors are special, whose return types are of the class itself. We create a constructor by specifying the class name alongside any desired parameters.
+We now want a way to create an instance of a \ttt{Point}. We declare instances of objects using the \ttt{new} keyword followed by the class constructor. \emph{Constructors}\index{constructor} are special methods that are called when we wish to create a new object of that class. Our \ttt{Point} class constructor can receive parameters, which we can use to initialize the relevant $x$ and $y$ instance variables. So, let's declare the constructor for our \ttt{Point} class. Constructors, in general, should be \ttt{non-private}, as we will need to call them from outside the class definition. On a case-by-case basis, this changes accordingly, as some classes are local to another class definition and are thereby private. Constructors are also special in that they do not have a return type, although phrasing it in this way leads to some confusion, because constructors have implicit return types. By implicit, we mean that we do not directly specify the return type, but Java knows that constructors are special, whose return types are of the class itself. We create a constructor by specifying the class name alongside any desired parameters.
 
 \begin{cl}[]{\ttt{Point} Class Constructor}
 \begin{lstlisting}[language=MyJava]
@@ -40,30 +40,30 @@ class Point {
   private final int X;
   private final int Y;
   
-  public Point(int x, int y) {
+  Point(int x, int y) {
     this.X = x;
     this.Y = y;
   }
 }
 \end{lstlisting}
 \end{cl}
-Remember that the purpose of the constructor is to initialize the class instance variables. So, unless we wish to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. Inside the constructor, we assign the value of the parameter \ttt{x} to the instance variable \ttt{x}. Should we opt to not use \ttt{this} on the left-hand variable identifier, then the parameter \ttt{x} would shadow the instance variable \ttt{x}, meaning that writing \ttt{x = x} assigns the parameter to itself. At last, we can create a \ttt{Point} object by calling the constructor, but wait, we have no way of accessing/referring to the instance variables of the \ttt{Point} object! We need to create \emph{accessor methods}\index{accessor method} to retrieve the values of the instance variables. Accessor methods are \ttt{public} and should do exactly one thing: return the respective instance variable.
+Remember that the purpose of the constructor is to initialize the class instance variables. So, unless we wish to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. Inside the constructor, we assign the value of the parameter \ttt{x} to the instance variable \ttt{x}. Should we opt to not use \ttt{this} on the left-hand variable identifier, then the parameter \ttt{x} would shadow the instance variable \ttt{x}, meaning that writing \ttt{x = x} assigns the parameter to itself. At last, we can create a \ttt{Point} object by calling the constructor, but wait, we have no way of accessing/referring to the instance variables of the \ttt{Point} object! We need to create \emph{accessor methods}\index{accessor method} to retrieve the values of the instance variables. Accessor methods are non-private and should do exactly one thing: return the respective instance variable.
 
 \begin{cl}[]{Designing Accessor Methods}
 \begin{lstlisting}[language=MyJava]
-public Point {
+class Point {
 
   private final int X;
   private final int Y;
   
-  public Point(int x, int y) {
+  Point(int x, int y) {
     this.X = x;
     this.Y = y;
   }
   
-  public int getX() { return this.X; }
+  int getX() { return this.X; }
   
-  public int getY() { return this.Y; }
+  int getY() { return this.Y; }
 }
 \end{lstlisting}
 \end{cl}
@@ -103,7 +103,7 @@ class PointTester {
 \end{lstlisting}
 \end{cl}
 
-Of course, testing the accessor methods is a little boring, so let's override the \ttt{toString} method to print a stringified representation of the \ttt{Point} class. Every object in Java has a \ttt{toString} method, which returns a string representation of the object. By default, the \ttt{toString} method returns the class name followed by the object's hashcode. We can override the \ttt{toString} method by declaring a \ttt{public} method with the signature \ttt{public String toString()}. We can then return a string representation of the object. In this case, we will return a string of the form \ttt{"(x=$x$, y=$y$)"}, where $x$ and~$y$ refer to the respecitve instance variables.
+Of course, testing the accessor methods is a little boring, so let's override the \ttt{toString} method to print a stringified representation of the \ttt{Point} class. Every object in Java has a \ttt{toString} method, which returns a string representation of the object. By default, the \ttt{toString} method returns the class name followed by the object's hashcode. We can override the \ttt{toString} method by declaring a \ttt{public} method with the signature \ttt{public String toString()} (note that this is one instance where \ttt{public} cannot be avoided.) We can then return a string representation of the object. In this case, we will return a string of the form \ttt{"(x=$x$, y=$y$)"}, where $x$ and~$y$ refer to the respecitve instance variables. 
 
 \begin{cl}[]{Overriding the \ttt{toString} Method}
 \begin{lstlisting}[language=MyJava]
@@ -186,7 +186,7 @@ class Point {
    * @param p the other point.
    * @return the distance between this point and p.
    */
-  public double distance(Point p) {
+  double distance(Point p) {
     int dx = this.X - p.X;
     int dy = this.Y - p.Y;
     return Math.sqrt(dx * dx + dy * dy);
@@ -212,7 +212,7 @@ class Point {
    * i.e., (0, 0).
    * @return returns the magnitude of this distance.
    */
-   public double distance() {
+   double distance() {
      return this.distance(new Point(0, 0));
    }
 }
@@ -256,7 +256,7 @@ class Point {
    * @param lop - list of points.
    * @return empty Optional if the list is empty, or OptionalDouble otherwise.
    */
-  public static Optional<Double> averageDistance(List<Point> lop) {
+  static Optional<Double> averageDistance(List<Point> lop) {
     return lop.stream()
               .map(p -> p.distance())
               .mapToDouble(d -> d)
@@ -300,7 +300,7 @@ class Point {
    * @param maxRadius the maximum radius.
    * @return a random point.
    */
-  public static Point random(double maxRadius) {
+  static Point random(double maxRadius) {
     Random r = new Random();
     double radius = r.nextDouble(maxRadius);
     double angle = r.nextDouble() * Math.PI * 2;
@@ -352,16 +352,16 @@ class Point {
   private final int X;
   private final int Y;
 
-  public Point(int x, int y) { this.X = x; this.Y = y; count++; }
+  Point(int x, int y) { this.X = x; this.Y = y; count++; }
 
-  public static int getCount() { return count; }
+  static int getCount() { return count; }
 }
 \end{lstlisting}
 \end{cl}
 
 Notice that, inside the \ttt{getCount} method, we do not refer to \ttt{count} with \ttt{this}, since \ttt{count} is a static variable and not an instance variable. Prefixing the \ttt{count} variable with \ttt{this} results in a compiler error. Further note that the variable is not marked as \ttt{final}, since it is not immutable and changes with every newly-instantiated \ttt{Point} object.
 
-\example{Imagine we want to store a collection of \ttt{Point} objects in a data structure such as a \ttt{HashSet}. The question that arises from this decision is apparent: how do we determine if a \ttt{Point} is already inside the set? We need to override two important methods from \ttt{Object}: \ttt{equals} and \ttt{hashCode}. The \ttt{equals} method of an object determines how we wish to compare two instances of the class. In this circumstance, let's say that two points are equal according to \ttt{equals} if and only if they share the same $x$ and $y$ coordinates. Overriding the \ttt{equals} method from the \ttt{Object} class requires correctly copying the signature, the sole parameter being an \ttt{Object} that we want to check for type equality. In other words, we first want to verify that the passed object to the \ttt{equals} method is, in fact, a \ttt{Point}, otherwise they cannot possibly be equal. We can use the \ttt{instanceof} operator to our advantage. From here, if the input parameter is a \ttt{Point}, we can cast the parameter to a \ttt{Point}, then check whether or not the coordinates match.}
+\example{Imagine we want to store a collection of \ttt{Point} objects in a data structure such as a \ttt{HashSet}. The question that arises from this decision is apparent: how do we determine if a \ttt{Point} is already inside the set? We need to override two important methods from \ttt{Object}: \ttt{public boolean equals} and \ttt{public int hashCode}. The \ttt{equals} method of an object determines how we wish to compare two instances of the class. In this circumstance, let's say that two points are equal according to \ttt{equals} if and only if they share the same $x$ and $y$ coordinates. Overriding the \ttt{equals} method from the \ttt{Object} class requires correctly copying the signature, the sole parameter being an \ttt{Object} that we want to check for type equality. In other words, we first want to verify that the passed object to the \ttt{equals} method is, in fact, a \ttt{Point}, otherwise they cannot possibly be equal. We can use the \ttt{instanceof} operator to our advantage. From here, if the input parameter is a \ttt{Point}, we can cast the parameter to a \ttt{Point}, then check whether or not the coordinates match. Moreover, like \ttt{toString}, the \ttt{equals} and \ttt{hashCode} methods are definitionally \ttt{public}, so do not forget the access modifier.}
 
 \begin{cl}[]{Testing Equality Over Points}
 \begin{lstlisting}[language=MyJava]
@@ -476,7 +476,7 @@ class Point {
    * @param lop - list of Point objects.
    * @return list where linear points are removed.
    */
-  public static List<Point> removeLinearPoints(List<Point> lop) {
+  static List<Point> removeLinearPoints(List<Point> lop) {
     return lop.stream()
               .filter(p -> p.getX() != p.getY())
               .toList();
@@ -491,17 +491,17 @@ class Point {
 \begin{lstlisting}[language=MyJava]
 class Suit {
 
-  public static final Suit CLUBS = new Suit("(*;$\clubsuit$;*)");
-  public static final Suit DIAMONDS = new Suit("(*;$\diamondsuit$;*)");
-  public static final Suit HEARTS = new Suit("(*;$\heartsuit$;*)");
-  public static final Suit SPADES = new Suit("(*;$\spadesuit$;*)");
-  public static final int NUM_SUITS = 4;
+  static final Suit CLUBS = new Suit("(*;$\clubsuit$;*)");
+  static final Suit DIAMONDS = new Suit("(*;$\diamondsuit$;*)");
+  static final Suit HEARTS = new Suit("(*;$\heartsuit$;*)");
+  static final Suit SPADES = new Suit("(*;$\spadesuit$;*)");
+  static final int NUM_SUITS = 4;
 
   private final String S_VAL;
 
   private Suit(String s) { this.S_VAL = s; }
 
-  public static Iterator<Suit> iterator() {
+  static Iterator<Suit> iterator() {
     return new ArrayList<Suit>(List.of(CLUBS, DIAMONDS, HEARTS, SPADES))
                               .iterator();
   }
@@ -540,12 +540,12 @@ class Card {
   private final Suit SUIT;
   private final int VAL;
 
-  public Card(Suit suit, int value) { this.SUIT = suit; this.VAL = value; }
+  Card(Suit suit, int value) { this.SUIT = suit; this.VAL = value; }
   
   @Override
   public String toString() { return String.format("%d of %s", this.VAL, this.SUIT); }
 
-  public int getValue() { return this.VAL; } 
+  int getValue() { return this.VAL; } 
 }
 \end{lstlisting}
 \end{cl}
@@ -596,7 +596,7 @@ class Deck {
 
   private final ArrayList<Card> CARDS;
 
-  public Deck() {
+  Deck() {
     this.CARDS = new ArrayList<Card>();
     this.populateDeck();
   }
@@ -606,7 +606,7 @@ class Deck {
   * deck is empty, we return null.
   * @return the top-most card in the deck, or null if the deck is empty.
   */
-  public Card drawCard() {
+  Card drawCard() {
     return this.CARDS.isEmpty() ? null : this.CARDS.remove(this.CARDS.size() - 1);
   }
 
@@ -614,7 +614,7 @@ class Deck {
    * Determines if the deck is empty.
    * @return true if the deck contains no cards, and false otherwise.
    */
-  public boolean isEmpty() { 
+  boolean isEmpty() { 
     return this.CARDS.isEmpty(); 
   }
 
@@ -652,31 +652,31 @@ class Player {
 
   private final ArrayList<Card> HAND;
 
-  public Player() { this.HAND = new ArrayList<Card>(); }
+  Player() { this.HAND = new ArrayList<Card>(); }
 
   /**
    * Adds a card to the player's hand.
    * @param c card to add to the player's hand.
    */
-  public void addCard(Card c) { this.HAND.add(c); }
+  void addCard(Card c) { this.HAND.add(c); }
 
   /**
    * Removes all cards from the player's hand.
    */
-  public void clearHand() { this.HAND.clear(); }
+  void clearHand() { this.HAND.clear(); }
 
   /**
    * Determines the player's score.
    * @return the player's score.
    */
-  public int getScore() {
+  int getScore() {
     return this.HAND.stream()
                     .map(c -> c.getValue())
                     .reduce(0, Integer::sum);
   }
 
   @Override
-  public String toString() {
+  String toString() {
     return String.format("Score: %d\nHand: %s\n", 
                          this.getScore(), this.HAND.toString());
   }
@@ -698,13 +698,13 @@ class TwentyOne {
 
   private final Player PLAYER;
 
-  public TwentyOne() { this.PLAYER = new Player(); }
+  TwentyOne() { this.PLAYER = new Player(); }
 
   /**
    * Plays a game of "21", where the player has to draw cards until they
    * get as close to 21 as possible without going over.
    */
-  public void playGame() {
+  void playGame() {
     Scanner in = new Scanner(System.in);
     boolean continuePlaying = true;
     while (continuePlaying) {
@@ -785,7 +785,7 @@ class Rational {
   private final long NUMERATOR;
   private final long DENOMINATOR;
 
-  public Rational(long numerator, long denominator) {
+  Rational(long numerator, long denominator) {
     long gcd = gcd(numerator, denominator);
     this.NUMERATOR = numerator / gcd;
     this.DENOMINATOR = denominator / gcd; 
@@ -840,7 +840,7 @@ class Rational {
    * @param r the other rational number.
    * @return the (simplified) sum of this and r.
    */
-  public Rational add(Rational r) {
+  Rational add(Rational r) {
     long commonDenominator = this.DENOMINATOR * r.DENOMINATOR;
     long newNumerator = this.NUMERATOR * r.DENOMINATOR 
                         + r.NUMERATOR * this.DENOMINATOR;
@@ -889,7 +889,7 @@ class Rational {
    * @param r the other rational number.
    * @return the (simplified) product of this and r.
    */
-  public Rational multiply(Rational r) {
+  Rational multiply(Rational r) {
     return new Rational(this.NUMERATOR * r.NUMERATOR, 
                         this.DENOMINATOR * r.DENOMINATOR);
   }
@@ -910,11 +910,11 @@ class StackFrame {
 
   private Map<String, Object> PARAMS;
 
-  public StackFrame() { this.PARAMS = new HashMap<>(); }
+  StackFrame() { this.PARAMS = new HashMap<>(); }
 
-  public Object getParam(String s) { return this.PARAMS.get(s); }
+  Object getParam(String s) { return this.PARAMS.get(s); }
 
-  public StackFrame addParam(String s, Object o) {
+  StackFrame addParam(String s, Object o) {
     this.PARAMS.put(s, o);
     return this;
   }
@@ -969,7 +969,7 @@ import java.util.BigInteger;
 
 class StackFrameDriver {
 
-  public static BigInteger fact(BigInteger n) {
+  static BigInteger fact(BigInteger n) {
     if (n.compareTo(BigInteger.ONE) <= 0) {
       return n.add(BigInteger.ONE);
     } else {
@@ -977,7 +977,7 @@ class StackFrameDriver {
     }
   }
 
-  public static BigInteger factLoop(BigInteger n) {
+  static BigInteger factLoop(BigInteger n) {
     Stack<StackFrame> sf = new Stack<>();
     BigInteger res = n;
     sf.push(new StackFrame().addParam("n", n));
@@ -996,7 +996,7 @@ class StackFrameDriver {
 
   // ... other implementation not shown.
 
-  public static BigInteger factLoop(BigInteger n) {
+  static BigInteger factLoop(BigInteger n) {
     Stack<StackFrame> sf = new Stack<>();
     BigInteger res = BigInteger.ONE;
     sf.push(new StackFrame().addParam("n", n));

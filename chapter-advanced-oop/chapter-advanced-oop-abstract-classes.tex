@@ -8,9 +8,9 @@ We consider a class to be abstract if it is not representable by any instance. T
 \begin{lstlisting}[language=MyJava]
 abstract class Animal {
 
-  public Animal() {} 
+  Animal() {} 
 
-  public abstract String speak();
+  abstract String speak();
 }
 \end{lstlisting}
 \end{cl}
@@ -21,10 +21,10 @@ Let's declare two subclasses: \ttt{Dog} and \ttt{Cat}, representing dogs and cat
 \begin{lstlisting}[language=MyJava]
 class Dog extends Animal {
 
-  public Dog() { super(); }
+  Dog() { super(); }
 
   @Override
-  public String speak() { return "Woof!"; }
+  String speak() { return "Woof!"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -33,10 +33,10 @@ class Dog extends Animal {
 \begin{lstlisting}[language=MyJava]
 class Cat extends Animal {
 
-  public Cat() { super(); }
+  Cat() { super(); }
 
   @Override
-  public String speak() { return "Meow!"; }
+  String speak() { return "Meow!"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -117,7 +117,7 @@ abstract class GameObject {
   private int x;
   private int y;
 
-  public GameObject(int x, int y) {
+  GameObject(int x, int y) {
     this.x = x;
     this.y = y;
   }
@@ -134,7 +134,7 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
   private int width;
   private int height;
 
-  public AxisAlignedBoundingBoxObject(int x, int y, int width, int height) {
+  AxisAlignedBoundingBoxObject(int x, int y, int width, int height) {
     super(x, y);
     this.width = width;
     this.height = height;
@@ -145,7 +145,7 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
    * @param obj instance of AxisAlignedBoundingBoxObject.
    * @return true if the objects overlap and false otherwise.
    */
-  public boolean collidesWith(AxisAlignedBoundingBoxObject obj) {
+  boolean collidesWith(AxisAlignedBoundingBoxObject obj) {
     return (this.getX() < obj.getX() + obj.width) &&
 	   (this.getX() + this.width >= obj.getX()) &&
  	   (this.getY() < obj.getY() + obj.height)  &&
@@ -215,10 +215,10 @@ interface IDrawable {
 \begin{lstlisting}[language=MyJava]
 class CircleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
   
-  public CircleObject(int x, int y, int r) { super(x, y, r * 2, r * 2); }
+  CircleObject(int x, int y, int r) { super(x, y, r * 2, r * 2); }
 
   @Override
-  public void draw(Graphics2D g2d) {
+  void draw(Graphics2D g2d) {
     g2d.drawOval(this.getX(), this.getY(), this.getWidth(), this.getHeight());
   }
 }
@@ -229,10 +229,10 @@ class CircleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
 \begin{lstlisting}[language=MyJava]
 class RectangleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
   
-  public RectangleObject(int x, int y, int w, int h) { super(x, y, w, h); }
+  RectangleObject(int x, int y, int w, int h) { super(x, y, w, h); }
   
   @Override
-  public void draw(Graphics2D g2d) {
+  void draw(Graphics2D g2d) {
     g2d.drawRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
   }
 }
@@ -241,7 +241,7 @@ class RectangleObject extends AxisAlignedBoundingBoxObject implements IDrawable 
 
 \example{A terminal argument parser is a program/function that interprets a series of arguments passed to another program and makes it easier for programmers to determine if a flag is enabled. Without one, many programmers often resort to using a complex series of conditional statements to check for the existence of a flag. Not only is this cumbersome, but it is prone to errors, and neither extendable nor flexible to different arrangements of arguments. In this example we will develop a small terminal argument parser.}
 
-First, we need to design a class that represents an ``argument'' to a program. Arguments, as we described in Chapter~\ref{chapter-arrays-and-collections}, are space-separated string values that we pass to a program executable, which populate the \ttt{String[] args} array in the \ttt{main} method. In particular, however, we want to specify that an argument is not necessarily the values themselves, but are instead the flags, or instructions, passed to the executable. The simplest version of a flag is one that receives exactly one argument, which we will represent via an abstract \ttt{Argument} class. Later on, we want to be able to validate a flag with its given arguments, so the \ttt{Argument} class includes an abstract \ttt{boolean validate} method, that shall be overridden in all subclasses of \ttt{Argument}.
+First, we need to design a class that represents an ``argument'' to a program. Arguments, as we described in Chapter~\ref{chapter-arrays-collections}, are space-separated string values that we pass to a program executable, which populate the \ttt{String[] args} array in the \ttt{main} method. In particular, however, we want to specify that an argument is not necessarily the values themselves, but are instead the flags, or instructions, passed to the executable. The simplest version of a flag is one that receives exactly one argument, which we will represent via an abstract \ttt{Argument} class. Later on, we want to be able to validate a flag with its given arguments, so the \ttt{Argument} class includes an abstract \ttt{boolean validate} method, that shall be overridden in all subclasses of \ttt{Argument}.
 
 \begin{cl}[]{Argument Class Definition}
 \begin{lstlisting}[language=MyJava]
@@ -252,11 +252,11 @@ abstract class Argument {
 
   private String key;
 
-  public Argument(String key) { this.key = key; }
+  Argument(String key) { this.key = key; }
 
-  public String getKey() { return this.key; }
+  String getKey() { return this.key; }
 
-  public abstract boolean validate(Map<String, List<String>> args);
+  abstract boolean validate(Map<String, List<String>> args);
 }
 \end{lstlisting}
 \end{cl}
@@ -270,10 +270,10 @@ import java.util.Map;
 
 class OptionalArgument extends Argument {
 
-  public OptionalArgument(String key) { super(key); }
+  OptionalArgument(String key) { super(key); }
 
   @Override
-  public boolean validate(Map<String, List<String>> args) { return true; }
+  boolean validate(Map<String, List<String>> args) { return true; }
 }
 \end{lstlisting}
 \end{cl}
@@ -287,13 +287,13 @@ class NumberedArgument extends Argument {
 
   private final int NUM_REQUIRED_ARGS;
 
-  public NumberedArgument(String key, int n) {
+  NumberedArgument(String key, int n) {
     super(key);
     this.NUM_REQUIRED_ARGS = n;
   }
 
   @Override
-  public boolean validate(Map<String, List<String>> args) {
+  boolean validate(Map<String, List<String>> args) {
     if (!args.containsKey(this.getKey())) { return false; } 
     else { return args.get(this.getKey()).size() == this.NUM_REQUIRED_ARGS; }
   }
@@ -315,7 +315,7 @@ class ArgumentParser {
   private Map<String, List<String>> parsedArguments;
   private Set<Argument> arguments;
 
-  public ArgumentParser(String[] args) {
+  ArgumentParser(String[] args) {
     this.arguments = new HashSet<>();
     this.parsedArguments = new HashMap<>();
     String currKey = null;
@@ -329,9 +329,9 @@ class ArgumentParser {
     }
   }
 
-  public void addArgument(Argument arg) { this.arguments.add(arg); }
+  void addArgument(Argument arg) { this.arguments.add(arg); }
 
-  public List<String> getArguments(String key) {
+  List<String> getArguments(String key) {
     return this.parsedArguments.containsKey(key) ? 
              this.parsedArguments.get(key) : 
              null;
@@ -358,7 +358,7 @@ class ArgumentParser {
    * instance variable are "valid".
    * @return true if all arguments are valid, false otherwise.
    */
-  public boolean parseArguments() {
+  boolean parseArguments() {
     return this.arguments.stream()
                          .allMatch(e -> e.validate(this.parsedArguments));
   }
@@ -378,22 +378,22 @@ An \ttt{Lvalue} is the left-hand side of the evaluation of an abstract syntax tr
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
-public abstract class AstNode implements Evaluable {
+abstract class AstNode implements Evaluable {
 
   private final List<AstNode> CHILDREN;  
  
-  public AstNode(List<AstNode> children) { 
+  AstNode(List<AstNode> children) { 
     this.CHILDREN = children; 
   }
 
-  public AstNode(AstNode... children) { 
+  AstNode(AstNode... children) { 
     this(List.of(children)); 
   }
 
   @Override
-  public abstract Lvalue eval(Environment env);
+  abstract Lvalue eval(Environment env);
 
-  public List<AstNode> getChildren() { 
+  List<AstNode> getChildren() { 
     return this.CHILDREN; 
   }
 
@@ -408,19 +408,19 @@ final class Lvalue {
 
   private final AstNode VALUE;
 
-  public Lvalue(AstNode value) { 
+  Lvalue(AstNode value) { 
     this.VALUE = value; 
   }
 
-  public AstNode getAst() { 
+  AstNode getAst() { 
     return this.VALUE; 
   }
 
-  public double getNumberValue() { 
+  double getNumValue() { 
     return ((NumberNode) this.VALUE).getValue(); 
   }
 
-  public boolean getBoolValue() { 
+  boolean getBoolValue() { 
     return ((BoolNode) this.VALUE).getValue(); 
   }
 
@@ -447,7 +447,9 @@ final class Environment {
   
   private final Map<String, AstNode> ENV;
 
-  public Environment() { this.ENV = new HashMap<>(); }
+  Environment() { 
+    this.ENV = new HashMap<>(); 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -484,7 +486,7 @@ final class VarNode extends AstNode {
 
   private final String NAME;
 
-  public VarNode(String name) {
+  VarNode(String name) {
     super();
     this.NAME = name;
   }
@@ -496,14 +498,16 @@ final class VarNode extends AstNode {
   * @return The result of the variable lookup after interpretation.
   */
   @Override
-  public Lvalue eval(Environment env) {
+  Lvalue eval(Environment env) {
     String id = this.NAME;
     AstNode res = env.get(id);
     return res.eval(env);
   }
 
   @Override
-  public String toString() { return this.NAME; }
+  public String toString() { 
+    return this.NAME; 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -514,18 +518,24 @@ final class NumberNode extends AstNode {
 
   private final double VALUE;
 
-  public NumberNode(String value) {
+  NumberNode(String value) {
     super();
     this.VALUE = Double.parseDouble(value);
   }
 
-  public NumberNode(double value) { this(Double.toString(value)); }
+  NumberNode(double value) { 
+    this(Double.toString(value)); 
+  }
 
   @Override
-  public Lvalue eval(Environment env) { return new Lvalue(this); }
+  Lvalue eval(Environment env) { 
+    return new Lvalue(this); 
+  }
 
   @Override
-  public String toString() { return Double.toString(this.VALUE); }
+  public String toString() { 
+    return Double.toString(this.VALUE); 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -536,15 +546,15 @@ final class BoolNode extends AstNode {
 
   private final boolean VALUE;
 
-  public BoolNode(String value) {
+  BoolNode(String value) {
     super();
     this.VALUE = Boolean.parseBoolean(value);
   }
 
-  public BoolNode(boolean value) { this(Boolean.toString(value)); }
+  BoolNode(boolean value) { this(Boolean.toString(value)); }
 
   @Override
-  public Lvalue eval(Environment env) { return new Lvalue(this); }
+  Lvalue eval(Environment env) { return new Lvalue(this); }
 
   @Override
   public String toString() { return Boolean.toString(this.VALUE); }
@@ -560,24 +570,22 @@ final class PrimNode extends AstNode {
 
   private final String OP;
 
-  public PrimNode(String op, AstNode... children) {
+  PrimNode(String op, AstNode... children) {
     super(children);
     this.OP = op;
   }
 
   /**
    * Interpret a primitive operation.
-   * @param env The environment in which to interpret the operation.
+   * @param env - The environment in which to interpret the operation.
    * @return The result of the primitive operation.
    */
   @Override
-  public Lvalue eval(Environment env) {
+  Lvalue eval(Environment env) {
     String op = this.OP;
-    // Evaluate each argument before applying the primitive.
     List<Lvalue> operands = this.getChildren().stream()
                                               .map(n -> n.eval(env))
                                               .toList();
-    // Each primitive operator is handled differently.
     switch (op) {
       case "+": return this.primPlus(operand, env);
       case "-": return this.primMinus(operand, env);
@@ -595,53 +603,67 @@ final class PrimNode extends AstNode {
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{Addition Operator}
+\begin{cl}[]{Addition Primitive Operator}
 \begin{lstlisting}[language=MyJava]
 final class PrimNode extends AstNode {
-  // ... other fields/methods not shown.
 
+  /**
+   *
+   * @param args - 
+   * @param env - 
+   * @return 
+   */
   private Lvalue primPlus(List<Lvalue> args, Environment env) {
-    return new Lvalue(args.stream()
-                          .map(Lvalue::getNumberValue)
-                          .reduce(0.0, Double::sum));
+    return new Lvalue(args.stream().map(Lvalue::getNumValue).reduce(0.0, Double::sum));
   }
 }
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{Subtraction Operator}
+\begin{cl}[]{Subtraction Primitive Operator}
 \begin{lstlisting}[language=MyJava]
 final class PrimNode extends AstNode {
-  // ... other fields/methods not shown.
 
-  private Lvalue primMinus(List<Lvalue> args) {
-    return new Lvalue(args.stream()
-                          .map(Lvalue::getNumberValue)
-                          .reduce(0.0, (acc, c) -> c - acc));
+  /**
+   *
+   * @param args - 
+   * @param env - 
+   * @return 
+   */
+  private Lvalue primMinus(List<Lvalue> args, Environment env) {
+    return new Lvalue(args.stream().map(Lvalue::getNumValue).reduce(0.0, (a, c) -> c - a));
   }
 }
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{Multiplication Operator}
+\begin{cl}[]{Multiplication Primitive Operator}
 \begin{lstlisting}[language=MyJava]
 final class PrimNode extends AstNode {
-  // ... other fields/methods not shown.
 
+  /**
+   *
+   * @param args - 
+   * @param env - 
+   * @return 
+   */
   private Lvalue primProduct(List<Lvalue> args, Environment env) {
-    return new Lvalue(args.stream()
-                          .map(Lvalue::getNumberValue)
-                          .reduce(1.0, (acc, c) -> c * acc));
+    return new Lvalue(args.stream().map(Lvalue::getNumValue).reduce(1.0, (a, c) -> c * a));
   }
 }
 \end{lstlisting}
 \end{cl}
 
-\begin{cl}[]{Equality Operator}
+\begin{cl}[]{Equality Primitive Operator}
 \begin{lstlisting}[language=MyJava]
 final class PrimNode extends AstNode {
-  // ... other fields/methods not shown.
 
+  /**
+   *
+   * @param args - 
+   * @param env - 
+   * @return 
+   */
   private Lvalue primEq(List<Lvalue> args, Environment env) {
     return new Lvalue(args.get(0).equals(args.get(1)));
   }
@@ -691,11 +713,11 @@ final class Environment {
   private final Map<String, AstNode> ENV;
   private final Environment PARENT;
 
-  public Environment() { 
+  Environment() { 
     this(null); 
   }
 
-  public Environment(Environment parent) { 
+  Environment(Environment parent) { 
     this.ENV = new HashMap<>(); 
     this.PARENT = parent; 
   }
@@ -706,7 +728,7 @@ final class Environment {
    * @return the value bound to the variable, or null if it does not exist.
    */
   @Override
-  public AstNode lookup(String id) {
+  AstNode lookup(String id) {
     if (this.ENV.containsKey(id)) { 
       return this.ENV.get(id); 
     } else if (this.PARENT != null) { 
@@ -722,7 +744,7 @@ final class Environment {
    * @param value - the value to bind to the variable.
    * @return a new environment with the new binding.
    */
-  public Environment extend(String id, AstNode value) {
+  Environment extend(String id, AstNode value) {
     Environment env = new Environment(this);
     env.ENV.put(id, value);
     return env;
@@ -739,7 +761,7 @@ final class LetNode extends AstNode {
 
   private final String ID;
 
-  public LetNode(String id, AstNode exp, AstNode body) {
+  LetNode(String id, AstNode exp, AstNode body) {
     super(exp, body);
     this.ID = id;
   }
@@ -751,7 +773,7 @@ final class LetNode extends AstNode {
    * @return The result of the let statement.
    */
   @Override
-  public Lvalue eval(Environment env) {
+  Lvalue eval(Environment env) {
     String id = this.ID;
     AstNode exp = this.getChildren().get(0);
     AstNode body = return this.getChildren().get(1);
@@ -778,7 +800,7 @@ Finally we arrive at decision-based nodes. The \ttt{IfNode} class represents a c
 \begin{lstlisting}[language=MyJava]
 final class IfNode extends AstNode {
   
-  public IfNode(AstNode predicate, AstNode consequent, AstNode alternative) {
+  IfNode(AstNode predicate, AstNode consequent, AstNode alternative) {
     super(predicate, consequent, alternative);
   }
 
@@ -788,7 +810,7 @@ final class IfNode extends AstNode {
   * @return The result of the if statement.
   */
   @Override
-  public Lvalue eval(Environment env) {
+  Lvalue eval(Environment env) {
     AstNode pred = this.getChildren().get(0);
     AstNode cons = this.getChildren().get(1);
     AstNode alt = this.getChildren().get(2);

@@ -35,18 +35,18 @@ class Point {
   private int x;
   private int y;
 
-  public Point(int x, int y) { 
+  Point(int x, int y) { 
     this.x = x; 
     this.y = y; 
   }
 
-  public int getX() { return this.x; }
+  int getX() { return this.x; }
 
-  public int getY() { return this.y; }
+  int getY() { return this.y; }
 
-  public void setX(int x) { this.x = x; }
+  void setX(int x) { this.x = x; }
 
-  public void setY(int y) { this.y = y; }
+  void setY(int y) { this.y = y; }
 }
 \end{lstlisting}
 \end{cl}
@@ -129,9 +129,9 @@ class MiniArrayList<T> {
   private int size;
   private int capacity;
 
-  public MiniArrayList() { this(10); }
+  MiniArrayList() { this(10); }
 
-  public MiniArrayList(int capacity) {
+  MiniArrayList(int capacity) {
     this.size = 0;
     this.capacity = capacity;
   }
@@ -145,16 +145,16 @@ Notice that we declare an array of type \ttt{T} to store the elements of our min
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
-  private T[] elements;
+  private T[] vals;
   private int size;
   private int capacity;
 
-  public MiniArrayList() { this(10); }
+  MiniArrayList() { this(10); }
 
-  public MiniArrayList(int capacity) {
+  MiniArrayList(int capacity) {
     this.size = 0;
     this.capacity = capacity;
-    this.elements = (T[]) new Object[capacity];
+    this.vals = (T[]) new Object[capacity];
   }
 }
 \end{lstlisting}
@@ -195,9 +195,9 @@ class MiniArrayList<T> {
    * Adds an element to the end of the list.
    * @param element the element to add.
    */
-  public void add(T element) {
+  void add(T element) {
     if (this.size == this.capacity) { this.resize(); }
-    this.elements[this.size++] = element;
+    this.vals[this.size++] = element;
   }
 
   /**
@@ -206,13 +206,13 @@ class MiniArrayList<T> {
   private void resize() {
     this.capacity *= RESIZE_FACTOR;
     T[] newArray = (T[]) new Object[this.capacity];
-    for (int i = 0; i < this.size; i++) { newArray[i] = this.elements[i]; }
-    this.elements = newArray;
+    for (int i = 0; i < this.size; i++) { newArray[i] = this.vals[i]; }
+    this.vals = newArray;
   }
 
-  public T get(int index) { return this.elements[index]; }
+  T get(int index) { return this.vals[index]; }
 
-  public int size() { return this.size; }
+  int size() { return this.size; }
 }
 \end{lstlisting}
 \end{cl}
@@ -255,7 +255,6 @@ class MiniArrayListTester {
 \begin{cl}[]{\ttt{MiniArrayList} Inserting and Removing Elements}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
-
   // ... other details not shown.
 
   /**
@@ -263,10 +262,10 @@ class MiniArrayList<T> {
    * @param e the element to insert.
    * @param idx the index to insert at.
    */
-  public void insert(T e, int idx) {
+  void insert(T e, int idx) {
     if (this.size == capacity) { this.resize(); }
     this.shiftRight(idx);
-    this.elements[idx] = e;
+    this.vals[idx] = e;
   }
 
   /**
@@ -274,7 +273,7 @@ class MiniArrayList<T> {
    * @param idx the index to remove.
    * @return the element removed.
    */
-  public T remove(int idx) {
+  T remove(int idx) {
     T e = this.get(idx);
     this.shiftLeft(idx);
     this.size--;
@@ -288,17 +287,13 @@ class MiniArrayList<T> {
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
-  // ... other details not shown.
-
   /**
    * Shifts all elements to the left of the given index one position leftwards.
    * Note that this method overwrites the element at the given index.
    * @param idx the index to shift left of.
    */
   private void shiftLeft(int idx) {
-    for (int i = idx; i < this.size - 1; i++) {
-      this.elements[i] = this.elements[i + 1];
-    }
+    for (int i = idx; i < this.size - 1; i++) { this.vals[i] = this.vals[i + 1]; }
   }
 
   /**
@@ -306,9 +301,7 @@ class MiniArrayList<T> {
    * @param idx the index to shift right of.
    */
   private void shiftRight(int idx) {
-    for (int i = size - 1; i > idx; i--) {
-      this.elements[i] = this.elements[i - 1];
-    }
+    for (int i = size - 1; i > idx; i--) { this.vals[i] = this.vals[i - 1]; }
   }
 }
 \end{lstlisting}
@@ -330,15 +323,12 @@ class ClassTester {
     final A a = new A("Hello!");
     B b = new B(a);
     C c = new C(a);
-
-    // What do each of these output?
     assert______(b.getA(), c.getA());
     assert______(b.getA().getS(), c.getA().getS());
     a.setS("Hi!");
     assert______(b.getA().getS(), c.getA().getS());
     b.getA().setS("howdy!");
     assert______(b.getA().getS(), c.getA().getS());
-
     B b2 = new B(a);
     assert______(a, b2.getA());
     assert______(b, b2);
@@ -455,9 +445,9 @@ class F {
   
   private final List<Integer> LS;
   
-  public F(List<Integer> ls) { this.LS = ls; }
+  F(List<Integer> ls) { this.LS = ls; }
   
-  public List<Integer> getList() { return this.LS; }
+  List<Integer> getList() { return this.LS; }
 }
 \end{lstlisting}
 \end{cl}
@@ -493,7 +483,7 @@ class DoublyLinkedList<T> {
   private Node<T> head;
   private Node<T> tail;
 
-  public DoublyLinkedList() {
+  DoublyLinkedList() {
     this.last = this.first = null;
   }
 }
@@ -511,7 +501,7 @@ import java.util.Iterator;
 class DoublyLinkedList<T> {
   // ... previous code omitted ...
 
-  public Iterator<T> iterator() {
+  Iterator<T> iterator() {
     return new DoublyLinkedListIterator<>(this.first);
   }
 
@@ -524,12 +514,12 @@ class DoublyLinkedList<T> {
     }
 
     @Override
-    public boolean hasNext() { 
+    boolean hasNext() { 
       return this.current != null; 
     }
 
     @Override
-    public T next() {
+    T next() {
       T value = this.current.value;
       this.current = this.current.next;
       return value;
@@ -577,7 +567,7 @@ class DoublyLinkedList<T> {
   * Adds a new node to the end of the list.
   * @param data The data to be stored in the new node.
   */
-  public void add(T data) {
+  void add(T data) {
     Node<T> newNode = new Node<>(data);
 
     // If the list is empty, make the new node the first and last node.
@@ -640,7 +630,7 @@ class DoublyLinkedList<T> {
    * @return Optional.empty() if the index is out of bounds,
    *         the data at that node's index otherwise.
    */
-  public Optional<T> get(int idx) {
+  Optional<T> get(int idx) {
     Node<T> curr = this.first;
     int i = 0;
     while (curr != null && i < idx) {
@@ -700,7 +690,7 @@ class DoublyLinkedList<T> {
    * Removes an element from the linked list, if it exists.
    * @param data value to be removed, compared via .equals.
    */
-  public void remove(T data) {
+  void remove(T data) {
     Node<T> curr = this.first;
     while (curr != null) {
       if (curr.data.equals(data)) { // Case 1: if it's the first.
@@ -766,7 +756,7 @@ class AssociationList<K, V> {
   private final V value;
   private final AssociationList<K, V> parent;
   
-  public AssociationList() {
+  AssociationList() {
     this.key = null;
     this.value = null;
     this.parent = null;
@@ -783,7 +773,7 @@ class AssociationList<K, V> {
    * @param key the key to lookup.
    * @return the value associated with the key, if it exists.
    */
-  public Optional<V> lookup(K key) {
+  Optional<V> lookup(K key) {
     AssociationList<K, V> curr = this;
     while (curr != null) {
       if (curr.key.equals(key)) {
@@ -801,7 +791,7 @@ class AssociationList<K, V> {
    * @param value the value to associate.
    * @return a new association list with the new association.
    */
-   public AssociationList<K, V> extend(K key, V value) {
+   AssociationList<K, V> extend(K key, V value) {
     return new AssociationList<>(key, value, this);
    }
   

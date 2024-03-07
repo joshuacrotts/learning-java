@@ -63,16 +63,16 @@ class Pentagon implements IShape {
   
   private final double SIDE_LENGTH;
 
-  public Pentagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
+  Pentagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
 
   @Override
-  public double area() {
+  double area() {
     return 0.25 * Math.sqrt(5 * (5 + 2 * Math.sqrt(5))) 
                 * Math.pow(this.SIDE_LENGTH, 2);
   }
 
   @Override
-  public double perimeter() {
+  double perimeter() {
     return 5 * this.SIDE_LENGTH;
   }
 }
@@ -85,22 +85,22 @@ class Octagon implements IShape {
 
   private final double SIDE_LENGTH;
 
-  public Octagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
+  Octagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
 
   @Override
-  public double area() {
+  double area() {
     return 2 * (1 + Math.sqrt(2)) * Math.pow(this.SIDE_LENGTH, 2);
   }
 
   @Override
-  public double perimeter() {
+  double perimeter() {
     return 8 * this.SIDE_LENGTH;
   }
 }
 \end{lstlisting}
 \end{cl}
 
-\example{Recall from the previous chapter our ``Twenty-one'' card game example. In that, we designed the \ttt{Suit} class, which contained four public and static instances of \ttt{Suit}, where each represented one of the four valid card suits. This design works as intended, it fails to be elegant and demonstrate how the suits are all the same, but differ only in their string representation. Let's now design the \ttt{ISuit} interface, which requires any implementing class to override the \ttt{stringify} method.}
+\example{Recall from the previous chapter our ``Twenty-one'' card game example. In that, we designed the \ttt{Suit} class, which contained four and static instances of \ttt{Suit}, where each represented one of the four valid card suits. This design works as intended, it fails to be elegant and demonstrate how the suits are all the same, but differ only in their string representation. Let's now design the \ttt{ISuit} interface, which requires any implementing class to override the \ttt{stringify} method.}
 
 \begin{cl}[]{Suit Interface Example}
 \begin{lstlisting}[language=MyJava]
@@ -120,10 +120,10 @@ From here, we can define four separate classes, all of which implement \ttt{ISui
 \begin{lstlisting}[language=MyJava]
 class Diamond implements ISuit {
   
-  public Diamond() {}
+  Diamond() {}
 
   @Override
-  public String stringify() { return "(*;$\diamondsuit$;*)"; }
+  String stringify() { return "(*;$\diamondsuit$;*)"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -132,10 +132,10 @@ class Diamond implements ISuit {
 \begin{lstlisting}[language=MyJava]
 class Heart implements ISuit {
     
-  public Heart() {}
+  Heart() {}
 
   @Override
-  public String stringify() { return "(*;$\heartsuit$;*)"; }
+  String stringify() { return "(*;$\heartsuit$;*)"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -237,7 +237,7 @@ class IAnimalTester {
 class Cat implements IAnimal {
 
   @Override
-  public String speak() { return "Meow!"; }
+  String speak() { return "Meow!"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -247,7 +247,7 @@ class Cat implements IAnimal {
 class Dog implements IAnimal {
 
   @Override
-  public String speak() { return "Woof!"; }
+  String speak() { return "Woof!"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -293,28 +293,28 @@ class Dog implements IAnimal {
 %   }
   
 %   @Override
-%   public Student create() {
+%   Student create() {
 %     return new Student(...);
 %   }
   
 %   @Override
-%   public void read(Student s) {
+%   void read(Student s) {
 %     System.out.println(s);
 %   }
   
 %   @Override
-%   public void update(Student s) {
+%   void update(Student s) {
 %     this.name = s.name;
 %     this.id = s.id;
 %     this.gpa = s.gpa;
 %   }
   
 %   @Override
-%   public void destroy(Student s) {  s = null;
+%   void destroy(Student s) {  s = null;
 %   }
   
 %   @Override
-%   public String toString() {
+%   String toString() {
 %     return String.format("Name: %s\nID: %d\nGPA: %.2f", 
 %                           this.name, this.id, this.gpa);
 %   }

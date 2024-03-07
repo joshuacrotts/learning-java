@@ -131,14 +131,14 @@ class MazeSolver {
 
   private final char[][] MAZE;
 
-  public MazeSolver(String fileName) { /* TODO read maze from file. */ }
+  MazeSolver(String fileName) { /* TODO read maze from file. */ }
 
   /**
    * Recursively solves the maze, returning a solution if it exists, and 
    * null otherwise. We use a simple backtracking algorithm in the helper.
    * @return a solution to the maze, or null if it does not exist.
    */
-  public char[][] solve() {
+  char[][] solve() {
     char[][] soln = new char[MAZE.length][MAZE[0].length];
     return this.solveHelper(0, 0, soln) ? soln : null;
   }

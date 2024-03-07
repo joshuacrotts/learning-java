@@ -97,7 +97,7 @@ class StandardRecursiveLinearSearch<V extends Comparable<V>>
                                     implements ILinearSearch<V> {
   
   @Override
-  public int linearSearch(AbstractList<V> ls, V v) {
+  int linearSearch(AbstractList<V> ls, V v) {
     if (ls.isEmpty()) { throw new NoSuchElementException(); }
     else if (ls.get(0).equals(v)) { return 0; }
     else { 
@@ -122,7 +122,7 @@ import java.util.AbstractList;
 class TailRecursiveLinearSearch<V extends Comparable<V>> 
                                 implements ILinearSearch<V> {
   @Override
-  public int linearSearch(AbstractList<V> ls, V v) {
+  int linearSearch(AbstractList<V> ls, V v) {
     return this.linearSearchHelper(ls, v, 0);
   }
 
@@ -147,7 +147,7 @@ import java.util.AbstractList;
 class LoopLinearSearch<V extends Comparable<V>> implements ILinearSearch<V> {
 
   @Override
-  public int linearSearch(AbstractList<V> ls, V v) {
+  int linearSearch(AbstractList<V> ls, V v) {
     int idx = 0;
     for (int i = 0; i < ls.size(); i++) {
       if (ls.get(i).equals(v)) { return i; }
@@ -236,7 +236,7 @@ class TailRecursiveBinarySearch<V extends Comparable<V>>
                                 implements IBinarySearch<V> {
 
   @Override
-  public int binarySearch(AbstractList<V> ls, V v) {
+  int binarySearch(AbstractList<V> ls, V v) {
     return binarySearchTRHelper(ls, v, 0, ls.size() - 1);
   }
 
@@ -267,7 +267,7 @@ import java.util.AbstractList;
 class LoopBinarySearch<V extends Comparable<V>> implements IBinarySearch<V> {
   
   @Override
-  public int binarySearch(AbstractList<V> ls, V v) {
+  int binarySearch(AbstractList<V> ls, V v) {
     int low = 0;
     int high = ls.size() - 1;
     while (low <= high) {
@@ -340,13 +340,13 @@ import java.util.Comparator;
 class TailRecursiveBinarySearch implements IBinarySearch {
   
   @Override
-  public <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, V v) {
+  <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, V v) {
     return binarySearchTRHelper(ls, v, 0, ls.size() - 1,
                                 (o1, o2) -> o1.compareTo(o2));
   }
   
   @Override
-  public <V> int binarySearch(AbstractList<V> ls, V v, Comparator<? super V> c) {
+  <V> int binarySearch(AbstractList<V> ls, V v, Comparator<? super V> c) {
     return binarySearchTRHelper(ls, v, 0, ls.size() - 1, c);
   }
   

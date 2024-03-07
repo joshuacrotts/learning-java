@@ -245,7 +245,7 @@ class ObjectStreamExample {
     private int health;
     private double[] topScores;
     
-    public Player(String name, int score, int health, double[] topScores) {
+    Player(String name, int score, int health, double[] topScores) {
       this.name = name;
       this.score = score;
       this.health = health;
@@ -293,7 +293,7 @@ class Employee {
   private double salary;
   private boolean fullTime;
   
-  public Employee(long eid, String f, String l, double s, boolean ft) {
+  Employee(long eid, String f, String l, double s, boolean ft) {
     this.employeeId = eid;
     this.firstName = f;
     this.lastName = l;
@@ -359,7 +359,7 @@ class EmployeeScanner {
    * @param fileName name of file.
    * @return list of Employee instances.
    */
-  public static List<Employee> readRecords(String fileName) {
+  static List<Employee> readRecords(String fileName) {
     List<Employee> records = new ArrayList<>();
 
     try (Scanner f = new Scanner(new File(fileName))) {
@@ -490,7 +490,7 @@ class LineWordCharCounter {
    * @param fileName name of file.
    * @return array of counts.
    */
-  public static int[] count(String fileName) {
+  static int[] count(String fileName) {
     int[] counts = new int[]{0, 0, 0};
     try (Scanner f = new Scanner(new File(fileName))) {
       while (f.hasNextLine()) {
@@ -632,7 +632,7 @@ class TemperatureComputer {
    *                   temperature separated by ';'.
    * @return String formatted as aforementioned.
    */
-  public static String computeMeasurement(String filename) {
+  static String computeMeasurement(String filename) {
     // TODO.
     return null;
   }
@@ -642,7 +642,7 @@ class TemperatureComputer {
     private double min, max, total;
     private int noOccurrences;
 
-    public Measurement(double t) {
+    Measurement(double t) {
       this.numOccurrences = 1;
       this.min = t;
       this.max = t;
@@ -654,7 +654,7 @@ class TemperatureComputer {
      * We update the minimum, maximum, total, and 
      * number of occurrences respectively.
      */
-    public void add(double t) {
+    void add(double t) {
       this.noOccurrences++;
       this.total += t;
       this.min = Math.min(this.min, t);
@@ -685,7 +685,7 @@ class TemperatureComputer {
    *                   temperature separated by ';'.
    * @return String formatted as aforementioned.
    */
-  public static String computeMeasurement(String filename) {
+  static String computeMeasurement(String filename) {
     Map<String, Measurement> mMap = new HashMap<>();
     try (Stream<String> lines = Files.lines(Path.of(filename))) {
       lines.forEach(x -> {
@@ -730,7 +730,7 @@ class SudokuSolver {
   private int[][] board;
   private int[][] solution;
 
-  public SudokuSolver(String filename) {
+  SudokuSolver(String filename) {
     this.board = new int[N][N];
     this.solution = new int[N][N];
     try (Stream<String> lines = Files.lines(Path.of(filename))) {
@@ -747,12 +747,12 @@ class SudokuSolver {
     }
   }
 
-  public boolean solve() { 
+  boolean solve() { 
     /* TODO. */ 
     return false;  
   }
 
-  public void output(String filename) { 
+  void output(String filename) { 
     /* TODO. */ 
   }
 }
@@ -777,7 +777,7 @@ import java.util.*;
 class SudokuSolver {
   // ... other variables and methods not shown.
 
-  public SudokuSolver(String filename) { 
+  SudokuSolver(String filename) { 
     /* Implementation omitted. */ 
   }
 
@@ -824,7 +824,7 @@ class SudokuSolver {
 
   /* ... other variables and methods not shown. */
 
-  public SudokuSolver(String filename) { /* Implementation omitted. */ }
+  SudokuSolver(String filename) { /* Implementation omitted. */ }
 
   /**
    * Returns whether or not a solution exists. If a solution does not exist,
@@ -879,14 +879,14 @@ class SudokuSolver {
 
   /* ... other variables and methods not shown. */
 
-  public SudokuSolver(String filename) { /* Implementation omitted. */ }
+  SudokuSolver(String filename) { /* Implementation omitted. */ }
 
   /**
    * Outputs the solution to a file. The solution is just a 9x9 grid of 
    * numbers, and does not attempt to format the output in any way.
    * @param filename - name of output file.
    */
-  public void output(String filename) {
+  void output(String filename) {
     try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
       if (this.solution == null) { 
         throw new IllegalStateException("No solution exists."); 

@@ -90,7 +90,7 @@ class RaceConditionExample {
   private static class Incrementer implements Runnable {
 
     @Override
-    public void run() {
+    void run() {
       for (int i = 0; i < 1_000_000; i++) { counter += 1; }
     }
   }
@@ -121,15 +121,15 @@ class BankAccount {
 
   private int amt;
 
-  public BankAccount(int amt) { 
+  BankAccount(int amt) { 
     this.amt = amt; 
   }
 
-  public void deposit(int more) { 
+  void deposit(int more) { 
     this.amt += more; 
   }
 
-  public void withdraw(int less) {
+  void withdraw(int less) {
     if (amt >= less) { 
       this.amt -= less; 
     } else { 
@@ -137,7 +137,7 @@ class BankAccount {
     }
   }
 
-  public int getAmount() { 
+  int getAmount() { 
     return this.amt; 
   }
 }
@@ -154,12 +154,12 @@ class TransactionThread implements Runnable {
 
   private BankAccount acc;
 
-  public TransactionThread(BankAccount acc) { 
+  TransactionThread(BankAccount acc) { 
     this.acc = acc; 
   }
 
   @Override
-  public void run() {
+  void run() {
     for (int i = 0; i < 1000; i++) {
       this.acc.deposit(500);
       this.acc.withdraw(500);
@@ -175,7 +175,7 @@ import java.lang.Thread;
 
 class BankAccountRunner {
 
-  public static void runTransactionThreads() {
+  static void runTransactionThreads() {
     BankAccount acc = new BankAccount(0);
     Thread t1 = new Thread(new TransactionThread(acc));
     Thread t2 = new Thread(new TransactionThread(acc));
@@ -215,7 +215,7 @@ withdraw: insufficient funds
 It seems that we have an unpredictable problem: rerunning the program produces different results each time, but the error stems from the fact that our accesses to the bank account are not \emph{synchronized}. To understand why, let's expand out the code for performing a withdraw.
 
 \begin{verbnobox}[\small]
-public void withdraw(int less) {
+void withdraw(int less) {
   int currAmt = this.amt;
   if (currAmt >= less) {
     int newAmt = currAmt - less;
@@ -239,7 +239,7 @@ import static Assertions.assertEquals;
 class BankAccountTester {
 
   @Test
-  public void testTransfer() {
+  void testTransfer() {
     BankAccount b1 = new BankAccount(0);
     BankAccount b2 = new BankAccount(100);
     assertAll(
@@ -257,7 +257,7 @@ class BankAccount {
 
   private int amt;
 
-  public BankAccount(int amt) { 
+  BankAccount(int amt) { 
     this.amt = amt; 
   }
 
@@ -266,7 +266,7 @@ class BankAccount {
    * @param b2 other bank account to deposit money into.
    * @param amt the amount to withdraw from this account.
    */
-  public void transfer(BankAccount b2, int amt) {
+  void transfer(BankAccount b2, int amt) {
     this.withdraw(amt);
     b2.deposit(amt);
   }
@@ -289,13 +289,13 @@ class TransferThread implements Runnable {
   private final BankAccount B1;
   private final BankAccount B2;
 
-  public TransferThread(BankAccount b1, BankAccount b2) {
+  TransferThread(BankAccount b1, BankAccount b2) {
     this.B1 = b1;
     this.B2 = b2;
   }
 
   @Override
-  public void run() {
+  void run() {
     for (int i = 0; i < 1000; i++) { 
       this.B1.transfer(this.B2, 500); 
     }
@@ -310,7 +310,7 @@ import java.lang.Thread;
 
 class BankAccountRunner {
 
-  public static void runTransferThreads() {
+  static void runTransferThreads() {
     BankAccount b1 = new BankAccount(0);
     BankAccount b2 = new BankAccount(0);
     Thread t1 = new Thread(new TransferThread(b1, b2));
@@ -340,7 +340,7 @@ class BankAccount {
 
   private int amt;
 
-  public BankAccount(int amt) { 
+  BankAccount(int amt) { 
     this.amt = amt; 
   }
 
@@ -349,7 +349,7 @@ class BankAccount {
    * @param b2 other bank account to deposit money into.
    * @param amt the amount to withdraw from this account.
    */
-  public void transfer(BankAccount b2, int amt) {
+  void transfer(BankAccount b2, int amt) {
     synchronized (this) {
       synchronized (b2) {
         this.withdraw(amt);
@@ -373,7 +373,7 @@ class BankAccount {
 
   private static Lock lock = new ReentrantLock();
 
-  public BankAccount(int amt) {
+  BankAccount(int amt) {
     this.amt = amt;
   }
 
@@ -382,7 +382,7 @@ class BankAccount {
    * @param b2 other bank account to deposit money into.
    * @param amt the amount to withdraw from this account.
    */
-  public void transfer(BankAccount b2, int amt) {
+  void transfer(BankAccount b2, int amt) {
     BankAccount.lock.lock();
     try {
       this.withdraw(amt);
@@ -392,13 +392,13 @@ class BankAccount {
     }
   }
 
-  public void deposit(int more) {
+  void deposit(int more) {
     BankAccount.lock.lock();
     try { this.amt += more; } 
     finally {  BankAccount.lock.unlock(); }
   }
 
-  public void withdraw(int less) {
+  void withdraw(int less) {
     BankAccount.lock.lock();
     try {
       if (amt >= less) { this.amt -= less; }
@@ -422,14 +422,14 @@ class ThreadSafeArrayList<T> {
   // ... other instance variables not shown.
   private Lock lock;
 
-  public ThreadSafeArrayList(int capacity) {
+  ThreadSafeArrayList(int capacity) {
     this.size = 0;
     this.capacity = capacity;
     this.elements = (T[]) new Object[capacity];
     this.lock = new ReentrantLock();
   }
 
-  public void add(T element) {
+  void add(T element) {
     this.lock.lock();
     if (this.size == this.capacity) { this.resize(); }
     this.elements[this.size] = element;
@@ -437,7 +437,7 @@ class ThreadSafeArrayList<T> {
     this.lock.unlock();
   }
 
-  public void insert(T e, int idx) {
+  void insert(T e, int idx) {
     this.lock.lock();
     try {
       if (this.size == capacity) { this.resize(); }
@@ -446,7 +446,7 @@ class ThreadSafeArrayList<T> {
     } finally { this.lock.unlock(); }
   }
 
-  public T remove(int idx) {
+  T remove(int idx) {
     this.lock.lock();
     try {
       T e = this.get(idx);
@@ -456,14 +456,14 @@ class ThreadSafeArrayList<T> {
     return e;
   }
 
-  public T get(int index) {
+  T get(int index) {
     this.lock.lock();
     try { T e = this.elements[index]; }
     finally { this.lock.unlock(); }
     return e;
   }
 
-  public int size() {
+  int size() {
     this.lock.lock();
     try { int sz = this.size; }
     finally { this.lock.unlock(); }
@@ -507,13 +507,13 @@ class AtomicIntegerExample {
   private static class Incrementer implements Runnable {
 
     @Override
-    public void run() {
+    void run() {
       for (int i = 0; i < 1_000_000; i++) { 
         inc(); 
       }
     }
 
-    public static synchronized void inc() {
+    static synchronized void inc() {
       counter.incrementAndGet();
     }
   }
@@ -537,10 +537,10 @@ class Consumer<T> implements Runnable {
 
   private final Vector<T> LIST;
 
-  public Consumer(Vector<T> ls) { this.LIST = ls; }
+  Consumer(Vector<T> ls) { this.LIST = ls; }
 
   @Override
-  public void run() {
+  void run() {
     while (true) {
       while (this.LIST.isEmpty()) { /* Do nothing. */ }
       T e = this.LIST.remove(0);
@@ -572,14 +572,14 @@ class Producer implements Runnable {
   private final Lock LOCK;
   private final Condition COND_VAR;
 
-  public Producer(Vector<Integer> ls, Lock lock, Condition condVar) {
+  Producer(Vector<Integer> ls, Lock lock, Condition condVar) {
     this.LIST = ls;
     this.LOCK = lock;
     this.COND_VAR = condVar;
   }
 
   @Override
-  public void run() {
+  void run() {
     while (true) {
       this.LOCK.lock();
       int n = this.RAND.nextInt(100);
@@ -703,7 +703,7 @@ class CountryPopulationRankServer {
   private final int PORT;
   private final List<String> COUNTRIES;
 
-  public CountryPopulationRankServer(int port) {
+  CountryPopulationRankServer(int port) {
     this.PORT = port;
     this.COUNTRIES = new ArrayList<>();
 
@@ -718,7 +718,7 @@ class CountryPopulationRankServer {
     }
   }
 
-  public void start() {
+  void start() {
     // Set up the thread pool.
     try (ServerSocket ss = new ServerSocket(this.PORT)) {
       while (true) {
@@ -758,12 +758,12 @@ class Server {
 
     private final Server SERVER;
 
-    public TaskHandler(Server server) { 
+    TaskHandler(Server server) { 
       this.SERVER = server; 
     }
 
     @Override
-    public void run() {
+    void run() {
       while (this.SERVER.running) {
         try {
           Task task = this.SERVER.TASKS.take();
@@ -796,7 +796,7 @@ class Server {
   private final int PORT;
   private boolean running;
 
-  public Server(int port) {
+  Server(int port) {
     this.running = true;
     this.PORT = port;
     this.THREAD_POOL = Executors.newCachedThreadPool();
@@ -805,7 +805,7 @@ class Server {
     this.THREAD_POOL.execute(new TaskHandler(this));
   }
 
-  public void start() {
+  void start() {
     try {
       ServerSocket server = new ServerSocket(this.PORT);
       System.out.printf("Server connected on port %d...\n", this.PORT);
@@ -819,7 +819,7 @@ class Server {
     } catch (IOException e) { e.printStackTrace(); }
   }
 
-  public void addTask(Task t) {
+  void addTask(Task t) {
     if (t != null) { this.TASKS.add(t); }
   }
 
@@ -850,7 +850,7 @@ class Client implements Runnable {
   private boolean connected;
   private String userId;
 
-  public Client(Socket socket) {
+  Client(Socket socket) {
     this.SOCKET = socket;
     this.SERVER = server;
     this.IN = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -861,7 +861,7 @@ class Client implements Runnable {
   }
 
   @Override
-  public void run() {
+  void run() {
     try {
       String line;
       while (this.connected && (line = this.IN.readLine()) != null) { 
@@ -880,7 +880,7 @@ We now need to write the \ttt{parseCmd} message, which receives an unparsed stri
 class Client {
   // ... other information not shown.
 
-  public Task parseCmd(String line) {
+  Task parseCmd(String line) {
     String cmd = line.substring(0, line.indexOf(' '));
     String msg = line.substring(line.indexOf(' ') + 1);
     switch (cmd) {
@@ -909,14 +909,14 @@ abstract class Task {
   private final TaskType TYPE;
   private final String RESPONSE;
 
-  public Task(TaskType type, String response) {
+  Task(TaskType type, String response) {
     this.TYPE = type;
     this.RESPONSE = response;
   }
 
-  public TaskType getType() { return this.TYPE; }
+  TaskType getType() { return this.TYPE; }
 
-  public String getResponse() { return this.RESPONSE; }
+  String getResponse() { return this.RESPONSE; }
 }
 \end{lstlisting}
 \end{cl}
@@ -927,12 +927,12 @@ abstract class SenderTask extends Task {
 
   private final Client SENDER;
 
-  public SenderTask(TaskType type, String response, Client sender) {
+  SenderTask(TaskType type, String response, Client sender) {
     super(type, response);
     this.SENDER = sender;
   }
 
-  public Client getSender() { return this.SENDER; }
+  Client getSender() { return this.SENDER; }
 }
 \end{lstlisting}
 \end{cl}
@@ -941,7 +941,7 @@ abstract class SenderTask extends Task {
 \begin{lstlisting}[language=MyJava]
 class BroadcastTask extends SenderTask {
 
-  public BroadcastTask(Client sender, String response) {
+  BroadcastTask(Client sender, String response) {
     super(TaskType.BROADCAST, response, sender);
   }
 }
@@ -955,7 +955,7 @@ We now must write the \ttt{Client} \ttt{send} method, which receives a \ttt{Task
 class Client {
   // ... other information not shown.
 
-  public void send(Task t) {
+  void send(Task t) {
     switch (t) {
       case BroadcastTask tb -> {
         if (this.loggedIn) { 

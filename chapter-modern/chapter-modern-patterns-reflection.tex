@@ -92,12 +92,12 @@ The idea with this project is to output our lines of source code into a temporar
 
 \begin{verbnobox}[\small]
 class Interp0 {
-  public static int i = 5;
-  public static void execute() {}
+  static int i = 5;
+  static void execute() {}
 }
 
 class Interp1 extends Interp0 {
-  public static void execute() {
+  static void execute() {
     System.out.println(i);  
   }
 }
@@ -192,7 +192,7 @@ class JavaRepl {
   private final BufferedReader IN; 
   private int classNo;
 
-  public JavaRepl() {
+  JavaRepl() {
     try {
       this.TMP_DIR = Files.createTempDirectory();
     } catch (IOException ex) {
@@ -206,7 +206,7 @@ class JavaRepl {
 \end{lstlisting}
 \end{cl}
 
-With this, we know that we want to store the class and what its name should be, thanks to a counter that starts at zero. In the \ttt{createJavaFile} method, we create a \ttt{File} at the correct location, with its contents populated by a writer of some kind. Here is where we make use of the \ttt{isDeclaration} method---if the source code that we pass is, in fact, a declaration, we precede it with the \ttt{public static} keywords. Otherwise, it resides inside the \ttt{public static void execute()} method. Creating and returning this file is straightforward. We need to account for the fact that if the class number is zero, we do not extend any class. As a corollary point, to be able to use certain classes, e.g., \ttt{List}, at the REPL, we include two wildcard imports from the I/O and utilities Java packages.
+With this, we know that we want to store the class and what its name should be, thanks to a counter that starts at zero. In the \ttt{createJavaFile} method, we create a \ttt{File} at the correct location, with its contents populated by a writer of some kind. Here is where we make use of the \ttt{isDeclaration} method---if the source code that we pass is, in fact, a declaration, we precede it with the \ttt{static} keyword. Otherwise, it resides inside the \ttt{static void execute()} method. Creating and returning this file is straightforward. We need to account for the fact that if the class number is zero, we do not extend any class. As a corollary point, to be able to use certain classes, e.g., \ttt{List}, at the REPL, we include two wildcard imports from the I/O and utilities Java packages.
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
@@ -228,10 +228,10 @@ class JavaRepl {
 
       // If it's a declaration, it cannot be inside a method.
       if (this.isDeclaration(src)) {
-        pw.printf("public static %s\n", src);
-        pw.println("public static void execute() {}");
+        pw.printf("static %s\n", src);
+        pw.println("static void execute() {}");
       } else {
-        pw.printf("public static void execute() { %s }\n", src);
+        pw.printf("static void execute() { %s }\n", src);
       }
       pw.println("}");
     } catch (IOException ex) {
@@ -257,7 +257,7 @@ class JavaRepl {
   private final StandardJavaFileManager FILE_MANAGER;
   private final DiagnosticCollector<? super JavaFileObject> DS;
 
-  public JavaRepl() {
+  JavaRepl() {
     // ... other instantiations not shown.
     this.JAVAC = ToolProvider.getSystemJavaCompiler();
     this.DS = new DiagnosticCollector<>();
@@ -312,7 +312,7 @@ class JavaRepl {
 
   private final URLClassLoader CLASS_LOADER;
 
-  public JavaRepl() {
+  JavaRepl() {
     // ... other instantiations not shown.
     try {
       this.CLASS_LOADER = URLClassLoader.newInstance(

@@ -26,7 +26,7 @@ class PatternMatchingTester {
 \end{lstlisting}
 \end{cl}
 
-The definitions of \ttt{Rectangle}, \ttt{Circle}, \ttt{Triangle}, and \ttt{IShape} are trivial and have been shown in previous chapters. The \ttt{perimeter} method, which is static inside \ttt{PatternMatching}, is shown below. We return the result of a \ttt{switch} expression, which matches against the possible subtypes of \ttt{IShape}. We create a temporary binding for the identifier \ttt{shape} that is bound to the \ttt{IShape} object passed into the method. This, in effect, casts the \ttt{IShape} to the subtype that is pattern matched, and we can then access the respective public methods and fields of the specific subtype rather than being restricted to only members of the \ttt{IShape} interface.
+The definitions of \ttt{Rectangle}, \ttt{Circle}, \ttt{Triangle}, and \ttt{IShape} are trivial and have been shown in previous chapters. The \ttt{perimeter} method, which is static inside \ttt{PatternMatching}, is shown below. We return the result of a \ttt{switch} expression, which matches against the possible subtypes of \ttt{IShape}. We create a temporary binding for the identifier \ttt{shape} that is bound to the \ttt{IShape} object passed into the method. This, in effect, casts the \ttt{IShape} to the subtype that is pattern matched, and we can then access the respective non-private methods and fields of the specific subtype rather than being restricted to only members of the \ttt{IShape} interface.
 
 \begin{cl}[]{Pattern Matching}
 \begin{lstlisting}[language=MyJava]
@@ -39,7 +39,7 @@ class PatternMatching {
    * @param shape the IShape whose perimeter to compute.
    * @return the perimeter of the shape.
    */
-  public static double perimeter(IShape s) {
+  static double perimeter(IShape s) {
     return switch (s) {
       case Rectangle r -> 2 * r.getWidth() + 2 * r.getHeight();
       case Circle c    -> 2 * Math.PI * c.getRadius();
@@ -82,7 +82,7 @@ import java.lang.IllegalStateException;
 
 class Factorial {
 
-  public static Integer fact(Integer n) {
+  static Integer fact(Integer n) {
     return switch (n) {
       case Integer v when v == 0 -> 1;
       case Integer v when v > 0  -> v * fact(v - 1);
@@ -154,7 +154,7 @@ class Rectangle implements IShape {
   private final double WIDTH;
   private final double HEIGHT;
 
-  public Rectangle(double width, double height) {
+  Rectangle(double width, double height) {
     this.WIDTH = width;
     this.HEIGHT = height;
   }
@@ -166,9 +166,9 @@ class Rectangle implements IShape {
            this.HEIGHT == r.HEIGHT;
   }
 
-  public double getWidth() { return this.WIDTH; }
+  double getWidth() { return this.WIDTH; }
 
-  public double getHeight() { return this.HEIGHT; }
+  double getHeight() { return this.HEIGHT; }
 }
 \end{lstlisting}
 \end{cl}
@@ -212,7 +212,7 @@ import java.lang.BigDecimal;
 
 record Number(BigDecimal value) implements IExpr {
   
-  public Number(int value) { this(new BigDecimal(value)); }
+  Number(int value) { this(new BigDecimal(value)); }
 }
 \end{lstlisting}
 \end{cl}
@@ -235,7 +235,7 @@ class Evaluator {
    * @param exp the expression to evaluate as a subtype IExpr.
    * @return result of evaluating the expression: a BigDecimal.
    */
-  public static BigDecimal eval(IExpr exp) {
+  static BigDecimal eval(IExpr exp) {
     return switch (exp) {
       case Number(var n)               -> n;
       case Add   (var left, var right) -> eval(left).add(eval(right));
@@ -336,7 +336,7 @@ class Lexer {
    * @param raw string input.
    * @return queue of tokens.
    */
-  public static Queue<Token> lex(String s) {
+  static Queue<Token> lex(String s) {
     // First, we need to add a space after each left parenthesis and before each right parenthesis.
     String sWithSpaces = s.replaceAll("\\(", "( ").replaceAll("\\)", " )");
     // First, we need to split the string into tokens.
@@ -424,7 +424,7 @@ class Parser {
    * @param tokenList queue of tokens to parse.
    * @return constructed AST from the tokens.
    */
-  public static AstNode parse(Queue<Token> tokenList) {
+  static AstNode parse(Queue<Token> tokenList) {
     if (!tokenList.isEmpty()) {
       return switch (tokenList.peek().type()) {
         case NUMBER -> new NumberNode(tokenList.remove().data());

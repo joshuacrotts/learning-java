@@ -7,7 +7,7 @@ The \emph{Kotlin} programming language supports customized \emph{ranges}. That i
 \begin{enumerate}[label=(\alph*)]
     \item Design the generic \ttt{Range} class. It should store, as instance variables, a minimum and a maximum value, both of which are of type \ttt{<T extends Comparable<T>>}, meaning \ttt{T} must be a comparable type.
     \item The \ttt{Range} constructor should receive these two values as parameters and assign them to the instance variables accordingly. 
-    \item Design the \ttt{public boolean contains(T v)} method that returns whether or not $v$ is between the interval that this range operates over. 
+    \item Design the \ttt{boolean contains(T v)} method that returns whether or not $v$ is between the interval that this range operates over. 
 \end{enumerate}
 
 \exercise{2}{chapter-advanced-oop}{Design the generic static method \ttt{T validateInput(String prompt, String errResp, U extends Predicate<T> p)} that receives a prompt, an error response, and an object that implements the \ttt{Predicate} interface to test whether or not the received value, received through standard input, is valid. If the value is invalid according to the predicate, print the error response and re-prompt the user. Otherwise, return the entered value.}
@@ -29,13 +29,13 @@ class FactorialLazyList implements ILazyList<Integer> {
   private int n;
   private int fact;
  
-  public FactorialLazyList() {
+  FactorialLazyList() {
     this.n = 1;
     this.fact = 1;
   }
 
   @Override
-  public int next() {
+  int next() {
     this.fact *= this.n;
     this.n++;
     return this.fact;
@@ -211,7 +211,7 @@ class PrimNode extends AstNode {
   // Other details omitted.
 
   @Override
-  public Lvalue eval(Environment env) {
+  Lvalue eval(Environment env) {
     // TODO.
   }
 
@@ -221,7 +221,7 @@ class PrimNode extends AstNode {
   private Lvalue primPlus(List<Lvalue> args, Environment env) {
     int result = 0;
     for (Lvalue lv : args) {
-      result += lv.getNumberValue();
+      result += lv.getNumValue();
     }
     return result;
   }
@@ -328,7 +328,7 @@ class FactorialTailRecursive {
    * @param acc - the accumulator.
    * @return a tail call that is either done or not done.
    */
-  public static ITailCall<BigInteger> factTailCall(BigInteger n, BigInteger acc) {
+  static ITailCall<BigInteger> factTailCall(BigInteger n, BigInteger acc) {
     if (n.equals(BigInteger.ZERO)) {
       return TailCallUtils.done(acc);
     } else {
@@ -347,8 +347,8 @@ First, design the generic \ttt{ITailCall<T>} interface. It should contain only o
 Second, design the \ttt{TailCallUtils} final class to contain a private constructor (this class will only utilize and define two static methods). The two methods are as follows:
 
 \begin{itemize}
-  \item \ttt{public static <T> ITailCall<T> call(ITailCall next)}, which receives and returns the next tail call to apply. This definition should be exactly one line long and as simple as it seems.
-  \item \ttt{public static <T> ITailCall<T> done(T val)}, which receives the value to return from the trampoline. We need to create an instance of an interface, which sounds bizarre, but is possible only when we provide an implementation of its methods. So, return a \ttt{new ITailCall<>()}, and inside its body, override the \ttt{isDone} and \ttt{getValue} methods with the correct bodies.
+  \item \ttt{static <T> ITailCall<T> call(ITailCall next)}, which receives and returns the next tail call to apply. This definition should be exactly one line long and as simple as it seems.
+  \item \ttt{static <T> ITailCall<T> done(T val)}, which receives the value to return from the trampoline. We need to create an instance of an interface, which sounds bizarre, but is possible only when we provide an implementation of its methods. So, return a \ttt{new ITailCall<>()}, and inside its body, override the \ttt{isDone} and \ttt{getValue} methods with the correct bodies.
 \end{itemize}
 
 Finally, run the factorial test that we provided earlier in its JUnit suite. It should pass and not stack overflow, hence the inclusion of an \ttt{assertDoesNotThrow} call.

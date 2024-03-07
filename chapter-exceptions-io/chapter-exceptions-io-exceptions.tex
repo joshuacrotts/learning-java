@@ -13,11 +13,11 @@ import java.lang.ArithmeticException;
 
 class ArithmeticExceptionExample {
   
-  public double div(int a, int b, int c) {
+  double div(int a, int b, int c) {
     return (a + b) / c;
   }
 
-  public double div2(int a, int b, int c) {
+  double div2(int a, int b, int c) {
     try {
       return (a + b) / c;
     } catch (ArithmeticException ex) {
@@ -55,7 +55,7 @@ class IllegalArgumentExceptionExampleTester {
 \begin{lstlisting}[language=MyJava]
 class IllegalArgumentExceptionExample {
   
-  public void div(int a, int b, int c) throws IllegalArgumentException {
+  void div(int a, int b, int c) throws IllegalArgumentException {
     if (c == 0) { throw new IllegalArgumentException("div: / by zero"); }
     else { return (a + b) / c; }
   }
@@ -69,7 +69,7 @@ What if we wanted to call \ttt{div} from a separate method and process the excep
 \begin{lstlisting}[language=MyJava]
 class IllegalArgumentExceptionExample {
   
-  public void div(int a, int b, int c) throws IllegalArgumentException {
+  void div(int a, int b, int c) throws IllegalArgumentException {
     if (c == 0) { throw new IllegalArgumentException("div: / by zero"); }
     else { return (a + b) / c; }
   }
@@ -135,7 +135,7 @@ The programmer can define their own exceptions in terms of other exceptions. Exc
 \begin{lstlisting}[language=MyJava]
 class BadStringInputException extends RuntimeException {
   
-  public BadStringInputException(String msg) {
+  BadStringInputException(String msg) {
     super(String.format("BadStringInputException: %s", msg));
   }
 }

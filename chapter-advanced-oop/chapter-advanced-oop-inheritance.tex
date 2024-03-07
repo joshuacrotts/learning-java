@@ -1,6 +1,6 @@
 \section{Inheritance}
 
-Classes may relate to other classes by a hierarchy. In particular, one class, called the \emph{subclass}, can extend another class, called the \emph{superclass}. A subclass inherits all the public methods and fields from its superclass. Classes can only extend one class at a time, unlike other programming languages such as C++. 
+Classes may relate to other classes by a hierarchy. In particular, one class, called the \emph{subclass}, can extend another class, called the \emph{superclass}. A subclass inherits all the methods and fields from its superclass. Classes can only extend one class at a time, unlike other programming languages such as C++. 
 
 \example{Suppose we have the \ttt{Alien} class defined as follows, which can move forward by one unit and turn left by 90 degrees in some world that it resides within.\footnote{We base this example off of Karel J. Robot from~\cite{kareljrobot} and~\cite{pattiskarel}.}}
 
@@ -42,14 +42,14 @@ class AlienTester {
 \begin{lstlisting}[language=MyJava]
 class Alien {
 
-  public enum Direction { NORTH, SOUTH, EAST, WEST };
+  enum Direction { NORTH, SOUTH, EAST, WEST };
 
   private int x;
   private int y;
 
   private Direction dir;
 
-  public Alien() {
+  Alien() {
     this.x = 0;
     this.y = 0;
     this.dir = Direction.EAST;
@@ -58,7 +58,7 @@ class Alien {
   /**
    * Moves the alien forward by one unit in the direction it is facing.
    */
-  public void moveForward() {
+  void moveForward() {
     switch (this.dir) {
       NORTH -> this.y++;
       SOUTH -> this.y--;
@@ -70,7 +70,7 @@ class Alien {
   /**
    * Turns the alien left by 90 degrees.
    */
-  public void turnLeft() {
+  void turnLeft() {
     switch (this.dir) {
       NORTH -> this.dir = Direction.WEST;
       SOUTH -> this.dir = Direction.EAST;
@@ -112,14 +112,14 @@ class RightAlienTester {
 \begin{lstlisting}[language=MyJava]
 class RightAlien extends Alien {
 
-  public RightAlien() { 
+  RightAlien() { 
     super(); 
   }
 
   /**
    * Turns the Alien right by 90 degrees.
    */
-  public void turnRight() {
+  void turnRight() {
     switch (this.getDir()) {
       NORTH -> this.setDir(Direction.EAST);
       SOUTH -> this.setDir(Direction.WEST);
@@ -158,12 +158,12 @@ class MileMoverAlienTester {
 \begin{lstlisting}[language=MyJava]
 class MileMoverAlien extends Alien {
 
-  public MileMoverAlien() { 
+  MileMoverAlien() { 
     super(); 
   }
 
   @Override
-  public void moveForward() {
+  void moveForward() {
     for (int i = 0; i < 10; i++) { 
       super.moveForward(); 
     }
@@ -182,13 +182,13 @@ class BouncerAlien extends Alien {
 
   private final Random RNG;
 
-  public BouncerAlien() {
+  BouncerAlien() {
     super();
     this.RNG = new Random();
   }
 
   @Override
-  public void moveForward() {
+  void moveForward() {
     switch (this.rand.nextInt(4)) {
       case 0: { this.setDir(Direction.NORTH); break; }
       case 1: { this.setDir(Direction.SOUTH); break; }
@@ -216,7 +216,7 @@ Why are we worrying about reflection in the first place? Would it not be easier 
 \begin{lstlisting}[language=MyJava]
 class WorldObject {
 
-  public WorldObject() {}
+  WorldObject() {}
 }
 \end{lstlisting}
 \end{cl}
@@ -225,7 +225,7 @@ class WorldObject {
 \begin{lstlisting}[language=MyJava]
 class StarObject extends WorldObject {
   
-  public StarObject() { super(); }
+  StarObject() { super(); }
 }
 \end{lstlisting}
 \end{cl}
@@ -240,7 +240,7 @@ class WorldPosition {
 
   private List<WorldObject> WORLD;
 
-  public WorldPosition() { 
+  WorldPosition() { 
     super(); 
     this.WORLD = new ArrayList<>();  
   }
@@ -250,7 +250,7 @@ class WorldPosition {
    * @param cls the class to search for.
    * @return those instances of a class that exist on the position.
    */
-  public int count(Class<?> cls) {
+  int count(Class<?> cls) {
     return this.WORLD.stream()
                      .filter(o -> obj.getClass().equals(cls))
                      .count();
@@ -267,7 +267,7 @@ final class World {
   
   private final WorldPosition[][] WORLD;
 
-  public World(int width, int height) {
+  World(int width, int height) {
     this.WORLD = new WorldPosition[width][height];
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
@@ -283,7 +283,7 @@ final class World {
    * @param x the x-coordinate of the position.
    * @param y the y-coordinate of the position.
    */
-  public void add(WorldObject obj, int x, int y) {
+  void add(WorldObject obj, int x, int y) {
     this.WORLD[x][y].add(obj);
   }
 
@@ -291,7 +291,7 @@ final class World {
    * Counts the number of stars on a given position in the world.
    * @return the number of stars.
    */
-  public int countStars() {
+  int countStars() {
     return this.WORLD[x][y].count(StarObject.class);
   }
 }

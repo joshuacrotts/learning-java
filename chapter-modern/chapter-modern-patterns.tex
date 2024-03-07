@@ -26,7 +26,7 @@ class Player {
   private int x;
   private int y;
 
-  public Player() { this.x = 0; this.y = 0; }
+  Player() { this.x = 0; this.y = 0; }
 
   // Getters and setters omitted.
 }
@@ -41,10 +41,10 @@ class MoveCommand implements Command {
 
   private Player player;
 
-  public MoveCommand(Player p) { this.player = p; }
+  MoveCommand(Player p) { this.player = p; }
 
   @Override
-  public void execute() { this.player.setX(this.player.getX() + 1); }
+  void execute() { this.player.setX(this.player.getX() + 1); }
 }
 \end{lstlisting}
 \end{cl}
@@ -55,10 +55,10 @@ class JumpCommand implements Command {
   
   private Player player;
 
-  public JumpCommand(Player p) { this.player = p; }
+  JumpCommand(Player p) { this.player = p; }
 
   @Override
-  public void execute() { this.player.setY(this.player.getY() + 1); }
+  void execute() { this.player.setY(this.player.getY() + 1); }
 }
 \end{lstlisting}
 \end{cl}
@@ -72,14 +72,14 @@ class InputHandler {
   private Command xButton;
   private Command yButton;
 
-  public InputHandler(Command xButton, Command yButton) {
+  InputHandler(Command xButton, Command yButton) {
     this.xButton = xButton;
     this.yButton = yButton;
   }
 
-  public void pressXButton() { this.xButton.execute(); }
+  void pressXButton() { this.xButton.execute(); }
 
-  public void pressYButton() { this.yButton.execute(); }
+  void pressYButton() { this.yButton.execute(); }
 }
 \end{lstlisting}
 \end{cl}
@@ -147,7 +147,7 @@ class Fraction {
   private int num;
   private int den;
 
-  public Fraction(int num, int den) {
+  Fraction(int num, int den) {
     this.num = num;
     this.den = den;
   }
@@ -197,7 +197,7 @@ class FractionFactory {
   
   private static final Fraction[] CACHE;
 
-  public FractionFactory() {
+  FractionFactory() {
     this.CACHE = new Fraction[LIMIT];
   }
 
@@ -207,7 +207,7 @@ class FractionFactory {
    * @param den denominator of fraction.
    * @return a new instance of Fraction, or a shared instance if it was cached.
    */
-  public Fraction create(int num, int den) {
+  Fraction create(int num, int den) {
     return den >= 1 && den <= LIMIT ? this.CACHE[den - 1] 
                                     : new Fraction(num, den);
   }
@@ -217,7 +217,7 @@ class FractionFactory {
 
 \example{Imagine that we have a file of data containing information about a ``Person,'' which entails their university records. A person can be a student, faculty, or staff member, and each type of person contains a name. For the purposes of this example, this is the only information that we care about, but we could easily extend it to include other datapoints. The idea is that we want to read in these records and create a \ttt{Person} object for each record. We could store `type' of person as, say, an enum, or a string, but this is not ideal. Instead, we will use the \emph{factory} pattern to create a \ttt{Person} object for each record, and the factory will determine the subclass of person based on the record.}
 
-Namely, let's create the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{public String getRole()} method to-be overridden in each subclass. We will also write the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that takes a \ttt{name} and \ttt{role} as arguments, and returns the relevant subclass of \ttt{Person}.
+Namely, let's create the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{String getRole()} method to-be overridden in each subclass. We will also write the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that takes a \ttt{name} and \ttt{role} as arguments, and returns the relevant subclass of \ttt{Person}.
 
 To read the input file, we will write the \ttt{PersonDatabase} class, which stores a \ttt{Map} of \ttt{Person} objects, where the key is the name of the person and the value is the \ttt{Person} object. The \ttt{PersonDatabase} class contains a \ttt{readFile} method that takes a \ttt{String} argument representing the path to the file, and reads the file line-by-line, creating a \ttt{Person} object for each record and storing it in the \ttt{Map}.
 
@@ -233,9 +233,9 @@ class PersonDatabase {
 
   private final Map<String, Person> DATABASE;
 
-  public PersonDatabase() { this.DATABASE = new HashMap<>(); }
+  PersonDatabase() { this.DATABASE = new HashMap<>(); }
 
-  public void readFile(String path) {
+  void readFile(String path) {
     try (BufferedReader br = new BufferedReader(new FileReader(path))) {
       String line;
       while ((line = br.readLine()) != null) {
@@ -245,7 +245,7 @@ class PersonDatabase {
     } catch (IOException ex) { ex.printStackTrace(); }
   }
 
-  public Person lookup(String name) { return this.DATABASE.get(name); }
+  Person lookup(String name) { return this.DATABASE.get(name); }
 }
 \end{lstlisting}
 \end{cl}
@@ -260,7 +260,7 @@ class PersonFactory {
    * @param role role of person.
    * @return a new subclass of Person.
    */
-  public static Person create(String name, String role) {
+  static Person create(String name, String role) {
     return switch(role) {
       case "student" -> new Student(name);
       case "faculty" -> new Faculty(name);
@@ -278,11 +278,11 @@ abstract class Person {
 
   private final String NAME;
 
-  public Person(String name) { this.NAME = name; }
+  Person(String name) { this.NAME = name; }
 
-  public String getName() { return this.NAME; }
+  String getName() { return this.NAME; }
 
-  public abstract String getRole();
+  abstract String getRole();
 }
 \end{lstlisting}
 \end{cl}
@@ -291,10 +291,10 @@ abstract class Person {
 \begin{lstlisting}[language=MyJava]
 class Student extends Person {
 
-  public Student(String name) { super(name); }
+  Student(String name) { super(name); }
 
   @Override
-  public String getRole() { return "student"; }
+  String getRole() { return "student"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -303,10 +303,10 @@ class Student extends Person {
 \begin{lstlisting}[language=MyJava]
 class Faculty extends Person {
 
-  public Faculty(String name) { super(name); }
+  Faculty(String name) { super(name); }
 
   @Override
-  public String getRole() { return "faculty"; }
+  String getRole() { return "faculty"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -315,10 +315,10 @@ class Faculty extends Person {
 \begin{lstlisting}[language=MyJava]
 class Staff extends Person {
 
-  public Staff(String name) { super(name); }
+  Staff(String name) { super(name); }
 
   @Override
-  public String getRole() { return "staff"; }
+  String getRole() { return "staff"; }
 }
 \end{lstlisting}
 \end{cl}
@@ -396,27 +396,27 @@ class Url {
   
   private Url() {}
 
-  public Url schema(String schema) {
+  Url schema(String schema) {
     this._schema = schema;
     return this;
   }
 
-  public Url host(String host) {
+  Url host(String host) {
     this._host = host;
     return this;
   }
 
-  public Url port(int port) {
+  Url port(int port) {
     this._port = port;
     return this;
   }
 
-  public Url path(String path) {
+  Url path(String path) {
     this._path = path;
     return this;
   }
 
-  public Url build() {
+  Url build() {
     if (this._schema == null || this._host == null) {
       throw new IllegalStateException("build: incomplete URL");
     }
@@ -474,7 +474,7 @@ Now, we update each subclass to override the \ttt{visit} method and call the app
 class NumNode extends AstNode {
   // ... other methods and variables not shown.
 
-  public String visit(ExpressionVisitor visitor) {
+  String visit(ExpressionVisitor visitor) {
     return visitor.visit(this);
   }
 }
@@ -526,12 +526,12 @@ import java.lang.StringBuilder;
 class ExpressionPrinterVisitor implements ExpressionVisitor {
 
   @Override
-  public String visit(NumNode node) {
+  String visit(NumNode node) {
     return String.valueOf(node.getValue());
   }
   
   @Override
-  public String visit(PrimNode node) {
+  String visit(PrimNode node) {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
     sb.append(node.getOperator() + " ");
@@ -543,12 +543,12 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
   }
   
   @Override
-  public String visit(VarNode node) {
+  String visit(VarNode node) {
     return node.getValue();
   }
   
   @Override
-  public String visit(LetNode node) {
+  String visit(LetNode node) {
     StringBuilder sb = new StringBuilder();
     sb.append("(let ([" + node.getVar() + " ");
     sb.append(node.value.visit(this));
@@ -559,7 +559,7 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
   }
   
   @Override
-  public String visit(IfNode node) {
+  String visit(IfNode node) {
     StringBuilder sb = new StringBuilder();
     sb.append("(if ");
     sb.append(node.condition.visit(this));
@@ -603,7 +603,7 @@ The subtypes of \ttt{IGroceryItem}, as we stated, are \ttt{Fruit}, \ttt{Milk}, a
 record Fruit(String name, int oz) implements IGroceryItem {
 
   @Override
-  public <R> R visit(IGroceryItemVisitor<R> visitor) { 
+  <R> R visit(IGroceryItemVisitor<R> visitor) { 
     return visitor.visit(this); 
   }
 }
@@ -615,7 +615,7 @@ record Fruit(String name, int oz) implements IGroceryItem {
 record Milk(boolean skim, int fluidOz) implements IGroceryItem {
   
   @Override
-  public <R> R visit(IGroceryItemVisitor<R> visitor) {
+  <R> R visit(IGroceryItemVisitor<R> visitor) {
     return visitor.visit(this); 
   }
 }
@@ -627,7 +627,7 @@ record Milk(boolean skim, int fluidOz) implements IGroceryItem {
 record Cereal(String mascot, int oz) implements IGroceryItem {
     
   @Override
-  public <R> R visit(IGroceryItemVisitor<R> visitor) {
+  <R> R visit(IGroceryItemVisitor<R> visitor) {
     return visitor.visit(this); 
   }
 }
@@ -679,18 +679,18 @@ class GroceryItemPriceVisitor implements IGroceryItemVisitor<Double> {
   private static final double CEREAL_PRICE_PER_OZ = 0.1;
 
   @Override
-  public Double visit(Fruit f) {
+  Double visit(Fruit f) {
     return f.oz() * FRUIT_PRICE_PER_OZ;
   }
 
   @Override
-  public Double visit(Milk m) {
+  Double visit(Milk m) {
     double gallonsPrice = m.fluidOz() / 128.0 * MILK_PRICE_PER_GALLON;
     return m.skim() ? gallonsPrice + 0.5 : gallonsPrice;
   }
 
   @Override
-  public Double visit(Cereal c) {
+  Double visit(Cereal c) {
     return c.oz() * CEREAL_PRICE_PER_OZ;
   }
 }
