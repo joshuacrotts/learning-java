@@ -91,7 +91,7 @@ class SumOfDoubleArray {
 
   /**
    * Computes the sum of the values in a double array.
-   * @param double [] array of double values.
+   * @param arr - double [] array of double values.
    * @return sum of those values.
    */
   static double sumOfDoubles(double[] arr) {
@@ -466,8 +466,8 @@ class ArrayArguments {
 
   /**
    * Returns whether or not a given flag exists in the arguments array.
-   * @param args array of arguments.
-   * @param flag flag to search for.
+   * @param args - array of arguments.
+   * @param flag - flag to search for.
    * @return whether or not the flag exists.
    */
   static boolean isFlagPresent(String[] args, String flag) {
@@ -549,7 +549,7 @@ class SumOf2DArray {
 
   /**
    * Computes the sum of the values in a two-dimensional array.
-   * @param arr two-dimensional array of integers.
+   * @param arr - two-dimensional array of integers.
    * @return sum of those values.
    */
   static int sumOf2DArray(int[][] arr) {
@@ -596,10 +596,10 @@ class RookPath {
    * Computes the number of possible paths that a rook can take to go from the
    * top-left of a board to the bottom-right, assuming that it cannot move left
    * or up.
-   * @param x x-coordinate of the rook's starting position.
-   * @param y y-coordinate of the rook's starting position.
-   * @param n number of rows of the board.
-   * @param m number of columns of the board.
+   * @param x - x-coordinate of the rook's starting position.
+   * @param y - y-coordinate of the rook's starting position.
+   * @param n - number of rows of the board.
+   * @param m - number of columns of the board.
    * @return number of possible paths.
    */
   static int rook(int x, int y, int n, int m) {
@@ -651,10 +651,10 @@ class RookPath {
    * Computes the number of possible paths that a rook can take to go from the
    * (x, y) position of a board to the bottom-right, assuming that it cannot
    * move left or up. This approach uses dynamic programming.
-   * @param x x-coordinate of the rook's starting position.
-   * @param y y-coordinate of the rook's starting position.
-   * @param n number of rows of the board.
-   * @param m number of columns of the board.
+   * @param x - x-coordinate of the rook's starting position.
+   * @param y - y-coordinate of the rook's starting position.
+   * @param n - number of rows of the board.
+   * @param m - number of columns of the board.
    * @return number of possible paths.
    */
   static int rookDp(int x, int y, int n, int m) {

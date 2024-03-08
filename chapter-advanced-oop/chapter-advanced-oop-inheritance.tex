@@ -135,7 +135,6 @@ Great, we can turn right with this flavor of the alien! Though, moving forward b
 
 \begin{cl}[MileMoverAlienTester.java]{Mile Mover Alien Tester}
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
 class MileMoverAlienTester {
@@ -143,12 +142,11 @@ class MileMoverAlienTester {
   @Test
   void testMileMoverAlien() {
     Alien r1 = new MileMoverAlien();
-    assertAll(
-      () -> r1.moveForward(),
-      () -> assertEquals(10, r1.getX()),
-      () -> r1.turnLeft(),
-      () -> r1.moveForward(),
-      () -> assertEquals(10, r1.getY()));
+      r1.moveForward(),
+      assertEquals(10, r1.getX()),
+      r1.turnLeft(),
+      r1.moveForward(),
+      assertEquals(10, r1.getY());
   }
 }
 \end{lstlisting}
@@ -158,15 +156,11 @@ class MileMoverAlienTester {
 \begin{lstlisting}[language=MyJava]
 class MileMoverAlien extends Alien {
 
-  MileMoverAlien() { 
-    super(); 
-  }
+  MileMoverAlien() { super(); }
 
   @Override
   void moveForward() {
-    for (int i = 0; i < 10; i++) { 
-      super.moveForward(); 
-    }
+    for (int i = 0; i < 10; i++) { super.moveForward(); }
   }
 }
 \end{lstlisting}
@@ -247,7 +241,7 @@ class WorldPosition {
 
   /**
    * Using streams, returns the number of occurrences of a given class type.
-   * @param cls the class to search for.
+   * @param cls - the class to search for.
    * @return those instances of a class that exist on the position.
    */
   int count(Class<?> cls) {
@@ -260,6 +254,8 @@ class WorldPosition {
 \end{cl}
 
 Finally we arrive at the \ttt{World} class. Perhaps we make it a design choice to disallow extension of this class. To block a class from being extended, we label it as \ttt{final}\index{final class}. The \ttt{World} class stores, as we stated, a two-dimensional array of \ttt{WorldPosition} instances, simulating a two-dimensional grid structure (where the plane origin lies in the top-left rather than the traditional bottom-left). Our constructor receives two integers denoting the width and height of the world, corresponding to the number of rows and columns of the underlying array, respectively.\footnote{Because \ttt{WorldPosition} \emph{is} a list, we can conclude that \ttt{World} \emph{is} a two-dimensional array, meaning a programmer might ask about extending the functionality of an array. Arrays are not extendable, because they are not classes/interfaces.} Each position in the world is directly instantiated thereof to prevent later null pointer references. Said \ttt{World} class contains two methods: \ttt{addObject}, and \ttt{countStars}, where the former adds an object to a given position in the world, and the latter counts the number of stars on that position.
+
+In Chapter~\ref{chapter-modern}, we revisit reflection and explore its potential in greater detail. Remember that reflection is a runtime mechanism and, consequently, program performance may be penalized in certain situations.
 
 \begin{cl}[]{World Class Implementation}
 \begin{lstlisting}[language=MyJava]
@@ -279,9 +275,9 @@ final class World {
   /**
    * Assigns a WorldObject to a given position in the world by adding
    * it to the list of objects.
-   * @param obj the object to assign.
-   * @param x the x-coordinate of the position.
-   * @param y the y-coordinate of the position.
+   * @param obj - the object to assign.
+   * @param x - the x-coordinate of the position.
+   * @param y - the y-coordinate of the position.
    */
   void add(WorldObject obj, int x, int y) {
     this.WORLD[x][y].add(obj);

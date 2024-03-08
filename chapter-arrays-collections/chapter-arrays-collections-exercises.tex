@@ -304,6 +304,13 @@ postfixEvaluator({"5", "2", "*", "5", "+", "2", "+"}) => 17
 postfixEvaluator({"1", "2", "3", "4", "+", "+", "+"}) => 10
 \end{verbnobox}
 
+\exercise{2}{chapter-arrays-collections}{Design the \ttt{double prefixEvaluator(List<String>) l} method that, when given a list of binary operators and numeric operands represented as strings, returns the result of evaluating the prefix-notation expression. This is slightly more difficult than the postfix evaluator, but not by much. As with the previous exercise, write helper methods for determining whether or not a string is an operator or an operand, and use a stack. Hint: traverse the input list from right-to-left, but be careful about non-commutative operations!}
+
+\begin{verbnobox}[\small]
+prefixEvaluator({"+", "3", "4"}) => 7
+prefixEvaluator({"+", "+", "2", "10", "*", "-5", "/", "16", "4"}) => -8
+\end{verbnobox}
+
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{List<List<String>> displayOrders(List<List<String>> orderInfo)} method that, when given an array of orders, returns a series of order specifications by customer table.}
 
 To be more specific, an order is a \ttt{List<String>} whose first element is the customer name, whose second element is the table number, and whose third element is the food that the customer is ordering. 
@@ -321,7 +328,7 @@ Return the data as a list of rows of information. The first row displays the tab
  {"8", "0", "0", "1", "0", "0"}}
 \end{verbnobox}
 
-\exercise{1}{chapter-arrays-collections}{Design the \ttt{substitute} method that, when given a \ttt{String} $\mathit{exp}$ and an environment $\mathit{env}$ \ttt{HashMap<String, Integer>}, substitutes each occurrence of an ``identifier'' for its value counterpart from the map.}
+\exercise{1}{chapter-arrays-collections}{Design the \ttt{substitute} method that, when given an~$\mathit{exp}$ as a~\ttt{String} and an environment~$\mathit{env}$ as a~\ttt{HashMap<String, Integer>}, substitutes each occurrence of an ``identifier'' for its value counterpart from the map.}
 
 \begin{verbnobox}[\small]
 substitute("f(x) = 3 * a + b", {<"a" : 10>, <"b" : 13>})

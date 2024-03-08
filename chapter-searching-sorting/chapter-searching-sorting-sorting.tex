@@ -81,8 +81,8 @@ class FunctionalInsertionSort<V extends Comparable<V>>
 
   /**
    * Inserts an element into a sorted list of values.
-   * @param val value to insert.
-   * @param sortedRest a sorted sublist.
+   * @param val - value to insert.
+   * @param sortedRest - a sorted sublist.
    * @return the sorted sublist with the new value inserted.
    */
   private AbstractList<V> insert(V val, AbstractList<V> sortedRest) {
@@ -454,7 +454,7 @@ class FunctionalBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
 
   /**
     * Get the largest element in the list.
-    * @param ls the list to search.
+    * @param ls - the list to search.
     * @return the largest element in the list.
     */
   private V getLargest(AbstractList<V> ls) {
@@ -608,7 +608,7 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   /**
    * Recursive helper method for merge sort. Splits the list in half and merges
    * the two halves after recursively sorting them.
-   * @param ls the list to sort.
+   * @param ls - the list to sort.
    * @return the sorted list.
    */
   private AbstractList<V> msHelper(AbstractList<V> ls) {
@@ -632,8 +632,8 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
    * one-by-one and adds the smaller element to the new list. If one list 
    * is exhausted, the elements of the other list are added to the new list.
    *
-   * @param ls1 the first sorted list.
-   * @param ls2 the second sorted list.
+   * @param ls1 - the first sorted list.
+   * @param ls2 - the second sorted list.
    * @return the merged sorted list.
    */
   private AbstractList<V> merge(AbstractList<V> ls1, AbstractList<V> ls2) {
@@ -674,9 +674,9 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
 
   /**
    * Recursively sorts the list by splitting it in half and merging the two halves
-   * @param ls the list to sort.
-   * @param low the lower bound of the sublist. 
-   * @param high the upper bound of the sublist.
+   * @param ls - the list to sort.
+   * @param low - the lower bound of the sublist. 
+   * @param high - the upper bound of the sublist.
    */
   private void msHelper(AbstractList<V> ls, int low, int high) {
     if (low < high) {
@@ -689,10 +689,10 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
 
   /**
    * Merges two sorted sublists into one sorted list. 
-   * @param ls the list to sort.
-   * @param low the lower bound of the sublist.
-   * @param mid the middle index of the sublist.
-   * @param high the upper bound of the sublist.
+   * @param ls - the list to sort.
+   * @param low - the lower bound of the sublist.
+   * @param mid - the middle index of the sublist.
+   * @param high - the upper bound of the sublist.
    */
   private void merge(AbstractList<V> ls, int low, int mid, int high) {
     AbstractList<V> ls1 = new ArrayList<>();
@@ -835,9 +835,9 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 
   /**
    * Recursive helper method for quicksort.
-   * @param ls the List to sort.
-   * @param low the lower bound of the partition.
-   * @param high the upper bound of the partition.
+   * @param ls - the List to sort.
+   * @param low - the lower bound of the partition.
+   * @param high - the upper bound of the partition.
    */
   private void quicksortHelper(AbstractList<V> ls, int low, int high) {
     if (low < high) {
@@ -850,9 +850,9 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
   /**
    * Creates a quicksort partition, where all elements less than the pivot are
    * to the left of the pivot, and all elements greater than the pivot are to its right.
-   * @param ls the List to partition.
-   * @param low the lower bound of the partition.
-   * @param high the upper bound of the partition.
+   * @param ls - the List to partition.
+   * @param low - the lower bound of the partition.
+   * @param high - the upper bound of the partition.
    * @return the index of the pivot.
    */
   private int quicksortPartition(AbstractList<V> ls, int low, int high) {

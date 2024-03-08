@@ -263,8 +263,8 @@ class BankAccount {
 
   /**
    * Transfers money from one account to another.
-   * @param b2 other bank account to deposit money into.
-   * @param amt the amount to withdraw from this account.
+   * @param b2 - other bank account to deposit money into.
+   * @param amt - the amount to withdraw from this account.
    */
   void transfer(BankAccount b2, int amt) {
     this.withdraw(amt);
@@ -346,8 +346,8 @@ class BankAccount {
 
   /**
    * Transfers money from one account to another.
-   * @param b2 other bank account to deposit money into.
-   * @param amt the amount to withdraw from this account.
+   * @param b2 - other bank account to deposit money into.
+   * @param amt - the amount to withdraw from this account.
    */
   void transfer(BankAccount b2, int amt) {
     synchronized (this) {
@@ -379,8 +379,8 @@ class BankAccount {
 
   /**
    * Transfers money from one account to another.
-   * @param b2 other bank account to deposit money into.
-   * @param amt the amount to withdraw from this account.
+   * @param b2 - other bank account to deposit money into.
+   * @param amt - the amount to withdraw from this account.
    */
   void transfer(BankAccount b2, int amt) {
     BankAccount.lock.lock();

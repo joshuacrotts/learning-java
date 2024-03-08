@@ -8,7 +8,7 @@ In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List
 
 \subsection{Defining an Interface}
 
-\example{Imagine that we want to design an interface that describes a shape. All (two-dimensional) shapes have an area and a perimeter, so we can define an interface that, when implemented by a class, requires that the class provide an implementation of the \ttt{area} and \ttt{perimeter} methods. A common convention for user-defined interfaces is to prefix the names with \ttt{I} to distinguish them from classes. Moreover, the names of interfaces are either nouns or, more traditionally, verbs, since they describe behaviors or characteristics of a class.}\footnote{We do not add the \ttt{public} keyword to the interface definition because all interface methods are implicitly public.}
+\example{Imagine that we want to design an interface that describes a shape. All (two-dimensional) shapes have an area and a perimeter, so we can define an interface that, when implemented by a class, requires that the class provide an implementation of the \ttt{area} and \ttt{perimeter} methods. A common convention for user-defined interfaces is to prefix the names with \ttt{I} to distinguish them from classes. Moreover, the names of interfaces are either nouns or, more traditionally, verbs, since they describe behaviors or characteristics of a class.\footnote{We do not add the \ttt{public} keyword to the interface definition because all interface methods are implicitly public.}}
 
 \begin{cl}[]{Shape Interface}
 \begin{lstlisting}[language=MyJava]
@@ -237,7 +237,9 @@ class IAnimalTester {
 class Cat implements IAnimal {
 
   @Override
-  String speak() { return "Meow!"; }
+  String speak() { 
+    return "Meow!"; 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -247,7 +249,9 @@ class Cat implements IAnimal {
 class Dog implements IAnimal {
 
   @Override
-  String speak() { return "Woof!"; }
+  String speak() { 
+    return "Woof!"; 
+  }
 }
 \end{lstlisting}
 \end{cl}
@@ -382,15 +386,15 @@ class IntegerBox implements IBox<Integer> {
   }
   
   @Override
-  public static IBox<Integer> box(Integer value) { 
+  static IBox<Integer> box(Integer value) { 
     return new IntegerBox(value); 
   }
   
   @Override
-  public Integer get() { return this.value; }
+  Integer get() { return this.value; }
   
   @Override
-  public void set(Integer value) { this.value = value; }
+  void set(Integer value) { this.value = value; }
 }
 \end{lstlisting}
 \end{cl}
@@ -434,7 +438,7 @@ class AddOne implements Function<Integer, Integer> {
   private AddOne() {}
 
   @Override
-  public static Integer apply(Integer i) { return i + 1; }
+  static Integer apply(Integer i) { return i + 1; }
 }
 \end{lstlisting}
 \end{cl}
@@ -475,7 +479,7 @@ class FunctionMap {
    * @param f the function to apply to each element.
    * @return the list of elements after applying f to each element.
    */
-  public static <T, V> List<V> map(List<T> l, Function<T, V> f) {
+  static <T, V> List<V> map(List<T> l, Function<T, V> f) {
     return l.stream()
             .map(t -> f.apply(t))
             .collect(Collectors.toList());
@@ -550,9 +554,9 @@ class Lit implements IExpr {
 
   private final int N;
 
-  public Lit(int n) { this.N = n; }
+  Lit(int n) { this.N = n; }
 
-  public int value() { return this.N; }
+  int value() { return this.N; }
 }
 \end{lstlisting}
 \end{cl}
@@ -585,13 +589,13 @@ class Add implements IExpr {
   private final IExpr LHS;
   private final IExpr RHS;
 
-  public Add(IExpr lhs, IExpr rhs) {
+  Add(IExpr lhs, IExpr rhs) {
     this.LHS = lhs;
     this.RHS = rhs;
   }
 
   @Override
-  public int value() { return this.LHS.value() + this.RHS.value(); }
+  int value() { return this.LHS.value() + this.RHS.value(); }
 }
 \end{lstlisting}
 \end{cl}
@@ -646,12 +650,12 @@ class ConstantExpression implements Expression {
 
   private final int CONSTANT;
 
-  public ConstantExpression(int c) { 
+  ConstantExpression(int c) { 
     this.CONSTANT = c; 
   }
 
   @Override
-  public Expression derivative(String v) { 
+  Expression derivative(String v) { 
     return new ConstantExpression(0); 
   }
 
@@ -687,14 +691,14 @@ class MonomialExpression implements Expression {
   private final int EXPT;
   private final String VAR;
 
-  public MonomialExpression(String v, int a, int n) { 
+  MonomialExpression(String v, int a, int n) { 
     this.VAR = v;
     this.COEFFICIENT = a;
     this.EXPT = n;
   }
 
   @Override
-  public Expression derivative(String v) { 
+  Expression derivative(String v) { 
     if (this.VAR.equals(v)) {
       if (this.EXPT == 1) {
         return new ConstantExpression(this.COEFFICIENT);
@@ -784,16 +788,16 @@ class AddExpression implements Expression {
 
   private final List<Expression> EXPR_LIST;
 
-  public AddExpression(Expression... exprs) {
+  AddExpression(Expression... exprs) {
     this.EXPR_LIST = Arrays.asList(exprs);
   }
 
-  public AddExpression(List<Expression> exprs) { 
+  AddExpression(List<Expression> exprs) { 
     this.EXPR_LIST = exprs; 
   }
 
   @Override
-  public Expression derivative(String v) {
+  Expression derivative(String v) {
     List<Expression> exprs = new ArrayList<>();
     this.EXPR_LIST.forEach(e -> exprs.add(e.derivative(v)));
     return new AddExpression(exprs);

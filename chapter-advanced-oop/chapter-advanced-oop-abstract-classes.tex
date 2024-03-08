@@ -142,7 +142,7 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
 
   /**
    * Determines whether this object collides with another AxisAlignedBoundingBoxObject.
-   * @param obj instance of AxisAlignedBoundingBoxObject.
+   * @param obj - instance of AxisAlignedBoundingBoxObject.
    * @return true if the objects overlap and false otherwise.
    */
   boolean collidesWith(AxisAlignedBoundingBoxObject obj) {
@@ -494,7 +494,7 @@ final class VarNode extends AstNode {
   /**
   * Interpret a variable. We look up the variable in the environment and
   * return the value associated with it.
-  * @param env The environment in which to interpret the variable.
+  * @param env - the environment in which to interpret the variable.
   * @return The result of the variable lookup after interpretation.
   */
   @Override
@@ -577,7 +577,7 @@ final class PrimNode extends AstNode {
 
   /**
    * Interpret a primitive operation.
-   * @param env - The environment in which to interpret the operation.
+   * @param env - the environment in which to interpret the operation.
    * @return The result of the primitive operation.
    */
   @Override
@@ -724,7 +724,7 @@ final class Environment {
 
   /**
    * Looks up a variable in the current environment.
-   * @param id the variable name.
+   * @param id - the variable name.
    * @return the value bound to the variable, or null if it does not exist.
    */
   @Override
@@ -806,7 +806,7 @@ final class IfNode extends AstNode {
 
   /**
   * Interpret an if statement.
-  * @param env The environment in which to interpret the if statement.
+  * @param env - the environment in which to interpret the if statement.
   * @return The result of the if statement.
   */
   @Override

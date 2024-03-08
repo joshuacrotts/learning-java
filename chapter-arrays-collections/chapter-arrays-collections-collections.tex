@@ -342,7 +342,7 @@ class NumAverage {
 
   /**
    * Computes the average of a sequence of provided integers.
-   * @param variadic integers.
+   * @param nums - variadic integers.
    * @return average if there is at least one number or zero otherwise.
    */
   static int numAverage(int ... nums) {
@@ -916,6 +916,13 @@ Traversing over a map is straightforward: we can obtain a \emph{key set}\index{k
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static ComputeMode.mode;
+
+import java.util.List;
+import java.util.Set;
+
 class ComputeModeTester {
 
   @Test
@@ -932,6 +939,12 @@ class ComputeModeTester {
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 class ComputeMode {
 
   /**
@@ -989,6 +1002,11 @@ Because we want both the sets and maps to be alphabetized, the use of a \ttt{Tre
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 class ShareFirstCharacterTester {
   
@@ -1275,24 +1293,37 @@ class StackPrinter {
 
   public static void main(String[] args) {
     Stack<Integer> S = new Stack<>();
-    S.push(10); S.push(20); S.push(30); S.push(40); S.push(50);
+    S.push(10); 
+    S.push(20); 
+    S.push(30); 
+    S.push(40); 
+    S.push(50);
 
     // Enhanced for loop prints them "incorrectly!"
     // An Iterator also has this issue.
     // We get "10, 20, 30, 40, 50" separated by newlines.
-    for (int x : S) { System.out.println(x); }
+    for (int x : S) { 
+      System.out.println(x); 
+    }
 
     Deque<Integer> D = new ArrayDeque<>();
-    D.push(10); D.push(20); D.push(30); D.push(40); D.push(50);    
+    D.push(10); 
+    D.push(20); 
+    D.push(30); 
+    D.push(40); 
+    D.push(50);    
+
     // An ArrayDeque corrects this problem.
     // We correctly get "50, 40, 30, 20, 10" separated by newlines.
-    for (int x : D) { System.out.println(x); }
+    for (int x : D) { 
+      System.out.println(x); 
+    }
   }
 }
 \end{lstlisting}
 \end{cl}
 
-\example{The unintuitive nature of the enhanced \ttt{for} loop and certain iterators does not stop with stacks, unfortunately. Priority queues are also afflicted as a consequence of their implementation. Let's see what happens when we create a priority queue whose comparator prioritizes the string \ttt{"Joshua"} over all strings and makes the string \ttt{"Jack"} have the lowest priority.} 
+\example{The unintuitive nature of the enhanced \ttt{for} loop and certain iterators does not stop with stacks, unfortunately. Priority queues are also afflicted as a consequence of their implementation. Let's see what happens when we create a priority queue whose comparator prioritizes the string \ttt{"Joshua"} over all strings and makes the string \ttt{"Jack"} have the lowest priority. In other words, any occurrence of \ttt{"Joshua"} should come before all other strings in the priority queue, whereas any occurrence of \ttt{"Jack"} should come after all other strings in the priority queue. Any strings in between are ordered naturally, i.e., via lexicographical ordering.} 
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
@@ -1612,7 +1643,7 @@ class SqList {
 
   /**
    * Returns a list of squared integers from a list of integers.
-   * @param list of integers.
+   * @param ls - list of integers.
    * @return list of squared integers.
    */
   static List<Integer> sqList(List<Integer> ls) {
@@ -1638,19 +1669,19 @@ Of course, we begin by writing a few tests. Fortunately, writing tests is simple
 \begin{cl}[]{Tests for \ttt{removeVowels} Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
-import static RemoveVowelsStream.removeVowels;
+import static Assertions.assertEquals;
 
 class RemoveVowelsStreamTester {
   
   @Test
   void testRemoveVowels() {
     assertAll(
-      () -> assertEquals("hll", StreamTests.removeVowels("hello")),
-      () -> assertEquals("hw r y?", StreamTests.removeVowels("how are you?")),
-      () -> assertEquals("", StreamTests.removeVowels("aaaaaaaaaaaa")),
-      () -> assertEquals("bbbbbbbbbb", StreamTests.removeVowels("bbbbbbbbbb")),
-      () -> assertEquals("bbbbb", StreamTests.removeVowels("abababababa")),
-      () -> assertEquals("hll", StreamTests.removeVowels("aeiouAEIOU")));
+      () -> assertEquals("hll", removeVowels("hello")),
+      () -> assertEquals("hw r y?", removeVowels("how are you?")),
+      () -> assertEquals("", removeVowels("aaaaaaaaaaaa")),
+      () -> assertEquals("bbbbbbbbbb", removeVowels("bbbbbbbbbb")),
+      () -> assertEquals("bbbbb", removeVowels("abababababa")),
+      () -> assertEquals("hll", removeVowels("aeiouAEIOU")));
   }
 }
 \end{lstlisting}
@@ -1686,6 +1717,7 @@ The primary benefit of streams is their compositionality. We can chain together 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import static Assertions.assertNull;
 
 import java.util.Optional;
 import java.util.List;

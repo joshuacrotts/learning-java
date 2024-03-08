@@ -36,7 +36,7 @@ class PatternMatching {
 
   /**
    * Computes the perimeter of a given shape.
-   * @param shape the IShape whose perimeter to compute.
+   * @param shape - the IShape whose perimeter to compute.
    * @return the perimeter of the shape.
    */
   static double perimeter(IShape s) {
@@ -232,7 +232,7 @@ class Evaluator {
 
   /**
    * Evaluates a given expression using records and pattern matching.
-   * @param exp the expression to evaluate as a subtype IExpr.
+   * @param exp - the expression to evaluate as a subtype IExpr.
    * @return result of evaluating the expression: a BigDecimal.
    */
   static BigDecimal eval(IExpr exp) {
@@ -333,7 +333,7 @@ class Lexer {
 
   /**
    * Splits the input of our language into tokens.
-   * @param raw string input.
+   * @param s - raw string input.
    * @return queue of tokens.
    */
   static Queue<Token> lex(String s) {
@@ -348,7 +348,7 @@ class Lexer {
 
   /**
    * Creates a token from a string.
-   * @param t the string to create a token from.
+   * @param t - the string to create a token from.
    * @return the token.
    */
   private static Token createToken(String t) {
@@ -421,7 +421,7 @@ class Parser {
 
   /**
    * Parses a list of tokens into an AST.
-   * @param tokenList queue of tokens to parse.
+   * @param tokenList - queue of tokens to parse.
    * @return constructed AST from the tokens.
    */
   static AstNode parse(Queue<Token> tokenList) {
@@ -441,7 +441,7 @@ class Parser {
    * Constructs an s-expression from a list of tokens. The precondition
    * for entering this method is that the first token in the queue is
    * the opening parenthesis of the s-expression, i.e., an L_PAREN.
-   * @param tokenList queue of tokens to parse as the sexpr.
+   * @param tokenList - queue of tokens to parse as the sexpr.
    * @return constructed SExpressionNode from the tokens.
    */
   private static AstNode parseSExpression(Queue<Token> tokenList) {

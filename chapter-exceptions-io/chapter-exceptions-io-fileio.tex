@@ -356,7 +356,7 @@ class EmployeeScanner {
 
   /**
    * Reads in a list of employee records from a given filename.
-   * @param fileName name of file.
+   * @param fileName - name of file.
    * @return list of Employee instances.
    */
   static List<Employee> readRecords(String fileName) {
@@ -487,7 +487,7 @@ class LineWordCharCounter {
 
   /**
    * Counts the number of lines, words, and characters in a given file.
-   * @param fileName name of file.
+   * @param fileName - name of file.
    * @return array of counts.
    */
   static int[] count(String fileName) {
@@ -523,7 +523,7 @@ class ConcatenateFiles {
  
   /**
    * Determines whether all files have the same extension.
-   * @param files array of file names.
+   * @param files - array of file names.
    * @return true if all files have same extension, false otherwise.
    */
   private static boolean sameExtension(String[] files) {
@@ -543,8 +543,8 @@ class ConcatenateFiles {
 
   /**
    * Concatenates the contents of a list of files into a single file.
-   * @param files array of file names.
-   * @param outFile name of output file.
+   * @param files - array of file names.
+   * @param outFile - name of output file.
    */
   private static void concatenate(String[] files, String outFile) {
     try (BufferedWriter bw = new BufferedWriter(new FileWriter(outFile))) {

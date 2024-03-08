@@ -203,8 +203,8 @@ class FractionFactory {
 
   /**
    * Creates a new Fraction instance, or looks it up in the cache.
-   * @param num numerator of fraction.
-   * @param den denominator of fraction.
+   * @param num - numerator of fraction.
+   * @param den - denominator of fraction.
    * @return a new instance of Fraction, or a shared instance if it was cached.
    */
   Fraction create(int num, int den) {
@@ -256,8 +256,8 @@ class PersonFactory {
   
   /**
    * Creates a new Person object based on the role.
-   * @param name name of person.
-   * @param role role of person.
+   * @param name - name of person.
+   * @param role - role of person.
    * @return a new subclass of Person.
    */
   static Person create(String name, String role) {

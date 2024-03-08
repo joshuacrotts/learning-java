@@ -183,7 +183,7 @@ class Point {
 
   /**
    * Determines the Euclidean distance between two points.
-   * @param p the other point.
+   * @param p - the other point.
    * @return the distance between this point and p.
    */
   double distance(Point p) {
@@ -228,6 +228,10 @@ We could, if desired, overload the \ttt{Point} constructor as well. Though, it m
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalDouble;
+
 class PointTester {
   // ... previous code not shown.
 
@@ -248,6 +252,9 @@ class PointTester {
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.OptionalDouble;
+
 class Point {
   // ... previous code not shown. 
 
@@ -256,7 +263,7 @@ class Point {
    * @param lop - list of points.
    * @return empty Optional if the list is empty, or OptionalDouble otherwise.
    */
-  static Optional<Double> averageDistance(List<Point> lop) {
+  static OptionalDouble averageDistance(List<Point> lop) {
     return lop.stream()
               .map(p -> p.distance())
               .mapToDouble(d -> d)
@@ -297,7 +304,7 @@ class Point {
 
   /**
    * Generates a random point with a maximum radius.
-   * @param maxRadius the maximum radius.
+   * @param maxRadius - the maximum radius.
    * @return a random point.
    */
   static Point random(double maxRadius) {
@@ -446,7 +453,10 @@ class Point {
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
+import java.util.List;
+
 class PointTester {
+
   // ... previous code not shown. 
 
   @Test
@@ -468,7 +478,10 @@ class PointTester {
 
 \begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
+import java.util.List;
+
 class Point {
+
   // ... previous code not shown. 
 
   /**
@@ -558,6 +571,8 @@ To test a \ttt{Deck}, we can write a \ttt{drawCard} method, which retrieves the 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import static Assertions.assertTrue;
+import static Assertions.assertFalse;
 
 class DeckTester {
 
@@ -656,7 +671,7 @@ class Player {
 
   /**
    * Adds a card to the player's hand.
-   * @param c card to add to the player's hand.
+   * @param c - card to add to the player's hand.
    */
   void addCard(Card c) { this.HAND.add(c); }
 
@@ -837,7 +852,7 @@ class Rational {
 
   /**
    * Adds two rational numbers.
-   * @param r the other rational number.
+   * @param r - the other rational number.
    * @return the (simplified) sum of this and r.
    */
   Rational add(Rational r) {
@@ -882,11 +897,11 @@ class RationalTester {
 \begin{cl}[Rational.java]{Multiplying Two Rational Numbers}
 \begin{lstlisting}[language=MyJava]
 class Rational {
-  // Other details not shown.
+  // ... other details not shown.
 
   /**
    * Multiplies two rational numbers.
-   * @param r the other rational number.
+   * @param r - the other rational number.
    * @return the (simplified) product of this and r.
    */
   Rational multiply(Rational r) {
@@ -910,9 +925,13 @@ class StackFrame {
 
   private Map<String, Object> PARAMS;
 
-  StackFrame() { this.PARAMS = new HashMap<>(); }
+  StackFrame() { 
+    this.PARAMS = new HashMap<>(); 
+  }
 
-  Object getParam(String s) { return this.PARAMS.get(s); }
+  Object getParam(String s) { 
+    return this.PARAMS.get(s); 
+  }
 
   StackFrame addParam(String s, Object o) {
     this.PARAMS.put(s, o);

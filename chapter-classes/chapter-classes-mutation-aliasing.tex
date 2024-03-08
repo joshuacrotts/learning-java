@@ -61,13 +61,25 @@ import static Assertions.assertEquals;
 class PointTester {
 
   @Test
-  void pointAliasing() {
+  void testPointAliasing() {
     Point p1 = new Point(7, 4);
     Point p2 = p1;
     p1.setX(3);
-    assertEquals(3, p1.getX());
-    assertEquals(3, p2.getX());
-    assertEquals(p1, p2);
+    assertAll(
+      () -> assertEquals(3, p1.getX()),
+      () -> assertEquals(3, p2.getX()),
+      () -> assertEquals(p1, p2));
+  }
+
+  @Test
+  void testSetX() {
+    Point p1 = new Point(11, 13);
+    Point p2 = p1;
+    p2.setX(100);
+    assertAll(
+      () -> assertEquals(100, p1.getX()),
+      () -> assertEquals(100, p2.getX())
+      () -> assertEquals(p1, p2));
   }
 
   @Test
@@ -75,15 +87,16 @@ class PointTester {
     Point p1 = new Point(7, 4);
     Point p2 = p1;
     p1.setY(2);
-    assertEquals(2, p1.getY());
-    assertEquals(2, p2.getY());
-    assertEquals(p1, p2);
+    assertAll(
+      () -> assertEquals(2, p1.getY()),
+      () -> assertEquals(2, p2.getY()),
+      () -> assertEquals(p1, p2));
   }
 }
 \end{lstlisting}
 \end{cl}
 
-This idea carries over to other, more complex classes as well. For example, strings, arrays, lists, and others are all objects, and therefore, they are all subject to object aliasing. Modifying one \ttt{ArrayList} instance will modify all other \ttt{ArrayList} instances that reference the same object. This is a common source of bugs in Java programs, and it is important to be aware of this behavior. In the following example, we will demonstrate aliasing through the \ttt{ArrayList} data structure containing \ttt{Point} objects. We add a series of \ttt{Point} instances to an \ttt{ArrayList}, which is then aliased by another \ttt{ArrayList}. We then add another \ttt{Point} instance to the first \ttt{ArrayList}, followed by a verification that the lists are the same size. Additionally, we traverse over the lists and verify that the elements are the same through the \ttt{==} operator. Remember that \ttt{==} returns whether or not two objects reference the same instance in memory. Because these lists are merely aliases of each other, they will contain references to the same \ttt{Point} instances.
+This idea carries over to other, more complex classes as well. For example, strings, arrays, lists, and others are all objects, and therefore, they are all subject to object aliasing. Modifying one \ttt{ArrayList} instance will modify all other \ttt{ArrayList} instances that reference the same object. This is a common source of bugs in Java programs, and it is important to be aware of this behavior. In the following example, we will demonstrate aliasing through the \ttt{ArrayList} data structure containing \ttt{Point} objects. We add a series of \ttt{Point} instances to an \ttt{ArrayList}, which is then aliased by another \ttt{ArrayList}. We then add another \ttt{Point} instance to the first \ttt{ArrayList}, followed by a verification that the lists are the same size. Additionally, we traverse over the lists and verify that the elements are the same through the \ttt{==} operator. Remember that \ttt{==} returns whether or not two objects reference the same instance in memory. Because these lists are merely aliases of each other, they will, in fact, contain references to the same \ttt{Point} instances.
 
 \begin{cl}[]{Testing \ttt{ArrayList} Aliasing}
 \begin{lstlisting}[language=MyJava]
@@ -139,7 +152,7 @@ class MiniArrayList<T> {
 \end{lstlisting}
 \end{cl}
 
-Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type. Recall that generics are a compile-time feature, and arrays are a runtime feature. Therefore, we cannot instantiate an array of a generic type. Instead, we must instantiate an array containing type \ttt{Object}, followed by a cast to contain type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \emph{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
+Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type, because Java arrays use information, at runtime, about the element type. Generics, on the other hand, are a compile-time feature, meaning it is impossible to directly instantiate an array of a generic type. Instead, we must instantiate an array containing (elements of) type \ttt{Object}, followed by a cast to contain (elements of) type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \emph{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
 
 \begin{cl}[]{\ttt{MiniArrayList} Class Instantiating the Backing Array}
 \begin{lstlisting}[language=MyJava]
@@ -193,7 +206,7 @@ class MiniArrayList<T> {
 
   /**
    * Adds an element to the end of the list.
-   * @param element the element to add.
+   * @param element - the element to add.
    */
   void add(T element) {
     if (this.size == this.capacity) { this.resize(); }
@@ -259,8 +272,8 @@ class MiniArrayList<T> {
 
   /**
    * Inserts an element at the given index.
-   * @param e the element to insert.
-   * @param idx the index to insert at.
+   * @param e - the element to insert.
+   * @param idx - the index to insert at.
    */
   void insert(T e, int idx) {
     if (this.size == capacity) { this.resize(); }
@@ -270,7 +283,7 @@ class MiniArrayList<T> {
 
   /**
    * Removes the element at the given index.
-   * @param idx the index to remove.
+   * @param idx - the index to remove.
    * @return the element removed.
    */
   T remove(int idx) {
@@ -290,7 +303,7 @@ class MiniArrayList<T> {
   /**
    * Shifts all elements to the left of the given index one position leftwards.
    * Note that this method overwrites the element at the given index.
-   * @param idx the index to shift left of.
+   * @param idx - the index to shift left of.
    */
   private void shiftLeft(int idx) {
     for (int i = idx; i < this.size - 1; i++) { this.vals[i] = this.vals[i + 1]; }
@@ -298,7 +311,7 @@ class MiniArrayList<T> {
 
   /**
    * Shifts all elements to the right of the given index one position rightwards.
-   * @param idx the index to shift right of.
+   * @param idx - the index to shift right of.
    */
   private void shiftRight(int idx) {
     for (int i = size - 1; i > idx; i--) { this.vals[i] = this.vals[i - 1]; }
@@ -342,8 +355,9 @@ class ClassTester {
 
 To set the scene, we first declare \ttt{a} as an immutable instance of \ttt{A} with the string literal \ttt{"Hello!"}. Then, we instantiate objects \ttt{b} and \ttt{c} of types \ttt{B} and \ttt{C} respectively, each receiving \ttt{a} as an argument to their constructors. 
 
-Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two references to the same object. Because \ttt{a} is immutable, we cannot change its value, so both \ttt{b} and \ttt{c} will always refer to the same object. Therefore, we use \ttt{assertEquals} to compare the two references. In particular, passing \ttt{a} to both constructors passes a reference to the same object.\footnote{In Figure~\ref{fig:memoryref}, we use memory addresses to refer to the location of \ttt{a}. To be a bit pedantic, objects are not stored directly in system memory per se, but rather a location accessible by the Java Virtual Machine.}
-\begin{figure}[H]
+Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two references to the same object. Because \ttt{a} is immutable, we cannot change its value, so both \ttt{b} and \ttt{c} will always refer to the same object. Therefore, we use \ttt{assertEquals} to compare the two references. In particular, passing \ttt{a} to both constructors passes a reference to the same object.
+
+\begin{figure}[htp!]
 \centering
 \begin{tikzpicture}
   % Object a
@@ -366,6 +380,8 @@ Comparing \ttt{b.getA()} against \ttt{c.getA()} is a comparison of two reference
 \end{tikzpicture}
 \label{fig:memoryref}
 \end{figure}
+
+In Figure~\ref{fig:memoryref}, we use memory addresses to refer to the location of \ttt{a}. To be a bit pedantic, objects are not stored directly in system memory per se, but rather a location accessible by the Java Virtual Machine.
 
 Comparing \ttt{b.getA().getS()} against \ttt{c.getA().getS()} is a comparison of two references to the same object, similar to the previous problem, right? Wrong! Recall that the \ttt{String} class overrides the \ttt{.equals} method implementation to compare strings for their content rather than their reference. Should we choose to compare the two strings for referential equality, we must use the \ttt{==} operator. In this case, we use \ttt{assertEquals} since the two strings are equal in content, but using \ttt{==} would also work because the strings are also equal in reference.
 
@@ -565,7 +581,7 @@ class DoublyLinkedList<T> {
 
   /**
   * Adds a new node to the end of the list.
-  * @param data The data to be stored in the new node.
+  * @param data - The data to be stored in the new node.
   */
   void add(T data) {
     Node<T> newNode = new Node<>(data);
@@ -626,7 +642,7 @@ class DoublyLinkedList<T> {
 
   /**
    * Returns the element at a given index as an Optional.
-   * @param idx index to retrieve.
+   * @param idx - index to retrieve.
    * @return Optional.empty() if the index is out of bounds,
    *         the data at that node's index otherwise.
    */
@@ -688,7 +704,7 @@ class DoublyLinkedList<T> {
 
   /**
    * Removes an element from the linked list, if it exists.
-   * @param data value to be removed, compared via .equals.
+   * @param data - value to be removed, compared via .equals.
    */
   void remove(T data) {
     Node<T> curr = this.first;
@@ -770,7 +786,7 @@ class AssociationList<K, V> {
   
   /**
    * Returns the value associated with a given key.
-   * @param key the key to lookup.
+   * @param key - the key to lookup.
    * @return the value associated with the key, if it exists.
    */
   Optional<V> lookup(K key) {
@@ -787,8 +803,8 @@ class AssociationList<K, V> {
   
   /**
    * Adds a new association to the list.
-   * @param key the key to associate.
-   * @param value the value to associate.
+   * @param key - the key to associate.
+   * @param value - the value to associate.
    * @return a new association list with the new association.
    */
    AssociationList<K, V> extend(K key, V value) {
