@@ -309,6 +309,7 @@ postfixEvaluator({"1", "2", "3", "4", "+", "+", "+"}) => 10
 \begin{verbnobox}[\small]
 prefixEvaluator({"+", "3", "4"}) => 7
 prefixEvaluator({"+", "+", "2", "10", "*", "-5", "/", "16", "4"}) => -8
+prefixEvaluator({"*", "-", "100", "20", "5"}) => 400
 \end{verbnobox}
 
 \exercise{3}{chapter-arrays-collections}{Design the \ttt{List<List<String>> displayOrders(List<List<String>> orderInfo)} method that, when given an array of orders, returns a series of order specifications by customer table.}
