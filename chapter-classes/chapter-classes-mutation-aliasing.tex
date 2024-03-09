@@ -4,7 +4,6 @@ A limitation that we have purposefully imposed on our object/class design is the
 
 To access a \ttt{private} instance variable, we design a \ttt{public} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a \ttt{public} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns the instance variable to the parameter. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a point $p$ to $(7, 4)$, but we then want to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which we confirm through the accessor method. Another way of phrasing this is that, when testing a mutator, we care about the \emph{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. Setter methods, or methods that modify outside values or data are definitionally \emph{impure}\index{impure}. Because we want to be able to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove this keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we \emph{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
 
-\begin{cl}[]{Testing \ttt{Point} Setter Methods}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -26,9 +25,7 @@ class PointTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{\ttt{Point} Class with Accessor and Mutator Methods}
 \begin{lstlisting}[language=MyJava]
 class Point {
 
@@ -49,11 +46,9 @@ class Point {
   void setY(int y) { this.y = y; }
 }
 \end{lstlisting}
-\end{cl}
 
 What are some consequences to mutating an object? One comes through the notion of \emph{object aliasing}. Recall that objects point to references in memory. Therefore if we instantiate a \ttt{Point} $p_1$, then initialize another \ttt{Point} $p_2$ to reference $p_1$, then both objects refer to the same \ttt{Point} instance in memory. If we modify $p_1$ through a setter method, then $p_2$ will reflect the change.
 
-\begin{cl}[]{Object Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -94,11 +89,9 @@ class PointTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 This idea carries over to other, more complex classes as well. For example, strings, arrays, lists, and others are all objects, and therefore, they are all subject to object aliasing. Modifying one \ttt{ArrayList} instance will modify all other \ttt{ArrayList} instances that reference the same object. This is a common source of bugs in Java programs, and it is important to be aware of this behavior. In the following example, we will demonstrate aliasing through the \ttt{ArrayList} data structure containing \ttt{Point} objects. We add a series of \ttt{Point} instances to an \ttt{ArrayList}, which is then aliased by another \ttt{ArrayList}. We then add another \ttt{Point} instance to the first \ttt{ArrayList}, followed by a verification that the lists are the same size. Additionally, we traverse over the lists and verify that the elements are the same through the \ttt{==} operator. Remember that \ttt{==} returns whether or not two objects reference the same instance in memory. Because these lists are merely aliases of each other, they will, in fact, contain references to the same \ttt{Point} instances.
 
-\begin{cl}[]{Testing \ttt{ArrayList} Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -128,13 +121,11 @@ class PointTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{Now that we have classes, mutation, and accessibility, we can finally implement generic data structures such as an \ttt{ArrayList}. In this example we will implement the behavior of the \ttt{ArrayList} data structure, which means we finally understand what is going on under the hood in the Collections API. Let's design a class \ttt{MiniArrayList}, which operates over any type using generics. Like generic static methods, we must quantify the generic type, but unlike static methods, however, we quantify the type over the class declaration, meaning that all instance and static methods observe/respect the quantifier and do not need to be separately quantified.}
 
 In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements, is stored in \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is stored in \ttt{capacity}. Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class, an idea called \emph{constructor chaining}. 
 
-\begin{cl}[]{\ttt{MiniArrayList} Class}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -150,11 +141,9 @@ class MiniArrayList<T> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type, because Java arrays use information, at runtime, about the element type. Generics, on the other hand, are a compile-time feature, meaning it is impossible to directly instantiate an array of a generic type. Instead, we must instantiate an array containing (elements of) type \ttt{Object}, followed by a cast to contain (elements of) type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \emph{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
 
-\begin{cl}[]{\ttt{MiniArrayList} Class Instantiating the Backing Array}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -171,11 +160,9 @@ class MiniArrayList<T> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 We now need to implement the \ttt{add} method, which adds an element to the end of the array list. We first check if the array is full, and if so, we resize the array. We then add the element to the end of the array and increment the size. Resizing the array is, fortunately, not complicated; all we need to do is instantiate a new, larger array, copy the existing elements over, then reassign the instance variable. The question now is, by what factor should the array capacity increase? This decision is implementation-dependent, but we will use a doubling factor out of convenience. We make \ttt{resize} private because it is an implementation detail that the user does not need to know about. To write coherent tests, we should also write the \ttt{get} method, which returns the element at a given index, as well as \ttt{size}, which returns the number of logical elements in the list. For now, we will not worry about bounds checking, but we will return to this in a later chapter on exceptions.
 
-\begin{cl}[]{Testing \ttt{MiniArrayList} \ttt{add} Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -196,9 +183,7 @@ class MiniArrayListTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{\ttt{MiniArrayList} Adding Elements}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -228,11 +213,9 @@ class MiniArrayList<T> {
   int size() { return this.size; }
 }
 \end{lstlisting}
-\end{cl}
 
 We will write two more methods: \ttt{insert} and \ttt{remove}, which inserts an element $e$ at a given index $i$, and removes an element $e$ respectively. These two methods are similar in that they alter the backing array by shifting its values right and left. Accordingly, our implementation will contain the private helper methods \ttt{shiftRight} and \ttt{shiftLeft}. If we attempt to insert an element into a list that must be resized, we call \ttt{resize}. Both \ttt{insert} and \ttt{remove} warrant test cases! Like the \ttt{get} counterpart, neither of these new methods will perform bounds checking, so testing out-of-bounds behavior, for the time being, is not pertinent.
 
-\begin{cl}[]{Testing \ttt{MiniArrayList} \ttt{insert} and \ttt{remove} Methods}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 
@@ -263,9 +246,7 @@ class MiniArrayListTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{\ttt{MiniArrayList} Inserting and Removing Elements}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
   // ... other details not shown.
@@ -294,9 +275,7 @@ class MiniArrayList<T> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Shifting Left and Right}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -318,13 +297,11 @@ class MiniArrayList<T> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{Let's see a few more examples of object aliasing and mutation. These examples will not be meaningful in what they represent, but are great exercises in testing your understanding. We will create five classes: \ttt{A}, \ttt{B}, \ttt{C}, \ttt{D}, and \ttt{E}. Class \ttt{A} contains one mutable string instance variable; its constructor assigns the instance variable to the parameter thereof. Classes \ttt{B} and \ttt{C} are identical aside from the name: they contain an immutable object of type \ttt{A} as an instance variable. Class \ttt{D} stores an integer array of ten elements. Finally, class \ttt{E} stores a mutable integer as an instance variable.}
 
 We present several test cases that assert different pieces of these classes. We will analyze each one and determine why it uses either \ttt{assertEquals} or \ttt{assertNotEquals} in its comparison. Our first series of tests only focuses on classes \ttt{A}, \ttt{B}, and \ttt{C} to keep things simple. We insert blanks in the assertion statements for you to fill in as exercise before checking your answers.
 
-\begin{cl}[]{Testing Object Mutation and Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -351,7 +328,6 @@ class ClassTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 To set the scene, we first declare \ttt{a} as an immutable instance of \ttt{A} with the string literal \ttt{"Hello!"}. Then, we instantiate objects \ttt{b} and \ttt{c} of types \ttt{B} and \ttt{C} respectively, each receiving \ttt{a} as an argument to their constructors. 
 
@@ -397,7 +373,6 @@ Up next we reassign \ttt{b} to point to \ttt{b2}. This is a reassignment of a re
 
 Let's now test the \ttt{D} and \ttt{E} classes, which use arrays as instance variables.
 
-\begin{cl}[]{Testing Object Mutation and Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -421,7 +396,6 @@ class ClassTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 The objects \ttt{d} and \ttt{e} are instantiated to types \ttt{D} and \ttt{E} respectively, the latter of which receives the integer \ttt{42} as an argument to the constructor. We follow this up with an array of ten \ttt{E} objects. The loop after instantiates each element of the array to a new \ttt{E} object with the integer \ttt{i} as an argument to the constructor.
 
@@ -433,7 +407,6 @@ Thus, if we set the number of one arbitrary element, this change propagates to e
 
 \example{Some may question why we emphasize aliasing and mutation. When working with the Collections API and designing data structures, proper care must be taken to avoid undesired behavior. Consider what happens if we design a class \ttt{F} that stores a reference to a \ttt{List<Integer>} as an instance variable. Then, suppose we instantiate two distinct instances of \ttt{F}, namely $f_1$ and $f_2$, each of which receive the same list of numbers. If we then mutate the list somewhere inside of $f_1$, then the list stored as a reference inside $f_2$ is also changed.}
 
-\begin{cl}[]{Testing List Mutation and Aliasing}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -451,9 +424,7 @@ class ClassTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Class Storing a List of Integers}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -466,7 +437,6 @@ class F {
   List<Integer> getList() { return this.LS; }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{Recall the \ttt{LinkedList} class from Chapter~\ref{chapter-arrays-collections}. If you have ever wondered how it works under the hood, now is the time to find out! We will design a \emph{doubly-linked list} data structure that stores arbitrarily-typed elements.}
 
@@ -476,7 +446,6 @@ We need a generic class that stores references to the first and last elements of
 
 We run into an eminent problem when declaring the types of the instance variables: what should they be? We need to design a class that encapsulates the value of the node, and holds references to its previous and successor nodes. Some programmers may consider designing a separate \ttt{.java} file for this class, but remember the encapsulation methodology: nobody outside of this class should even be aware that nodes exist in the first place. So, we can create a private and static \ttt{Node<T>} class, which is local to the definition of \ttt{DoublyLinkedList}. A privatized class can only ever be static, because it does not make sense to say that a private class definition belongs to an arbitrary instance of the class in which it resides. We also override the \ttt{toString} to output the underlying stringified data of the node.
 
-\begin{cl}[]{Doubly-Linked List Class}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
 
@@ -504,13 +473,11 @@ class DoublyLinkedList<T> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Notice that, in the constructor of \ttt{DoublyLinkedList}, we assign the first and last references to each other, which both point to \ttt{null}. This is because, when the list is empty, there is no first or last element.
 
 To test the methods that we are about to design, we will override the \ttt{toString} method (of \ttt{DoublyLinkedList}) to print the elements inside brackets, separated by commas and a space. To traverse over the list, however, we should use a custom-defined \ttt{Iterator}, which will be its own localized class definition. We have seen iterators before, but until now we have not implemented one on our own. The idea is, fortunately, very simple: we keep track of the current node, and upon calling \ttt{hasNext}, we return whether or not the node is \ttt{null}. Similarly, invoking \ttt{next} returns the value of the stored node and moves the pointer forward via the ``next'' instance. Finally, we create the \ttt{.iterator} method, which returns an instance of the iterator superclass. We do not want to expose how this particular iterator works, because the caller does not need to be aware of this logic; they are only concerned with iterating over the structure, in this case, a doubly-linked list.
 
-\begin{cl}[]{Doubly-Linked List Iterator}
 \begin{lstlisting}[language=MyJava]
 import java.util.Iterator;
 
@@ -543,13 +510,11 @@ class DoublyLinkedList<T> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Using the iterator in \ttt{toString} is straightforward: we have a while loop that continues until no more elements are present. We complete two tasks at the same time by having an iterator, which then makes subsequent traversals over the list easier.
 
 Now we can write methods to add, retrieve, and remove elements from the list. To add an elemenet, we need to take the links of \ttt{first} and \ttt{last}, and reassign them accordingly to remain consistent with our doubly-linked list property. If the list is empty, then we just have to assign the new node $n$ to both the \ttt{first} and \ttt{last} references. Otherwise, we set the ``next'' pointer of \ttt{last} to $n$, and set the ``previous'' pointer of $n$ to \ttt{last}. 
 
-\begin{cl}[]{Testing the Doubly-Linked List Add Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -572,9 +537,7 @@ class DoublyLinkedListTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Doubly-Linked List Add Method}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
   // ... previous code omitted ...
@@ -598,11 +561,9 @@ class DoublyLinkedList<T> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Retrieving an element is trivial, as it's just a matter of traversing over the list and returning the data at the index of a node. If the index is out of bounds, we return an empty \ttt{Optional}.\footnote{It is, in general, a better idea to use exceptions, but we have not covered them yet.}
 
-\begin{cl}[]{Testing the Doubly-Linked List Get Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -631,9 +592,7 @@ class DoublyLinkedListTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Doubly-Linked List Get Method}
 \begin{lstlisting}[language=MyJava]
 import java.util.Optional;
 
@@ -659,7 +618,6 @@ class DoublyLinkedList<T> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Finally we arrive at element removal, which is not as cut-and-dry. We want to pass the element-to-remove (compared via \ttt{equals}), but we need to adjust the pointers accordingly. In particular, there are four cases to consider:
 
@@ -670,7 +628,6 @@ Finally we arrive at element removal, which is not as cut-and-dry. We want to pa
   \item If the element-to-remove $e$ is not in the list, do nothing.
 \end{enumerate}
 
-\begin{cl}[]{Testing the Doubly-Linked List Remove Method}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -695,9 +652,7 @@ class DoublyLinkedListTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Doubly-Linked List Remove Method}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
   // ... previous code omitted ...
@@ -726,7 +681,6 @@ class DoublyLinkedList<T> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{Some programming languages do not come standard with data structures such as \ttt{Map} or, if they do, they are cumbersome to utilize. A substitute for the common mapping data structure is called an \emph{association list}, originating with the Lisp programming language. Its desired purpose is nearly identical to that of a map, but with worse performance implications. In this example we will design such a structure, as if \ttt{Map} did not exist in Java.}
 
@@ -734,7 +688,6 @@ Associations lists, as their name implies, associate values to other values, jus
 
 Our association list will support several methods that are related to their functional programming eqiuvalents. In particular, we want a \ttt{lookup} method to retrieve the associated value of some element and an an \ttt{extend} method to add a new association. Note that the \ttt{extend} method will, rather than modifying the current association list, return a new association list with the new association added. This is because we want to preserve the idea of immutability, which is a common theme in functoinal programming. Association lists, therefore, need to have a ``parent'' pointer to keep track of those associations in the list that we extend from.\footnote{In the next section on abstract classes and interpreters, we will revisit this idea in greater detail.} We will also override the \ttt{toString} method to print the associations in a readable format. 
 
-\begin{cl}[]{Association List Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -759,9 +712,7 @@ class AssociationListTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Association List Class}
 \begin{lstlisting}[language=MyJava]
 import java.lang.StringBuilder;
 import java.util.Optional;
@@ -825,6 +776,5 @@ class AssociationList<K, V> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Each association list in our representation stores exactly one association. Each time we extend the association, we create a new list that points to the previous list. This is a very inefficient way to store associations, but it is a common functional way of extending bindings in a programming language, most often in simple interpreted languages.

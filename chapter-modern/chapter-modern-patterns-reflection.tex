@@ -4,7 +4,6 @@ Reflection\index{reflection}, while not a necessarily new computer science conce
 
 \example{Suppose that we want to be able to search, then invoke, a method based on its name. Reconsider the primitive calculator example from many chapters ago, where we utilize a case dispatch on the operator received as a terminal argument. As we add functions to the system, we must proportionally add code in the \ttt{main} method to account for the new case, which is tiresome at best. Java allows us to lookup a method, at runtime, using its reflection API, and pass parameters accordingly. As a substitute for terminal arguments (and the \ttt{main} method in general), we will pass an ``argument array'' to a static \ttt{calculate} method, so we can easily run unit tests.}
 
-\begin{cl}[]{Reflective Calculator Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -32,7 +31,6 @@ class ReflectiveCalculatorTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 To retrieve a method at runtime, we first need to retrieve the class in which it lives through the \ttt{Class.forName} method. In this case we pass \ttt{ReflectiveCalculator}, as that is the name of our class. Note that the return value is of type \ttt{Class<?>}, denoting that it is a reflective class type.
 
@@ -42,7 +40,6 @@ Finally, we invoke the method encapsulated by the \ttt{Method} using the conveni
 
 There is one small intricacy with how Java handles variadic arguments and passing arrays to reflective methods. Passing an array to a variadic argument method unwraps the arguments and passes them individually. For example, if we have a method \ttt{foo(String... args)}, and we pass \ttt{foo(new String[] \string{"Hello", "World"\string})}, the method receives two arguments: \ttt{"Hello"} and \ttt{"World"}. In our case this is problematic, since we want our computation methods to receive the entire array of arguments. To accomplish this, we can cast the array to an \ttt{Object} and pass it to \ttt{invoke} as a single argument.
 
-\begin{cl}[]{Reflective Calculator}
 \begin{lstlisting}[language=MyJava]
 import java.lang.reflect.Method;
 class ReflectiveCalculator {
@@ -65,7 +62,6 @@ class ReflectiveCalculator {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{The Python programming language, including many others, offer a REPL, or a read-evaluate-print-loop, that users can run at the terminal to evaluate expressions and programs. This is done to alleviate the need to open a source file in a text editor, type the code, then run the file with the respective command. Java is not one of these languages out-of-the-box, unfortunately. There is an application, namely JShell, which introduces this functionality. In this example, we will write our own version of JShell, where the programmer can type and evaluate expressions and statements at the terminal.\footnote{Credit goes to Terence Parr for this example and ``assignment'' from his graduate course on programming languages at the University of San Francisco. That's right--this is a graduate-level programming example!}}
 
@@ -127,7 +123,6 @@ The \ttt{execute} method is generated all the time, but we only care about its c
 
 Let's assume that the \ttt{type} rule is any arbitrary sequence of characters representing a type in Java (e.g., \ttt{void}, \ttt{int}, \ttt{Dog}), as is an identifier. Under these assumptions, it is simple to parse a string to determine if it's a declaration. We will further assume that the user is acting in good faith and typing only valid Java code that compiles under said assumptions; responses to inputs such as \ttt{intttt x = 5;} will not be considered in this example.\footnote{We make prolific use of regular expressions in this next section. You are free to gloss over these details or use raw string parsing with substring and equals, but regex makes the parsing process significantly faster.}
 
-\begin{cl}[JavaRepl.java]{Declaration Determination Methods}
 \begin{lstlisting}[language=MyJava]
 class JavaRepl {
 
@@ -174,13 +169,11 @@ class JavaRepl {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Anything that is not a declaration is something else that belongs inside the body of \ttt{execute}, and is executed accordingly. For instance, if we declare $i$ to be zero, then use a post-increment operator on $i$, the \ttt{i++} statement is stored inside \ttt{Interp1}'s \ttt{execute} body, and is invoked prior to the next standard input reading. 
 
 Now, onto the main event. We know how to read lines/data from standard input, so that's nothing more than a rehashing of what we've seen before. We create an infinite loop, read in a single string (line), and create a \ttt{File} object out of that string by storing it in a temporary class file. Where do we create that temporary class file? In a temporary directory, which is created by a static method in the\ttt{Files} class. Let's set this up in the constructor of \ttt{JavaRepl}, since the temporary directory (path) won't change for the lifetime of the program. Let's also instantiate the standard input reading mechanism, i.e., a \ttt{BufferedReader} that operates over an \ttt{InputStreamReader}.
 
-\begin{cl}[JavaRepl.java]{}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 import java.nio.file.Files;
@@ -204,11 +197,9 @@ class JavaRepl {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 With this, we know that we want to store the class and what its name should be, thanks to a counter that starts at zero. In the \ttt{createJavaFile} method, we create a \ttt{File} at the correct location, with its contents populated by a writer of some kind. Here is where we make use of the \ttt{isDeclaration} method---if the source code that we pass is, in fact, a declaration, we precede it with the \ttt{static} keyword. Otherwise, it resides inside the \ttt{static void execute()} method. Creating and returning this file is straightforward. We need to account for the fact that if the class number is zero, we do not extend any class. As a corollary point, to be able to use certain classes, e.g., \ttt{List}, at the REPL, we include two wildcard imports from the I/O and utilities Java packages.
 
-\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 class JavaRepl {
   // ... other methods not shown.
@@ -241,11 +232,9 @@ class JavaRepl {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Here we run into our first of two roadblocks: how to compile the file at runtime. Fortunately, there exists the Java compiler API, which contains methods and classes to compile a file definition. Most of this code is boilerplate ``setup,'' so understanding it completely is unnecessary. At the core, we instantiate a compiler object, as well as a list of diagnostics that may result from compiling the program (e.g., error messages). These get passed into a compilation unit that executes the compiler. Upon success, it produces a \ttt{.class} file in the temporary directory, as we would if we were compiling our Java code by hand. We will instantiate the \ttt{JavaCompiler}, \ttt{StandardJavaFileManager}, and \ttt{DiagnosticCollector} objects in the constructor. More importantly we have the \ttt{executeRepl} method, which starts the REPL and listens for data on standard input. This is where we use the API to compile and produce the \ttt{.class} file.   
 
-\begin{cl}[]{Using the Java Compiler API}
 \begin{lstlisting}[language=MyJava]
 import javax.tools.*;
 import java.lang.StringBuilder;
@@ -298,13 +287,11 @@ class JavaRepl {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 If the compilation was unsuccessful, thereby meaning \ttt{ok} is false, we iterate over the diagnostics received from the compile and print them to the standard error stream. Otherwise, we know it successfully compiled and we now have a class file.
 
 Now comes the second roadblock: we want to load this file into memory via the reflection API and preserve changes to static fields. For example, if we increment/reassign a variable, its state should be updated across the REPL. To do this, we need to use a common class loader\index{common class loader}, which persists changes to static fields and means we can load a new class at runtime. Indeed, we want to load the new class that we just compiled, namely \ttt{Interp$X$}, and invoke its \ttt{execute} method. This is nothing new, but what we have not seen is the common class loader approach; we store an instance of \ttt{URLClassLoader} that gets instantiated to refer to the temporary directory path, in our constructor. Therefore, when loading a class via \ttt{loadClass}, any changes we made to previous variables remain loaded into memory.
 
-\begin{cl}[]{Using the Reflection API}
 \begin{lstlisting}[language=MyJava]
 class JavaRepl {
 
@@ -345,6 +332,5 @@ class JavaRepl {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 In summary, we load the current class, reflectively grab its \ttt{execute} method, then execute it with \ttt{null} as an argument, designating that it is a static method in the class. Finally we increment the class number for the next line.

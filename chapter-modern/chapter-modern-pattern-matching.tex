@@ -4,7 +4,6 @@ Pattern matching is a powerful tool for working with data. It allows the program
 
 \example{Suppose we want to write a method that uses pattern matching to compute the perimeter of an \ttt{IShape}. We can do this by matching on the shape and then computing the perimeter for each type of shape.}
 
-\begin{cl}[]{Example of Pattern Matching}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -24,11 +23,9 @@ class PatternMatchingTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 The definitions of \ttt{Rectangle}, \ttt{Circle}, \ttt{Triangle}, and \ttt{IShape} are trivial and have been shown in previous chapters. The \ttt{perimeter} method, which is static inside \ttt{PatternMatching}, is shown below. We return the result of a \ttt{switch} expression, which matches against the possible subtypes of \ttt{IShape}. We create a temporary binding for the identifier \ttt{shape} that is bound to the \ttt{IShape} object passed into the method. This, in effect, casts the \ttt{IShape} to the subtype that is pattern matched, and we can then access the respective non-private methods and fields of the specific subtype rather than being restricted to only members of the \ttt{IShape} interface.
 
-\begin{cl}[]{Pattern Matching}
 \begin{lstlisting}[language=MyJava]
 imoprt java.lang.IllegalArgumentException;
 
@@ -49,13 +46,11 @@ class PatternMatching {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 We can also use ``guard expressions'' when constructing patterns to only match a pattern if a condition holds for that pattern.
 
 \example{Suppose that we want to write a factorial method using pattern matching. We can do this by matching on the argument to the factorial method. If the argument is zero, we return one. Otherwise, we return the argument multiplied by the factorial of the argument minus one. We can use a guard expression to ensure that the argument is non-negative.}
 
-\begin{cl}[]{Example of Guard Expressions} 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -74,9 +69,7 @@ class FactorialTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Factorial}
 \begin{lstlisting}[language=MyJava]
 import java.lang.IllegalStateException;
 
@@ -91,7 +84,6 @@ class Factorial {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Notice that we have to use the wrapper class, since Java permits only special types of pattern matching over the primitive data types, and otherwise works with objects. As an example, we could replace the first case with a match against the literal zero, since Java autounboxes the \ttt{Integer} object to a primitive \ttt{int}, e.g., \ttt{case 0 -> 1;}. Unfortunately we cannot use guard expressions over primitives.
 
@@ -125,7 +117,6 @@ public boolean equals(Object o) {
 
 \example{Suppose that we want to override the \ttt{equals} method inside \ttt{Rectangle} using pattern matching. It's possible to use an \ttt{if} statement rather than resolving the \ttt{instanceof} check in an expression, but the latter is much more concise and solves the same problem.}
 
-\begin{cl}[]{Rectangle Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -145,9 +136,7 @@ class RectangleTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Rectangle}
 \begin{lstlisting}[language=MyJava]
 class Rectangle implements IShape {
 
@@ -171,7 +160,6 @@ class Rectangle implements IShape {
   double getHeight() { return this.HEIGHT; }
 }
 \end{lstlisting}
-\end{cl}
 
 
 \subsection{Record Types}
@@ -180,7 +168,6 @@ Our perimeter pattern matcher is helpful and convenient, but what is not-so-conv
 
 \example{Using record types, let's write a small interpreter for a simple language that supports arithmetic expressions and boolean expressions. Instead of the interface approach that we took before, we will use records and pattern matching to evaluate the expressions. With this, our interpreter will make use of \ttt{var}: a new keyword for a variable whose type is inferred from the type of the expression on the right-hand side of the assignment operator. This allows us to omit long and complex types such as \ttt{BigDecimal}.} 
 
-\begin{cl}[]{Testing the Evaluator}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -198,15 +185,11 @@ class EvaluatorTest {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Expression Interface}
 \begin{lstlisting}[language=MyJava]
 interface IExpr {}
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{``Number'' Record Type}
 \begin{lstlisting}[language=MyJava]
 import java.lang.BigDecimal;
 
@@ -215,15 +198,11 @@ record Number(BigDecimal value) implements IExpr {
   Number(int value) { this(new BigDecimal(value)); }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{``Add'' Record Type}
 \begin{lstlisting}[language=MyJava]
 record Add(IExpr left, IExpr right) implements IExpr {}
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Evaluator}
 \begin{lstlisting}[language=MyJava]
 import java.lang.IllegalArgumentException;
 import java.lang.BigDecimal;
@@ -244,7 +223,6 @@ class Evaluator {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 In the interpreter, we pattern match on the constructors of our record types. For example, in the \ttt{eval} method, when pattern matching on the \ttt{Add} constructor. We create temporary bindings for the identifiers \ttt{left} and \ttt{right} that are bound to the respective \ttt{Expr} objects that are passed into the constructor. We then recursively call \ttt{eval} on these objects and add the results together. We do the same for the other constructors of \ttt{Expr}. To make testing the program easier, we designed a secondary constructor for \ttt{Number} that receives an integer and converts it to a \ttt{BigDecimal}. Note that self-defined constructors of a record can only reference other constructors via \ttt{this(...)}.
 
@@ -267,21 +245,16 @@ It is the job of the lexer to categorize the input into patterns that the progra
 
 Before we write the lexer and test cases, we need to determine what comprises a token. Tokens have token types, e.g., \ttt{L\_PAREN} and so forth, as well as an associated string. In the case of, say, a \ttt{NUMBER}, the associated string \emph{is} that number represented by the token, e.g,. \ttt{40}. Let's use a Java record to represent a \ttt{Token}, and an enumeration for the types of tokens. We will integrate tokens into the lexer tests, so it makes little sense to write separate tests for tokens and token types.
 
-\begin{cl}[TokenType.java]{Token Type Enumeration}
 \begin{lstlisting}[language=MyJava]
 enum TokenType { L_PAREN, R_PAREN, NUMBER, SYMBOL }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[Token.java]{Token Record}
 \begin{lstlisting}[language=MyJava]
 record Token(TokenType type, String data) { }
 \end{lstlisting}
-\end{cl}
 
 The implementation of the lexer is not complicated---the static \ttt{lex} method receive a \ttt{String} and returns a \ttt{Queue<Token>} containing all identified tokens. As we stated earlier, we first add the required spacing, then split on the whitespace character, producing a \ttt{String[]} of raw tokens. Then, we iterate over these strings and enqueue an instance of \ttt{Token} with the respective token type and data. For identifying numbers, we simply determine if an attempt to parse the string as a number results in an exception and, if not, it becomes a \ttt{NUMBER} token. Otherwise, the only option (assuming we identify parentheses before this case) is some kind of symbol token.
 
-\begin{cl}[LexerTester.java]{Testing the Lexer}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -322,9 +295,7 @@ class LexerTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[Lexer.java]{Implementation of Lexer}
 \begin{lstlisting}[language=MyJava]
 import java.util.LinkedList;
 import java.util.Queue;
@@ -367,7 +338,6 @@ class Lexer {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 As we see, we can make use of streams and collectors to populate the queue of tokens. The \ttt{createToken} method is responsible for creating the respective token type from the input. Subsequent updates to the grammar of the language would result in only needing to update \ttt{createToken} rather than requiring a change to the internals of the lexer algorithm itself. Suppose that we want to add boolean literals into the language. Thus, we need two modifications: 1) add a boolean \ttt{TokenType} and 2) add a clause in the switch expression to return a \ttt{Token} that represents a \ttt{TokenType.BOOLEAN} or something similar.
 
@@ -377,7 +347,6 @@ Our parser implementation contains a single static method: \ttt{parse}, which re
 
 To parse the list of tokens, we peek at the head of the queue and match on its type. If it is a number or a symbol, we instantiate an instance of the appropriate subclass type. If we encounter a left parenthesis, then we must do more work, that work being to parse the contents inside the parentheses. We traverse over the tokens until we encounter a right parenthesis, recursively parsing and adding each abstract syntax tree node to a running \ttt{SExprNode} instance. Because the process is recursive, we handle the cases in which an s-expression is nested inside another, which was the case in the third test case from the lexer tester.
 
-\begin{cl}[ParserTester.java]{Testing the Parser}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -410,9 +379,7 @@ class ParserTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[Parser.java]{Parser Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.util.Objects;
 import java.util.Queue;
@@ -476,7 +443,6 @@ class Parser {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Fortunately the parser is also not to difficult to understand. We perform a case analysis on the token and either return an abstract syntax tree node or create one from an s-expression.
 

@@ -6,7 +6,6 @@ Presumably this section discusses file input and output syntax and semantics. Al
 
 \example{Let's write a program that reads data from a file and echos it to standard output.}
 
-\begin{cl}[FileInputStreamExample.java]{Reading File Data Example}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -34,7 +33,6 @@ class FileInputStreamExample {
   } 
 }
 \end{lstlisting}
-\end{cl}
 
 Recall that in the previous section we mentioned checked exceptions, and deferred the discussion until generalized input and output. Now that we are here, we can refresh our memory and actually put them to use. A checked exception\index{checked exception} is an exception enforced at compile-time.We emphasize the word enforced because the exception is not handled until runtime, but we must place the code that may throw the checked exception within a \ttt{try/catch} block, as we did with the file input stream example. Namely, the \ttt{FileInputStream} constructor is defined to potentially throw a \ttt{FileNotFoundException}, whereas its \ttt{read} method throws a generalized \ttt{IOException} if some kind of input error occurs. Since \ttt{FileNotFoundException} is a subclass/subexception type of \ttt{IOException}, we could omit the distinct catch clause for this exception. 
 
@@ -42,7 +40,6 @@ When reading from an input source that is not \ttt{System.in}, it is imperative 
 
 \example{Let's use the try-with-resources block to copy the contents of one file to another. In essence, we will write a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.}
 
-\begin{cl}[FileCopyExample.java]{Copying File Data Example with Try-With-Resources}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 
@@ -61,13 +58,11 @@ class FileCopyExample {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 The file input and output stream classes read data as raw bytes from their source/destination streams. In most circumstances, we probably want to read characters from a data source or to a data destination. To do so, we can instead opt to use the \ttt{FileReader} class, which extends \ttt{Reader} rather than the \ttt{InputStream} class. Namely, \ttt{FileReader} is for reading text, whereas \ttt{FileInputStream} is for reading raw byte content of a file. Therefore a \ttt{FileReader} can read only textual files, i.e., files without an encoding, e.g., \ttt{.pdf}, \ttt{.docx}, and so forth.
 
 \example{Using \ttt{FileReader}, we will once again write an ``echo'' program, which reads data from its file source and outputs it to standard output. Of course, we may want to output data to a file, in which case we use the dual to \ttt{FileReader}, namely \ttt{FileWriter}. In summary, \ttt{FileWriter} provides several methods for writing strings and characters to a data destination. In this example we will also write some data to a test file, then examine its output based on the method invocations that we make.}
 
-\begin{cl}[FileReaderWriterExamples.java]{Examples of File Reader and Writer}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 
@@ -94,7 +89,6 @@ class FileReaderWriterExamples {
 }
 
 \end{lstlisting}
-\end{cl}
 
 If we open the \ttt{file2.out}, we see that it outputs \ttt{"Here is a string"} on one line, followed by \ttt{"Here is another string"} on the next line. Then, we might expect it to output the numeric strings \ttt{"9"}, \ttt{"71"}, and \ttt{"33"} all on the same line. The \ttt{write} method will coerce (valid) numbers into their ASCII character counterparts, meaning that the file contains the tab character, an uppercase \ttt{`G'}, and the exclamation point \ttt{`!'}. As we will soon demonstrate, working directly with \ttt{FileReader} and \ttt{FileWriter} is rarely advantageous. 
 
@@ -133,7 +127,6 @@ The problem with the file input and output stream classes, as well as the file r
 
 \example{Using \ttt{BufferedReader} and \ttt{BufferedWriter}, we will write a program that reads data from a file and outputs it to another file.}
 
-\begin{cl}[BufferedReaderWriterExample.java]{Buffered Reader and Writer Example}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 
@@ -150,11 +143,9 @@ class BufferedReaderWriterExample {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 The benefits of buffered I/O are not obvious to us as the programmers who use these classes. We can, however, directly compare the timed performance of buffered I/O to non-buffered I/O. The following code shows two implementations of reading the contents of a very large file and echoing them to another. We have two defined methods: \ttt{buffered} and \ttt{nonbuffered}, which utilize the \ttt{BufferedReader/Writer} and \ttt{FileInput/\-OutputStream} classes respectively. Upon testing, we see that the buffered variant takes around three seconds to finish, whereas the nonbuffered version took over four minutes!
 
-\begin{cl}[PerformanceExamples.java]{Buffered versus Non-Buffered I/O Performance}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 
@@ -176,8 +167,7 @@ class PerformanceExamples {
     } catch (IOException ex) { ex.printStackTrace(); }
   }
 }
-\end{lstlisting}
-\end{cl}  
+\end{lstlisting}  
 
 The classes that we have explored thus far are primarily for reading/writing either binary or text data. Perhaps we want to output values that are not strictly strings or raw bytes, e.g., integers, doubles, floats, and other primitives datatypes. To do so, we can instantiate a \ttt{PrintWriter} instance, which itself receives an instance of the \ttt{Writer} class. A concern for some programmers may be that we lose the benefits of buffered I/O, but this is not the case; the constructor for \ttt{PrintWriter} wraps the writer object that it receives in an instantiation of a \ttt{BufferedWriter} object. Therefore, we do not forgo any performance gains from buffered writing, while gaining the ability to write non-strictly-text data.
 
@@ -200,7 +190,6 @@ The classes that we have explored thus far are primarily for reading/writing eit
 
 \example{Using \ttt{PrintWriter}, let's output some arbitrary constants and formatted strings to a file.}
 
-\begin{cl}[PrintWriterExample.java]{Using the \ttt{PrintWriter} Class}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 
@@ -216,7 +205,6 @@ class PrintWriterExample {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 And thus the contents of \ttt{file4.out} are, as we might expect:
 
@@ -230,7 +218,6 @@ We now have methods for reading strings and raw bytes, as well as methods for ou
 
 \example{Let's use \ttt{ObjectInput/OutputStream} classes to serialize an object of type \ttt{Player}, which has a name, score, health, and array of top scores. To designate that an object can be serialized, it must implement the \ttt{Serializable} interface. This interface is a \emph{marker interface}\index{marker interface}, meaning that it has no methods to implement. Instead, it is a flag that tells the compiler that the class can be serialized. Our example will also demonstrate the idea that classes can contain other class definitions, which is useful for grouping related classes together. The \ttt{ObjectStreamExample} class defines the private and static \ttt{Player} class as described above. Should we open the \ttt{player.out} file, we see that it contains incomprehensible data; this is because the data is intended to be read only by a program.}
 
-\begin{cl}[ObjectStreamExample.java]{(De-)Serializing the \ttt{Player} Class}
 \begin{lstlisting}[language=MyJava]
 import java.io.Serializable;
 
@@ -260,7 +247,6 @@ class ObjectStreamExample {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Suppose, on the contrary, that we store objects as strings in a file. This has two problems: first, as we said before, we would need to recursively serialize all compositional objects of the object that we are serializing. Second, we would need to write a parser to read the stringified object and reinitialize its fields. In essence, we have to reinvent worse versions of preexisting classes.
 
@@ -283,7 +269,6 @@ Suppose, on the contrary, that we store objects as strings in a file. This has t
 
 We will say that an \ttt{Employee} contains an employee identification number, a first name, a last name, a salary, and whether or not they are full-time staff. Each row in the file contains an \ttt{Employee} record.
 
-\begin{cl}[Employee.java]{Employee Class Definition}
 \begin{lstlisting}[language=MyJava]
 class Employee {
 
@@ -309,7 +294,6 @@ class Employee {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Our method will return a list of \ttt{Employee} instances that has been populated after reading the data from the file. In particular, the \ttt{nextLong}, \ttt{nextDouble}, \ttt{nextBoolean}, and \ttt{next} methods will be helpful. The \ttt{next} method, whose behavior is not obvious from the name, returns the next sequence of characters prior to a whitespace. 
 
@@ -321,7 +305,6 @@ To test, we will create a file containing the following contents:
 789 Bob Jones 50000.00 false
 \end{verbnobox}
 
-\begin{cl}[EmployeeScannerTester.java]{Testing the \ttt{EmployeeScanner} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -342,9 +325,7 @@ class EmployeeScannerTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[EmployeeScanner.java]{Reading Employee Records}
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 import java.util.List;
@@ -377,7 +358,6 @@ class EmployeeScanner {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 At this point we have seen several methods and classes for reading data from different data sources. Let's now write a few more meaningful programs.
 
@@ -417,7 +397,6 @@ At this point we have seen several methods and classes for reading data from dif
 
 \example{Let's write a program that reads a file containing integers and outputs, to another file, the even integers. Because our input file has only integers, we can use the \ttt{Scanner} class for reading the data and \ttt{PrintWriter} to output those even integers. To make the program a bit more interesting, we will read the input file from the terminal arguments, and output the even integers to a file whose name is the same as the input file, but instead with the \ttt{.out} extension.}
 
-\begin{cl}[EvenIntegers.java]{Reading and Writing Even Integers}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 import java.util.Scanner;
@@ -447,7 +426,6 @@ class EvenIntegers {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{Let's write a program that returns an array containing the number of lines, words, and characters (including whitespaces but excluding newlines) in a given file. The array indices correspond to those quantities respectively. To simplify the program, words will be considered strings as separated by spaces. For example, if the file contains the following contents:}
 
@@ -458,7 +436,6 @@ Here is the last line.
 \end{verbnobox}
 The returned array should be \ttt{[3, 14, 46]}. This way we can write JUnit tests to verify that our program works as intended.
 
-\begin{cl}[LineWordCharCounterTester.java]{Testing the \ttt{LineWordCharCounter} Class}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -475,9 +452,7 @@ class LineWordCharCounterTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[LineWordCharCounter.java]{Counting Lines, Words, and Characters}
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 import java.util.File;
@@ -506,7 +481,6 @@ class LineWordCharCounter {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{Going further with terminal arguments, let's write a program that receives multiple file names from the terminal, and outputs a file with all of the data concatenated into one. We will throw an exception if the user passes in files that do not all share the same extension. As an example, should the user input}
 \begin{verbnobox}[\small]
@@ -514,7 +488,6 @@ java ConcatenateFiles file1.txt file2.txt file3.txt output-file.txt
 \end{verbnobox}
 then the program should output a file \ttt{output-file.txt} that contains the contents of \ttt{file1.txt}, \ttt{file2.txt}, and \ttt{file3.txt} in that order. 
 
-\begin{cl}[ConcatenateFiles.java]{Concatenating Files}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 import java.util.Arrays;
@@ -577,7 +550,6 @@ class ConcatenateFiles {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 
 
@@ -590,7 +562,7 @@ class ConcatenateFiles {
 Aside from the aforementioned classes for working with files and I/O, Java's later versions provide methods and classes that achieve the same task as those that we might otherwise need to write several lines of code. 
 
 \example{To read the lines from a given file, we might open the file using a \ttt{BufferedReader} and \ttt{FileReader} object, read the values into some collection, e.g., a list, then process those lines accordingly. This gets repetitive, so it might be a good idea to write a method that does this for us, and is an exercise that we provide to the reader. Java 8 introduced two classes: \ttt{Files} and \ttt{Path} that work with files and paths respectively. Let's use a handy method from \ttt{Files}, namely \ttt{readAllLines}, to, as its name implies, read the lines from an input file. }
-\begin{cl}[]{}
+
 \begin{lstlisting}[language=MyJava]
 import java.nio.file.Files;
 import java.util.List;
@@ -607,7 +579,6 @@ class ReadAllLines {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 We still need to catch an \ttt{IOException} because \ttt{readAllFiles} might throw one in the event of some I/O error. What may be slightly disappointing is the fact that we cannot wrap this in a try-with-resources block because \ttt{readAllLines} opens and closes the file it receives, resulting in what might appear to be less succinct code. Moreover, the method receives a \ttt{Path}, rather than a \ttt{String}, which we believe to be an attempt made by Java to prevent the programmer from needing to mess with strings and other input resources directly. 
 
@@ -617,7 +588,6 @@ To start this problem, let's consider our options: we have one billion rows of t
 
 To start, let's design the skeleton for our method, which we will name \ttt{computeTemperatures}, as well as the \ttt{Measurement} private class. Moreover, when instantiating a new \ttt{Measurement} instance, its current minimum, maximum, and total are all equal to the value on the current line.
 
-\begin{cl}[TemperatureComputer.java]{}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.nio.file.*;
@@ -663,13 +633,11 @@ class TemperatureComputer {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 As stated, using a map is the appropriate data structure, so let's instantiate a \ttt{HashMap} due to its quick lookup times. Then, we declare, inside a try-with-resources, a \ttt{Stream<String>}, returned by the \ttt{lines} method. Once either the stream is fully consumed, the stream is closed, or the program execution finishes the try block, the file is also closed. From the stream, we could use a traditional for-each loop, but let's use stream operations instead. For every line $l$, we want to split it on the semicolon, retrieve the location and temperature, then update the map as necessary. Because we need to update the state of an object if it exists in the map, we will utilize the \ttt{putIfAbsent} method, which returns the associating \ttt{Measurement} if the key-to-put already exists.
 
 Lastly, we must conjoin the sorted pairs in the map with commas, which we can do via the \ttt{sorted()} and \ttt{Collectors.joining()} methods. In addition to this, we added a \ttt{toString} method to \ttt{Measurement} that returns a formatted string containing the minimum, average, and maximum temperatures floated to one decimal. Due to how trivial this is, we omit it in the listing.
 
-\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -708,7 +676,6 @@ class TemperatureComputer {
   // ... other class not shown.
 }
 \end{lstlisting}
-\end{cl}
 
 With inputs as large as what we assume them to be, we must make reasonable considerations with our choice of data structure. We could, theoretically, use a \ttt{TreeMap} and have the program autosort the measurement map pairs, but this is a performance penalty that is greater than using the \ttt{sorted} method as provided by the stream API over the map keys. In our tests, using a \ttt{TreeMap} amounted to a forty second performance penalty.
 
@@ -718,7 +685,6 @@ The most straightforward algorithm to solve a Sudoku puzzle is via a backtrackin
 
 Let's write the \ttt{SudokuSolver} class, whose constructor receives a file that represents a partial Sudoku puzzle. The input specification contains nine rows and nine columns, with dots to denote a missing number. From here, we will design the \ttt{boolean solve()} method, which returns whether or not a solution exists. If there is one, it is stored in an instance variable of the class. We will also design the \ttt{void output(String fileName)} method to output the solution to a file. If there is no solution, the program will throw an \ttt{IllegalStateException} to indicate a failure.
 
-\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.nio.file.*;
@@ -757,7 +723,6 @@ class SudokuSolver {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Our \ttt{solve} method jump-starts a backtracking algorithm that attempts to solve the puzzle using recursion. Let's design a private helper method to receive the row $r$ and column $c$ of the cell to fill. If $r$ and $c$ are both equal to $N$, then we have reached the end of the board and therefore have a solution. Otherwise, we need to find the next empty cell to fill. This is a three-step process:
 \begin{enumerate}[label=(\roman*)]
@@ -768,7 +733,6 @@ Our \ttt{solve} method jump-starts a backtracking algorithm that attempts to sol
 
 What does it mean for a number to be valid? A number is valid in its placement if it does not already exist in the row, column, or subgrid. Let's write another private helper method that, when given a cell at row $r$ and column $c$, and a number $n$, determines whether or not the number is valid.
 
-\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.nio.file.*;
@@ -810,11 +774,9 @@ class SudokuSolver {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 From this we can begin to work on the recursive backtracking algorithm, using the outline we provided earlier. 
 
-\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.nio.file.*;
@@ -865,11 +827,9 @@ class SudokuSolver {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Finally, the \ttt{output} method is straightforward. We use a \ttt{PrintWriter} to write the solution to a file. If there is no solution, meaning the solution instance variable is set to \ttt{null}, we throw an \ttt{IllegalStateException}.
 
-\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.nio.file.*;
@@ -904,4 +864,3 @@ class SudokuSolver {
   }
 }
 \end{lstlisting}
-\end{cl}

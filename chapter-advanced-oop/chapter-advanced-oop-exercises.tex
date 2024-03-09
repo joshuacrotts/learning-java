@@ -13,16 +13,13 @@ The \emph{Kotlin} programming language supports customized \emph{ranges}. That i
 \exercise{2}{chapter-advanced-oop}{Design the generic static method \ttt{T validateInput(String prompt, String errResp, U extends Predicate<T> p)} that receives a prompt, an error response, and an object that implements the \ttt{Predicate} interface to test whether or not the received value, received through standard input, is valid. If the value is invalid according to the predicate, print the error response and re-prompt the user. Otherwise, return the entered value.}
 
 \exercise{3}{chapter-advanced-oop}{A \emph{lazy list} is one that, in theory, produces infinite results! Consider the \ttt{ILazyList} interface below:}
-\begin{cl}[ILazyList.java]{}
 \begin{lstlisting}[language=MyJava]
 interface ILazyList<T> {
   T next();
 }
 \end{lstlisting}
-\end{cl}
 
 When calling \ttt{next} on a lazy list, we update the contents of the lazy list and return the next result. We mark this as a generic interface to allow for any desired return type. For instance, below is a lazy list that produces factorial values:\footnote{We will ignore the intricacies that come with Java's implementation of the \ttt{int} datatype. To make this truly infinite, we could use \ttt{BigInteger}.}
-\begin{cl}[FactorialLazyList.java]{}
 \begin{lstlisting}[language=MyJava]
 class FactorialLazyList implements ILazyList<Integer> {
 
@@ -42,11 +39,9 @@ class FactorialLazyList implements ILazyList<Integer> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Testing it with ten calls to \ttt{next} yields predictable results.
 
-\begin{cl}[FactorialLazyListTester.java]{Testing Factorial Lazy List}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -70,11 +65,9 @@ class FactorialLazyListTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Design the \ttt{FibonacciLazyList} class, which implements \ttt{ILazyList<Integer>} and correctly overrides \ttt{next} to produce Fibonacci sequence values. You code should \emph{not} use any loops or recursion. Recall that the Fibonacci sequence is defined as $f(n) = f(n - 1) + f(n - 2)$ for all $n\geq{2}$. The base cases are $f(0) = 0$ and $f(1) = 1$.
 
-\begin{cl}[FibonacciLazyListTester.java]{Testing Fibonacci Lazy List}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -98,11 +91,9 @@ class FibonacciLazyListTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \exercise{2}{chapter-advanced-oop}{Design the \ttt{LazyListTake} class. It should receive an \ttt{ILazyList} and an integer $n$ denoting how many elements to take, as parameters. Then, write a \ttt{List<T> getList()} method, which returns a \ttt{List<T>} of $n$ elements from the given lazy list.}
 
-\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -122,11 +113,9 @@ class LazyListTakeTester {
  }
 }
 \end{lstlisting}
-\end{cl}
 
 \exercise{2}{chapter-advanced-oop}{Java's functional API allows us to pass lambda expressions as arguments to other methods, as well as method references (as we saw in Chapter~\ref{chapter-arrays-collections}). Design the generic \ttt{FunctionalLazyList} class to implement \ttt{ILazyList}, whose constructor receives a unary function \ttt{Function<T, T> f} and an initial value \ttt{T t}. Then, override the \ttt{next} method to invoke $f$ on the current element of the lazy list and return the previous. For example, the following test case shows the expected results when creating a lazy list of infinite positive multiples of three.}
 
-\begin{cl}[]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 import static Assertions.assertAll;
@@ -145,7 +134,6 @@ class FunctionalLazyListTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 What's awesome about this exercise is that it allows us to define the elements of the lazy list as any arbitrary lambda expression, meaning that we could redefine \ttt{FactorialLazyList} and \ttt{FibonacciLazyList} in terms of \ttt{FunctionLazyList}. We can generate infinitely many ones, squares, triples, or whatever else we desire.
 
@@ -183,7 +171,6 @@ Variables, in our language, are defined and bound exactly once, namely when they
 
 \exercise{3}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.} Having to manually update our case analysis on the primitive operator type is cumbersome and prone to mistakes. A better solution would be to store the operator and its corresponding ``handler'' method, i.e., the method that receives the operands and does the logic of the operator. We can do this via a map where the keys are the string operators and the values are functional references to the handlers. Unfortunately, Java does not directly support passing methods as parameters, meaning they are not first-class. Conversely, we can make use of Java's functional interfaces to achieve our goal. Namely, the interface will contain one method: \ttt{Lvalue apply(List<Lvalue> args, Environment env)}, where \ttt{args} is the list of evaluated arguments. We will call the interface \ttt{IFunction} and make it generic, with the first type quantified to a list of \ttt{Lvalue} instances, and the second type quantified to \ttt{Lvalue}. Hopefully, the connection between these quantified types and the signature of \ttt{apply} is apparent. Using the below definition of \ttt{IFunction}, update \ttt{PrimNode} to no longer perform a case analysis in favor of the map. We provide an example of populating the map with the initial operators in a \ttt{static} block.
 
-\begin{cl}[]{Functional Interface for Primitive Operators}
 \begin{lstlisting}[language=MyJava]
 @FunctionalInterface
 interface IFunction<T, R> {
@@ -191,9 +178,7 @@ interface IFunction<T, R> {
   R apply(T t);
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[PrimNode.java]{Primitive Node Class with Function Map}
 \begin{lstlisting}[language=MyJava]
 import java.util.Map;
 import java.util.HashMap;
@@ -227,7 +212,6 @@ class PrimNode extends AstNode {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \exercise{3}{chapter-advanced-oop}{This exercise is multi-part and involves the interpreter we wrote in the chapter.}
 \begin{enumerate}[label=(\alph*)]
@@ -292,7 +276,6 @@ The Scheme programming language and its derivatives support \emph{code quotation
 
 The problem with tail recursion (and recursion in general) in Java is the fact that it does not convert tail calls into iteration, which means the stack quickly overflows with activation records. We can make use of a \emph{trampoline} to force the recursion into iteration through \emph{thunks}. In essence, we have a tail recursive method that returns either a value or makes a tail recursive call, such as the factorial example below.\footnote{We omit the driver method to shorten the code, as the important part lies inside the recursive implementation.} Inside our base case, we invoke the \ttt{done} method with the accumulator value. Otherwise, we invoke the \ttt{call} method containing a lambda expression of no arguments, whose right-hand side is a recursive call to \ttt{factTR}. Functions, or lambda expressions, that receive no arguments are called thunks.
 
-\begin{cl}[FactorialTailRecursiveTester.java]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -313,9 +296,7 @@ class FactorialTailRecursiveTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[FactorialTailRecursive.java]{}
 \begin{lstlisting}[language=MyJava]
 import java.lang.BigInteger;
 
@@ -338,7 +319,6 @@ class FactorialTailRecursive {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 The idea is that we have a helper class and method, namely \ttt{invoke}, that continuously applies the thunks, \textbf{inside a while loop}, until the computation is done. The trampoline analogy is used because we bounce on the trampoline while invoking thunks and jump off when we are ``done.''
 

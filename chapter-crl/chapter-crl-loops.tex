@@ -33,7 +33,7 @@ Notice that, in order to ``tail-recursify'' \texttt{fact}, we had to add an extr
 
 Our iterative version of \texttt{fact} should move all ``accumulator'' variables into the method body. E.g., \texttt{acc} will now be declared locally to the \texttt{fact} method. In addition to this movement, all accumulator-to-local variables should have an ``iterative purpose statement,'' which mimics the documentation comment for the accumulator parameter.
 
-\begin{cl}[]{Localizing Accumulator Variables}
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
   // acc stores the current factorial value as n goes to zero.
@@ -41,11 +41,9 @@ static int fact(int n) {
   // TODO.
 }
 \end{lstlisting}
-\end{cl}
 
 Second, we must describe the syntax of a loop. A \texttt{while} loop is the construct of choice, and it has two components: a condition denoted as a predicate, and a body. The loop checks to see if the given predicate is true and, if so, executes the body of the loop. On the other hand, if the predicate is false, we jump down to below the loop. Each pass through the loop, it re-verifies that the predicate holds true. Unlike expressions, however, a \texttt{while} loop, itself, does not resolve to some value. It is called a \emph{statement} because of this property. Let us begin by defining the predicate of our loop. To answer this, we ask, then answer, the question of the base case(s) for our tail recursive method. As we see, our base case is true when $n$ is zero. Therefore our loop should continue to execute as long as $n$ is not zero. One tail recursive method call correlates directly with one loop iteration. So, let us remove the \texttt{if}/\texttt{else} statement chain and substitute them by a loop whose condition is nothing more than the negated base case(s).
 
-\begin{cl}[]{Adding the Loop and Negated Predicate}
 \begin{lstlisting}[language=MyJava]
 static int fact(n) {
   // acc stores the current factorial value as n goes to zero.
@@ -55,11 +53,9 @@ static int fact(n) {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Finally, we come to the heart of the loop. Within, we update variables according to how they are updated in the tail recursive call. Namely, as we saw, $n$ is decremented by $1$, and $\emph{acc}$ is multiplied by $n$. We must be careful, however, because the order of these statements is significant! In the tail recursive method call to \texttt{fact}, the $n$ that is decremented is passed to the method, whereas the original value of $n$ is used when multiplying by $\emph{acc}$. As a result, the accumulator update should come first.
 
-\begin{cl}[]{Loop Body Becomes Tail Recursive Updates}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
   // acc stores the current factorial value as n goes to zero.
@@ -70,11 +66,9 @@ static int fact(int n) {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 We are almost done. The loop body is now complete, with each modification pairing precisely with some piece of the tail recursive version. All that remains is the base case return statement. In our tail recursive method, once we hit the base case, we return \texttt{acc}. We model this, of course, using a return outside the loop.
 
-\begin{cl}[]{Return the Base Case}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
   // acc stores the current factorial value as n goes to zero.
@@ -86,7 +80,6 @@ static int fact(int n) {
   return acc;
 }
 \end{lstlisting}
-\end{cl}
 
 Excellent, we now have an iterative version of the factorial method! Let us compare these two side-by-side, color-coding their similarities. Base cases are \textcolor{red}{red}, accumulated variables/steps are \textcolor{darkyellow}{yellow}, and return values are \textcolor{darkgreen}{green}. 
 
@@ -166,7 +159,6 @@ Finally, in \emph{$TR_\mathbf{Ret}$}, we add the line to return the accumulated 
 
 \subsection{\emph{$TR_\mathbf{H}$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. Each of these play a crucial role in the transition to $I$, and quickly yet correctly identifying these as they fit in tail recursive methods is paramount. Let us re-look at our old factorial friend to see what this entails.
 
-\begin{cl}[]{Tail Recursive Factorial}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n, int acc) {
   if (n == 0) {
@@ -176,11 +168,9 @@ static int fact(int n, int acc) {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Marking the base case(s) is usually rather simple, as they are most often the selection statements that return a value rather than a recursive method invocation. So, the only instance of this in the above definition is $n == 0$. So, we highlight this in a color, e.g., \textcolor{red}{red}.
 
-\begin{cl}[]{Highlighting Factorial Base Case}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n, int acc) {
   if ((*;\textcolor{red}{n == 0};*)) {
@@ -190,11 +180,9 @@ static int fact(int n, int acc) {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 To coincide with the base case(s), we also want to highlight the returned values that are not recursive calls. Only one exists, namely $\emph{acc}$. Let us highlight this in \textcolor{darkgreen}{green}.
 
-\begin{cl}[]{Highlighting Factorial Returned Values}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n, int acc) {
   if ((*;\textcolor{red}{n == 0};*)) {
@@ -204,11 +192,9 @@ static int fact(int n, int acc) {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 We are almost done. Now, we want to highlight variables passed to the (tail) recursive call that are updated. When we say updated, we mean ``modified'' insofar as they are not simply copied verbatim, e.g., $f(n) = f(n)$, in which we see $n$ remains unaltered. Fortunately, both $n$ and $\emph{acc}$ are updated ($n$ is decremented by one; $\emph{acc}$ is multiplied by $n$). Let us highlight these changes in \textcolor{darkyellow}{yellow}. 
 
-\begin{cl}[]{Highlighting Factorial Updated Arguments}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n, int acc) {
   if ((*;\textcolor{red}{n == 0};*)) {
@@ -218,11 +204,9 @@ static int fact(int n, int acc) {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \subsection{\emph{$TR_\mathbf{IVP}$}:} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $\emph{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
 
-\begin{cl}[]{Accumulator Statement for Factorial}
 \begin{lstlisting}[language=MyJava]
 /**
  * @accumulator acc stores the current factorial product. 
@@ -235,24 +219,20 @@ static int fact(int n, int acc) {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 In the translation to a loop, we move $\emph{acc}$ to the body of the method, and write a similar iterative variable purpose.\footnote{By ``move,'' we mean ``remove'' but not ``delete.''} Note that the value the initialized variable receives depends on the problem/context, but it always matches whatever value is passed to a tail recursive helper method.
 
-\begin{cl}[]{Iterative Variable Purpose Statement}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
   // acc stores the current factorial product. 
   int acc = 1;
 }
 \end{lstlisting}
-\end{cl}
 
 Writing these imperative variable purposes, akin to accumulator statements, helps us organize what variables change and, more importantly, when and how they change. 
 
 \subsection{\emph{$TR_\mathbf{C}$}:} Up next is where we take our base case condition, highlighted in red, and insert it as the negated condition for our loop. First, we add the \ttt{while} keyword to our method, then follow this with a set of parentheses and an exclamation point immediately after the opening parenthesis but before the closing. Inside these parentheses we insert the base case condition. To be safe, you should also insert parentheses for the base case, which ensures that the correct expression is negated by the logical `not' operator. Follow this with an opening and closing brace set.
 
-\begin{cl}[]{Adding Condition to Loop}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
   // acc stores the current factorial product. 
@@ -262,7 +242,6 @@ static int fact(int n) {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \subsection{\emph{$TR_\mathbf{B}$}:} Finally we get to the fun part of this translation process: the body of our loop. Here we need to make a design choice of what variables to update and when they should be updated. We take the \textcolor{darkyellow}{yellow} highlighted tail recursive arguments, create assignment statements out of them, and insert them into the body of our loop. To do so, we need to follow two principles:
 
@@ -334,7 +313,6 @@ Determining the correct order of update, according to the rules we specify, may 
 
 \subsection{\emph{$TR_\mathbf{Ret}$}:}
 In our final stage of translation, we add the necessary return statement(s) that serve to return the accumulated result from our loop. We highlighted these values in \textcolor{darkgreen}{green} during the highlighting/color-coding stage.
-\begin{cl}[]{Adding Accumulator Return Statement to Loop}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
   // acc stores the current factorial product. 
@@ -346,7 +324,6 @@ static int fact(int n) {
   return acc;
 }
 \end{lstlisting}
-\end{cl}
 
 And that is it; the translation pipeline is complete, and we now know how to translate a tail recursive method into one that uses a loop.
 
@@ -368,7 +345,6 @@ Declaring an integer counter $c$ is mandatory. Our loop condition, therefore, is
 
 Up next we need a method to determine if a value is prime. We presented the definition of primality before, and it is also known that we only need to check up to the square root of $n$ for primality. Let us design such a method, writing the appropriate tests. Our condition is to continue so long as a variable, $i$, is less than or equal to the square root of our input number. The variable $i$ serves as a counter towards our number; if we find that $n$ is not divisible by any numbers from two up to the square root of $n$, then it must be prime.\footnote{We cast the result of \ttt{Math.sqrt} to an integer because it returns a \ttt{double} rather than an \ttt{int} datatype.} Note the edge cases of zero and one, which are both non-prime.
 
-\begin{cl}[SumPrimes.java]{Sum Of First 100 Primes Skeleton}
 \begin{lstlisting}[language=MyJava]
 class SumPrimes {
 
@@ -383,9 +359,7 @@ class SumPrimes {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[PrimeTester.java]{Loop Primality Tests}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertTrue;
@@ -409,9 +383,7 @@ class PrimeTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[Prime.java]{Loop Primality Implementation}
 \begin{lstlisting}[language=MyJava]
 class Prime {
 
@@ -437,11 +409,9 @@ class Prime {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 The primality tests pass, which means we can put \ttt{isPrime} to work inside of \ttt{sum100Primes}. The method logic is straightforward: initialize our counter c at one. We also need a variable to track the last-found prime integer, so we know from where to start the search. We will call this variable $l$ and initialize it to zero. Finally, a $\mathit{sum}$ variable accumulates the sum of each prime. Inside the loop, we declare another variable $v$, which serves as the value to check for primality, taking on the value of $l + 1$ (if it were just $l$, we would forever check the same value for primality!). Run $v$ through the \ttt{isPrime} method and, if it is prime, assign to $l$ the value of $v$, add $v$ to the sum, and increment $c$. Otherwise, increment $l$ by one.\footnote{We will note that this code is overly verbose for pedagogical purposes.}
 
-\begin{cl}[SumPrimes.java]{Sum Of First 100 Primes Implementation}
 \begin{lstlisting}[language=MyJava]
 class SumPrimes {
 
@@ -471,13 +441,11 @@ class SumPrimes {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Running the code produces $24133$: the desired answer.
 
 \example{Suppose we want to compute the sum of the first $n$ odd reciprocals. That is, $\frac{1}{1} + \frac{1}{3} + \frac{1}{5} + \cdots + \frac{1}{2n-1}$. Again, we might do this recursively, but let us try and write an iterative algorithm. The signature is straightforward: we want to receive some integer $n$ and compute the sum of $n$ odd reciprocals. Our tests are trivial to write with the employment of a calculator.}
 
-\begin{cl}[OddReciprocalSumTester.java]{Odd Reciprocal Summation Tests}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -501,11 +469,9 @@ class OddReciprocalSumTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 The implementation is similarly simple: we create a counter $c$ that increments so long as $c$ is not equal to $n$, accumulating the $\emph{sum}$ of $1$ divided by $2c-1$.
 
-\begin{cl}[OddReciprocalSum.java]{Odd Reciprocal Summation Implementation}
 \begin{lstlisting}[language=MyJava]
 class OddReciprocalSum {
 
@@ -525,7 +491,6 @@ class OddReciprocalSum {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Note the cast of the denominator from an \ttt{int} to a \ttt{double}; what happens if we omit the cast? Our tests fail because dividing two integers produces another integer, which is not desired when all of our numbers are less than or equal to one.\footnote{Equivalently, we might multiply $c$ by $2.0$, or subtract $1.0$; all of these coerce the \ttt{int} into a \ttt{double}, thereby allowing correct division.}
 
@@ -535,7 +500,6 @@ With a \ttt{for} loop, we provide three values: an \emph{initializer statement},
 
 \example{Suppose we wish to write a program that returns the sum of the integers between two integers $a$ and $b$, inclusive. We know how many integers there are between $a$ and $b$, assuming $a \leq b$, so we should use a \ttt{for} loop to solve this problem.} 
 
-\begin{cl}[SumIntervalTester.java]{Sum of Integers in the Interval $[a, b]$}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -554,11 +518,9 @@ class SumIntervalTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 We want to iterate from $i = a$ so long as $i \leq b$. We use the variable $i$ out of convention; one could easily use any other unused identifier.
 
-\begin{cl}[SumInterval.java]{Sum of Integers in the Interval $[a, b]$}
 \begin{lstlisting}[language=MyJava]
 class SumInterval {
 
@@ -578,7 +540,6 @@ class SumInterval {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{Let's write an example of an unpredictable loop; one that best suits the use of \ttt{while}. Suppose we want to manually compute the square root of some positive value, i.e., without Java's implementation. A simple algorithm to use is \emph{Newton's Approximation}:}
 
@@ -598,7 +559,6 @@ g_5 &= \dfrac{\left(8.2921 + \dfrac{64}{8.2921}\right)}{2} &= 8.0051\\
 
 At each iteration, we square the current guess and determine if the absolute difference between it and $n$ is less than the guess. When so, that iteration of $g_x$ is the square root approximation. Otherwise, we continue to approach the square root value. We cannot reasonably predict when this will occur (that is, how many iterations are necessary), so we use a \ttt{while} loop. Because there are multiple potential points of failure in this algorithm, we make sure to write an extensive test suite. The method itself is a re-telling of the mathematical definition with bits of Java syntax sprinkled about. 
 
-\begin{cl}[NewtonApproximationTester.java]{Newton's Approximation Tests}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -622,9 +582,7 @@ class NewtonApproximationTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[NewtonApproximation.java]{Newton's Approximation Algorithm}
 \begin{lstlisting}[language=MyJava]
 class NewtonApproximation {
 
@@ -645,7 +603,6 @@ class NewtonApproximation {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 To decrease the level of accuracy, we of course should pass a different value for the $\mathit{delta}$ argument. Conversely, to see a higher level of precision, a $\mathit{delta}$ that is closer (but not equal to) to zero is necessary. Our implementation of the square root algorithm is far from optimal, but it exists to demonstrate the necessity of \ttt{while} loops. Though it is important to note that the expressive power of both \ttt{for} and \ttt{while} is largely irrelevant if we only concern ourselves with their semantics; they are equal in power. This means that any \ttt{for} loop is representable with a \ttt{while} and vice-versa. Depending on the circumstance, however, one might be preferable over the other. We reiterate that \ttt{for} loops should be used when we know how many iterations there are for a certain task, whereas \ttt{while} loops are for indeterminate termination conditions. 
 
@@ -657,7 +614,6 @@ To decrease the level of accuracy, we of course should pass a different value fo
 \end{align*}
 Writing tests for a Fibonacci algorithm is trivial to do and propagates through to the other variants. So, writing tests for the standard recursive algorithm, assuming they are correct, allows us to easily write tests for the others!
 
-\begin{cl}[]{Standard Recursion Fibonacci Algorithm Tests}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -677,11 +633,9 @@ class FibonacciTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 The standard recursive algorithm is trivial to write but also horribly inefficient; because we make two recursive calls to $\emph{Fib}$, we end up computing the same data multiple times, resulting in an \emph{exponential time algorithm}\index{exponential time}. In other words, small inputs, e.g., $\emph{Fib}(40)$, will take a very long time to finish.
 
-\begin{cl}[]{Standard Recursive Fibonacci Implementation}
 \begin{lstlisting}[language=MyJava]
 class Fibonacci {
 
@@ -691,11 +645,9 @@ class Fibonacci {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Our method works and tests pass, which is great, but we can do better by using tail recursion. The tail recursive variant, however, is slightly more complicated than prior tail recursive definitions due to the use of two accumulators. We use two values to compute the ``next'' Fibonacci number: the previous, and the previous' previous. So, storing these as values, say, $a$ and $b$, is sensible, where $a$ is the ``previous' previous,'' and $b$ is the previous. Thus, when making a tail recursive call, we assign $b$ as $a + b$, and $a$ as $b$. We must not forget the driver method!
 
-\begin{cl}[]{Tail Recursive Fibonacci Implementation}
 \begin{lstlisting}[language=MyJava]
 class Fibonacci {
 
@@ -721,7 +673,6 @@ class Fibonacci {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Our tail recursive implementation has two base cases instead of one due to the two base cases of the mathematical recursive definition. It may be a little difficult to visualize the initial accumulator values (i.e., the starting values of $a$ and $b$), but just consider the base case(s) of the standard recursive algorithm and let this/these guide your decision.
 
@@ -763,7 +714,6 @@ In essence, we generate a local temporary variable to hold onto the old value of
 
 The last stage is simple; we return the result of the other base case, namely $b$ when $n$ is finally one.
 
-\begin{cl}[]{Iterative Fibonacci Implementation}
 \begin{lstlisting}[language=MyJava]
 static int fib(int n) {
   // Holds the "previous' previous".
@@ -784,7 +734,6 @@ static int fib(int n) {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 The Fibonacci sequence is predictable in that we know how many iterations are necessary to compute a result. Therefore, a \ttt{for} loop seems like a reasonable substitute to \ttt{while} in this circumstance. 
 
@@ -792,7 +741,6 @@ We still must declare variables $a$ and $b$, but instead of decrementing $n$, we
 
 No significant changes in the implementation are made, aside from a new local variable to count down from $n$ until it hits one.
 
-\begin{cl}[]{Iterative Fibonacci Implementation Using \ttt{for}}
 \begin{lstlisting}[language=MyJava]
 static int fib(int n) {
   int a = 0;
@@ -809,11 +757,9 @@ static int fib(int n) {
   return b;
 }
 \end{lstlisting}
-\end{cl}
 
 \example{We can use two keywords to alter the control flow of a loop: \ttt{break} and \ttt{continue}. We saw \ttt{break} when working with the \ttt{switch} keyword and statement, but in the context of loops its meaning has more significance. Suppose that we're writing the \ttt{int findFirstVowel(String s)} method that returns the first occurrence of a vowel in a string $s$, and $-1$ if it has no vowels. The \ttt{break} statement will be used to exit the loop body early upon finding a vowel. We will traverse over the string characters using a \ttt{for} loop and terminate if we reach the end of the string, hence the inclusion of the \ttt{i < s.length()} condition. Our implementation must also include a method to determine whether or not a character is a vowel. We could write ten separate clauses for checking if a character is the uppercased or lowercased version of the vowel, or we could eliminate half by simply converting the character to either case and only checking those.}
 
-\begin{cl}[FindFirstVowelTester.java]{}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -834,9 +780,7 @@ class FindFirstVowelTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[FindFirstVowel.java]{}
 \begin{lstlisting}[language=MyJava]
 class FindFirstVowel {
 
@@ -869,11 +813,9 @@ class FindFirstVowel {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{To better illustrate how \ttt{break} and \ttt{continue} work, let's write a method that has no real utility, but demonstrates the utility of these keywords. Our method, namely \ttt{countOdds}, will count the number of odd integers generated by a random number generator from 1 to 100. Though, to make it more interesting, we will not count odd numbers less than $50$, and if we ever generate a number greater than 95, we stop looping and return the count. The idea is to use \ttt{break} when we generate a number between $96$ and $100$, and to use \ttt{continue} to skip over incrementing the counter if we find a number less than $50$. The \ttt{continue} keyword jumps program control to the top of the loop, skipping over any remaining statements in the body. Because this program relies solely on random chance, writing tests is not helpful. In the code segment, using an \ttt{else} statement would be preferred over the superfluous use of \ttt{continue}, but we demo it to at least portray its existence. The only way to exit the infinite \ttt{while} loop is to use either \ttt{break}, \ttt{return}, or stop the program some other way (e.g., through a program crash or forced termination).}
 
-\begin{cl}[RandomNumbers.java]{}
 \begin{lstlisting}[language=MyJava]
 class RandomNumbers {
 
@@ -894,11 +836,9 @@ class RandomNumbers {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \example{Let's write one more example of a loop where we go directly from the problem statement to the code in question. Suppose we're writing a method that receives some string $s$, a ``search string'' $f$, and a replacement string $r$, and our goal is to replace all occurrences of $f$ with $r$ without helper methods in the \ttt{String} class, e.g., \ttt{indexOf}, \ttt{contains}, and certainly not \ttt{replace}. Of course, we start by writing the signature, documentation comments, and a handful of tests. We emphasize writing more tests than perhaps normal for this specific problem due to its complexity and number of ``edge cases,'' i.e., cases in which a method might not account for because of their obscurity.}
 
-\begin{cl}[FindReplaceTester.java]{Find \& Replace Tester}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -928,11 +868,9 @@ class FindReplaceTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 Now we write the implementation of \ttt{replace}, which breaks down into a few cases: while traversing, are did we find the start of the search string $f$, did we find the end of $f$, and did we encounter a break in $f$? Let's go from the start to the end in our analysis. When traversing over the input string $s$, if we find the character that starts $f$ in $s$, we increment a counter $c$, and continue counting as long as the characters in the particular substring of $s$ match the characters in $f$. As an example, in the string $s=\ttt{"hello"}$, if $f=\ttt{"ell"}$, once our traversal finds \ttt{"e"}, we increment $c$ by one to designate that we matched one character of $f$. We continue this until we either hit the end of $f$, the end of $s$, or we find a non-matching character. In the former instance, we append the replacement string $r$ onto our newly-constructed string $s'$, because it indicates that we encountered a full match of $f$ inside $s$, meaning it is of course replaced by $r$. In the second instance, we reach the end of $s$, meaning that we are out of characters to match. Therefore, we either copy over the last $c$ characters from $s$ into $s'$ if we have not also hit the end of $f$, or $r$ otherwise. For example, if $s=\ttt{"hello"}$, and $f=\ttt{"low"}$, we reach the end of $s$ prior to finishing the substring $f$, meaning that we only copy over those final characters of $s$ and do not append $r$. Conversely, if $f=\ttt{"lo"}$ in that instance, we instead substitute the suffix \ttt{"lo"} with whatever is the value of $r$. Finally, when we encounter a non-matching character, we terminate the current replacement strategy and simply append the last $c$ characters of $s$ onto $s'$ and move the index forward.
 
-\begin{cl}[FindReplace.java]{Find \& Replace Implementation}
 \begin{lstlisting}[language=MyJava]
 import java.lang.StringBuilder;
 
@@ -981,7 +919,6 @@ class FindReplace {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 % \subsection{Quick Check Questions}
 % \begin{enumerate}

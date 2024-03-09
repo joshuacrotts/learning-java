@@ -10,7 +10,6 @@ Another reason why the standard-recursive version is suboptimal is because we ha
 
 First, let's create an interface for designing linear search algorithms. Recall when we stated that the data structure should guarantee constant-access times. The \ttt{List} interface does not provide this promise, so we will instead opt for a generic \ttt{AbstractList<V>}, where \ttt{V} is any comparable type. The method provided by the interface should receive the list and the element to search.
 
-\begin{cl}[]{Testing the Linear Search Algorithms}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -73,9 +72,7 @@ class ILinearSearchTest {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Linear Search Interface}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
 import java.util.AbstractList;
@@ -85,9 +82,7 @@ interface ILinearSearch<V extends Comparable<V>> {
   int linearSearch(AbstractList<V> ls, V v);
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Standard-Recursive Linear Search with Exceptions}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
 import java.util.AbstractList;
@@ -106,7 +101,6 @@ class StandardRecursiveLinearSearch<V extends Comparable<V>>
   }
 }
 \end{lstlisting}
-\end{cl}
 
 As demonstrated, we must handle the no-element case as an exception, which would otherwise be left as a decision to the programmer that calls this version of the \ttt{linearSearch} algorithm.
 
@@ -114,7 +108,6 @@ As demonstrated, we must handle the no-element case as an exception, which would
 
 The tail recursive linear search is much more intuitive to understand compared to its standard recursive counterpart---we use an accumulator to keep track of the current index, and if we reach the end of the list, a $-1$ is returned. If we find the element $v$, we return the index, which does not unwind the stack since there is no work remaining after each tail call, making this extremely efficient (again, at least in comparison to the standard recursive version).
 
-\begin{cl}[]{Tail-Recursive Linear Search}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
 import java.util.AbstractList;
@@ -133,13 +126,11 @@ class TailRecursiveLinearSearch<V extends Comparable<V>>
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \subsubsection*{Loop Linear Search}
 
 Even though the tail recursive linear search is relatively straightforward to understand, almost all linear search implementations prefer the iterative version, or one that uses a loop, which we will now show. As an exercise, the readers should go through the process described in Chapter~\ref{chapter-crl} to convert the tail recursive method into an iterative method. We do not do so here because we know the upper-bound of a linear search, so even though a \ttt{while} loop is correct, it offers no advantages over a \ttt{for} loop.
 
-\begin{cl}[]{Iterative Linear Search}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
 import java.util.AbstractList;
@@ -156,7 +147,6 @@ class LoopLinearSearch<V extends Comparable<V>> implements ILinearSearch<V> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \subsection{Binary Search}
 
@@ -166,7 +156,6 @@ Binary search makes even less sense to design as a standard-recursive algorithm 
 
 When we state that binary search is faster than linear search, this is of course relative to the problem context; if we want to search an unsorted list exactly once, then taking the time to sort the data, then run binary search, it is not optimal. Repeatedly searching for elements in a list containing many values should be done with first sorting the list, then binary searching. As an example, if we were to use linear search on a sorted list containing half a billion elements for an element that is not present, we must check all half a billion values. Compare this to binary search, which is logarithmic in the number of elements. So, taking the base two logarithm of our input size places an upper-bound of twenty-nine comparisons (after rounding). To say that this is a substantial performance increase is underselling it to the max.
 
-\begin{cl}[]{Testing the Binary Search Algorithms}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -211,9 +200,7 @@ class IBinarySearchTest {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Binary Search Interface}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
 import java.util.AbstractList;
@@ -223,11 +210,9 @@ interface IBinarySearch<V extends Comparable<V>> {
   int binarySearch(AbstractList<V> ls, V v);
 }
 \end{lstlisting}
-\end{cl}
 
 \subsubsection*{Tail Recursive Binary Search}
 
-\begin{cl}[]{Tail-Recursive Binary Search}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
 import java.util.AbstractList;
@@ -255,11 +240,9 @@ class TailRecursiveBinarySearch<V extends Comparable<V>>
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \subsubsection*{Loop Binary Search}
 
-\begin{cl}[]{Iterative Binary Search}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
 import java.util.AbstractList;
@@ -280,14 +263,12 @@ class LoopBinarySearch<V extends Comparable<V>> implements IBinarySearch<V> {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 \subsection{Using Comparators for Searching}
 Recall the use of comparators from~\ref{chapter-arrays-collections} when discussing priority queues. Our implementations of linear and binary search, at the moment, require the generic class we parameterize over to be \ttt{Comparable}, which can be slightly limiting on the types of classes we can search through, because it is not feasible to modify a class that already exists in the Java library. Plus, having to go back and write a definition of \ttt{compareTo} in a Java source file is cumbersome. The solution to this problem is to define a custom \ttt{Comparator} object and pass that to the search methods. Namely, we can add a second method to the binary search generic interface that receives an instance of \ttt{Comparator}, which is then internally utilized by our search algorithms. 
 
 \example{Let's amend our definition of \ttt{IBinarySearch} to also include a method that receives the \ttt{Comparator} object. Note that we need to specify in the definition of the comparator that the type it receives should be a superclass of the list element type. Therefore we will use the dual to \ttt{extends}: namely \ttt{super}, in the parameterized type. Note that we do not necessarily care about the type variable of this element, so we can use a wildcard `\ttt{?}' instead of using another letter from the alphabet. With this modification, however, it no longer makes as much sense to quantify that \ttt{V} extends \ttt{Comparable<V>}, because the latter method does not require its type to implement that interface. So, let's remove it from the interface signature and move it down to the type quantification.}
 
-\begin{cl}[]{Adding a Comparator-Based Binary Search}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
 import java.util.Comparator;
@@ -300,11 +281,9 @@ interface IBinarySearch {
   <V> int binarySearch(AbstractList<V> ls, V v, Comparator<? super V> c);
 }
 \end{lstlisting}
-\end{cl}
 
 Now, of course, we do not want to have to rewrite the entire definition of \ttt{binarySearch} just to make use of a different comparator, and indeed, we do not have to do so. All we must do is move the logic of the search into the version that receives a comparator and update the one that operates over comparable elements. This means that we need to instantiate a \ttt{Comparator} that uses the \ttt{compareTo} method from the elements, which is trivial to do via a lambda expression. We also must change the definition from using \ttt{compareTo}, which comes from \ttt{Comparable} to use \ttt{compare} from the \ttt{c} object.
 
-\begin{cl}[]{Testing the Comparator-Based Binary Search}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -329,9 +308,7 @@ class IBinarySearchTester {
   }
 }
 \end{lstlisting}
-\end{cl}
 
-\begin{cl}[]{Comparator-Based Tail Recursive Binary Search}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
 import java.util.AbstractList;
@@ -366,6 +343,5 @@ class TailRecursiveBinarySearch implements IBinarySearch {
   }
 }
 \end{lstlisting}
-\end{cl}
 
 We leave changing the loop variant to use comparators as an exercise. It does not make sense to update \ttt{ILinearSearch} because linear search uses \ttt{.equals} for comparing objects rather than \ttt{.compareTo} or \ttt{.compare}.
