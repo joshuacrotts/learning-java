@@ -278,6 +278,7 @@ class McqScoreCalculator {
 
 The tail recursive solution is almost identical to the standard recursive variant. The essential difference is that we accumulate the score as a parameter in between recursive calls instead of summing the points when unwinding the calls. Aside from that, everything else remains the same. Our tests from \ttt{score} are likewise suitable for both the tail recursive and loop methods.
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class McqScoreCalculator {
 
@@ -288,10 +289,8 @@ class McqScoreCalculator {
    * @return
    */
   static double scoreTR(String[] E, String[] A) {
-    int maxScore = E.length * 3;
-    return Math.max(0, scoreTRHelper(E, A, 0, 0)) / maxScore * 100;
+    return Math.max(0, scoreTRHelper(E, A, 0, 0)) / (E.length * 3) * 100;
   }
-
   /**
    *
    * @param E - 
@@ -486,6 +485,7 @@ Multi-dimensional arrays are nothing more than arrays of arrays. Thus, as an exa
 int[][] A = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
 \end{verbnobox}
 
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -503,7 +503,7 @@ class SumOf2DArrayTester {
 }
 \end{lstlisting}
 
-We need to know both the number of rows and the number of columns to traverse over a two-dimensional array. To retrieve the number of rows, we simply refer to the array's length via \texttt{$A$.length}. To get the number of columns, again, because we know that $A$ is an array of one-dimensional arrays, we use \ttt{$A[0]$.length}, or in general, \ttt{$A[i]$.length} for any $i$ such that $0 \leq i< $ \ttt{$A$.length}.\footnote{This generalization applies because arrays in Java cannot be \emph{ragged}, or where different rows/columns have different lengths.}
+We need to know both the number of rows and the number of columns to traverse over a two-dimensional array. To retrieve the number of rows, we simply refer to the array's length via \texttt{$A$.length}. To get the number of columns, again, because we know that $A$ is an array of one-dimensional arrays, we use \ttt{$A[0]$.length}, or in general, \ttt{$A[i]$.length} for any $i$ such that $0 \leq i< $ \ttt{$A$.length}.\footnote{This generalization applies because arrays in Java cannot be \emph{ragged}: where different rows/columns have differing sizes.}
 
 \begin{lstlisting}[language=MyJava]
 class SumOf2DArray {
@@ -529,6 +529,7 @@ Note that to access the element at row $i$ and column $j$, we use \ttt{$A[i][j]$
 
 \example{Let's solve a slightly harder problem using two-dimensional arrays. Suppose that we want to write a method that returns the number of possible moves that a rook can take to go from the top-left of a (not-necessarily rectangular) board to the bottom-right, assuming that it cannot move left or up. The naive solution to this problem is to use a recursive method that changes its position by one in either direction, stopping once we hit the bottom-right of the board. Assuming the rook starts at $(x, y)$ and the board is $n \times m$, we can write the following method.}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -580,6 +581,7 @@ Dynamic programming problems are often solved using two-dimensional arrays using
   \item Iterate over the array, filling in the values using a recurrence relation.
 \end{enumerate}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

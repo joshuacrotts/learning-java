@@ -313,6 +313,8 @@ Determining the correct order of update, according to the rules we specify, may 
 
 \subsection{\emph{$TR_\mathbf{Ret}$}:}
 In our final stage of translation, we add the necessary return statement(s) that serve to return the accumulated result from our loop. We highlighted these values in \textcolor{darkgreen}{green} during the highlighting/color-coding stage.
+
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
   // acc stores the current factorial product. 
@@ -384,6 +386,7 @@ class PrimeTester {
 }
 \end{lstlisting}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Prime {
 
@@ -446,6 +449,7 @@ Running the code produces $24133$: the desired answer.
 
 \example{Suppose we want to compute the sum of the first $n$ odd reciprocals. That is, $\frac{1}{1} + \frac{1}{3} + \frac{1}{5} + \cdots + \frac{1}{2n-1}$. Again, we might do this recursively, but let us try and write an iterative algorithm. The signature is straightforward: we want to receive some integer $n$ and compute the sum of $n$ odd reciprocals. Our tests are trivial to write with the employment of a calculator.}
 
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -583,6 +587,7 @@ class NewtonApproximationTester {
 }
 \end{lstlisting}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class NewtonApproximation {
 
@@ -593,6 +598,7 @@ class NewtonApproximation {
    * @param delta - approximation range.
    * @return approximation of sqrt of n.
    */
+
   static double sqrtApprox(double n, double delta) {
     double g = n;
     // As long as the guess is too far from the real value...
@@ -636,6 +642,7 @@ class FibonacciTester {
 
 The standard recursive algorithm is trivial to write but also horribly inefficient; because we make two recursive calls to $\emph{Fib}$, we end up computing the same data multiple times, resulting in an \emph{exponential time algorithm}\index{exponential time}. In other words, small inputs, e.g., $\emph{Fib}(40)$, will take a very long time to finish.
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Fibonacci {
 
@@ -871,14 +878,14 @@ class FindReplaceTester {
 
 Now we write the implementation of \ttt{replace}, which breaks down into a few cases: while traversing, are did we find the start of the search string $f$, did we find the end of $f$, and did we encounter a break in $f$? Let's go from the start to the end in our analysis. When traversing over the input string $s$, if we find the character that starts $f$ in $s$, we increment a counter $c$, and continue counting as long as the characters in the particular substring of $s$ match the characters in $f$. As an example, in the string $s=\ttt{"hello"}$, if $f=\ttt{"ell"}$, once our traversal finds \ttt{"e"}, we increment $c$ by one to designate that we matched one character of $f$. We continue this until we either hit the end of $f$, the end of $s$, or we find a non-matching character. In the former instance, we append the replacement string $r$ onto our newly-constructed string $s'$, because it indicates that we encountered a full match of $f$ inside $s$, meaning it is of course replaced by $r$. In the second instance, we reach the end of $s$, meaning that we are out of characters to match. Therefore, we either copy over the last $c$ characters from $s$ into $s'$ if we have not also hit the end of $f$, or $r$ otherwise. For example, if $s=\ttt{"hello"}$, and $f=\ttt{"low"}$, we reach the end of $s$ prior to finishing the substring $f$, meaning that we only copy over those final characters of $s$ and do not append $r$. Conversely, if $f=\ttt{"lo"}$ in that instance, we instead substitute the suffix \ttt{"lo"} with whatever is the value of $r$. Finally, when we encounter a non-matching character, we terminate the current replacement strategy and simply append the last $c$ characters of $s$ onto $s'$ and move the index forward.
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.lang.StringBuilder;
 
 class FindReplace {
 
   /**
-   * Searches through a string s for occurrences of "find", and
-   * replaces them with "repl".
+   * Searches through a string s for occurrences of "find", and replaces them with "repl".
    * @param s - string to search through.
    * @param find - string to find.
    * @param repl - string to replace "find" with.
@@ -908,8 +915,7 @@ class FindReplace {
           pos++;
         }
       }
-      // If we reach the end of the string and are in the middle of
-      // searching, we append it to the sting.
+      // If we reach the end of the string and are in the middle of searching, we append it.
       if (pos > 0 && j >= s.length()) {
         sb.append(repl);
         break;

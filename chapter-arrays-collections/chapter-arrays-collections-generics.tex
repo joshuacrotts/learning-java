@@ -85,7 +85,6 @@ To restrict the type parameter to a certain subset of types, we can use \emph{bo
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static GenericMax.genericMax;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -99,7 +98,6 @@ class GenericMaxTester {
     List<Double> l3 = new ArrayList<>(List.of(500.0, 400.0, 3.0, Math.PI, 200.0));
     List<Character> l4 = new ArrayList<>(List.of('?','@','A','a','Z'));
     List<List<Integer>> l5 = new ArrayList<>();
-
     assertAll (
       () -> assertEquals(20, genericMax(l1)),
       () -> assertEquals("x", genericMax(l2)),
@@ -110,6 +108,7 @@ class GenericMaxTester {
 }
 \end{lstlisting}
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparable;
 import java.util.List;
@@ -123,9 +122,8 @@ class GenericMax {
    * @return the maximum element in the list.
    */
   static <T extends Comparable<T>> T genericMax(List<T> t) {
-    if (t.isEmpty()) { 
-      return null; 
-    } else {
+    if (t.isEmpty()) { return null; }
+    else {
       T max = t.get(0);
       for (int i = 1; i < t.size(); i++) {
         if (t.get(i).compareTo(max) > 0) { 
@@ -158,9 +156,7 @@ class NumberListTester {
   void testSum() {
     assertAll(
       () -> assertEquals(0, sum(List.of())),
-      () -> assertEquals(42, sum(List.of(-0.2f, -1, (short) 43, 2.6d, 
-                                         (byte) 100, -100L, -2.4f)),
-                         DELTA));
+      () -> assertEquals(42, sum(List.of(-1, (short) 138.2, 2.6d, -95L, -2.8f)), DELTA));
   }
 }
 \end{lstlisting}
@@ -185,10 +181,10 @@ class NumberList {
 
 \example{Lower-bounded type parameters are the dual to upper-bounded type parameters. If we want to restrict our possible types in a generic implementation to be only superclasses of a type, we can easily do so. For instance, the following code specifies that the input list can only contain objects that are superclasses of \ttt{Integer}, or are \ttt{Integer} itself. Unfortunately, the only classes that are ancestors/superclasses of \ttt{Integer} are \ttt{Number} and \ttt{Object}, which severely limits what we can do with our list. For the sake of an example, we might return a string containing the ``stringified'' elements, separated by commas, enclosed by brackets.}
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static NumberList.stringify;
 
 import java.util.List;
 

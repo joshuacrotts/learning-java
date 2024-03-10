@@ -44,6 +44,7 @@ class DIntArray {
 
 We now want a method that will add a value to a given ``list'' in this fashion. In particular, we know that indices whose elements are $-1$ correspond to ``free/available'' slots for the next value to-be added. The thing is, there is more to consider than just replacing the first-found instance of $-1$ with the desired value. We need to ensure that room exists for this new value; i.e., whether or not there is a $-1$ to begin with. As such, we should write a local helper method that returns a resized list with the values copied over from the old list; the only difference being a doubling in element capacity. Then, inside \ttt{addToList}, we check to see if we were able to properly insert $v$ into the list and, if not, we resize and make a recursive call to \ttt{addToList}.\footnote{We could use \ttt{Arrays.copyOf}, but it is important to understand \emph{how} the copying occurs.} Regarding performance and memory usage, this is not an optimal solution since we could simply add $v$ to index $|A|$ of the new array $A'$, since we know $|A'| = |A|$.
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertArrayEquals;
@@ -305,10 +306,10 @@ Using \ttt{List.of} raises a question: does \ttt{List.of} only receive four inte
 
 \example{Suppose we want to write a variadic method that computes the average of any number of given \ttt{double} values. Without variadic-argument methods, we must wrap these in a list or an array, then pass it to the method. Variadic arguments allow us to specify any desired number of arguments, and it is the responsibility of the method to interpret those values as a traversable data structure. So, to iterate over such a structure, we can use the enhanced-for loop.}
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static NumAverage.numAverage;
 
 class NumAverageTester {
 
@@ -343,7 +344,7 @@ class NumAverage {
 \begin{lstlisting}[language=MyJava]
 class RequiredVariadicParameters {
 
-  static int doSomething(String s, int v, String ... vals) { (*;\textcolor{lightgray}{...};*) }
+  static int doSomething(String s, int v, String ... vals) { ... }
 }
 \end{lstlisting}
 
@@ -717,6 +718,7 @@ class RemoveDuplicatesList {
 
 \example{Suppose we want to find all common elements shared between two linked lists of elements, which are unordered. Let's write the \ttt{commonValues} method that, when given two linked lists of integers, returns a sorted ordered list of values that occur in both lists. We should not count values twice, e.g., if the value \ttt{2} occurs twice in the first list, then the resulting output list should only contain one occurrence of \ttt{2}. Because we want the output to be sorted, we can take advantage of a tree set.}
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -778,6 +780,7 @@ class CommonValuesTester {
 
 \example{We are given an array of numbers from $1$ to $n$ where one number is missing and one is duplicated. Let's design the \ttt{findDupMissing} method that returns an array of two elements: the first of which is the missing number and the second of which is the duplicate value. It makes sense to use a \ttt{TreeSet} since, that way, we can store the numbers in order and find out which one is omitted through one traversal, and find the only duplicate.}
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertArrayEquals;
@@ -875,13 +878,13 @@ A \emph{LinkedHashMap}\index{linked hash map}\index{\ttt{LinkedHashMap}} is a ma
   \item Find the highest frequency.
   \item Find all numbers that match this frequency.
 \end{enumerate}
+\enlargethispage{2\baselineskip}
 
 Traversing over a map is straightforward: we can obtain a \emph{key set}\index{key set}, which is a set of keys, and each corresponding value takes one call to the \ttt{.get} method.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static ComputeMode.mode;
 
 import java.util.List;
 import java.util.Set;
@@ -958,6 +961,7 @@ sharesFirstChar(["she", "sells", "sea", "shells", "by", "the", "sea", "shore"])
 
 Because we want both the sets and maps to be alphabetized, the use of a \ttt{TreeSet} and \ttt{TreeMap} is appropriate. So, we will first traverse over the input list and instantiate a map whose keys are the first letters of each word and whose value is a new instance of a \ttt{TreeSet}. A second traversal is then used to populate those sets.
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1023,6 +1027,7 @@ class ShareFirstCharacter {
 
 \example{Let's design the \ttt{firstUniqueLetter} method that, when given a string, returns the first non-repeated letter. If there is no non-repeated letter, we will return the empty string. Because we care about the insertion order, we should use a \ttt{LinkedHashMap} whose keys are characters in the string and whose values are frequency counts. The idea is to count the frequency of each (letter) character, when lowercased, then traverse over the linked map and find the first key whose (value) frequency is one. Because we now understand how to combine \ttt{get} and \ttt{put} to insert and increment frequency counts, we will instead opt to use \ttt{getOrDefault}, which removes the need for the conditional.\footnote{This problem comes courtesy of \ttt{frew@mclean.com} on \ttt{codingbat.com}. Thanks!}}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1087,6 +1092,7 @@ First, we will count the frequency of each character, then use a \ttt{PriorityQu
   \item Else, return the lesser of $e_k$ and $f_k$.
 \end{itemize}
 
+\enlargethispage{-2\baselineskip}
 Of course, we know that $K$ is \ttt{Character} and $V$ is \ttt{Integer} representing the characters mapped to their frequencies. To retrieve the key and value from an \ttt{Map.Entry} object, we use the \ttt{getKey()} and \ttt{getValue()} methods respectively. 
 
 \begin{lstlisting}[language=MyJava]
@@ -1205,6 +1211,7 @@ It should be stated that the enhanced \ttt{for} loop is nearly identical to the 
 
 \example{Let's now iterate over the \ttt{LinkedHashSet} using an enhanced \ttt{for} loop. We can do so by placing the type on the left-hand side of the element declaration. Our test will simply subtract the elements from left-to-right, since subtraction is not commutative, we can quickly verify the correctness of our result.}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -1267,6 +1274,7 @@ class StackPrinter {
 
 \example{The unintuitive nature of the enhanced \ttt{for} loop and certain iterators does not stop with stacks, unfortunately. Priority queues are also afflicted as a consequence of their implementation. Let's see what happens when we create a priority queue whose comparator prioritizes the string \ttt{"Joshua"} over all strings and makes the string \ttt{"Jack"} have the lowest priority. In other words, any occurrence of \ttt{"Joshua"} should come before all other strings in the priority queue, whereas any occurrence of \ttt{"Jack"} should come after all other strings in the priority queue. Any strings in between are ordered naturally, i.e., via lexicographical ordering.} 
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.PriorityQueue;
@@ -1404,6 +1412,7 @@ Here's what we need to do: we will use \ttt{iterate} to generate new values in t
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
+import static Assertions.assertArrayEquals;
 
 import java.util.Stream;
 import java.util.List;
@@ -1486,6 +1495,7 @@ class BigIntFibStream {
 
 So our code now produces a list of \ttt{BigInteger} arrays containing the current Fibonacci value and its successor. Though, is this really what we want? A better solution would be to simply return the first element of the tuple/two-element array. We can achieve this via the \ttt{map} function. \ttt{map} receives a lambda expression as an argument and applies it to every element of the acting stream. Let's modify the code a bit to see an improved output. Excellently, this change means we do not need to loop over our expected/actual lists in the unit testing method, as \ttt{assertEquals} works as intended over \ttt{List} objects.
 
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -1534,10 +1544,10 @@ A \emph{higher-order function} is a function that takes functions as parameters.
 
 \example{Let's write the \ttt{sqList} method that receives a \ttt{List<Integer>} and squares each element using the Stream API. The method should return a new list. A motif presented throughout stream methods is that they do not modify the original data. We should use \ttt{map} to apply a lambda expression that receives an integer and returns its square. Fortunately for us, we can convert any collection into a stream using the \ttt{.stream()} method. From there, we use a simple \ttt{map} invocation to arrive at our desired outcome.}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static SqList.sqList;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -1628,7 +1638,7 @@ class RemoveVowelsStream {
 The primary benefit of streams is their compositionality. We can chain together multiple operations, sequentially, to compute a result. Though, there are instances in which a value may not exist, and the stream has to account for these somehow.
 
 \example{Consider a series of stream operations to find the maximum integer of a list. For the general case, this is straightforward, but what about when the list is empty? It does not make sense to return zero, since the maximum integer in a list may very well be zero, which leads to a false conclusion. The solution, in this case, is the \ttt{Optional} class. An \ttt{Optional} is a container that may or may not contain a value. If so, we may access the value directly via \ttt{.get}. If we do not know whether or not it contains a value, we may use \ttt{.orElse($t$)}, which returns the encapsulated value if it exists, or $t$ otherwise. We can also check, prior to a retrieval, if the \ttt{Optional} contains a value via the \ttt{.isPresent} method. \ttt{Optional} is generic and works over any class type, like almost all other classes from the collections API. To test the return value of a stream operation that returns an \ttt{Optional}, e.g., \ttt{max}, we instantiate an \ttt{Optional} that wraps the resulting value if it exists, or \ttt{Optional.empty()} otherwise.}
-
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

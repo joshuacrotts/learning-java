@@ -149,7 +149,7 @@ isValidIpv4("ABC.DEF.GHI")      => false
 isValidIpv4("192.168.1A6.201")  => false
 \end{verbnobox}
 
-\begin{verbnobox}[\small]
+\begin{lstlisting}[language=MyJava]
 /**
  * Determines whether or not we can convert a given string into 
  * an integer datatype.
@@ -164,7 +164,7 @@ static boolean isNumeric(String n) {
     return false;
   }
 }
-\end{verbnobox}
+\end{lstlisting}
 
 \exercise{1}{chapter-crl}{Design the \ttt{String stateOfMatter(double t, char u)} method that receives a water temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{`C'} or \ttt{`F'} for Celsius and Fahrenheit respectively. Return a string representing whether the water is a liquid, solid, or gas at sea level.}
 
@@ -203,6 +203,15 @@ Your method should return the total cost of the item after applying the discount
     \item If the number of hours is less than or equal to $40$, then no overtime pay is given.
     \item If the number of hours is greater than $70$, then the resulting gross pay (before taxes) is increased by $15\%$.
     \item The gross pay is subject to the tax \emph{percentage} passed to the method. 
+\end{itemize}
+
+\exercise{1}{chapter-crl}{Design the \ttt{double computeBonusPay(double baseSalary, int yearsOfService, boolean achievedTarget, double salesAmount, double targetSales)} method that calculates the amount of bonus pay (note: \textbf{only} the bonus pay) given to an employee under the following conditions:}
+\begin{itemize}
+    \item A base bonus rate of $10\%$ of the base salary is given to employees who have achieved their sales target.
+    \item Employees with more than $5$ years of service receive an additional $5\%$ bonus of their base salary.
+    \item If the sales amount exceeds the target sales by more than $50\%$, the employee receives an additional bonus of $25\%$ of the base salary.
+    \item If the employee has not achieved their sales target, they receive a flat bonus of $2\%$ of their base salary, regardless of sales amount or years of service.
+    \item The total bonus amount is reduced by a flat tax rate of $25\%$.
 \end{itemize}
 
 \exercise{1}{chapter-crl}{Design the recursive \ttt{int countStr(String s)} that counts the number of times the substring \ttt{"str"} appears in a given string $s$.}
