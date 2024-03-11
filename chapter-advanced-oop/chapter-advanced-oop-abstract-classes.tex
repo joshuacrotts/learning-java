@@ -615,9 +615,11 @@ final class PrimNode extends AstNode {
   }
 
   private AstNode primMinus(List<AstNode> args, Environment env) {
-    return new NumberNode(args.stream()
-                              .map(t -> ((NumberNode) t).getValue())
-                              .reduce(0.0, (a, c) -> c - a)));
+    double res = ((NumberNode) args.get(0)).getValue();
+    for (int i = 1; i < args.size(); i++) {
+      res -= ((NumberNode) args.get(i)).getValue();
+    }
+    return new NumberNode(res);
   }
 
   private AstNode primProduct(List<AstNode> args, Environment env) {
@@ -783,7 +785,7 @@ final class IfNode extends AstNode {
 }
 \end{lstlisting}
 
-Finally, at long last, we can write some tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment. Unfortunately, we still have to write the programs as an abstract syntax tree, but the problems of lexing and parsing raw string input into an abstract syntax tree are reserved for some other time (or perhaps a separate course altogether).
+Finally, at long last, we can write some tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment, which contains no bindings at the start of evaluation. Unfortunately, we still have to write the programs as an abstract syntax tree, but the problems of lexing and parsing raw string input into an abstract syntax tree are reserved for some other time (or perhaps a separate course altogether).
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -792,23 +794,31 @@ import static Assertions.assertEquals;
 class InterpTester {
   
   @Test
-  void interpret() {
+  void testEval() {
     assertAll(
       () -> assertEquals(new NumberNode("42"),
-                         new NumberNode("42").eval(new Environment())),
+              new NumberNode("42")
+                      .eval(new Environment())),
+      () -> assertEquals(new BoolNode(true),
+              new PrimNode("eq?",
+                      new NumberNode(42),
+                      new PrimNode("-",
+                              new NumberNode(100),
+                              new NumberNode(58)))
+                      .eval(new Environment())),
       () -> assertEquals(new NumberNode("42"),
-                         new LetNode("x", new NumberNode("42"), new VarNode("x"))
-                         .eval(new Environment())),
+              new LetNode("x", new NumberNode("42"), new VarNode("x"))
+                      .eval(new Environment())),
       () -> assertEquals(new NumberNode("42"),
-                         new PrimNode("+", new NumberNode("1"), new NumberNode("41"))
-                         .eval(new Environment())),
+              new PrimNode("+", new NumberNode("1"), new NumberNode("41"))
+                      .eval(new Environment())),
       () -> assertEquals(new NumberNode("42"),
-                         new LetNode("x",
-                          new NumberNode("1"),
-                           new LetNode("y",
-                            new NumberNode("41"),
-                             new PrimNode("+", new VarNode("x"), new VarNode("y"))))
-                         .eval(new Environment())));
+              new LetNode("x",
+                      new NumberNode("1"),
+                      new LetNode("y",
+                              new NumberNode("41"),
+                              new PrimNode("+", new VarNode("x"), new VarNode("y"))))
+                      .eval(new Environment())));
   }
 }
 \end{lstlisting}
