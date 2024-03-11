@@ -1,5 +1,5 @@
 \section{Tree-Based Data Structures}
-At the start of this section, we distinguished between three types of data structures: array-based, dictionary-based, and set-based. To close off this part of the chapter, we will dive into a more advanced data structure category: tree-based structures.
+At the start of section~\ref{section:chapter-arrays-collections-collections}, we distinguished between three types of data structures: array-based, dictionary-based, and set-based. To close off this part of the chapter, we will dive into a more advanced data structure category: tree-based structures.
 
 A \emph{tree} is a recursive data structure by nature. Trees are comprised of \emph{nodes} and \emph{edges} between nodes. Let's draw a simple tree that stores some arbitrary numbers.
 
@@ -42,7 +42,8 @@ The tree example from Figure~\ref{fig:binarytree} is, coincidentally, a binary s
 To create a binary search tree with our API, we can declare an object of type \ttt{Tree}, then instantiate it as a \ttt{BinarySearchTree}. 
 Similar to how \ttt{ArrayList} and \ttt{LinkedList} are ``kinds of'' \ttt{List} objects, a \ttt{BinarySearchTree} is a ``kind of'' \ttt{Tree} object.
 To add an element to the binary search tree, we invoke the \ttt{add} method. 
-Nodes are inserted according to their natural ordering if a \ttt{Comparator} is not specified when instantiating the tree, identical to priority queues.
+Nodes are inserted according to their natural ordering if a \ttt{Comparator} is not specified when instantiating the tree, identical to priority queues. 
+Be aware that the elements of the tree must be \ttt{Comparable}.
 
 \example{To visit the elements of a binary tree, we can write one of three methods: \ttt{preorderTraversal}, \ttt{inorderTraversal}, or \ttt{postorderTraversal}.}
 All three traversal types are recursive by design.
@@ -52,7 +53,9 @@ All three traversal types are recursive by design.
   \item A \emph{postorder traversal} recurses on its left child, then recurses on its right child, then visits the current node.
 \end{itemize}
 
-Let's design the \ttt{List<T> inorderTraversal(Tree<T> t)} method, which returns a list of the elements in the tree after an inorder traversal. An interesting property of this traversal is that it always visits the elements in sorted order (according to the natural ordering or the comparator). To make testing this method easier, we will take advantage of the fact that we can pass a list of values to the \ttt{BinarySearchTree} constructor, which "bulk adds" them to the tree.
+Let's design the \ttt{List<T> inorderTraversal(Tree<T> t)} method, which returns a list of the elements in the tree after an inorder traversal. 
+An interesting property of this traversal is that it always visits the elements in sorted order (according to the natural ordering or the comparator). 
+To make testing this method easier, we will take advantage of the fact that we can pass a list of values to the \ttt{BinarySearchTree} constructor, which "bulk adds" them to the tree.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -60,15 +63,14 @@ import static Assertions.assertEquals;
 
 import java.util.List;
 import java.util.ArrayList;
-import teachingjava.trees.Tree;
 import teachingjava.trees.BinarySearchTree;
 
 class InorderTraversalTester {
 
   @Test
   void testInorderTraversal() {
-    Tree<Integer> t1 = new BinarySearchTree<>();
-    Tree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
+    BinarySearchTree<Integer> t1 = new BinarySearchTree<>();
+    BinarySearchTree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
     assertAll(
       () -> assertEquals(List.of(), inorderTraversal(t1));
       () -> assertEquals(List.of(1, 3, 6, 7, 15, 26, 42, 84), inorderTraversal(t2)));
@@ -77,6 +79,7 @@ class InorderTraversalTester {
 
 \end{lstlisting}
 \begin{lstlisting}[language=MyJava]
+import java.util.Comparable;
 import java.util.List;
 import java.util.ArrayList;
 import teachingjava.trees.Tree;
@@ -85,11 +88,11 @@ import teachingjava.trees.BinarySearchTree;
 class InorderTraversal {
 
   /**
-   *
-   * @param
-   * @return
+   * Returns a list of the elements in the tree after an inorder traversal.
+   * @param t - the tree to traverse.
+   * @return a list of elements.
    */
-  static <T> List<T> inorderTraversal(Tree<T> t) {
+  static <T extends Comparable<T>> List<T> inorderTraversal(BinarySearchTree<T> t) {
     if (t.isEmpty()) {
       return new ArrayList<>();
     } else {
@@ -118,15 +121,14 @@ import static Assertions.assertEquals;
 import static Assertions.assertAll;
 
 import java.util.List;
-import teachingjava.trees.Tree;
 import teachingjava.trees.BinarySearchTree;
 
 class FindMaxTester {
 
   @Test
   void testFindMax() {
-    Tree<Integer> t1 = new BinarySearchTree<>();
-    Tree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
+    BinarySearchTree<Integer> t1 = new BinarySearchTree<>();
+    BinarySearchTree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
     assertAll(
       () -> assertEquals(null, findMax(t1));
       () -> assertEquals(84, findMax(t2)));
@@ -135,7 +137,7 @@ class FindMaxTester {
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-import teachingjava.trees.Tree;
+import java.util.Comparable;
 import teachingjava.trees.BinarySearchTree;
 
 class FindMax {
@@ -145,7 +147,7 @@ class FindMax {
    * @param t - the tree to search.
    * @return the maximum value in the tree, or null if the tree is empty.
    */
-  static <T> T findMax(Tree<T> t) {
+  static <T extends Comparable<T>> T findMax(BinarySearchTree<T> t) {
     if (t.isEmpty()) {
       return null;
     } else if (t.getRight().isEmpty()) {
@@ -165,16 +167,15 @@ import static Assertions.assertFalse;
 import static Assertions.assertAll;
 
 import java.util.List;
-import teachingjava.trees.Tree;
 import teachingjava.trees.BinarySearchTree;
 
 class IsBalancedTester {
 
   @Test
   void testIsBalanced() {
-    Tree<Integer> t1 = new BinarySearchTree<>();
-    Tree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
-    Tree<Integer> t3 = new BinarySearchTree<>(List.of(10, 5, 20));
+    BinarySearchTree<Integer> t1 = new BinarySearchTree<>();
+    BinarySearchTree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
+    BinarySearchTree<Integer> t3 = new BinarySearchTree<>(List.of(10, 5, 20));
     assertAll(
       () -> assertTrue(isBalanced(t1));
       () -> assertFalse(isBalanced(t2)),
@@ -184,7 +185,7 @@ class IsBalancedTester {
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-import teachingjava.trees.Tree;
+import java.util.Comparable;
 import teachingjava.trees.BinarySearchTree;
 
 class IsBalanced {
@@ -195,7 +196,7 @@ class IsBalanced {
    * @param t - the tree to check.
    * @return true if the tree is balanced, false otherwise.
    */
-  static boolean isBalanced(Tree t) {
+  static <T extends Comparable<T>> boolean isBalanced(BinarySearchTree<T> t) {
     if (t.isEmpty()) {
       return true;
     } else {
@@ -209,5 +210,136 @@ class IsBalanced {
 }
 \end{lstlisting}
 
+\example{Let's design the \ttt{BinarySearchTree<T> inorderSuccessor(BinarySearchTree<T> t)} method, which returns the inorder successor of a node in a given binary search tree.} 
+The inorder successor of a node $n$ is the node with the smallest value that is greater than $n$'s value. 
+Another way to phrase it is the next-greatest element in the tree.
+The algorithm to find the inorder successor of a node $n$ is as follows:
+\begin{itemize}
+  \item If $n$ has a right child, then the inorder successor is the left-most child of $n$'s right subtree.
+  \item If $n$ has no right child, then the inorder successor is the first ancestor of $n$ that is a left child.
+\end{itemize}
+Following the first case is trivial, because we only need to traverse the left subtree of $n$'s right child. 
+The second case is more difficult, because we need to traverse the tree \emph{upwards} until we find the first ancestor that is a left child. 
+We can do this by keeping track of the parent of $n$, and if $n$ is its parent's left child, we return the parent.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertEquals;
+import static Assertions.assertAll;
+
+import java.util.List;
+import teachingjava.trees.BinarySearchTree;
+
+class InorderSuccessorTester {
+
+  @Test
+  void testInorderSuccessor() {
+    BinarySearchTree<Integer> t1 = new BinarySearchTree<>();
+    BinarySearchTree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
+    assertAll(
+      () -> assertEquals(null, inorderSuccessor(t1));
+      () -> assertEquals(null, inorderSuccessor(t2.contains(42)));
+      () -> assertEquals(15, inorderSuccessor(t2.contains(7)));
+      () -> assertEquals(42, inorderSuccessor(t2.contains(26))));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Comparable;
+import teachingjava.trees.BinarySearchTree;
+
+class InorderSuccessor {
+
+  /**
+   * Returns the inorder successor of a node in a binary search tree.
+   * @param t - the node to find the successor of.
+   * @return the inorder successor of the node, or null if the node has no successor.
+   */
+  static <T extends Comparable<T>> T inorderSuccessor(BinarySearchTree<T> t) {
+    if (t.isEmpty()) {
+      return null;
+    } else if (t.getRight() != null) {
+      BinarySearchTree<T> temp = t.getRight();
+      while (temp != null) {
+        temp = temp.getLeft();
+      }
+      return temp;
+    } else {
+      BinarySearchTree<T> parent = t.getParent();
+      while (parent != null && t == parent.getRight()) {
+        t = parent;
+        parent = parent.getParent();
+      }
+      return parent;
+    }
+  }
+}
+\end{lstlisting}
+
+\example{Let's see an example of why we might care about finding the inorder successor of a node.}
+We will design the \ttt{Set<T> findBetween(BinarySearchTree<T> t, T min, T ,max)} method, which returns a set of all elements in the tree that are between \ttt{min} and \ttt{max}. 
+There are two ways we can solve this problem: (1) traverse the tree and add elements to the set if they are between \ttt{min} and \ttt{max}, or (2) find the inorder successor of \ttt{min}, and then traverse the tree until we reach \ttt{max}.
+The former approach is more straightforward, but the latter is more efficient, because it takes advantage of the fact that the tree is ordered. 
+The latter algorithm is as follows:
+\begin{itemize}
+  \item Find the inorder precedessor to \ttt{min}, or \ttt{min} itself if it is in the tree.
+  \item Traverse the tree until we reach \ttt{max}, adding elements to the set as we go, computing the inorder successor of each node.
+\end{itemize}
+
+First, we need an algorithm to find the inorder predecessor of a node. 
+This encompasses searching for the location of the node in the tree and returning it, if it exists. Otherwise we return the parent of the last node we visited. We will explicitly show the \ttt{findPredecessor} method, but it will be used in the implementation of our \ttt{findBetween} method.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertEquals;
+import static Assertions.assertAll;
+
+class FindBetweenTester {
+
+  @Test
+  void testFindBetween() {
+    BinarySearchTree<Integer> t1 = new BinarySearchTree<>();
+    BinarySearchTree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
+    assertAll(
+      () -> assertEquals(Set.of(), findBetween(t1, 0, 100));
+      () -> assertEquals(Set.of(1, 3, 6, 7, 15, 26, 42), findBetween(t2, 0, 100));
+      () -> assertEquals(Set.of(3, 6, 7, 15, 26), findBetween(t2, 3, 26));
+      () -> assertEquals(Set.of(3, 6, 7, 15), findBetween(t2, 3, 25)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Comparable;
+import java.util.Set;
+import java.util.HashSet;
+import teachingjava.trees.BinarySearchTree;
+
+class FindBetween {
+
+  /**
+   * Returns a set of all elements in the tree that are between min and max.
+   * @param t - the tree to search.
+   * @param min - the minimum value.
+   * @param max - the maximum value.
+   * @return a set of elements between min and max.
+   */
+  static <T extends Comparable<T>> Set<T> findBetween(BinarySearchTree<T> t, T min, T max) {
+    Set<T> res = new HashSet<>();
+    BinarySearchTree<T> temp = findPredecessor(t, min);
+    while (temp != null && temp.getValue().compareTo(max) <= 0) {
+      // Add the element to the set if it is between min and max.
+      if (temp.getValue().compareTo(min) >= 0) {
+        res.add(temp.getValue());
+      }
+      temp = inorderSuccessor(temp);
+    }
+    return res;
+  }
+}
+\end{lstlisting}
+
 Maintaining a balanced binary tree, as we suggested earlier, guarantees fast operations. 
-This invariant is non-trivial to maintain, and there are several \emph{height-balancing} tree data structures that do so. For example, there are \emph{AVL} trees, \emph{red-black} trees, and \emph{splay} trees (the list is by no means exhaustive). We end our discussion on trees here, but we will revisit them in a subsequent chapter on advanced object-oriented programming, where their practicality becomes more apparent.
+This invariant is non-trivial to maintain, and there are several \emph{height-balancing} tree data structures that do so. 
+For example, there are \emph{AVL} trees, \emph{red-black} trees, and \emph{splay} trees (the list is by no means exhaustive). 
+Trees are a natural fit for programming language interpreters and design. Moreover, height-balancing trees are the basis for the \ttt{TreeSet} and \ttt{TreeMap} classes, which guarantee quick operation times.
+We end our discussion on trees here, but we will revisit them in a subsequent chapter on advanced object-oriented programming, where their practicality becomes more apparent.
