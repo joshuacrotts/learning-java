@@ -110,3 +110,104 @@ This property allows for very fast object lookup times, insertions, and removals
 Maintaining the balance factor of a tree is a non-trivial task, though, and the \ttt{BinarySearchTree} class does not balance the tree, meaning the fast operation times are not guaranteed.
 In fact, these operations are, in their worst case, the same as a linked list, because the shape of a \emph{totally unbalanced} binary search tree resembles a list. 
 By ``totally unbalanced,'' we mean that all elements are to the left or right of the root, a property that applies recursively to its children.
+
+\example{Let's write the \ttt{findMax} method that finds the largest element of a binary search tree. All this involves is following the right-most child until we reach a dead-end. Because all elements to the right of another are larger than the node, this task is trivial.}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertEquals;
+import static Assertions.assertAll;
+
+import java.util.List;
+import teachingjava.trees.Tree;
+import teachingjava.trees.BinarySearchTree;
+
+class FindMaxTester {
+
+  @Test
+  void testFindMax() {
+    Tree<Integer> t1 = new BinarySearchTree<>();
+    Tree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
+    assertAll(
+      () -> assertEquals(null, findMax(t1));
+      () -> assertEquals(84, findMax(t2)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import teachingjava.trees.Tree;
+import teachingjava.trees.BinarySearchTree;
+
+class FindMax {
+
+  /**
+   * Finds the maximum value in a tree.
+   * @param t - the tree to search.
+   * @return the maximum value in the tree, or null if the tree is empty.
+   */
+  static <T> T findMax(Tree<T> t) {
+    if (t.isEmpty()) {
+      return null;
+    } else if (t.getRight().isEmpty()) {
+      return t.getValue();
+    } else {
+      return findMax(t.getRight());
+    }
+  }
+}
+\end{lstlisting}
+
+\example{Let's design the \ttt{boolean isBalanced(Tree t)} method to determine whether or not a tree is balanced.} As we stated, a tree is balanced if the difference between the heights of its left and right subtrees differ by at most one. The idea is to recursively traverse each subtree until we reach a leaf, at which we know that the tree is balanced. We then compare the heights of the left and right subtrees, and if they differ by more than one, we return \ttt{false}. Because we use a logical \ttt{AND} operator, if any subtree is unbalanced, the entire tree is unbalanced, because the \ttt{false} return value propagates upward.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertTrue;
+import static Assertions.assertFalse;
+import static Assertions.assertAll;
+
+import java.util.List;
+import teachingjava.trees.Tree;
+import teachingjava.trees.BinarySearchTree;
+
+class IsBalancedTester {
+
+  @Test
+  void testIsBalanced() {
+    Tree<Integer> t1 = new BinarySearchTree<>();
+    Tree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
+    Tree<Integer> t3 = new BinarySearchTree<>(List.of(10, 5, 20));
+    assertAll(
+      () -> assertTrue(isBalanced(t1));
+      () -> assertFalse(isBalanced(t2)),
+      () -> assertTrue(isBalanced(t3)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import teachingjava.trees.Tree;
+import teachingjava.trees.BinarySearchTree;
+
+class IsBalanced {
+
+  /**
+   * Determines whether a tree is balanced. A tree is balanced if the difference
+   * between the heights of its left and right subtrees differ by at most one.
+   * @param t - the tree to check.
+   * @return true if the tree is balanced, false otherwise.
+   */
+  static boolean isBalanced(Tree t) {
+    if (t.isEmpty()) {
+      return true;
+    } else {
+      boolean left = isBalanced(t.getLeft());
+      boolean right = isBalanced(t.getRight());
+      int leftHeight = t.getLeft().height();
+      int rightHeight = t.getRight().height();
+      return left && right && Math.abs(leftHeight - rightHeight) <= 1;
+    }
+  }
+}
+\end{lstlisting}
+
+Maintaining a balanced binary tree, as we suggested earlier, guarantees fast operations. 
+This invariant is non-trivial to maintain, and there are several \emph{height-balancing} tree data structures that do so. For example, there are \emph{AVL} trees, \emph{red-black} trees, and \emph{splay} trees (the list is by no means exhaustive). We end our discussion on trees here, but we will revisit them in a subsequent chapter on advanced object-oriented programming, where their practicality becomes more apparent.
