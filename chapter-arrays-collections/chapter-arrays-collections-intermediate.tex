@@ -1,0 +1,112 @@
+\section{Tree-Based Data Structures}
+At the start of this section, we distinguished between three types of data structures: array-based, dictionary-based, and set-based. To close off this part of the chapter, we will dive into a more advanced data structure category: tree-based structures.
+
+A \emph{tree} is a recursive data structure by nature. Trees are comprised of \emph{nodes} and \emph{edges} between nodes. Let's draw a simple tree that stores some arbitrary numbers.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[level distance=1.5cm,
+  level 1/.style={sibling distance=3cm},
+  level 2/.style={sibling distance=1.5cm}]
+  \node {7}
+    child {node {3}
+      child {node {1}}
+      child {node {6}}
+    }
+    child {node {42}
+      child {node {15}
+        child {node {26}}
+      }
+      child {node {84}}
+    };
+\end{tikzpicture}
+\caption{Caption for the binary tree.}
+\label{fig:binarytree}
+\end{figure}
+
+The example in Figure~\ref{fig:binarytree} is called a \emph{binary tree} because all nodes have at most two children. 
+The top-most node in the tree, $7$ is called the \emph{root}, which has two children that are trees themselves $3$ and $41$. 
+The root has a depth of zero, whereas $3$ and $41$ have depth of one. 
+A node $m$ is a child of node $a$ if there is a direct edge between $a$ and $m$, where the depth level of $a$ is exactly one fewer than $m$'s depth level. 
+We consider a node $m$ to be a descendant of node $a$ if there is a sequence of edges from $a$ to $m$, where the depth level of $a$ is at least one fewer than $m$'s depth level. 
+The \emph{height} of a tree $T$ is the maximum of the depth of $T$'s root and its children. 
+In the example, the tree's height is three due to the path from $7$ to $26$.
+
+At this point the reader may await us to show them a collections API implementation of a tree. 
+Unfortunately, Java provides no implementation of trees in its collections API. 
+To compensate, we provide a library that mimics what Java might provide. In this library we include the \ttt{BinarySearchTree} class, alongside a few other tree implementations that are more complex. 
+The difference between a binary search tree and a standard binary tree is that the elements are ordered. 
+All nodes to the left of a node $T$ are ``less than'' $T$, whereas all nodes to the right of $T$ are greater than $T$.
+The tree example from Figure~\ref{fig:binarytree} is, coincidentally, a binary search tree.
+
+To create a binary search tree with our API, we can declare an object of type \ttt{Tree}, then instantiate it as a \ttt{BinarySearchTree}. 
+Similar to how \ttt{ArrayList} and \ttt{LinkedList} are ``kinds of'' \ttt{List} objects, a \ttt{BinarySearchTree} is a ``kind of'' \ttt{Tree} object.
+To add an element to the binary search tree, we invoke the \ttt{add} method. 
+Nodes are inserted according to their natural ordering if a \ttt{Comparator} is not specified when instantiating the tree, identical to priority queues.
+
+\example{To visit the elements of a binary tree, we can write one of three methods: \ttt{preorderTraversal}, \ttt{inorderTraversal}, or \ttt{postorderTraversal}.}
+All three traversal types are recursive by design.
+\begin{itemize}
+  \item A \emph{preorder traversal} visits the current node, then recurses on its left child, then recurses on its right child.
+  \item An \emph{inorder traversal} recurses on its left child, then visits the current node, then recurses on its right child.
+  \item A \emph{postorder traversal} recurses on its left child, then recurses on its right child, then visits the current node.
+\end{itemize}
+
+Let's design the \ttt{List<T> inorderTraversal(Tree<T> t)} method, which returns a list of the elements in the tree after an inorder traversal. An interesting property of this traversal is that it always visits the elements in sorted order (according to the natural ordering or the comparator). To make testing this method easier, we will take advantage of the fact that we can pass a list of values to the \ttt{BinarySearchTree} constructor, which "bulk adds" them to the tree.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+import java.util.ArrayList;
+import teachingjava.trees.Tree;
+import teachingjava.trees.BinarySearchTree;
+
+class InorderTraversalTester {
+
+  @Test
+  void testInorderTraversal() {
+    Tree<Integer> t1 = new BinarySearchTree<>();
+    Tree<Integer> t2 = new BinarySearchTree<>(List.of(7, 3, 42, 1, 6, 15, 84, 26));
+    assertAll(
+      () -> assertEquals(List.of(), inorderTraversal(t1));
+      () -> assertEquals(List.of(1, 3, 6, 7, 15, 26, 42, 84), inorderTraversal(t2)));
+  }
+}
+
+\end{lstlisting}
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.ArrayList;
+import teachingjava.trees.Tree;
+import teachingjava.trees.BinarySearchTree;
+
+class InorderTraversal {
+
+  /**
+   *
+   * @param
+   * @return
+   */
+  static <T> List<T> inorderTraversal(Tree<T> t) {
+    if (t.isEmpty()) {
+      return new ArrayList<>();
+    } else {
+      List<T> left = inorderTraversal(t.getLeft());
+      List<T> right = inorderTraversal(t.getRight());
+      List<T> res = new ArrayList<>();
+      res.addAll(left);
+      res.add(t.getValue());
+      res.addAll(right);
+      return res;
+    }
+  }
+}
+\end{lstlisting}
+
+A tree is said to be \emph{balanced} if the heights of its left and right children differ by at most one.
+This property allows for very fast object lookup times, insertions, and removals. 
+Maintaining the balance factor of a tree is a non-trivial task, though, and the \ttt{BinarySearchTree} class does not balance the tree, meaning the fast operation times are not guaranteed.
+In fact, these operations are, in their worst case, the same as a linked list, because the shape of a \emph{totally unbalanced} binary search tree resembles a list. 
+By ``totally unbalanced,'' we mean that all elements are to the left or right of the root, a property that applies recursively to its children.
