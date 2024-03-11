@@ -236,6 +236,7 @@ class Dog implements IAnimal {
 
 Interestingly, interfaces may have static methods. Our \ttt{IBox} interface has a static \ttt{box} method that returns a box of the type passed in as an argument. This is useful because we can call the \ttt{box} method without having to instantiate a class that implements the \ttt{IBox} interface. We can then use the \ttt{get} and \ttt{set} methods to retrieve and change the value of the box.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class IBox<T> {
   
@@ -299,7 +300,17 @@ class IntegerBox implements IBox<Integer> {
 }
 \end{lstlisting}
 
-The Java Swing API is a graphics framework for designing graphical interfaces and drawing shapes/images. In addition to these capabilities, it also supports user input through the keyboard, mouse, and other means. Compared to a class like \ttt{Scanner}, which waits for the user to press ``Enter'' when they are finished typing input, the Swing API allows for dynamic input and is constantly monitored by the program. We call the part of the program that listens and processes events an \emph{event listener}. A popular example is the \ttt{ActionListener} interface, which is used to listen for a broad classification of events. The \ttt{ActionListener} interface has a single method, \ttt{actionPerformed}, that is invoked when an event occurs. The \ttt{actionPerformed} method receives an \ttt{ActionEvent} object that contains information about the event that occurred, which is then usable by the method to determine what to do in response to the event. Because graphical interface design goes beyond the scope of this textbook, we will omit a code example, but we mention action listeners to demonstrate that interfaces are not limited to the examples we have seen thus far. Moreover, the Swing API provides more specific listeners for processing keyboard and mouse events, e.g., \ttt{KeyListener}, \ttt{MouseListener}, \ttt{MouseMotionListener}, and so forth. We could, for instance, design a class that implements the \ttt{MouseListener} interface and provides an overriding implementation of the \ttt{mouseClicked} method. Then, inside a Java Swing graphical component, we might hook the class as a mouse listener and, when the user clicks the mouse, the \ttt{mouseClicked} method is invoked.
+\example{The Java Swing API is a graphics framework for designing graphical interfaces and drawing shapes/images.} 
+In addition to these capabilities, it also supports user input through the keyboard, mouse, and other means. 
+Compared to a class like \ttt{Scanner}, which waits for the user to press ``Enter'' when they are finished typing input, the Swing API allows for dynamic input and is constantly monitored by the program. 
+We call the part of the program that listens and processes events an \emph{event listener}. 
+A popular example is the \ttt{ActionListener} interface, which is used to listen for a broad classification of events. 
+The \ttt{ActionListener} interface has a single method, \ttt{actionPerformed}, that is invoked when an event occurs. 
+The \ttt{actionPerformed} method receives an \ttt{ActionEvent} object that contains information about the event that occurred, which is then usable by the method to determine what to do in response to the event. 
+Because graphical interface design goes beyond the scope of this textbook, we will omit a code example, but we mention action listeners to demonstrate that interfaces are not limited to the examples we have seen thus far. 
+Moreover, the Swing API provides more specific listeners for processing keyboard and mouse events, e.g., \ttt{KeyListener}, \ttt{MouseListener}, \ttt{MouseMotionListener}, and so forth. 
+We could, for instance, design a class that implements the \ttt{MouseListener} interface and provides an overriding implementation of the \ttt{mouseClicked} method. 
+Then, inside a Java Swing graphical component, we might hook the class as a mouse listener and, when the user clicks the mouse, the \ttt{mouseClicked} method is invoked.
 
 \example{An amazing insight into the power of interfaces is already present in Java, but deriving it ourselves is useful. Consider the notion of first-class functions: the concept in which functions and data are equivalent, and we can pass functions around as arguments and return them from other functions. In Java, we can pass functions around as arguments, mimicing first-class functions, by designing a \emph{functional interface}.}
 
@@ -518,6 +529,7 @@ class DerivativeTester {
 }
 \end{lstlisting}
 
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Objects;
 
@@ -609,15 +621,14 @@ class MonomialExpression implements Expression {
 }
 \end{lstlisting}
 
-Let's move into compositional expressions: expressions that contain expressions as instance variables. Such an example is an additive operator; the derivative of the expression $(f(x) + g(x))' = f'(x) + g'(x)$, where $f'$ is the derivative of $f$. In summary, the derivative of a sum is the sum of the derivatives of its operands. To represent sequential operands, e.g., $x + y + z + \cdots + w$, we will store the expressions in a list. Note that our symbolic differentiator neither simplifies expressions nor combines like terms.
+Let's move into compositional expressions: expressions that contain expressions as instance variables. Such an example is an additive operator; the derivative of the expression $(f(x) + g(x))' = f'(x)~+~g'(x)$, where $f'$ is the derivative of $f$. In summary, the derivative of a sum is the sum of the derivatives of its operands. To represent sequential operands, e.g., $x + y + z + \cdots + w$, we will store the expressions in a list. Note that our symbolic differentiator neither simplifies expressions nor combines like terms.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
   
 class DerivativeTester {
-  
-  // ... other testing methods not shown.
+  // ... previous methods not shown.
 
   @Test
   void testAddExpressionDerivative() {

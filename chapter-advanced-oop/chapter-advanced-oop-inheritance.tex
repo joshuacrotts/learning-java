@@ -4,6 +4,7 @@ Classes may relate to other classes by a hierarchy. In particular, one class, ca
 
 \example{Suppose we have the \ttt{Alien} class defined as follows, which can move forward by one unit and turn left by 90 degrees in some world that it resides within.\footnote{We base this example off of Karel J. Robot from~\cite{kareljrobot} and~\cite{pattiskarel}.}}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -82,6 +83,7 @@ class Alien {
 
 What we have defined is an incredibly primitive alien class that stores its position and direction in a two-dimensional plane. Testing the alien, as we have done, is straightforward, but even such a simple alien definition must turn left three times to mimic the behavior of turning right once. We should extend the \ttt{Alien} class to add a \ttt{turnRight} method. We will call this class \ttt{RightAlien}, which adds a single method: \ttt{turnRight}. The other methods remain the same, since we do not want to overwrite their behavior. One important thing to note is that we invoke the superclass constructor via the \ttt{super()} invocation. We do so because we want the direction, $x$ and $y$ variables to be correctly initialized when instantiating an instance of \ttt{RightAlien}. As we will demonstrate with future examples, invoking the superclass constructor can be done with arguments.
 
+\enlargethispage{-8\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -125,6 +127,7 @@ class RightAlien extends Alien {
 
 Great, we can turn right with this flavor of the alien! Though, moving forward by one unit is absurdly slow, so let's now design the \ttt{MileMoverAlien} class, which moves ten units for every \ttt{moveForward} call. A mile, in this two-dimensional world, is equal to ten units. Because we want to override the functionality of \ttt{moveForward} from \ttt{Alien}, we must redefine the method in the subclass, and add the \ttt{@Override} annotation. Moreover, we define this particular version of \ttt{moveForward} in terms of \ttt{moveForward} from the superclass. This is a common pattern when overriding methods: we want to reuse the functionality of the superclass, but add some additional behavior. In this case, we want to move ten units forward, instead of one. In order to invoke the superclass definition of \ttt{moveForward}, we prefix the method call with `\ttt{super.}', rather than `\ttt{this.}'. Should we accidentally prefix the method call with `\ttt{this.}', we would be invoking the subclass definition of \ttt{moveForward}, resulting in an infinite loop!\footnote{Omitting `\ttt{this.}' still causes the method to infinitely loop, since not having the qualifier will cause Java to look in the current class definition.} One could make the case and say that this is, in fact, a form of recursion, and indeed this is true, but it is nonsensical recursion because the outcome not only undesired but also never terminates.
 
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -206,6 +209,7 @@ class StarObject extends WorldObject {
 }
 \end{lstlisting}
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 import java.util.List;

@@ -114,11 +114,10 @@ abstract class GameObject {
     this.x = x;
     this.y = y;
   }
-
-  // Getters and setters omitted.
 }
 \end{lstlisting}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=Myjava]
 abstract class AxisAlignedBoundingBoxObject extends GameObject {
   
@@ -142,8 +141,6 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
  	   (this.getY() < obj.getY() + obj.height)  &&
 	   (this.getY() + this.height >= obj.height); 
   }
-  
-  // Getters and setters omitted.
 }
 \end{lstlisting}
 
@@ -182,6 +179,7 @@ We need to translate our circles into axis-aligned bounding box, but what does t
 
 The question that we anticipate many readers are thinking of is, why do we even distinguish objects of differing ``types'' if they both implement collision detection in the same fashion? Since we are working in the context of a game, the way we draw these objects will almost certainly be different! Let's, for the sake of emphasizing the distinctions, design a \ttt{IDrawable} interface, which provides one method: \ttt{draw(Graphics2D g2d)}, which gives us a \ttt{Graphics2D} object. We will not discuss, nor do we really care about the innards of a graphics library aside from the fact that it contains two primitive methods: \ttt{drawOval(int x, int y, int w, int h)} and \ttt{drawRect(int x, int y, int w, int h)}. Therefore our two object subclasses will implement \ttt{IDrawable} and override the method differently.
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 interface IDrawable {
   
@@ -243,6 +241,7 @@ abstract class Argument {
 
 From here, let's design two types of arguments: one that is optional and one that receives $n$ arguments. Namely, an optional argument is one that is always valid, according to \ttt{validate}, because it does not necessarily need to exist. The $n$-valued argument, on the other hand, requires that the associated passed flag contains exactly $n$ values. For example, if we say that the \ttt{--input} flag requires exactly $3$ arguments, then if we do not pass exactly three space-separated non-flag values, it fails to validate.
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.Map;
@@ -457,6 +456,7 @@ class AstTest {
 }
 \end{lstlisting}
 
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class VarNode extends AstNode {
 
@@ -468,11 +468,11 @@ final class VarNode extends AstNode {
   }
 
   /**
-  * Interpret a variable. We look up the variable in the environment and
-  * return the value associated with it.
-  * @param env - the environment in which to interpret the variable.
-  * @return The result of the variable lookup after interpretation.
-  */
+   * Interpret a variable. We look up the variable in the environment and
+   * return the value associated with it.
+   * @param env - the environment in which to interpret the variable.
+   * @return The result of the variable lookup after interpretation.
+   */
   @Override
   AstNode eval(Environment env) {
     String id = this.NAME;
@@ -528,6 +528,7 @@ final class NumberNode extends AstNode {
 }
 \end{lstlisting}
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class BoolNode extends AstNode {
 
@@ -571,6 +572,7 @@ final class BoolNode extends AstNode {
 
 From here, we arrive at primitive operators via \ttt{PrimNode}. A primitive operator is one akin to addition, subtraction, and so forth. Two additional primitives that we will support are reading an integer from standard input, and printing one to standard output. Primitive operators receive any number of arguments and whose behavior is handled as a case analysis of the \ttt{eval} method. 
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -664,6 +666,7 @@ class EnvironmentTester {
 }
 \end{lstlisting}
   
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.Map;
@@ -688,13 +691,9 @@ final class Environment {
    * @return the value bound to the variable, or null if it does not exist.
    */
   AstNode lookup(String id) {
-    if (this.ENV.containsKey(id)) { 
-      return this.ENV.get(id); 
-    } else if (this.PARENT != null) { 
-      return this.PARENT.lookup(id); 
-    } else { 
-      return null; 
-    }
+    if (this.ENV.containsKey(id)) { return this.ENV.get(id); } 
+    else if (this.PARENT != null) { return this.PARENT.lookup(id); } 
+    else { return null; }
   }
 
   /**
@@ -752,6 +751,7 @@ final class LetNode extends AstNode {
 
 Finally we arrive at decision-based nodes. The \ttt{IfNode} class represents a conditional expression rather than a statement. Recall the ternary operator; it resolves to a value, unlike Java's \ttt{if} statement. The \ttt{IfNode} class has three children: a predicate, a consequent, and an alternative. The predicate is an abstract syntax tree that represents a boolean expression, and the consequent and alternative are arbitrary abstract syntax tree nodes. The \ttt{IfNode} class will have a \ttt{toString} method that will return a string of the form \ttt{(if <pred> <conseq> <alt>)}. Its evaluator will evaluate the predicate, and then evaluate either the consequent or alternative depending on the result of the predicate.
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class IfNode extends AstNode {
   
@@ -787,6 +787,7 @@ final class IfNode extends AstNode {
 
 Finally, at long last, we can write some tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment, which contains no bindings at the start of evaluation. Unfortunately, we still have to write the programs as an abstract syntax tree, but the problems of lexing and parsing raw string input into an abstract syntax tree are reserved for some other time (or perhaps a separate course altogether).
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -797,28 +798,23 @@ class InterpTester {
   void testEval() {
     assertAll(
       () -> assertEquals(new NumberNode("42"),
-              new NumberNode("42")
-                      .eval(new Environment())),
+                         new NumberNode("42").eval(new Environment())),
       () -> assertEquals(new BoolNode(true),
-              new PrimNode("eq?",
-                      new NumberNode(42),
-                      new PrimNode("-",
-                              new NumberNode(100),
-                              new NumberNode(58)))
-                      .eval(new Environment())),
+                         new PrimNode("eq?",
+                          new NumberNode(42),
+                          new PrimNode("-",
+                           new NumberNode(100),
+                           new NumberNode(58))).eval(new Environment())),
       () -> assertEquals(new NumberNode("42"),
-              new LetNode("x", new NumberNode("42"), new VarNode("x"))
-                      .eval(new Environment())),
+                         new LetNode("x", 
+                          new NumberNode("42"), 
+                          new VarNode("x")).eval(new Environment())),
       () -> assertEquals(new NumberNode("42"),
-              new PrimNode("+", new NumberNode("1"), new NumberNode("41"))
-                      .eval(new Environment())),
-      () -> assertEquals(new NumberNode("42"),
-              new LetNode("x",
-                      new NumberNode("1"),
-                      new LetNode("y",
-                              new NumberNode("41"),
-                              new PrimNode("+", new VarNode("x"), new VarNode("y"))))
-                      .eval(new Environment())));
+                         new LetNode("x", new NumberNode("1"),
+                          new LetNode("y", new NumberNode("41"),
+                           new PrimNode("+", 
+                            new VarNode("x"), 
+                            new VarNode("y")))).eval(new Environment())));
   }
 }
 \end{lstlisting}
