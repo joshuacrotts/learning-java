@@ -1,6 +1,6 @@
 \section{Exceptions}
 
-Exceptions, at their code, are effect handlers. We use exceptions to identify and respond to events that occur at runtime. Java uses objects to implement an exception type hierarchy, with \ttt{Throwable} being the highest class in the chain. Any subclass or instance of \ttt{Throwable} can be thrown by Java. We will discuss several different exception types by categorizing them into one of two categories: unchecked versus checked checked exceptions.
+Exceptions, at their core, are effect handlers. We use exceptions to identify and respond to events that occur at runtime. Java uses objects to implement an exception type hierarchy, with \ttt{Throwable} being the highest class in the chain. Any subclass or instance of \ttt{Throwable} can be thrown by Java. We will discuss several different exception types by categorizing them into one of two categories: unchecked versus checked checked exceptions.
 
 \subsection{Unchecked Exceptions}
 In general, we handle exceptions at either compile time or runtime. The exceptions, themselves, are thrown at runtime, but certain exceptions must be explicitly handled and referenced by the program. An \emph{unchecked exception} is a form of exception whose behavior is dictated by the runtime system, or is caught by the programmer manually. A convenience factor of unchecked exceptions is that we do not \emph{have} to explicitly state what happens when one is thrown. It should also note that the \ttt{RuntimeException} class serves as the superclass of all unchecked exceptions.

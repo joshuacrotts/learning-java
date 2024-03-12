@@ -180,6 +180,7 @@ interface IFunction<T, R> {
 }
 \end{lstlisting}
 
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Map;
 import java.util.HashMap;
@@ -190,16 +191,13 @@ class PrimNode extends AstNode {
   
   static {
     OPERATORS = new HashMap<>();
-    // Store the primPlus operator in the map.
     OPERATORS.put("+", this.primPlus);
   }
 
   @Override
   AstNode eval(Environment env) { /* TODO. */  }
 
-  private AstNode primPlus(List<AstNode> args, Environment env) {
-    /* Implementation omitted. */
-  }
+  private AstNode primPlus(List<AstNode> args, Environment env) { /* Details omitted. */ }
 }
 \end{lstlisting}
 
