@@ -408,7 +408,7 @@ abstract class AstNode {
 }
 \end{lstlisting}
 
-From here, the simplest three abstract syntax tree nodes are \ttt{VarNode}, \ttt{NumberNode}, and \ttt{BoolNode}, corresponding to variables, numbers, and booleans, respectively. Each of these nodes will have a single value, that being the variable name, number, or boolean. The \ttt{eval} methods of the latter two classes resolve to themselves, since evaluating a number or a boolean is itself. The former, that being \ttt{VarNode}, is a little trickier. 
+From here, the simplest three abstract syntax tree nodes are \ttt{VarNode}, \ttt{NumNode}, and \ttt{BoolNode}, corresponding to variables, numbers, and booleans, respectively. Each of these nodes will have a single value, that being the variable name, number, or boolean. The \ttt{eval} methods of the latter two classes resolve to themselves, since evaluating a number or a boolean is itself. The former, that being \ttt{VarNode}, is a little trickier. 
 
 We must consider what happens when we evaluate a variable in any other programming language. The language looks up the variable identifier in the list of accessible bindings and returns whatever is the corresponding value. This location of bindings is called an environment in the programming languages nomenclature, and generally takes the form of a \ttt{HashMap} data structure. Therefore we can store an instance of a \ttt{HashMap} in our \ttt{Environment} class. 
 
@@ -444,8 +444,8 @@ class AstTest {
   }
 
   @Test
-  void testNumberNode() {
-    assertEquals("42", new NumberNode("42").toString());
+  void testNumNode() {
+    assertEquals("42", new NumNode("42").toString());
   }
 
   @Test
@@ -488,16 +488,16 @@ final class VarNode extends AstNode {
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-final class NumberNode extends AstNode {
+final class NumNode extends AstNode {
 
   private final double VALUE;
 
-  NumberNode(String value) {
+  NumNode(String value) {
     super();
     this.VALUE = Double.parseDouble(value);
   }
 
-  NumberNode(double value) { 
+  NumNode(double value) { 
     this(Double.toString(value)); 
   }
 
@@ -508,8 +508,8 @@ final class NumberNode extends AstNode {
 
   @Override
   public boolean equals(Object o) {
-    if (!(o instanceof NumberNode)) { return false; }
-    else { return this.VALUE == ((NumberNode) o).VALUE; }
+    if (!(o instanceof NumNode)) { return false; }
+    else { return this.VALUE == ((NumNode) o).VALUE; }
   }
 
   @Override
@@ -611,22 +611,22 @@ final class PrimNode extends AstNode {
   }
 
   private AstNode primPlus(List<AstNode> args, Environment env) {
-    return new NumberNode(args.stream()
-                              .map(t -> ((NumberNode) t).getValue())
+    return new NumNode(args.stream()
+                              .map(t -> ((NumNode) t).getValue())
                               .reduce(0.0, Double::sum));
   }
 
   private AstNode primMinus(List<AstNode> args, Environment env) {
-    double res = ((NumberNode) args.get(0)).getValue();
+    double res = ((NumNode) args.get(0)).getValue();
     for (int i = 1; i < args.size(); i++) {
-      res -= ((NumberNode) args.get(i)).getValue();
+      res -= ((NumNode) args.get(i)).getValue();
     }
-    return new NumberNode(res);
+    return new NumNode(res);
   }
 
   private AstNode primProduct(List<AstNode> args, Environment env) {
-    return new NumberNode(args.stream()
-                              .map(t -> ((NumberNode) t).getValue())
+    return new NumNode(args.stream()
+                              .map(t -> ((NumNode) t).getValue())
                               .reduce(1.0, (a, c) -> c * a)));
   }
 
@@ -639,8 +639,8 @@ final class PrimNode extends AstNode {
 We need a way of binding variables to their values, so we shall take a hint from functional programming languages via the \ttt{LetNode} class. The \ttt{LetNode} class has three children: a variable name, a value, and a body. The variable name will be a string, with the value and body both being abstract syntax tree nodes. The \ttt{LetNode} class will have a \ttt{toString} method that will return a string in the form of \ttt{(let ([<var> <exp>]) <body>)}. The \ttt{eval} method will evaluate the value, extend the environment with the new binding, and then evaluate the body with the extended environment. To do this, we need to understand what environment extension entails. Reconsidering our \ttt{Environment} class, we know that it contains a \ttt{HashMap} to designate that environments use maps by design. We may be tempted to write a \ttt{set} method in our \ttt{Environment} class to add an identifier binding to the current environment. Although this works (and will be a necessity in due time), it means that we can only \emph{modify}, or \emph{change}, the environment, which isn't desired. The alternative approach would be to utilize \emph{environment extension}. That is, create a new environment with the old bindings, followed by an insertion of the new binding. Environment extension brings up the issue of variable scope, because different variables are live at different locations in the program. Consider the following program described by the abstract syntax tree:
 
 \begin{verbnobox}[\small]
-new LetNode("x", new NumberNode(5), 
- new LetNode("y", new PrimNode("+", new NumberNode(6), new VarNode("x")), 
+new LetNode("x", new NumNode(5), 
+ new LetNode("y", new PrimNode("+", new NumNode(6), new VarNode("x")), 
   new VarNode("y")))
 \end{verbnobox}
   
@@ -655,11 +655,11 @@ class EnvironmentTester {
   @Test
   void testEnvironment() {
     Environment root = new Environment();
-    Environment e1 = env.extend("x", new NumberNode(5));
-    Environment e2 = env.extend("y", new NumberNode(6));
+    Environment e1 = env.extend("x", new NumNode(5));
+    Environment e2 = env.extend("y", new NumNode(6));
     assertAll(
-      () -> assertEquals(new NumberNode(5), env.lookup("x")),
-      () -> assertEquals(new NumberNode(6), env.lookup("y")),
+      () -> assertEquals(new NumNode(5), env.lookup("x")),
+      () -> assertEquals(new NumNode(6), env.lookup("y")),
       () -> assertEquals(null, env.lookup("z")),
       () -> assertEquals(null, env.lookup("x")));
   }
@@ -797,21 +797,21 @@ class InterpTester {
   @Test
   void testEval() {
     assertAll(
-      () -> assertEquals(new NumberNode("42"),
-                         new NumberNode("42").eval(new Environment())),
+      () -> assertEquals(new NumNode("42"),
+                         new NumNode("42").eval(new Environment())),
       () -> assertEquals(new BoolNode(true),
                          new PrimNode("eq?",
-                          new NumberNode(42),
+                          new NumNode(42),
                           new PrimNode("-",
-                           new NumberNode(100),
-                           new NumberNode(58))).eval(new Environment())),
-      () -> assertEquals(new NumberNode("42"),
+                           new NumNode(100),
+                           new NumNode(58))).eval(new Environment())),
+      () -> assertEquals(new NumNode("42"),
                          new LetNode("x", 
-                          new NumberNode("42"), 
+                          new NumNode("42"), 
                           new VarNode("x")).eval(new Environment())),
-      () -> assertEquals(new NumberNode("42"),
-                         new LetNode("x", new NumberNode("1"),
-                          new LetNode("y", new NumberNode("41"),
+      () -> assertEquals(new NumNode("42"),
+                         new LetNode("x", new NumNode("1"),
+                          new LetNode("y", new NumNode("41"),
                            new PrimNode("+", 
                             new VarNode("x"), 
                             new VarNode("y")))).eval(new Environment())));

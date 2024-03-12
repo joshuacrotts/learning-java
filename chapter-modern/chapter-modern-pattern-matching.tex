@@ -394,7 +394,7 @@ class Parser {
   static AstNode parse(Queue<Token> tokenList) {
     if (!tokenList.isEmpty()) {
       return switch (tokenList.peek().type()) {
-        case NUMBER -> new NumberNode(tokenList.remove().data());
+        case NUMBER -> new NumNode(tokenList.remove().data());
         case SYMBOL -> new SymbolNode(tokenList.remove().data());
         case BOOLEAN -> new BooleanNode(tokenList.remove().data());
         case L_PAREN -> parseSExpression(tokenList);
