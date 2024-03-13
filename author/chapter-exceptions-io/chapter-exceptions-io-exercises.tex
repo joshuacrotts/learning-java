@@ -40,9 +40,11 @@ THIS_IS_NOT_AN_INTEGER!
 
     then the program does not output a file because it throws an exception.
 
-    \myexercise{2}{chapter-exceptions-io}{Design the \ttt{Capitalize} class, which reads a file of strings (that are not necessarily line-separated) specified by the user (using standard input), and outputs the capitalized versions of the sentences to a file of the same name, just with the \ttt{.out} extension. You may assume that a sentence is a string that is terminated by a period and only a period. This problem is harder than it looks because you need to correctly print the string out to the file. If you use a splitting method, e.g., \ttt{.split}, you must remember to reinsert the period in the resulting string. There are many ways to solve this problem!}
+    \myexercise{2}{chapter-exceptions-io}{Design the \ttt{Capitalize} class, which contains one \ttt{static} method: \ttt{void capitalize(String in)}. The \ttt{capitalize} method reads a file of sentences (that are not necessarily line-separated), and outputs the capitalized versions of the sentences to a file of the same name, just with the \ttt{.out} extension (you must remove whatever extension existed previously). 
+    
+    You may assume that a sentence is a string that is terminated by a period and only a period, which is followed by a single space. If you use a splitting method, e.g., \ttt{.split}, you must remember to reinsert the period in the resulting string. There are many ways to solve this problem!}
 
-    \emph{Example Run.} If the user types \ttt{"file2a.in"} into the running program, and \ttt{file2a.in} contains the following \emph{(note that if you copy and paste this input data, you will need to remove the newline before the \ttt{"hopefully"} token):}
+    \emph{Example Run.} If we invoke \ttt{capitalize("file2a.in")} into the running program, and \ttt{file2a.in} contains the following \emph{(note that if you copy and paste this input data, you will need to remove the newline before the \ttt{"hopefully"} token):}
 
     \begin{verbnobox}[\small]
 hi, it's a wonderful day. i am doing great, how are you doing. it's 
@@ -51,7 +53,7 @@ this is a sentence on another line.
 this sentence should also be capitalized.
     \end{verbnobox}
 
-    then \ttt{file2a.out} is generated containing the following:
+    then \ttt{file2a.out} is generated containing the following (\emph{again, remember to remove the newline before \ttt{"hopefully"}.}):
 
     \begin{verbnobox}[\small]
 Hi, it's a wonderful day. I am doing great, how are you doing. It's 
@@ -60,9 +62,11 @@ This is a sentence on another line.
 This sentence should also be capitalized.
     \end{verbnobox}
 
-    \myexercise{2}{chapter-exceptions-io}{Design the \ttt{SpellChecker} class, which reads two files: \ttt{"dictionary.txt"} and a file specified by the user (through standard input). The specified flie contains a single sentence that may or may not have misspelled words. Your job is to check each word in the file and determine whether or not they are spelled correctly, according to the dictionary of words. If it is not spelled correctly, wrap it inside brackets \ttt{[]}. Output the modified sentences to a file of the same name, just with the \ttt{.out} extension instead. You may assume that words are space-separated and that no punctuation exist. Hint: use a \ttt{HashSet}! Another hint: words that are different cases are not misspelled; e.g., \ttt{"Hello"} is spelled the same as \ttt{"hello"}; how can your program check this?}
+    \myexercise{2}{chapter-exceptions-io}{Design the \ttt{SpellChecker} class, which contains one \ttt{static} method: \ttt{void spellCheck(String dict, String in)}. The \ttt{spellCheck} methods reads two files: a ``dictionary'' and a content file. The content file contains a single sentence that may or may not have misspelled words. Your job is to check each word in the file and determine whether or not they are spelled correctly, according to the dictionary of (line-separated) words. If a word is not spelled correctly, wrap it inside brackets \ttt{[]}. 
+    
+    Output the modified sentences to a file of the same name, just with the \ttt{.out} extension (you must remove whatever extension existed previously). You may assume that words are space-separated and that no punctuation exist. Hint: use a \ttt{Set}! Another hint: words that are different cases are not misspelled; e.g., \ttt{"Hello"} is spelled the same as \ttt{"hello"}; how can your program check this?}
 
-    \emph{Example Run.} Assuming \ttt{dictionary.txt} contains a list of words, if the user types \ttt{"file3a.in"} into the running program, and \ttt{file3a.in} contains the following:
+    \emph{Example Run.} Assuming \ttt{dictionary.txt} contains a list of words, if we invoke \ttt{spellChecker("dictionary.txt", "file3a.in")}, and \ttt{file3a.in} contains the following:
 
     \begin{verbnobox}[\small]
 Hi hwo are you donig I am dioing jsut fine if I say so mysefl but I 
@@ -73,7 +77,7 @@ will aslo sya that I am throughlyy misssing puncutiation
 
     \begin{verbnobox}[\small]
 Hi [hwo] are you [donig] I am [dioing] [jsut] fine if I say so 
-[mysefl] but I will [aslo] [sya] that I am [thoroughlyy] [misssing] 
+[mysefl] but I will [aslo] [sya] that I am [throughlyy] [misssing] 
 [puncutiation]
     \end{verbnobox}
 
