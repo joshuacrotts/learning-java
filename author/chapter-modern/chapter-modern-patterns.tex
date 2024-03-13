@@ -1,0 +1,636 @@
+\section{Design Patterns}
+
+Part of the reason that we have spent so much time discussing object-oriented design is because it is a fundamental aspect of software engineering. In particular, we have discussed the importance of designing classes that are cohesive, loosely coupled, and adhere to the single responsibility principle. We have also discussed the importance of designing classes that are extensible, and how to do so through the use of inheritance and polymorphism. As software engineers, we are responsible for designing and implementing software that is scalable and maintainable. Scalable software does not explode in complexity when adding new features/functionality, or as the user-base grows. Maintainable software, on the other hand, is simple to understand and make incremental changes and fixes as time passes. 
+
+In this section we will discuss several \emph{design patterns}\index{design patterns}, which are common solutions to specific problems that arise largely in the context of object-oriented design. Design patterns are, of course, not specific to Java and can be implemented in any reasonable object-oriented language. 
+
+\subsection{Command}
+
+The \emph{command}\index{command pattern} pattern is a simple pattern that encapsulates a request, of sorts, to some type of handler. The handler knows nothing about the request itself, only that the handler acts as a dispatch for invoking the request.
+
+\myexample{Suppose that we're writing a game that involves moving a player around an environment. We want to write a class that handles moving the player, but remains independent of the player implementation. First, we will say that the player executes some type of \ttt{Command}, which is an interface containing a sole \ttt{execute} method. Then, we will write a \ttt{Player} class containing \ttt{move} and \ttt{jump} methods, where the former increments their $x$ coordinate and jump increments their $y$ coordinate, starting from the origin.}
+
+\begin{lstlisting}[language=MyJava]
+interface Command {
+
+  void execute();
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Player {
+  
+  private int x;
+  private int y;
+
+  Player() { this.x = 0; this.y = 0; }
+
+  // Getters and setters omitted.
+}
+\end{lstlisting}
+
+Now, we will write two subtypes of \ttt{Command}, namely \ttt{MoveCommand} and \ttt{JumpCommand}, that each implement \ttt{execute}, the only difference being the intended behavior. The \ttt{MoveForward} command receives the \ttt{Player} instance and a direction, whereas \ttt{JumpCommand} only needs to receives a \ttt{Player} instance. 
+
+\begin{lstlisting}[language=MyJava]
+class MoveCommand implements Command {
+
+  private Player player;
+
+  MoveCommand(Player p) { this.player = p; }
+
+  @Override
+  void execute() { this.player.setX(this.player.getX() + 1); }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class JumpCommand implements Command {
+  
+  private Player player;
+
+  JumpCommand(Player p) { this.player = p; }
+
+  @Override
+  void execute() { this.player.setY(this.player.getY() + 1); }
+}
+\end{lstlisting}
+
+Lastly, we must implement a ``command dispatch handler,'' of sorts, which we might envision to be a controller. In particular, we will write \ttt{InputHandler} to store two commands that respond to presses to an `X button' and presses to a `Y button'. The methods to `press' each button correspond to invoking \ttt{execute} on the respective commands. The general idea behind the command pattern is that we can pass any arbitrary implementation of a command to this handler to change/update the behavior of a button press or action in the handler. 
+
+\begin{lstlisting}[language=MyJava]
+class InputHandler {
+
+  private Command xButton;
+  private Command yButton;
+
+  InputHandler(Command xButton, Command yButton) {
+    this.xButton = xButton;
+    this.yButton = yButton;
+  }
+
+  void pressXButton() { this.xButton.execute(); }
+
+  void pressYButton() { this.yButton.execute(); }
+}
+\end{lstlisting}
+
+Now, we can test the system. Under other circumstances we would write JUnit tests before writing the separate commands, but we needed to write the handler before writing coherent tests. 
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class CommandTester {
+
+  @Test
+  void testCommand() {
+    Player p = new Player();
+    InputHandler handler = new InputHandler(new MoveCommand(p), 
+                                            new JumpCommand(p));
+    assertAll(
+      () -> assertEquals(0, p.getX()),
+      () -> assertEquals(0, p.getY()),
+      () -> handler.pressXButton(),
+      () -> assertEquals(1, p.getX()),
+      () -> handler.pressYButton(),
+      () -> assertEquals(1, p.getY()));
+  }
+}
+\end{lstlisting}
+
+As shown, we have decoupled the player from the handler, and the handler from the implementation of the commands. This, consequently, allows us to alter or modify the behavior of commands without redesigning the handler or player classes.
+
+\subsection{Factory}
+
+\myexample{To showcase our next pattern, we will design the \ttt{Fraction} class to represent mathematical fractions containing integer numerators and denominators. This example greatly resembles the rational number class in a previous chapter, but we introduce a twist to exemplify the benefits of the \emph{factory}\index{factory pattern} pattern.}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class FractionTester {
+
+  @Test
+  void testFraction() {
+    assertAll(
+      () -> assertEquals("1/1", new Fraction(1, 1).toString()),
+      () -> assertEquals("1/2", new Fraction(1, 2).toString()),
+      () -> assertEquals("17/312", new Fraction(17, 312).toString()),
+      () -> assertEquals("321/199", new Fraction(321, 199).toString()));
+
+    // Test random allocations of 1/2.
+    for (int i = 0; i < 500_000; i++) {
+      assertEquals("1/2", new Fraction(1, i).toString());
+    }
+  } 
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Fraction {
+
+  private int num;
+  private int den;
+
+  Fraction(int num, int den) {
+    this.num = num;
+    this.den = den;
+  }
+
+  @Override
+  public String toString() { return String.format("%d/%d", this.num, this.den); }
+}
+\end{lstlisting}
+
+Notice that one of our test cases loops five hundred thousand times, repeatedly allocating the same fraction, namely $1/2$. It is almost certainly true that, whatever application uses the \ttt{Fraction} class, will not need separate/distinct instances of a fraction. Accordingly, we are unnecessarily allocating \ttt{Fraction} instances, taking a lot of CPU time and memory. The solution is to introduce a form of caching, wherein we create a lookup table of the most ``common'' fractions and, whenever someone wants to construct a \ttt{Fraction}, we first determine if it can be polled from the table. If not, we have no choice but to allocate the fraction. We call this the \emph{factory} pattern, because we have a class that represents and processes the creation of \ttt{Fraction} objects, rather than allowing the user to directly instantiate one themselves. 
+
+In designing the \ttt{FractionFactory} class, we declare a five-hundred element array to store the fractions $1/n$, where $n$ is an integer such that $1 \leq n \leq 500$. Its constructor allocates the fraction ``cache.'' We now need a method to take the role of building fractions; namely a \ttt{Fraction create(int num, int den)} method, which either looks up and returns the shared instance of a common fraction, or allocates a new instance.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class FractionFactoryTester {
+
+  @Test
+  void testFractionFactory() {
+    FractionFactory ff = new FractionFactory();
+    assertAll(
+      () -> assertEquals("1/1", ff.create(1, 1).toString()),
+      () -> assertEquals("1/2", ff.create(1, 2).toString()),
+      () -> assertEquals("17/312", ff.create(17, 312).toString()),
+      () -> assertEquals("321/199", ff.create(321, 199).toString()));
+
+    // Check to see that all of the allocations are the same.
+    Fraction f1 = ff.create(1, 2);
+    for (int i = 0; i < 500_000; i++) {
+      assertEquals("1/2", ff.create(1, 2).toString());
+      assertEquals(true, f1 == ff.create(1, 2));
+    }
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class FractionFactory {
+
+  private static final int LIMIT = 500;
+  
+  private static final Fraction[] CACHE;
+
+  FractionFactory() {
+    this.CACHE = new Fraction[LIMIT];
+  }
+
+  /**
+   * Creates a new Fraction instance, or looks it up in the cache.
+   * @param num - numerator of fraction.
+   * @param den - denominator of fraction.
+   * @return a new instance of Fraction, or a shared instance if it was cached.
+   */
+  Fraction create(int num, int den) {
+    return den >= 1 && den <= LIMIT ? this.CACHE[den - 1] 
+                                    : new Fraction(num, den);
+  }
+}
+\end{lstlisting}
+
+\myexample{Imagine that we have a file of data containing information about a ``Person,'' which entails their university records. A person can be a student, faculty, or staff member, and each type of person contains a name. For the purposes of this example, this is the only information that we care about, but we could easily extend it to include other datapoints. The idea is that we want to read in these records and create a \ttt{Person} object for each record. We could store `type' of person as, say, an enum, or a string, but this is not ideal. Instead, we will use the \emph{factory} pattern to create a \ttt{Person} object for each record, and the factory will determine the subclass of person based on the record.}
+
+Namely, let's create the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{String getRole()} method to-be overridden in each subclass. We will also write the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that takes a \ttt{name} and \ttt{role} as arguments, and returns the relevant subclass of \ttt{Person}.
+
+To read the input file, we will write the \ttt{PersonDatabase} class, which stores a \ttt{Map} of \ttt{Person} objects, where the key is the name of the person and the value is the \ttt{Person} object. The \ttt{PersonDatabase} class contains a \ttt{readFile} method that takes a \ttt{String} argument representing the path to the file, and reads the file line-by-line, creating a \ttt{Person} object for each record and storing it in the \ttt{Map}.
+
+\begin{lstlisting}[language=MyJava]
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+class PersonDatabase {
+
+  private final Map<String, Person> DATABASE;
+
+  PersonDatabase() { this.DATABASE = new HashMap<>(); }
+
+  void readFile(String path) {
+    try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        String[] tokens = line.split(",");
+        this.DATABASE.put(tokens[0], PersonFactory.create(tokens[0], tokens[1]));
+      }
+    } catch (IOException ex) { ex.printStackTrace(); }
+  }
+
+  Person lookup(String name) { return this.DATABASE.get(name); }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class PersonFactory {
+  
+  /**
+   * Creates a new Person object based on the role.
+   * @param name - name of person.
+   * @param role - role of person.
+   * @return a new subclass of Person.
+   */
+  static Person create(String name, String role) {
+    return switch(role) {
+      case "student" -> new Student(name);
+      case "faculty" -> new Faculty(name);
+      case "staff" -> new Staff(name);
+      default -> throw new IllegalArgumentException("create: invalid role");
+    };
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+abstract class Person {
+
+  private final String NAME;
+
+  Person(String name) { this.NAME = name; }
+
+  String getName() { return this.NAME; }
+
+  abstract String getRole();
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Student extends Person {
+
+  Student(String name) { super(name); }
+
+  @Override
+  String getRole() { return "student"; }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Faculty extends Person {
+
+  Faculty(String name) { super(name); }
+
+  @Override
+  String getRole() { return "faculty"; }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Staff extends Person {
+
+  Staff(String name) { super(name); }
+
+  @Override
+  String getRole() { return "staff"; }
+}
+\end{lstlisting}
+
+If we assume that our input records are line-separated and comma-delimited, then we can write a simple test case to verify that the \ttt{PersonDatabase} class correctly reads the file and creates the appropriate \ttt{Person} objects. The following file (titled \ttt{"records1.dat"}) will be used for testing purposes.
+
+\begin{verbnobox}[\small]
+Willard Van Orman Quine,faculty
+Alan Mathison Turing,student
+John von Neumann,staff
+Stephen Cole Kleene,faculty
+\end{verbnobox}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertTrue;
+
+class PersonDatabaseTester {
+
+  @Test
+  void testPersonDatabase() {
+    PersonDatabase db = new PersonDatabase();
+    db.readFile("records1.dat");
+    assertAll(
+      () -> assertTrue(db.lookup("Willard Van Orman Quine") instanceof Faculty),
+      () -> assertTrue(db.lookup("Alan Mathison Turing") instanceof Student),
+      () -> assertTrue(db.lookup("John von Neumann") instanceof Staff),
+      () -> assertTrue(db.lookup("Stephen Cole Kleene") instanceof Faculty));
+  }
+}
+\end{lstlisting}
+
+As expected, all tests pass.
+
+\subsection{Builder}
+
+When creating instances of classes, it is not always feasible or possible to pass all of the necessary arguments to a constructor. The \emph{builder} pattern allows us to write ``partial constructors,'' i.e., methods that take a subset of the arguments and return an object that contains the partial arguments. 
+
+\myexample{Suppose that we are designing a \ttt{URL} class to represent a URL, which contains a schema, host, port, and path. We want to write a \ttt{URLBuilder} class that allows us to construct a \ttt{URL} object by passing arguments one-at-a-time to a series of methods. In particular, each instance variable, namely \ttt{\_schema}, \ttt{\_host}, \ttt{\_port}, and \ttt{\_path}, has a corresponding method of the same name sans the underscore. Each method returns \ttt{this}, which allows us to chain method calls together. Moreover, returning \ttt{this} and forgoing the constructor means we do not need to unnecessarily allocate a new \ttt{Url} object for every method call.}
+
+We will designate that a ``complete'' URL is one that has, at the very least, a schema and a host. To complement this, we now design the \ttt{build} method that returns a \ttt{Url} object if the schema and host are non-\ttt{null}, otherwise, it throws an \ttt{IllegalStateException}. When the optional fields are not specified, they are set to default values, namely \ttt{0} for the port and \ttt{""} for the path.
+
+To test the implementation, we chain together a series of method calls on a \ttt{Url} instance and verify that the resulting \ttt{Url} object is correct through its \ttt{toString} representation.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class UrlTester {
+
+  @Test
+  void testUrlBuilder() {
+    Url url = new Url().schema("http")
+                       .host("www.google.com")
+                       .port(80)
+                       .path("search");
+    assertAll(
+      () -> assertEquals("http://www.google.com:80/search", url.toString()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Url {
+
+  private String _schema;
+  private String _host;
+  private int _port;
+  private String _path;
+  
+  private Url() {}
+
+  Url schema(String schema) {
+    this._schema = schema;
+    return this;
+  }
+
+  Url host(String host) {
+    this._host = host;
+    return this;
+  }
+
+  Url port(int port) {
+    this._port = port;
+    return this;
+  }
+
+  Url path(String path) {
+    this._path = path;
+    return this;
+  }
+
+  Url build() {
+    if (this._schema == null || this._host == null) {
+      throw new IllegalStateException("build: incomplete URL");
+    }
+    this._port = this._port == 0 ? 80 : this._port;
+    this._path = this._path == null ? "" : this._path;
+    this.complete = true;
+    return this;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s://%s:%d/%s", this._schema,
+                         this._host, this._port, this._path);
+  }
+}
+\end{lstlisting}
+
+Partially-constructed objects may seem odd at first, but they are useful in situations where we want to instantiate an object piecemeal, i.e., one instance variable at a time. Plus, we can reuse the same builder with multiple objects. As an example, suppose that we want to create a \ttt{Url} for a particular host and schema, but without a specific port or path. We can then reuse this object repeatedly to populate an partially-constructed instance with differing ports and paths, rather than having to unnecessarily repeat the known schema and host.
+
+\subsection{Visitor}
+
+The \emph{visitor} pattern is the most complex pattern that we will work with, but it offers a host of benefits. Consider a situation in which we do not have access to classes, but want to modify their implementation to add some functionality. In particular, if those classes support the use of visitors, then we can design almost any type of functionality without needing to modify those classes at all.
+
+\myexample{Let's write a visitor that prints out a programming language expression in a human-readable format. In particular, we will use a simplified version of the interpreter from Chapter~\ref{chapter-advanced-oop}. First, we need to write the visitor interface, which contains a \ttt{visit} method for each type of expression, namely \ttt{NumNode}, \ttt{PrimNode}, \ttt{VarNode}, and \ttt{LetNode}. Each \ttt{visit} method takes an expression of the corresponding type as an argument and returns a string.}
+
+\begin{lstlisting}[language=MyJava]
+interface ExpressionVisitor {
+  
+  String visit(NumNode node);
+  String visit(PrimNode node);
+  String visit(VarNode node);
+  String visit(LetNode node);
+}
+\end{lstlisting}
+
+Next, we need to modify the \ttt{AstNode} class to include an abstract \ttt{visit} method that receives a \ttt{Visitor} object and calls the appropriate \ttt{visit} method using polymorphic dispatch. 
+
+\begin{lstlisting}[language=MyJava]
+class AstNode {
+  // ... other methods and variables not shown.
+
+  abstract String visit(ExpressionVisitor visitor);
+}
+\end{lstlisting}
+
+Now, we update each subclass to override the \ttt{visit} method and call the appropriate \ttt{visit} method. Fortunately this is trivial, since all we must do is add the method signature and call \ttt{visit} with \ttt{this} as the argument to represent that the visitor is visiting the current node. Because this is consistently redundant, we will only show the implementation of the \ttt{NumNode} class, but the remaining classes are identical with respect to this method.\footnote{Remember that we said that we could not alter/update these classes (or rather that the visitor pattern guarantees this invariant), but we rely on the assumption that they support the visitor pattern, which is the only internal modification.}
+
+\begin{lstlisting}[language=MyJava]
+class NumNode extends AstNode {
+  // ... other methods and variables not shown.
+
+  String visit(ExpressionVisitor visitor) {
+    return visitor.visit(this);
+  }
+}
+\end{lstlisting}
+
+From here, we need to design a variant of the interface that implements the expression printing behavior. Thus we will write the \ttt{ExpressionPrinterVisitor} class, which implements the \ttt{ExpressionVisitor} interface. The \ttt{ExpressionPrinterVisitor} class overrides the respective methods from the \ttt{ExpressionVisitor} interface to prints out the expression, to standard output, in a ``stringified'' format.
+
+The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{ExpressionVisitor} to \ttt{ExpressionPrinterVisitor}, followed by a call to \ttt{visit} on the root node of the expression tree. The result is a string representation of the expression, which we then verify.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class ExpressionPrinterVisitorTester {
+
+  @Test
+  void testPrimExprPrint() {
+    AstNode expr = new PrimNode("+", 
+                        new NumNode(1), 
+                        new PrimNode("*", 
+                          new NumNode(2), 
+                          new NumNode(3)));
+    String result = expr.visit(new ExpressionPrinterVisitor());
+    assertAll(
+      () -> assertEquals("(+ 1 (* 2 3))", result));
+  }
+
+  @Test
+  void testLetExprPrint() {
+    AstNode expr = new LetNode("x", 
+                        new NumNode(1), 
+                        new PrimNode("+", 
+                          new VarNode("x"), 
+                          new NumNode(2)));
+    String result = expr.visit(new ExpressionPrinterVisitor());
+    assertAll(
+      () -> assertEquals("(let ([x 1])\n  (+ x 2))", result));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.StringBuilder; 
+
+class ExpressionPrinterVisitor implements ExpressionVisitor {
+
+  @Override
+  String visit(NumNode node) {
+    return String.valueOf(node.getValue());
+  }
+  
+  @Override
+  String visit(PrimNode node) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("(");
+    sb.append(node.getOperator() + " ");
+    sb.append(node.getChildren().stream()
+                                .map(c -> c.visit(this))
+                                .collect(Collectors.joining(" ")));
+    sb.append(")");
+    return sb.toString();
+  }
+  
+  @Override
+  String visit(VarNode node) {
+    return node.getValue();
+  }
+  
+  @Override
+  String visit(LetNode node) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("(let ([" + node.getVar() + " ");
+    sb.append(node.value.visit(this));
+    sb.append(")]\n  ");
+    sb.append(node.body.visit(this));
+    sb.append(")");
+    return sb.toString();
+  }
+  
+  @Override
+  String visit(IfNode node) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("(if ");
+    sb.append(node.condition.visit(this));
+    sb.append(" ");
+    sb.append(node.thenExpr.visit(this));
+    sb.append(" ");
+    sb.append(node.elseExpr.visit(this));
+    sb.append(")");
+    return sb.toString();
+  }
+}
+\end{lstlisting}
+
+\myexample{As another example, suppose that we have classes to represent items at a grocery store. Namely, we have a \ttt{IGroceryItem} interface, and subtypes \ttt{Fruit}, \ttt{Milk}, and \ttt{Cereal}. Additionally, we can extend the \ttt{IGroceryItemVisitor} interface, which itself contains corresponding ``visit'' methods for each subtype to describe how we wish to visit an \ttt{IGroceryItem} object. Let's take advantage of Java's generics to allow a specification of the return type for \ttt{visit} methods. A visitor that always returns nothing severely limits the capabilities of the visitor pattern.}
+
+\begin{lstlisting}[language=MyJava]
+interface IGroceryItemVisitor<R> {
+
+  R visit(Fruit fruit);
+  R visit(Milk milk);
+  R visit(Cereal cereal);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+interface IGroceryItem {
+
+  <R> R visit(IGroceryItemVisitor<R> visitor);
+}
+\end{lstlisting}
+
+The subtypes of \ttt{IGroceryItem}, as we stated, are \ttt{Fruit}, \ttt{Milk}, and \ttt{Cereal}. Fruits have a name and a weight in ounces, milk is either skim milk or regular (designated by a boolean) and a weight in fluid ounces, and cereal has a mascot and a weight in ounces. While we are in the realm of modern Java, let's once again use records to our advantage to remove redundant code. Conveniently, this means that we only have to override the \ttt{visit} method in each record type.
+
+\begin{lstlisting}[language=MyJava]
+record Fruit(String name, int oz) implements IGroceryItem {
+
+  @Override
+  <R> R visit(IGroceryItemVisitor<R> visitor) { 
+    return visitor.visit(this); 
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+record Milk(boolean skim, int fluidOz) implements IGroceryItem {
+  
+  @Override
+  <R> R visit(IGroceryItemVisitor<R> visitor) {
+    return visitor.visit(this); 
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+record Cereal(String mascot, int oz) implements IGroceryItem {
+    
+  @Override
+  <R> R visit(IGroceryItemVisitor<R> visitor) {
+    return visitor.visit(this); 
+  }
+}
+\end{lstlisting}
+
+Now, let's extend the capabilities of our classes by designing a visitor that calculates the total price of a grocery list. Namely, we will write the \ttt{GroceryListTotalVisitor} class, which implements the \ttt{IGroceryItemVisitor} interface. The \ttt{GroceryListTotalVisitor} class overrides the respective methods from the \ttt{IGroceryItemVisitor} interface to calculate the total price of the grocery list. For the sake of example, fruits are priced at $\$0.25$ per ounce, milk is priced at $\$2.00$ by the gallon, and cereal is priced at $\$0.10$ per ounce. If the milk is skim, we add $\$0.50$ to its price.
+
+The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{IGroceryItemVisitor} to \ttt{GroceryListTotalVisitor}, followed by a call to \ttt{visit} on each item in the grocery list. The result is the total price of the grocery list, which we then verify.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class GroceryListTotalVisitorTester {
+
+  @Test
+  void testGroceryListTotalVisitor() {
+    List<IGroceryItem> groceryList = List.of(
+      new Fruit("apple", 4),
+      new Fruit("banana", 2),
+      new Milk(true, 128),
+      new Cereal("Tony the Tiger", 16)
+    );
+
+    assertAll(
+      () -> assertEquals(0, 
+                         List.of().stream()
+                                  .mapToDouble(item -> 
+                                   item.visit(new GroceryListTotalVisitor()))
+                                  .sum()),
+      () -> assertEquals(5.60, 
+                         groceryList.stream()
+                                    .mapToDouble(item -> 
+                                     item.visit(new GroceryListTotalVisitor()))
+                                    .sum()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class GroceryItemPriceVisitor implements IGroceryItemVisitor<Double> {
+
+  private static final double FRUIT_PRICE_PER_OZ = 0.25;
+  private static final double MILK_PRICE_PER_GALLON = 2.0;
+  private static final double CEREAL_PRICE_PER_OZ = 0.1;
+
+  @Override
+  Double visit(Fruit f) {
+    return f.oz() * FRUIT_PRICE_PER_OZ;
+  }
+
+  @Override
+  Double visit(Milk m) {
+    double gallonsPrice = m.fluidOz() / 128.0 * MILK_PRICE_PER_GALLON;
+    return m.skim() ? gallonsPrice + 0.5 : gallonsPrice;
+  }
+
+  @Override
+  Double visit(Cereal c) {
+    return c.oz() * CEREAL_PRICE_PER_OZ;
+  }
+}
+\end{lstlisting}

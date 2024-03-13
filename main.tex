@@ -1,147 +1,65 @@
-\input{preamble}
-\input{my-utils}
+%%%%%%%%%%%%%%%%%%%% book.tex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% sample root file for the chapters of your "monograph"
+%
+% Use this file as a template for your own input.
+%
+%%%%%%%%%%%%%%%% Springer-Verlag %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\indexsetup{level=\chapter}
-\makeindex[columns=3, title=Index]
-\setlength{\footskip}{12pt}
-\title{Teaching Java\\A Test-Driven Approach}
-\author{Joshua Crotts}
-\date{\today}
-\newcommand\institute{%
-Department of Computer Science\par
-Indiana University Bloomington} 
-\usepackage[hidelinks]{hyperref}
+
+% RECOMMENDED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[graybox,envcountchap,sectrefs]{style/svmono}
+
+% choose options for [] as required from the list
+% in the Reference Guide
+
+\input{pkgs}
+\input{common}
+\input{my-utils}
+\input{listing-lang}
+\input{tcolorbox-env}
+
+% see the list of further useful packages
+% in the Reference Guide
+
+\makeindex             % used for the subject index
+                       % please use the style svind.ist with
+                       % your makeindex program
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\graphicspath{{./}{images/}}
+
 \begin{document}
 
+\author{Joshua Crotts}
+\title{Learning Java}
+\subtitle{A Test-Driven Approach}
+\maketitle
 
-\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}\textit{}
+\frontmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Include prevents a page break before
-\input{intro/titlepage.tex}
+\include{author/prologue/dedication}
+\include{author/prologue/preface}
+\include{author/prologue/acknowledgment}
 
-Teaching Java: A Test-Driven Approach\\
-
-Joshua Crotts
-
-% \newpage
-% Disclaimer Page
-\frontmatter
-\label{dedications}
-% \input{intro/dedications.tex}
-% \input{intro/intentional-blank}
-
-\label{acknowledgments}
-% \input{intro/acknowledgments.tex}
-
-\label{toc} 
-\input{intro/toc}
-
-\newpage
-% \input{intro/intentional-blank}
-\begingroup
-\pagestyle{plain}
-\label{lof}
-\listoffigures
-\endgroup
-
-\label{preface}
-\input{intro/preface.tex}
-
-% \input{intro/intentional-blank}
-% \label{wav}
-
-\mainmatter
+\tableofcontents
 
 
-\chapter{Testing \& Java Basics}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{chapter-testingandjava}
-\setcounter{excounter}{1}
-\setcounter{examplecounter}{1}
-\input{chapter-testingandjava/chapter-testingandjava}
-
-\chapter{Conditionals, Recursion, and Loops}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{chapter-crl}
-\setcounter{excounter}{1}
-\setcounter{examplecounter}{1}
-\input{chapter-crl/chapter-crl}
-
-\chapter{Arrays, Collections, and Generics}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{chapter-arrays-collections}
-\setcounter{excounter}{1}
-\setcounter{examplecounter}{1}
-\input{chapter-arrays-collections/chapter-arrays-collections}
-
-\chapter{Classes and Objects}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{chapter-classes}
-\setcounter{excounter}{1}
-\setcounter{examplecounter}{1}
-\input{chapter-classes/chapter-classes-main}
-
-\chapter{Advanced Object-Oriented Programming}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{chapter-advanced-oop}
-\setcounter{excounter}{1}
-\setcounter{examplecounter}{1}
-\input{chapter-advanced-oop/chapter-advanced-oop}
-
-\chapter{Exceptions \& Data I/O}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{chapter-exceptions-io}
-\setcounter{excounter}{1}
-\setcounter{examplecounter}{1}
-\input{chapter-exceptions-io/chapter-exceptions-io}
-
-\chapter{Searching and Sorting}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{chapter-searching-sorting}
-\setcounter{excounter}{1}
-\setcounter{examplecounter}{1}
-\input{chapter-searching-sorting/chapter-searching-sorting}
-
-\chapter{Algorithm Analysis}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{chapter-algorithms}
-\setcounter{excounter}{1}
-\setcounter{examplecounter}{1}
-\input{chapter-algorithms/chapter-algorithms}
-
-\chapter{Modern Java \& Advanced Java Topics}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{chapter-modern}
-\setcounter{excounter}{1}
-\setcounter{examplecounter}{1}
-\input{chapter-modern/chapter-modern}
-
-\backmatter
-% \thispagestyle{chapterstart}
-% \pagestyle{otherpages}
-% \label{epilogue}
-% \input{outro/epilogue}
-
-\appendix
-\chapter{JUnit}
-\thispagestyle{chapterstart}
-\pagestyle{otherpages}
-\label{appendix-junit}
-\input{appendices/appendix-junit}
-
-\addcontentsline{toc}{chapter}{Bibliography}
-\footnotesize
-\bibliographystyle{apalike}
-\bibliography{bibliography}
-\nocite{*}
+\mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{author/chapter-testingandjava/chapter-testingandjava}
+\input{author/chapter-crl/chapter-crl}
+\input{author/chapter-arrays-collections/chapter-arrays-collections}
+\input{author/chapter-classes/chapter-classes}
+\input{author/chapter-advanced-oop/chapter-advanced-oop}
+\input{author/chapter-exceptions-io/chapter-exceptions-io}
+\input{author/chapter-searching-sorting/chapter-searching-sorting}
+\input{author/chapter-algorithms/chapter-algorithms}
+\input{author/chapter-modern/chapter-modern}
+\input{author/appendices/appendix-junit}
+\backmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \printindex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \end{document}

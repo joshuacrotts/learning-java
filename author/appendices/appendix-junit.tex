@@ -1,0 +1,93 @@
+\appendix
+% \motto{All's well that ends well}
+\chapter{JUnit Testing}
+\label{appendix-junit} % Always give a unique label
+% use \chaptermark{}
+% to alter or adjust the chapter heading in the running head
+
+Welcome to the back of the book; we hope this is not after you have finished the book but rather before you have even started the main content! In this appendix we will discuss how to use and setup the JUnit testing framework.
+
+\section{JUnit}
+
+There are many testing frameworks that we could use during our Java adventure, but we will stick to the industry-standard JUnit library. JUnit allows us to write test cases for methods as a means of determining whether or not they function correctly. Most beginning programmers debug or test their methods by calling them in, for example, the \ttt{main} method with inputs, then verifying that their output matches what they expect, usually through the console. This is neither robust nor elegant, and is prone to mistakes. Moreover, it introduces an unnecessary step: having to check to see whether the terminal contains the correct output. JUnit bypasses this inconvenience, and we will demonstrate with some examples.
+
+\subsection{Installing \& Using JUnit}
+
+Firstly, we need to install JUnit. We will assume that the users are working with the IntelliJ IDE, and have it installed on their computer. Each project will need to have JUnit separately configured, but doing so is trivial. There are two primary ways of integrating JUnit into a project: with or without Maven, which is a complex dependency manager. Our examples do not use Maven.
+
+We need to create a class definition that has our method to test. For example, let's redo the example from Chapter~\ref{chapter-testingandjava}, where we convert a temperature from degrees Fahrenheit to degrees Celsius.
+
+\begin{lstlisting}[language=MyJava]
+class TempConverter {
+
+  /**
+   * Converts a temperature from Fahrenheit to Celsius.
+   * @param f - degrees Fahrenheit.
+   * @return f in degrees Celsius.
+   */
+  static double f2c(double f) {
+    return 0.0;
+  }
+}
+\end{lstlisting}
+
+In IntelliJ, right-click the class name, i.e., \ttt{TempConverter}, then click ``Show Context Actions'' (you can also press a shortcut combination such as Alt+Enter). This will pop up a menu with a few options, one of which is ``Create test.'' Click this, and a dialog box will pop up labeled ``No Test Roots Found,'' which asks if you want to create the tests in the same directory as the source files. In large projects, it is a good idea to separate the source files from tester files, but for our purposes, they will remain together. Click ``OK,'' and another dialog box will appear, containing various options, the first of which is a piece of text saying that ``JUnit5 library not found in the module.'' Beside of this text is a button labeled ``Fix''; click this, then hit ``OK'' in the following dialog box. Now, at the bottom, there exists a box with all the visible methods for which we can write tests. In our case, the only option is \ttt{f2c}, which is to be expected. Click the checkbox to its left, the hit ``OK'' to generate the test file.
+
+From here, IntelliJ generates a new and separate class/source called \ttt{TempConverterTest}. Assuming everything is correct up to this point, there are two pieces of red text, one of which is ``Assertions'' on line one, and the other is ``Test'' on line five. Hover your cursor over the ``Assertions'' word, and wait for about two seconds. A tooltip should appear saying that it ``Cannot resolve symbol \`Assertions\'.'' Below this is a button that says ``Add library JUnit 5.X.Y to classpath,'' where $X$ and $Y$ are arbitrary versions of JUnit (as long as it is not JUnit 4). Clicking this will bring JUnit 5 into the project and the other error should disappear.
+
+Inside this tester file is a method \ttt{f2c} with a preluding annotation immediately above. This \ttt{@Test} annotation tells JUnit that this method contains JUnit tests and should be interpreted as such.\footnote{Initially, your annotation will contain more than just \ttt{@Test}; IntelliJ qualifies the annotation with its full location in the Java library.} Let's write a few tests! To do so, we can use the \ttt{assertEquals} method, which receives two arguments: the expected value and the actual value. The expected value, as its name might imply, is the expected output of a method that we test. The actual value, on the other hand, is where we call the method we are testing. So, we might write a test case saying that $212^{\circ}\text{F}$ is equal to $100^{\circ}\text{C}$, and another test to assert that $32^{\circ}\text{F}$ is equal to $0^{\circ}\text{C}$. To emphasize that we are working inside a test method, we will prefix \ttt{f2c} with \ttt{test}, which also helps to eliminate accidentally referencing the \ttt{f2c} method defined in this file versus the one inside the \ttt{TempConverter} class.
+
+\begin{lstlisting}[language=MyJava]
+import static org.junit.jupiter.api.Assertions.*;
+
+class TempConverterTest {
+
+  @org.junit.jupiter.api.Test
+  void testF2c() {
+    assertEquals(0, TempConverter.f2c(32));
+    assertEquals(100, TempConverter.f2c(212));
+  }
+}
+\end{lstlisting}
+
+To execute this test (and only this test) method, click the green arrow immediately to the left of the method declaration. This will run the tests inside the method, and in the output window at the bottom of the IDE will be a list of the assertions that failed, if any. Of course, the second one fails because we have no meaningful implementation of \ttt{f2c} yet. Should we want to write multiple test methods for different methods in the source file, we can do so easily. Head back to the \ttt{TempConverter.java} file and write the \ttt{c2f} method, which converts a temperature in degrees Celsius to degrees Fahrenheit. Then, click on the class name, show context actions, and create test. The same dialog box with the selectable methods appears, so be sure to check \ttt{c2f}. Hitting ``OK'' at this point displays an error dialog box sayhing that the test file already exists. This is correct, and IntelliJ is making sure that we are okay with updating the contents of that file by introducing a new method stub for testing \ttt{c2f}. Hit ``OK'' and you will see that the \ttt{c2f} method now has a corresponding tester method. Writing assertions in this method is similarly straightforward, and if we do not want to rerun the tests for \ttt{f2c} just yet, we do not have to; clicking on the arrows beside a tester method's signature runs only the assertions inside that particular testing method. Should we want to run all the tests, we do not need to click each individual arrow, as that would be cumbersome. Instead, at the class declaration, i.e., \ttt{class TempConverterTest}, there is another green arrow; clicking this runs all declared test methods inside our class definition.
+
+One issue that comes up when running tests with \ttt{assertEquals} and other variants is that, if an assertion fails, JUnit stops execution at the point of failure and refuses to run any other tests that follow. This is rarely a good idea, so to circumvent this problem, we can wrap all assertion statements inside a call to \ttt{assertAll}, which acts as a ``dispatch'' of sorts. What this entails is, we provide, to \ttt{assertAll}, a list of assertions to execute, and it will execute them one after another, regardless of if one fails. A syntax warning to be aware of is that each assertion must be prefaced with `\ttt{() -> }', without the quotes, and all but the last assertion must have commas. Below is an example.
+
+\begin{lstlisting}[language=MyJava]
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+  
+class TempConverterTest {
+
+  @Test
+  void f2c() {
+    assertAll(
+      () -> assertEquals(0, TempConverter.f2c(32)),
+      () -> assertEquals(100, TempConverter.f2c(212)),
+      () -> assertEquals(-40, TempConverter.f2c(-40)));
+  }
+}
+\end{lstlisting}
+Rerunning this test demonstrates that, even though the second assertion fails, the last is still executed because all of the assertions reside within a call to \ttt{assertAll}. 
+
+Figure~\ref{fig:testingmethods} provides a table of helpful JUnit assertion methods.
+
+\begin{figure}[tp]
+  %\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
+    \small
+    \begin{tcolorbox}[title=JUnit 5 Testing Methods]
+    \begin{description}
+      \item [\ttt{assertEquals($e$, $a$)}] asserts that the actual value, namely $a$, should be equal to the expected value $e$. When these are primitive datatypes, e.g., \ttt{int}, their values are compared. If they are objects, it uses their \ttt{.equals} method implementation.
+      \item [\ttt{assertNotEquals($e$, $a$)}] is the dual to \ttt{assertEquals} in that, if \ttt{assertEquals($e$, $a$)} returns \ttt{true}, then \ttt{assertNotEquals($e$, $a$)} returns false.
+      \item [\ttt{assertTrue($p$)}] asserts that $p$ is an expression that resolves to \ttt{true}.
+      \item [\ttt{assertFalse($p$)}] asserts that $p$ is an expression that resolves to \ttt{false}.
+      \item [\ttt{assertArrayEquals($A_2$, $A_1$)}] asserts that the contents of an expression generating the array $A_1$ are equal to the expected array of values $A_2$. 
+      \item [\ttt{assertThrows($E$, $e$)}] asserts that the executable code $e$ throws the exception $E$.
+      \item [\ttt{assertNull($e$)}] asserts that $e$ is \ttt{null}.
+    \end{description}
+  \end{tcolorbox}
+    \caption{Useful JUnit Methods.}
+    \label{fig:testingmethods}
+  \end{figure}

@@ -1,0 +1,170 @@
+\section{Conditionals}
+
+Decisions are otherwise called \emph{conditionals}. We have seen conditionals before, but in this section we will reintroduce them as a concept and discuss the intricacies of Java's conditionals, including the different logical operators and behaviors thereof.
+
+In Java, we use \ttt{if} to designate a branch in code. We supply to it a conditional expression, or a \emph{predicate}\index{predicate}, which resolves to either true or false. In essence, predicates resolve to boolean values. For example, if we want to return $5$ if two integers $a$ and $b$ are the same value, we write the following:
+\begin{lstlisting}[language=MyJava]
+static int foo() {
+  int a = ...;
+  int b = ...;
+  if (a == b) { return 5; }
+  return 0;
+}
+\end{lstlisting}
+The \ttt{==} operator compares primitive values for equality, as we stated in our Java primer. If we want to use the result of a (boolean) method as the condition, we might want to inline the invocation. 
+\begin{lstlisting}[language=MyJava]
+static boolean bar() {
+  ...
+}
+
+static int foo() {
+  if (bar()) { return 5; }
+  return 0;
+}
+\end{lstlisting}
+We negate conditional expressions using the exclamation point operator, i.e., \ttt{!}. That is, if $e$ is an expression that returns a boolean value, $\ttt{!}e$ flips the output value from true to false or vice versa. We can chain conditional expressions together using the logical AND/OR operators, namely \ttt{\&\&} and \ttt{||} respectively. All boolean subexpressions that comprise a larger expression, conjoined by \ttt{\&\&}, must be true for the overall expression to be true. On the other hand, when boolean expressions are conjoined by \ttt{||}, only one must be true. 
+
+Both logical AND and logical OR are called \emph{short-circuiting operators}. Regarding the former, if we have the expression $e = e_1 \;\ttt{\&\&}\;e_2$, and $e_1$ resolves to false, then $e_2$ is not evaluated, because both operands must be true for the result of the AND to be true. Logical OR works similarly; if we have the expression $e = e_1\;\ttt{||}\;e_2$, and $e_1$ resolves to true, then $e_2$ is not evaluated, because only one operand has to be true for the result of the OR to be true.
+
+\begin{lstlisting}[language=MyJava]
+static int foo() {
+  int a = 5;
+  int b = 10;
+  int c = 5;
+  // We never check if c == 5.
+  if (a == b && c == 5) { return 100; }
+  // We never check if b != 10.
+  if (a == c || b != 10) { return 200; }
+  return 0;
+}
+\end{lstlisting}
+
+In addition to \ttt{if}, Java also has \ttt{else} and \ttt{else if} for extending the possible outcomes of a condition. When the predicate of a preceding \ttt{if} is false and an \ttt{else} block is attached, its code is evaluated. Moreover, when the predicate of a preceding \ttt{if} is false and an \ttt{else if} block is attached, the condition to the \ttt{else if} is evaluated. The former pairing represents a binary outcome, whereas the latter corresponds to more than two possible outcomes. Multiple \ttt{if} statements ``stacked above one another'' results in their sequential evaluation since Java assumes they are disjoint code segments. The \ttt{else if} block, on the contrary, executes only when its preceding \ttt{if} condition resolves to false. In the following code listing, we show an example of two sets of conditional statements; the former uses only \ttt{if} and the latter takes advantage of \ttt{if}, \ttt{else if}, and \ttt{else}. Accordingly, the left-hand listing returns $20$ and the right-hand listing returns $10$.
+
+\begin{clrr}[]{}
+\begin{lstlisting}[language=MyJava]
+static int foo() {
+  int x = 10;
+  int y = 0;
+  if (x == 10) { y = 10; } 
+  if (y == 10) { y += 10; }
+  if (x != 10 && y != 10) { y += 1000; }
+  return y;
+}
+\end{lstlisting}
+\tcblower
+\begin{lstlisting}[language=MyJava]
+static int foo() {
+  int x = 10;
+  int y = 0;
+  if (x == 10) { y = 10; } 
+  else if (y == 10) { y += 10; } 
+  else { y += 1000; }
+  return y;
+}
+\end{lstlisting}
+\end{clrr}
+
+\myexample{Suppose we want to translate a \ttt{String} grade into its grade-point average equivalent, treating pluses and minuses as grade increment or decrements. Our grading schema has no grade higher than a $4.0$, and all failing grades result in a zero. After writing the tests, we can use a series of \ttt{if} and \ttt{else if} statements as a case analysis on the letter grade. Afterwards, once we have the base GPA according to the letter, we apply the plus or minus given the aforementioned criteria. When determining the initial GPA value, were we to use a series of \ttt{if} statements as opposed to \ttt{if}/\ttt{else if}/\ttt{else}, every predicate would need to be evaluated regardless of whether it is meaningful. By ``meaningful,'' we mean to suggest that, for instance, once we know the GPA is a 4.0, it makes no sense to determine if the grade is a \ttt{`B'}, since we know from the previous branch that it is an \ttt{`A'}. The \ttt{else if} statements are skipped over if a preceding condition resolves to true.}
+
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static GpaCalculator.gpa;
+
+class GpaCalculatorTesting {
+
+  @Test
+  void testGpa() {
+    assertAll(
+      () -> assertEquals(4.0, gpa("A+")),
+      () -> assertEquals(3.7, gpa("A-")),
+      () -> assertEquals(0.0, gpa("F-")));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class GpaCalculator {
+
+  /**
+   * Computes the numeric GPA for a given letter grade.
+   * @param letter - grade between A and F, with optional +/-.
+   * @return numeric grade from 4.0 to 0.0.
+   */
+  static double gpa(String grade) {
+    boolean plus = grade.contains("+");
+    boolean minus = grade.contains("-");
+    char letter = grade.charAt(0);
+    double gpa = 0;
+    
+    // Compute the grade letter.
+    if (letter == 'A') {  gpa = 4.0; } 
+    else if (letter == 'B') { gpa = 3.0; } 
+    else if (letter == 'C') { gpa = 2.0; } 
+    else if (letter == 'D') { gpa = 1.0; } 
+    else { gpa = 0.0; }
+    
+    // Compute +/- if applicable.
+    if (letter != 'A' && letter != 'F') { gpa = plus ? gpa + 0.3 : gpa; }
+    if (letter != 'F') { gpa = minus ? gpa - 0.3 : gpa; }
+    return gpa;
+  }
+}
+\end{lstlisting}
+
+The latter two \ttt{if} statements, as we said, apply increments or decrements based on whether the grade is a \ttt{+} or a \ttt{-}. We use the not-equal-to operator, \ttt{!=}, to circumvent having to apply a negation on the outside, i.e., \ttt{!(letter == `A')}. The bodies of these cases, however, appear to be foreign, and indeed, we introduce the \emph{ternary operator}. Because \ttt{if} is a statement, there is no way to inline a conditional into an expression. The ternary operator is a fix to this problem. We read ${r = p\;?\;c\;:\;a}$ as follows: ``if $p$ is true, assign $c$ to $r$, otherwise assign $a$ to $r$.'' Inlining conditional expressions in this fashion reduces code clutter but should be used sparingly. We could write all \ttt{if} statements as ternary operations, but doing so would obfuscate our logic.
+
+Aside from the `\ttt{if}'/`\ttt{else if}'/`\ttt{else}' trio, plus the ternary operator, Java has the \ttt{switch}/\ttt{case} statements, which serve to help simplify case analysis problems. A \ttt{switch} statement receives an expression $e$ that resolves to some value $v$. Inside the \ttt{switch} exists \ttt{case} statements, corresponding to possible outcomes of $e$'s evaluation. For instance, if we wanted to write a method that determines the number of days there are in a given (non-leap year) month, we might be inclined to use several \ttt{if} statements, which is prone to errors. Let us see the answer to this problem using \ttt{switch} and \ttt{case} statements.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static MonthToDays.monthToDays;
+
+class MonthToDaysTester {
+
+  @Test
+  void testMonthToDays() {
+    assertAll(
+      () -> assertEquals(31, monthToDays("January")),
+      () -> assertEquals(28, monthToDays("February")),
+      () -> assertEquals(31, monthToDays("May")),
+      () -> assertEquals(31, monthToDays("July")),
+      () -> assertEquals(31, monthToDays("August")),
+      () -> assertEquals(30, monthToDays("September")),
+      () -> assertEquals(31, monthToDays("December")));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class MonthToDays {
+
+  /**
+   * Determines how many days a given month has, not accounting for leap years.
+   * @param m - capitalized month, e.g., "July".
+   * @return the number of days in the month
+   */
+  static int monthToDays(String m) {
+    int days = 0;
+    switch (m) {
+      case "February":
+        days = 28;
+        break;
+      case "April":
+      case "June":
+      case "September":
+      case "November":
+        days = 30;
+        break;
+      default:
+        days = 31;
+    }
+    return days;
+  }
+}
+\end{lstlisting}
+
+We evaluate $m$ inside the \ttt{switch} statement, and it resolves to one of twelve possible strings, assuming the input is a valid and capitalized month. If, for instance, the string is \ttt{"February"}, we assign $\mathit{days}$ to $28$ and perform a \ttt{break}. Cases that comprise a \ttt{switch} block can ``fall through'' to the next case, meaning that if we did not insert a \ttt{break}, the program would fall all the way to the \ttt{default} case and assign $31$ to $\mathit{days}$. Default cases correspond to ``anything other data,'' similar to \ttt{else} blocks. In our case, we place all months that have thirty-one days in the default case to reduce the number of lines in our code. In the case of a month having thirty days, there are four possibilities, and we stack these atop one another to state that these months should have $30$ assigned to $\mathit{days}$. If we wanted to omit the \ttt{break} statements, we might instead inline \ttt{return} statements directly, since we do not do anything aside from return $\mathit{days}$ at the end of the method. Of course, this solution only works when the resulting target of a \ttt{switch} block \emph{is} the desired value.

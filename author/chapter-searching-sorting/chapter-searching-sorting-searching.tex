@@ -1,0 +1,347 @@
+\section{Searching}
+
+\subsection{Linear Search}
+The \emph{linear search} algorithm is a sequential searching algorithm. That is, we check element-by-element to determine if the element we are looking for is in the list. If the element is in the list, we return the index of the element. If the element is not in the list, we (generally) return $-1$. Linear search is nonsensical for non-constant-time access data structures, such as linked lists, because the whole point of linear search is to retrieve an element at its index quickly, then determine if it is the element we are searching. 
+
+\subsubsection*{Standard Recursive Linear Search}
+We might think that a standard recursive linear search works, and indeed it is possible to write such an algorithm, but in Java it is almost nonsensical to do so. Consider the possible base cases: if the list is empty, what do we return? As described earlier, we might return $-1$, but think about what happens when the recursive calls unwind. If we add one to the result of the recursive calls when searching, then if the element is not in the list, the returned value will always be the length of the list minus one. Should we find the desired element, we might return zero, which works as expected. It's only in the cases when we do not find the element that we run into trouble. There are two possible solutions: throw an exception if the element is not present, or simply do not use a standard recursive linear search.\footnote{Some languages, e.g., Scheme, use \emph{continuations} to represent ``jump-out'' states; allowing the program to forgo unwinding the call stack when returning $-1$. Since Java does not support continuations by defauilt, we cannot use this methodology.} We might also think to use \ttt{Optional}, but this is not a good idea either, since we would need to check the result of the recursive calls, which detracts from the simplicity of the algorithm.
+
+Another reason why the standard-recursive version is suboptimal is because we have no way of passing the index-to-check; we instead must create sublists of the original list, which is horribly inefficient (at least in Java).
+
+First, let's create an interface for designing linear search algorithms. Recall when we stated that the data structure should guarantee constant-access times. The \ttt{List} interface does not provide this promise, so we will instead opt for a generic \ttt{AbstractList<V>}, where \ttt{V} is any comparable type. The method provided by the interface should receive the list and the element to search.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.AbstractList;
+import java.util.NoSuchElementException;
+
+class ILinearSearchTest {
+
+  private static final AbstractList<Integer> LS1 
+    = new ArrayList<>(List.of(78, 43, 22, 101, 29, 34, 23, 12, 33));
+  private static final AbstractList<Integer> LS2 
+    = new ArrayList<>(List.of(1,2,3,4,5,6,7,8,9,10,11,12));
+
+  @Test
+  void testSrls() {
+    ILinearSearch<Integer> ls = new StandardRecursiveLinearSearch<>();
+    assertAll(
+      () -> assertEquals(2, ls.linearSearch(LS1, 22)),
+      () -> assertThrows(NoSuchElementException.class, 
+                         () -> ls.linearSearch(LS1, 102)),
+      () -> assertEquals(8, ls.linearSearch(LS1, 33)),
+      () -> assertEquals(0, ls.linearSearch(LS1, 78)),
+
+      () -> assertEquals(2, ls.linearSearch(LS2, 3)),
+      () -> assertThrows(NoSuchElementException.class, 
+                         () -> ls.linearSearch(LS2, 13)),
+      () -> assertEquals(8, ls.linearSearch(LS2, 9)),
+      () -> assertEquals(0, ls.linearSearch(LS2, 1)));
+  }
+
+  @Test
+  void testTrls() {
+    ILinearSearch<Integer> ls = new TailRecursiveLinearSearch<>();
+    assertAll(
+      () -> assertEquals(2, ls.linearSearch(LS1, 22)),
+      () -> assertThrows(-1, ls.linearSearch(LS1, 102)),
+      () -> assertEquals(8, ls.linearSearch(LS1, 33)),
+      () -> assertEquals(0, ls.linearSearch(LS1, 78)),
+
+      () -> assertEquals(2, ls.linearSearch(LS2, 3)),
+      () -> assertThrows(-1, ls.linearSearch(LS2, 13)),
+      () -> assertEquals(8, ls.linearSearch(LS2, 9)),
+      () -> assertEquals(0, ls.linearSearch(LS2, 1)));
+  }
+
+  @Test
+  void testLLs() {
+    ILinearSearch<Integer> ls = new LoopLinearSearch<>();
+    assertAll(
+      () -> assertEquals(2, ls.linearSearch(LS1, 22)),
+      () -> assertThrows(-1, ls.linearSearch(LS1, 102)),
+      () -> assertEquals(8, ls.linearSearch(LS1, 33)),
+      () -> assertEquals(0, ls.linearSearch(LS1, 78)),
+
+      () -> assertEquals(2, ls.linearSearch(LS2, 3)),
+      () -> assertThrows(-1, ls.linearSearch(LS2, 13)),
+      () -> assertEquals(8, ls.linearSearch(LS2, 9)),
+      () -> assertEquals(0, ls.linearSearch(LS2, 1)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.AbstractList;
+
+interface ILinearSearch<V extends Comparable<V>> {
+  
+  int linearSearch(AbstractList<V> ls, V v);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.AbstractList;
+import java.util.NoSuchElementException;
+  
+class StandardRecursiveLinearSearch<V extends Comparable<V>> 
+                                    implements ILinearSearch<V> {
+  
+  @Override
+  int linearSearch(AbstractList<V> ls, V v) {
+    if (ls.isEmpty()) { throw new NoSuchElementException(); }
+    else if (ls.get(0).equals(v)) { return 0; }
+    else { 
+      return 1 + linearSearch((AbstractList<V>) ls.subList(1, ls.size()), v); 
+    }
+  }
+}
+\end{lstlisting}
+
+As demonstrated, we must handle the no-element case as an exception, which would otherwise be left as a decision to the programmer that calls this version of the \ttt{linearSearch} algorithm.
+
+\subsubsection*{Tail Recursive Linear Search}
+
+The tail recursive linear search is much more intuitive to understand compared to its standard recursive counterpart---we use an accumulator to keep track of the current index, and if we reach the end of the list, a $-1$ is returned. If we find the element $v$, we return the index, which does not unwind the stack since there is no work remaining after each tail call, making this extremely efficient (again, at least in comparison to the standard recursive version).
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.AbstractList;
+
+class TailRecursiveLinearSearch<V extends Comparable<V>> 
+                                implements ILinearSearch<V> {
+  @Override
+  int linearSearch(AbstractList<V> ls, V v) {
+    return this.linearSearchHelper(ls, v, 0);
+  }
+
+  private int linearSearchHelper(AbstractList<V> ls, V v, int idx) {
+    if (idx == ls.size()) { return -1; }
+    else if (ls.get(idx).equals(v)) { return idx; }
+    else { return linearSearchHelper(ls, v, idx + 1); }
+  }
+}
+\end{lstlisting}
+
+\subsubsection*{Loop Linear Search}
+
+Even though the tail recursive linear search is relatively straightforward to understand, almost all linear search implementations prefer the iterative version, or one that uses a loop, which we will now show. As an exercise, the readers should go through the process described in Chapter~\ref{chapter-crl} to convert the tail recursive method into an iterative method. We do not do so here because we know the upper-bound of a linear search, so even though a \ttt{while} loop is correct, it offers no advantages over a \ttt{for} loop.
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.AbstractList;
+
+class LoopLinearSearch<V extends Comparable<V>> implements ILinearSearch<V> {
+
+  @Override
+  int linearSearch(AbstractList<V> ls, V v) {
+    int idx = 0;
+    for (int i = 0; i < ls.size(); i++) {
+      if (ls.get(i).equals(v)) { return i; }
+    }
+    return -1;
+  }
+}
+\end{lstlisting}
+
+\subsection{Binary Search}
+
+Binary search is the alternative to linear search, and fortunately proves to be significantly faster, but with a catch: the data must be sorted in order to correctly use a binary searching algorithm. Here's how it works: we check the middle element $e$ of the list against our target value $k$ and, if they are equal, we return the middle element index. If $e < k$, we know that $k$ is greater than all elements to the left of $e$ because the data is in sorted order. Therefore, we can check exclusively on the right-half. This idea applies to the left-half as well; if $e > k$, then $k$ must be less than all elements to the right of the middle. 
+
+Binary search makes even less sense to design as a standard-recursive algorithm because of the fact that we have to search separate partitions of the list. So, we will only design tail-recursive and loop versions. The tail-recursive variant is extremely simple and directly follows from the English description of the algorithm: we keep track of the indices to search between $l$ and $h$, assuming $l \leq h$. Given this assumption we compute the middle element index as $l + (h - l) / 2$, and recursively update $l$/$h$ as necessary to change the bounds of the search ``zone.'' If $l > h$, the bounds have crossed, meaning the search element does not exist in the list. 
+
+When we state that binary search is faster than linear search, this is of course relative to the problem context; if we want to search an unsorted list exactly once, then taking the time to sort the data, then run binary search, it is not optimal. Repeatedly searching for elements in a list containing many values should be done with first sorting the list, then binary searching. As an example, if we were to use linear search on a sorted list containing half a billion elements for an element that is not present, we must check all half a billion values. Compare this to binary search, which is logarithmic in the number of elements. So, taking the base two logarithm of our input size places an upper-bound of twenty-nine comparisons (after rounding). To say that this is a substantial performance increase is underselling it to the max.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.AbstractList;
+
+class IBinarySearchTest {
+  
+  private static final AbstractList<Integer> LS1 
+    = new ArrayList<>(List.of(12, 22, 23, 29, 33, 34, 43, 78, 101));
+  private static final AbstractList<Integer> LS2 
+    = new ArrayList<>(List.of(1,2,3,4,5,6,7,8,9,10,11,12));
+
+  @Test
+  void testTrbs() {
+    IBinarySearch<Integer> ls = new TailRecursiveBinarySearch<>();
+    assertAll(
+      () -> assertEquals(1, ls.binarySearch(LS1, 22)),
+      () -> assertEquals(-1, ls.binarySearch(LS1, 102)),
+      () -> assertEquals(4, ls.binarySearch(LS1, 33)),
+      () -> assertEquals(7, ls.binarySearch(LS1, 78)),
+
+      () -> assertEquals(2, ls.binarySearch(LS2, 3)),
+      () -> assertEquals(-1, ls.binarySearch(LS2, 13)),
+      () -> assertEquals(8, ls.binarySearch(LS2, 9)),
+      () -> assertEquals(0, ls.binarySearch(LS2, 1)));
+  }
+  
+  @Test
+  void testLbs() {
+    IBinarySearch<Integer> ls = new LoopBinarySearch<>();
+    assertAll(
+      () -> assertEquals(1, ls.binarySearch(LS1, 22)),
+      () -> assertEquals(-1, ls.binarySearch(LS1, 102)),
+      () -> assertEquals(4, ls.binarySearch(LS1, 33)),
+      () -> assertEquals(7, ls.binarySearch(LS1, 78)),
+
+      () -> assertEquals(2, ls.binarySearch(LS2, 3)),
+      () -> assertEquals(-1, ls.binarySearch(LS2, 13)),
+      () -> assertEquals(8, ls.binarySearch(LS2, 9)),
+      () -> assertEquals(0, ls.binarySearch(LS2, 1)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.AbstractList;
+
+interface IBinarySearch<V extends Comparable<V>> {
+  
+  int binarySearch(AbstractList<V> ls, V v);
+}
+\end{lstlisting}
+
+\subsubsection*{Tail Recursive Binary Search}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.AbstractList;
+
+class TailRecursiveBinarySearch<V extends Comparable<V>> 
+                                implements IBinarySearch<V> {
+
+  @Override
+  int binarySearch(AbstractList<V> ls, V v) {
+    return binarySearchTRHelper(ls, v, 0, ls.size() - 1);
+  }
+
+  private int binarySearchTRHelper(AbstractList<V> ls, V v, int low, int high) {
+    if (low > high) { return -1; }
+    else {
+      int mid = low + (high - low) / 2;
+      if (ls.get(mid).compareTo(v) > 0) { 
+        return binarySearchTRHelper(ls, v, low, mid - 1); 
+      } else if (ls.get(mid).compareTo(v) < 0) { 
+        return binarySearchTRHelper(ls, v, mid + 1, high); 
+      } else { 
+        return mid; 
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+\subsubsection*{Loop Binary Search}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.AbstractList;
+  
+class LoopBinarySearch<V extends Comparable<V>> implements IBinarySearch<V> {
+  
+  @Override
+  int binarySearch(AbstractList<V> ls, V v) {
+    int low = 0;
+    int high = ls.size() - 1;
+    while (low <= high) {
+      int mid = low + (high - low) / 2;
+      if (ls.get(mid).compareTo(v) > 0) { high = mid - 1; } 
+      else if (ls.get(mid).compareTo(v) < 0) { low = mid + 1; } 
+      else { return mid; }
+    }
+    return -1;
+  }
+}
+\end{lstlisting}
+
+\subsection{Using Comparators for Searching}
+Recall the use of comparators from~\ref{chapter-arrays-collections} when discussing priority queues. Our implementations of linear and binary search, at the moment, require the generic class we parameterize over to be \ttt{Comparable}, which can be slightly limiting on the types of classes we can search through, because it is not feasible to modify a class that already exists in the Java library. Plus, having to go back and write a definition of \ttt{compareTo} in a Java source file is cumbersome. The solution to this problem is to define a custom \ttt{Comparator} object and pass that to the search methods. Namely, we can add a second method to the binary search generic interface that receives an instance of \ttt{Comparator}, which is then internally utilized by our search algorithms. 
+
+\myexample{Let's amend our definition of \ttt{IBinarySearch} to also include a method that receives the \ttt{Comparator} object. Note that we need to specify in the definition of the comparator that the type it receives should be a superclass of the list element type. Therefore we will use the dual to \ttt{extends}: namely \ttt{super}, in the parameterized type. Note that we do not necessarily care about the type variable of this element, so we can use a wildcard `\ttt{?}' instead of using another letter from the alphabet. With this modification, however, it no longer makes as much sense to quantify that \ttt{V} extends \ttt{Comparable<V>}, because the latter method does not require its type to implement that interface. So, let's remove it from the interface signature and move it down to the type quantification.}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.Comparator;
+import java.util.AbstractList;
+
+interface IBinarySearch {
+
+  <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, V v);
+
+  <V> int binarySearch(AbstractList<V> ls, V v, Comparator<? super V> c);
+}
+\end{lstlisting}
+
+Now, of course, we do not want to have to rewrite the entire definition of \ttt{binarySearch} just to make use of a different comparator, and indeed, we do not have to do so. All we must do is move the logic of the search into the version that receives a comparator and update the one that operates over comparable elements. This means that we need to instantiate a \ttt{Comparator} that uses the \ttt{compareTo} method from the elements, which is trivial to do via a lambda expression. We also must change the definition from using \ttt{compareTo}, which comes from \ttt{Comparable} to use \ttt{compare} from the \ttt{c} object.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.AbstractList;
+import java.util.Comparator;
+
+class IBinarySearchTester {
+
+  // Other testing methods omitted.
+
+  @Test
+  void testBinarySearchComparator() {
+    IBinarySearch<Integer> search = new TailRecursiveBinarySearch<>();
+    AbstractList<Integer> ls = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    Comparator<Integer> c = (o1, o2) -> o1.compareTo(o2);
+    assertAll(
+      () -> assertEquals(0, search.binarySearch(ls, 1, c));
+      () -> assertEquals(9, search.binarySearch(ls, 10, c));
+      () -> assertEquals(4, search.binarySearch(ls, 5, c));
+      () -> assertEquals(-1, search.binarySearch(ls, 11, c)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.AbstractList;
+import java.util.Comparator;
+
+class TailRecursiveBinarySearch implements IBinarySearch {
+  
+  @Override
+  <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, V v) {
+    return binarySearchTRHelper(ls, v, 0, ls.size() - 1,
+                                (o1, o2) -> o1.compareTo(o2));
+  }
+  
+  @Override
+  <V> int binarySearch(AbstractList<V> ls, V v, Comparator<? super V> c) {
+    return binarySearchTRHelper(ls, v, 0, ls.size() - 1, c);
+  }
+  
+  private <V> int binarySearchTRHelper(AbstractList<V> ls, V v, int low, int high,
+                                       Comparator<? super V> c) {
+    if (low > high) { return -1; } 
+    else {
+      int mid = low + (high - low) / 2;
+      if (c.compare(ls.get(mid), v) > 0) { 
+        return binarySearchTRHelper(ls, v, low, mid - 1, c); 
+      } else if (c.compare(ls.get(mid), v) < 0) { 
+        return binarySearchTRHelper(ls, v, mid + 1, high, c); 
+      } else { 
+        return mid; 
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+We leave changing the loop variant to use comparators as an exercise. It does not make sense to update \ttt{ILinearSearch} because linear search uses \ttt{.equals} for comparing objects rather than \ttt{.compareTo} or \ttt{.compare}.

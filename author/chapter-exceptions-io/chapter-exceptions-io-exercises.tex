@@ -1,0 +1,207 @@
+\section{Exercises}
+
+\myexercise{2}{chapter-exceptions-io}{Design the \ttt{EchoOdds} class, which reads a file of line-separated integers specified by the user (using standard input), and writes only the odd numbers out to a file of the same name, just with the \ttt{.out} extension. If there is a non-number in the file, throw an \ttt{InputMismatchException}.} 
+
+\emph{Example Run.} If the user types \ttt{"file1a.in"} into the running program, and \ttt{file1a.in} contains the following:
+
+\begin{verbnobox}[\small]
+5
+100
+25
+17
+2
+4
+0
+-3848
+13
+    \end{verbnobox}
+
+    then \ttt{file1a.out} is generated containing the following:
+    \begin{verbnobox}[\small]
+5
+25
+17
+13
+    \end{verbnobox}
+
+\emph{Example Run.}  If the user types \ttt{"file1b.in"} into the running program, and \ttt{file1b.in} contains the following:
+
+    \begin{verbnobox}[\small]
+5
+100
+25
+17
+THIS_IS_NOT_AN_INTEGER!
+4
+0
+-3848
+13
+    \end{verbnobox}
+
+    then the program does not output a file because it throws an exception.
+
+    \myexercise{2}{chapter-exceptions-io}{Design the \ttt{Capitalize} class, which reads a file of strings (that are not necessarily line-separated) specified by the user (using standard input), and outputs the capitalized versions of the sentences to a file of the same name, just with the \ttt{.out} extension. You may assume that a sentence is a string that is terminated by a period and only a period. This problem is harder than it looks because you need to correctly print the string out to the file. If you use a splitting method, e.g., \ttt{.split}, you must remember to reinsert the period in the resulting string. There are many ways to solve this problem!}
+
+    \emph{Example Run.} If the user types \ttt{"file2a.in"} into the running program, and \ttt{file2a.in} contains the following \emph{(note that if you copy and paste this input data, you will need to remove the newline before the \ttt{"hopefully"} token):}
+
+    \begin{verbnobox}[\small]
+hi, it's a wonderful day. i am doing great, how are you doing. it's 
+hopefully fairly obvious as to what you need to do to solve this problem.
+this is a sentence on another line.
+this sentence should also be capitalized.
+    \end{verbnobox}
+
+    then \ttt{file2a.out} is generated containing the following:
+
+    \begin{verbnobox}[\small]
+Hi, it's a wonderful day. I am doing great, how are you doing. It's 
+hopefully fairly obvious as to what you need to do to solve this problem.
+This is a sentence on another line.
+This sentence should also be capitalized.
+    \end{verbnobox}
+
+    \myexercise{2}{chapter-exceptions-io}{Design the \ttt{SpellChecker} class, which reads two files: \ttt{"dictionary.txt"} and a file specified by the user (through standard input). The specified flie contains a single sentence that may or may not have misspelled words. Your job is to check each word in the file and determine whether or not they are spelled correctly, according to the dictionary of words. If it is not spelled correctly, wrap it inside brackets \ttt{[]}. Output the modified sentences to a file of the same name, just with the \ttt{.out} extension instead. You may assume that words are space-separated and that no punctuation exist. Hint: use a \ttt{HashSet}! Another hint: words that are different cases are not misspelled; e.g., \ttt{"Hello"} is spelled the same as \ttt{"hello"}; how can your program check this?}
+
+    \emph{Example Run.} Assuming \ttt{dictionary.txt} contains a list of words, if the user types \ttt{"file3a.in"} into the running program, and \ttt{file3a.in} contains the following:
+
+    \begin{verbnobox}[\small]
+Hi hwo are you donig I am dioing jsut fine if I say so mysefl but I 
+will aslo sya that I am throughlyy misssing puncutiation
+    \end{verbnobox}
+
+    then \ttt{file3a.out} is generated containing the following:
+
+    \begin{verbnobox}[\small]
+Hi [hwo] are you [donig] I am [dioing] [jsut] fine if I say so 
+[mysefl] but I will [aslo] [sya] that I am [thoroughlyy] [misssing] 
+[puncutiation]
+    \end{verbnobox}
+
+\myexercise{2}{chapter-exceptions-io}{Recall the \ttt{Optional} class and its purpose. In this exercise you will reimplement its behavior with the \ttt{IMaybe} interface with two subtypes \ttt{Just} and \ttt{Nothing}, representing the existence and absence of a value, respectively. Design the generic \ttt{IMaybe} interface, which contains the following three metohds: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The constructors of these subtypes receive either an object of type \ttt{T} or no parameter, depending on whether it is a \ttt{Just} or a \ttt{Nothing}. Throw an \ttt{UnsupportedOperationException} when trying to get the value from an instance of \ttt{Nothing}}.
+
+\myexercise{2}{chapter-exceptions-io}{Redo the ``\ttt{Maybe}'' exercise, only this time implement it as an abstract class/subclass hierarchy. That is, \ttt{Maybe} should be an abstract class containing three abstract methods: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The \ttt{Just} and \ttt{Nothing} classes should be subclasses of \ttt{Maybe} and override these methods accordingly. Do not create constructors for these classes. Instead, create static factory methods \ttt{Just.of(T t)} and \ttt{Nothing.of()} that return an instance of the appropriate class.}
+
+\myexercise{2}{chapter-exceptions-io}{A common use for file input and output is data analysis. Design a class \ttt{StatisticsDescriptor} that has the following methods:}
+\begin{itemize}
+    \item \ttt{void read(String fileName)}, which reads in a list of numbers from a file into a collection. These numbers can be integers or floating-point values.
+    \item \ttt{double mean()}, which returns the mean of the dataset.
+    \item \ttt{double stddev()}, which returns the standard deviation of the dataset.
+    \item \ttt{double quantile(double q)}, which receives a quantile value $q \in [0, 1]$ and returns the value such that there are $q$, as a percentage, values below said value. As an example, if our dataset contains \ttt{3, 2, 1, 4, 5, 10, 20}, and we call \ttt{quantile(0.30)}, then we return $2.8$ to indicate that $30\%$ of the values in the dataset are below $2.8$. 
+    \item \ttt{double median()}, which returns the median, or the middle value, of the dataset.
+    \item \ttt{double mode()}, which returns the mode, or the most-frequent value, of the dataset.
+    \item \ttt{double range()}, which returns the range, or the difference between the maximum and minimum values of the dataset.
+    \item \ttt{List<Double> outliers()}, which returns the numbers that are outliers of the dataset. We consider a value an outlier if it is greater than three standard deviations away from the mean. Refer to the formula for z-score calculation in the exercises from Chapter~\ref{chapter-testingandjava}.
+    \item \ttt{void output(String fileName)}, which outputs all of the above statistics to the file specified by the parameter (the order is irrelevant). You should output these as a series of ``key-value'' pairs separated by an equals sign, e.g., \ttt{mean=X}. Put each pair on a separate line.
+\end{itemize}
+
+For all methods (except \ttt{read}), if the data has yet to be read, throw an \ttt{IllegalStateException}. 
+
+\myexercise{2}{chapter-exceptions-io}{You are teaching an introductory programming course and you want to keep a seating chart for your students. A seating chart is an arrangement of numbers $1..n$, the location in the classroom of which is defined by the instructor. Numbers that are lower in the range are closer to the front of the room. Design the \ttt{SeatingChart} class, which has the following methods:}
+
+\begin{itemize}
+    \item \ttt{SeatingChart()} is the constructor, which initializes the seating chart to be empty. The seating chart is represented as a \ttt{List<Student>}, where \ttt{Student} is a private and static class, inside \ttt{SeatingChart}, that you design. Students should have a name, a seat number, and an accommodation parameter. The seat number is an integer, and the accommodation parameter is a boolean.
+
+    \item \ttt{void read(String fileName)} reads in a list of students from a file into the seating chart. The file contains a list of students, one per line, with their name. A student also has an optional accommodation parameter, which means they should sit in a seat closer to the front of the room. The file is comma-separated, and if the student has an accommodation, it is represented by \ttt{true} after the student's name.
+    \begin{verbnobox}[\small]
+Alice
+Bob,true
+Charlie
+    \end{verbnobox}
+    \item \ttt{void scramble()} scrambles the seating chart. That is, it randomly shuffles the students in the seating chart. This also accounts for the accommodations, so that students with accommodations are closer to the front of the room.
+    \item \ttt{void alphabetize()} sorts the seating chart alphabetically by the students' names. This mode does not account for accommodations, and is strictly alphabetical.
+    \item \ttt{List<Student> getStudents()} returns the seating chart as a list of students.
+    \item \ttt{List<Student> getAccommodationStudents()} returns the students with accommodations as a list.
+    \item \ttt{void output(String fileName)} outputs the seating chart to a file specified by the parameter. The file should contain the students' names and their seat numbers, one per line, separated by a comma. The output list should be in the order of the seating chart.
+\end{itemize}
+
+\myexercise{3}{chapter-exceptions-io}{A maze is a grid of cells, each of which is either open or blocked. We can move from one free cell to another if they are adjacent. Design the \ttt{MazeSolver} class, which has the following methods:}
+
+\begin{itemize}
+    \item \ttt{MazeSolver(String fileName)} is the constructor, which reads a description of a maze from a file. The file contains a grid of characters, where \ttt{`.'} represents an open cell and \ttt{`\#'} represents a blocked cell. The file is formatted such that each line is the same length. Read the data into a \ttt{char[][]} instance variable. You may assume that the maze dimensions are on the first line of the file, separated by a space.
+
+    \item \ttt{char[][] solve()} returns a \ttt{char[][]} that represents the solution to the maze. The solution should be the same as the input maze, but with the path from the start to the end marked with \ttt{`*'} characters. The start is the top-left cell, and the end is the bottom-right cell. If there is no solution, return \ttt{null}.
+
+    We can use a backtracking algorithm to solve this problem: start at a cell and mark it as visited. Then, recursively try to move to each of its neighbors, marking the path with a \ttt{`*'} character. If you reach the maze exit, then return \ttt{true}. Otherwise, backtrack and try another path. By ``backtrack,'' we mean that you should remove the \ttt{`*'} character from the path. If you have tried all possible paths from a cell and none of them lead to the exit, then return \ttt{false}. We provide a skeleton of the class below.
+
+    \item \ttt{void output(String fileName, char[][] soln)} outputs the given solution to the maze to a file specified by the parameter. Refer to the above descriptoin for the format of the output file and the input \ttt{char[][]} solution.
+
+\begin{lstlisting}[language=MyJava]
+class MazeSolver {
+
+  private final char[][] MAZE;
+
+  MazeSolver(String fileName) { /* TODO read maze from file. */ }
+
+  /**
+   * Recursively solves the maze, returning a solution if it exists, and 
+   * null otherwise. We use a simple backtracking algorithm in the helper.
+   * @return a solution to the maze, or null if it does not exist.
+   */
+  char[][] solve() {
+    char[][] soln = new char[MAZE.length][MAZE[0].length];
+    return this.solveHelper(0, 0, soln) ? soln : null;
+  }
+
+  /**
+   * Recursively solves the maze, returning true if we ever reach
+   * the exit. We try all possible paths from the current cell, if
+   * they are reachable. If a path ends up being a dead end, we backtrack
+   * and try another path.
+   * @param r - the row of the current cell.
+   * @param c - the column of the current cell.
+   * @param sol - the current solution to the maze.
+   * @return true if we are at the exit, false otherwise.
+   */
+  private boolean solveHelper(int r, int c, char[][] sol) { /* TODO. */ }
+}
+\end{lstlisting}
+\end{itemize}
+
+\myexercise{3}{chapter-exceptions-io}{The \ttt{cut} program is a command-line tool for extracting pieces of text from data. For this exercise, you will implement a very basic version of the program that reads data from the terminal.}
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, add support for the \ttt{-c $X,Y,\ldots,Z$} flag, which outputs the characters at positions $X,Y,\ldots,Z$ in each line. If any number is less than $1$, throw an \ttt{IllegalArgumentException}.
+    \item Second, add support for the \ttt{-c $X$-$Y$} flag, which outputs the characters between and including positions $X$ and $Y$. This option should also work with comma separators.
+    \item Third, add support for the \ttt{-c $X$-} and \ttt{-c -$Y$} flags, which print the characters from $X$ to the end of the line, and all characters up to $Y$.
+    \item Fourth, Add support for the \ttt{-d$D$} and \ttt{-f$X$} flags. The former serves as a single character delimiter, and the latter indicates that $X$ is either an interval or a range of fields to print. The fields are delimited by $D$. Note that these two flags cannot be used without the other. The format of $X$ mirrors that of the input to the $-c$ flag. If $D$ does not exist on a line, then the entire line is printed.
+\end{enumerate}
+
+\myexercise{3}{chapter-exceptions-io}{The \ttt{sort} program is a command-line tool for sorting input from a data source. For this exercise, you will implement a very basic version of the program that reads data from the terminal.}
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, allow the sort command to receive either a file or a list of data. If the \ttt{-d$D$} flag is passed, use $D$ as the delimiter. The default for a file is a newline, and the default for a non-file is the space.
+    \item Second, add support for the \ttt{-r} flag for reversed sorting.
+    \item Third, add support for the \ttt{-i} flag for case-insensitive sorting.
+    \item Fourth, add support for the \ttt{-c} flag for checking to see if a file is sorted. Reports the first occurrence of out-of-order sort.
+    \item Fifth, add support the the \ttt{-n} flag for sorting the values as if they are numbers. Notice the difference between sorting \ttt{9, 10, 8} with and without this flag.
+    \item Sixth, add support for the \ttt{-u} flag for removing duplicate values.
+    \item Seventh, add support for the \ttt{-o} flag for outputting to the file specified immediately after.
+\end{enumerate}
+Any of these flags should be composable with another, with the exception of \ttt{-o} whose output file is the next argument, and \ttt{-c}, which outputs any disorders to standard out.
+
+\myexercise{3}{chapter-exceptions-io}{The \ttt{awk} program is a command-line tool for text parsing and processing. For this exercise, you will implement a very basic version of the program that reads data from the terminal. Be aware that this exercise is more in line with a mini-project.}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Add support for the \ttt{-F} flag that, when immediately followed by a delimiter, uses that delimiter as a ``field separator'' when parsing input lines. For example, \ttt{-F,} uses a comma as the delimiter.
+    \item Add the \ttt{-h} flag that ignores the first row in all subsequent commands. This is particularly useful when working with files that have headers, e.g., comma-separated value files.
+    \item Next, add the \ttt{'{print ...}'} command. That is, the user should be able to type an open brace, followed by \ttt{print}, then some data, then a closing brace, all enclosed by single quotes. The \ttt{print} command receives multiple possible values, including `column labels', i.e., \ttt{$N$}, where $N$ is a column number. For example, \ttt{awk -F, '{print \$1}' input.csv} should print the first column of each row in the input file. 
+    \item After getting the previous command to work, add support for inlined prefix operations in the \ttt{print} command. That is, suppose we want to print the sum of the second and fourth column of each row. To do this, we might write \ttt{awk -h -F, '{print (+ \$2 \$4)}' input.csv}. For simplicity, you may assume that there are only four operations: \ttt{'+'}, \ttt{'-'}, \ttt{'*'}, and \ttt{'/'}. 
+    \item After getting the previous command to work, add multiple-argument support for \ttt{print}. That is, if we want to compute the product of the first three columns, output a string saying \ttt{" multiplied is " }, followed by the product, we could write \ttt{awk -h -F, '{print \$1,\$2,\$3 " multiplied is " (* \$1 \$2 \$3) }'}. Note that the delimiter between the column labels must match that passed by \ttt{-F}, otherwise there is no separator.
+    \item After getting the previous command to work, add support for conditional expressions. That is, suppose we want to print the second column of a row only if it has a value greater than $200$. We can achieve this via \ttt{"awk -h -F, '{print \$2(> \$2 200)}'}. If you \emph{really} want a challenge, you can add support for inlining other arithmatic expressions into a conditional. For example, if we want to print the third column only if the sum of the first two columns exceeds $1000$, we might write \ttt{awk -h -F, '{print \$3(> (+ \$1 \$2) 1000)}'}.
+    \item Finally, add the \ttt{-v=N:V} flag that acts as a variable map that can be used in a print command. That is, suppose we want to create a variable called \ttt{val} and assign to it \ttt{30}. We can do this via \ttt{-v=val:30}, then reference it in a \ttt{print} via \ttt{\$}, e.g., \ttt{awk -F, '{print \$val}'}.
+\end{enumerate}
+
+\myexercise{3}{chapter-exceptions-io}{A thesaurus is, in effect, a dataset of words/phrases and information about those words/phrases. For example, a thesaurus may contain a word's definition, synonyms, antonyms, part-of-speech, and more. There are hundreds of collections online that researchers use for sentiment analysis, natural language processing, and more. In this exercise you will create a mini-thesaurus parser that allows the user to lookup information about a word/phrase.}
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, design the skeleton for the \ttt{Thesaurus} class. It should store a \ttt{Set<Word>} $S$ as an instance variable.
+    \item Design the private and static \ttt{Word} class inside the \ttt{Thesaurus} class body. A \ttt{Word} stores a \ttt{String} $s$ and a \ttt{Map<String, List<String>>} $M$ as instance variables. The string is the word itself, and the map is an association of information ``categories'' to a list of content. For example, we can create a \ttt{Word} that represents \ttt{"happy"}, with an association of \ttt{"synonym"} to \ttt{List.of("content", "cheery", "jolly")}. Design the respective getters and setters for these two instance variables.
+    \item In the \ttt{Word} class, design the \ttt{boolean updateCategory(String c, String v)} method, which receives a category $c$ and a value $v$, and updates the list mapped by $c$ to now include $v$. If \ttt{c} did not previously exist for that \ttt{Word}, add it to the map and return \ttt{false}. On the other hand, if $c$ did previously exist for that \ttt{Word}, update its association and return \ttt{true}.
+    \item In the \ttt{Word} class, override the \ttt{equals} and \ttt{hashCode} methods to compare two \ttt{Word} objects for equality and generate the hash code respectively. Two \ttt{Word} objects are equal if they represent the same word.
+    \item In the \ttt{Thesaurus} class, design the \ttt{List<String> getInfo(String c)} and \ttt{List<String> getInfo(String w, String c, int n)} methods, where the former calls the latter with \ttt{Integer.MAX_VALUE} as \ttt{n}. The latter, on the other hand, looks up $w$ in $S$, and
+    \begin{itemize}
+        \item If $\ttt{w}\not\in{S}$, return \ttt{null}.
+        \item Otherwise, return $n$ items from the category $c$ of $w$. If $n$ is \ttt{Integer.MAX_VALUE}, return the entire list.
+    \end{itemize}
+    The list returned by both methods must be immutable and not a pointer to the reference in the map. Notice that we overload \ttt{getInfo} to perform different actions based on the number (and type) of received parameters.
+\end{enumerate}

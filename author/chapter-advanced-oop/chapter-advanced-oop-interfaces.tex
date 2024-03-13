@@ -1,0 +1,711 @@
+\section{Interfaces}
+
+Interfaces are a way of grouping classes together by a ubiquitous behavior. We have worked with interfaces before without acknowledging their properties as an interface. For example, the \ttt{Comparable} interface is implemented by classes that can be compared against each other. In particular, there is a single method that must be implemented by any class that implements the \ttt{Comparable} interface: the \ttt{compareTo} method. The \ttt{compareTo} method takes in a single argument of the same type as the class that implements the \ttt{Comparable} interface and returns an integer. Said integer is negative if the object instance is less than the argument, zero if the object instance is equal to the argument, and positive if the object instance is greater than the argument.
+
+So, by having a class implement the \ttt{Comparable} interface, we group it into that subset of classes that are, indeed, comparable. Doing so implies that these classes have an ordering and are sortable in, for example, a Java collection. 
+
+In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List}, \ttt{Queue}, and \ttt{Map} interfaces, which all have a set of methods that must be implemented by any class that implements the interface. Recall that \ttt{ArrayList} and \ttt{LinkedList} are both types of \ttt{List} objects, and this interface describes several methods that all lists, by definition, must override. To \emph{override} a method means that we provide a new implementation of the method that is different from the default implementation provided by the interface.
+
+\subsection*{Defining an Interface}
+
+\myexample{Imagine that we want to design an interface that describes a shape. All (two-dimensional) shapes have an area and a perimeter, so we can define an interface that, when implemented by a class, requires that the class provide an implementation of the \ttt{area} and \ttt{perimeter} methods. A common convention for user-defined interfaces is to prefix the names with \ttt{I} to distinguish them from classes. Moreover, the names of interfaces are either nouns or, more traditionally, verbs, since they describe behaviors or characteristics of a class.\footnote{We do not add the \ttt{public} keyword to the interface definition because all interface methods are implicitly public.}}
+
+\begin{lstlisting}[language=MyJava]
+interface IShape {
+
+  double area();
+
+  double perimeter();
+}
+\end{lstlisting}
+
+We cannot write any tests for the \ttt{IShape} interface directly, since it is impossible to instantiate an interface. We can, however, write two different classes that implement \ttt{IShape}, and test those. To demonstrate, we will write and test the \ttt{Pentagon} and \ttt{Octagon} classes whose constructors receive (and then store as instance variables) the side length of the shape. Fortunately, the definitions thereof are trivial because they are nothing more than regurgitations of the mathematical formulae. Notice that, when testing, we initialize the object instance to be of type \ttt{IShape}, not \ttt{Pentagon} or \ttt{Octagon}. This is because we want to be able to categorize these classes as types of \ttt{IShape} instances rather than solely instances of \ttt{Pentagon} or \ttt{Octagon} respectively. This is a common practice in object-oriented programming, and it is called \emph{polymorphism}. Polymorphism is the ability of an object to take on many forms. In this case, the \ttt{IShape} interface is the form that the \ttt{Pentagon} and \ttt{Octagon} classes use to take on the form of a shape as we described.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class IShapeTester {
+
+  private static final DELTA = 0.01;
+  
+  @Test
+  void testPentagon() {
+    IShape p1 = new Pentagon(1);
+    IShape p2 = new Pentagon(7.25);
+    assertAll(
+      () -> assertEquals(1.72, p1.area(), DELTA),
+      () -> assertEquals(90.43, p2.area(), DELTA),
+      () -> assertEquals(5, p1.perimeter(), DELTA),
+      () -> assertEquals(36.25, p2.perimeter(), DELTA));
+  }
+
+  @Test
+  void testOctagon() {
+    IShape o1 = new Octagon(1);
+    IShape o2 = new Octagon(7.25);
+    assertAll(
+      () -> assertEquals(4.83, o1.area(), DELTA),
+      () -> assertEquals(253.79, o2.area(), DELTA),
+      () -> assertEquals(8, o1.perimeter(), DELTA),
+      () -> assertEquals(58, o2.perimeter(), DELTA));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Pentagon implements IShape {
+  
+  private final double SIDE_LENGTH;
+
+  Pentagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
+
+  @Override
+  double area() {
+    return 0.25 * Math.sqrt(5 * (5 + 2 * Math.sqrt(5))) 
+                * Math.pow(this.SIDE_LENGTH, 2);
+  }
+
+  @Override
+  double perimeter() {
+    return 5 * this.SIDE_LENGTH;
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Octagon implements IShape {
+
+  private final double SIDE_LENGTH;
+
+  Octagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
+
+  @Override
+  double area() {
+    return 2 * (1 + Math.sqrt(2)) * Math.pow(this.SIDE_LENGTH, 2);
+  }
+
+  @Override
+  double perimeter() {
+    return 8 * this.SIDE_LENGTH;
+  }
+}
+\end{lstlisting}
+
+\myexample{Recall from the previous chapter our ``Twenty-one'' card game example. In that, we designed the \ttt{Suit} class, which contained four and static instances of \ttt{Suit}, where each represented one of the four valid card suits. This design works as intended, it fails to be elegant and demonstrate how the suits are all the same, but differ only in their string representation. Let's now design the \ttt{ISuit} interface, which requires any implementing class to override the \ttt{stringify} method.}
+
+\begin{lstlisting}[language=MyJava]
+interface ISuit {
+
+  /**
+   * Returns the string representation of the suit.
+   */
+  String stringify();
+}
+\end{lstlisting}
+
+From here, we can define four separate classes, all of which implement \ttt{ISuit} and override the \ttt{stringify} method. These classes are incredibly simple, and as such, we will show only the \ttt{Diamond} and \ttt{Heart} classes.
+
+\begin{lstlisting}[language=MyJava]
+class Diamond implements ISuit {
+  
+  Diamond() {}
+
+  @Override
+  String stringify() { return "(*;$\diamondsuit$;*)"; }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Heart implements ISuit {
+    
+  Heart() {}
+
+  @Override
+  String stringify() { return "(*;$\heartsuit$;*)"; }
+}
+\end{lstlisting}
+
+As we see, both \ttt{Diamond} and \ttt{Heart} implement \ttt{ISuit} and handle ``stringification'' differently. We can test these definitions by storing a list of \ttt{ISuit} instances and ensuring that the correct character is returned.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+import java.util.ArrayList;
+
+class ISuitTester {
+
+  @Test
+  void suitTester() {
+    List<ISuit> suit = new ArrayList<>();
+    // Add diamonds at even indices, hearts at odd indices.
+    for (int i = 0; i < 100; i++) {
+      if (i % 2 == 0) { suit.add(new Diamond()); }
+      else { suit.add(new Heart()); }
+    }
+
+    // Now check to verify that the stringification works.
+    for (int i = 0; i < suit.size(); i++) {
+      if (i % 2 == 0) { assertEquals("(*;$\diamondsuit$;*)", suit.get(i).stringify()); }
+      else { assertEquals("(*;$\heartsuit$;*)", suit.get(i).stringify()); }
+    }
+  }
+}
+\end{lstlisting}
+
+One extra piece of information that we should share is that we can instantiate objects in different ways. To demonstrate why this matters, suppose we initialize an object $s_1$ to type \ttt{ISuit}, but instantiate it as type \ttt{Diamond}. Then, we initialize another object $s_2$ to type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. We would expect that $s_1$ and $s_2$ are equivalent, but this is not the case. Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. Because $s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. Should we want to be able to invoke \ttt{diamondCount} on $s_1$, we need to \emph{downcast}\index{downcast} $s_1$ to type \ttt{Diamond}.
+
+\begin{verbnobox}[\small]
+ISuit s1 = new Diamond();
+s1.diamondCount();             // Compile-time error!
+Diamond s2 = new Diamond();
+s2.diamondCount();             // Works but not polymorphic.
+((Diamond) s1).diamondCount(); // Works but downcasts.
+\end{verbnobox}
+
+\myexample{Animals are a common example of an interface. Imagine that, in our domain of animals, every animal can speak one way or another. Speaking involves returning a string representing the sound that the animal makes. By designing the \ttt{IAnimal} interface, we can group all animals that can speak together. We can then design classes that implement the \ttt{IAnimal} interface and provide an implementation of the \ttt{speak} method. When testing the latter, we can write tests that instantiate a collection of \ttt{IAnimal} instances, and invoke \ttt{speak} on each of them polymorphically. In doing so we get a refresher of the Java stream API.}
+
+\begin{lstlisting}[language=MyJava]
+interface IAnimal {
+
+  /**
+   * Returns the sound that the animal makes.
+   */
+  String speak();
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+import java.util.ArrayList;
+
+class IAnimalTester {
+  
+  @Test
+  void testCat() {
+    IAnimal cat = new Cat();
+    assertEquals("Meow!", cat.speak());
+  }
+
+  @Test
+  void testDog() {
+    IAnimal dog = new Dog();
+    assertEquals("Woof!", dog.speak());
+  }
+
+  @Test
+  void testListOfAnimals() {
+    List<IAnimal> animals = new ArrayList<>();
+    animals.add(new Cat());
+    animals.add(new Dog());
+    animals.add(new Cat());
+    assertEquals("[Meow!, Wolf! Meow!]", 
+                 animals.stream()
+                        .map(IAnimal::speak)
+                        .collect(Collectors.toList()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Cat implements IAnimal {
+
+  @Override
+  String speak() { 
+    return "Meow!"; 
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Dog implements IAnimal {
+
+  @Override
+  String speak() { 
+    return "Woof!"; 
+  }
+}
+\end{lstlisting}
+
+\myexample{Suppose we want to design an interface that boxes an arbitrary value. We have seen this idea through autoboxing and autounboxing of the primitive datatypes and the wrapper classes, but our interface extends the concept to any type. We can define an interface that requires that any class that implements it provide an implementation of the \ttt{box}, \ttt{get}, and \ttt{set} methods. Boxing a value means that we can pass it around as a reference rather than as a raw value. Recall that passing primitives to methods is by value and, therefore, the method cannot change the value of the primitive. If, however, we box the primitive, then we can pass the boxed value to a method and change the value of the boxed value. We will first design the generic \ttt{IBox} interface, and then we will design a class that implements the methods.} 
+
+Interestingly, interfaces may have static methods. Our \ttt{IBox} interface has a static \ttt{box} method that returns a box of the type passed in as an argument. This is useful because we can call the \ttt{box} method without having to instantiate a class that implements the \ttt{IBox} interface. We can then use the \ttt{get} and \ttt{set} methods to retrieve and change the value of the box.
+
+
+\begin{lstlisting}[language=MyJava]
+class IBox<T> {
+  
+  /**
+   * Boxes the value of type T.
+   */
+  static IBox<T> box(T t);
+
+  /**
+   * Returns the boxed value of type T.
+   */
+  T get();
+
+  /**
+   * Sets the boxed value of type T.
+   */
+  void set(T t);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class IBoxTester {
+
+  private static <T> void modifyBox(IBox<T> box, T t) {
+    box.set(t);
+  }
+  
+  @Test
+  void testIntegerBox() {
+    IBox<Integer> box = IntegerBox.box(5);
+    assertAll(
+      () -> assertEquals(5, box.get()),
+      () -> modifyBox(box, 10),
+      () -> assertEquals(10, box.get()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class IntegerBox implements IBox<Integer> {
+  
+  private Integer value;
+  
+  private IntegerBox(Integer value) { 
+    this.value = value; 
+  }
+  
+  @Override
+  static IBox<Integer> box(Integer value) { 
+    return new IntegerBox(value); 
+  }
+  
+  @Override
+  Integer get() { return this.value; }
+  
+  @Override
+  void set(Integer value) { this.value = value; }
+}
+\end{lstlisting}
+
+\myexample{The Java Swing API is a graphics framework for designing graphical interfaces and drawing shapes/images.} 
+In addition to these capabilities, it also supports user input through the keyboard, mouse, and other means. 
+Compared to a class like \ttt{Scanner}, which waits for the user to press ``Enter'' when they are finished typing input, the Swing API allows for dynamic input and is constantly monitored by the program. 
+We call the part of the program that listens and processes events an \emph{event listener}. 
+A popular example is the \ttt{ActionListener} interface, which is used to listen for a broad classification of events. 
+The \ttt{ActionListener} interface has a single method, \ttt{actionPerformed}, that is invoked when an event occurs. 
+The \ttt{actionPerformed} method receives an \ttt{ActionEvent} object that contains information about the event that occurred, which is then usable by the method to determine what to do in response to the event. 
+Because graphical interface design goes beyond the scope of this textbook, we will omit a code example, but we mention action listeners to demonstrate that interfaces are not limited to the examples we have seen thus far. 
+Moreover, the Swing API provides more specific listeners for processing keyboard and mouse events, e.g., \ttt{KeyListener}, \ttt{MouseListener}, \ttt{MouseMotionListener}, and so forth. 
+We could, for instance, design a class that implements the \ttt{MouseListener} interface and provides an overriding implementation of the \ttt{mouseClicked} method. 
+Then, inside a Java Swing graphical component, we might hook the class as a mouse listener and, when the user clicks the mouse, the \ttt{mouseClicked} method is invoked.
+
+\myexample{An amazing insight into the power of interfaces is already present in Java, but deriving it ourselves is useful. Consider the notion of first-class functions: the concept in which functions and data are equivalent, and we can pass functions around as arguments and return them from other functions. In Java, we can pass functions around as arguments, mimicing first-class functions, by designing a \emph{functional interface}.}
+
+Let's design the generic \ttt{Function<T, V>} interface, which quantifies over two types \ttt{T}, representing the input type, and \ttt{V}, representing the output type. The \ttt{Function<T, V>} interface has a single static method, \ttt{apply}, that receives an argument of type \ttt{T} and returns a value of type \ttt{V}. We can then design a class that implements the \ttt{Function<T, V>} interface and provides an implementation of the \ttt{apply} method. We can then pass the class around as an argument to other methods, and invoke the \ttt{apply} method on the class to get the result of the function. An incredibly simple example is \ttt{AddOne}, which implements the \ttt{Function<Integer, Integer>} interface and adds one to its input. We make the constructor of the implementing class private to prevent any unnecessary instantiations; we only want to use the class as a first-class function rather than an object.
+
+\begin{lstlisting}[language=MyJava]
+interface Function<T, V> {
+
+  static V apply(T t); 
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AddOneTester {
+
+  @Test
+  void addOneTester() {
+    assertAll(
+      () -> assertEquals(0, AddOne.apply(1)),
+      () -> assertEquals(3, AddOne.apply(2)),
+      () -> assertEquals(30001, AddOne.apply(30000)));
+  }
+}
+\end{lstlisting}
+\begin{lstlisting}[language=MyJava]
+class AddOne implements Function<Integer, Integer> {
+
+  private AddOne() {}
+
+  @Override
+  static Integer apply(Integer i) { return i + 1; }
+}
+\end{lstlisting}
+
+So far, we have not demonstrated the potential of first-class functions in Java with our design. Suppose we have a list of \ttt{Integer} values $l=v_1, v_2, ..., v_n$ and a function $f$, and we want to apply $f$ to each element thereof. That is, we will create a new list $l'=f(v_1), f(v_2), ..., f(v_n)$. Normally, we would need to write a specific function for each function $f$, but by passing a functional interface, we can write a single method that receives this list and a function $f$ and applies $f$ to each element of the list. This operation, in general, is called \ttt{map}, which we saw during our discussion on streams!\footnote{Do not confuse this with the concept of a map/dictionary from our data structures/collections discussion.}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+
+class FunctionMapTester {
+
+  @Test
+  void testMap() {
+    List<Integer> l = List.of(1, 2, 3, 4, 5);
+    Function<Integer, Integer> addOne = new AddOne();
+    assertAll(
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), FunctionMap.map(l, addOne)),
+      () -> assertEquals(List.of(), FunctionMap.map(List.of(), addOne)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.ArrayList;
+
+class FunctionMap {
+
+  /**
+   * Applies the function f to each element of the list l.
+   * @param l - the list of elements.
+   * @param f - the function to apply to each element.
+   * @return the list of elements after applying f to each element.
+   */
+  static <T, V> List<V> map(List<T> l, Function<T, V> f) {
+    return l.stream()
+            .map(t -> f.apply(t))
+            .collect(Collectors.toList());
+  }
+}
+\end{lstlisting}
+
+\myexample{Java 8 introduced the \ttt{Function} interface, so we do not have to design our own version. Using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can make use of method referencing via the \ttt{::} operator. Let's rewrite the \ttt{addOne} example doing so. We will also show off the fact that Java will auto-box and unbox an integer primitive into its \ttt{Integer} counterpart, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives instead, which are easier to work with. Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, because Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static FunctionMap.map;
+
+import java.util.List;
+
+class FunctionMapTester {
+
+  static int addOne(int i) { return i + 1; }
+
+  @Test
+  void testMap() {
+    List<Integer> l = List.of(1, 2, 3, 4, 5);
+    assertAll(
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, FunctionMapTester::addOne)),
+      () -> assertEquals(List.of(), map(List.of(), FunctionMapTester::addOne)),
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, i -> i + 1)),
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(List.of(), i -> i + 1)));
+  }
+}
+\end{lstlisting}
+
+\myexample{Now that we have interfaces, we can write a very simple expression tree interpreter! What do we mean by this? Consider the arithmatic expression $5 + (3 + 4)$. According to the standard order-of-operations, we evaluate the parenthesized sub-expressions first, then reduce outer expressions. So, in our case, we add $3$ and $4$ to get $7$, followed by an addition of $5$. We can represent this idea as an evaluation tree, where we travel from bottom-up, evaluating sub-expressions as they are encountered. How does this relate to interfaces? Suppose we create the \ttt{IExpr} interface, which contains a single method: \ttt{int value}, which returns the value of an expression.}
+
+\begin{lstlisting}[language=MyJava]
+interface IExpr {
+
+  /**
+   * Returns the value of the expression.
+   */
+  int value();
+}
+\end{lstlisting}
+
+The simplest (atomic) values in our language are numbers, or literals as they are called. A \ttt{Lit} stores a single integer as an instance variable, and returns this instance variable upon a \ttt{value} invocation, which means \ttt{Lit} must implement the \ttt{IExpr} interface. Testing this class is trivial, so we will only write two tests.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class LitTester {
+
+  @Test
+  void testLit() {
+    assertAll(
+      () -> assertEquals(0, new Lit(0).value()),      
+      () -> assertEquals(42, new Lit(42).value()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Lit implements IExpr {
+
+  private final int N;
+
+  Lit(int n) { this.N = n; }
+
+  int value() { return this.N; }
+}
+\end{lstlisting}
+
+How do we add two numbers? Or, rather, how do we represent the addition of two numbers? This question comes through the answer to our question of representing literal values. Addition expressions store two \ttt{IExpr} expressions as instance variables, and (mutually) recursively calls their \ttt{value} methods, followed by a summation. Note the parallelism to how we do this when evaluating expressions either on paper or in our heads.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AddTester {
+
+  @Test
+  void testAdd() {
+    assertAll(
+      () -> assertEquals(12, new Add(new Lit(5), new Add(new Lit(3), new Lit(4)))),
+      () -> assertEquals(42, new Add(new Lit(41), new Lit(1))),
+      () -> assertEquals(101, new Add(new Add(new Lit(123), new Lit(-43)),
+                                      new Add(new Lit(2), new Lit(19)))));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Add implements IExpr {
+
+  private final IExpr LHS;
+  private final IExpr RHS;
+
+  Add(IExpr lhs, IExpr rhs) {
+    this.LHS = lhs;
+    this.RHS = rhs;
+  }
+
+  @Override
+  int value() { return this.LHS.value() + this.RHS.value(); }
+}
+\end{lstlisting}
+
+Thus we have a programming language that interprets numbers and addition expressions! We could add more elements/operators to this language, and we encourage the readers to get creative.
+
+\myexample{Symbolic differentiators are programs that take a mathematical expression and compute its derivative, but non-numerically. That is, it examines and interprets the structure of the expression to calculate the derivative. In this example we will write a symbolic differentiator in Java using interfaces and classes. Note that you do not need any calculus knowledge to follow along.}
+
+The formal definition of the derivative of a function is not a necessary detail to concern ourselves of; but in short, it measures the instantaneous rate-of-change at a given point of the function, i.e., the slope of the line tangent to the point. There are several rules for computing derivatives of functions, all of which are common exercises in an introductory calculus course. We want to be able to construct expressions in such a way that it is trivial to differentiate their components. As an example, the derivative of the expression $3x^2 - 16x + 100$ is $6x - 6$ due to specific rules that we will explain shortly. The idea, however, is that we have a large expression to find the derivative of, and by differentiating its subcomponents, we obtain the derivative of the larger. Let's see what all we need to do.
+
+First, let's design the \ttt{Expression} interface, which contains one method to compute the derivative of an \ttt{Expression}: \ttt{Expression derivative(String v)}. Expressions in calculus are differentiated with respect to a given variable, e.g., $x$, so we need to pass that to any expression that we wish to differentiate. Now, any class that implements \ttt{Expression} must override \ttt{derivative}. 
+
+Using some basic calculus derivative shortcuts/rules, we can easily think of two more types of expressions: constants (e.g., $3$, $0$, $27$) and monomials (e.g., $ax^n$ where $a, n$ are integers). So, let's design the \ttt{ConstantExpression} and \ttt{MonomialExpression} classes, the former of which has a constructor that receives a single integer $c$, whereas the latter stores the variable, the coefficient $a$, and finally the exponent $n$. To make working with these expressions easier, as well as ensuring testibility, we will override the \ttt{equals}, \ttt{hashCode}, and \ttt{toString} methods.
+
+The derivative of a constant $c$ is always zero, because the slope of a straight line, namely $f(x) = c$ is zero, i.e., non-changing. On the other hand, a monomial follows a different rule based off its coefficient and exponent: the derivative of $ax^n$ is $anx^{n-1}$ for any $n > 1$. If $n=1$, then this trivially becomes a constant. There is one more edge-case to consider: if the given variable $v$ does not match the variable of the monomial, then the derivative is zero since it is differentiating with respect to a free variable. 
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class DerivativeTester {
+
+  @Test
+  void testNumberExpressionDerivative() {
+    assertAll(
+      () -> assertEquals(new NumberExpression(0),
+                         new NumberExpression(0).derivative("x")),
+      () -> assertEquals(new NumberExpression(0),
+                         new NumberExpression(10).derivative("x")));
+  }
+
+  @Test
+  void testMonomialExpressionDerivative() {
+    assertAll(
+      () -> assertEquals(new ConstantExpression(3),
+                         new MonomialExpression("x", 3, 1).derivative("x")),
+      () -> assertEquals(new ConstantExpression(0),
+                         new MonomialExpression("x", 3, 10).derivative("y")),
+      () -> assertEquals(new MonomialExpression("x", 6, 1),
+                         new MonomialExpression("x", 3, 2).derivative("x")));
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Objects;
+
+class ConstantExpression implements Expression {
+
+  private final int CONSTANT;
+
+  ConstantExpression(int c) { 
+    this.CONSTANT = c; 
+  }
+
+  @Override
+  Expression derivative(String v) { 
+    return new ConstantExpression(0); 
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof ConstantExpression)) { 
+      return false; 
+    } else { 
+      return ((ConstantExpression) obj).CONSTANT == this.CONSTANT; 
+    }
+  }
+
+  @Override
+  public int hashCode() { 
+    return Objects.hash(this.CONSTANT); 
+  }
+
+  @Override
+  public String toString() { 
+    return String.format("%d", this.CONSTANT); 
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Objects;
+
+class MonomialExpression implements Expression {
+
+  private final int COEFFICIENT;
+  private final int EXPT;
+  private final String VAR;
+
+  MonomialExpression(String v, int a, int n) { 
+    this.VAR = v;
+    this.COEFFICIENT = a;
+    this.EXPT = n;
+  }
+
+  @Override
+  Expression derivative(String v) { 
+    if (this.VAR.equals(v)) {
+      if (this.EXPT == 1) {
+        return new ConstantExpression(this.COEFFICIENT);
+      } else {
+        return new MonomialExpression(this.VAR, 
+                                      this.COEFFICIENT * this.EXPT, 
+                                      this.EXPT - 1);
+      }
+    } else {
+      return new ConstantExpression(0);
+    } 
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof MonomialExpression)) { 
+      return false; 
+    } else { 
+      MonomialExpression expr = (MonomialExpression) obj;
+      return this.VAR.equals(expr.VAR)
+          && this.COEFFICIENT == expr.COEFFICIENT 
+          && this.EXPT == expr.EXPT;
+    }
+  }
+
+  @Override
+  public int hashCode() { 
+    return Objects.hash(this.VAR, this.COEFFICIENT, this.EXPT); 
+  }
+
+  @Override
+  public String toString() { 
+    return String.format("%d%s^%d", this.COEFFICIENT, this.VAR, this.EXPT); 
+  }
+}
+\end{lstlisting}
+
+Let's move into compositional expressions: expressions that contain expressions as instance variables. Such an example is an additive operator; the derivative of the expression $(f(x) + g(x))' = f'(x)~+~g'(x)$, where $f'$ is the derivative of $f$. In summary, the derivative of a sum is the sum of the derivatives of its operands. To represent sequential operands, e.g., $x + y + z + \cdots + w$, we will store the expressions in a list. Note that our symbolic differentiator neither simplifies expressions nor combines like terms.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+  
+class DerivativeTester {
+  // ... previous methods not shown.
+
+  @Test
+  void testAddExpressionDerivative() {
+    assertAll(
+      () -> assertEquals(
+              new AddExpression(
+                new MonomialExpression("x", 3, 2),
+                new MonomialExpression("x", 6, 5)),
+              new AddExpression(
+                new MonomialExpression("x", 1, 3),
+                new MonomialExpression("x", 1, 6)).derivative("x")),
+      () -> assertEquals(
+              new AddExpression(
+                new MonomialExpression("x", 10, 4,
+                new MonomialExpression("x", 12, 2),
+                new MonomialExpression("x", -14, 1),
+                new NumberExpression(6),
+                new NumberExpression(0))),
+              new AddExpression(
+                new MonomialExpression("x", 2, 5),
+                new MonomialExpression("x", 4, 3),
+                new MonomialExpression("x", -7, 2),
+                new MonomialExpression("x", 6, 1),
+                new NumberExpression(9)).derivative("x")));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+class AddExpression implements Expression {
+
+  private final List<Expression> EXPR_LIST;
+
+  AddExpression(Expression... exprs) {
+    this.EXPR_LIST = Arrays.asList(exprs);
+  }
+
+  AddExpression(List<Expression> exprs) { 
+    this.EXPR_LIST = exprs; 
+  }
+
+  @Override
+  Expression derivative(String v) {
+    List<Expression> exprs = new ArrayList<>();
+    this.EXPR_LIST.forEach(e -> exprs.add(e.derivative(v)));
+    return new AddExpression(exprs);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof AddExpression)) { 
+      return false; 
+    } else { 
+      AddExpression expr = (AddExpression) obj;
+      for (int i = 0; i < this.EXPR_LIST.size(); i++) {
+        if (!this.EXPR_LIST.get(i).equals(expr.EXPR_LIST.get(i))) { 
+          return false; 
+        }
+      }
+      return true;
+    }
+  }
+
+  @Override
+  public int hashCode() { this.EXPR_LIST.hashCode(); }
+
+  @Override
+  public String toString() { 
+    return this.EXPR_LIST.stream()
+                         .map(Object::toString)
+                         .collect(Collectors.joining(" + "));
+  }
+}
+\end{lstlisting}

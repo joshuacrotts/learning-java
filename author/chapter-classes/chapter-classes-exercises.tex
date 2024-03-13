@@ -1,0 +1,182 @@
+\section{Exercises}
+
+\myexercise{1}{chapter-classes}{Design the \ttt{Car} class, which stores a \ttt{String} representing the car's make, a \ttt{String} representing the car's model, and an \ttt{int} representing the car's year. Its constructor should receive these three values and store them in the instance variables. Be sure to write instance accessor and mutator methods for modifying all three fields. That is, you should write \ttt{getMake()}, \ttt{setMake(String s)}, and so forth, to access and modify the fields directly.}
+
+\myexercise{1}{chapter-classes}{Design the \ttt{Dog} class, which stores a \ttt{String} representing the breed, a \ttt{String} representing its name, and an \ttt{int} representing its age in years. You should also store a boolean to keep track of whether or not the dog is a puppy. A dog is a puppy if it is less than two years old. Its constructor should receive these three values and store them in the instance variables. Be sure to write instance accessor and mutator methods for modifying all three fields. That is, you should write \ttt{getBreed()}, \ttt{setBreed(String s)}, and so forth, to access and modify the fields directly.}
+
+\myexercise{1}{chapter-classes}{Design the \ttt{Person} class, which stores a \ttt{String} representing the person's first name, a \ttt{String} representing the person's last name, and an \ttt{int} representing the person's age in years. Its constructor should receive these three values and store them in the instance variables. Be sure to write instance accessor and mutator methods for modifying all three fields. That is, you should write \ttt{getFirstName()}, \ttt{setFirstName(String s)}, and so forth, to access and modify the fields directly.}
+
+\myexercise{1}{chapter-classes}{Design the \ttt{Employee} class, which stores the employee's first and last names as strings, their birthyear as an integer, their yearly salary as a double (we will assume that all employees are paid some value greater than zero), and their employee ID as a string. To make things interesting, assume that an employee's ID is not alterable and must be set in the constructor. The employee ID is constructed using the first five characters of their last name, the first letter of their first name, and the last two digits of their birthyear. For instance, if the employee's name is \ttt{Joshua Crotts} and their birthyear is \ttt{1999}, their employee ID is \ttt{CrottJ99}. Its constructor should receive the name, birthyear, and salary as parameters, but build the employee ID from the name and birthyear. Be sure to design the relevant accessor and mutator methods.}
+
+\myexercise{1}{chapter-classes}{As part of the \ttt{Employee} class, design the \ttt{void bonus()} method, which updates the salary of an employee. Calling \ttt{bonus} on an employee increases their salary by ten percent.}
+
+\myexercise{2}{chapter-classes}{As part of the \ttt{Employee} class, override the \ttt{equals} and \ttt{toString} methods from the \ttt{Object} class to compare two employees by their employee ID and to print the employee's name, birthyear, salary, and employee ID respectively separated by commas.}
+
+\myexercise{2}{chapter-classes}{In this exercise you will design a class for storing employees. This relies on completing the \ttt{Employee} class exercise.}
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{Job} class, which stores a list of employees \ttt{ArrayList<Employee>} as an instance variable. Its constructor should receive no arguments.
+    \item Design the \ttt{void addEmployee(Employee e)} method, which adds an employee to the \ttt{Job}.
+    \item Design the \ttt{void removeEmployee(Employee e)} method, which removes an employee from the \ttt{Job}.
+    \item Design the \ttt{Optional<Double> computeAverageSalary()} method, which returns the average salary of all employees in the \ttt{Job}. If there are no employees, return an empty \ttt{Optional}.
+    \item Design the \ttt{Optional<Employee> highestPaid()} method, which returns the employee whose salary is the highest of all employees in the \ttt{Job}. If there are no employees, return an empty \ttt{Optional}.
+    \item Override the \ttt{toString} method to print out the list of employees in the \ttt{Job}. You can use the default \ttt{toString} implementation of the \ttt{ArrayList} class.
+\end{enumerate}
+
+\myexercise{2}{chapter-classes}{In this exercise you will design a \emph{linear congruential generator}: a pseudorandom number generation algorithm. In particular, the C programming language standard library defines two functions: \ttt{rand} and \ttt{srand}. The latter sets the \emph{seed} for the generator, and \ttt{rand} returns a random integer between $[0, 2^{15})$. The formula for this generator is a recurrence relation:}
+\begin{align*}
+    \emph{next} &= |r_n \cdot 1103515245 + 12345|\\
+    r_{n+1} &= \left(\dfrac{\emph{next}}{2^{16}}\right)\;\%\;2^{15};
+\end{align*}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{LcgRandom} class, which implements this behavior. In particular, it should have two constructors: one that receives a seed value $s$, and another that sets the seed to one. The seed initializes the value of $r_0$.
+    \item Design the \ttt{int genInt()} method, which returns a random integer between $0$ and $2^{15}$ using this algorithm.
+    \item Design the \ttt{IntStream stream()} method, which returns a stream of random numbers that uses \ttt{genInt} to generate numbers. Hint: use \ttt{generate}!
+    \item Design the \ttt{genInt(int b)} method that returns an integer between $[0, b]$. Note that $0 \leq b < 2^{15}$; you do not need to account for values outside of this range. Do \textbf{not} simply loop until you find a value between that range; instead, use modulus to your advantage.
+\end{enumerate}
+
+\myexercise{3}{chapter-classes}{This question has six parts.}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers $m$ and $n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers. Copy the integers from the passed array into an instance variable array.
+    \item Design the \ttt{void set(int i, int j, int val)} method, which sets the value at row $i$ and column $j$ to \ttt{val}.
+    \item Design the \ttt{void add(Matrix m)} method, which adds the values of the passed matrix to the current matrix. If the dimensions of the passed matrix do not match the dimensions of the current matrix, do nothing.
+    \item Design the \ttt{void multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply $m$ with this matrix, do nothing.
+    \item Design the \ttt{void transpose()} method, which transposes the matrix. That is, the rows become the columns and the columns become the rows. You may need to alter the dimensions of the matrix.
+    \item Design the \ttt{void rotate()} method, rotates the matrix $90$ degrees clockwise. To rotate a matrix, compute the transposition and then reverse the rows. You may need to alter the dimensions of the matrix.
+    \item Override the \ttt{String toString()} method to print out the matrix in a boxed format.
+\end{enumerate}
+
+\myexercise{2}{chapter-classes}{This exercise has five parts.}
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{GameObject} class, which stores a \ttt{Pair<Double, Double>} denoting its center $(x, y)$ position and a \ttt{Pair<Double, Double>} denoting its width and height respectively. Its constructor should receive four \ttt{double} values representing $x$, $y$, $\emph{width}$, and $\emph{height}$. Be sure to write instance accessor and mutator methods for modifying both fields. That is, you should write \ttt{double getLocationX()}, \ttt{void setLocationX(double d)}, and so forth, to access and modify the \ttt{Pair} values directly. 
+
+    \item Design the \ttt{boolean collidesWith(GameObject obj)} method that returns if \ttt{this} \ttt{GameObject} collides with the parameter \ttt{obj}. You should design this solution as if the game objects are shaped like rectangles (which they are!).
+
+    \item Design the \ttt{double distance(GameObject obj)} method that returns the Euclidean distance from the center of \ttt{this} \ttt{GameObject} to the center of the parameter \ttt{obj}. 
+
+    \item Design the \ttt{double move(double dx, double dy)} method that moves the object about the Cartesian (two-dimensional) plane. The distance should be a delta represented as two \ttt{double} numbers \ttt{dx} and \ttt{dy} that directly manipulate the object position. For instance, if \ttt{dx} is $3.0$ and \ttt{dy} is $-2.0$ and the object is currently at $<2.0, -9.0>$, invoking \ttt{move(3.0, -2.0)} updates the object to be at $<5.0, -11.0>$.
+
+    \item Override the \ttt{String toString()} method to call the \ttt{toString} methods of the two instance variables, conjoined by a semicolon.
+\end{enumerate}
+
+\myexercise{2}{chapter-classes}{This exercise has three parts.}
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{GameRunner} class, which stores a list of objects \ttt{ArrayList<GameObject>} as an instance variable. Its constructor should receive an integer representing a random number generator seed. It should first instantiate \ttt{rand} to a new \ttt{Random} object with this seed, and then populate the list with twenty random \ttt{GameObject} instances at random \textbf{integer} positions with random \textbf{integer} sizes. These random positions should be between $[-10, 10]$ for both coordinates and the random sizes should be between $[1, 10]$ for both dimensions.
+
+    \item Design the \ttt{void moveObjects()} method, which moves each object by three positive $x$ units and four negative $y$ units.
+
+    \item Design the \ttt{String stringifyObjects()} method, which converts each object in the list into its string representation, with brackets around the elements, and separated by commas. Hint: you can use one method from the \ttt{Stream} class to do this quickly!
+\end{enumerate}
+
+\myexercise{2}{chapter-classes}{This exercise involves the ``Twenty-One'' game implementation from the chapter.}
+\begin{enumerate}[label=(\alph*)]
+    \item Change each card to use the Unicode symbol counterpart rather than the \ttt{"X of Y"} \ttt{toString} model, where \ttt{X} is the value and \ttt{Y} is the suit. The Unicode symbols are available on the second page of this PDF: \url{https://www.unicode.org/charts/PDF/U1F0A0.pdf}. This will be a little tedious, but it makes the game look cooler!
+    \item Add the Ace, Jack, Queen, and King cards, instead of the previous implementation of using four cards whose values were all ten. A simple solution is to use a \ttt{String} that keeps track of the ``name'' of a card alongside the other instance variables. 
+    \item Add an AI to the game (you do not need to test this class). This involves writing the \ttt{AI} class and designing the \ttt{boolean play(Deck deck)} method. An \ttt{AI} has a \ttt{ArrayList<Card>}, similar to \ttt{Player}, but makes decisions autonomously using the following algorithm (written in a pseudocode-like language):
+    \begin{verbnobox}[\small]
+boolean play(Deck d) {
+  score = getScore()
+  if score < 16 then:
+    cards.add(d.drawCard())
+    return true;
+  else if (score > 16 && score < 21) {
+    k = Generate a random integer between [0, 3).
+    if k is zero then:
+      cards.add(d.drawCard())
+      return true;
+  } 
+  return false;
+}
+\end{verbnobox}
+The method returns whether or not the AI drew a card. If they did not draw a card, then their turn is over. When playing the game, the player can see the first two cards dealt to an AI, but nothing more. You might want to add a static variable to the \ttt{Card} class representing the ``covered card.'' Note that the AI knows only the context of its deck of cards; it is not aware of any other \ttt{Player} or \ttt{AI}.
+\item After designing the \ttt{AI} class and adding one to your game, create an \ttt{ArrayList<AI>} simulating multiple computer players in the game.
+\end{enumerate}
+
+\myexercise{1}{chapter-classes}{Add the \ttt{void set(T e, int idx)} method to the \ttt{MiniArrayList} class, which sets the element at $\emph{idx}$ to the given $e$ element.}
+
+\myexercise{1}{chapter-classes}{Add the \ttt{void isEmpty()} method to the \ttt{MiniArrayList} class, which returns whether or not the list is empty.}
+
+\myexercise{2}{chapter-classes}{Add the \ttt{void clear()} method to the \ttt{MiniArrayList} class, which ``removes'' all elements from the list. This should not change the capacity of the list. Note that there's a reason why ``removes'' is in quotes. We rank this exercise as a two-star not because of its length, but because it is a little tricky.}
+
+\myexercise{2}{chapter-classes}{Override the \ttt{equals} method (from \ttt{Object}) in the \ttt{MiniArrayList} class to compare two lists by their elements. Return \ttt{true} if all elements in the two lists are \ttt{.equals} to one another, and \ttt{false} otherwise.}
+
+\myexercise{2}{chapter-classes}{Using the \ttt{StackFrame} class, design an implementation of the tail recursive factorial method. Recall how to do this from Chapter~\ref{chapter-crl}: instead of pushing an activation record to the call stack, we can simply update the bindings in the existing frame.}
+
+\myexercise{3}{chapter-classes}{This exercise has seven parts.}
+
+A \emph{chunked array list} data structure avoids the overhead of copying the underlying array upon running out of free spots. The idea is to break the collection into chunks, namely, as an \ttt{ArrayList} of arrays. Assuming that the underlying collection of chunks is adequately populated, this collection will seldom require a resizing operation. This data structure will not support arbitrary insertions or removals.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the generic \ttt{ChunkedArrayList} class. It should store, as an instance variable, an \ttt{ArrayList<T[]>} of chunks, where $T$ is the parameterized type. Design two constructors: one that receives a chunk size $s$ and a number of preallocated chunks $n$, and another constructor that receives no parameters, defaulting $n$ to $10$ and $s$ to $50$.
+    \item Design the \ttt{void add(T t)} method that, when given an item $t$, adds it to the end of the current chunk. If we run out of space in the current chunk, add it to the next chunk in succession. If there are no available chunks, add a new \ttt{T[]} of size $s$ to the list. Hint: use modulus.
+    \item Design the \ttt{T get(int i)} method that, when given an index $i$, returns the item at that index. The user of this data structure should not need to know about the chunks or their implementation. Therefore, if $s=10$, and we access index $27$, it should receive the element in chunk $3$, index $7$. Assume that $i$ is in bounds.
+    \item Design the \ttt{void resizeChunks(int n)} method that resizes each chunk to the input argument $n$. Depending on this value, you will need to either reallocate each underlying array or shift values around. For example, if we have a chunk array list with $150$ elements whose chunks hold up to $50$ elements each, and we resize the chunks to be $25$ in maximum capacity, we will double the number of necessary chunks. On the other hand, if we resize the chunks to hold $100$ elements, then the values in chunk two are shifted into chunk one, and those in chunk three are shifted into chunk two.
+    \item Design the \ttt{int getChunkCapacity()} method that returns the maximum capacity of each chunk.
+    \item Design the \ttt{int size()} method that returns the total number of elements in the chunk array list.
+    \item Design the \ttt{int getChunkSize()} method that returns the number of chunks currently in-use.
+\end{enumerate}
+
+\myexercise{3}{chapter-classes}{This exercise has seven parts.}
+
+A \emph{persistent data structure}\index{persistent data structure} is one that saves intermittent data structures after applying operations that would otherwise alter the contents of the data structure. Take, for instance, a standard FIFO queue. When we invoke its `enqueue' method, we modify the underlying data structure to now contain the new element. If this were a persistent queue, then enqueueing a new element would, instead, return a new queue that contains all elements and the newly-enqueued value, thereby leaving the original queue unchanged.
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, design the generic, private, and static class \ttt{Node} inside a generic \ttt{PQueue} class skeleton. It should store, as instance variables, a pointer to its next element as well as its associated value.
+    \item Then, design the \ttt{PQueue} class, which represents a persistent queue data structure. As instance variables, store ``first'' and ``last'' pointers as \ttt{Node} objects, as well as an integer to represent the number of existing elements. In the constructor, instantiate the pointers to \ttt{null} and the number of elements to zero.
+    \item Design the \ttt{PQueue<T> enqueue(T t)} method that enqueues a value onto the end of a new queue containing all the old elements, in addition to the new value.
+    \item Design the \ttt{PQueue<T> dequeue()} method that removes the first element of the queue, returning a new queue without this first value.
+    \item Design the \ttt{T peek()} method that returns the first element of the queue.
+    \item Design the \ttt{PQueue<T> of(T... vals)} method that creates a queue with the values passed as \ttt{vals}. Note that this must be a variadic method. Do not create a series of \ttt{PQueue} objects by enqueueing each element into a distinct queue; this is incredibly inefficient. Instead, allocate each \ttt{Node} one-by-one, thereby never calling \ttt{enqueue}.
+    \item Design the \ttt{int size()} method that returns the number of elements in the queue. You should not traverse the queue to compute this value. 
+\end{enumerate}
+
+\myexercise{3}{chapter-classes}{This exercise has three parts.}
+
+A \emph{deterministic finite state automaton} is an extremely primitive machine that represents transitions between the different states of a system. Think, as an example, of a light switch; there is an ``OFF'' state and an ``ON'' state, where flipping the switch flops between the two. The switch flip represents the input that causes a transition from one state to another. Programming languages most often use finite automata for character recognition, i.e., what characters are valid in the language grammar. The following is an example of a DFA diagram that accepts input strings that contain an odd number of \ttt{'a'} characters from an input alphabet $\Sigma = \{a, b\}$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, begin by designing the skeleton for the \ttt{DFA} class, which contains the following private and static class definitions:
+    \begin{itemize}
+        \item \ttt{State}, which stores a string identifier, an \ttt{"isStart"} boolean flag and an \ttt{"isFinal"} flag. The class should contain appropriate accessors but no mutators.
+        \item \ttt{Transition}, which stores two \ttt{State} objects $a$ and $b$ representing the ``from'' and ``to'', as well as the required input to transition from $a$ to $b$. 
+    \end{itemize}
+    \item The \ttt{DFA} constructor should be empty, and the class definition should store a \ttt{Set<Transition>} as well as a \ttt{Set<State>}. 
+    \item Design the \ttt{void addState(State s)} method, which adds a new \ttt{State} to the finite automaton.
+    \item Design the \ttt{State transition(State s, String i)} method, which returns the state arrived after making the transition from $s$ via input $i$.
+    \item Finally, design the \ttt{boolean accepts(String v)} method, which receives an input string $v$ and traverses over the automaton to determine if it accepts or rejects the input. We accept $v$ if the last state we end on is marked as a final state.
+\end{enumerate}
+
+\myexercise{3}{chapter-exceptions-io}{A binary relation $\mathcal{R}$ is a subset of the cartesian product of two sets $A$ and $B$. That is, $\mathcal{R} \subseteq A \times B$ such that $A \times B = \{\langle{x, y}\rangle \mid x \in A \text{ and } y \in B\}$. There are several ways that we can describe binary relations, including reflexive, symmetric, transitive, antisymmetric, asymmetric, irreflexive, and serial.}
+
+Design the generic \ttt{BinaryRelation<T, U>} class to represent a mathematical binary relation. It should store a \ttt{Set<Pair<String, String>{>}}, where the inner pair is the associated tuples of the set. Its constructor should instantiate the set instance variable. 
+
+Then, design the following methods:
+
+\begin{enumerate}[label=(\alph*)]
+    \item \ttt{void addTuple(T x, U y)} receives two values $x$ and $y$ of types $T$ and $U$ respectively, and adds them as a tuple to the underlying set.
+    
+    \item \ttt{boolean isReflexive()} returns true if the relation is reflexive. A relation $\mathcal{R}$ is reflexive if, for all $x \in S$, $\langle{x, x}\rangle \in \mathcal{R}$.
+    
+    \item \ttt{boolean isSymmetric()} returns true if the relation is symmetric. A relation $\mathcal{R}$ is symmetric if, for all $x, y \in S$, $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, x}\rangle \in \mathcal{R}$.
+    
+    \item \ttt{boolean isTransitive()} returns true if the relation is reflexive. A relation $\mathcal{R}$ is transitive if, for all $x, y, z \in S$, if $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, z}\rangle \in \mathcal{R}$, then $\langle{x, z}\rangle \in \mathcal{R}$.
+    
+    \item \ttt{boolean isEquivalence()} returns true if the relation is an equivalence relation. A relation $\mathcal{R}$ is an equivalence relation if it is reflexive, symmetric, and transitive.
+
+    \item \ttt{boolean isIrreflexive()} returns true if the relation is irreflexive. A relation $\mathcal{R}$ is irreflexive if, for all $x \in S$, $\langle{x, x}\rangle \not\in \mathcal{R}$.
+    
+    \item \ttt{boolean isAntisymmetric()} returns true if the relation is antisymmetric. A relation $\mathcal{R}$ is antisymmetric if, for all $x, y \in S$, if $\langle{x, y}\rangle \in \mathcal{R}$ and $\langle{y, x}\rangle \in \mathcal{R}$, then $x \neq y$.
+    
+    \item \ttt{boolean isAsymmetric()} returns true if the relation is asymmetric. A relation is asymmetric if it is both antisymmetric and irreflexive.
+
+    \item \ttt{boolean isSerial()} returns true if the relation is serial. A relation $\mathcal{R}$ is serial if, for all $x \in S$, there exists a $y \in S$ such that $\langle{x, y}\rangle \in \mathcal{R}$.
+
+    \item \ttt{Set<Pair<String, String>{>} reflexiveClosure()} returns a set representing the reflexive closure of a binary relation, which is $\mathcal{R} \cup r(\mathcal{R})$, where $r$ returns a reflexive set over $S$.
+    
+    \item \ttt{Set<Pair<String, String>{>} isSymmetricClosure()} returns a set representing the symmetric closure of a binary relation, which is $\mathcal{R} \cup s(\mathcal{R})$, where $r$ returns a symmetric set over $S$.
+
+    \item \ttt{Set<Pair<String, String>{>} transitiveClosure()} returns a set representing the transitive closure of a binary relation, which is $\mathcal{R} \cup t(\mathcal{R})$, where $t$ returns a transitive set over $S$.
+\end{enumerate}
+
+As an added optimization, we should cache whether the current relation is one of these properties when prompted. If we do not add a pair to the relation, then it makes little sense to recompute whether or not is, say, reflexive. Implement this as an optimization, however you wish, into the class.

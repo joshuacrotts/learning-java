@@ -1,38 +1,23 @@
-\usepackage{titlesec}
+\usepackage{type1cm}         
+\usepackage{showframe}
+% \usepackage[a4,frame,center]{crop}
+\usepackage{makeidx}         % allows index generation
+\usepackage{graphicx}        % standard LaTeX graphics tool
+                             % when including figure files
+\usepackage{multicol}        % used for the two-column index
+\usepackage[bottom]{footmisc}% places footnotes at page bottom
+\usepackage{listings}
+
+% \usepackage{titlesec}
 \usepackage{blindtext}
 \usepackage{color}
-\usepackage{geometry}
-\usepackage{amsthm}
-\usepackage{xspace}
+\usepackage{verbatimbox}
 \usepackage{transparent}
-\usepackage{tocloft}% http://ctan.org/pkg/tocloft (for fixing section title in toc
+% \usepackage{tocloft}% http://ctan.org/pkg/tocloft (for fixing section title in toc
 \usepackage{pgfornament} % FOR NEW COVER PAGE STUFF
 \usepackage[all]{nowidow}
-
-
-\newcommand{\mathtime}{} % uncomment to use Times New Roman fonts
-% fonts
-
-%% Times New Roman Fonts
-\ifdefined\mathtime
-  \usepackage{newtxtext} 
-\fi
-% \usepackage[htt]{hyphenat}
-\usepackage{tikz}
-\usepackage{tikz-qtree}
-\usepackage[utf8]{inputenc}
-\ifdefined\mathtime
-  \usepackage[complete, subscriptcorrection, zswash]{mtpro2}
-  \input{res/mtpro2-patch}
-\fi
-\usepackage[lighttt]{res/fonts/mylmodern}
-% \usepackage{fdsymbol}
-% \usepackage{pifont} % REQUIRED
-
 \usepackage{float}
 \usepackage{amsmath}
-% \usepackage{amssymb}
-% \usepackage[cam,letter,center]{crop}  
 \usepackage[mathscr]{euscript}
 \usepackage{mathtools}
 \usepackage{simplebnf}
@@ -42,26 +27,23 @@
 \usepackage{url}
 
 % typesetting
-% \usepackage{icomma}
-\usepackage{fancyhdr}
 \usepackage{pdfpages}
-\usepackage{framed}
+% \usepackage{framed}
 \usepackage{tikz-cd}
 \usepackage[skins]{tcolorbox}
 \usepackage{etoolbox}
 \usepackage{enumitem}
 \usepackage{syntax}
 \usepackage[super]{nth} 
-\usepackage{nopageno}
+% \usepackage{nopageno}
 \usepackage{mathtools}
 \usepackage{tabularray}
-\usepackage{mathpartir}
-\usepackage{imakeidx}
+% \usepackage{mathpartir}
+% \usepackage{imakeidx}
 \usepackage{caption}
 \usepackage{subcaption}
-\usepackage[perpage]{footmisc}
 \usepackage{fancyvrb}
-\usepackage{parskip}
+% \usepackage{parskip}
 \usepackage{alltt}
 
 % pseudocode
@@ -70,6 +52,53 @@
 % other miscellaneous includes
 \usepackage[disable]{todonotes}
 \usepackage{breakcites}
+
+
+
+\newcommand{\timesnewroman}{} % uncomment to use Times New Roman fonts
+\newcommand{\mathtime}{}
+% \newcommand{\courier}{}
+% \newcommand{\libertinus}{}
+% \newcommand{\palatino}{}
+% \newcommand{\baskerville}{}
+% \newcommand{\libertine}{}
+
+% fonts
+
+%% Times New Roman Fonts
+\ifdefined\timesnewroman
+  \usepackage{newtxtext} 
+\fi
+\ifdefined\libertine
+  \usepackage{libertine}
+\fi
+\ifdefined\libertinus
+  \usepackage{libertinus}
+\fi
+\ifdefined\palatino
+  \usepackage{newpxtext}
+\fi
+\ifdefined\baskerville
+  \usepackage{librebaskerville}
+  \usepackage[T1]{fontenc}
+\fi
+% \usepackage[htt]{hyphenat}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage[utf8]{inputenc}
+\ifdefined\mathtime
+  \usepackage[complete, subscriptcorrection, zswash]{mtpro2}
+  \input{res/mtpro2-patch}
+\fi
+
+\ifdefined\courier
+  \usepackage{courier}
+\else
+  \usepackage[lighttt]{res/fonts/mylmodern}
+\fi
+% \usepackage{fdsymbol}
+% \usepackage{pifont} % REQUIRED
+
 
 \usetikzlibrary{automata, matrix, fit, positioning, arrows, arrows.meta, chains, bending,intersections,graphs}
 

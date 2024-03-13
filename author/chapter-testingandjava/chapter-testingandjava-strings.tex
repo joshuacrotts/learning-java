@@ -1,0 +1,145 @@
+\section{Strings}
+
+\emph{Strings}, as you might recall, are a sequence of characters. Characters, of course, are enclosed by single quotes, e.g., \ttt{\q{}x\q{}}. A Java \ttt{String} is enclosed by double quotes. e.g., \ttt{"Hello!"}. Strings may contain any number of characters and any kind of character, including no characters at all or only a single character. There is an apparent distinction between \ttt{\q{}x\q{}} and \ttt{"x"}: the former is a \ttt{char} and the latter is a \ttt{String}! Note the capitalization on the word \ttt{String}; this is a significant detail, because a \ttt{String} is not one of the primitive datatypes that we described in the previous section. Instead, it is several \ttt{char} values combined together ``under-the-hood,'' so to speak. We can declare a \ttt{String} as a variable using the keyword combined with a variable name, just as we might for primitives. 
+
+\begin{lstlisting}[language=MyJava]
+class NewStringTests {
+
+  public static void main(String[] args) {
+    String s1 = "Hello, world!";
+    String s2 = "How are you doing?";
+    String s3 = "This is another string!";
+  }
+}
+\end{lstlisting}
+
+\begin{figure}[tp]
+  %\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
+    \small
+    \begin{tcolorbox}[title=String Class]
+      A \emph{string}\index{string} is an immutable sequence of characters. Strings are indexed from $0$ to $|S|-1$, where $|S|$ is the number of characters of $S$.
+      \vspace{2ex}
+    \begin{description}
+      \item[\ttt{$S_1$ + $S_2$}] adds the characters from $S_2$ onto the end of $S_1$, producing a new string.
+      \item[\ttt{int $S$.length()}] returns the number of characters in $S$.
+      \item[\ttt{char $S$.charAt($i$)}] retrieves the $(i + 1)^\text{th}$ character in $S$. We can also say that this retrieves the character at index $i$ of $S$.
+      \item[\ttt{String $S$.substring($i$, $j$)}] returns a new string containing the characters from index $i$, inclusive, to index $j$, exclusive. The number of extracted characters is $j - i$. We will use the notation $S' \sqsubseteq S$ to denote that $S'$ is a substring of $S$.
+      \item[\ttt{String $S$.substring($i$)}] returns a new string from index $i$ to the end of $S$.
+      \item[\ttt{int $S$.indexOf($S'$)}] returns the index of the first instance of $S'$ in $S$, or $-1$ if $S' \not\sqsubseteq S$.
+      \item[\ttt{boolean $S$.contains($S'$)}] returns \ttt{true} if $S' \sqsubseteq S$; \ttt{false} otherwise.
+      \item[\ttt{String $S$.repeat($n$)}] returns a new string containing $n$ copies of $S$.
+      \item[\ttt{String String.valueOf($v$)}] returns a stringified version of $v$, where $v$ is some primitive value.
+      \item[\ttt{int Integer.parseInt($S$)}] returns the integer representation of a string $S$, if it can be parsed as such.
+    \end{description}
+  \end{tcolorbox}
+    \caption{Useful String Methods.}
+    \label{fig:strings}
+  \end{figure}
+
+We can conjoin, or \emph{concatenate}\index{concatenation}, strings together with the \ttt{+} operator. Concatenating one string $s_2$ onto the end of another string $s_1$ creates a new string $s_3$, copies the characters from $s_1$ as well as the characters from $s_2$, in that order. 
+
+To retrieve the number of characters in a string, invoke \ttt{.length} on the string. Note that the empty string has length zero, and spaces count towards the length of a string, since spaces are characters. For instance, the length of \ttt{"  a  "} is five because there are two spaces, followed by a lowercase `\ttt{a}', followed by two more spaces.
+
+Comparing strings for equality seems straightforward: we can use \ttt{==} to compare one string versus another. Doing this is a common beginner pitfall! Strings are \emph{objects} and cannot be compared for value-equality using the \ttt{==} operator. Introducing this term ``value-equality'' insinuates that strings can, in fact, be compared using \ttt{==}, which is theoretically correct. The problem is that the result of this comparison only compares the memory addresses of the strings. In other words, \ttt{$s_1$ == $s_2$} returns whether the two strings reference, or point to, the same string in memory. 
+ 
+\begin{lstlisting}[language=MyJava]
+class NewStringTests {
+
+  public static void main(String[] args) {
+    String s1 = "Hello";
+    String s2 = s1;
+    System.out.println(s1 == s2); // true
+  }
+}
+\end{lstlisting}
+
+In the above code snippet we declare $s_1$ as the \emph{string literal}\index{string literal} \ttt{"Hello"}, then initialize $s_2$ to point to $s_1$. So there are, in effect, two pointers to the string literal \ttt{"Hello"}. Let us try something a little more tricky: suppose we declare three strings, where $s_1$ is the same as before, $s_2$ is the string literal \ttt{"Hello"}, and $s_3$ is the string literal \ttt{"World"}. Comparing $s_1$ to $s_2$, strangely enough, also outputs true, but why? It seems that $s_1$ and $s_2$ reference different string literals, even though they contain the same characters. Indeed, this is the case, but Java performs an optimization called \emph{string pool caching}\index{string pool cache}. That is, if two strings \emph{are} the same string literal, it makes little sense for them to point to two distinct references, since strings are immutable. Therefore, Java optimizes these into references to a single allocated string literal. Comparing $s_1$ or $s_2$ with $s_3$ outputs false, which is the anticipated result.
+
+\begin{lstlisting}[language=MyJava]
+class NewStringTests {
+
+  public static void main(String[] args) {
+    String s1 = "Hello";
+    String s2 = "Hello";
+    String s3 = "World";
+    System.out.println(s1 == s2); // true (?)
+    System.out.println(s2 == s3); // false
+  }
+}
+\end{lstlisting}
+
+If we want to circumvent Java's string caching capabilities, we need a way of \emph{instantiating} a new string for our variables to reference. We use the power of \ttt{new String} to create a brand new, non-cached string reference. We treat this as a method, of sorts, called the \emph{object constructor}. We will revisit constructors in our discussion on objects and classes, but for now, consider it a method for creating a distinct \ttt{String} instance. This method is \emph{overloaded} to receive either zero or one parameter. The latter implementation receives a \ttt{String}, which is copied into the new \ttt{String} instance. If we pass a string literal to the constructor, it copies the characters \emph{from} the literal into the new string. At this point, the only possible object to be equal to $s_1$ is $s_1$ itself or another string that points to its value.
+
+\begin{lstlisting}[language=MyJava]
+class NewStringTests {
+
+  public static void main(String[] args) {
+    String s1 = new String("hello");
+    String s2 = new String("hello");
+    String s3 = new String("world");
+    String s4 = s1;
+    System.out.println(s1 == s1); // true
+    System.out.println(s1 == s2); // false!
+    System.out.println(s2 == s3); // false
+    System.out.println(s1 == s4); // true
+  }
+}
+\end{lstlisting}
+
+Now, what if we want to compare strings for their content, i.e., their characters? The \ttt{String} class provides a handy \ttt{.equals} method that we invoke on instances of strings. Two strings $s_1$ and $s_2$ are equal if they are \emph{lexicographically equal}. In essence, this is a long and scary word to represent the concept of ``containing the same characters.'' Lexicographical comparisons are case-sensitive, meaning that uppercase and lowercase letters are different according to Java.
+
+\begin{lstlisting}[language=MyJava]
+class StringLexicographicallyEqual {
+
+  public static void main(String[] args) {
+    String s1 = new String("hello");
+    String s2 = new String("hello");
+    String s3 = new String("world");
+    System.out.println(s1.equals(s2)); // true
+    System.out.println(s2.equals(s3)); // false
+  }
+}
+\end{lstlisting}
+
+Let us veer into the discussion on the lexicographical ordering of strings. Like numbers, strings are comparable and can be, e.g., ``less than'' another. According to Java, one string is less than another if it is lexicographically less than another, and this idea extends to all comparison operators aside from equality. Memorizing the string ordering rules is cumbersome, so we propose the S.N.U.L. acronym. In general, special characters (S) are less than numbers (N), which are less than uppercase characters (U), which are less than lowercase characters (L). For a full description with the exceptions to our generalization, view an ASCII table. 
+
+\myexample{Java returns the distance between the first non-equal characters in a string using \ttt{.compareTo}. For instance, \ttt{"hello".compareTo("hi")} returns \ttt{-4} because the distance from the first non-equal characters, those being \ttt{'e'} and \ttt{'i'}, is minus four characters, since \ttt{'i'} is greater than \ttt{'e'}. If we compare \ttt{"hello"} against \ttt{"Hello"}, we get \ttt{32}, because according to the ASCII table, \ttt{'h'} corresponds to the integer $104$, and \ttt{'H'} corresponds to the integer $72$, and their difference is $104 - 72$. Of course, comparing \ttt{"hello"} against \ttt{"hello"} produces zero, indicating that they contain the same characters.}
+
+Strings are \emph{indexed from zero}, which means that the characters in the string are located at \emph{indices} from zero to the length of the string minus one. So, for example, in the string \ttt{"hello"}, \ttt{'h'} is at index zero, \ttt{'e'} is at index one, \ttt{'l'} is at index two, \ttt{'l'} is at index three, and \ttt{'o'} is at index four. Knowing this fact is crucial to working with helper methods such as \ttt{charAt}, \ttt{indexOf}, and \ttt{substring}, which we will now discuss.
+
+\myexample{To retrieve the character at a given index, we invoke \ttt{charAt} on the string: \ttt{"hello".charAt(1)} returns \ttt{'e'}. Attempting to index out of bounds with either a negative number or a number that is equal to or exceeds the length of the string results in a \ttt{StringIndexOutOfBoundsException} error.}
+
+\myexample{We can use \ttt{indexOf} to find the index of the first occurrence of some value in a string. To demonstrate, \ttt{"hello, how are you?".indexOf("are")} returns \ttt{11} because the substring \ttt{"are"} occurs starting at index $11$ of the provided string. If the supplied value is not present in the string, \ttt{indexOf} returns $-1$.}
+
+\myexample{A \emph{substring} of a string $s$ is a sequence of existing characters inside $s$. We can extract a substring from some string $s$ using the \ttt{substring} method: \ttt{"abcde".substring(2, 4)} returns \ttt{"cd"}. Note that the last index is exclusive, meaning that, as a rule of thumb, the number of characters returned in the substring is equal to the second argument minus the first argument. There is also a handy second version of this method that receives only one argument: it returns the substring from the given index up to the end of the string. E.g., \ttt{"abcdefg".substring(1)} returns everything but the first character, i.e., \ttt{"bcdefg"}.}
+
+\myexample{We can convert between datatypes, such as an integer to a string and vice versa, using the \ttt{String.valueOf} and \ttt{Integer.parseInt} methods respectively. Passing any non-string primitive value as an argument to \ttt{valueOf} converts it into a string. Oppositely, if we pass a string that represents an integer to \ttt{parseInt}, we obtain the corresponding integer. The \ttt{Double.parseDouble} and \ttt{Boolean.parseBoolean} methods behave similarly. Passing an invalid string, i.e., one that does not represent the respective datatype, results in Java throwing a \ttt{NumberFormatException} error.}
+
+\begin{verbnobox}[\small]
+String s1 = String.valueOf(1234);
+String s2 = String.valueOf(Math.PI);
+int n1 = Integer.parseInt(s1);
+double s2 = Double.parseDouble(s2);
+\end{verbnobox}
+
+% \subsection{Quick Check Questions}
+% \begin{enumerate}[label=(\arabic*)]
+%   \item \mcq{What is the correct way to declare a string in Java?}{\texttt{char s = 'Hello'},\texttt{String s = 'Hello'},\texttt{String s = "Hello"},\texttt{char[] s = "Hello"}}
+
+%   \item \mcq{How do you concatenate two strings in Java?}{Using the \texttt{conjoin()} method,Using the \texttt{+} operator,Using the \texttt{append()} method,Using the \texttt{++} operator}
+%   \item \mcq{How can you compare two strings for content character equality in Java?}{Using the \texttt{==} operator,Using the \texttt{equals()} method,Using the \texttt{compare()} method,Using the \texttt{compareTo()} method}
+
+%   \item \mcq{What does the \texttt{length()} method of a String return?}{The size in bytes of the string,The number of characters in the string,The number of bytes in the string,The capacity of the string buffer}
+
+%   \item \mcq{What is the result of using \texttt{new String("hello") == new String("hello")}?}{\texttt{true}, because the contents of the strings are the same,\texttt{false}, because they are two different objects in memory,\texttt{true}, because of string interning,\texttt{false}, because the \texttt{==} operator checks for value equality}
+
+%   \item \mcq{What does the \texttt{charAt(int index)} method of a String do?}{Returns the character at the specified index, starting from 1,Returns the ASCII value of the character at the specified index,Returns the character at the specified index, starting from 0,Changes the character at the specified index}
+
+%   \item \mcq{How does the \texttt{substring(int beginIndex, int endIndex)} method work in Java?}{It returns a new string that starts from \texttt{beginIndex} and ends at \texttt{endIndex}, inclusive,It returns a new string that starts from \texttt{beginIndex} and ends at \texttt{endIndex}, exclusive,It modifies the original string to contain only the specified range of characters,It throws an exception if \texttt{endIndex} is less than \texttt{beginIndex}}
+
+%   \item \mcq{What is the return type of the \texttt{indexOf(String str)} method when the specified string is not found?}{\texttt{null},\texttt{0},An empty string,\texttt{-1}}
+
+%   \item \mcq{What is the purpose of the \texttt{String.valueOf(int value)} method?}{To convert an integer value to its corresponding ASCII character string,To find the string representation of the integer value in a string array,To convert an integer value to its string representation,To parse an integer value from a string}
+
+%   \item \mcq{What exception is thrown when an invalid string is passed to the \texttt{Integer.parseInt(String s)} method?}{\texttt{IllegalArgumentException},\texttt{InputMismatchException},\texttt{NumberFormatException},\texttt{ParseException}}
+% \end{enumerate}

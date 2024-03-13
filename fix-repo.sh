@@ -3,6 +3,9 @@ cd .. \
 && mkdir new-java \
 && cd new-java \
 && git clone git@github.com:joshuacrotts/teaching-java.git \
+&& cd teaching-java \
+&& git checkout libretine-font \
+&& cd .. \
 && cd .. \
 && cd teaching-java \
 && rm -rf *.git \

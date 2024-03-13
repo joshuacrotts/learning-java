@@ -1,0 +1,277 @@
+\section{Inheritance}
+
+Classes may relate to other classes by a hierarchy. In particular, one class, called the \emph{subclass}, can extend another class, called the \emph{superclass}. A subclass inherits all the methods and fields from its superclass. Classes can only extend one class at a time, unlike other programming languages such as C++. 
+
+\myexample{Suppose we have the \ttt{Alien} class defined as follows, which can move forward by one unit and turn left by 90 degrees in some world that it resides within.\footnote{We base this example off of Karel J. Robot from~\cite{kareljrobot} and~\cite{pattiskarel}.}}
+
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AlienTester {
+
+  @Test
+  void testAlien() {
+    Alien r1 = new Alien();
+    assertAll(
+      () -> r1.moveForward(),
+      () -> assertEquals(1, r1.getX()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(Alien.Direction.NORTH, r1.getDir()),
+      () -> r1.moveForward(),
+      () -> assertEquals(1, r1.getY()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(Alien.Direction.WEST, r1.getDir()),
+      () -> r1.moveForward(),
+      () -> assertEquals(0, r1.getX()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(Alien.Direction.SOUTH, r1.getDir()),
+      () -> r1.moveForward(),
+      () -> assertEquals(0, r1.getY()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(Alien.Direction.EAST, r1.getDir()),
+      () -> r1.moveForward(),
+      () -> assertEquals(1, r1.getX()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Alien {
+
+  enum Direction { NORTH, SOUTH, EAST, WEST };
+
+  private int x;
+  private int y;
+
+  private Direction dir;
+
+  Alien() {
+    this.x = 0;
+    this.y = 0;
+    this.dir = Direction.EAST;
+  }
+
+  /**
+   * Moves the alien forward by one unit in the direction it is facing.
+   */
+  void moveForward() {
+    switch (this.dir) {
+      NORTH -> this.y++;
+      SOUTH -> this.y--;
+      EAST -> this.x++;
+      WEST -> this.x--;
+    }
+  }
+
+  /**
+   * Turns the alien left by 90 degrees.
+   */
+  void turnLeft() {
+    switch (this.dir) {
+      NORTH -> this.dir = Direction.WEST;
+      SOUTH -> this.dir = Direction.EAST;
+      EAST -> this.dir = Direction.NORTH;
+      WEST -> this.dir = Direction.SOUTH;
+    }
+  }
+
+  // Accessors and mutators omitted for brevity.
+}
+\end{lstlisting}
+
+What we have defined is an incredibly primitive alien class that stores its position and direction in a two-dimensional plane. Testing the alien, as we have done, is straightforward, but even such a simple alien definition must turn left three times to mimic the behavior of turning right once. We should extend the \ttt{Alien} class to add a \ttt{turnRight} method. We will call this class \ttt{RightAlien}, which adds a single method: \ttt{turnRight}. The other methods remain the same, since we do not want to overwrite their behavior. One important thing to note is that we invoke the superclass constructor via the \ttt{super()} invocation. We do so because we want the direction, $x$ and $y$ variables to be correctly initialized when instantiating an instance of \ttt{RightAlien}. As we will demonstrate with future examples, invoking the superclass constructor can be done with arguments.
+
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class RightAlienTester {
+
+  @Test
+  void testMoverAlien() {
+    RightAlien r1 = new RightAlien();
+    assertAll(
+      () -> r1.turnRight(),
+      () -> assertEquals(RightAlien.Direction.SOUTH, r1.getDir()),
+      () -> r1.turnRight(),
+      () -> assertEquals(RightAlien.Direction.WEST, r1.getDir()),
+      () -> r1.turnLeft(),
+      () -> assertEquals(RightAlien.Direction.SOUTH, r1.getDir()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class RightAlien extends Alien {
+
+  RightAlien() { 
+    super(); 
+  }
+
+  /**
+   * Turns the Alien right by 90 degrees.
+   */
+  void turnRight() {
+    switch (this.getDir()) {
+      NORTH -> this.setDir(Direction.EAST);
+      SOUTH -> this.setDir(Direction.WEST);
+      EAST -> this.setDir(Direction.SOUTH);
+      WEST -> this.setDir(Direction.NORTH);
+    }
+  }
+}
+\end{lstlisting}
+
+Great, we can turn right with this flavor of the alien! Though, moving forward by one unit is absurdly slow, so let's now design the \ttt{MileMoverAlien} class, which moves ten units for every \ttt{moveForward} call. A mile, in this two-dimensional world, is equal to ten units. Because we want to override the functionality of \ttt{moveForward} from \ttt{Alien}, we must redefine the method in the subclass, and add the \ttt{@Override} annotation. Moreover, we define this particular version of \ttt{moveForward} in terms of \ttt{moveForward} from the superclass. This is a common pattern when overriding methods: we want to reuse the functionality of the superclass, but add some additional behavior. In this case, we want to move ten units forward, instead of one. In order to invoke the superclass definition of \ttt{moveForward}, we prefix the method call with `\ttt{super.}', rather than `\ttt{this.}'. Should we accidentally prefix the method call with `\ttt{this.}', we would be invoking the subclass definition of \ttt{moveForward}, resulting in an infinite loop!\footnote{Omitting `\ttt{this.}' still causes the method to infinitely loop, since not having the qualifier will cause Java to look in the current class definition.} One could make the case and say that this is, in fact, a form of recursion, and indeed this is true, but it is nonsensical recursion because the outcome not only undesired but also never terminates.
+
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertEquals;
+
+class MileMoverAlienTester {
+
+  @Test
+  void testMileMoverAlien() {
+    Alien r1 = new MileMoverAlien();
+      r1.moveForward(),
+      assertEquals(10, r1.getX()),
+      r1.turnLeft(),
+      r1.moveForward(),
+      assertEquals(10, r1.getY());
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class MileMoverAlien extends Alien {
+
+  MileMoverAlien() { super(); }
+
+  @Override
+  void moveForward() {
+    for (int i = 0; i < 10; i++) { super.moveForward(); }
+  }
+}
+\end{lstlisting}
+
+Now suppose we want a alien that ``bounces'' throughout the world. A bouncing alien will pick a random direction to face, then move two spots in that direction, simulating a bounce. Because the alien chooses a random direction, testing its implementation is difficult without predetermined knowledge of the random number generator. Therefore we will omit a tester for this class. All we must do is override the \ttt{moveForward} method, and invoke \ttt{super.moveForward} twice after facing a random direction.
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Random;
+
+class BouncerAlien extends Alien {
+
+  private final Random RNG;
+
+  BouncerAlien() {
+    super();
+    this.RNG = new Random();
+  }
+
+  @Override
+  void moveForward() {
+    switch (this.rand.nextInt(4)) {
+      case 0: { this.setDir(Direction.NORTH); break; }
+      case 1: { this.setDir(Direction.SOUTH); break; }
+      case 2: { this.setDir(Direction.EAST); break; }
+      case 3: { this.setDir(Direction.WEST); break; }
+    }
+    super.moveForward();
+    super.moveForward();
+  }
+}
+\end{lstlisting}
+
+Why not create a world for this alien to live within, and objects to interact with or collide into? Let's design the \ttt{World} class, which stores a two-dimensional array of \ttt{WorldPosition} instances. The \ttt{WorldPosition} class is a very general wrapper class to store what we will call \ttt{WorldObject} instances. Because a \ttt{WorldObject} is not very specific, we will expand upon its implementation with a single subclass, that being \ttt{StarObject}. Stars are objects that an alien in the world can pick up and drop. 
+
+This is a lot of information to consider, so let's back up a bit and start by designing the \ttt{WorldPosition} class. A \ttt{WorldPosition} contains a list of \ttt{WorldObject} instances. Therefore, we know that \ttt{WorldPosition} encapsulates objects that exist on that particular position. We also need to write the \ttt{WorldObject} class, which does nothing but acts as a placeholder for other objects to extend; one of those being \ttt{StarObject}.
+
+We, ideally, want aliens to be able to pick and place stars on a world position. It is nonsensical, though, for a aliens to pick stars on a \ttt{WorldPosition} that has no existing stars. Therefore, in the \ttt{WorldPosition} class, we will write a method that returns the number of instances of a given object. Doing so raises a question of, ``How do we specify a class to count?,'' the answer to which comes via \emph{reflection}. 
+
+Reflection is a programming language feature that allows us to inspect the structure of a class at runtime. We can use reflection to determine the class of an object, and then compare that class to the class we are using to search through the data structure. If the classes instances match (i.e., an object in the list is an instance of the desired searching class), in the case of our ``counter'' method, we increment the counter. To access an object's class information through reflection, we use the \ttt{getClass} method, which returns a \ttt{Class} instance. To receive any type of class as the parameter to a method, we parameterize the type of \ttt{Class} with a wildcard, \ttt{<?>}.
+
+Why are we worrying about reflection in the first place? Would it not be easier to simply write a method that, say, returns the number of \ttt{StarObject} instances in the \ttt{WorldPosition} through perhaps an enumeration describing the type of object? The answer is a resounding yes, but forcing the programmer to write an enumeration just to describe the type of some class is cumbersome and unnecessary. Moreover, when we want to extend the functionality to include a new type, we must update the enumeration, which is a poor design choice. Reflection allows us to write a single method that can count the number of instances of any class, without having to continuously/repeatedly rewrite the method.
+
+\begin{lstlisting}[language=MyJava]
+class WorldObject {
+
+  WorldObject() {}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class StarObject extends WorldObject {
+  
+  StarObject() { super(); }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=MyJava]
+import java.util.ArrayList;
+import java.util.List;
+import java.lang.Class;
+
+class WorldPosition {
+
+  private List<WorldObject> WORLD;
+
+  WorldPosition() { 
+    super(); 
+    this.WORLD = new ArrayList<>();  
+  }
+
+  /**
+   * Using streams, returns the number of occurrences of a given class type.
+   * @param cls - the class to search for.
+   * @return those instances of a class that exist on the position.
+   */
+  int count(Class<?> cls) {
+    return this.WORLD.stream()
+                     .filter(o -> obj.getClass().equals(cls))
+                     .count();
+  }
+}
+\end{lstlisting}
+
+Finally we arrive at the \ttt{World} class. Perhaps we make it a design choice to disallow extension of this class. To block a class from being extended, we label it as \ttt{final}\index{final class}. The \ttt{World} class stores, as we stated, a two-dimensional array of \ttt{WorldPosition} instances, simulating a two-dimensional grid structure (where the plane origin lies in the top-left rather than the traditional bottom-left). Our constructor receives two integers denoting the width and height of the world, corresponding to the number of rows and columns of the underlying array, respectively.\footnote{Because \ttt{WorldPosition} \emph{is} a list, we can conclude that \ttt{World} \emph{is} a two-dimensional array, meaning a programmer might ask about extending the functionality of an array. Arrays are not extendable, because they are not classes/interfaces.} Each position in the world is directly instantiated thereof to prevent later null pointer references. Said \ttt{World} class contains two methods: \ttt{addObject}, and \ttt{countStars}, where the former adds an object to a given position in the world, and the latter counts the number of stars on that position.
+
+In Chapter~\ref{chapter-modern}, we revisit reflection and explore its potential in greater detail. Remember that reflection is a runtime mechanism and, consequently, program performance may be penalized in certain situations.
+
+\begin{lstlisting}[language=MyJava]
+final class World {
+  
+  private final WorldPosition[][] WORLD;
+
+  World(int width, int height) {
+    this.WORLD = new WorldPosition[width][height];
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        this.WORLD[i][j] = new WorldPosition();
+      }
+    }
+  }
+
+  /**
+   * Assigns a WorldObject to a given position in the world by adding
+   * it to the list of objects.
+   * @param obj - the object to assign.
+   * @param x - the x-coordinate of the position.
+   * @param y - the y-coordinate of the position.
+   */
+  void add(WorldObject obj, int x, int y) {
+    this.WORLD[x][y].add(obj);
+  }
+
+  /**
+   * Counts the number of stars on a given position in the world.
+   * @return the number of stars.
+   */
+  int countStars() {
+    return this.WORLD[x][y].count(StarObject.class);
+  }
+}
+\end{lstlisting}

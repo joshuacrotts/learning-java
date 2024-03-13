@@ -1,0 +1,107 @@
+\section{Exercises}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double celsiusToFahrenheit(double c)} method, which converts a temperature from Celsius to Fahrenheit.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double fiToCm(double f, double in)} method, which receives two quantities in feet and inches respectively, and returns the amount in centimeters.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{int combineDigits(int a, int b)} method, which receives two \ttt{int} values between 0 and 9, and combines them into a two-digit number.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double gigameterToLightsecond(double gm)} method, which converts a distance in gigameters to light seconds (i.e., distance light travels in one second). There are $1,000,000,000$ meters in a gigameter, and light travels $299,792,458$ meters per second.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double billTotal(double t)} method, which computes the total for a bill. The total is the given subtotal $t$, plus $6.75\%$ of $t$ for the tax, and $20\%$ of the taxed total for the tip.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double grocery(int a, int b, int o, int g, int p)} method, which receives five integers representing the number of apples, bananas, oranges, bunches of grapes, and pineapples purchased at a store. Use the following table to compute the total purchase cost in US dollars.}
+
+\begin{center}
+\begin{tabular}{c|c}
+    Item & Price Per Item\\
+    \hline
+    Apple & \$0.59\\
+    Banana & \$0.99\\
+    Orange & \$0.45\\
+    Bunch of Grapes & \$1.39\\
+    Pineapple & \$2.24
+\end{tabular}
+\end{center}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double pointDistance(double px, double py, double qx, double qy)} method, which receives four double values representing two Cartesian coordinates. The method should return the distance between these points.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{int sumOfSquares(int x, int y)} method, which computes and returns the sum of the squares of two integers $x$ and $y$.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double octagonArea(double s)} method, which computes the area of an octagon with a given side length $s$. The formula is}
+\[
+A = 2(1 + \sqrt{2})s^2
+\]
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double pyramidSurfaceArea(double l, double w, double h)} method, which computes the surface area of a pyramid with a given base length $l$, base width $w$, and height $h$. The formula is}
+\[
+A = lw + l\sqrt{\left(\dfrac{w}{2}\right)^2 + h^2} + w\sqrt{\left(\dfrac{l}{2}\right)^2 + h^2}
+\]
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double crazyMath(double x)} method, which receives a value of $x$ and computes the value of the following expression:}
+
+\[
+    (1 - e^{-x})^{xe^{-x}} \cdot \dfrac{x\pi\cdot\cos{(4\pi{x})}}{\log_2{|x|}\cdot{\log_4{|x|} \cdot \ln{|x|}}}
+\]
+
+\noindent Below are some test cases. Hint: when testing this method, you may want to use the \ttt{delta} parameter of \ttt{assertEquals}!
+
+\begin{clrr}[]{}
+\begin{lstlisting}[language=MyJava]
+(*;\textbf{>};*) crazyMath(0)
+(*;\textbf{>};*) crazyMath(1)
+(*;\textbf{>};*) crazyMath(2)
+(*;\textbf{>};*) crazyMath(3)
+(*;\textbf{>};*) crazyMath(10)
+\end{lstlisting}
+\tcblower
+\begin{lstlisting}[language=MyJava]
+-0.0
+Infinity
+17.429741427952166
+6.778069159471912
+2.4727699557822547
+\end{lstlisting}
+\end{clrr}
+
+\myexercise{1}{chapter-testingandjava}{The \emph{z-score} is a measure of how far a given data point is away from the mean of a normally-distributed sample. In essence, roughly $68\%$ of data falls between z-scores of $[-1, 1]$, roughly $95\%$ falls between $[-2, 2]$, and $99.7\%$ falls between $[-3, 3]$. This means that extreme outliers have z-scores of either less than $-3$ or greater than $3$.}
+ 
+Design the \ttt{boolean isExtremeOutlier(double x, double avg, double stddev)} me\-thod that, when given a data point $x$, a mean $\mu$, and a standard deviation $\sigma$, computes the corresponding z-score of $x$ and returns whether it is an ``extreme'' outlier. Use the following formula:
+
+\[
+Z = \dfrac{x - \mu}{\sigma}
+\]
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double logBase(double n, double b)} that, when given a number $n$ and a base $b$, returns $\log_{b}(n)$. You will need to make use of the change-of-base formula, which we provide below ($n$ is the number to compute the logarithm of, $b$ is the old base, and $b'$ is the new base).}
+
+\[
+\log_b(n) = \dfrac{\log_{b'}(n)}{\log_{b'}(b)}
+\]
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{String weekday(int d)} method that, when given an integer $d$ from $1$ to $7$, returns the corresponding day of the week, with $1$ corresponding to \ttt{"Monday"} and \ttt{"Sunday"} corresponding to $7$. You \textbf{cannot} use any conditionals or data structures to solve this problem. Hint: declare a string containing each day of the week, with spaces to pad the days, and use \ttt{indexOf} and \ttt{substring}.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{String flStrip(String s)} method that, when given a string, returns a new string with the first and last characters stripped. You may assume that the input string contains at least two characters.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double stats(double x, double y)} method that receives two \ttt{double} parameters, and returns a \ttt{String} containing the following information: the sum, product, difference, the average, the maximum, and the minimum. The string should be formatted as follows, where each category is separated by a newline \ttt{'\textbackslash n'} character. Assume that \ttt{XX} is a placeholder for the calculated result.}
+\begin{verbnobox}[\small]
+"sum=XX
+product=XX
+difference=XX
+average=XX
+max=XX
+min=XX"
+\end{verbnobox}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{String userId(String f, String l, int y)} method that computes a user ID based on three given values: a first name, a last name, and a birth year. A user ID is calculated by taking the the first five letters of their last name, the first letter of their first name, and the last two digits of their birth year, and combining the result. Your method should, therefore, receive two \ttt{String} parameters and an \ttt{int}. Do not convert the year to a \ttt{String}. Below are some test cases.}
+
+\begin{verbnobox}[\small]
+userId("Joshua", "Crotts", 1999)     => "CrottJ99"
+userId("Katherine", "Johnson", 1918) => "JohnsK18"
+userId("Fred", "Fu", 1957)           => "FuF57"
+\end{verbnobox}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{String cutUsername(String email)} method that receives an email address of the form \ttt{x@y.z} and returns the username. The username of an email address is \ttt{x}.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{String cutDomain(String url)} method that returns the domain name of a website URL of the form \ttt{www.x.Z}, where \ttt{X} is the domain name and \ttt{Z} is the top-level domain.}
+
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{int nextClosest(int m, int n)} method that, when given two positive (non-zero) integers $m$ and $n$, finds the closest positive integer $z$ to $m$ such that $z$ is a multiple of $n$ and $z \leq m$. For example, if $m=67$ and $n=15$, then $z=60$.}
