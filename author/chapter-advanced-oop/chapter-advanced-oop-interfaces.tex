@@ -1,10 +1,10 @@
 \section{Interfaces}
 
-Interfaces are a way of grouping classes together by a ubiquitous behavior. We have worked with interfaces before without acknowledging their properties as an interface. For example, the \ttt{Comparable} interface is implemented by classes that can be compared against each other. In particular, there is a single method that must be implemented by any class that implements the \ttt{Comparable} interface: the \ttt{compareTo} method. The \ttt{compareTo} method takes in a single argument of the same type as the class that implements the \ttt{Comparable} interface and returns an integer. Said integer is negative if the object instance is less than the argument, zero if the object instance is equal to the argument, and positive if the object instance is greater than the argument.
+Interfaces are a way of grouping classes together by a ubiquitous behavior. We have worked with interfaces before without acknowledging their properties as an interface. For example, the \ttt{Comparable} interface is implemented by classes that we want to be able to compare against one another. In particular, there is a single method that must be implemented by any class that implements the \ttt{Comparable} interface: the \ttt{compareTo} method. The \ttt{compareTo} method takes in a single argument of the same type as the class that implements the \ttt{Comparable} interface and returns an integer. Said integer is negative if the object instance is less than the argument, zero if the object instance is equal to the argument, and positive if the object instance is greater than the argument.
 
 So, by having a class implement the \ttt{Comparable} interface, we group it into that subset of classes that are, indeed, comparable. Doing so implies that these classes have an ordering and are sortable in, for example, a Java collection. 
 
-In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List}, \ttt{Queue}, and \ttt{Map} interfaces, which all have a set of methods that must be implemented by any class that implements the interface. Recall that \ttt{ArrayList} and \ttt{LinkedList} are both types of \ttt{List} objects, and this interface describes several methods that all lists, by definition, must override. To \emph{override} a method means that we provide a new implementation of the method that is different from the default implementation provided by the interface.
+In addition to the \ttt{Comparable} interface, we have worked with the \ttt{List}, \ttt{Queue}, and \ttt{Map} interfaces, which all have a set of methods that must be implemented by any class that implements the interface. Recall that \ttt{ArrayList} and \ttt{LinkedList} are both types of \ttt{List} objects, and this interface describes several methods that all lists, by definition, must override.\footnote{In Chapter~\ref{chapter-arrays-collections}, we said that these two classes are ``kinds of'' \ttt{List} objects. Here we clarify that ``kind of,'' in this context, means to implement the \ttt{List} interface.} To \emph{override} a method means that we provide a new implementation of the method that is different from the default implementation provided by the interface.
 
 \subsection*{Defining an Interface}
 
@@ -394,7 +394,6 @@ class FunctionMap {
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static FunctionMap.map;
 
 import java.util.List;
 

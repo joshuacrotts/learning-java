@@ -352,6 +352,7 @@ As a means of motivation, let's write a few programs in this language to show it
 (*;\phantom{.};*)
 (*;\phantom{.};*)
 (*;\phantom{.};*)
+(*;\phantom{.};*)
 \end{lstlisting}
 \end{minipage}%
 \hfill % Fills the horizontal space between the minipages
@@ -369,12 +370,13 @@ As a means of motivation, let's write a few programs in this language to show it
 \hfill % Fills the horizontal space between the minipages
 \begin{minipage}[t]{0.32\textwidth}
 \begin{lstlisting}[language=MyScheme, frame=single]
-(let ([z 42])
-  (if (eq? (- 100 58) z)
+(let ([z 95])
+  (if (eq? (- 100 5) z)
       (let ([w -10])
         (* w z 2))
       (let ([w -5])
         (* z w -2))))
+(*;\phantom{.};*)
 (*;\phantom{.};*)
 \end{lstlisting}
 \end{minipage}
@@ -433,8 +435,8 @@ final class Environment {
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertEquals;
 import static Assertions.assertAll;
+import static Assertions.assertEquals;
 
 class AstTest {
 
@@ -647,8 +649,8 @@ new LetNode("x", new NumNode(5),
 Within the inner-most \ttt{PrimNode} expression, $x$ does not exist in its environment, but it does exist in an environment defined above its scope. So, each environment is itself a store a map of identifiers to abstract syntax trees, but they also contain another \ttt{Environment}. If we are at the ``root level'' of the program, this environment is set to \ttt{null}. Correspondingly, Environment contains two constructors: one that receives a parent environment and another without. As such, we must write the \ttt{lookup} method, which finds a variable binding in the current list of bindings and, if it does not exist, recursively looks it up in the parent environment. If we reach the root level environment and the variable does not exist, we return a \ttt{null} value. We also override the \ttt{toString} method to print out the environment in a readable format.
 
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertEquals;
 import static Assertions.assertAll;
+import static Assertions.assertEquals;
 
 class EnvironmentTester {
   

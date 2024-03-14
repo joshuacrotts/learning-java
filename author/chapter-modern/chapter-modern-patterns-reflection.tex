@@ -7,7 +7,6 @@ Reflection\index{reflection}, while not a necessarily new computer science conce
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static ReflectiveCalculator.calculate;
 
 class ReflectiveCalculatorTester {
 
@@ -42,6 +41,10 @@ There is one small intricacy with how Java handles variadic arguments and passin
 
 \begin{lstlisting}[language=MyJava]
 import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.IllegalAccessException;
+import java.lang.NoSuchMethodException;
+
 class ReflectiveCalculator {
 
   /**
@@ -104,21 +107,21 @@ The \ttt{execute} method is generated all the time, but we only care about its c
 \setlength{\grammarparsep}{20pt plus 1pt minus 1pt} % increase separation between rules
 \setlength{\grammarindent}{12em} % increase separation between LHS/RHS 
 \begin{figure}[H]
-        \begin{grammar}
-            <expr> ::= <varDecl> 
-                    \alt <methodDecl> 
-                    \alt <classDecl>
+  \begin{grammar}
+      <expr> ::= <varDecl> 
+              \alt <methodDecl> 
+              \alt <classDecl>
 
-            <varDecl> ::= <type> ` ' <id> `;'
-                      \alt <type> `[]' ` ' <id> `;'
+      <varDecl> ::= <type> ` ' <id> `;'
+                \alt <type> `[]' ` ' <id> `;'
 
-            <methodDecl> ::= <type> ` ' <id> `(' <params> `)' `{' <body> `}'
+      <methodDecl> ::= <type> ` ' <id> `(' <params> `)' `{' <body> `}'
 
-            <classDecl> ::= `class ' <id> `{' <body> `}'
-                        \alt `class ' <id> ` extends ' <id> `{' <body> `}'
+      <classDecl> ::= `class ' <id> `{' <body> `}'
+                  \alt `class ' <id> ` extends ' <id> `{' <body> `}'
 
-        \end{grammar}
-    \caption{ Extended BNF Grammar for Declarations }
+  \end{grammar}
+  \caption{ Extended BNF Grammar for Declarations }
 \end{figure}
 
 Let's assume that the \ttt{type} rule is any arbitrary sequence of characters representing a type in Java (e.g., \ttt{void}, \ttt{int}, \ttt{Dog}), as is an identifier. Under these assumptions, it is simple to parse a string to determine if it's a declaration. We will further assume that the user is acting in good faith and typing only valid Java code that compiles under said assumptions; responses to inputs such as \ttt{intttt x = 5;} will not be considered in this example.\footnote{We make prolific use of regular expressions in this next section. You are free to gloss over these details or use raw string parsing with substring and equals, but regex makes the parsing process significantly faster.}

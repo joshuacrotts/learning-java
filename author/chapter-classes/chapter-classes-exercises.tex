@@ -6,20 +6,31 @@
 
 \myexercise{1}{chapter-classes}{Design the \ttt{Person} class, which stores a \ttt{String} representing the person's first name, a \ttt{String} representing the person's last name, and an \ttt{int} representing the person's age in years. Its constructor should receive these three values and store them in the instance variables. Be sure to write instance accessor and mutator methods for modifying all three fields. That is, you should write \ttt{getFirstName()}, \ttt{setFirstName(String s)}, and so forth, to access and modify the fields directly.}
 
-\myexercise{1}{chapter-classes}{Design the \ttt{Employee} class, which stores the employee's first and last names as strings, their birthyear as an integer, their yearly salary as a double (we will assume that all employees are paid some value greater than zero), and their employee ID as a string. To make things interesting, assume that an employee's ID is not alterable and must be set in the constructor. The employee ID is constructed using the first five characters of their last name, the first letter of their first name, and the last two digits of their birthyear. For instance, if the employee's name is \ttt{Joshua Crotts} and their birthyear is \ttt{1999}, their employee ID is \ttt{CrottJ99}. Its constructor should receive the name, birthyear, and salary as parameters, but build the employee ID from the name and birthyear. Be sure to design the relevant accessor and mutator methods.}
+\myexercise{1}{chapter-classes}{Design the \ttt{Employee} class, which stores the employee's first and last names as strings, their birthyear as an integer, their yearly salary as a double (we will assume that all employees are paid some value greater than zero), and their employee ID as a string.}
+    
+To make things interesting, assume that an employee's ID is not alterable and must be set in the constructor. The employee ID is constructed using the first five characters of their last name, the first letter of their first name, and the last two digits of their birthyear. For instance, if the employee's name is \ttt{Joshua Crotts} and their birthyear is \ttt{1999}, their employee ID is \ttt{CrottJ99}. Its constructor should receive the name, birthyear, and salary as parameters, but build the employee ID from the name and birthyear.
+
+The instance variables, accessors, and mutators (where applicable) should be named as follows:
+\begin{itemize}
+    \item \ttt{id}, \ttt{getID}.
+    \item \ttt{firstName}, \ttt{getFirstName}.
+    \item \ttt{lastName}, \ttt{getLastName}.
+    \item \ttt{birthYear}, \ttt{getBirthYear}.
+    \item \ttt{salary}, \ttt{getSalary}, \ttt{setSalary}
+\end{itemize}
 
 \myexercise{1}{chapter-classes}{As part of the \ttt{Employee} class, design the \ttt{void bonus()} method, which updates the salary of an employee. Calling \ttt{bonus} on an employee increases their salary by ten percent.}
 
-\myexercise{2}{chapter-classes}{As part of the \ttt{Employee} class, override the \ttt{equals} and \ttt{toString} methods from the \ttt{Object} class to compare two employees by their employee ID and to print the employee's name, birthyear, salary, and employee ID respectively separated by commas.}
+\myexercise{2}{chapter-classes}{As part of the \ttt{Employee} class, override the \ttt{equals} and \ttt{toString} methods from the \ttt{Object} class to compare two employees by their employee ID and to print the employee's name, birthyear, salary, and employee ID respectively separated by commas and a space. Do not add a comma and space after the last field.}
 
 \myexercise{2}{chapter-classes}{In this exercise you will design a class for storing employees. This relies on completing the \ttt{Employee} class exercise.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{Job} class, which stores a list of employees \ttt{ArrayList<Employee>} as an instance variable. Its constructor should receive no arguments.
+    \item Design the \ttt{Job} class, which stores a list of employees \ttt{List<Employee>} as an instance variable. Whether you choose to instantiate it as an \ttt{ArrayList} or a \ttt{LinkedList} is up to you and makes little difference for this particular question. Its constructor should receive no arguments. The instance variable, along with its accessor and mutator, should be named \ttt{employees}, \ttt{getEmployees}, and \ttt{setEmployees} respectively.
     \item Design the \ttt{void addEmployee(Employee e)} method, which adds an employee to the \ttt{Job}.
     \item Design the \ttt{void removeEmployee(Employee e)} method, which removes an employee from the \ttt{Job}.
     \item Design the \ttt{Optional<Double> computeAverageSalary()} method, which returns the average salary of all employees in the \ttt{Job}. If there are no employees, return an empty \ttt{Optional}.
     \item Design the \ttt{Optional<Employee> highestPaid()} method, which returns the employee whose salary is the highest of all employees in the \ttt{Job}. If there are no employees, return an empty \ttt{Optional}.
-    \item Override the \ttt{toString} method to print out the list of employees in the \ttt{Job}. You can use the default \ttt{toString} implementation of the \ttt{ArrayList} class.
+    \item Override the \ttt{toString} method to print out the list of employees in the \ttt{Job}. To make this easy, you can simply invoke the \ttt{toString} method from the \ttt{List} implementation.
 \end{enumerate}
 
 \myexercise{2}{chapter-classes}{In this exercise you will design a \emph{linear congruential generator}: a pseudorandom number generation algorithm. In particular, the C programming language standard library defines two functions: \ttt{rand} and \ttt{srand}. The latter sets the \emph{seed} for the generator, and \ttt{rand} returns a random integer between $[0, 2^{15})$. The formula for this generator is a recurrence relation:}
@@ -38,24 +49,24 @@
 \myexercise{3}{chapter-classes}{This question has six parts.}
 
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers $m$ and $n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers. Copy the integers from the passed array into an instance variable array.
+    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers~$m$~and~$n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers. Copy the integers from the passed array into an instance variable array.
     \item Design the \ttt{void set(int i, int j, int val)} method, which sets the value at row $i$ and column $j$ to \ttt{val}.
     \item Design the \ttt{void add(Matrix m)} method, which adds the values of the passed matrix to the current matrix. If the dimensions of the passed matrix do not match the dimensions of the current matrix, do nothing.
-    \item Design the \ttt{void multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply $m$ with this matrix, do nothing.
+    \item Design the \ttt{void multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply~$m$ with this matrix, do nothing.
     \item Design the \ttt{void transpose()} method, which transposes the matrix. That is, the rows become the columns and the columns become the rows. You may need to alter the dimensions of the matrix.
-    \item Design the \ttt{void rotate()} method, rotates the matrix $90$ degrees clockwise. To rotate a matrix, compute the transposition and then reverse the rows. You may need to alter the dimensions of the matrix.
+    \item Design the \ttt{void rotate()} method, rotates the matrix~$90$ degrees clockwise. To rotate a matrix, compute the transposition and then reverse the rows. You may need to alter the dimensions of the matrix.
     \item Override the \ttt{String toString()} method to print out the matrix in a boxed format.
 \end{enumerate}
 
 \myexercise{2}{chapter-classes}{This exercise has five parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{GameObject} class, which stores a \ttt{Pair<Double, Double>} denoting its center $(x, y)$ position and a \ttt{Pair<Double, Double>} denoting its width and height respectively. Its constructor should receive four \ttt{double} values representing $x$, $y$, $\emph{width}$, and $\emph{height}$. Be sure to write instance accessor and mutator methods for modifying both fields. That is, you should write \ttt{double getLocationX()}, \ttt{void setLocationX(double d)}, and so forth, to access and modify the \ttt{Pair} values directly. 
+    \item Design the \ttt{GameObject} class, which stores a \ttt{Pair<Double, Double>} denoting its center~$(x, y)$ position and a \ttt{Pair<Double, Double>} denoting its width and height respectively. Its constructor should receive four \ttt{double} values representing~$x$,~$y$, $\emph{width}$, and $\emph{height}$. Be sure to write instance accessor and mutator methods for modifying both fields. That is, you should write \ttt{double getLocationX()}, \ttt{void setLocationX(double d)}, and so forth, to access and modify the \ttt{Pair} values directly. 
 
     \item Design the \ttt{boolean collidesWith(GameObject obj)} method that returns if \ttt{this} \ttt{GameObject} collides with the parameter \ttt{obj}. You should design this solution as if the game objects are shaped like rectangles (which they are!).
 
     \item Design the \ttt{double distance(GameObject obj)} method that returns the Euclidean distance from the center of \ttt{this} \ttt{GameObject} to the center of the parameter \ttt{obj}. 
 
-    \item Design the \ttt{double move(double dx, double dy)} method that moves the object about the Cartesian (two-dimensional) plane. The distance should be a delta represented as two \ttt{double} numbers \ttt{dx} and \ttt{dy} that directly manipulate the object position. For instance, if \ttt{dx} is $3.0$ and \ttt{dy} is $-2.0$ and the object is currently at $<2.0, -9.0>$, invoking \ttt{move(3.0, -2.0)} updates the object to be at $<5.0, -11.0>$.
+    \item Design the \ttt{double move(double dx, double dy)} method that moves the object about the Cartesian (two-dimensional) plane. The distance should be a delta represented as two \ttt{double} numbers \ttt{dx} and \ttt{dy} that directly manipulate the object position. For instance, if \ttt{dx} is~$3.0$ and \ttt{dy} is~$-2.0$ and the object is currently at \ttt{<2.0, -9.0>}, invoking \ttt{move(3.0, -2.0)} updates the object to be at \ttt{<5.0, -11.0>}.
 
     \item Override the \ttt{String toString()} method to call the \ttt{toString} methods of the two instance variables, conjoined by a semicolon.
 \end{enumerate}
@@ -127,7 +138,7 @@ A \emph{persistent data structure}\index{persistent data structure} is one that 
     \item Design the \ttt{PQueue<T> enqueue(T t)} method that enqueues a value onto the end of a new queue containing all the old elements, in addition to the new value.
     \item Design the \ttt{PQueue<T> dequeue()} method that removes the first element of the queue, returning a new queue without this first value.
     \item Design the \ttt{T peek()} method that returns the first element of the queue.
-    \item Design the \ttt{PQueue<T> of(T... vals)} method that creates a queue with the values passed as \ttt{vals}. Note that this must be a variadic method. Do not create a series of \ttt{PQueue} objects by enqueueing each element into a distinct queue; this is incredibly inefficient. Instead, allocate each \ttt{Node} one-by-one, thereby never calling \ttt{enqueue}.
+    \item Design the \ttt{static <T> PQueue<T> of(T... vals)} method that creates a queue with the values passed as \ttt{vals}. Note that this must be a variadic method. Do not create a series of \ttt{PQueue} objects by enqueueing each element into a distinct queue; this is incredibly inefficient. Instead, allocate each \ttt{Node} one-by-one, thereby never calling \ttt{enqueue}.
     \item Design the \ttt{int size()} method that returns the number of elements in the queue. You should not traverse the queue to compute this value. 
 \end{enumerate}
 

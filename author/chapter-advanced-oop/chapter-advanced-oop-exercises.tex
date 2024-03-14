@@ -206,16 +206,14 @@ class PrimNode extends AstNode {
   \item First, design the \ttt{ProgramNode} class, which allows the user to define a program as a sequence of statements rather than a single expression.
   \item Design the \ttt{DefNode} class, which allows the user to create a global definition. Because we're now working with definitions that do not extend the environment, we should use the set method in environment. When creating a global definition via \ttt{DefNode}, we're expressing the idea that, from that point forward, the (root) environment should contain a binding from the identifier to whatever value it binds.
   \item Design the \ttt{FuncNode} node. We will consider a function definition as an abstract tree node that begins with \ttt{FuncNode}. This node has two parameters to its constructor: a list of parameter (string) identifiers, and a single abstract syntax tree node representing the body of the function. We will only consider functions that return values; void functions do not exist in this language.
-
   \item Design the \ttt{ApplyNode} class, which applies a function to its arguments. You do not need to consider applications in which the first argument is a non-function. 
 
   Calling/Invoking a function is perhaps the hardest part of this exercise. Here's the idea, which is synonymous and shared with almost all programming languages: 
 
   \begin{enumerate}[label=(\roman*)] 
-  \item First, evaluate each argument of the function call. This will result in several l-values, which should be stored in a list. 
-  \item Convert these to their AST counterparts. 
+  \item First, evaluate each argument of the function call. This will result in several evaluated abstract syntax trees, which should be stored in a list. 
   \item We then want to create an environment in which the formal parameters are bound to their arguments. Overload the extend method in \ttt{Environment} to now receive a list of string identifiers and a list of (evaluated) AST arguments. Bind each formal to its corresponding AST, and return the extended environment. 
-  \item Evaluate the function identifier to get its function definition and convert it to an AST.
+  \item Evaluate the function identifier to get its function definition as an abstract syntax tree.
   \item Call \ttt{eval} on the function body and pass the new (extended) environment.
   \end{enumerate}
   This seems like a lot of work (because it is), but it means you can write really cool programs, including those that use recursion!

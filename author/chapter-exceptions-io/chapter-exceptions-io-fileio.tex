@@ -308,13 +308,14 @@ To test, we will create a file containing the following contents:
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+
 import java.util.List;
 
 class EmployeeScannerTester {
 
   @Test
   void testReadRecords() {
-    List<Employee> emps = EmployeeScanner.readRecords("employees.txt");
+    List<Employee> emps = readRecords("employees.txt");
     assertAll(
       () -> assertEquals(emps.get(0).toString(), 
                          "[123] Smith, John | 100000.00 | FT?=false"),

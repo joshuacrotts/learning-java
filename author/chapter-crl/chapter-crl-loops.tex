@@ -84,7 +84,7 @@ static int fact(int n) {
 Excellent, we now have an iterative version of the factorial method! Let us compare these two side-by-side, color-coding their similarities. Base cases are \textcolor{red}{red}, accumulated variables/steps are \textcolor{darkyellow}{yellow}, and return values are \textcolor{darkgreen}{green}. 
 
 \begin{clrr}[]{Tail Recursive versus Iterative Factorial}
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int fact(int n, int acc) {
   if (*;\textcolor{red}{(n == 0)};*) {
     return (*;\textcolor{darkgreen}{acc};*);
@@ -97,7 +97,7 @@ static int fact(int n, int acc) {
 (*;\phantom{};*)
 \end{lstlisting}
 \tcblower
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int fact(int n) {
   // acc stores the current factorial
   // value as n goes to zero.
@@ -114,7 +114,7 @@ static int fact(int n) {
 \subsubsection*{A Fine-Grained Approach}
 What we just saw was a fast-paced, high-level overview of the conversion process from tail recursive methods into methods that use while loops. Let’s take a step back and slow our approach to better understand each piece. We first want to describe a general outline of the steps to success in this translation pipeline. 
 
-Of course, the goal, in due time, is to work our way from $TR$ to $I$, but there are a few highly important intermediary components to this process. Note that the lines from $P$ to $R$, and $R$ to $TR$ are not as important for this section of the transformation.
+Of course, the goal, in due time, is to work our way from \emph{$TR$} to $I$, but there are a few highly important intermediary components to this process. Note that the lines from $P$ to $R$, and $R$ to $TR$ are not as important for this section of the transformation.
 
 \begin{figure}[h!]
 \centering
@@ -366,7 +366,6 @@ class SumPrimes {
 import static Assertions.assertAll;
 import static Assertions.assertTrue;
 import static Assertions.assertFalse;
-import static Prime.isPrime;
 
 class PrimeTester {
 
@@ -453,7 +452,6 @@ Running the code produces $24133$: the desired answer.
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static OddReciprocalSum.oddRecipSum;
 
 class OddReciprocalSumTester {
 
@@ -507,7 +505,6 @@ With a \ttt{for} loop, we provide three values: an \emph{initializer statement},
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static SumInterval.sum;
 
 class SumIntervalTester {
 
@@ -569,7 +566,6 @@ At each iteration, we square the current guess and determine if the absolute dif
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static NewtonApproximation.sqrtApprox;
 
 class NewtonApproximationTester {
 
@@ -601,7 +597,6 @@ class NewtonApproximation {
    * @param delta - approximation range.
    * @return approximation of sqrt of n.
    */
-
   static double sqrtApprox(double n, double delta) {
     double g = n;
     // As long as the guess is too far from the real value...
@@ -626,7 +621,6 @@ Writing tests for a Fibonacci algorithm is trivial to do and propagates through 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static Fibonacci.fib;
 
 class FibonacciTester {
 
@@ -688,8 +682,8 @@ Our tail recursive implementation has two base cases instead of one due to the t
 
 Finally we arrive at the iterative algorithm. To avoid any confusion in the conversion process, we will use our translation pipeline. Skipping a few steps up to $TR_\emph{C}$:
 
-\begin{clrr}[]{Initial Translation of Fibonacci $TR$ To $I$}
-\begin{lstlisting}[language=MyJava]
+\begin{clrr}[]{Initial Translation of Fibonacci \emph{$TR$} To $I$}
+\begin{lstlisting}[language=MyJavaNF]
 static int fibHelper(int n, 
                      int a, 
                      int b) {
@@ -698,16 +692,18 @@ static int fibHelper(int n,
   } else if ((*;\textcolor{red}{n == 1};*)) {
     return (*;\textcolor{darkgreen}{b};*);
   } else {
-    return fibHelper((*;\textcolor{darkyellow}{n - 1};*), (*;\textcolor{darkyellow}{b};*), (*;\textcolor{darkyellow}{a + b};*));
+    return fibHelper((*;\textcolor{darkyellow}{n - 1};*), 
+                     (*;\textcolor{darkyellow}{b};*), 
+                     (*;\textcolor{darkyellow}{a + b};*));
   }
 }
 \end{lstlisting}
 \tcblower
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int fib(int n) {
-  // Holds the "previous' previous".
+  // Holds the previous' prev.
   int a = 0;
-  // Holds the "previous".
+  // Holds the prev.
   int b = 1;
   while (???) {
     // TODO.
@@ -726,9 +722,9 @@ The last stage is simple; we return the result of the other base case, namely $b
 
 \begin{lstlisting}[language=MyJava]
 static int fib(int n) {
-  // Holds the "previous' previous".
+  // Holds the previous' prev.
   int a = 0;
-  // Holds the "previous".
+  // Holds the prev.
   int b = 1;
   // Initial base case.
   if (n == 0) {
@@ -852,7 +848,6 @@ class RandomNumbers {
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-import static FindReplace.replace;
 
 class FindReplaceTester {
 

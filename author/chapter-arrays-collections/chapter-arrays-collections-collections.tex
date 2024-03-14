@@ -48,8 +48,6 @@ We now want a method that will add a value to a given ``list'' in this fashion. 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertArrayEquals;
-import static DIntArray.makeList;
-import static DIntArray.add;
 
 class DIntArrayTester {
 
@@ -1274,7 +1272,6 @@ class StackPrinter {
 
 \myexample{The unintuitive nature of the enhanced \ttt{for} loop and certain iterators does not stop with stacks, unfortunately. Priority queues are also afflicted as a consequence of their implementation. Let's see what happens when we create a priority queue whose comparator prioritizes the string \ttt{"Joshua"} over all strings and makes the string \ttt{"Jack"} have the lowest priority. In other words, any occurrence of \ttt{"Joshua"} should come before all other strings in the priority queue, whereas any occurrence of \ttt{"Jack"} should come after all other strings in the priority queue. Any strings in between are ordered naturally, i.e., via lexicographical ordering.} 
 
-
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.PriorityQueue;
@@ -1305,7 +1302,7 @@ class PriorityQueuePrinting {
     // Prints a seemingly random order!
     for (String s : pq) { System.out.println(s); }
 
-    // Uses arrays to sort the elements according to the PQ's comparator.
+    // Uses Arrays to sort the elements according to the PQ's comparator.
     String[] elements = pq.toArray(new String[0]);
     Arrays.sort(elements, pq.comparator());
     System.out.println(Arrays.toString(elements));

@@ -32,14 +32,15 @@ We define two versions of \ttt{div}, where the first does not perform an explici
 \myexample{In the above example, we catch the \ttt{ArithmeticException} handled by Java. Though, suppose we have a situation in which \emph{we} want to throw the exception. Because the problem arises from a bad parameter, it would be wise to throw an \ttt{IllegalArgumentException}, which designates exactly what its name suggests. We manually check to see if the divisor, namely $c$, is zero and, if so, we throw a new \ttt{IllegalArgumentException}. Because \ttt{IllegalArgumentException} is an unchecked exception, the caller needs not to handle nor necessarily know that it may invoke the exception. Should we want to signal that as a hint, in the method signature we can specify that the method potentially throws an \ttt{IllegalArgumentException}. As the callee that defines the location of an exception invocation, we \emph{only} throw the exception; it is not our responsibility to control the outcome. We can test a new version of \ttt{div} by testing whether or not it throws an exception through the \ttt{assertThrows} and \ttt{assertDoesNotThrow} assertion methods. The thing is, though, neither \ttt{assertThrows} nor \ttt{assertDoesNotThrow} are not as simple as they appear on the surface; we need to specify \emph{which} exception the code might throw as a reference to the class definition.\footnote{To reference a class definition as an object, we access \ttt{.class} on the class as if it were a static method.} Additionally, it must be passed as something that is executable. Fortunately, we have worked with executable constructs before: lambda/anonymous functions! Simply wrap the code that might raise an exception inside a lambda, and it works as expected.}
 
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
-import static Assertions.assertEquals;
-import static IllegalArgumentExceptionExample.div;
+import static Assertions.assertDoesNotThrow;
+import static Assertions.assertThrows;
+
+import java.lang.IllegalArgumentException;
 
 class IllegalArgumentExceptionExampleTester {
   
   @Test
-  void testIaeException() {
+  void testIllegalArgumentException() {
     assertAll(
       () -> assertThrows(IllegalArgumentException.class, () -> div(5, 3, 0)),
       () -> assertDoesNotThrow(div(5, 3, 1)));
@@ -48,6 +49,8 @@ class IllegalArgumentExceptionExampleTester {
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
+import java.lang.IllegalArgumentException;
+
 class IllegalArgumentExceptionExample {
   
   void div(int a, int b, int c) throws IllegalArgumentException {
@@ -60,6 +63,8 @@ class IllegalArgumentExceptionExample {
 What if we wanted to call \ttt{div} from a separate method and process the exception ourselves? Indeed, this is doable. Should we wish to retrieve the exception message (i.e., the message passed to the exception constructor), we can via the \ttt{.getMessage} method, which is helpful for producing custom error messages/responses, or redirecting the message to a different destination.
 
 \begin{lstlisting}[language=MyJava]
+import java.lang.IllegalArgumentException;
+
 class IllegalArgumentExceptionExample {
   
   void div(int a, int b, int c) throws IllegalArgumentException {
@@ -81,7 +86,10 @@ class IllegalArgumentExceptionExample {
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
-import static Assertions.assertEquals;
+import static Assertions.assertDoesNotThrow;
+import static Assertions.assertThrows;
+
+import java.lang.StringIndexOutOfBoundsException;
 
 class IndexOutOfBoundsExceptionExampleTester {
 
