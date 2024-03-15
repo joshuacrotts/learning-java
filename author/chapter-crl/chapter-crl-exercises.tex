@@ -214,6 +214,8 @@ Your method should return the total cost of the item after applying the discount
     \item The total bonus amount is reduced by a flat tax rate of $25\%$.
 \end{itemize}
 
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{String createPalindrome(String s, boolean mirror)} method that receives a string $s$ and a boolean. If the boolean is true, then return a string $ss'$, where $s'$ is the mirror of $s$. If the boolean is false, then return a string $st$, where $t$ contains all but the last character of $s$, and is reversed. You cannot use any helper classes, e.g., \ttt{StringBuilder}/\ttt{StringBuffer} to solve this problem.}
+
 \myexercise{1}{chapter-crl}{Design the recursive \ttt{int countStr(String s)} that counts the number of times the substring \ttt{"str"} appears in a given string $s$.}
 
 \myexercise{1}{chapter-crl}{Rewrite the \ttt{countStr} method to use tail recursion. Name this new version of the method \ttt{countStrTR}. Hint: you will need to design a \ttt{private static} helper method. The \ttt{countStrTR} method should only have one parameter.}
@@ -490,6 +492,21 @@ multTable(2, 6) => "1*1=1,1*2=2,1*3=3,1*4=4,1*5=5,
                     1*6=6,2*1=2,2*2=4,2*3=6,2*4=8,
                     2*5=10,2*6=12"
 \end{verbnobox}
+
+\myexercise{3}{chapter-crl}{This exercise has two parts.}
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{int nCk(int n, int k)} method that returns the number of ways that one can choose $k$ elements from a set of $n$ values without care for the order. The formula, also called the binomial coefficient (represented as $\binom{n}{k}$), is listed below.
+    
+\[
+    \binom{n}{k} = \dfrac{n!}{k!(n - k)!}
+\]
+
+    \item Use the \ttt{nCk} method that you designed to design another method: \ttt{String binomial(int x, int y, int n)}, which returns a string representation of the expansion of powers of a binomial, namely $(x + y)^n$. The formula is as follows, where $\binom{n}{k}$ stands in place for \ttt{nCk}:
+
+    \[
+    (x + y)^n = \binom{n}{0}x^ny^0 + \binom{n}{1}x^{n-1}y^1 + \cdots + \binom{n}{n-1}x^1y^{n-1} + \binom{n}{n}x^0y^n
+    \]
+\end{enumerate}
 
 \myexercise{3}{chapter-crl}{The \emph{definite integral} of a function $f$, defined as $\int_{a}^{b} f(x)\;\text{d}x$, produces the area under the curve of $f$ on the interval $[a, b]$. The thing is, though, integrals are defined in terms of \emph{Riemann summations}, which provide estimations on the area under a curve.} Riemann sums approximate the area by creating rectangles of a fixed width $\Delta$, as shown in ~\ref{fig:riemannf} for an arbitrary function $f$. Left-Riemann, right-Riemann, and midpoint-Riemann approximations define the focal point, i.e., the height, of the rectangle. Notice that, in Figure ~\ref{fig:riemannf}, we use a midpoint-Riemann sum with $\Delta = 0.2$, in which the collective sum of all the rectangle areas is the Riemann approximation. Your job is to use this idea to approximate the area of a circle.
 

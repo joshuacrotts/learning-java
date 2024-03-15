@@ -66,7 +66,7 @@ class FunctionalInsertionSort<V extends Comparable<V>>
                               implements IInsertionSort<V> {
   
   @Override
-  AbstractList<V> insertionSort(AbstractList<V> ls) {
+  public AbstractList<V> insertionSort(AbstractList<V> ls) {
     if (ls.isEmpty()) { return new ArrayList<>(); }
     else { 
       return insert(ls.get(0), 
@@ -110,7 +110,7 @@ import java.util.Collections;
 class InPlaceInsertionSort<V extends Comparable<V>> implements IInsertionSort<V> {
 
   @Override
-  AbstractList<V> insertionSort(AbstractList<V> ls) {
+  public AbstractList<V> insertionSort(AbstractList<V> ls) {
     for (int i = 1; i < ls.size(); i++) {
       V curr = ls.get(i);
       int j = i - 1;
@@ -230,7 +230,7 @@ class FunctionalSelectionSort<V extends Comparable<V>>
                               implements ISelectionSort<V> {
 
   @Override
-  AbstractList<V> selectionSort(AbstractList<V> ls) {
+  public AbstractList<V> selectionSort(AbstractList<V> ls) {
     if (ls.isEmpty() || ls.size() == 1) { return ls; }
     else {
       // Remember that min returns an Optional, but we know it is non-empty.
@@ -263,7 +263,7 @@ import java.util.*;
 class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V> {
   
   @Override
-  AbstractList<V> selectionSort(AbstractList<V> ls) {
+  public AbstractList<V> selectionSort(AbstractList<V> ls) {
     for (int i = 0; i < ls.size(); i++) {
       V min = ls.get(i);
       int minIdx = 0;
@@ -405,7 +405,7 @@ import java.util.ArrayList;
 class FunctionalBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
 
   @Override
-  AbstractList<V> bubbleSort(AbstractList<V> ls) {
+  public AbstractList<V> bubbleSort(AbstractList<V> ls) {
     if (ls.size() <= 1) { 
       return ls; 
     } else {
@@ -453,7 +453,7 @@ import java.util.Collections;
 class InPlaceBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
 
   @Override
-  AbstractList<V> bubbleSort(AbstractList<V> ls) {
+  public AbstractList<V> bubbleSort(AbstractList<V> ls) {
     for (int i = 0; i < ls.size(); i++) {
       for (int j = 0; j < ls.size() - i - 1; j++) {
         if (ls.get(j).compareTo(ls.get(j + 1)) > 0) {
@@ -572,7 +572,7 @@ import java.util.ArrayList;
 class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   
   @Override
-  AbstractList<V> mergeSort(AbstractList<V> ls) {
+  public AbstractList<V> mergeSort(AbstractList<V> ls) {
     return this.msHelper(ls);
   }
   
@@ -636,7 +636,7 @@ import java.util.ArrayList;
 class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
 
   @Override
-  AbstractList<V> mergeSort(AbstractList<V> ls) {
+  public AbstractList<V> mergeSort(AbstractList<V> ls) {
     this.msHelper(ls, 0, ls.size() - 1);
     return ls;
   }
@@ -745,7 +745,7 @@ import java.util.stream.Collectors;
 class FunctionalQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 
   @Override
-  AbstractList<V> quicksort(AbstractList<V> ls) {
+  public AbstractList<V> quicksort(AbstractList<V> ls) {
     if (ls.isEmpty()) { return ls; }
     else {
       // Choose a random pivot.
@@ -789,7 +789,7 @@ import java.util.*;
 class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 
   @Override
-  AbstractList<V> quicksort(AbstractList<V> ls) {
+  public AbstractList<V> quicksort(AbstractList<V> ls) {
     this.quicksortHelper(ls, 0, ls.size() - 1);
     return ls;
   }

@@ -89,7 +89,7 @@ class RaceConditionExample {
   private static class Incrementer implements Runnable {
 
     @Override
-    void run() {
+    public void run() {
       for (int i = 0; i < 1_000_000; i++) { counter += 1; }
     }
   }
@@ -154,7 +154,7 @@ class TransactionThread implements Runnable {
   }
 
   @Override
-  void run() {
+  public void run() {
     for (int i = 0; i < 1000; i++) {
       this.acc.deposit(500);
       this.acc.withdraw(500);
@@ -282,7 +282,7 @@ class TransferThread implements Runnable {
   }
 
   @Override
-  void run() {
+  public void run() {
     for (int i = 0; i < 1000; i++) { 
       this.B1.transfer(this.B2, 500); 
     }
@@ -515,7 +515,7 @@ class Consumer<T> implements Runnable {
   Consumer(Vector<T> ls) { this.LIST = ls; }
 
   @Override
-  void run() {
+  public void run() {
     while (true) {
       while (this.LIST.isEmpty()) { /* Do nothing. */ }
       T e = this.LIST.remove(0);
@@ -552,7 +552,7 @@ class Producer implements Runnable {
   }
 
   @Override
-  void run() {
+  public void run() {
     while (true) {
       this.LOCK.lock();
       int n = this.RAND.nextInt(100);
@@ -728,7 +728,7 @@ class Server {
     }
 
     @Override
-    void run() {
+    public void run() {
       while (this.SERVER.running) {
         try {
           Task task = this.SERVER.TASKS.take();
@@ -822,7 +822,7 @@ class Client implements Runnable {
   }
 
   @Override
-  void run() {
+  public void run() {
     try {
       String line;
       while (this.connected && (line = this.IN.readLine()) != null) { 
@@ -898,7 +898,7 @@ class BroadcastTask extends SenderTask {
 }
 \end{lstlisting}
 
-We now must write the \ttt{Client} \ttt{send} method, which receives a \ttt{Task} from the server and interprets it accordingly. The only task that our server can send is \ttt{BROADCAST}, so we simply need to check whether the client is logged in and, if so, print the message to their output stream. At the same time, we can also take care of privatized parsing command methods. Only one of these three should return a non-\ttt{null} object. It is also a design decision to make \ttt{handleQuitCmd} and \ttt{handleLoginCmd} return \ttt{null} because they do not need to be broadcast to other users. We do so to ensure consistency among the methods.
+We now must write the \ttt{Client}'s \ttt{send} method, which receives a \ttt{Task} from the server and interprets it accordingly. The only task that our server can send is \ttt{BROADCAST}, so we simply need to check whether the client is logged in and, if so, print the message to their output stream. At the same time, we can also take care of privatized parsing command methods. Only one of these three should return a non-\ttt{null} object. It is also a design decision to make \ttt{handleQuitCmd} and \ttt{handleLoginCmd} return \ttt{null} because they do not need to be broadcast to other users. We do so to ensure consistency among the methods.
 
 \begin{lstlisting}[language=MyJava]
 class Client {

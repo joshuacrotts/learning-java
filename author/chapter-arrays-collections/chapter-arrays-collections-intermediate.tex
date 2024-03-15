@@ -140,7 +140,7 @@ Maintaining the balance factor of a tree is a non-trivial task, though, and the 
 In fact, these operations are, in their worst case, the same as a linked list, because the shape of a \emph{totally unbalanced} binary search tree resembles a list. 
 By ``totally unbalanced,'' we mean that all elements are to the left or right of the root, a property that applies recursively to its children.
 
-\myexample{Let's write the \ttt{findMax} method that finds the largest element of a binary search tree. All this involves is following the right-most child until we reach a dead-end. Because all elements to the right of another are larger than the node, this task is trivial.}
+\myexample{Let's design the \ttt{findMax} method that finds the largest element of a binary search tree. All this involves is following the right-most child until we reach a dead-end. Because all elements to the right of another are larger than the node, this task is trivial.}
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;

@@ -32,7 +32,7 @@ class FactorialLazyList implements ILazyList<Integer> {
   }
 
   @Override
-  int next() {
+  public int next() {
     this.fact *= this.n;
     this.n++;
     return this.fact;

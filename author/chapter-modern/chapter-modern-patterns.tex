@@ -39,7 +39,7 @@ class MoveCommand implements Command {
   MoveCommand(Player p) { this.player = p; }
 
   @Override
-  void execute() { this.player.setX(this.player.getX() + 1); }
+  public void execute() { this.player.setX(this.player.getX() + 1); }
 }
 \end{lstlisting}
 
@@ -51,7 +51,7 @@ class JumpCommand implements Command {
   JumpCommand(Player p) { this.player = p; }
 
   @Override
-  void execute() { this.player.setY(this.player.getY() + 1); }
+  public void execute() { this.player.setY(this.player.getY() + 1); }
 }
 \end{lstlisting}
 
@@ -479,12 +479,12 @@ import java.lang.StringBuilder;
 class ExpressionPrinterVisitor implements ExpressionVisitor {
 
   @Override
-  String visit(NumNode node) {
+  public String visit(NumNode node) {
     return String.valueOf(node.getValue());
   }
   
   @Override
-  String visit(PrimNode node) {
+  public String visit(PrimNode node) {
     StringBuilder sb = new StringBuilder();
     sb.append("(");
     sb.append(node.getOperator() + " ");
@@ -496,12 +496,12 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
   }
   
   @Override
-  String visit(VarNode node) {
+  public String visit(VarNode node) {
     return node.getValue();
   }
   
   @Override
-  String visit(LetNode node) {
+  public String visit(LetNode node) {
     StringBuilder sb = new StringBuilder();
     sb.append("(let ([" + node.getVar() + " ");
     sb.append(node.value.visit(this));
@@ -512,7 +512,7 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
   }
   
   @Override
-  String visit(IfNode node) {
+  public String visit(IfNode node) {
     StringBuilder sb = new StringBuilder();
     sb.append("(if ");
     sb.append(node.condition.visit(this));
@@ -550,7 +550,7 @@ The subtypes of \ttt{IGroceryItem}, as we stated, are \ttt{Fruit}, \ttt{Milk}, a
 record Fruit(String name, int oz) implements IGroceryItem {
 
   @Override
-  <R> R visit(IGroceryItemVisitor<R> visitor) { 
+  public <R> R visit(IGroceryItemVisitor<R> visitor) { 
     return visitor.visit(this); 
   }
 }
@@ -560,7 +560,7 @@ record Fruit(String name, int oz) implements IGroceryItem {
 record Milk(boolean skim, int fluidOz) implements IGroceryItem {
   
   @Override
-  <R> R visit(IGroceryItemVisitor<R> visitor) {
+  public <R> R visit(IGroceryItemVisitor<R> visitor) {
     return visitor.visit(this); 
   }
 }
@@ -570,7 +570,7 @@ record Milk(boolean skim, int fluidOz) implements IGroceryItem {
 record Cereal(String mascot, int oz) implements IGroceryItem {
     
   @Override
-  <R> R visit(IGroceryItemVisitor<R> visitor) {
+  public <R> R visit(IGroceryItemVisitor<R> visitor) {
     return visitor.visit(this); 
   }
 }
@@ -592,8 +592,7 @@ class GroceryListTotalVisitorTester {
       new Fruit("apple", 4),
       new Fruit("banana", 2),
       new Milk(true, 128),
-      new Cereal("Tony the Tiger", 16)
-    );
+      new Cereal("Tony the Tiger", 16));
 
     assertAll(
       () -> assertEquals(0, 
@@ -618,18 +617,18 @@ class GroceryItemPriceVisitor implements IGroceryItemVisitor<Double> {
   private static final double CEREAL_PRICE_PER_OZ = 0.1;
 
   @Override
-  Double visit(Fruit f) {
+  public Double visit(Fruit f) {
     return f.oz() * FRUIT_PRICE_PER_OZ;
   }
 
   @Override
-  Double visit(Milk m) {
+  public Double visit(Milk m) {
     double gallonsPrice = m.fluidOz() / 128.0 * MILK_PRICE_PER_GALLON;
     return m.skim() ? gallonsPrice + 0.5 : gallonsPrice;
   }
 
   @Override
-  Double visit(Cereal c) {
+  public Double visit(Cereal c) {
     return c.oz() * CEREAL_PRICE_PER_OZ;
   }
 }

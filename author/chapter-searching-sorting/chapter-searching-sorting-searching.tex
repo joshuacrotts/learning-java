@@ -92,7 +92,7 @@ class StandardRecursiveLinearSearch<V extends Comparable<V>>
                                     implements ILinearSearch<V> {
   
   @Override
-  int linearSearch(AbstractList<V> ls, V v) {
+  public int linearSearch(AbstractList<V> ls, V v) {
     if (ls.isEmpty()) { throw new NoSuchElementException(); }
     else if (ls.get(0).equals(v)) { return 0; }
     else { 
@@ -115,7 +115,7 @@ import java.util.AbstractList;
 class TailRecursiveLinearSearch<V extends Comparable<V>> 
                                 implements ILinearSearch<V> {
   @Override
-  int linearSearch(AbstractList<V> ls, V v) {
+  public int linearSearch(AbstractList<V> ls, V v) {
     return this.linearSearchHelper(ls, v, 0);
   }
 
@@ -138,7 +138,7 @@ import java.util.AbstractList;
 class LoopLinearSearch<V extends Comparable<V>> implements ILinearSearch<V> {
 
   @Override
-  int linearSearch(AbstractList<V> ls, V v) {
+  public int linearSearch(AbstractList<V> ls, V v) {
     int idx = 0;
     for (int i = 0; i < ls.size(); i++) {
       if (ls.get(i).equals(v)) { return i; }
@@ -221,7 +221,7 @@ class TailRecursiveBinarySearch<V extends Comparable<V>>
                                 implements IBinarySearch<V> {
 
   @Override
-  int binarySearch(AbstractList<V> ls, V v) {
+  public int binarySearch(AbstractList<V> ls, V v) {
     return binarySearchTRHelper(ls, v, 0, ls.size() - 1);
   }
 
@@ -250,7 +250,7 @@ import java.util.AbstractList;
 class LoopBinarySearch<V extends Comparable<V>> implements IBinarySearch<V> {
   
   @Override
-  int binarySearch(AbstractList<V> ls, V v) {
+  public int binarySearch(AbstractList<V> ls, V v) {
     int low = 0;
     int high = ls.size() - 1;
     while (low <= high) {
@@ -317,7 +317,7 @@ import java.util.Comparator;
 class TailRecursiveBinarySearch implements IBinarySearch {
   
   @Override
-  <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, V v) {
+  public <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, V v) {
     return binarySearchTRHelper(ls, v, 0, ls.size() - 1,
                                 (o1, o2) -> o1.compareTo(o2));
   }

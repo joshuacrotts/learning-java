@@ -61,13 +61,13 @@ class Pentagon implements IShape {
   Pentagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
 
   @Override
-  double area() {
+  public double area() {
     return 0.25 * Math.sqrt(5 * (5 + 2 * Math.sqrt(5))) 
                 * Math.pow(this.SIDE_LENGTH, 2);
   }
 
   @Override
-  double perimeter() {
+  public double perimeter() {
     return 5 * this.SIDE_LENGTH;
   }
 }
@@ -81,12 +81,12 @@ class Octagon implements IShape {
   Octagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
 
   @Override
-  double area() {
+  public double area() {
     return 2 * (1 + Math.sqrt(2)) * Math.pow(this.SIDE_LENGTH, 2);
   }
 
   @Override
-  double perimeter() {
+  public double perimeter() {
     return 8 * this.SIDE_LENGTH;
   }
 }
@@ -112,7 +112,7 @@ class Diamond implements ISuit {
   Diamond() {}
 
   @Override
-  String stringify() { return "(*;$\diamondsuit$;*)"; }
+  public String stringify() { return "(*;$\diamondsuit$;*)"; }
 }
 \end{lstlisting}
 
@@ -122,7 +122,7 @@ class Heart implements ISuit {
   Heart() {}
 
   @Override
-  String stringify() { return "(*;$\heartsuit$;*)"; }
+  public String stringify() { return "(*;$\heartsuit$;*)"; }
 }
 \end{lstlisting}
 
@@ -216,7 +216,7 @@ class IAnimalTester {
 class Cat implements IAnimal {
 
   @Override
-  String speak() { 
+  public String speak() { 
     return "Meow!"; 
   }
 }
@@ -226,7 +226,7 @@ class Cat implements IAnimal {
 class Dog implements IAnimal {
 
   @Override
-  String speak() { 
+  public String speak() { 
     return "Woof!"; 
   }
 }
@@ -288,15 +288,15 @@ class IntegerBox implements IBox<Integer> {
   }
   
   @Override
-  static IBox<Integer> box(Integer value) { 
+  public static IBox<Integer> box(Integer value) { 
     return new IntegerBox(value); 
   }
   
   @Override
-  Integer get() { return this.value; }
+  public Integer get() { return this.value; }
   
   @Override
-  void set(Integer value) { this.value = value; }
+  public void set(Integer value) { this.value = value; }
 }
 \end{lstlisting}
 
@@ -344,7 +344,7 @@ class AddOne implements Function<Integer, Integer> {
   private AddOne() {}
 
   @Override
-  static Integer apply(Integer i) { return i + 1; }
+  public static Integer apply(Integer i) { return i + 1; }
 }
 \end{lstlisting}
 
@@ -449,7 +449,8 @@ class Lit implements IExpr {
 
   Lit(int n) { this.N = n; }
 
-  int value() { return this.N; }
+  @Override
+  public int value() { return this.N; }
 }
 \end{lstlisting}
 
@@ -484,7 +485,7 @@ class Add implements IExpr {
   }
 
   @Override
-  int value() { return this.LHS.value() + this.RHS.value(); }
+  public int value() { return this.LHS.value() + this.RHS.value(); }
 }
 \end{lstlisting}
 
@@ -541,7 +542,7 @@ class ConstantExpression implements Expression {
   }
 
   @Override
-  Expression derivative(String v) { 
+  public Expression derivative(String v) { 
     return new ConstantExpression(0); 
   }
 
@@ -582,7 +583,7 @@ class MonomialExpression implements Expression {
   }
 
   @Override
-  Expression derivative(String v) { 
+  public Expression derivative(String v) { 
     if (this.VAR.equals(v)) {
       if (this.EXPT == 1) {
         return new ConstantExpression(this.COEFFICIENT);
@@ -676,7 +677,7 @@ class AddExpression implements Expression {
   }
 
   @Override
-  Expression derivative(String v) {
+  public Expression derivative(String v) {
     List<Expression> exprs = new ArrayList<>();
     this.EXPR_LIST.forEach(e -> exprs.add(e.derivative(v)));
     return new AddExpression(exprs);

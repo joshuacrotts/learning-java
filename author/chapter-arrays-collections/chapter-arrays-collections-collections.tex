@@ -1539,7 +1539,7 @@ We will now take a bit more of a look at \ttt{map}, as well as other useful \emp
 
 A \emph{higher-order function} is a function that takes functions as parameters. We saw that \ttt{map} receives a lambda expression and applies it to every element of a stream. 
 
-\myexample{Let's write the \ttt{sqList} method that receives a \ttt{List<Integer>} and squares each element using the Stream API. The method should return a new list. A motif presented throughout stream methods is that they do not modify the original data. We should use \ttt{map} to apply a lambda expression that receives an integer and returns its square. Fortunately for us, we can convert any collection into a stream using the \ttt{.stream()} method. From there, we use a simple \ttt{map} invocation to arrive at our desired outcome.}
+\myexample{Let's design the \ttt{sqList} method that receives a \ttt{List<Integer>} and squares each element using the Stream API. The method should return a new list. A motif presented throughout stream methods is that they do not modify the original data. We should use \ttt{map} to apply a lambda expression that receives an integer and returns its square. Fortunately for us, we can convert any collection into a stream using the \ttt{.stream()} method. From there, we use a simple \ttt{map} invocation to arrive at our desired outcome.}
 
 
 \begin{lstlisting}[language=MyJava]
