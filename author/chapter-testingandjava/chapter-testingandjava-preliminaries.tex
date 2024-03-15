@@ -11,7 +11,7 @@ class TempConverter {
    * @param f - temperature in F.
    * @return temperature in C.
    */
-  static double fahrenheitToCelsius(double f) {
+  static double f2c(double f) {
     return 0.0;
   }
 }
@@ -19,7 +19,7 @@ class TempConverter {
 
 All code, in Java, belongs to a \emph{class}\index{class}. Classes have much more complex and concrete definitions that we will investigate in due time, but for now, we may think of them as the homes of our functions. By the way, functions in Java are called \emph{methods}\index{method}.\footnote{The reasoning is simple: a method belongs to a class. Other programming languages, e.g., C++ or Python, do not restrict the programmer to writing code only within a class. Thus, there is a distinction between functions, which do not reside within a class, and methods.} Again, this slight terminology differentiation is not without its reasons, but for all intents and purposes, functions are methods and vice versa. The class we have defined in the previous listing is called \ttt{TempConverter}, giving rise to believe that the class does something related to temperature conversion.
 
-We write the \ttt{fahrenheitToCelsius} method, whose \emph{return type}\index{return type} is a \ttt{double}, and has one \emph{parameter}\index{parameter}, which is also a \ttt{double}. A \ttt{double} is a floating-point value, meaning it potentially has decimals. For our method, this choice makes sense, because if we were to instead receive an \ttt{int}, we would not be able to convert temperatures such as \ttt{35.5} degrees Fahrenheit to Celsius. 
+We write the \ttt{f2c} method, whose \emph{return type}\index{return type} is a \ttt{double}, and has one \emph{parameter}\index{parameter}, which is also a \ttt{double}. A \ttt{double} is a floating-point value, meaning it potentially has decimals. For our method, this choice makes sense, because if we were to instead receive an \ttt{int}, we would not be able to convert temperatures such as \ttt{35.5} degrees Fahrenheit to Celsius. 
 
 The \ttt{static} keyword that we wrote has significance, but for now, consider it a series of six mandatory key presses (plus one for the space thereafter).
 
@@ -28,9 +28,9 @@ Above this method \emph{signature}\index{signature} is a Java documentation comm
 Inside its method body lies a single \ttt{return}, in which we return \ttt{0.0}. Returning a value is what a \emph{method call}\index{method call}, or \emph{method invocation}\index{method invocation}, resolves to. For example, if we were to call \ttt{fahrenheitToCelsius} with any arbitrary \ttt{double} value, the call would be substituted with \ttt{0.0}. This is otherwise called \emph{method application}\index{method application}.
 
 \begin{verbnobox}[\small]
-fahrenheitToCelsius(5)     -> 0.0
-fahrenheitToCelsius(78)    -> 0.0
-fahrenheitToCelsius(-3123) -> 0.0
+f2c(5)     -> 0.0
+f2c(78)    -> 0.0
+f2c(-3123) -> 0.0
 \end{verbnobox}
 
 Of course, this method is meaningless without an implementation. We want to design \emph{test cases}\index{test cases} to ensure the method works as expected. Test cases verify the correctness (or incorrectness) of a method. We, as the readers, know how to convert a temperature from Fahrenheit to Celsius, but telling a computer to do such a conversion is not as obvious at first glance. To test our methods, we will use the \emph{JUnit} testing framework\index{JUnit}. To create a test for \ttt{fahrenheitToCelsius}, we will make a second class called \ttt{TempConverterTester} to house a single method: \ttt{fahrenheitToCelsiusTest}.
@@ -39,14 +39,14 @@ Of course, this method is meaningless without an implementation. We want to desi
 class TempConverterTester {
 
   @Test
-  void testFahrenheitToCelsius() {
+  void testF2C() {
     Assertions.assertAll(
-      () -> Assertions.assertEquals(0, TempConverter.fahrenheitToCelsius(32)));
+      () -> Assertions.assertEquals(0, TempConverter.f2c(32)));
   }
 }
 \end{lstlisting}
 
-We want JUnit to recognize that \ttt{fahrenheitToCelsius} contains testing code, so we prepend the \ttt{@Test} annotation to the method signature. In its body, we call \ttt{Assertions\-.assertAll}, which receives a series of methods that are ran in succession. In our case, we want to assert that our \ttt{fahrenheitToCelsius} method should return \ttt{0} degrees Celsius when given a temperature of \ttt{32} degrees Fahrenheit. The first parameter to \ttt{assertEquals} is the expected value of the test, i.e., what we want it to produce. The second parameter is the actual value of the test, i.e., what our code produces. 
+We want JUnit to recognize that \ttt{f2c} contains testing code, so we prepend the \ttt{@Test} annotation to the method signature. In its body, we call \ttt{Assertions\-.assertAll}, which receives a series of methods that are ran in succession. In our case, we want to assert that our \ttt{fahrenheitToCelsius} method should return \ttt{0} degrees Celsius when given a temperature of \ttt{32} degrees Fahrenheit. The first parameter to \ttt{assertEquals} is the expected value of the test, i.e., what we want it to produce. The second parameter is the actual value of the test, i.e., what our code produces. 
 
 When writing tests, it is important to consider \emph{edge cases}\index{edge case} and all possible branches of a method implementation. Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. So, let us add a few more test cases.\footnote{To condense our code, we exclude the \ttt{FahrenheitToCelsius} class name out of conciseness. On the other hand, we can omit the \ttt{Assertions} class name by importing the two methods as shown in the listing.}
 
@@ -57,13 +57,13 @@ import static Assertions.assertEquals;
 class TempConverterTester {
 
   @Test
-  void testFahrenheitToCelsius() {
+  void testF2C() {
     assertAll(
-      () -> assertEquals(0, fahrenheitToCelsius(32)),
-      () -> assertEquals(100, fahrenheitToCelsius(212)),
-      () -> assertEquals(-40, fahrenheitToCelsius(40)),
-      () -> assertEquals(-17.778, fahrenheitToCelsius(0), .01),
-      () -> assertEquals(-273.15, fahrenheitToCelsius(-459), .01));
+      () -> assertEquals(0, f2c(32)),
+      () -> assertEquals(100, f2c(212)),
+      () -> assertEquals(-40, f2c(40)),
+      () -> assertEquals(-17.778, f2c(0), .01),
+      () -> assertEquals(-273.15, f2c(-459), .01));
   }
 }
 \end{lstlisting}
@@ -80,7 +80,7 @@ class TempConverter {
    * @param temperature in F.
    * @return temperature in C.
    */
-  static double fahrenheitToCelsius(double d) {
+  static double f2c(double d) {
     return (d - 32) * (5.0 / 9.0)
   }
 }
@@ -137,7 +137,14 @@ class VectorDistance {
 
   /**
    * Computes the distance between two given vectors:
-   * v_1=(x_1, y_1, z_1) and v_2=(x_2, y_2, z_2)
+   * v_1=(x_1, y_1, z_1) and v_2=(x_2, y_2, z_2).
+   * @param x1 - x component of first vector.
+   * @param y1 - y component of first vector.
+   * @param z1 - z component of first vector.
+   * @param x2 - x component of second vector.
+   * @param y2 - y component of second vector.
+   * @param z2 - z component of second vector.
+   * @return distance between v1 and v2.
    */
   static double computeDistance(double x1, double y1, double z1, 
                                 double x2, double y2, double z2) {
@@ -162,7 +169,12 @@ b &= y_1 - mx_1
 class SlopeIntercept {
 
   /**
-   * Computes the slope of the line represented by the two Cartesian points.
+   * Computes the slope of the line represented 
+   * by the two Cartesian points.
+   * @param x1 - x-coordinate of point 1.
+   * @param y1 - y-coordinate of point 1.
+   * @param x2 - x-coordinate of point 2.
+   * @param y2 - y-coordinate of point 2.
    * @return slope of points.
    */
   static double slope(int x1, int y1, int x2, int y2) {
@@ -170,7 +182,12 @@ class SlopeIntercept {
   }
 
   /**
-   * Computes the y-intercept of the line represented by the two Cartesian points.
+   * Computes the y-intercept of the line represented 
+   * by the two Cartesian points.
+   * @param x1 - x-coordinate of point 1.
+   * @param y1 - y-coordinate of point 1.
+   * @param x2 - x-coordinate of point 2.
+   * @param y2 - y-coordinate of point 2.
    * @return y-intercept of line represented by points.
    */
   static double yIntercept(x1, int y1, int x2, int y2) {
@@ -213,7 +230,12 @@ And the implementation of the two methods follows from the mathematical definiti
 class SlopeIntercept {
 
   /**
-   * Computes the slope of the line represented by the two Cartesian points.
+   * Computes the slope of the line represented 
+   * by the two Cartesian points.
+   * @param x1 - x-coordinate of point 1.
+   * @param y1 - y-coordinate of point 1.
+   * @param x2 - x-coordinate of point 2.
+   * @param y2 - y-coordinate of point 2.
    * @return slope of points.
    */
   static double slope(int x1, int y1, int x2, int y2) {
@@ -221,7 +243,12 @@ class SlopeIntercept {
   }
 
   /**
-   * Computes the y-intercept of the line represented by the two Cartesian points.
+   * Computes the y-intercept of the line represented 
+   * by the two Cartesian points.
+   * @param x1 - x-coordinate of point 1.
+   * @param y1 - y-coordinate of point 1.
+   * @param x2 - x-coordinate of point 2.
+   * @param y2 - y-coordinate of point 2.
    * @return y-intercept of points.
    */
   static double yIntercept(x1, int y1, int x2, int y2) {
@@ -274,6 +301,7 @@ class QuarticFormulaSolverTester {
 
 Again, we write tests \emph{before} the method implementation because we know, intuitively, how to solve an equation for a variable, but a computer has to be told how to solve this task. Fortunately for us, a quartic equation solver is nothing more than returning the result of the expression. We, of course, have to use the exponential \ttt{Math.pow} method again (or conjoin several multiplicatives of $x$), but otherwise, it is straightforward.
 
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class QuarticFormulaSolver {
 
@@ -284,7 +312,8 @@ class QuarticFormulaSolver {
    * @return the result of the expression after substituting x.
    */
   static double solveQuartic(double x) {
-    return 4 * Math.pow(x, 4) + 7 * Math.pow(x, 3) + 21 * Math.pow(x, 2) - 65 * x + 3;
+    return 4 * Math.pow(x, 4) + 7 * Math.pow(x, 3) + 
+               21 * Math.pow(x, 2) - 65 * x + 3;
   }
 }
 \end{lstlisting}

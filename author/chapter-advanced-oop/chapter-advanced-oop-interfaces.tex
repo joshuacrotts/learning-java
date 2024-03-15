@@ -19,7 +19,7 @@ interface IShape {
 }
 \end{lstlisting}
 
-We cannot write any tests for the \ttt{IShape} interface directly, since it is impossible to instantiate an interface. We can, however, write two different classes that implement \ttt{IShape}, and test those. To demonstrate, we will write and test the \ttt{Pentagon} and \ttt{Octagon} classes whose constructors receive (and then store as instance variables) the side length of the shape. Fortunately, the definitions thereof are trivial because they are nothing more than regurgitations of the mathematical formulae. Notice that, when testing, we initialize the object instance to be of type \ttt{IShape}, not \ttt{Pentagon} or \ttt{Octagon}. This is because we want to be able to categorize these classes as types of \ttt{IShape} instances rather than solely instances of \ttt{Pentagon} or \ttt{Octagon} respectively. This is a common practice in object-oriented programming, and it is called \emph{polymorphism}. Polymorphism is the ability of an object to take on many forms. In this case, the \ttt{IShape} interface is the form that the \ttt{Pentagon} and \ttt{Octagon} classes use to take on the form of a shape as we described.
+We cannot write any tests for the \ttt{IShape} interface directly, since it is impossible to instantiate an interface. We can, however, write two different classes that implement \ttt{IShape}, and test those. To demonstrate, we will write and test the \ttt{Pentagon} and \ttt{Octagon} classes whose constructors receive (and then store as instance variables) the side length of the shape. Fortunately, the definitions thereof are trivial because they are nothing more than regurgitations of the mathematical formulae. Notice that, when testing, we initialize the object instance to be of type \ttt{IShape}, not \ttt{Pentagon} or \ttt{Octagon}. This is because we want to be able to categorize these classes as types of \ttt{IShape} instances rather than solely instances of \ttt{Pentagon} or \ttt{Octagon} respectively. This is a common practice in object-oriented programming, and it is called \emph{polymorphism}. Polymorphism is the ability of an object to take on many forms. In this case, the \ttt{IShape} interface is the form that the \ttt{Pentagon} and \ttt{Octagon} classes use to take on the form of a shape as we described.\footnote{We must mark the \ttt{area} and \ttt{perimeter} methods as \ttt{public} because all interface methods are \ttt{public}, either explicitly or implicitly.}
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -216,9 +216,7 @@ class IAnimalTester {
 class Cat implements IAnimal {
 
   @Override
-  public String speak() { 
-    return "Meow!"; 
-  }
+  public String speak() { return "Meow!"; }
 }
 \end{lstlisting}
 
@@ -226,9 +224,7 @@ class Cat implements IAnimal {
 class Dog implements IAnimal {
 
   @Override
-  public String speak() { 
-    return "Woof!"; 
-  }
+  public String speak() { return "Woof!"; }
 }
 \end{lstlisting}
 

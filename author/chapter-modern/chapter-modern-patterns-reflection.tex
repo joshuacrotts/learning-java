@@ -75,10 +75,10 @@ First, we need to establish a few details. Our program will read, from standard 
 > System.out.println(i)
 5
 > class Animal { String speak() { return ""; }}
-> class Dog extends Animal { String speak() { return "Wolf!"; }}
+> class Dog extends Animal { String speak() { return "Woof!"; }}
 > Animal a = new Dog();
 > System.out.println(a.speak());
-"Wolf!"
+"Woof!"
 > System.out.println(List.of(i, i + 2));
 [5, 7]
 > System.out.println(IntStream.iterate(0, i -> i + 5).limit(10));
