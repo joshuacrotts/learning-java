@@ -12,6 +12,7 @@ static int foo() {
 }
 \end{lstlisting}
 The \ttt{==} operator compares primitive values for equality, as we stated in our Java primer. If we want to use the result of a (boolean) method as the condition, we might want to inline the invocation. 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 static boolean bar() {
   ...
@@ -42,7 +43,7 @@ static int foo() {
 In addition to \ttt{if}, Java also has \ttt{else} and \ttt{else if} for extending the possible outcomes of a condition. When the predicate of a preceding \ttt{if} is false and an \ttt{else} block is attached, its code is evaluated. Moreover, when the predicate of a preceding \ttt{if} is false and an \ttt{else if} block is attached, the condition to the \ttt{else if} is evaluated. The former pairing represents a binary outcome, whereas the latter corresponds to more than two possible outcomes. Multiple \ttt{if} statements ``stacked above one another'' results in their sequential evaluation since Java assumes they are disjoint code segments. The \ttt{else if} block, on the contrary, executes only when its preceding \ttt{if} condition resolves to false. In the following code listing, we show an example of two sets of conditional statements; the former uses only \ttt{if} and the latter takes advantage of \ttt{if}, \ttt{else if}, and \ttt{else}. Accordingly, the left-hand listing returns $20$ and the right-hand listing returns $10$.
 
 \begin{clrr}[]{}
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int foo() {
   int x = 10;
   int y = 0;
@@ -53,7 +54,7 @@ static int foo() {
 }
 \end{lstlisting}
 \tcblower
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int foo() {
   int x = 10;
   int y = 0;
