@@ -191,3 +191,22 @@ Then, design the following methods:
 \end{enumerate}
 
 As an added optimization, we should cache whether the current relation is one of these properties when prompted. If we do not add a pair to the relation, then it makes little sense to recompute whether or not is, say, reflexive. Implement this as an optimization, however you wish, into the class.
+
+\myexercise{1}{chapter-classes}{This exercise has N parts. A complex number $c \in \mathbb{C}$ has two components: a real number $a$ and an imaginary number $b$. Together, these create $a + bi$. In this exercise you will design a class that operates over complex numbers.}
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{ComplexNumber} class, whose constructor receives two \ttt{double} values: $a$ and $b$. Store these as instance variables.
+    \item Design the empty constructor that initializes $a$ and $b$ to $0$ and $0$ respectively. 
+    \item Implement the respective accessor and mutator methods for the real and imaginary components.
+    \item Override the \ttt{toString} method to return a string representation of the complex number of the form \ttt{"a + bi"} or \ttt{"a - bi"} when $b$ is either positive or negative. 
+    \item Override the \ttt{equals} method to compare two complex numbers. Of course, this entails comparing the real component and the imaginary component.
+    \item Override the \ttt{hashCode} method to return a hashcode that encodes the \ttt{a} and \ttt{b} components respectively.
+    \item Design the \ttt{double magnitude()} method, which returns the magnitude of \ttt{this} complex number. The magnitude of a complex number is the square root of the sum of its components.
+    \item Design the \ttt{double argument()} method, which returns the argument, or angle, of \ttt{this} complex number in radians. The argument of a complex number is computed as $\tan^{-1}{\frac{b}{a}}$.
+    \item Design the \ttt{ComplexNumber add(ComplexNumber c2)} method, which receives a \ttt{ComplexNumber} as an argument and returns a new \ttt{ComplexNumber} representing the sum of \ttt{this} complex number and the given number. The sum of two complex numbers is the sum of the real components and the imaginary components.
+    \item Design the \ttt{ComplexNumber sub(ComplexNumber c2)} method, which receives a \ttt{ComplexNumber} as an argument and returns a new \ttt{ComplexNumber} representing the difference of \ttt{this} complex number and the given number. The difference of two complex numbers is the difference of the real components and the imaginary components.
+    \item Design the \ttt{ComplexNumber mul(ComplexNumber c2)} method, which receives a \ttt{ComplexNumber} as an argument and returns a new \ttt{ComplexNumber} representing the product of \ttt{this} complex number and the given number. The product of two complex numbers is as follows:
+    \[
+        (a + bi)(c + di) = (ac - bd) + (ad + bc)i    
+    \]
+    Hint: use \ttt{add} and \ttt{mul} to your advantage.
+\end{enumerate}

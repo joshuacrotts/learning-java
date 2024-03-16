@@ -4,7 +4,7 @@ cd .. \
 && cd new-java \
 && git clone git@github.com:joshuacrotts/teaching-java.git \
 && cd teaching-java \
-&& git checkout libretine-font \
+&& git checkout springer \
 && cd .. \
 && cd .. \
 && cd teaching-java \
