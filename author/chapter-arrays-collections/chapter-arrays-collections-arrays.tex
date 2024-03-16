@@ -75,7 +75,8 @@ class SumOfDoubleArrayTester {
     assertAll(
       () -> assertEquals(0.0, sumOfDoubles(new double[]{})),
       () -> assertEquals(50.0, sumOfDoubles(new double[]{50.0})),
-      () -> assertEquals(100.0, sumOfDoubles(new double[]{25.0, 50.0, 25.0})));
+      () -> assertEquals(100.0, sumOfDoubles(new double[]
+                                             {25.0, 50.0, 25.0})));
   }
 }
 \end{lstlisting}
@@ -100,6 +101,7 @@ class SumOfDoubleArray {
 
 Even though our code works and the tests that we wrote pass without question, there is a bit of verbosity with our loop; all we ever use the iteration variable, $i$, is for accessing a variable. In such circumstances, we may prefer using the enhanced \ttt{for} loop, which abstracts away the index and provides an iteration construct for accessing elements sequentially.
 
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class SumOfDoubleArray {
 
@@ -231,10 +233,10 @@ class McqScoreCalculatorTester {
 
   @Test
   void testScore() {    
-    String[] E = new String[]{"A", "C", "D", "A", "B", "B", "D", "C", "C"};
-    String[] A1 = new String[]{"A", "C", "D", "C", "B", "B", "C", "C", "C"};
-    String[] A2 = new String[]{"A", "C", "D", "A", "B", "B", "D", "C", "C"};
-    String[] A3 = new String[]{"A", "C", "?", "C", "?", "B", "?", "C", "C"};
+    String[] E = new String[]{"A","C","D","A","B","B","D","C","C"};
+    String[] A1 = new String[]{"A","C","D","C","B","B","C","C","C"};
+    String[] A2 = new String[]{"A","C","D","A","B","B","D","C","C"};
+    String[] A3 = new String[]{"A","C","?","C","?","B","?","C","C"};
     assertAll(
       () -> assertEquals(70.3, score(E, A1)),
       () -> assertEquals(100.0, score(E, A2)),
@@ -296,10 +298,11 @@ class McqScoreCalculator {
    * @param s - 
    * @return
    */
-  private static double scoreTRHelper(String[] E, String[] A, int i, int s) {
+  private static double scoreTRHelper(String[] E, String[] A, 
+                                      int i, int s) {
     if (i >= E.length) { return s; }
-    else if (A[i].equals(E[i])) { return scoreTRHelper(E, A, i + 1, s + 3); }
-    else if (A[i].equals("?")) { return scoreTRHelper(E, A, i + 1, s); }
+    else if (A[i].equals(E[i])) { return scoreTRHelper(E, A, i+1, s+3); }
+    else if (A[i].equals("?")) { return scoreTRHelper(E, A, i+1, s); }
     else { return scoreTRHelper(E, A, i + 1, s + -1); }
   }
 }
@@ -307,6 +310,7 @@ class McqScoreCalculator {
 
 Lastly, the loop variant is just a translation pipeline away. When traversing over arrays, though, it is much more colloquial to use a \ttt{for} loop, since the bounds are known a priori.
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class McqScoreCalculator {
 
@@ -339,6 +343,7 @@ We are on our way to understanding the full signature of the \ttt{main} method. 
 
 First, we must explain how terminal arguments work. Terminal arguments are specified after the executable (name) and are separated by spaces. For instance, if our program name is \ttt{calculator}, we might use \ttt{./calculator --add 5 4 17}. Thus, \ttt{args[0]} is \ttt{--add}, \ttt{args[1]} is \ttt{"5"}, \ttt{args[2]} is \ttt{"4"}, and \ttt{args[3]} is \ttt{"17"}. For simplification purposes, we will assume that the first argument is always the operation/help flag, and the remaining values are operands. This means that the program should output \ttt{26}. Let us write a method that parses the operation/help flag. Upon success, it returns \ttt{true} and upon failure, it returns \ttt{false}. This prevents the program from further interpreting bad terminal arguments, e.g., \ttt{./calculator --wrong 5 12}. We will also use \ttt{false} as an indication that the \ttt{help} menu was requested or prompted. Thus, to not duplicate code, we should write another method that displays the relevant program usage information.
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Calculator {
 
@@ -359,7 +364,8 @@ class Calculator {
   }
 
   static void displayHelp() {
-    System.out.println("usage: ./calculator --(help | add | sub) <n1> [n...]");
+    System.out.println("usage: ./calculator --(help | add | sub) <n1> 
+                        [n...]");
   }
 }
 \end{lstlisting}
@@ -389,6 +395,7 @@ class Calculator {
 
 To start, let's see a few example runs of our program, containing a mixture of flags.
 
+\enlargethispage{4\baselineskip}
 \begin{verbnobox}[\small]
 ./ArrayArguments 5 1 2 3 4 5 --sum --max
 sum: 15.000000
@@ -445,6 +452,7 @@ The other ``operations'' methods, as well as their tests, are simple to write, a
 
 Our main method first checks to see if the user entered the ``help'' command and, if so, presents the necessary information for runnning the program. Otherwise, we perform a case analysis on the terminal arguments, looking for the presence of the operation flags. For arbitrary reasons, we output the sum, then the product, then the min, and finally the max, in that order, despite the ordering of the flags. As an exercise, we encourage the readers to modify the program to output the values in the order of the flags. An important detail that some may miss is that we use a sequence of \ttt{if} statements rather than \ttt{if/else if} statements. This is because we want to allow the user to pass multiple flags, and we do not want to restrict them to only one. Thus, we must check for the presence of each flag individually.
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class ArrayArguments {
 
@@ -547,9 +555,9 @@ class RookPathTester {
 class RookPath {
 
   /**
-   * Computes the number of possible paths that a rook can take to go from the
-   * top-left of a board to the bottom-right, assuming that it cannot move left
-   * or up.
+   * Computes the number of possible paths that a rook 
+   * can take to go from the top-left of a board to the 
+   * bottom-right, assuming that it cannot move left or up.
    * @param x - x-coordinate of the rook's starting position.
    * @param y - y-coordinate of the rook's starting position.
    * @param n - number of rows of the board.
@@ -557,8 +565,11 @@ class RookPath {
    * @return number of possible paths.
    */
   static int rook(int x, int y, int n, int m) {
-    if (x == n || y == m) { return 1; }
-    else { return rook(x + 1, y, n, m) + rook(x, y + 1, n, m); }
+    if (x == n || y == m) { 
+      return 1; 
+    } else { 
+      return rook(x + 1, y, n, m) + rook(x, y + 1, n, m); 
+    }
   }
 }
 \end{lstlisting}
@@ -577,7 +588,6 @@ Dynamic programming problems are often solved using two-dimensional arrays using
   \item Iterate over the array, filling in the values using a recurrence relation.
 \end{enumerate}
 
-
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -595,13 +605,15 @@ class RookPathTester {
 }
 \end{lstlisting}
 
+\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RookPath {
 
   /**
-   * Computes the number of possible paths that a rook can take to go from the
-   * (x, y) position of a board to the bottom-right, assuming that it cannot
-   * move left or up. This approach uses dynamic programming.
+   * Computes the number of possible paths that a rook 
+   * can take to go from the (x, y) position of a board 
+   * to the bottom-right, assuming that it cannot move left or up. 
+   * This approach uses dynamic programming.
    * @param x - x-coordinate of the rook's starting position.
    * @param y - y-coordinate of the rook's starting position.
    * @param n - number of rows of the board.
