@@ -19,6 +19,7 @@ We need a few methods to solve this problem: \ttt{makeList}, \ttt{addToList}, \t
 
 To better relate to the \ttt{ArrayList} class implementation, we will write two versions of the \ttt{makeList} method: one that receives an initial size and one that does not. Designing two methods of the same name that receive different parameter types/quantities is known as \emph{method overloading}\index{method overloading}, and we will see this further in our discussion on \emph{classes}. \ttt{makeList} returns an array of integers instantiated to the given size, or a base size of ten elements in the method that does not receive a parameter. Note that, inside of the \ttt{makeList} method that does not receive a parameter, we invoke \ttt{makeList(10)} so as to not repeat ourselves.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -546,7 +547,8 @@ import java.util.PriorityQueue;
 class PriorityQueueByP {
 
   /**
-   * Returns a priority queue that prioritizes strings that start with `p'.
+   * Returns a priority queue that prioritizes strings 
+   * that start with `p'.
    * @return priority queue instance.
    */
   static PriorityQueue<String> priorityByP() {
@@ -586,7 +588,7 @@ Let's perform a case analysis on the input strings. If both strings are non-empt
 \EndProcedure
 \end{algorithmic}
 \caption{Pseudocode for Comparing Two Strings For `p' Priority}
-\label{alg:pseudocodeinsertion}
+\label{alg:pseudocodepriority}
 \end{algorithm}
 
 \begin{lstlisting}[language=MyJava]
@@ -828,8 +830,8 @@ import java.util.TreeSet;
 class FindDupMissing {
 
   /**
-   * Finds a duplicate number and a missing number from an array of numbers
-   * from a specific interval.
+   * Finds a duplicate number and a missing number from 
+   * an array of numbers within a specific interval.
    * @param A - array of integers where each number is in [1, n],
    *            with one missing and one duplicate.
    * @return two-element array where [0] is the missing number
