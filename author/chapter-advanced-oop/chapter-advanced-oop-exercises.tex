@@ -103,11 +103,11 @@ class LazyListTakeTester {
 
  @Test
  void testLazyListTake() {
-  LazyListTake llt1 = new LazyListTake(new FactorialLazyList(), 10);
+  LazyListTake llt1 = new LazyListTake(new FactorialLazyList(), 8);
   LazyListTake llt2 = new LazyListTake(new FibonacciLazyList(), 10);
 
   assertAll(
-    () -> assertEquals("[1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800]",
+    () -> assertEquals("[1, 2, 6, 24, 120, 720, 5040, 40320]",
                        llt1.getList().toString()),
     () -> assertEquals("[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]",
                        llt2.getList().toString()));
@@ -187,17 +187,19 @@ import java.util.HashMap;
 
 class PrimNode extends AstNode {
   
-  private static final Map<String, IFunction<List<AstNode>, AstNode>> OPERATORS;
+  private static final Map<String, IFunction<List<AstNode>, AstNode>> OPS;
   
   static {
-    OPERATORS = new HashMap<>();
-    OPERATORS.put("+", this.primPlus);
+    OPS = new HashMap<>();
+    OPS.put("+", this.primPlus);
   }
 
   @Override
   AstNode eval(Environment env) { /* TODO. */  }
 
-  private AstNode primPlus(List<AstNode> args, Environment env) { /* Details omitted. */ }
+  private AstNode primPlus(List<AstNode> args, Environment env) { 
+    /* Details omitted. */ 
+  }
 }
 \end{lstlisting}
 
@@ -217,6 +219,7 @@ class PrimNode extends AstNode {
   \item Call \ttt{eval} on the function body and pass the new (extended) environment.
   \end{enumerate}
   This seems like a lot of work (because it is), but it means you can write really cool programs, including those that use recursion!
+  \enlargethispage{2\baselineskip}
   \begin{verbnobox}[\small]
 new ProgramNode(
   new DefNode("!", 
@@ -233,8 +236,7 @@ new ProgramNode(
             new PrimNode("-", 
             new VarNode("n"), 
             new NumNode(1))))))),
-  new PrimNode("print", new ApplyNode("!", new NumNode(5)))
-)
+  new PrimNode("print", new ApplyNode("!", new NumNode(5))))
 \end{verbnobox}
 \end{enumerate}
 
@@ -308,18 +310,18 @@ import java.lang.BigInteger;
 class FactorialTailRecursive {
  
   /**
-   * Tail-recursive factorial function. Uses BigInteger to avoid number overflow and
-   * thunks to avoid stack overflow.
+   * Tail-recursive factorial function. Uses BigInteger to 
+   * avoid number overflow and thunks to avoid stack overflow.
    * @param n - the number to compute the factorial of.
-   * @param acc - the accumulator.
+   * @param ac - the accumulator.
    * @return a tail call that is either done or not done.
    */
-  static ITailCall<BigInteger> factTailCall(BigInteger n, BigInteger acc) {
+  static ITailCall<BigInteger> factTailCall(BigInteger n, BigInteger ac) {
     if (n.equals(BigInteger.ZERO)) {
-      return TailCallUtils.done(acc);
+      return TailCallUtils.done(ac);
     } else {
-      return TailCallUtils.call(() -> factTailCall(n.subtract(BigInteger.ONE), 
-                                                   acc.multiply(n)));
+      return TailCallUtils.call(() -> 
+               factTailCall(n.subtract(BigInteger.ONE), ac.multiply(n)));
     }
   }
 }
