@@ -45,6 +45,7 @@ class Point {
 \end{lstlisting}
 Remember that the purpose of the constructor is to initialize the class instance variables. So, unless we wish to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. Inside the constructor, we assign the value of the parameter \ttt{x} to the instance variable \ttt{x}. Should we opt to not use \ttt{this} on the left-hand variable identifier, then the parameter \ttt{x} would shadow the instance variable \ttt{x}, meaning that writing \ttt{x = x} assigns the parameter to itself. At last, we can create a \ttt{Point} object by calling the constructor, but wait, we have no way of accessing/referring to the instance variables of the \ttt{Point} object! We need to create \emph{accessor methods}\index{accessor method} to retrieve the values of the instance variables. Accessor methods are non-private and should do exactly one thing: return the respective instance variable.
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Point {
 
@@ -97,6 +98,7 @@ class PointTester {
 
 Of course, testing the accessor methods is a little boring, so let's override the \ttt{toString} method to print a stringified representation of the \ttt{Point} class. Every object in Java has a \ttt{toString} method, which returns a string representation of the object. By default, the \ttt{toString} method returns the class name followed by the object's hashcode. We can override the \ttt{toString} method by declaring a \ttt{public} method with the signature \ttt{public String toString()} (note that this is one instance where \ttt{public} cannot be avoided.) We can then return a string representation of the object. In this case, we will return a string of the form \ttt{"(x=$x$, y=$y$)"}, where $x$ and~$y$ refer to the respecitve instance variables. 
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Point {
   // ... previous code not shown.
@@ -137,6 +139,7 @@ This is also a good time to bring up another terminology distinction. Some progr
 
 Returning to the \ttt{Point} class, we will now write \ttt{distance}, which receives a \ttt{Point} as a parameter and returns the Euclidean distance from \ttt{this} to the parameter. Before doing so, however, we should write a few tests. Conveniently, the three points that we test all have a distance of five between each other.
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -205,6 +208,7 @@ We could, if desired, overload the \ttt{Point} constructor as well. Though, it m
 
 \myexample{Let's design the static \ttt{averageDistance} method, which receives a \ttt{List<Point>} and computes the average distance away from the origin. We already have a method to compute the distance of a point to the origin, so let's take advantage of the stream API to map \ttt{distance} to every point, then find the average of those resulting double values. This method will return an \ttt{OptionalDouble} in the event that the provided list is empty, which serves as a wrapper around the \ttt{Optional<Double>} type.}
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -240,7 +244,8 @@ class Point {
   /**
    * Computes the average distance to the origin of a list of points.
    * @param lop - list of points.
-   * @return empty Optional if the list is empty, or OptionalDouble otherwise.
+   * @return empty Optional if the list is empty, 
+   *         or OptionalDouble otherwise.
    */
   static OptionalDouble averageDistance(List<Point> lop) {
     return lop.stream()
@@ -272,6 +277,7 @@ class PointTester {
 }
 \end{lstlisting}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Random;
 
@@ -297,6 +303,7 @@ We have seen static methods, but what about static variables? A static variable,
 
 \myexample{Suppose we want to keep track of how many instances of \ttt{Point} have been instantiated. Since this is a property of the \ttt{Point} class rather than an instance of the class, we can declare a static variable \ttt{count} to keep track of the number of instances, which is incremented inside the constructor. To remain consistent with our recurring theme of encapsulation, \ttt{count} will be declared as \ttt{private}, and we will write a static method \ttt{getCount} to retrieve the number of instances, which is invoked on the class.\footnote{It is possible to invoke a static method on an instance of the class, but it is considered bad practice and unnecessary.} When testing, we need to be careful to only instantiate instances of \ttt{Point} when we are ready to check the status of \ttt{count}, since the static \ttt{count} variable is incremented inside the constructor.}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -313,7 +320,8 @@ class PointTester {
     Point p3 = new Point(0, 0);
     assertEquals(3, Point.getCount());
 
-    // Even though we lose reference to p, the static varible still increments!
+    // Even though we lose reference to p, 
+    // the static varible still increments!
     for (int i = 0; i < 10; i++) {
       Point p = new Point();
     }
@@ -340,6 +348,7 @@ Notice that, inside the \ttt{getCount} method, we do not refer to \ttt{count} wi
 
 \myexample{Imagine we want to store a collection of \ttt{Point} objects in a data structure such as a \ttt{HashSet}. The question that arises from this decision is apparent: how do we determine if a \ttt{Point} is already inside the set? We need to override two important methods from \ttt{Object}: \ttt{public boolean equals} and \ttt{public int hashCode}. The \ttt{equals} method of an object determines how we wish to compare two instances of the class. In this circumstance, let's say that two points are equal according to \ttt{equals} if and only if they share the same $x$ and $y$ coordinates. Overriding the \ttt{equals} method from the \ttt{Object} class requires correctly copying the signature, the sole parameter being an \ttt{Object} that we want to check for type equality. In other words, we first want to verify that the passed object to the \ttt{equals} method is, in fact, a \ttt{Point}, otherwise they cannot possibly be equal. We can use the \ttt{instanceof} operator to our advantage. From here, if the input parameter is a \ttt{Point}, we can cast the parameter to a \ttt{Point}, then check whether or not the coordinates match. Moreover, like \ttt{toString}, the \ttt{equals} and \ttt{hashCode} methods are definitionally \ttt{public}, so do not forget the access modifier.}
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -393,6 +402,7 @@ class PointTester {
 }
 \end{lstlisting}
 
+\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Objects;
 
@@ -479,6 +489,7 @@ class Suit {
 
 Testing the \ttt{Card} class is simple and straightforward; we only need to test one method, the \ttt{toString} method, since testing \ttt{getValue}, at this point, is superfluous. We could also test the \ttt{Suit} class, but we will not do so here, given that the only useful methods are to retrieve the instance variables and the iterator.
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -505,7 +516,9 @@ class Card {
   Card(Suit suit, int value) { this.SUIT = suit; this.VAL = value; }
   
   @Override
-  public String toString() { return String.format("%d of %s", this.VAL, this.SUIT); }
+  public String toString() { 
+    return String.format("%d of %s", this.VAL, this.SUIT); 
+  }
 
   int getValue() { return this.VAL; } 
 }
@@ -515,6 +528,7 @@ In a standard fifty-two deck of cards, some are ``special,'' e.g., the Jacks, Qu
 
 To test a \ttt{Deck}, we can write a \ttt{drawCard} method, which retrieves the ``top-most'' card on the deck to see if it is in the correct order. According to our implementation of the iterator, the top-most cards should have values of ten and be of the same suit. From there, we can draw three more cards to ensure they are of values nine, eight, and seven of the same suit. The iterator places \ttt{DIAMOND} as the final suit, so this is what we will assume in our tester. It might also be beneficial to test the \ttt{isEmpty} method, which returns \ttt{true} if the deck is empty, and \ttt{false} otherwise. We can test this functionality by drawing all fifty-two cards from the deck and ensuring that the deck is empty afterwards. Note that we draw four tens because there are no ``Kings,'' ``Queens,'' or ``Jacks'' in the deck.
 
+\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -546,6 +560,7 @@ class DeckTester {
 }
 \end{lstlisting}
 
+\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -553,7 +568,6 @@ import java.util.Iterator;
 class Deck {
 
   private static final int MAX_NUM_CARDS = 52;
-
   private final ArrayList<Card> CARDS;
 
   Deck() {
@@ -574,9 +588,7 @@ class Deck {
    * Determines if the deck is empty.
    * @return true if the deck contains no cards, and false otherwise.
    */
-  boolean isEmpty() { 
-    return this.CARDS.isEmpty(); 
-  }
+  boolean isEmpty() { return this.CARDS.isEmpty(); }
 
   /**
    * Instantiates the deck to contain all 52 cards.
@@ -645,13 +657,13 @@ Using the capabilities of \ttt{Player}, \ttt{Deck}, and \ttt{Card}, we will writ
 
 It should be noted that this version of ``twenty-one'' only has the objective of getting as close as possible to a hand containing cards with a value that sums to twenty one, compared to a more-traditional card game where multiple players exist, with a dealer to distribute cards. As exercises, there are many ways to enhance the game, including adding a ``high score'' board to keep track of previous game outcomes, introducing CPU players to automatically poll cards from the deck to beat the main player, or even adding more human players through standard input/output iteractions. 
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 
 class TwentyOne {
 
   private static final int MAX_SCORE = 21;
-
   private final Player PLAYER;
 
   TwentyOne() { this.PLAYER = new Player(); }
@@ -675,7 +687,8 @@ class TwentyOne {
       this.PLAYER.addCard(d.drawCard());
       this.PLAYER.addCard(d.drawCard());
 
-      // While the player has not "busted", ask them to draw a card or stand.
+      // While the player has not "busted", 
+      // ask them to draw a card or stand.
       while (this.PLAYER.getScore() <= this.MAX_SCORE) {
         System.out.println(this.PLAYER);
         System.out.println("Do you want to draw? (Y/n)");
@@ -711,6 +724,7 @@ Designing interactive games is a great exercise in object-oriented programming, 
 
 The \ttt{Rational} constructor receives two integers $p$ and $q$, and assigns them as instance variables. The \ttt{toString} method is trivial to write and only involves us adding a slash between our numerator and denominator. Though, let's back up for a second and rethink the constructor. Do we really want to be able to store fractions that are not in their simplest form? For example, do we want to allow the user to create a \ttt{Rational} object with a numerator of $2$ and a denominator of $4$? The answer is probably not, meaning that we should add a method that simplifies the fraction. We can do this by finding the greatest common divisor of the numerator and denominator, and dividing both by that value. Euclid's algorithm for finding the greatest common divisor of two integers works wonderfully here. Due to its trivial implementation and the fact that it is a tail recursive algorithm exercise from the previous chapters, we will omit its implementation.
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -720,13 +734,20 @@ class RationalTester {
   @Test
   void testRationalToString() {
     assertAll(
-      () -> assertEquals("1/2", new Rational(1, 2).toString()),
-      () -> assertEquals("3/400", new Rational(3, 400).toString()),
-      () -> assertEquals("1/1305", new Rational(5, 6525).toString()),
-      () -> assertEquals("3591/46562", new Rational(7182, 93124).toString()),
-      () -> assertEquals("7/32", new Rational(7, 32).toString()),
-      () -> assertEquals("9388/48122", new Rational("4694/24061").toString()),
-      () -> assertEquals("1/1", new Rational(1, 1).toString()));
+      () -> assertEquals("1/2", 
+                         new Rational(1, 2).toString()),
+      () -> assertEquals("3/400", 
+                         new Rational(3, 400).toString()),
+      () -> assertEquals("1/1305", 
+                         new Rational(5, 6525).toString()),
+      () -> assertEquals("3591/46562", 
+                         new Rational(7182, 93124).toString()),
+      () -> assertEquals("7/32", 
+                         new Rational(7, 32).toString()),
+      () -> assertEquals("9388/48122", 
+                         new Rational("4694/24061").toString()),
+      () -> assertEquals("1/1", 
+                         new Rational(1, 1).toString()));
   }
 }
 \end{lstlisting}
@@ -752,6 +773,7 @@ class Rational {
 
 To add two rational numbers $r_1$ and $r_2$, they must share a denominator. If they do not, then we must find a common denominator by multiplying the denominators together, then multiplying the relevant numerators by the reciprocals of the denominator. For instance, if we want to add $2/3$ and $7/9$, the (not-necessarily lowest) common denominator is $3\cdot{9} = 27$. We then multiply $2$ by $9$ and $7$ by $3$ to get $18/27$ and $24/27$. Adding across the numerators results in $42/27$, which reduces to $14/9$. Since we wish to preserve the original rational number, we will write a method that returns a new \ttt{Rational} rather than modifying the one we have in-place (this also allows us to omit a step in which we simplify the resulting fraction, since the constructor takes care of this task).
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -762,19 +784,19 @@ class RationalTester {
   void testRationalAdd() {
     assertAll (
       () -> assertEquals("14/9", 
-                         new Rational(2, 3).add(new Rational(7, 9)).toString()),
+              new Rational(2, 3).add(new Rational(7, 9)).toString()),
       () -> assertEquals("5/6", 
-                         new Rational(1, 2).add(new Rational(1, 3)).toString()),
+              new Rational(1, 2).add(new Rational(1, 3)).toString()),
       () -> assertEquals("1/3", 
-                         new Rational(1, 4).add(new Rational(1, 12)).toString()),
+              new Rational(1, 4).add(new Rational(1, 12)).toString()),
       () -> assertEquals("1/4", 
-                         new Rational(1, 8).add(new Rational(1, 8)).toString()),
+              new Rational(1, 8).add(new Rational(1, 8)).toString()),
       () -> assertEquals("1/8", 
-                         new Rational(1, 16).add(new Rational(1, 16)).toString()),
+              new Rational(1, 16).add(new Rational(1, 16)).toString()),
       () -> assertEquals("1/16", 
-                         new Rational(1, 32).add(new Rational(1, 32)).toString()),
+              new Rational(1, 32).add(new Rational(1, 32)).toString()),
       () -> assertEquals("2/1", 
-                         new Rational(32, 32).add(new Rational(32, 32)).toString()));
+              new Rational(32, 32).add(new Rational(32, 32)).toString()));
   }
 }
 \end{lstlisting}
@@ -799,6 +821,7 @@ class Rational {
 
 Due to the correspondence to addition, we will leave \ttt{subtraction} as an exercise to the reader. We can now do multiplication, which is even simpler than addition; all that is needed is to multiply the numerators and denominators together. We will also leave \ttt{division} as an exercise to the reader. We also encourage the reader to write methods for comparing rationals for equality, as well as greater than/less than. Plus, we could extend this system to support \ttt{BigInteger} values for the numerator and denominator, which would allow us to represent arbitrarily large rational numbers. This, in turn, would require updating all methods to use \ttt{BigInteger} arithmetic, which is a good exercise in itself.
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -809,17 +832,17 @@ class RationalTester {
   void testRationalMultiply() {
     assertAll (
       () -> assertEquals("14/27", 
-                         new Rational(2, 3).multiply(new Rational(7, 9)).toString()),
+             new Rational(2, 3).multiply(new Rational(7, 9)).toString()),
       () -> assertEquals("1/6", 
-                         new Rational(1, 2).multiply(new Rational(1, 3)).toString()),
+             new Rational(1, 2).multiply(new Rational(1, 3)).toString()),
       () -> assertEquals("1/48", 
-                         new Rational(1, 4).multiply(new Rational(1, 12)).toString()),
+             new Rational(1, 4).multiply(new Rational(1, 12)).toString()),
       () -> assertEquals("1/64", 
-                         new Rational(1, 8).multiply(new Rational(1, 8)).toString()),
+             new Rational(1, 8).multiply(new Rational(1, 8)).toString()),
       () -> assertEquals("1/25", 
-                         new Rational(1, 5).multiply(new Rational(1, 5)).toString()),
+             new Rational(1, 5).multiply(new Rational(1, 5)).toString()),
       () -> assertEquals("1/1", 
-                         new Rational(1, 1).multiply(new Rational(1, 1)).toString()));
+             new Rational(1, 1).multiply(new Rational(1, 1)).toString()));
   }
 }
 \end{lstlisting}
@@ -869,6 +892,7 @@ class StackFrame {
 
 Now, let's translate the standard recursive \ttt{fact} method, which will receive a \ttt{BigInteger}, and return its factorial. Below we show the recursive version. From this, we design the \ttt{factLoop} method that instantiates a \ttt{Stack<StackFrame>} to replicate the call stack. We begin the process by pushing the initial frame, which stores the initial input argument. This is followed by a variable to keep track of the ``return value,'' which should match the type of the standard recursive method (for our purposes of factorial, this is a \ttt{BigInteger}). Our loop continues as long as there is a stack frame to pop, and the core logic of the algorithm, namely $n!$, is identical to our standard recursive counterpart.
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

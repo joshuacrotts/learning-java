@@ -4,6 +4,7 @@ A limitation that we have purposefully imposed on our object/class design is the
 
 To access a \ttt{private} instance variable, we design a \ttt{public} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a \ttt{public} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns the instance variable to the parameter. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a point $p$ to $(7, 4)$, but we then want to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which we confirm through the accessor method. Another way of phrasing this is that, when testing a mutator, we care about the \emph{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. Setter methods, or methods that modify outside values or data are definitionally \emph{impure}\index{impure}. Because we want to be able to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove this keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we \emph{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -38,17 +39,15 @@ class Point {
   }
 
   int getX() { return this.x; }
-
   int getY() { return this.y; }
-
   void setX(int x) { this.x = x; }
-
   void setY(int y) { this.y = y; }
 }
 \end{lstlisting}
 
 What are some consequences to mutating an object? One comes through the notion of \emph{object aliasing}. Recall that objects point to references in memory. Therefore if we instantiate a \ttt{Point} $p_1$, then initialize another \ttt{Point} $p_2$ to reference $p_1$, then both objects refer to the same \ttt{Point} instance in memory. If we modify $p_1$ through a setter method, then $p_2$ will reflect the change.
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -92,6 +91,7 @@ class PointTester {
 
 This idea carries over to other, more complex classes as well. For example, strings, arrays, lists, and others are all objects, and therefore, they are all subject to object aliasing. Modifying one \ttt{ArrayList} instance will modify all other \ttt{ArrayList} instances that reference the same object. This is a common source of bugs in Java programs, and it is important to be aware of this behavior. In the following example, we will demonstrate aliasing through the \ttt{ArrayList} data structure containing \ttt{Point} objects. We add a series of \ttt{Point} instances to an \ttt{ArrayList}, which is then aliased by another \ttt{ArrayList}. We then add another \ttt{Point} instance to the first \ttt{ArrayList}, followed by a verification that the lists are the same size. Additionally, we traverse over the lists and verify that the elements are the same through the \ttt{==} operator. Remember that \ttt{==} returns whether or not two objects reference the same instance in memory. Because these lists are merely aliases of each other, they will, in fact, contain references to the same \ttt{Point} instances.
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -144,6 +144,7 @@ class MiniArrayList<T> {
 
 Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type, because Java arrays use information, at runtime, about the element type. Generics, on the other hand, are a compile-time feature, meaning it is impossible to directly instantiate an array of a generic type. Instead, we must instantiate an array containing (elements of) type \ttt{Object}, followed by a cast to contain (elements of) type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \emph{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
 
+\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -184,6 +185,7 @@ class MiniArrayListTester {
 }
 \end{lstlisting}
 
+\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -281,20 +283,26 @@ class MiniArrayList<T> {
 class MiniArrayList<T> {
 
   /**
-   * Shifts all elements to the left of the given index one position leftwards.
-   * Note that this method overwrites the element at the given index.
+   * Shifts all elements to the left of the given index 
+   * one position leftwards. Note that this method overwrites 
+   * the element at the given index.
    * @param idx - the index to shift left of.
    */
   private void shiftLeft(int idx) {
-    for (int i = idx; i < this.size - 1; i++) { this.vals[i] = this.vals[i + 1]; }
+    for (int i = idx; i < this.size - 1; i++) { 
+      this.vals[i] = this.vals[i + 1]; 
+    }
   }
 
   /**
-   * Shifts all elements to the right of the given index one position rightwards.
+   * Shifts all elements to the right of the given index 
+   * one position rightwards.
    * @param idx - the index to shift right of.
    */
   private void shiftRight(int idx) {
-    for (int i = size - 1; i > idx; i--) { this.vals[i] = this.vals[i - 1]; }
+    for (int i = size - 1; i > idx; i--) { 
+      this.vals[i] = this.vals[i - 1]; 
+    }
   }
 }
 \end{lstlisting}
@@ -489,11 +497,11 @@ class DoublyLinkedList<T> {
     return new DoublyLinkedListIterator<>(this.first);
   }
 
-  private static class DoublyLinkedListIterator<T> implements Iterator<T> {
+  private static class DoublyLLIterator<T> implements Iterator<T> {
     
     private Node<T> current;
 
-    private DoublyLinkedListIterator(Node<T> first) {
+    private DoublyLLIterator(Node<T> first) {
       this.current = first;
     }
 
@@ -620,6 +628,7 @@ class DoublyLinkedList<T> {
 }
 \end{lstlisting}
 
+\enlargethispage{3\baselineskip}
 Finally we arrive at element removal, which is not as cut-and-dry. We want to pass the element-to-remove (compared via \ttt{equals}), but we need to adjust the pointers accordingly. In particular, there are four cases to consider:
 
 \begin{enumerate}[label=(\alph*)]
@@ -654,6 +663,7 @@ class DoublyLinkedListTester {
 }
 \end{lstlisting}
 
+\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
   // ... previous code not shown.
@@ -714,7 +724,8 @@ class AssociationListTester {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[language=MyJava]
+\enlargethispage{-3\baselineskip}
+\begin{lstlisting}[language=MyJavaNF]
 import java.lang.StringBuilder;
 import java.util.Optional;
 
@@ -744,11 +755,8 @@ class AssociationList<K, V> {
   Optional<V> lookup(K key) {
     AssociationList<K, V> curr = this;
     while (curr != null) {
-      if (curr.key.equals(key)) {
-        return Optional.of(curr.value);
-      } else {
-        curr = curr.parent;
-      }
+      if (curr.key.equals(key)) { return Optional.of(curr.value); } 
+      else { curr = curr.parent; }
     }
     return Optional.empty();
   }
@@ -759,10 +767,12 @@ class AssociationList<K, V> {
    * @param value - the value to associate.
    * @return a new association list with the new association.
    */
-   AssociationList<K, V> extend(K key, V value) {
+  AssociationList<K, V> extend(K key, V value) {
     return new AssociationList<>(key, value, this);
-   }
-  
+  }
+\end{lstlisting}
+\enlargethispage{4\baselineskip}
+\begin{lstlisting}[language=MyJavaNF]
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder("[");
@@ -777,5 +787,4 @@ class AssociationList<K, V> {
   }
 }
 \end{lstlisting}
-
 Each association list in our representation stores exactly one association. Each time we extend the association, we create a new list that points to the previous list. This is a very inefficient way to store associations, but it is a common functional way of extending bindings in a programming language, most often in simple interpreted languages.

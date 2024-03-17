@@ -19,8 +19,11 @@ interface IShape {
 }
 \end{lstlisting}
 
-We cannot write any tests for the \ttt{IShape} interface directly, since it is impossible to instantiate an interface. We can, however, write two different classes that implement \ttt{IShape}, and test those. To demonstrate, we will write and test the \ttt{Pentagon} and \ttt{Octagon} classes whose constructors receive (and then store as instance variables) the side length of the shape. Fortunately, the definitions thereof are trivial because they are nothing more than regurgitations of the mathematical formulae. Notice that, when testing, we initialize the object instance to be of type \ttt{IShape}, not \ttt{Pentagon} or \ttt{Octagon}. This is because we want to be able to categorize these classes as types of \ttt{IShape} instances rather than solely instances of \ttt{Pentagon} or \ttt{Octagon} respectively. This is a common practice in object-oriented programming, and it is called \emph{polymorphism}. Polymorphism is the ability of an object to take on many forms. In this case, the \ttt{IShape} interface is the form that the \ttt{Pentagon} and \ttt{Octagon} classes use to take on the form of a shape as we described.\footnote{We must mark the \ttt{area} and \ttt{perimeter} methods as \ttt{public} because all interface methods are \ttt{public}, either explicitly or implicitly.}
+We cannot write any tests for the \ttt{IShape} interface directly, since it is impossible to instantiate an interface. We can, however, write two different classes that implement \ttt{IShape}, and test those. To demonstrate, we will write and test the \ttt{Pentagon} and \ttt{Octagon} classes whose constructors receive (and then store as instance variables) the side length of the shape. Fortunately, the definitions thereof are trivial because they are nothing more than regurgitations of the mathematical formulae. Notice that, when testing, we initialize the object instance to be of type \ttt{IShape}, not \ttt{Pentagon} or \ttt{Octagon}. This is because we want to be able to categorize these classes as types of \ttt{IShape} instances rather than solely instances of \ttt{Pentagon} or \ttt{Octagon} respectively. Instantiating a variable as an interface type, then instantiating it as a subtype is a form of \emph{polymorphism}. Polymorphism is the ability of an object to take on many forms. In this case, the \ttt{IShape} interface is the form that the \ttt{Pentagon} and \ttt{Octagon} classes use to take on the form of a shape as we described. 
 
+When implementing the methods of an interface in a class, we must mark those methods as \ttt{public} because all interface methods are \ttt{public}, either explicitly or implicitly. In this context, the \ttt{area} and \ttt{perimeter} methods are overridden in the \ttt{Octagon} and \ttt{Pentagon} classes.
+
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -58,7 +61,9 @@ class Pentagon implements IShape {
   
   private final double SIDE_LENGTH;
 
-  Pentagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
+  Pentagon(double sideLength) { 
+    this.SIDE_LENGTH = sideLength; 
+  }
 
   @Override
   public double area() {
@@ -73,12 +78,15 @@ class Pentagon implements IShape {
 }
 \end{lstlisting}
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Octagon implements IShape {
 
   private final double SIDE_LENGTH;
 
-  Octagon(double sideLength) { this.SIDE_LENGTH = sideLength; }
+  Octagon(double sideLength) { 
+    this.SIDE_LENGTH = sideLength; 
+  }
 
   @Override
   public double area() {
@@ -116,6 +124,7 @@ class Diamond implements ISuit {
 }
 \end{lstlisting}
 
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Heart implements ISuit {
     
@@ -220,6 +229,7 @@ class Cat implements IAnimal {
 }
 \end{lstlisting}
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Dog implements IAnimal {
 
@@ -253,6 +263,7 @@ class IBox<T> {
 }
 \end{lstlisting}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -359,8 +370,10 @@ class FunctionMapTester {
     List<Integer> l = List.of(1, 2, 3, 4, 5);
     Function<Integer, Integer> addOne = new AddOne();
     assertAll(
-      () -> assertEquals(List.of(2, 3, 4, 5, 6), FunctionMap.map(l, addOne)),
-      () -> assertEquals(List.of(), FunctionMap.map(List.of(), addOne)));
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), 
+                         FunctionMap.map(l, addOne)),
+      () -> assertEquals(List.of(), 
+                         FunctionMap.map(List.of(), addOne)));
   }
 }
 \end{lstlisting}
@@ -387,6 +400,7 @@ class FunctionMap {
 
 \myexample{Java 8 introduced the \ttt{Function} interface, so we do not have to design our own version. Using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can make use of method referencing via the \ttt{::} operator. Let's rewrite the \ttt{addOne} example doing so. We will also show off the fact that Java will auto-box and unbox an integer primitive into its \ttt{Integer} counterpart, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives instead, which are easier to work with. Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, because Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}}
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -401,10 +415,14 @@ class FunctionMapTester {
   void testMap() {
     List<Integer> l = List.of(1, 2, 3, 4, 5);
     assertAll(
-      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, FunctionMapTester::addOne)),
-      () -> assertEquals(List.of(), map(List.of(), FunctionMapTester::addOne)),
-      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, i -> i + 1)),
-      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(List.of(), i -> i + 1)));
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), 
+                         map(l, FunctionMapTester::addOne)),
+      () -> assertEquals(List.of(),   
+                         map(List.of(), FunctionMapTester::addOne)),
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), 
+                         map(l, i -> i + 1)),
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), 
+                         map(List.of(), i -> i + 1)));
   }
 }
 \end{lstlisting}
@@ -423,6 +441,7 @@ interface IExpr {
 
 The simplest (atomic) values in our language are numbers, or literals as they are called. A \ttt{Lit} stores a single integer as an instance variable, and returns this instance variable upon a \ttt{value} invocation, which means \ttt{Lit} must implement the \ttt{IExpr} interface. Testing this class is trivial, so we will only write two tests.
 
+\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -461,8 +480,10 @@ class AddTester {
   @Test
   void testAdd() {
     assertAll(
-      () -> assertEquals(12, new Add(new Lit(5), new Add(new Lit(3), new Lit(4)))),
-      () -> assertEquals(42, new Add(new Lit(41), new Lit(1))),
+      () -> assertEquals(12, new Add(new Lit(5), 
+                                     new Add(new Lit(3), new Lit(4)))),
+      () -> assertEquals(42, new Add(new Lit(41), 
+                                     new Lit(1))),
       () -> assertEquals(101, new Add(new Add(new Lit(123), new Lit(-43)),
                                       new Add(new Lit(2), new Lit(19)))));
   }
@@ -481,10 +502,12 @@ class Add implements IExpr {
   }
 
   @Override
-  public int value() { return this.LHS.value() + this.RHS.value(); }
+  public int value() { 
+    return this.LHS.value() + this.RHS.value(); 
+  }
 }
 \end{lstlisting}
-
+\enlargethispage{1\baselineskip}
 Thus we have a programming language that interprets numbers and addition expressions! We could add more elements/operators to this language, and we encourage the readers to get creative.
 
 \myexample{Symbolic differentiators are programs that take a mathematical expression and compute its derivative, but non-numerically. That is, it examines and interprets the structure of the expression to calculate the derivative. In this example we will write a symbolic differentiator in Java using interfaces and classes. Note that you do not need any calculus knowledge to follow along.}
@@ -516,11 +539,11 @@ class DerivativeTester {
   void testMonomialExpressionDerivative() {
     assertAll(
       () -> assertEquals(new ConstantExpression(3),
-                         new MonomialExpression("x", 3, 1).derivative("x")),
+              new MonomialExpression("x", 3, 1).derivative("x")),
       () -> assertEquals(new ConstantExpression(0),
-                         new MonomialExpression("x", 3, 10).derivative("y")),
+              new MonomialExpression("x", 3, 10).derivative("y")),
       () -> assertEquals(new MonomialExpression("x", 6, 1),
-                         new MonomialExpression("x", 3, 2).derivative("x")));
+              new MonomialExpression("x", 3, 2).derivative("x")));
   }
 }
 \end{lstlisting}
@@ -547,7 +570,8 @@ class ConstantExpression implements Expression {
     if (!(obj instanceof ConstantExpression)) { 
       return false; 
     } else { 
-      return ((ConstantExpression) obj).CONSTANT == this.CONSTANT; 
+      ConstantExpression cons = (ConstantExpression) obj;
+      return cons.CONSTANT == this.CONSTANT; 
     }
   }
 
@@ -563,7 +587,8 @@ class ConstantExpression implements Expression {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[language=MyJava]
+\enlargethispage{-5\baselineskip}
+\begin{lstlisting}[language=MyJavaNF]
 import java.util.Objects;
 
 class MonomialExpression implements Expression {
@@ -609,10 +634,14 @@ class MonomialExpression implements Expression {
   public int hashCode() { 
     return Objects.hash(this.VAR, this.COEFFICIENT, this.EXPT); 
   }
-
+\end{lstlisting}
+\enlargethispage{4\baselineskip}
+\begin{lstlisting}[language=MyJavaNF]
   @Override
   public String toString() { 
-    return String.format("%d%s^%d", this.COEFFICIENT, this.VAR, this.EXPT); 
+    return String.format("%d%s^%d", this.COEFFICIENT, 
+                                    this.VAR, 
+                                    this.EXPT); 
   }
 }
 \end{lstlisting}

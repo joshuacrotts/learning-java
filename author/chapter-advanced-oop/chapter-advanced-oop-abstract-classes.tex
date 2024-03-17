@@ -104,6 +104,7 @@ It might seem strange to use an abstract class, since we could write a \ttt{Spea
 \label{fig:collisiondetection}
 \end{figure}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 abstract class GameObject {
   
@@ -131,7 +132,8 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
   }
 
   /**
-   * Determines whether this object collides with another AxisAlignedBoundingBoxObject.
+   * Determines whether this object collides with 
+   * another AxisAlignedBoundingBoxObject.
    * @param obj - instance of AxisAlignedBoundingBoxObject.
    * @return true if the objects overlap and false otherwise.
    */
@@ -144,8 +146,9 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
 }
 \end{lstlisting}
 
-We declared an abstract class to extend another abstract class; which is perfectly acceptable. Because it makes no sense to have an entity called \ttt{AxisAlignedBoundingBoxObject}, we declare it as abstract, but we need it to contain the functionality of \ttt{GameObject}, which calls for the inheritance. Normally, we would immediately write an extensive test suite for \ttt{collidesWith}, but because we cannot instantiate an \ttt{AxisAlignedBoundingBox} directly, we cannot test \ttt{collidesWith} at the moment. In a couple of paragraphs, however, this will be possible, with the additions of \ttt{CircleObject} and \ttt{RectangleObject}.
+We declared an abstract class to extend another abstract class; which is perfectly acceptable. Because it makes no sense to instantiate an entity, in and of itself, called \ttt{AxisAlignedBoundingBoxObject}, we declare it as abstract, but we need it to contain the functionality of \ttt{GameObject}, which calls for the inheritance. Normally, we would immediately write an extensive test suite for \ttt{collidesWith}, but because we cannot instantiate an \ttt{AxisAlignedBoundingBox} directly, we cannot test \ttt{collidesWith} at the moment. In a couple of paragraphs, however, this will be possible, with the additions of \ttt{CircleObject} and \ttt{RectangleObject}.
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -154,14 +157,22 @@ class AxisAlignedBoundingBoxObjectTester {
 
   @Test
   void testCollidesWith() {
-    AxisAlignedBoundingBoxObject o1 = new RectangleObject(30, 30, 1000, 2000);
-    AxisAlignedBoundingBoxObject o2 = new RectangleObject(0, 0, 5, 5);
-    AxisAlignedBoundingBoxObject o3 = new RectangleObject(400, 200, 750, 250);
-    AxisAlignedBoundingBoxObject o4 = new RectangleObject(300, 100, 300, 200);
-    AxisAlignedBoundingBoxObject o5 = new CircleObject(20, 30, 1000);
-    AxisAlignedBoundingBoxObject o6 = new CircleObject(200, 250, 500);
-    AxisAlignedBoundingBoxObject o7 = new CircleObject(30, 300, 1500);
-    AxisAlignedBoundingBoxObject o8 = new CircleObject(90, 85, 200);
+    AxisAlignedBoundingBoxObject o1 
+      = new RectangleObject(30, 30, 1000, 2000);
+    AxisAlignedBoundingBoxObject o2 
+      = new RectangleObject(0, 0, 5, 5);
+    AxisAlignedBoundingBoxObject o3 
+      = new RectangleObject(400, 200, 750, 250);
+    AxisAlignedBoundingBoxObject o4 
+      = new RectangleObject(300, 100, 300, 200);
+    AxisAlignedBoundingBoxObject o5 
+      = new CircleObject(20, 30, 1000);
+    AxisAlignedBoundingBoxObject o6 
+      = new CircleObject(200, 250, 500);
+    AxisAlignedBoundingBoxObject o7 
+      = new CircleObject(30, 300, 1500);
+    AxisAlignedBoundingBoxObject o8 
+      = new CircleObject(90, 85, 200);
     assertAll(
       () -> assertTrue(o1.collidesWith(o2)),
       () -> assertTrue(o1.collidesWith(o4)),
@@ -195,26 +206,31 @@ interface IDrawable {
 }
 \end{lstlisting} 
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
-class CircleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
+class CircleObject extends AxisAlignedBoundingBoxObject 
+                   implements IDrawable {
   
   CircleObject(int x, int y, int r) { super(x, y, r * 2, r * 2); }
 
   @Override
   public void draw(Graphics2D g2d) {
-    g2d.drawOval(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+    g2d.drawOval(this.getX(), this.getY(), 
+                 this.getWidth(), this.getHeight());
   }
 }
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-class RectangleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
+class RectangleObject extends AxisAlignedBoundingBoxObject 
+                      implements IDrawable {
   
   RectangleObject(int x, int y, int w, int h) { super(x, y, w, h); }
   
   @Override
   public void draw(Graphics2D g2d) {
-    g2d.drawRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+    g2d.drawRect(this.getX(), this.getY(), 
+                 this.getWidth(), this.getHeight());
   }
 }
 \end{lstlisting}
@@ -270,8 +286,11 @@ class NumberedArgument extends Argument {
 
   @Override
   boolean validate(Map<String, List<String>> args) {
-    if (!args.containsKey(this.getKey())) { return false; } 
-    else { return args.get(this.getKey()).size() == this.NUM_REQUIRED_ARGS; }
+    if (!args.containsKey(this.getKey())) { 
+      return false; 
+    } else { 
+      return args.get(this.getKey()).size() == this.NUM_REQUIRED_ARGS; 
+    }
   }
 }
 \end{lstlisting}
@@ -322,8 +341,7 @@ import java.util.Set;
 import java.util.HashSet;
 
 class ArgumentParser {
-  
-  // ... other methods not shown.
+  // ... previous methods not shown.
 
   /**
    * Determines whether or not all of the arguments in the stored
@@ -337,7 +355,7 @@ class ArgumentParser {
 }
 \end{lstlisting}
 
-\subsubsection{The ASPL Interpreter}
+\subsubsection*{The ASPL Interpreter}
 \myexample{Inheritance is a truly powerful programming language construct, and we will now attempt to describe its beauty through the design of a mini-project. Said mini-project will encompass writing a small programming language called ASPL, or ``A Simple Programming Language.'' Programming language syntax and semantics, collectively, require a lot of knowledge outside the domain and scope of this text, but we will see that, even with our somewhat limited arsenal of tools, we can construct a fairly powerful programming language. Our language will start off as a recreation of the interpreter from our section on interfaces, but contains modifications to make it more flexible.}
 
 As a means of motivation, let's write a few programs in this language to show its capabilities. The first listing is a simple program to add two numbers together. The second listing binds two variables, and if their sum is equal to 42, then the result is 100, otherwise it is zero. The third listing declares a variable, followed by a conditional, both cases of which contain another binding of a variable, closing off with a product operation.
@@ -418,6 +436,7 @@ As a final corollary point before jumping into the environment details, we must 
 
 The question now is of what type are the keys and values in our map. The keys are string identifiers, and the values are their corresponding abstract syntax trees. Our environment representation/class is extremely simple and almost seems superfluous, but in due time we will add more functionality to justify its existence over a simple \ttt{HashMap} instance. In particular, the \ttt{lookup} method for finding a variable association will remain undefined for now.
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.Map;
@@ -530,7 +549,7 @@ final class NumNode extends AstNode {
 }
 \end{lstlisting}
 
-
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class BoolNode extends AstNode {
 
@@ -574,7 +593,7 @@ final class BoolNode extends AstNode {
 
 From here, we arrive at primitive operators via \ttt{PrimNode}. A primitive operator is one akin to addition, subtraction, and so forth. Two additional primitives that we will support are reading an integer from standard input, and printing one to standard output. Primitive operators receive any number of arguments and whose behavior is handled as a case analysis of the \ttt{eval} method. 
 
-
+\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -596,8 +615,8 @@ final class PrimNode extends AstNode {
   AstNode eval(Environment env) {
     String op = this.OP;
     List<AstNode> operands = this.getChildren().stream()
-            .map(n -> n.eval(env))
-            .toList();
+                                               .map(n -> n.eval(env))
+                                               .toList();
     switch (op) {
       case "+": return this.primPlus(operands, env);
       case "-": return this.primMinus(operands, env);
@@ -609,13 +628,13 @@ final class PrimNode extends AstNode {
 
   @Override
   public String toString() {
-    return String.format("(%s %s)", this.OP, this.getChildren().toString());
+    return String.format("(%s %s)",this.OP,this.getChildren().toString());
   }
 
   private AstNode primPlus(List<AstNode> args, Environment env) {
     return new NumNode(args.stream()
-                              .map(t -> ((NumNode) t).getValue())
-                              .reduce(0.0, Double::sum));
+                           .map(t -> ((NumNode) t).getValue())
+                           .reduce(0.0, Double::sum));
   }
 
   private AstNode primMinus(List<AstNode> args, Environment env) {
@@ -690,12 +709,17 @@ final class Environment {
   /**
    * Looks up a variable in the current environment.
    * @param id - the variable name.
-   * @return the value bound to the variable, or null if it does not exist.
+   * @return the value bound to the variable, 
+   *         or null if it does not exist.
    */
   AstNode lookup(String id) {
-    if (this.ENV.containsKey(id)) { return this.ENV.get(id); } 
-    else if (this.PARENT != null) { return this.PARENT.lookup(id); } 
-    else { return null; }
+    if (this.ENV.containsKey(id)) { 
+      return this.ENV.get(id); 
+    } else if (this.PARENT != null) { 
+      return this.PARENT.lookup(id);
+    } else { 
+      return null; 
+    }
   }
 
   /**
@@ -714,6 +738,7 @@ final class Environment {
 
 Our modified version of the environment allows us to implement local/let bindings in a way that respects parent environments. As one of the exercises of this chapter demonstrate, environment extension helps us when adding user-defined functions.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class LetNode extends AstNode {
 
@@ -746,14 +771,17 @@ final class LetNode extends AstNode {
   public String toString() {
     AstNode e = this.getChildren().get(0);
     AstNode b = this.getChildren().get(1);
-    return String.format("(let ([%s %s]) %s)", this.ID, e.toString(), b.toString());
+    return String.format("(let ([%s %s]) %s)", 
+                          this.ID, 
+                          e.toString(), 
+                          b.toString());
   }
 }
 \end{lstlisting}
 
 Finally we arrive at decision-based nodes. The \ttt{IfNode} class represents a conditional expression rather than a statement. Recall the ternary operator; it resolves to a value, unlike Java's \ttt{if} statement. The \ttt{IfNode} class has three children: a predicate, a consequent, and an alternative. The predicate is an abstract syntax tree that represents a boolean expression, and the consequent and alternative are arbitrary abstract syntax tree nodes. The \ttt{IfNode} class will have a \ttt{toString} method that will return a string of the form \ttt{(if <pred> <conseq> <alt>)}. Its evaluator will evaluate the predicate, and then evaluate either the consequent or alternative depending on the result of the predicate.
 
-
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class IfNode extends AstNode {
   
@@ -762,10 +790,10 @@ final class IfNode extends AstNode {
   }
 
   /**
-  * Interpret an if statement.
-  * @param env - the environment in which to interpret the if statement.
-  * @return The result of the if statement.
-  */
+   * Interpret an if statement.
+   * @param env - the environment in which to interpret the if statement.
+   * @return The result of the if statement.
+   */
   @Override
   AstNode eval(Environment env) {
     AstNode pred = this.getChildren().get(0);
@@ -773,8 +801,11 @@ final class IfNode extends AstNode {
     AstNode alt = this.getChildren().get(2);
 
     // Evaluate the predicate, then interpret one way or the other.
-    if (pred.eval(env).getBooleanValue()) { return cons.eval(env); } 
-    else { return alt.eval(env); }
+    if (pred.eval(env).getBooleanValue()) { 
+      return cons.eval(env); 
+    } else { 
+      return alt.eval(env); 
+    }
   }
   
   @Override
@@ -782,14 +813,17 @@ final class IfNode extends AstNode {
     AstNode p = this.getChildren().get(0);
     AstNode c = this.getChildren().get(1);
     AstNode a = this.getChildren().get(2);
-    return String.format("(if %s %s %s)", p.toString(), c.toString(), a.toString());
+    return String.format("(if %s %s %s)", 
+                          p.toString(), 
+                          c.toString(), 
+                          a.toString());
   }
 }
 \end{lstlisting}
 
 Finally, at long last, we can write some tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment, which contains no bindings at the start of evaluation. Unfortunately, we still have to write the programs as an abstract syntax tree, but the problems of lexing and parsing raw string input into an abstract syntax tree are reserved for some other time (or perhaps a separate course altogether).
 
-
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
