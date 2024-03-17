@@ -888,14 +888,14 @@ Java has an interface called \ttt{Map}\index{map}\index{\ttt{Map}} rather than a
   \label{fig:hashmap}
 \end{figure}
 
-\subsubsection{\ttt{TreeMap} Class}
+\subsubsection*{\ttt{TreeMap} Class}
 A \emph{TreeMap}\index{tree map}\index{\ttt{TreeMap}} is a map with a determined order, either by a natural ordering of the keys or that defined by a comparator. All methods in \texttt{Map} are definitionally implemented by a \texttt{TreeMap}.
 
-\subsubsection{\ttt{LinkedHashMap} Class}
+\subsubsection*{\ttt{LinkedHashMap} Class}
 A \emph{LinkedHashMap}\index{linked hash map}\index{\ttt{LinkedHashMap}} is a map with an ordering based on the insertion order of the key/value pairs. All methods in a \ttt{Map} are definitionally implemented by a \ttt{LinkedHashMap}.
 
 \myexample{Perhaps one of the most common use cases for a dictionary-based data structure is to compute the frequency, or count, of some values. Suppose we want to write the \ttt{Set<Integer> mode(List<Integer> ls)} method that, when given a list of integers, returns the mode(s), i.e., the most-frequent value(s). We can use a map to keep track of the numbers seen so far, which are the keys, and their respective frequencies being the values. Because a list of numbers may have multiple modes, we will need to use a three-step algorithm:}
-
+\enlargethispage{4\baselineskip}
 \begin{enumerate}
   \item Compute the frequencies of each number.
   \item Find the highest frequency.
@@ -918,13 +918,14 @@ class ComputeModeTester {
   void testMode() {
     assertAll(
       () -> assertEquals(Set.of(), mode(List.of())),  
-      () -> assertEquals(Set.of(3), mode(List.of(4, 5, 3, 2, 1, 3, 3, 4, 3))),
-      () -> assertEquals(Set.of(2, 3), mode(List.of(2, 3, 2, 3, 2, 3, 3, 2))),
-      () -> assertEquals(Set.of(2), mode(List.of(2, 2, 2, 2, 2, 2, 2, 2, 2))));
+      () -> assertEquals(Set.of(3), mode(List.of(4, 5, 2, 3, 3, 4, 3))),
+      () -> assertEquals(Set.of(2, 3), mode(List.of(2, 3, 2, 3, 3, 2))),
+      () -> assertEquals(Set.of(2), mode(List.of(2, 2, 2, 2, 2, 2, 2))));
   }
 }
 \end{lstlisting}
 
+\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.HashSet;
@@ -941,10 +942,8 @@ class ComputeMode {
    * @return set of mode values, if they exist.
    */
   static Set<Integer> mode(List<Integer> ls) {
-    Set<Integer> s = new HashSet<>();
-    if (ls.isEmpty()) {
-      return s;
-    } else {
+    if (ls.isEmpty()) { return new HashSet<>(); } 
+    else {
       // First, compute the frequencies.
       Map<Integer, Integer> frequencies = new HashMap<>();
       for (int v : ls) {
@@ -962,12 +961,10 @@ class ComputeMode {
       }
 
       // Now, find the values that match that frequency.
-      for (int k : frequencies.keySet()) {
-        if (frequencies.get(k) == highestFreq) {
-          s.add(k);
-        }
-      }
-      return s;
+      return frequencies.keySet()
+                        .stream()
+                        .filter(k -> frequencies.get(k) == highestFreq)
+                        .collect(Collectors.toSet());
     }
   }
 }
@@ -976,9 +973,9 @@ class ComputeMode {
 \myexample{Let's design the \ttt{sharesFirstChar} method that, when given an array of strings, returns a \ttt{Map<Character, Set<String>{>}} such that each alphabetized character maps to a set of alphabetized strings that start with that character. We will further assume that this is a case-insensitive mapping. Consider the following input and output example:}
 
 \begin{verbnobox}[\small]
-sharesFirstChar(["she", "sells", "sea", "shells", "by", "the", "sea", "shore"])
+sharesFirstChar(["she", "sells", "sea", "shells", "by", "the", "sea"])
   => [<'b' : {"by"}>, 
-      <'s' : {"sea", "sells", "she", "shells", "shore"}>
+      <'s' : {"sea", "sells", "she", "shells"}>
       <'t' : {"the"}>]
 \end{verbnobox}
 
@@ -1005,15 +1002,17 @@ class ShareFirstCharacterTester {
     exp2.put('b', new TreeSet<>());
     exp2.put('s', new TreeSet<>());
     exp2.put('t', new TreeSet<>());
-    exp2.get('s').addAll(Set.of("she", "sells", "sea", "shells", "shore"));
+    exp2.get('s').addAll(Set.of("she", "sells", "sea", "shells"));
     exp2.get('t').addAll(Set.of("the"));
     exp2.get('b').addAll(Set.of("by"));
-    assertEquals(exp2, shareFirstChar(List.of("she", "sells", "sea", "shells", 
-                                              "by", "the", "sea", "shore")));
+    assertEquals(exp2, 
+                 shareFirstChar(List.of("she", "sells", "sea", "shells", 
+                                        "by", "the", "sea")));
   }
 }
 \end{lstlisting}
 
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.List;
@@ -1067,6 +1066,7 @@ class FirstUniqueLetterTester {
 }
 \end{lstlisting}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.Map;
@@ -1135,24 +1135,27 @@ class NthMostUniqueCharTester {
 }
 \end{lstlisting}
 
+\enlargethispage{8\baselineskip}
 \begin{lstlisting}[language=MyJava]
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 class NthMostUniqueChar {
 
   /**
-   * Given a string, returns the nth most frequent character in that string.
+   * Given a string, returns the nth most 
+   * frequent character in that string.
    * @param s - string to examine.
    * @param n - int n >= 0.
-   * @return the nth most frequent character as a String or null if nonexistent.
+   * @return the nth most frequent character as 
+   *         a String or null if nonexistent.
    */
   static String nthMostUniqueChar(String s, int n) {
     // Step 1: compute the frequencies.
     Map<Character, Integer> M = new HashMap<>();
-    for (char c : s.toCharArray()) { M.put(c, M.getOrDefault(c, 0)); }
+    s.chars().forEach(c -> M.put(c, M.getOrDefault(c, 0))); 
 
     // Step 2: build the comparator.
     Comparator<Entry<Character, Integer>> cmp = new Comparator<>() {
@@ -1168,17 +1171,15 @@ class NthMostUniqueChar {
     };
 
     // Step 3: populate the priority queue with entry objects.
-    PriorityQueue<Map.Entry<Character, Integer>> Q = new PriorityQueue<>(cmp);
-    for (Map.Entry<Character, Integer> e : M.entrySet()) { Q.add(e); }
+    PriorityQueue<Map.Entry<Character, Integer>> Q 
+      = new PriorityQueue<>(cmp);
+    M.entrySet().forEach(e -> Q.add(e));
 
     // Step 4: poll n - 1 items from the queue.
     while (!Q.isEmpty()) {
       n--;
-      if (n == 0) {
-        return String.valueOf(Q.peek().getKey());
-      } else {
-        Q.poll();
-      }
+      if (n == 0) { return String.valueOf(Q.peek().getKey()); } 
+      else { Q.poll(); }
     }
     return null;
   }
@@ -1202,6 +1203,7 @@ Upon retrieving an iterator, we can use a \ttt{while} loop to continuously trave
 
 \myexample{Let's use an iterator to traverse over a \ttt{LinkedHashSet}, whose elements ordering is determined by their insertion order, meaning the iterator should produce them in the order in which they were inserted.}
 
+\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1214,14 +1216,11 @@ class IteratorTester {
 
   @Test
   void testIterator() {
-    Set<Integer> lhs = new LinkedHashSet<>();
-    lhs.add(8); lhs.add(10); lhs.add(0); lhs.add(90);
+    Set<Integer> lhs = new LinkedHashSet<>(Set.of(8, 90));
     Iterator<Integer> it = lhs.iterator();
     assertAll(
       () -> assertTrue(it.hasNext());
       () -> assertEquals(8, it.next()),
-      () -> assertEquals(10, it.next()),
-      () -> assertEquals(0, it.next()),
       () -> assertEquals(90, it.next()),
       () -> assertFalse(it.hasNext()));
   }
@@ -1248,7 +1247,9 @@ class EnhancedForLoopTester {
     Set<Integer> lhs = new LinkedHashSet<>();
     lhs.add(1); lhs.add(2); lhs.add(3); lhs.add(4);
     int diff = 0;
-    for (Integer e : lhs) { diff -= e; }
+    for (Integer e : lhs) { 
+      diff -= e; 
+    }
     assertEquals(-10, diff);
   }
 }
@@ -1256,6 +1257,7 @@ class EnhancedForLoopTester {
 
 \myexample{Not only does the use of an enhanced \ttt{for} loop disallow structural modification, it also does not preserve the order of stacks. For example, suppose we have a stack $S=[10, 20, 30, 40, 50]$, where $50$ is the top of the stack. If we want to print each element of $S$ without iterators or modifying the stack itself, the obvious option is to use an enhanced \ttt{for} loop. Unfortunately, this does not go as expected: it prints the elements in the order they are inserted, i.e., first-in-first-out. Intuitively we may expect the program to output the values via last-in-first-out, i.e., $50, 40, 30, 20, 10$. What's worse is that its \ttt{Iterator} implementation also makes this mistake. The solution proposed by Oracle is to instead use the \ttt{ArrayDeque} class, which is a type of \ttt{Deque} object.\footnote{A \emph{deque}, pronounced as `deck,' is a double-ended queue, meaning we can insert and remove elements from either the front or the rear.}\footnote{See the note listed on Oracle's \ttt{Stack} documentation: \url{https://docs.oracle.com/javase/8/docs/api/java/util/Stack.html}}}
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stack;
 import java.util.Iterator;
@@ -1265,38 +1267,25 @@ import java.util.ArrayDeque;
 class StackPrinter {
 
   public static void main(String[] args) {
-    Stack<Integer> S = new Stack<>();
-    S.push(10); 
-    S.push(20); 
-    S.push(30); 
-    S.push(40); 
-    S.push(50);
+    Stack<Integer> S = new Stack<>(List.of(10, 20, 30, 40, 50));
 
     // Enhanced for loop prints them "incorrectly!"
     // An Iterator also has this issue.
     // We get "10, 20, 30, 40, 50" separated by newlines.
-    for (int x : S) { 
-      System.out.println(x); 
-    }
+    S.forEach(x -> System.out.println(x));
 
-    Deque<Integer> D = new ArrayDeque<>();
-    D.push(10); 
-    D.push(20); 
-    D.push(30); 
-    D.push(40); 
-    D.push(50);    
+    Deque<Integer> D = new ArrayDeque<>(List.of(10, 20, 30, 40, 50));
 
     // An ArrayDeque corrects this problem.
     // We correctly get "50, 40, 30, 20, 10" separated by newlines.
-    for (int x : D) { 
-      System.out.println(x); 
-    }
+    D.forEach(x -> System.out.println(x));
   }
 }
 \end{lstlisting}
 
 \myexample{The unintuitive nature of the enhanced \ttt{for} loop and certain iterators does not stop with stacks, unfortunately. Priority queues are also afflicted as a consequence of their implementation. Let's see what happens when we create a priority queue whose comparator prioritizes the string \ttt{"Joshua"} over all strings and makes the string \ttt{"Jack"} have the lowest priority. In other words, any occurrence of \ttt{"Joshua"} should come before all other strings in the priority queue, whereas any occurrence of \ttt{"Jack"} should come after all other strings in the priority queue. Any strings in between are ordered naturally, i.e., via lexicographical ordering.} 
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.PriorityQueue;
@@ -1308,9 +1297,11 @@ class PriorityQueuePrinting {
     Comparator<String> S = new Comparator<>() {
       @Override
       public int compare(String s1, String s2) {
-        // If Joshua comes first or Jack comes last, then s1 is prioritized.
+        // If Joshua comes first or Jack comes last, 
+        // then s1 is prioritized.
         if (s1.equals("Joshua") || s2.equals("Jack")) { return -1; } 
-        // If Jack comes first or Joshua comes last, then s2 is prioritized.
+        // If Jack comes first or Joshua comes last, 
+        // then s2 is prioritized.
         else if (s1.equals("Jack") || s2.equals("Joshua")) { return 1; } 
         // All other strings take standard priority (natural ordering).
         else { return s1.compareTo(s2); }
@@ -1321,7 +1312,7 @@ class PriorityQueuePrinting {
 
   public static void main(String[] args) {
     PriorityQueue<String> pq = initPriorityQueue();
-    pq.add("Peter"); pq.add("Joshua"); pq.add("Gautam"); pq.add("Siobahn");
+    pq.add("Peter"); pq.add("Joshua"); pq.add("Gautam"); pq.add("Jane");
     pq.add("Jack"); pq.add("Ratan"); pq.add("Dharmik"); pq.add("Sakshi");
 
     // Prints a seemingly random order!
@@ -1372,6 +1363,8 @@ IntStream is = IntStream.iterate(0, x -> x + 2);
 \end{verbnobox}
 
 Let us explain this method, but to do so we must introduce \emph{lambda expressions}. A lambda expression is an anonymous function, i.e., a function definition without a name. In the above code snippet, we define a function that receives a value $x$ and returns $x$ plus two. It would be identical to defining a \ttt{private static} method to add two to some integer, but we like lambda expressions due to their locality; it might come across as superfluous to design a method that is used in only one context. Should we want to pass a method reference instead of a lambda expression, this is easily attainable.
+
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
 
@@ -1445,14 +1438,17 @@ class BigIntFibStreamTester {
 
   @Test
   void testBigIntFibStream() {
-    // Get the stream, test ten values, make sure the lists are the same
+    // Get the stream, test ten values, 
+    // make sure the lists are the same
     // length, then test each subarray.
     Stream<BigInteger[]> s = StreamExample.fibonacciStream();
     List<BigInteger[]> actualLs = s.limit(10).toList();
     List<BigInteger[]> expectedLs 
       = new ArrayList<>(
-        List.of(new BigInteger[]{new BigInteger("0"), new BigInteger("1")},
-                new BigInteger[]{new BigInteger("1"), new BigInteger("1")},
+        List.of(new BigInteger[]{new BigInteger("0"), 
+                                 new BigInteger("1")},
+                new BigInteger[]{new BigInteger("1"), 
+                                 new BigInteger("1")},
                 ...));
 
     // Check each array of BigIntegers of the expected and actual.
@@ -1464,6 +1460,7 @@ class BigIntFibStreamTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.BigInteger;
@@ -1471,12 +1468,15 @@ import java.util.BigInteger;
 class BigIntFibStream {
 
   /**
-   * Computes a stream of BigInteger values computing the nth Fibonacci value.
+   * Computes a stream of BigInteger values 
+   * computing the nth Fibonacci value.
    * @return stream containing arrays of the next sequential BigIntegers.
    */
   static Stream<BigInteger[]> fibonacciStream() {
-    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),new BigInteger("1")};
-    return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])});
+    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),
+                                         new BigInteger("1")};
+    return Stream.iterate(vals, v -> 
+                          new BigInteger[]{v[1], v[0].add(v[1])});
   }
 }
 \end{lstlisting}
@@ -1517,7 +1517,7 @@ class BigIntFibStream {
 
 So our code now produces a list of \ttt{BigInteger} arrays containing the current Fibonacci value and its successor. Though, is this really what we want? A better solution would be to simply return the first element of the tuple/two-element array. We can achieve this via the \ttt{map} function. \ttt{map} receives a lambda expression as an argument and applies it to every element of the acting stream. Let's modify the code a bit to see an improved output. Excellently, this change means we do not need to loop over our expected/actual lists in the unit testing method, as \ttt{assertEquals} works as intended over \ttt{List} objects.
 
-
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -1534,14 +1534,17 @@ class BigIntFibStreamTester {
     List<BigInteger> actualLs = s.limit(10).toList();
     List<BigInteger[]> expectedLs 
       = new ArrayList<>(
-        List.of(new BigInteger[]{new BigInteger("0"), new BigInteger("1")},
-                new BigInteger[]{new BigInteger("1"), new BigInteger("1")},
+        List.of(new BigInteger[]{new BigInteger("0"), 
+                                 new BigInteger("1")},
+                new BigInteger[]{new BigInteger("1"), 
+                                 new BigInteger("1")},
                 ...));
     assertEquals(expectedLs, actualLs);
   }
 }
 \end{lstlisting}
 
+\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.BigInteger;
@@ -1549,12 +1552,16 @@ import java.util.BigInteger;
 class BigIntFibStream {
 
   /**
-   * Computes a stream of BigInteger values computing the nth Fibonacci value.
-   * @return stream containing arrays of the next sequential Fibonacci BigIntegers.
+   * Computes a stream of BigInteger values 
+   * computing the nth Fibonacci value.
+   * @return stream containing arrays of the next 
+   *         sequential Fibonacci BigIntegers.
    */
   static Stream<BigInteger> fibonacciStream() {
-    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),new BigInteger("1")};
-    return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])})
+    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),
+                                         new BigInteger("1")};
+    return Stream.iterate(vals, 
+                          v -> new BigInteger[]{v[1], v[0].add(v[1])})
                  .map(v -> v[0]);
   }
 }
@@ -1578,13 +1585,11 @@ class SqListTester {
 
   @Test
   void testSqList() {
-    List<Integer> ls1 = new ArrayList<>(List.of(1, 4, 9, 16, 25));
-    List<Integer> ls2 = new ArrayList<>(List.of(0, 100, 81, 81));
-    List<Integer> ls3 = new ArrayList<>();
+    List<Integer> ls1 = new ArrayList<>(List.of(0, 100, 49));
+    List<Integer> ls2 = new ArrayList<>();
     assertAll(
-      () -> assertEquals(ls1, sqList(new ArrayList<>(List.of(1, 2, 3, 4, 5)))),
-      () -> assertEquals(ls2, sqList(new ArrayList<>(List.of(0, 10, 9, 9)))),
-      () -> assertEquals(ls3, sqList(new ArrayList<>())));
+      () -> assertEquals(ls1, sqList(new ArrayList<>(List.of(0, 10, 7)))),
+      () -> assertEquals(ls2, sqList(new ArrayList<>())));
   }
 }
 \end{lstlisting}    
@@ -1638,7 +1643,7 @@ class RemoveVowelsStreamTester {
 \end{lstlisting}
 
 Onto the definition; we start by writing the method signature and purpose. Then, we need to complete step one: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. Step two involves us converting each integer into a ``one-string,'' which we can do via the constructor for a \ttt{String} object. Step three requires the use of \ttt{filter}, which is another higher-order function. It receives a lambda expression and returns those objects from the stream that satisfy the filter. Since we want to filter \emph{out} the vowels, we should write a method that determines if a character is vowel, then negate the expression as part of the lambda definition. Lastly we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. The reduce function receives an initial value, i.e., an accumulator $a$ and a binary function $f$. It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly how reduce works; It folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} Due to the simplicity of the \ttt{isVowel} predicate and its implementation in Chapter~\ref{chapter-crl}, we omit its definition.
-
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RemoveVowelsStream {
 
@@ -1661,6 +1666,7 @@ The primary benefit of streams is their compositionality. We can chain together 
 
 \myexample{Consider a series of stream operations to find the maximum integer of a list. For the general case, this is straightforward, but what about when the list is empty? It does not make sense to return zero, since the maximum integer in a list may very well be zero, which leads to a false conclusion. The solution, in this case, is the \ttt{Optional} class. An \ttt{Optional} is a container that may or may not contain a value. If so, we may access the value directly via \ttt{.get}. If we do not know whether or not it contains a value, we may use \ttt{.orElse($t$)}, which returns the encapsulated value if it exists, or $t$ otherwise. We can also check, prior to a retrieval, if the \ttt{Optional} contains a value via the \ttt{.isPresent} method. \ttt{Optional} is generic and works over any class type, like almost all other classes from the collections API. To test the return value of a stream operation that returns an \ttt{Optional}, e.g., \ttt{max}, we instantiate an \ttt{Optional} that wraps the resulting value if it exists, or \ttt{Optional.empty()} otherwise.}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1679,10 +1685,10 @@ class OptionalTester {
     Optional<Integer> op1 = Optional.of(42);
     Optional<Integer> op2 = Optional.empty();
     assertAll(
-      () -> assertEquals(op1, LS1.stream().max((a, b) -> a - b)),
-      () -> assertEquals(op2, LS2.stream().max((a, b) -> a - b)),
-      () -> assertEquals(42, LS1.stream().max((a, b) -> a - b).orElse(null));
-      () -> assertNull(LS2.stream().max((a, b) -> a - b).orElse(null)));
+      () -> assertEquals(op1, LS1.stream().max((a,b) -> a-b)),
+      () -> assertEquals(op2, LS2.stream().max((a,b) -> a-b)),
+      () -> assertEquals(42, LS1.stream().max((a,b) -> a-b).orElse(null));
+      () -> assertNull(LS2.stream().max((a,b) -> a-b).orElse(null)));
   }
 }
 \end{lstlisting}
