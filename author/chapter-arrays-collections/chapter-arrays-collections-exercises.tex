@@ -184,7 +184,7 @@ Walking through this with the example from before, we get the following sequence
     \item If there are only two elements in the list, you only need to shift once. Do the math!
 \end{itemize}
     
-This method is harder than it may appear at first glance, so write plenty of tests!
+This method is harder than it may appear at first glance, so write plenty of tests! You \textbf{cannot} use any auxiliary data structures or methods (from, say, \ttt{Collections}) to solve this problem.
 
 \begin{verbnobox}[\small]
 shift({11, 12, 13, 14}, -1)          => {12, 13, 14, 11}
@@ -193,6 +193,14 @@ shift({99999999}, 1000)              => {99999999}
 shift({}, -9999999)                  => {}
 shift({120, 80, 70, 50, 40, 20}, -3) => {50, 40, 20, 120, 80, 70}
 \end{verbnobox}
+
+\myexercise{1}{chapter-arrays-collections}{The \textit{centroid} of a two-dimensional shape $S$ is the arithmetic mean position of its points. That is, it is the point that represents the ``middle'' of a shape.}
+
+Design the \ttt{double[] centroid(double[] P)} method that, given an array of coordinates, returns the centroid of the shape described by~$P$. The input array has values such that every two elements $P[i], P[i+1]$ form one coordinate pair. For instance, $P[0] = x_1$ and $P[1] = y_1$, meaning there are $|P|/2$ coordinate pairs. The \ttt{centroid} method should return a two-element array whose first is the $x$ coordinate and whose second is the $y$ coordinate. The formula for the centroid (described as a set of points) $C(x, y)$ is as follows:
+
+\[
+    C(x, y) = \left(\dfrac{1}{|P|}\sum_{i=0}^{|P|-1}{P[2i]}, \dfrac{1}{|P|}\sum_{i=0}^{|P|-1}{P[2i+1]}\right)
+\]
 
 \myexercise{2}{chapter-arrays-collections}{For this problem you are not allowed to use an \ttt{ArrayList} or any helper methods, e.g., \ttt{.contains}, or methods from the \ttt{Arrays} class. You \emph{may} (and should) use a \ttt{Set<Integer>} to keep track of previously-seen peaks.}
 

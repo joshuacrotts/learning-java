@@ -62,7 +62,7 @@ This is a sentence on another line.
 This sentence should also be capitalized.
     \end{verbnobox}
 
-    \myexercise{2}{chapter-exceptions-io}{Design the \ttt{SpellChecker} class, which contains one \ttt{static} method: \ttt{void spellCheck(String dict, String in)}. The \ttt{spellCheck} methods reads two files: a ``dictionary'' and a content file. The content file contains a single sentence that may or may not have misspelled words. Your job is to check each word in the file and determine whether or not they are spelled correctly, according to the dictionary of (line-separated) words. If a word is not spelled correctly, wrap it inside brackets \ttt{[]}. 
+    \myexercise{2}{chapter-exceptions-io}{Design the \ttt{SpellChecker} class, which contains one \ttt{static} method: \ttt{void spellCheck(String dict, String in)}. The \ttt{spellCheck} method reads two files: a ``dictionary'' and a content file. The content file contains a single sentence that may or may not have misspelled words. Your job is to check each word in the file and determine whether or not they are spelled correctly, according to the dictionary of (line-separated) words. If a word is not spelled correctly, wrap it inside brackets \ttt{[]}. 
     
     Output the modified sentences to a file of the same name, just with the \ttt{.out} extension (you must remove whatever extension existed previously). You may assume that words are space-separated and that no punctuation exist. Hint: use a \ttt{Set}! Another hint: words that are different cases are not misspelled; e.g., \ttt{"Hello"} is spelled the same as \ttt{"hello"}; how can your program check this?}
 
@@ -81,12 +81,14 @@ Hi [hwo] are you [donig] I am [dioing] [jsut] fine if I say so
 [puncutiation]
     \end{verbnobox}
 
+\myexercise{2}{chapter-exceptions-io}{Design the \ttt{OrderWebUrls} class, which contains one \ttt{static} method: \ttt{void orderWebUrls(String in)}. The \ttt{orderWebUrls} method reads in a file of line-separated web URLs. A web URL contains a protocol separated by a colon and two forward slashes, and a host name. For example, in the URL \ttt{https://www.joshuacrotts.us}, the protocol is \ttt{https} and the host name is \ttt{www.joshuacrotts.us}. The method should read in web URLs in this specific format and sort them, lexicographically, based on the hostname. If two hostnames are identical and only differ by the protocol, then the order becomes based on the protocol.}
+
 \myexercise{2}{chapter-exceptions-io}{Recall the \ttt{Optional} class and its purpose. In this exercise you will reimplement its behavior with the \ttt{IMaybe} interface with two subtypes \ttt{Just} and \ttt{Nothing}, representing the existence and absence of a value, respectively. Design the generic \ttt{IMaybe} interface, which contains the following three metohds: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The constructors of these subtypes receive either an object of type \ttt{T} or no parameter, depending on whether it is a \ttt{Just} or a \ttt{Nothing}. Throw an \ttt{UnsupportedOperationException} when trying to get the value from an instance of \ttt{Nothing}}.
 
 \myexercise{2}{chapter-exceptions-io}{Redo the ``\ttt{Maybe}'' exercise, only this time implement it as an abstract class/subclass hierarchy. That is, \ttt{Maybe} should be an abstract class containing three abstract methods: \ttt{T get()}, \ttt{boolean isJust()}, and \ttt{boolean isNothing()}. The \ttt{Just} and \ttt{Nothing} classes should be subclasses of \ttt{Maybe} and override these methods accordingly. Do not create constructors for these classes. Instead, create static factory methods \ttt{Just.of(T t)} and \ttt{Nothing.of()} that return an instance of the appropriate class.}
 
 \myexercise{2}{chapter-exceptions-io}{A common use for file input and output is data analysis. Design a class \ttt{StatisticsDescriptor} that has the following methods:}
-\begin{itemize}
+\begin{enumerate}[label=(\alph*)]
     \item \ttt{void read(String fileName)}, which reads in a list of numbers from a file into a collection. These numbers can be integers or floating-point values.
     \item \ttt{double mean()}, which returns the mean of the dataset.
     \item \ttt{double stddev()}, which returns the standard deviation of the dataset.
@@ -96,13 +98,13 @@ Hi [hwo] are you [donig] I am [dioing] [jsut] fine if I say so
     \item \ttt{double range()}, which returns the range, or the difference between the maximum and minimum values of the dataset.
     \item \ttt{List<Double> outliers()}, which returns the numbers that are outliers of the dataset. We consider a value an outlier if it is greater than three standard deviations away from the mean. Refer to the formula for z-score calculation in the exercises from Chapter~\ref{chapter-testingandjava}.
     \item \ttt{void output(String fileName)}, which outputs all of the above statistics to the file specified by the parameter (the order is irrelevant). You should output these as a series of ``key-value'' pairs separated by an equals sign, e.g., \ttt{mean=X}. Put each pair on a separate line.
-\end{itemize}
+\end{enumerate}
 
 For all methods (except \ttt{read}), if the data has yet to be read, throw an \ttt{IllegalStateException}. 
 
 \myexercise{2}{chapter-exceptions-io}{You are teaching an introductory programming course and you want to keep a seating chart for your students. A seating chart is an arrangement of numbers $1..n$, the location in the classroom of which is defined by the instructor. Numbers that are lower in the range are closer to the front of the room. Design the \ttt{SeatingChart} class, which has the following methods:}
 
-\begin{itemize}
+\begin{enumerate}[label=(\alph*)]
     \item \ttt{SeatingChart()} is the constructor, which initializes the seating chart to be empty. The seating chart is represented as a \ttt{List<Student>}, where \ttt{Student} is a private and static class, inside \ttt{SeatingChart}, that you design. Students should have a name, a seat number, and an accommodation parameter. The seat number is an integer, and the accommodation parameter is a boolean.
 
     \item \ttt{void read(String fileName)} reads in a list of students from a file into the seating chart. The file contains a list of students, one per line, with their name. A student also has an optional accommodation parameter, which means they should sit in a seat closer to the front of the room. The file is comma-separated, and if the student has an accommodation, it is represented by \ttt{true} after the student's name.
@@ -116,11 +118,46 @@ Charlie
     \item \ttt{List<Student> getStudents()} returns the seating chart as a list of students.
     \item \ttt{List<Student> getAccommodationStudents()} returns the students with accommodations as a list.
     \item \ttt{void output(String fileName)} outputs the seating chart to a file specified by the parameter. The file should contain the students' names and their seat numbers, one per line, separated by a comma. The output list should be in the order of the seating chart.
-\end{itemize}
+\end{enumerate}
+
+\myexercise{3}{chapter-exceptions-io}{You are designing a system for looking up car information, similar to that of, say, Kelly Blue Book or Carvana.}
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, design the \ttt{Car} class, which stores the make, model, color, trim, and VIN (vehicle identification number) of the car as strings, the year and number of prior owners as an integer, an enumeration that contains its title status (e.g., \ttt{Clean}, \ttt{Salvaged}, or \ttt{Rebuilt}), and its MSRP (in USD) as a floating-point value.\footnote{As a tip: if you are ever writing real-world software that works with currency values, you should \emph{never} store currency as floating-point numbers, e.g., \ttt{double} or \ttt{float}. This is because of the inaccuracies that come with such representations in a computer. The preferred solution is to use an object type that separately stores cents and dollars such as \ttt{BigDecimal}.}
+
+    \item Make the \ttt{Car} class serializable, like we did in the chapter. That is, implement the \ttt{Serializable} interface and override the \ttt{writeObject} and \ttt{readObject} methods respectively. 
+
+    \item Override the \ttt{equals} and \ttt{hashCode} methods. Two \ttt{Car} objects are the same if they share the same VIN. When overriding \ttt{hashCode}, return a hash code that hashes all instance variables.
+    
+    \item Finally, override the \ttt{toString} method, which returns a string similar to the following (with a tab character before each line):
+\begin{verbnobox}[\small]
+    Make: Honda
+    Model: Accord
+    Color: Silver
+    Trim: LX
+    Year: 2007
+    VIN: 1G4HDSLVRLX
+    Number of Previous Owners: 2
+    Title Status: Salvaged
+    MSRP: \$20,475.00
+\end{verbnobox}
+
+    \item Now, design the \ttt{CarDatabase} class, whose (no parameter) constructor instantiates a \ttt{List<Car>} instance variable to store the list of cars. Then, design the following methods:
+    \begin{enumerate}[label=(\roman*)]
+        \item \ttt{void addCar(Car car)}, which adds a car with the given values to the database.
+        \item \ttt{boolean removeCar(String vin)}, which removes a car with the given VIN. If the car was in the database, the method returns \ttt{true}, and \ttt{false} otherwise.
+        \item \ttt{boolean contains(String vin)}, which returns \ttt{true} if a \ttt{Car} with the given VIN exists in the database, and \ttt{false} otherwise. 
+        \item \ttt{boolean contains(Car car)}, which returns \ttt{true} if the given car exists in the database, and \ttt{false} otherwise. Note that this method should be one line long and call the other variant of \ttt{contains}.
+        \item \ttt{void readFile(String in)}, which populates the database with the \ttt{Car} objects from the given file. The file should contain only serialized \ttt{Car} objects and not plain-text. 
+        \item \ttt{void writeFile(String out)}, which writes all cars in the database out to a file with the given file name. The file should contain only serialized \ttt{Car} objects and not plain-text.
+        \item \ttt{void sort(Comparator<Car> cmp)}, which sorts the database of \ttt{Car} objects according to the provided \ttt{Comparator} implementation.
+        \item \ttt{void sort()}, which sorts the database of \ttt{Car} objects according to their VIN.
+    \end{enumerate}
+\end{enumerate}
 
 \myexercise{3}{chapter-exceptions-io}{A maze is a grid of cells, each of which is either open or blocked. We can move from one free cell to another if they are adjacent. Design the \ttt{MazeSolver} class, which has the following methods:}
 
-\begin{itemize}
+\begin{enumerate}[label=(\alph*)]
     \item \ttt{MazeSolver(String fileName)} is the constructor, which reads a description of a maze from a file. The file contains a grid of characters, where \ttt{`.'} represents an open cell and \ttt{`\#'} represents a blocked cell. The file is formatted such that each line is the same length. Read the data into a \ttt{char[][]} instance variable. You may assume that the maze dimensions are on the first line of the file, separated by a space.
 
     \item \ttt{char[][] solve()} returns a \ttt{char[][]} that represents the solution to the maze. The solution should be the same as the input maze, but with the path from the start to the end marked with \ttt{`*'} characters. The start is the top-left cell, and the end is the bottom-right cell. If there is no solution, return \ttt{null}.
@@ -159,7 +196,7 @@ class MazeSolver {
   private boolean solveHelper(int r, int c, char[][] sol) { /* TODO. */ }
 }
 \end{lstlisting}
-\end{itemize}
+\end{enumerate}
 
 \myexercise{3}{chapter-exceptions-io}{The \ttt{cut} program is a command-line tool for extracting pieces of text from data. For this exercise, you will implement a very basic version of the program that reads data from the terminal.}
 

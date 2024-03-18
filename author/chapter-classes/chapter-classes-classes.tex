@@ -206,7 +206,7 @@ class Point {
 
 We could, if desired, overload the \ttt{Point} constructor as well. Though, it makes little sense to do so in this specific instance, since a point is defined by its two coordinate members. In subsequent sections, however, we will overload the constructor and demonstrate its utility/practicality.
 
-\myexample{Let's design the static \ttt{averageDistance} method, which receives a \ttt{List<Point>} and computes the average distance away from the origin. We already have a method to compute the distance of a point to the origin, so let's take advantage of the stream API to map \ttt{distance} to every point, then find the average of those resulting double values. This method will return an \ttt{OptionalDouble} in the event that the provided list is empty, which serves as a wrapper around the \ttt{Optional<Double>} type.}
+\myexample{Let's design the static \ttt{avgDist} method, which receives a \ttt{List<Point>} and computes the average distance away from the origin. We already have a method to compute the distance of a point to the origin, so let's take advantage of the stream API to map \ttt{distance} to every point, then find the average of those resulting double values. This method will return an \ttt{OptionalDouble} in the event that the provided list is empty, which serves as a wrapper around the \ttt{Optional<Double>} type.}
 
 \enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -221,15 +221,16 @@ class PointTester {
   // ... previous code not shown.
 
   @Test
-  void testAverageDistance() {
-    List<Point> lop = List.of(
+  void testAvgDist() {
+    List<Point> lop1 = List.of();
+    List<Point> lop2 = List.of(
             new Point(4, 0), new Point(0, 4),
             new Point(-4, 0), new Point(0, -4),
             new Point(2, 2), new Point(-2, 2),
             new Point(-2, -2), new Point(2, -2));
     assertAll(
-      () -> assertEquals(3.414, Point.averageDistance(lop).get(), 0.01),
-      () -> assertEquals(OptionalDouble.empty(), Point.averageDistance(List.of())));
+      () -> assertEquals(OptionalDouble.empty(), Point.avgDist(lop1)),
+      () -> assertEquals(3.414, Point.avgDist(lop2).get(), 0.01));
   }
 }
 \end{lstlisting}
@@ -247,7 +248,7 @@ class Point {
    * @return empty Optional if the list is empty, 
    *         or OptionalDouble otherwise.
    */
-  static OptionalDouble averageDistance(List<Point> lop) {
+  static OptionalDouble avgDist(List<Point> lop) {
     return lop.stream()
               .map(p -> p.distance())
               .mapToDouble(d -> d)
