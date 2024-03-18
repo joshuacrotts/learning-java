@@ -140,7 +140,7 @@ What's awesome about this exercise is that it allows us to define the elements o
 
 \myexercise{2}{chapter-advanced-oop}{Design the generic \ttt{CyclicLazyList} class, which implements \ttt{ILazyList}, whose constructor is variadic and receives any number of values. Upon calling \ttt{next}, the cyclic lazy list should return the first item received from the constructor, then the second, and so forth until reaching the end. After returning all the values, cycle back to the front and continue. For instance, if we invoke \ttt{new CyclicLazyList<Integer>(1, 2, 3)}, invoking \ttt{.next} five times will produce \ttt{1}, \ttt{2}, \ttt{3}, \ttt{1}, \ttt{2}.}
 
-\myexercise{1}{chapter-advanced-oop}{Design the \ttt{static <T> Predicate<T> orEquals(Predicate<T> pred, T x)} method that, when given a predicate $p$ and an object $x$, returns a \emph{new} predicate that returns true if its argument $x'$ is equal (using \ttt{.equals}) to $x$ or satisfies $p(x)$.}
+\myexercise{1}{chapter-advanced-oop}{Design the \ttt{static <T> Predicate<T> orEquals(Predicate<T> pred, T x)} method that, when given a predicate $p$ and an object $x$, returns a \emph{new} predicate that returns true if its argument $x'$ is equal (using \ttt{equals}) to $x$ or satisfies $p(x)$.}
 
 \myexercise{2}{chapter-advanced-oop}{Design the \ttt{static <T> List<T> predicateOrEquals(List<T> ls, Predicate<T> pred, BiFunction<T, T, Boolean>, T x)} method that, when given a list of values $ls$, a predicate $p$, a function $f$, and a value $x$ that returns the list of values in $ls$ that either satisfy $p$ or are equal according to $f$. For the purposes of this question, $f$ is a method of two arguments of type $T$ that determines whether or not they are ``equal'' according to some criteria.}
 
@@ -236,11 +236,11 @@ new ProgramNode(
             new PrimNode("-", 
             new VarNode("n"), 
             new NumNode(1))))))),
-  new PrimNode("print", new ApplyNode("!", new NumNode(5))))
+  new ApplyNode("!", new NumNode(5)))
 \end{verbnobox}
 \end{enumerate}
 
-\myexercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter, and relies on the addition of \tt{FuncNode} and \ttt{ApplyNode}.}
+\myexercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter, and relies on the addition of \ttt{FuncNode} and \ttt{ApplyNode}.}
 Our current version of the interpreter uses \textit{dynamic scoping}. A dynamically-scoped interpreter is one that uses the value of the closest declaration of a variable. This seems like nonsense without an example, so consider the following two code listings.
 \begin{lstlisting}[language=MyScheme, frame=single]
 (define f

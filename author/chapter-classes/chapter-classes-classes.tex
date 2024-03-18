@@ -417,7 +417,7 @@ class Point {
 }
 \end{lstlisting}
 
-\myexample{Let's design the static \ttt{removeLinearPoints(List<Point> lop)} method that, when given a \ttt{List<Point>}, filters out all points that are ``linear,'' meaning that they share an $x$ and $y$ coordinate. Fortunately, as with the previous example, streams make this exercise a walk in the park. Because we overrode the \ttt{equals} definition, the comparisons by \ttt{assertEquals} will work correctly. That is, we are comparing the elements of two lists of \ttt{Point} objects. The \ttt{assertEquals} method uses the object's \ttt{.equals} method implementation for object equivalence comparisons, meaning that it will check each element of both lists to determine if they are all equivalent.}
+\myexample{Let's design the static \ttt{removeLinearPoints(List<Point> lop)} method that, when given a \ttt{List<Point>}, filters out all points that are ``linear,'' meaning that they share an $x$ and $y$ coordinate. Fortunately, as with the previous example, streams make this exercise a walk in the park. Because we overrode the \ttt{equals} definition, the comparisons by \ttt{assertEquals} will work correctly. That is, we are comparing the elements of two lists of \ttt{Point} objects. The \ttt{assertEquals} method uses the object's \ttt{equals} method implementation for object equivalence comparisons, meaning that it will check each element of both lists to determine if they are all equivalent.}
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
