@@ -69,8 +69,8 @@ class FunctionalInsertionSort<V extends Comparable<V>>
   public AbstractList<V> insertionSort(AbstractList<V> ls) {
     if (ls.isEmpty()) { return new ArrayList<>(); }
     else { 
-      return insert(ls.get(0), 
-                    insertionSort((AbstractList<V>) ls.subList(1, ls.size()))); 
+      AbstractList<V> rest = (AbstractList<V>) ls.subList(1, ls.size());
+      return insert(ls.get(0), insertionSort(rest)); 
     }
   }
 
@@ -107,7 +107,8 @@ import java.lang.Comparable;
 import java.util.AbstractList;
 import java.util.Collections;
 
-class InPlaceInsertionSort<V extends Comparable<V>> implements IInsertionSort<V> {
+class InPlaceInsertionSort<V extends Comparable<V>> 
+                           implements IInsertionSort<V> {
 
   @Override
   public AbstractList<V> insertionSort(AbstractList<V> ls) {
@@ -233,18 +234,18 @@ class FunctionalSelectionSort<V extends Comparable<V>>
   public AbstractList<V> selectionSort(AbstractList<V> ls) {
     if (ls.isEmpty() || ls.size() == 1) { return ls; }
     else {
-      // Remember that min returns an Optional, but we know it is non-empty.
+      // Recall that min returns an Optional, but we know it is nonempty.
       int minIdx = IntStream.range(0, ls.size())
-                            .boxed()
-                            .min((i1, i2) -> ls.get(i1).compareTo(ls.get(i2)))
-                            .get();
+                        .boxed()
+                        .min((i1,i2) -> ls.get(i1).compareTo(ls.get(i2)))
+                        .get();
 
       // Swap the minimum element with the first element.
       Collections.swap(ls, 0, minIdx);
 
       // Sort the rest of the list (excluding the first element).
-      AbstractList<V> sortedRest = selectionSort(
-                                    new ArrayList<>(ls.subList(1, ls.size())));
+      List<V> rest = new ArrayList<>(ls.subList(1, ls.size()));
+      AbstractList<V> sortedRest = selectionSort(rest);
 
       // Construct the final sorted list.
       AbstractList<V> sortedList = new ArrayList<>();
@@ -260,7 +261,9 @@ class FunctionalSelectionSort<V extends Comparable<V>>
 \begin{lstlisting}[language=MyJava]
 import java.util.*;
 
-class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V> {
+class InPlaceSelectionSort<V extends Comparable<V>> 
+new ArrayList<>(ls.subList(1, ls.size())))
+                           implements ISelectionSort<V> {
   
   @Override
   public AbstractList<V> selectionSort(AbstractList<V> ls) {
@@ -269,8 +272,8 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
       int minIdx = 0;
       boolean needToSwap = false;
 
-      // Find the minimum value. If we get a value less than the current minimum,
-      // we need to swap at the end.
+      // Find the minimum value. If we get a value less than the current 
+      // minimum, then we need to swap at the end.
       for (int j = i + 1; j < ls.size(); j++) {
         if (ls.get(j).compareTo(min) < 0) {
           min = ls.get(j);
@@ -402,7 +405,8 @@ import java.lang.Comparable;
 import java.util.AbstractList;
 import java.util.ArrayList;
 
-class FunctionalBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
+class FunctionalBubbleSort<V extends Comparable<V>> 
+                           implements IBubbleSort<V> {
 
   @Override
   public AbstractList<V> bubbleSort(AbstractList<V> ls) {
@@ -432,14 +436,15 @@ class FunctionalBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
   }
 
   /**
-    * Get the largest element in the list.
-    * @param ls - the list to search.
-    * @return the largest element in the list.
-    */
+   * Retrieves the largest element in the list. If the list is 
+   * empty, null is returned.
+   * @param ls - the list to search.
+   * @return the largest element in the list.
+   */
   private V getLargest(AbstractList<V> ls) {
     return ls.stream()
-              .max(Comparable::compareTo)
-              .orElse(null);
+             .max(Comparable::compareTo)
+             .orElse(null);
   }
 }
 \end{lstlisting}
@@ -450,7 +455,8 @@ import java.lang.Comparable;
 import java.util.AbstractList;
 import java.util.Collections;
 
-class InPlaceBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
+class InPlaceBubbleSort<V extends Comparable<V>> 
+                        implements IBubbleSort<V> {
 
   @Override
   public AbstractList<V> bubbleSort(AbstractList<V> ls) {
@@ -569,7 +575,8 @@ import java.lang.Comparable;
 import java.util.AbstractList;
 import java.util.ArrayList;
   
-class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
+class FunctionalMergeSort<V extends Comparable<V>> 
+                          implements IMergeSort<V> {
   
   @Override
   public AbstractList<V> mergeSort(AbstractList<V> ls) {
@@ -577,8 +584,8 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   }
   
   /**
-   * Recursive helper method for merge sort. Splits the list in half and merges
-   * the two halves after recursively sorting them.
+   * Recursive helper method for merge sort. Splits the list 
+   * in half and merges the two halves after recursively sorting them.
    * @param ls - the list to sort.
    * @return the sorted list.
    */
@@ -590,31 +597,35 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
       return newLs;
     } else {
       int mid = (ls.size() - 1) / 2;
-      List<V> leftHalf = ls.subList(0, mid + 1);
-      List<V> rightHalf = ls.subList(mid + 1, ls.size());
-      AbstractList<V> leftHalfSort = this.msHelper((AbstractList<V>) leftHalf);
-      AbstractList<V> rightHalfSort = this.msHelper((AbstractList<V>) rightHalf);
-      return this.merge(leftHalfSort, rightHalfSort);
+      List<V> left = ls.subList(0, mid + 1);
+      List<V> right = ls.subList(mid + 1, ls.size());
+      AbstractList<V> leftSort = this.msHelper((AbstractList<V>) left);
+      AbstractList<V> rightSort = this.msHelper((AbstractList<V>) right);
+      return this.merge(leftSort, rightSort);
     }
   }
   
   /**
-   * Merges two sorted lists into one sorted list. Compares each element 
-   * one-by-one and adds the smaller element to the new list. If one list 
-   * is exhausted, the elements of the other list are added to the new list.
-   *
+   * Merges two sorted lists into one sorted list. Compares each 
+   * element one-by-one and adds the smaller element to the new list. 
+   * If one list is exhausted, the elements of the other list are
+   * added to the new list.
    * @param ls1 - the first sorted list.
    * @param ls2 - the second sorted list.
    * @return the merged sorted list.
    */
-  private AbstractList<V> merge(AbstractList<V> ls1, AbstractList<V> ls2) {
+  private AbstractList<V> merge(AbstractList<V> ls1, 
+                                AbstractList<V> ls2) {
     int i, j = 0;
     AbstractList<V> newLs = new ArrayList<>();
           
     // Merge the lists, comparing the elements.
     while (i < ls1.size() && j < ls2.size()) {
-      if (ls1.get(i).compareTo(ls2.get(j)) < 0) { newLs.add(ls1.get(i++)); }
-      else { newLs.add(ls2.get(j++)); }
+      if (ls1.get(i).compareTo(ls2.get(j)) < 0) { 
+        newLs.add(ls1.get(i++)); 
+      } else { 
+        newLs.add(ls2.get(j++)); 
+      }
     }
   
     // Finish copying ls1.
@@ -642,7 +653,8 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   }
 
   /**
-   * Recursively sorts the list by splitting it in half and merging the two halves
+   * Recursively sorts the list by splitting it in half and merging 
+   * the two halves.
    * @param ls - the list to sort.
    * @param low - the lower bound of the sublist. 
    * @param high - the upper bound of the sublist.
@@ -742,7 +754,8 @@ import java.lang.Comparable;
 import java.util.AbstractList;
 import java.util.stream.Collectors;
 
-class FunctionalQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
+class FunctionalQuickSort<V extends Comparable<V>> 
+                          implements IQuickSort<V> {
 
   @Override
   public AbstractList<V> quicksort(AbstractList<V> ls) {
@@ -809,9 +822,10 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
   }
 
   /**
-   * Creates a quicksort partition, where all elements less than the pivot are
-   * to the left of the pivot, and all elements greater than the pivot are to its right.
-   * @param ls - the List to partition.
+   * Creates a quicksort partition, where all elements less than 
+   * the pivot are to the left of the pivot, and all elements 
+   * greater than the pivot are to its right.
+   * @param ls - the list to partition.
    * @param low - the lower bound of the partition.
    * @param high - the upper bound of the partition.
    * @return the index of the pivot.

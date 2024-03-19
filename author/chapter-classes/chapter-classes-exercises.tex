@@ -114,6 +114,26 @@ The method returns whether or not the AI drew a card. If they did not draw a car
 
 \myexercise{2}{chapter-classes}{Using the \ttt{StackFrame} class, design an implementation of the tail recursive factorial method. Recall how to do this from Chapter~\ref{chapter-crl}: instead of pushing an activation record to the call stack, we can simply update the bindings in the existing frame.}
 
+\myexercise{2}{chapter-classes}{This exercise has six parts.}
+
+In this question you will implement the \ttt{MiniStack} data structure. This is similar to the \ttt{MiniArrayList} class from the chapter, but, of course, is a stack and not an array list.
+
+Unlike many stack implementations, however, we will use an array-backed stack. This means that, instead of using a collection of \ttt{private} and \ttt{static} \ttt{Node} classes, the stack will use an array to store its elements. When the array runs out of space, a new one is allocated and the elements are copied over. 
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, design the generic \ttt{MiniStack} class. Its constructor should receive no arguments, and instantiate two instance variables: \ttt{T[] elements} and \ttt{size} to a new array and zero respectively. Remember that you cannot instantiate a generic array, so how do we do that? The initial capacity of the array should be set to \ttt{INITIAL\_CAPACITY}, which is a \ttt{private static final} variable declared in the class as ten.
+
+    \item Second, design the \ttt{void add(T t)} method, which adds an element onto the top of the stack. The ``top of the stack,'' when using an array, is the right-most element, i.e., the element with the highest index. It might be a good idea to design a \ttt{private} helper method that resizes the underlying array when necessary. Your resize factor, i.e., how you resize the stack, is up to you.
+
+    \item Third, design the \ttt{T peek()} method, which returns (but does not remove) the top-most element of the stack.
+
+    \item Fourth, design the \ttt{T pop()} method, which returns \textit{and} removes the top-most element. Be sure that your \ttt{add} method still works after designing \ttt{pop}.
+
+    \item Fifth, design the \ttt{int size} method, which returns the number of logical elements in the stack.
+
+    \item Finally, override the \ttt{toString} method to return a string containing the elements of the stack from top-to-bottom, separated by commas and a space. For example, if the stack contains, from bottom-to-top, \ttt{10}, \ttt{20}, \ttt{30}, \ttt{40}, and \ttt{50}, the \ttt{toString} method returns \ttt{"50, 40, 30, 20, 10"}.
+\end{enumerate}
+
 \myexercise{3}{chapter-classes}{This exercise has seven parts.}
 
 A \emph{chunked array list} data structure avoids the overhead of copying the underlying array upon running out of free spots. The idea is to break the collection into chunks, namely, as an \ttt{ArrayList} of arrays. Assuming that the underlying collection of chunks is adequately populated, this collection will seldom require a resizing operation. This data structure will not support arbitrary insertions or removals.

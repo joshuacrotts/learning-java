@@ -29,16 +29,16 @@ class ILinearSearchTest {
     ILinearSearch<Integer> ls = new StandardRecursiveLinearSearch<>();
     assertAll(
       () -> assertEquals(2, ls.linearSearch(LS1, 22)),
-      () -> assertThrows(NoSuchElementException.class, 
-                         () -> ls.linearSearch(LS1, 102)),
       () -> assertEquals(8, ls.linearSearch(LS1, 33)),
       () -> assertEquals(0, ls.linearSearch(LS1, 78)),
+      () -> assertThrows(NoSuchElementException.class, 
+                         () -> ls.linearSearch(LS1, 102)),
 
       () -> assertEquals(2, ls.linearSearch(LS2, 3)),
-      () -> assertThrows(NoSuchElementException.class, 
-                         () -> ls.linearSearch(LS2, 13)),
       () -> assertEquals(8, ls.linearSearch(LS2, 9)),
       () -> assertEquals(0, ls.linearSearch(LS2, 1)));
+      () -> assertThrows(NoSuchElementException.class, 
+                         () -> ls.linearSearch(LS2, 13)),
   }
 
   @Test
@@ -96,7 +96,7 @@ class StandardRecursiveLinearSearch<V extends Comparable<V>>
     if (ls.isEmpty()) { throw new NoSuchElementException(); }
     else if (ls.get(0).equals(v)) { return 0; }
     else { 
-      return 1 + linearSearch((AbstractList<V>) ls.subList(1, ls.size()), v); 
+      return 1+linearSearch((AbstractList<V>)ls.subList(1, ls.size()), v); 
     }
   }
 }
@@ -135,7 +135,8 @@ Even though the tail recursive linear search is relatively straightforward to un
 import java.lang.Comparable;
 import java.util.AbstractList;
 
-class LoopLinearSearch<V extends Comparable<V>> implements ILinearSearch<V> {
+class LoopLinearSearch<V extends Comparable<V>> 
+                       implements ILinearSearch<V> {
 
   @Override
   public int linearSearch(AbstractList<V> ls, V v) {
@@ -247,7 +248,8 @@ class TailRecursiveBinarySearch<V extends Comparable<V>>
 import java.lang.Comparable;
 import java.util.AbstractList;
   
-class LoopBinarySearch<V extends Comparable<V>> implements IBinarySearch<V> {
+class LoopBinarySearch<V extends Comparable<V>> 
+                       implements IBinarySearch<V> {
   
   @Override
   public int binarySearch(AbstractList<V> ls, V v) {
@@ -317,7 +319,8 @@ import java.util.Comparator;
 class TailRecursiveBinarySearch implements IBinarySearch {
   
   @Override
-  public <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, V v) {
+  public <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, 
+                                                    V v) {
     return binarySearchTRHelper(ls, v, 0, ls.size() - 1,
                                 (o1, o2) -> o1.compareTo(o2));
   }
@@ -327,7 +330,8 @@ class TailRecursiveBinarySearch implements IBinarySearch {
     return binarySearchTRHelper(ls, v, 0, ls.size() - 1, c);
   }
   
-  private <V> int binarySearchTRHelper(AbstractList<V> ls, V v, int low, int high,
+  private <V> int binarySearchTRHelper(AbstractList<V> ls, V v, 
+                                       int low, int high,
                                        Comparator<? super V> c) {
     if (low > high) { return -1; } 
     else {

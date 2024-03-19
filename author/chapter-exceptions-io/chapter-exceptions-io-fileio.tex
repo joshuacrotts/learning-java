@@ -26,7 +26,7 @@ class FileInputStreamExample {
     } catch (FileNotFoundException ex) {
       System.err.printf("main: could not find %s\n", inFile);
     } catch (IOException ex) {
-      System.err.printf("main: an I/O error occurred: %s\n", ex.getMessage());
+      System.err.printf("main: I/O err: %s\n", ex.getMessage());
     } finally {
       fis.close();
     } 
@@ -53,7 +53,7 @@ class FileCopyExample {
     } catch (FileNotFoundException ex) {
       System.err.printf("main: could not find file1.in\n");
     } catch (IOException ex) {
-      System.err.printf("main: an I/O error occurred: %s\n", ex.getMessage());
+      System.err.printf("main: I/O err: %s\n", ex.getMessage());
     }
   }
 }
@@ -134,8 +134,10 @@ import java.io.*;
 class BufferedReaderWriterExample {
 
   public static void main(String[] args) {
-    try (BufferedReader br = new BufferedReader(new FileReader("file1.in"));
-         BufferedWriter bw = new BufferedWriter(new FileWriter("file1.out"))) {
+    try (BufferedReader br = new BufferedReader(
+                              new FileReader("file1.in"));
+         BufferedWriter bw = new BufferedWriter(
+                              new FileWriter("file1.out"))) {
       String line = null;
       while ((line = br.readLine()) != null) { bw.write(line + "\n"); }
     } catch (IOException ex) {
@@ -153,8 +155,10 @@ import java.io.*;
 class PerformanceExamples {
   
   private static void buffered() {
-    try (BufferedReader br = new BufferedReader(new FileReader("huge-2m-file.txt"));
-         BufferedWriter bw = new BufferedWriter(new FileWriter("bigfile.out"))) {
+    try (BufferedReader br = new BufferedReader(
+                              new FileReader("huge-2m-file.txt"));
+         BufferedWriter bw = new BufferedWriter(
+                              new FileWriter("bigfile.out"))) {
       int c = -1;
       while ((c = br.read()) != -1) { bw.write(c); }
     } catch (IOException ex) { ex.printStackTrace(); }
@@ -241,8 +245,9 @@ class ObjectStreamExample {
     
     @Override
     public String toString() {
-      return String.format("Player[name=%s, score=%d, health=%d, topScores=%s]", 
-                           name, score, health, Arrays.toString(topScores));
+      return String.format("Player[name=%s, score=%d, health=%d, 
+                           topScores=%s]", name, score, health, 
+                           Arrays.toString(topScores));
     }
   }
 }
@@ -521,9 +526,11 @@ class ConcatenateFiles {
    * @param outFile - name of output file.
    */
   private static void concatenate(String[] files, String outFile) {
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter(outFile))) {
+    try (BufferedWriter bw = new BufferedWriter(
+                              new FileWriter(outFile))) {
       for (String file : files) {
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(
+                                  new FileReader(file))) {
           String line = null;
           while ((line = br.readLine()) != null) { 
             bw.write(line + "\n"); 
@@ -543,11 +550,11 @@ class ConcatenateFiles {
     String outFile = args[args.length - 1];
 
     if (!sameExtension(inFiles)) {
-      System.err.println("ConcatenateFiles: all files must have same extension");
+      System.err.println("ConcatenateFiles: bad extensions");
       System.exit(1);
+    } else {
+      concatenate(inFiles, outFile);
     }
-
-    concatenate(inFiles, outFile);
   }
 }
 \end{lstlisting}
@@ -661,7 +668,8 @@ class TemperatureComputer {
         String[] arr = x.split(";");
         String location = arr[0];
         double temp = Double.parseDouble(arr[1]);
-        Measurement ms = mMap.putIfAbsent(location, new Measurement(temp));
+        Measurement ms = mMap.putIfAbsent(location, 
+                                          new Measurement(temp));
         if (ms != null) { ms.add(temp); }
       });
     } catch (IOException e) {
@@ -784,14 +792,13 @@ import java.nio.file.*;
 import java.util.*;
 
 class SudokuSolver {
-
-  /* ... other variables and methods not shown. */
+  // ... previous code not shown.
 
   SudokuSolver(String filename) { /* Implementation omitted. */ }
 
   /**
-   * Returns whether or not a solution exists. If a solution does not exist,
-   * the variable that stores the solution is set to null.
+   * Returns whether or not a solution exists. If a solution does not 
+   * exist, the variable that stores the solution is set to null.
    * @return true if a solution exists, false otherwise.
    */
   private boolean solve() {
@@ -837,8 +844,7 @@ import java.nio.file.*;
 import java.util.*;
 
 class SudokuSolver {
-
-  /* ... other variables and methods not shown. */
+  // ... previous methods not shown.
 
   SudokuSolver(String filename) { /* Implementation omitted. */ }
 

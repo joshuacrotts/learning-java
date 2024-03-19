@@ -124,16 +124,22 @@ class PointTester {
 
 \myexample{Now that we have classes, mutation, and accessibility, we can finally implement generic data structures such as an \ttt{ArrayList}. In this example we will implement the behavior of the \ttt{ArrayList} data structure, which means we finally understand what is going on under the hood in the Collections API. Let's design a class \ttt{MiniArrayList}, which operates over any type using generics. Like generic static methods, we must quantify the generic type, but unlike static methods, however, we quantify the type over the class declaration, meaning that all instance and static methods observe/respect the quantifier and do not need to be separately quantified.}
 
-In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements, is stored in \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is stored in \ttt{capacity}. Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class, an idea called \emph{constructor chaining}. 
+In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements, is stored in \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is stored in \ttt{capacity}. 
+
+Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class, an idea called \emph{constructor chaining}. ``Ten,'' however, is a magic number: a number whose context is the only thing that determines its meaning. So, let's refactor it into a constant class variable with an identifier.
 
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
+
+  private static final int DEFAULT_CAPACITY = 10;
 
   private T[] elements;
   private int size;
   private int capacity;
 
-  MiniArrayList() { this(10); }
+  MiniArrayList() { 
+    this(DEFAULT_CAPACITY); 
+  }
 
   MiniArrayList(int capacity) {
     this.size = 0;
@@ -142,28 +148,40 @@ class MiniArrayList<T> {
 }
 \end{lstlisting}
 
-Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. The problem is that we cannot instantiate an array of a generic type, because Java arrays use information, at runtime, about the element type. Generics, on the other hand, are a compile-time feature, meaning it is impossible to directly instantiate an array of a generic type. Instead, we must instantiate an array containing (elements of) type \ttt{Object}, followed by a cast to contain (elements of) type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} This is called an \emph{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
+Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. 
+The problem we immediately encounter is that we cannot instantiate an array of a generic type, because Java arrays utilize runtime information about the element type. 
+Generics, on the other hand, are a compile-time feature, meaning it is impossible to directly instantiate an array of a generic type. 
+Instead, we must instantiate an array containing (elements of) type \ttt{Object}, followed by a cast to contain (elements of) type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} 
+This is called an \emph{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
 
-\enlargethispage{6\baselineskip}
+% \enlargethispage{9\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
+
+  private static final int DEFAULT_CAPACITY = 10;
 
   private T[] vals;
   private int size;
   private int capacity;
 
-  MiniArrayList() { this(10); }
+  MiniArrayList() { 
+    this(DEFAULT_CAPACITY); 
+  }
 
   MiniArrayList(int capacity) {
     this.size = 0;
     this.capacity = capacity;
-    this.vals = (T[]) new Object[capacity];
+    this.vals = (T[]) new Object[this.capacity];
   }
 }
 \end{lstlisting}
 
-We now need to implement the \ttt{add} method, which adds an element to the end of the array list. We first check if the array is full, and if so, we resize the array. We then add the element to the end of the array and increment the size. Resizing the array is, fortunately, not complicated; all we need to do is instantiate a new, larger array, copy the existing elements over, then reassign the instance variable. The question now is, by what factor should the array capacity increase? This decision is implementation-dependent, but we will use a doubling factor out of convenience. We make \ttt{resize} private because it is an implementation detail that the user does not need to know about. To write coherent tests, we should also write the \ttt{get} method, which returns the element at a given index, as well as \ttt{size}, which returns the number of logical elements in the list. For now, we will not worry about bounds checking, but we will return to this in a later chapter on exceptions.
+We now need to implement the \ttt{add} method, which adds an element to the end of the array list. We first check if the array is full, and if so, we resize the array. We then add the element to the end of the array and increment the size. Resizing the array is, fortunately, not complicated; all we need to do is instantiate a new, larger array, copy the existing elements over, then reassign the instance variable. The question now is, by what factor should the array capacity increase? This decision is implementation-dependent, but we will use a doubling factor out of convenience.\footnote{Another logical choice is to increase the capacity linearly based on the default capacity. This choice removes the need for an extra static variable.} We make \ttt{resize} private because it is an implementation detail that the programmer who uses \ttt{MiniArrayList} should not concern themselves over. 
 
+To write coherent tests, we should also write the \ttt{get} method, which returns the element at a given index, as well as \ttt{size}, which returns the number of logical elements in the list. 
+For now, we will not worry about bounds checking, but we will return to this in a later chapter on exceptions.
+
+\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -196,28 +214,48 @@ class MiniArrayList<T> {
    * @param element - the element to add.
    */
   void add(T element) {
-    if (this.size == this.capacity) { this.resize(); }
+    if (this.size == this.capacity) { 
+      this.resize(); 
+    }
     this.vals[this.size++] = element;
   }
 
   /**
-   * Resizes the backing array by a factor specified by the class.
+   * Retrieves an element at a given index. The index should
+   * be in-bounds. If not, an ArrayIndexOutOfBoundsException is thrown.
+   * @param index - list index between 0 <= i < L.size()
+   * @return item at the given index.
    */
+  T get(int index) { 
+    return this.vals[index]; 
+  }
+
+  /**
+   * Returns the logical size of the list, i.e., the number of 
+   * actual elements in the list.
+   * @return number of elements.
+   */
+  int size() { 
+    return this.size; 
+  }
+
+ /**
+  * Resizes the backing array by a factor specified by the class.
+  */
   private void resize() {
     this.capacity *= RESIZE_FACTOR;
     T[] newArray = (T[]) new Object[this.capacity];
-    for (int i = 0; i < this.size; i++) { newArray[i] = this.vals[i]; }
+    for (int i = 0; i < this.size; i++) { 
+      newArray[i] = this.vals[i]; 
+    }
     this.vals = newArray;
-  }
-
-  T get(int index) { return this.vals[index]; }
-
-  int size() { return this.size; }
+ }
 }
 \end{lstlisting}
 
 We will write two more methods: \ttt{insert} and \ttt{remove}, which inserts an element $e$ at a given index $i$, and removes an element $e$ respectively. These two methods are similar in that they alter the backing array by shifting its values right and left. Accordingly, our implementation will contain the private helper methods \ttt{shiftRight} and \ttt{shiftLeft}. If we attempt to insert an element into a list that must be resized, we call \ttt{resize}. Both \ttt{insert} and \ttt{remove} warrant test cases! Like the \ttt{get} counterpart, neither of these new methods will perform bounds checking, so testing out-of-bounds behavior, for the time being, is not pertinent.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -250,6 +288,7 @@ class MiniArrayListTester {
 }
 \end{lstlisting}
 
+\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
   // ... previous code not shown.
@@ -260,7 +299,9 @@ class MiniArrayList<T> {
    * @param idx - the index to insert at.
    */
   void insert(T e, int idx) {
-    if (this.size == capacity) { this.resize(); }
+    if (this.size == capacity) { 
+      this.resize(); 
+    }
     this.shiftRight(idx);
     this.vals[idx] = e;
   }

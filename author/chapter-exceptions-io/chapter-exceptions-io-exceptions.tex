@@ -42,8 +42,9 @@ class IllegalArgumentExceptionExampleTester {
   @Test
   void testIllegalArgumentException() {
     assertAll(
-      () -> assertThrows(IllegalArgumentException.class, () -> div(5, 3, 0)),
       () -> assertDoesNotThrow(div(5, 3, 1)));
+      () -> assertThrows(IllegalArgumentException.class, 
+                         () -> div(5, 3, 0)),
   }
 }
 \end{lstlisting}
@@ -54,22 +55,29 @@ import java.lang.IllegalArgumentException;
 class IllegalArgumentExceptionExample {
   
   void div(int a, int b, int c) throws IllegalArgumentException {
-    if (c == 0) { throw new IllegalArgumentException("div: / by zero"); }
-    else { return (a + b) / c; }
+    if (c == 0) { 
+      throw new IllegalArgumentException("div: / by zero"); 
+    } else { 
+      return (a + b) / c; 
+    }
   }
 }
 \end{lstlisting}
 
 What if we wanted to call \ttt{div} from a separate method and process the exception ourselves? Indeed, this is doable. Should we wish to retrieve the exception message (i.e., the message passed to the exception constructor), we can via the \ttt{.getMessage} method, which is helpful for producing custom error messages/responses, or redirecting the message to a different destination.
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.lang.IllegalArgumentException;
 
 class IllegalArgumentExceptionExample {
   
   void div(int a, int b, int c) throws IllegalArgumentException {
-    if (c == 0) { throw new IllegalArgumentException("div: / by zero"); }
-    else { return (a + b) / c; }
+    if (c == 0) { 
+      throw new IllegalArgumentException("div: / by zero"); 
+    } else { 
+      return (a + b) / c; 
+    }
   }
 
   public static void main(String[] args) {
@@ -98,14 +106,18 @@ class IndexOutOfBoundsExceptionExampleTester {
     String ex1 = "String";
     int[] ex2 = new int[]{5, 3, 1, 2, 4, 6}; 
     assertAll(
-      () -> assertThrows(StringIndexOutOfBoundsException.class, () -> ex1.charAt(17)),
-      () -> assertThrows(StringIndexOutOfBoundsException.class, () -> ex1.charAt(-1)),
       () -> assertDoesNotThrow(() -> ex1.charAt(0)),
       () -> assertDoesNotThrow(() -> ex1.charAt(ex1.length() - 1)),
-      () -> assertThrows(ArrayIndexOutOfBoundsException.class, () -> ex2[17]);
-      () -> assertThrows(ArrayIndexOutOfBoundsException.class, () -> ex2[-1]);
       () -> assertDoesNotThrow(() -> ex2[0]),
-      () -> assertDoesNotThrow(() -> ex2[ex2.length - 1]));
+      () -> assertDoesNotThrow(() -> ex2[ex2.length - 1])
+      () -> assertThrows(StringIndexOutOfBoundsException.class, 
+                         () -> ex1.charAt(17)),
+      () -> assertThrows(StringIndexOutOfBoundsException.class, 
+                         () -> ex1.charAt(-1)),
+      () -> assertThrows(ArrayIndexOutOfBoundsException.class,  
+                         () -> ex2[17]),
+      () -> assertThrows(ArrayIndexOutOfBoundsException.class, 
+                         () -> ex2[-1]));
   } 
 }
 \end{lstlisting} 

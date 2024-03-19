@@ -174,8 +174,9 @@ class MazeSolver {
   MazeSolver(String fileName) { /* TODO read maze from file. */ }
 
   /**
-   * Recursively solves the maze, returning a solution if it exists, and 
-   * null otherwise. We use a simple backtracking algorithm in the helper.
+   * Recursively solves the maze, returning a solution if it exists, 
+   * and null otherwise. We use a simple backtracking algorithm 
+   * in the helper.
    * @return a solution to the maze, or null if it does not exist.
    */
   char[][] solve() {
@@ -186,14 +187,16 @@ class MazeSolver {
   /**
    * Recursively solves the maze, returning true if we ever reach
    * the exit. We try all possible paths from the current cell, if
-   * they are reachable. If a path ends up being a dead end, we backtrack
-   * and try another path.
+   * they are reachable. If a path ends up being a dead end, we 
+   * backtrack and try another path.
    * @param r - the row of the current cell.
    * @param c - the column of the current cell.
    * @param sol - the current solution to the maze.
    * @return true if we are at the exit, false otherwise.
    */
-  private boolean solveHelper(int r, int c, char[][] sol) { /* TODO. */ }
+  private boolean solveHelper(int r, int c, char[][] sol) { 
+    /* TODO. */ 
+}
 }
 \end{lstlisting}
 \end{enumerate}
