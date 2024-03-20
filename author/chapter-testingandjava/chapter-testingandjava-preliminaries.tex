@@ -1,17 +1,17 @@
 \section{A First Glimpse at Java}
 It makes little sense to avoid the topic at hand, so let us jump right in and write a program! We have seen \emph{functions}\index{function} before, as well as some mathematics operations, perhaps in a different (language) context. 
 
-\myexample{Our program will convert a given temperature in Fahrenheit to Celsius.}
+\myexample{Our program will consist of a function that converts a given temperature in Fahrenheit to Celsius.}
 
 \begin{lstlisting}[language=MyJava]
 class TempConverter {
   
   /**
    * Converts a temperature from Fahrenheit to Celsius.
-   * @param f - temperature in F.
-   * @return temperature in C.
+   * @param f - temperature in degrees Fahrenheit.
+   * @return temperature in degrees Celsius.
    */
-  static double f2c(double f) {
+  static double fToC(double f) {
     return 0.0;
   }
 }
@@ -19,36 +19,36 @@ class TempConverter {
 
 All code, in Java, belongs to a \emph{class}\index{class}. Classes have much more complex and concrete definitions that we will investigate in due time, but for now, we may think of them as the homes of our functions. By the way, functions in Java are called \emph{methods}\index{method}.\footnote{The reasoning is simple: a method belongs to a class. Other programming languages, e.g., C++ or Python, do not restrict the programmer to writing code only within a class. Thus, there is a distinction between functions, which do not reside within a class, and methods.} Again, this slight terminology differentiation is not without its reasons, but for all intents and purposes, functions are methods and vice versa. The class we have defined in the previous listing is called \ttt{TempConverter}, giving rise to believe that the class does something related to temperature conversion.
 
-We write the \ttt{f2c} method, whose \emph{return type}\index{return type} is a \ttt{double}, and has one \emph{parameter}\index{parameter}, which is also a \ttt{double}. A \ttt{double} is a floating-point value, meaning it potentially has decimals. For our method, this choice makes sense, because if we were to instead receive an \ttt{int}, we would not be able to convert temperatures such as \ttt{35.5} degrees Fahrenheit to Celsius. 
+We write the \ttt{fToC} method, whose \emph{return type}\index{return type} is a \ttt{double}, and has one \emph{parameter}\index{parameter}, which is also a \ttt{double}. A \ttt{double} is a floating-point value, meaning it potentially has decimals. For our method, this choice makes sense, because if we were to instead receive an \ttt{int}, we would not be able to convert temperatures such as \ttt{35.5} degrees Fahrenheit to Celsius. 
 
 The \ttt{static} keyword that we wrote has significance, but for now, consider it a series of six mandatory key presses (plus one for the space thereafter).
 
 Above this method \emph{signature}\index{signature} is a Java documentation comment, providing a brief summary of the method's purpose, as well as the data it receives as parameters and its return value, should it be necessary. 
 
-Inside its method body lies a single \ttt{return}, in which we return \ttt{0.0}. Returning a value is what a \emph{method call}\index{method call}, or \emph{method invocation}\index{method invocation}, resolves to. For example, if we were to call \ttt{fahrenheitToCelsius} with any arbitrary \ttt{double} value, the call would be substituted with \ttt{0.0}. This is otherwise called \emph{method application}\index{method application}.
+Inside its method body lies a single \ttt{return}, in which we return \ttt{0.0}. Returning a value is what a \emph{method call}\index{method call}, or \emph{method invocation}\index{method invocation}, resolves to. For example, if we were to call \ttt{fToC} with any arbitrary \ttt{double} value, the call would be substituted with \ttt{0.0}. This is otherwise called \emph{method application}\index{method application}.
 
 \begin{verbnobox}[\small]
-f2c(5)     -> 0.0
-f2c(78)    -> 0.0
-f2c(-3123) -> 0.0
+fToC(5)     -> 0.0
+fToC(78)    -> 0.0
+fToC(-3123) -> 0.0
 \end{verbnobox}
 
-Of course, this method is meaningless without an implementation. We want to design \emph{test cases}\index{test cases} to ensure the method works as expected. Test cases verify the correctness (or incorrectness) of a method. We, as the readers, know how to convert a temperature from Fahrenheit to Celsius, but telling a computer to do such a conversion is not as obvious at first glance. To test our methods, we will use the \emph{JUnit} testing framework\index{JUnit}. To create a test for \ttt{fahrenheitToCelsius}, we will make a second class called \ttt{TempConverterTester} to house a single method: \ttt{fahrenheitToCelsiusTest}.
+Of course, this method is meaningless without an implementation. We want to design \emph{test cases}\index{test cases} to ensure the method works as expected. Test cases verify the correctness (or incorrectness) of a method. We, as the readers, know how to convert a temperature from Fahrenheit to Celsius, but telling a computer to do such a conversion is not as obvious at first glance. To test our methods, we will use the \emph{JUnit} testing framework\index{JUnit}. To create a test for \ttt{fToC}, we will make a second class called \ttt{TempConverterTester} to house a single method: \ttt{testFToC}.
 
 \begin{lstlisting}[language=MyJava]
 class TempConverterTester {
 
   @Test
-  void testF2C() {
+  void testfToC() {
     Assertions.assertAll(
-      () -> Assertions.assertEquals(0, TempConverter.f2c(32)));
+      () -> Assertions.assertEquals(0, TempConverter.fToC(32)));
   }
 }
 \end{lstlisting}
 
-We want JUnit to recognize that \ttt{f2c} contains testing code, so we prepend the \ttt{@Test} annotation to the method signature. In its body, we call \ttt{Assertions\-.assertAll}, which receives a series of methods that are ran in succession. In our case, we want to assert that our \ttt{fahrenheitToCelsius} method should return \ttt{0} degrees Celsius when given a temperature of \ttt{32} degrees Fahrenheit. The first parameter to \ttt{assertEquals} is the expected value of the test, i.e., what we want it to produce. The second parameter is the actual value of the test, i.e., what our code produces. 
+We want JUnit to recognize that \ttt{fToC} contains testing code, so we prepend the \ttt{@Test} annotation to the method signature. In its body, we call \ttt{Assertions\-.assertAll}, which receives a series of methods that are ran in succession. In our case, we want to assert that our \ttt{fahrToCel} method should return \ttt{0} degrees Celsius when given a temperature of \ttt{32} degrees Fahrenheit. The first parameter to \ttt{assertEquals} is the expected value of the test, i.e., what we want (and know) it to produce. The second parameter is the actual value of the test, i.e., what our code produces. 
 
-When writing tests, it is important to consider \emph{edge cases}\index{edge case} and all possible branches of a method implementation. Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. So, let us add a few more test cases.\footnote{To condense our code, we exclude the \ttt{FahrenheitToCelsius} class name out of conciseness. On the other hand, we can omit the \ttt{Assertions} class name by importing the two methods as shown in the listing.}
+When writing tests, it is important to consider \emph{edge cases}\index{edge case} and all possible branches of a method implementation. Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. So, let us add a few more test cases.\footnote{To condense our code, we exclude the \ttt{TempConverter} class name out of conciseness. On the other hand, we can omit the \ttt{Assertions} class name by importing the two methods as shown in the listing.}
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -57,13 +57,13 @@ import static Assertions.assertEquals;
 class TempConverterTester {
 
   @Test
-  void testF2C() {
+  void testfToC() {
     assertAll(
-      () -> assertEquals(0, f2c(32)),
-      () -> assertEquals(100, f2c(212)),
-      () -> assertEquals(-40, f2c(40)),
-      () -> assertEquals(-17.778, f2c(0), .01),
-      () -> assertEquals(-273.15, f2c(-459), .01));
+      () -> assertEquals(0, fToC(32)),
+      () -> assertEquals(100, fToC(212)),
+      () -> assertEquals(-40, fToC(40)),
+      () -> assertEquals(-17.778, fToC(0), .01),
+      () -> assertEquals(-273.15, fToC(-459), .01));
   }
 }
 \end{lstlisting}
@@ -80,7 +80,7 @@ class TempConverter {
    * @param temperature in F.
    * @return temperature in C.
    */
-  static double f2c(double d) {
+  static double fToC(double d) {
     return (d - 32) * (5.0 / 9.0)
   }
 }
@@ -322,7 +322,9 @@ class QuarticFormulaSolver {
 And, as expected, all tests pass. With only methods and math operations at our disposal, the capabilities of said methods is quite limited. Let us start revamping our tool set by reintroducing strings.
 
 \subsection{The Main Method}
-Java programming tutorials are quick to throw a lot of information at the reader/viewer, and our textbook is no exception to this practice. Unfortunately, Java is one of the more verbose programming languages, and to get up and running with a method, we must wrap its definition inside a class. From there we can, of course, begin to write our \ttt{static} method. The question, of course, is what does the static keyword mean? For the first few chapters, we will intentionally omit the definition, as it would almost certainly confuse the reader coming from another language. Therefore, for the time being, simply view it as six characters, plus a space, that must be typed in order to write a method to then test with JUnit. Though, imagine a case in which we want to output the result of some value without using a test, as we will do in many examples. Java requires a \ttt{main} method in any executable Java class that does not use tests. For the sake of completeness, let's now write the traditional ``Hello, world!'' program, but in Java using the \ttt{main} method and not tests.
+Java programming tutorials are quick to throw a lot of information at the reader/viewer, and our textbook is no exception to this practice. Unfortunately, Java is one of the more verbose programming languages, and to get up and running with a method, we must wrap its definition inside a class. From there we can, of course, begin to write our \ttt{static} method. Readers no doubt question the significance of \ttt{static}. For the first few chapters, we will intentionally omit its definition, as it would almost certainly confuse the reader coming from another language. Therefore, for the time being, simply view it as six characters, plus a space, that must be typed in order to write a method that we can then test with JUnit. 
+
+Imagine, however, a situation in which we want to output the result of some value without using a test, as we will do in many examples. Java requires a \ttt{main} method in any executable Java class that does not use tests. For the sake of completeness, let's now write the traditional ``Hello, world!'' program, but in Java using the \ttt{main} method instead of tests.
 
 \begin{lstlisting}[language=MyJava]
 class MainMethod {
@@ -333,7 +335,7 @@ class MainMethod {
 }
 \end{lstlisting}
 
-Yikes, that is a lot of required code to output some text to the console; what does \ttt{public} mean, and what are those \ttt{[]} brackets after the \ttt{String} word? Once again, we will not detail of their importance but view them as more mandatory characters to type when writing a \ttt{main} method. The only word we will explain is \ttt{void}, which means that the method does not return a value. If the readers are coming from a functional programming language, e.g., Scheme/Racket or OCaml, then it is almost certainly the case that they never worked with methods that did not return a value nor received no arguments. The \ttt{println} method in particular has no return value; its significance is the fact that it outputs some text to the terminal/console, which is a side-effect of the method. We'll come back to what all of this means in subsequent chapters, but we could not avoid at least briefly discussing it and its existence in the Java language.
+Yikes, that is a lot of required code to output some text to the console; what does \ttt{public} mean, and what are those \ttt{[]} brackets after the \ttt{String} word? Once again, we will not detail of their importance but view them as more mandatory characters to type when writing a \ttt{main} method. The only word we \emph{will} explain is \ttt{void}, which means that the method does not return a value. If the readers are coming from a functional programming language, e.g., Scheme/Racket or OCaml, then it is almost certainly the case that they never worked with methods that did not return a value nor received no arguments. The \ttt{println} method, for example, has no return value; its significance comes from the fact that it outputs text to the terminal/console, which is a \emph{method side-effect}\index{side-effect}. We'll come back to what all of this means in subsequent chapters, but we could not avoid at least briefly mentioning it and its existence in the Java language.
 
 % \subsection{Quick Check Questions}
 % \begin{enumerate}[label=(\arabic*)]
@@ -341,7 +343,7 @@ Yikes, that is a lot of required code to output some text to the console; what d
 
 %   \item \mcq{Which keyword is used in Java to define a class member that can be accessed without needing an instance of the class?}{\texttt{public},\texttt{private},\texttt{static},\texttt{final}}
 
-%   \item \mcq{What is the return type of the \texttt{fahrenheitToCelsius} method in the provided example?}{\texttt{int},\texttt{float},\texttt{double},\texttt{String}}
+%   \item \mcq{What is the return type of the \texttt{fToC} method in the provided example?}{\texttt{int},\texttt{float},\texttt{double},\texttt{String}}
 
 %   \item \mcq{What type of comment is used to document a method in Java?}{Single-line comment (\texttt{//}),Multi-line comment (\texttt{/* /}),JavaDoc comment (\texttt{/* */}),Inline comment}
   

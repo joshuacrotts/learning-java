@@ -353,8 +353,8 @@ class MiniArrayList<T> {
 We present several test cases that assert different pieces of these classes. We will analyze each one and determine why it uses either \ttt{assertEquals} or \ttt{assertNotEquals} in its comparison. Our first series of tests only focuses on classes \ttt{A}, \ttt{B}, and \ttt{C} to keep things simple. We insert blanks in the assertion statements for you to fill in as exercise before checking your answers.
 
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import static Assertions.assertNotEquals;
 
 class ClassTester {
 
@@ -424,8 +424,8 @@ Up next we reassign \ttt{b} to point to \ttt{b2}. This is a reassignment of a re
 Let's now test the \ttt{D} and \ttt{E} classes, which use arrays as instance variables.
 
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import static Assertions.assertNotEquals;
 
 class ClassTester {
 
@@ -454,6 +454,47 @@ So, what happens if we compare any arbitrary element $e$ against any other arbit
 The second for loop assigns each element of the array to the \ttt{e} object. Then, we can compare any arbitrary element against any other arbitrary element, and they will always be equal, since every element is a reference to the same memory reference. 
 
 Thus, if we set the number of one arbitrary element, this change propagates to every other element in the list, because again, all references point to the same object.
+
+\myexample{Let's get a bit more practice with aliasing through arrays. Suppose we have the following code, and we want to fill in the assertion blanks.}
+
+\begin{lstlisting}[language=MyJava]
+class ArrayAliasingTester {
+
+  static int baz(int[] A) {
+    A[3] = 42;
+    return A[3];
+  }
+
+  @Test
+  void testBaz() {
+    int[] A = new int[]{0, 0, 0, 0, 0};
+    A[2] = baz(A);
+    assertEquals(84, A[2] + A[3]);
+
+    int[] B = new int[]{0, 0, 0, 0, 0};
+    int[] C = B;
+    assert______(84, C[3] + baz(B));
+
+    int[] D = new int[]{0, 0, 0, 0, 0};
+    int[] E = D;
+    int res = baz(E);
+    assert______(84, D[3] + res);    
+  }
+}
+\end{lstlisting}
+
+Again, we encourage the readers to stop and think about what kinds of assertions to fill in the blanks. Consider what happens when arrays are passed to methods, then continue on to check your understanding.
+
+We start by examining the \ttt{baz} method, which receives an array of integers $A$, overwrites the value at index $3$ to be $42$, then returns that element. 
+
+Inside the JUnit tester method, we first instantiate an array $A$ to contain five zeroes. Afterwards, we assign, to index 2 of $A$, the value of invoking \ttt{baz(A)}, meaning \ttt{A[2]} is $42$, but so is \ttt{A[3]}, because passing an array to a method passes a copy of the reference to the array. Therefore, the value of the passed array is mutated. We assert whether or not the sum of these two elements is $84$, which is true because $42+42=84$.
+
+Second, we instantiate an array $B$ to contain five zeroes. This is followed by an initialization of an array $C$ to point to $B$, meaning $C$ is an alias for $B$. We then assert whether or not the sum of \ttt{C[3]} and \ttt{baz(B)} is $84$. The answer relies on an understanding of evaluation order. The plus operator evaluates its arguments from left-to-right. So, before invoking \ttt{baz(B)}, the value of \ttt{C[3]} is zero, so the left-hand side of the addition is zero. Immediately after, we evaluate \ttt{baz(B)}, which mutates not only index $3$ of $B$, but also index $3$ of $C$, because again, $C$ aliases~$B$. The expression now becomes an addition of $0$ and $42$, which is certainly not equal to~$84$.
+
+Third, we instantiate yet another array $E$ to contain five zeroes. We then alias the array $D$ to~$E$, followed by a call to \ttt{baz(E)}, whose result is stored in the \ttt{res} variable. We know for certain that \ttt{res} contains \ttt{42}, and we want to know whether \ttt{D[3]} also contains $42$ to sum to the expected value of $84$. Because $D$ aliases~$E$, it must be the case that \ttt{D[3]} is also $42$, meaning we assert equals.
+
+%%%%% Note to me: we should probably have an example of storing Points and aliasing those.
+
 
 \myexample{Some may question why we emphasize aliasing and mutation. When working with the Collections API and designing data structures, proper care must be taken to avoid undesired behavior. Consider what happens if we design a class \ttt{F} that stores a reference to a \ttt{List<Integer>} as an instance variable. Then, suppose we instantiate two distinct instances of \ttt{F}, namely $f_1$ and $f_2$, each of which receive the same list of numbers. If we then mutate the list somewhere inside of $f_1$, then the list stored as a reference inside $f_2$ is also changed.}
 

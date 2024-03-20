@@ -414,6 +414,33 @@ classifyVars("\(\lambda\)x.\(\lambda\)y.x")   => {<"x" : "B">, <"y" : "N">}
 
 Design the \ttt{subtitutionCipher} method, which receives a plain-text alphabet string $A$, a cipher-text string $K$, and a string $s$ to encode, \ttt{substitutionCipher} should return a string~$s'$ using the aforementioned substitution cipher algorithm. You must follow the ``design recipe'' laid out in class. That is, you must write the method purpose statement comment, tests, and the implementation.}
 
+\myexercise{3}{chapter-arrays-collections}{You are designing a system with querying functionality similar to a database language such as SQL. In particular, we have a 2D array of strings whose first row contains the following column headers: \ttt{"ID"}, \ttt{"Name"}, \ttt{"BirthYear"}, \ttt{"Occupation"}, and \ttt{"Salary"}. The remaining rows should contain several contributors to not only computer science but other sciences, engineering, and mathematics as well.}
+
+Design the \ttt{List<String> query(String[][] db, String cmd)} method that, when given a ``database'' and a ``Command'', returns the names of all people that satisfy the criteria enforced by the command.
+
+\begin{verbatim}
+A Command is "SELECT <count> WHERE <predicate>"
+\end{verbatim}
+
+The \ttt{SELECT} command receives a \ttt{$<$count$>$}, which is a number between $1$ and $n$, or the asterisk to indicate everyone in the database. The \ttt{WHERE} clause receives a ``Predicate''.
+
+\begin{verbatim}
+A Predicate is "<header> <comparator> <value>"
+\end{verbatim}
+
+Headers are one of the column headers of the database, and comparators are either \ttt{=}, \ttt{!=}, \ttt{<}, \ttt{<=}, \ttt{>}, or \ttt{>=}, or \ttt{LIKE}. Values are either numbers, floats, or strings. 
+
+Parsing a \ttt{LIKE} command is more complicated. There are four possible types of values: 
+
+\begin{verbatim}
+'S'
+'%S'
+'S%'
+'%S%
+\end{verbatim}
+
+The first matches an exact string, namely \ttt{S}. The second matches any string that ends with \ttt{S}. The third matches any string that begins with \ttt{S}. The fourth matches any string that contains \ttt{S}. 
+
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{int sumOdd(List<Integer> l)} that, when given a  list of integers, filters out even numbers and then calculates the sum of the remaining odd numbers. You must use the Stream API.}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{String conjoin(List<String> los)} method that, when given a list of strings, concatenates all the strings together into a single string, separated by a comma. You must use the Stream API.}

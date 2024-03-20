@@ -12,24 +12,24 @@ class MainMethod {
 }
 \end{lstlisting}
 
-Additionally, this change means that any methods that we want to reference/invoke within \ttt{main} (that are defined inside the respective class) do not need to be categorized as static. For instance, let's once again write the \ttt{double fahrenheitToCelsius(double f)} method, only this time, we will call it from inside the \ttt{main} method.
+Additionally, this change means that any methods that we want to reference/invoke within \ttt{main} (that are defined inside the respective class) do not need to be categorized as static. For instance, let's once again write the \ttt{double fToC(double f)} method, only this time, we will call it from inside the \ttt{main} method.
 
 \begin{lstlisting}[language=MyJava]
 class MainMethod {
 
-  double fahrenheitToCelsius(double f) {
+  double fToC(double f) {
     return (f - 32) * (5.0 / 9.0);
   }
   
   void main() {
-    System.out.printf("%d deg F = %d deg C.\n", 32, fahrenheitToCelsius(32));
+    System.out.printf("%d deg F = %d deg C.\n", 32, fToC(32));
   }
 }
 \end{lstlisting}
 
-Whether or not we label \ttt{fahrenheitToCelsius} as static is irrelevant in this circumstance. Unfortunately, if we want to write unit tests for this method, it needs to be \ttt{static}, as we cannot reference it outside the class definition without the static qualifier. Though, what if we could write unit tests within the \ttt{MainMethod} class, rather than writing an entirely separate file? Making this alteration couples the logic of the method with the tests, which, in a large project is not an advisable choice. 
+Whether or not we label \ttt{fToC} as static is irrelevant in this circumstance. Unfortunately, if we want to write unit tests for this method, it needs to be \ttt{static}, as we cannot reference it outside the class definition without the static qualifier. Though, what if we could write unit tests within the \ttt{MainMethod} class, rather than writing an entirely separate file? Making this alteration couples the logic of the method with the tests, which, in a large project is not an advisable choice. 
 
-To write the unit test, all we need is the \ttt{void testFahrenheitToCelsius()} method and prepend the \ttt{@Test} annotation.\footnote{The respective import statements are also necessary.} Then, our IDE will automatically detect that we have a test method in the file and is executable.\footnote{We will note that we could have done this back in Chapter~\ref{chapter-testingandjava}, but we favor separating the tests and the method definition, even if this means we must use the \ttt{static} keyword.} Since we wish to emphasize writing tests before the (method) implementation, we will place the testing method above the method that it tests. 
+To write the unit test, all we need is the \ttt{void testFToC()} method and prepend the \ttt{@Test} annotation.\footnote{The respective import statements are also necessary.} Then, our IDE will automatically detect that we have a test method in the file and is executable.\footnote{We will note that we could have done this back in Chapter~\ref{chapter-testingandjava}, but we favor separating the tests and the method definition, even if this means we must use the \ttt{static} keyword.} Since we wish to emphasize writing tests before the (method) implementation, we will place the testing method above the method that it tests. 
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -38,11 +38,11 @@ import static Assertions.assertEquals;
 class MainMethod {
 
   @Test
-  void testFahrenheitToCelsius() {
+  void testFToC() {
     assertAll(
-      () -> assertEquals(0, fahrenheitToCelsius(32));
-      () -> assertEquals(-40, fahrenheitToCelsius(-40));
-      () -> assertEquals(100, fahrenheitToCelsius(212)));
+      () -> assertEquals(0, fToC(32));
+      () -> assertEquals(-40, fToC(-40));
+      () -> assertEquals(100, fToC(212)));
   }
   
   /**
@@ -50,7 +50,7 @@ class MainMethod {
    * @param f - degrees Fahrenheit.
    * @return degrees Celsius.
    */
-  double fahrenheitToCelsius(double f) {
+  double fToC(double f) {
     return (f - 32) * (5.0 / 9.0); 
   }
 }
@@ -64,12 +64,12 @@ In addition to a less-verbose \ttt{main} method, Java 21 also introduces \emph{n
  * @param f - degrees Fahrenheit.
  * @return degrees Celsius.
  */
-double fahrenheitToCelsius(double f) {
+double fToC(double f) {
   return (f - 32) * (5.0 / 9.0); 
 }
 
 void main() {
-  System.out.printf("%d deg F = %d deg C\n", 32, fahrenheitToCelsius(32));
+  System.out.printf("%d deg F = %d deg C\n", 32, fToC(32));
 }
 \end{lstlisting}
 

@@ -47,9 +47,9 @@ In addition to \ttt{if}, Java also has \ttt{else} and \ttt{else if} for extendin
 static int foo() {
   int x = 10;
   int y = 0;
-  if (x == 10) { y = 10; } 
-  if (y == 10) { y += 10; }
-  if (x != 10 && y != 10) { y += 1000; }
+  if (x == 10) { y=5; } 
+  if (y == 5) { y+=10; }
+  if (x != 10 && y != 5) { y+=5; }
   return y;
 }
 \end{lstlisting}
@@ -58,9 +58,9 @@ static int foo() {
 static int foo() {
   int x = 10;
   int y = 0;
-  if (x == 10) { y = 10; } 
-  else if (y == 10) { y += 10; } 
-  else { y += 1000; }
+  if (x == 10) { y=10; } 
+  else if (y == 5) { y+=10; } 
+  else { y+=5; }
   return y;
 }
 \end{lstlisting}
