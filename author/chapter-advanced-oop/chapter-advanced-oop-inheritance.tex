@@ -81,8 +81,9 @@ class Alien {
 }
 \end{lstlisting}
 
-What we have defined is an incredibly primitive alien class that stores its position and direction in a two-dimensional plane. Testing the alien, as we have done, is straightforward, but even such a simple alien definition must turn left three times to mimic the behavior of turning right once. We should extend the \ttt{Alien} class to add a \ttt{turnRight} method. We will call this class \ttt{RightAlien}, which adds a single method: \ttt{turnRight}. The other methods remain the same, since we do not want to overwrite their behavior. One important thing to note is that we invoke the superclass constructor via the \ttt{super()} invocation. We do so because we want the direction, $x$ and $y$ variables to be correctly initialized when instantiating an instance of \ttt{RightAlien}. As we will demonstrate with future examples, invoking the superclass constructor can be done with arguments.
+What we have defined is an incredibly primitive alien class that stores its position and direction in a two-dimensional plane. Testing the alien, as we have done, is straightforward, but even such a simple alien definition must turn left three times to mimic the behavior of turning right once. One solution to this problem is to write the \ttt{turnRight} method directly inside \ttt{Alien}. Though, consider a situation in which the code for \ttt{Alien}, or any arbitrary class, is hidden and immutable. In such circumstances, any extendability must come via another means. 
 
+Let's \emph{extend} the \ttt{Alien} class to add a \ttt{turnRight} method. We will call this class \ttt{RightAlien}, which adds a single method: \ttt{turnRight}. The other methods remain the same, since we do not want to overwrite their behavior. One important thing to note is that we call the superclass constructor via the \ttt{super()} invocation. We do so because we want the direction, $x$, and $y$ variables to be correctly initialized when instantiating an instance of \ttt{RightAlien}. As we will demonstrate with future examples, it is also possible to invoke a superclass constructor that receives parameters.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -92,7 +93,7 @@ class RightAlienTester {
 
   @Test
   void testMoverAlien() {
-    RightAlien r1 = new RightAlien();
+    Alien r1 = new RightAlien();
     assertAll(
       () -> r1.turnRight(),
       () -> assertEquals(RightAlien.Direction.SOUTH, r1.getDir()),
@@ -227,7 +228,8 @@ class WorldPosition {
   }
 
   /**
-   * Using streams, returns the number of occurrences of a given class type.
+   * Using streams, returns the number of occurrences 
+   * of a given class type.
    * @param cls - the class to search for.
    * @return those instances of a class that exist on the position.
    */
@@ -239,7 +241,7 @@ class WorldPosition {
 }
 \end{lstlisting}
 
-Finally we arrive at the \ttt{World} class. Perhaps we make it a design choice to disallow extension of this class. To block a class from being extended, we label it as \ttt{final}\index{final class}. The \ttt{World} class stores, as we stated, a two-dimensional array of \ttt{WorldPosition} instances, simulating a two-dimensional grid structure (where the plane origin lies in the top-left rather than the traditional bottom-left). Our constructor receives two integers denoting the width and height of the world, corresponding to the number of rows and columns of the underlying array, respectively.\footnote{Because \ttt{WorldPosition} \emph{is} a list, we can conclude that \ttt{World} \emph{is} a two-dimensional array, meaning a programmer might ask about extending the functionality of an array. Arrays are not extendable, because they are not classes/interfaces.} Each position in the world is directly instantiated thereof to prevent later null pointer references. Said \ttt{World} class contains two methods: \ttt{addObject}, and \ttt{countStars}, where the former adds an object to a given position in the world, and the latter counts the number of stars on that position.
+Finally we arrive at the \ttt{World} class. Perhaps we make it a design choice to disallow extension of this class. To block a class from being extended, we label it as \ttt{final}\index{final class}. The \ttt{World} class stores, as we stated, a two-dimensional array of \ttt{WorldPosition} instances, simulating a two-dimensional grid structure (where the plane origin lies in the top-left rather than the traditional bottom-left). Our constructor receives two integers denoting the number of rows and columns in the world. Each position in the world is directly instantiated thereof to prevent later null pointer references. Said \ttt{World} class contains two methods: \ttt{addObject}, and \ttt{countStars}, where the former adds an object to a given position in the world, and the latter counts the number of stars on a given position.
 
 In Chapter~\ref{chapter-modern}, we revisit reflection and explore its potential in greater detail. Remember that reflection is a runtime mechanism and, consequently, program performance may be penalized in certain situations.
 
@@ -248,10 +250,10 @@ final class World {
   
   private final WorldPosition[][] WORLD;
 
-  World(int width, int height) {
-    this.WORLD = new WorldPosition[width][height];
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
+  World(int numRows, int numCols) {
+    this.WORLD = new WorldPosition[numRows][numCols];
+    for (int i = 0; i < numRows; i++) {
+      for (int j = 0; j < numCols; j++) {
         this.WORLD[i][j] = new WorldPosition();
       }
     }
@@ -270,10 +272,278 @@ final class World {
 
   /**
    * Counts the number of stars on a given position in the world.
+   * @param x - the x-coordinate of the position.
+   * @param y - the y-coordinate of the position.
    * @return the number of stars.
    */
-  int countStars() {
+  int countStars(int x, int y) {
     return this.WORLD[x][y].count(StarObject.class);
   }
 }
 \end{lstlisting}
+
+\myexample{Let's design a class hierarchy to represent Pok\'emon\texttrademark{} evolutions and types. For those unfamiliar, Pok\'emon\texttrademark{} is a Japanese trading card and video-game series (with movies and television shows) produced by Nintendo. In the world of Pok\'emon\texttrademark{}, there are creatures that humans, called trainers, can capture and use to battle other trainers in a competitive turn-based matchup.\footnote{This is a heavily condensed description, but it gets the job done.}}
+
+Pok\'emon, in our simplified system, have hit-points to represent their health, statistics about their power/strength/speed, and up to four ``moves.'' Additionally, they have a level to indicate how strong they are. We will come back to the notion of a ``move,'' or an attack, later. Finally, they also have either one or two types, which are returned via the \ttt{getTypes} method as a \ttt{Set<IType>}.\footnote{We will design \ttt{IType} in a few paragraphs.} Let's design the \ttt{Pokemon} class. Aside from the accessors and mutators, we will add one instance method for adding moves to the \ttt{Pokemon}, as long as there are less than four. 
+
+\begin{lstlisting}[language=MyJava]
+import java.util.HashSet;
+import java.util.Set; 
+
+class Pokemon {
+  
+  private int maxHp;
+  private int currentHp;
+  private int level;
+  private int power;
+  private Set<Move> moves;
+
+  Pokemon(int maxHp, int level, int power) {
+    this.maxHp = maxHp;
+    this.currentHp = this.maxHp;
+    this.level = level;
+    this.power = power;
+    this.moves = new HashSet<>();
+  }
+
+  void addMove(Move m) { 
+    if (this.moves.size() < 4) {
+      this.moves.add(m);
+    }
+  }
+
+  Set<IType> getTypes() {
+    return Set.of();
+  }
+}
+\end{lstlisting}
+
+As we stated, Pok\'emon have moves, or ways to combat an opponent. Moves have a type, a base attack statistic, and a number representing how many ``power points'' that the move has remaining. Each time an attack is used, its power point counter is decremented. Once it reaches zero, the move can no longer be used. Moves also inhabit exactly one type, which cannot change.
+
+\begin{lstlisting}[language=MyJava]
+class Move {
+
+  private final IType TYPE;
+  private final int NUM_POWER_POINTS;
+  private int remainingPowerPoints;
+  private int baseDamage;
+
+  Move(String name, int numPowerPoints, int baseDamage, IType type) {
+    this.name = name;
+    this.baseDamage = baseDamage;
+    this.NUM_POWER_POINTS = numPowerPoints;
+    this.TYPE = type;
+  }
+
+  // Accessors and mutators omitted.
+}
+\end{lstlisting}
+
+Finally, Pok\'emon, as well as moves, have types. Types in the world of Pok\'emon are a property of the Pok\'emon, which affect the power of their moves, as well as what types they are weak against. All in all, it is akin to a game of ``Rock, paper, scissors.'' That is, scissors beats paper, paper beats rock, and rock beats scissors. Pok\'emon and move types work similarly; if a move is \ttt{WaterType} and the Pok\'emon it is used against is \ttt{FireType}, the move is ``super effective'' against the Pok\'emon. The defending Pok\'emon thus takes more damage than it would otherwise. Conversely, if a move is \ttt{ElectricType} and the Pok\'emon is \ttt{RockType}, the move is ``not very effective'' against the Pok\'emon. The defending Pok\'emon thus takes less damage than it would otherwise. 
+
+Now, let's design a ``base interface'' that other classes implement. An \ttt{IType} contains two methods: \ttt{Set<IType> weakTo()} and \ttt{Set<IType> strongAgainst()}, which returns sets to represent the types that a type is weak to or strong against. These methods will call upon a data structure that we will denote as a ``type registry,'' which defines the relationships from one type to another. Interestingly, this means that the methods inside \ttt{IType} should have a body to reference the type registry, but in the previous section we stated that the methods of an interface must not have bodies. \emph{Default methods} of an interface, on the contrary, may have bodies, and serve as a ``default implementation'' of a method in the event that an interface does not override its definition.
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Set;
+
+interface IType {
+
+  default Set<IType> weakTo() {
+    return TypeRegistry.weakTo(this);
+  }
+
+  default Set<IType> strongAgainst() {
+    return TypeRegistry.strongAgainst(this);
+  }
+}
+\end{lstlisting}
+
+Out of conciseness, let's design only three types: \ttt{GrassType}, \ttt{WaterType}, and \ttt{FireType}. Repeating the rock-paper-scissors analogy, grass types are strong against water but weak to fire. Water types are strong against fire but weak to grass. Fire types are strong against grass but weak to water. 
+
+These three types, namely grass, water, and fire, are designed as classes that exist solely for the purposes of instantiating exactly one instance thereof. Types do not need to be instantiated multiple times since they are immutable and do not contain any relevant state. We are taking advantage of a \emph{design paradigm} called \emph{singleton}. The class constructors are private to prevent outside instantiation of the types, but the sole instance is public, static, and final for global, unrestricted, and immutable access.
+
+\begin{lstlisting}[language=MyJava]
+class FireType implements Type {
+
+  public static final IType FIRE_TYPE = new FireType();
+
+  private FireType() {}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class WaterType implements Type {
+
+  public static final IType WaterType = new WaterType();
+
+  private WaterType() {}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class GrassType implements Type {
+
+  public static final IType GRASS_TYPE = new GrassType();
+
+  private GrassType() {}
+}
+\end{lstlisting}
+
+The aforementioned type registry is a class that stores two maps of type weaknesses and strengths. It provides two static methods: \ttt{weakTo} and \ttt{strongAgainst}, identical to the \ttt{IType} interface, which tap into the map data structures for querying.
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Map;
+import java.util.Set;
+
+class TypeRegistry {
+
+  private static final Map<IType, Set<IType>> weaknesses =
+    Map.of(WaterType.WATER_TYPE, Set.of(GrassType.GRASS_TYPE),
+           GrassType.GRASS_TYPE, Set.of(FireType.FIRE_TYPE),
+           FireType.FIRE_TYPE, Set.of(WaterType.WATER_TYPE));
+
+  private static final Map<IType, Set<IType>> strengths =
+    Map.of(WaterType.WATER_TYPE, Set.of(FireType.FIRE_TYPE),
+           GrassType.GRASS_TYPE, Set.of(WaterType.WATER_TYPE),
+           FireType.FIRE_TYPE, Set.of(GrassType.GRASS_TYPE));
+
+  private TypeRegistry() {};
+
+  static Set<IType> weakTo(IType t) {
+    return weaknesses.getOrDefault(t, Set.of());
+  }
+
+  static Set<IType> strongAgainst(IType t) {
+    return strengths.getOrDefault(t, Set.of());
+  }
+}
+\end{lstlisting}
+
+Inside the \ttt{Pokemon} class, let's design two methods: \ttt{weakTo} and \ttt{strongAgainst}, both of which invoke the type registry. The problem, though, is that we potentially need to take the union of two sets, since a \ttt{Pokemon} stores a set of types. To compensate, we can use streams to take the union of multiple sets, which collapses the problem from handling both one and two sets independently into just handling a stream. To combine the sets, we can use the \ttt{flatMap} stream method, which is a higher-order method to apply a lambda expression to a list of collections, then flatten the result into a single collection. Namely, we take the sets of types, map the \ttt{weakTo} or \ttt{strongAgainst} over those types, creating a stream of sets of types. These are then converted into streams themselves and then flattened into a single stream. Finally, we collect those results into a set. 
+
+Before we write these two methods, however, let's actually create a \ttt{Pokemon} to show off our hard work. Let's design the \ttt{Chimchar} class, which is a fire type \ttt{Pokemon}, hence the subclass/superclass relationship. We will instantiate it to start off with 20 hit points, level 5, and have a base ``power'' statistic of 4. Because we must also pass the type information to the superclass constructor, we need to invoke \ttt{super(...)} with information provided from the subclass contructor in addition to the type(s). After creating the subclass instance, we can write tests for the type registry. 
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Set;
+
+class Chimchar extends Pokemon {
+
+  Chimchar(int hp, int level, int power) {
+    super(hp, level, power);
+  }
+
+  @Override
+  Set<IType> getTypes() {
+    return Set.of(FireType.FIRE_TYPE);
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.Set;
+
+class PokemonTester {
+
+  @Test
+  void testPokemon() {
+    Pokemon p1 = new Chimchar(20, 5, 4);
+    assertAll(
+      () -> assertEquals(Set.of(WaterType.WATER_TYPE),
+                         p1.weakTo()),
+      () -> assertEquals(Set.of(GrassType.GRASS_TYPE),
+                         p1.strongAgainst()));
+  }
+}
+\end{lstlisting}
+
+Finally, let's represent an important component of Pok\'emon: evolution! A Pok\'emon can evolve from one form to another, which we will represent through evolution. From this, a Pok\'emon's type can change, as do its base statistics and health. For example, the evolution of Chimchar into Monferno adds \ttt{FightingType} to its type set. We can change the type that a \ttt{Pokemon} inhabits by overriding the \ttt{getTypes} method: we retrieve the superclass type set, then add the new type earned by evolving.
+
+To make evolution a bit more interesting, we will design the \ttt{IEvolvable} interface, which is implemented by any evolvable Pok\'emon. This interface contains two methods: \ttt{boolean canEvolve()} and \ttt{Pokemon evolve()}. The former describes the requirements before a Pok\'emon can evolve, e.g., whether or not it has to be at a certain level. The latter \ttt{evolve} method returns a new instance of the evolution if it can evolve, and itself otherwise. 
+
+Designing an interface in this way means that \ttt{Pokemon} that evolve into a form, but cannot evolve thereafter must also override these methods to return \ttt{false} and themselves respectively.
+
+For contextualization, the evolution of Chimchar is Monferno. Chimchar can evolve into Monferno once it reaches level 14. Because \ttt{FightingType} is almost a carbon copy of the other three types, we omit its inclusion.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class PokemonTester {
+
+  @Test 
+  void testEvolution() {
+    Pokemon p1 = new Chimchar(21, 5);
+    Pokemon p2 = new Chimchar(54, 14);
+    assertAll(
+      () -> assertFalse(p1.canEvolve()),
+      () -> assertTrue(p1.evolve() instanceof Chimchar),
+      () -> assertTrue(p2.canEvolve()),
+      () -> assertTrue(p2.evolve() instanceof Monferno));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+interface IEvolvable {
+
+  boolean canEvolve();
+
+  Pokemon evolve();
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Chimchar extends Pokemon implements IEvolvable {
+  // ... previous methods not shown.
+
+  @Override
+  public boolean canEvolve() {
+    return this.getLevel() >= 14;
+  }
+
+  @Override
+  public Pokemon evolve() {
+    if (!this.canEvolve()) {
+      return this;
+    } else {
+      return new Monferno(super.getHp(), super.getLevel());
+    }
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Set;
+import java.util.Stream;
+import java.util.Collectors;
+
+class Monferno extends Chimchar implements IEvolvable {
+
+  Monferno(int hp, int level, int power) {
+    super(hp, level, power);
+  }
+
+  @Override 
+  public boolean canEvolve() {
+    return false;
+  }
+
+  @Override
+  public Pokemon evolve() {
+    return this;
+  }
+
+  @Override
+  Set<Type> getTypes() {
+    Stream<IType> ot = super.getTypes().stream();
+    Stream<IType> nt = Set.of(FightingType.FIGHTING_TYPE).stream();
+    return Stream.concat(ot, nt)
+                 .collect(Collectors.toSet());
+  }
+}
+\end{lstlisting}
+
+We went through all of this trouble to create a complex system, so what is its intended purpose? With a bit of work up front, we made it easy to extend this system to include new types, new kinds of Pok\'emon, and much more.\footnote{We did not do anything with the moves of a Pokemon; this may be a good place to start expanding upon if you are interested!}
