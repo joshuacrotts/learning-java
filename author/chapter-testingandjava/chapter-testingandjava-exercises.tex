@@ -96,6 +96,12 @@ c = \sqrt{a^2+b^2-2ab\cos{\theta}}
 \theta = \cos^{-1}\left(\dfrac{a^2+b^2-c^2}{2ab}\right)  
 \]
 
+\myexercise{1}{chapter-testingandjava}{A physics formula for computing object distance displacement is }
+\[
+d = v_{i}t + 1/2at^2    
+\]
+where $d$ is the final distance traveled in meters, $v_i$ is the initial velocity, $t$ is the time in seconds, and $a$ is the acceleration in meters per second. Design the \ttt{double distanceTraveled(double vi, double a, double t)} method that, when given these variables as parameters, returns the distance that the object in question traveled.
+
 \myexercise{1}{chapter-testingandjava}{Design the \ttt{String weekday(int d)} method that, when given an integer $d$ from $1$ to $7$, returns the corresponding day of the week, with $1$ corresponding to \ttt{"Monday"} and \ttt{"Sunday"} corresponding to $7$. You \textbf{cannot} use any conditionals or data structures to solve this problem. Hint: declare a string containing each day of the week, with spaces to pad the days, and use \ttt{indexOf} and \ttt{substring}.}
 
 \myexercise{1}{chapter-testingandjava}{Design the \ttt{String flStrip(String s)} method that, when given a string, returns a new string with the first and last characters stripped. You may assume that the input string contains at least two characters.}

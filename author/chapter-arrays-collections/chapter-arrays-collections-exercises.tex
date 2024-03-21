@@ -4,6 +4,26 @@
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{int[] multiplesOf8(int[] A)} that, when given an array of integers, returns a new array where, upon finding a multiple of eight, each successive element becomes that multiple of eight. If another multiple of eight is found, it is not replaced, but all elements to its right change. Consider the following example. \ttt{multiplesOf8([3, 4, 8, 2, 19, 24, 20])} returns \ttt{[3, 4, 8, 8, 8, 24, 24]}.}
 
+\myexercise{1}{chapter-arrays-collections}{This exercise has two parts.}
+
+Rectangular coordinates are traditional~$x$ and~$y$ coordinates of a two-dimensional space. Polar coordinates, on the other hand, also operate in two dimensions, but instead have a radius and an angle.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{double[] toPolar(double x, double y)} method that, when given $x$ and $y$ coordinates, returns a two-element array containing the polar coordinates $r$ in index 0 and $\theta$ in index 1, where the latter is in radians. We can convert from rectangular to polar coordinates using the following formula:
+
+    \begin{align*}
+        r &= \sqrt{x^2 + y^2}\\
+        \theta &= \arctan(y / x)
+    \end{align*}
+
+    \item Design the \ttt{double[] toRectangular(double r, double theta) method that, when given a radius $r$ and an angle $\theta$ in radians, returns a two-element array containing the rectangular coordinates $x$ in index 0 and $\theta$ in index 1. We can convert from polar to rectangular coordinates using the following formula:}
+
+    \begin{align*}
+    x &= r\cos{\theta}\\
+    y &= r\sin{\theta}
+    \end{align*}
+\end{enumerate}
+
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{boolean containsOnlyPrime(int[] arr)} method that returns whether or not a given array of integers contains only prime integers. Hint: use the method you wrote in Chapter~\ref{chapter-crl}.}
 
 \myexercise{1}{chapter-arrays-collections}{This question has two parts.}
