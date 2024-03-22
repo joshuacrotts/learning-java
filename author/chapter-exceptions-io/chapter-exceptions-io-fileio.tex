@@ -872,4 +872,11 @@ class SudokuSolver {
 }
 \end{lstlisting}
 
+\myexample{In Chapter~\ref{chapter-crl}, we presented an exercise on a text compression technique called \textit{run-length encoding}, without saying that phrase explicitly. In this example we will expand on the idea by designing a program that encodes and decodes strands of DNA using run-length encoding.}
+
+Our class, namely \ttt{DnaEncode}, supports two static methods: \ttt{String encode(String dna)}, and \ttt{String decode(String en)} for encoding an uncompressed DNA sequence and decoding respectively. In addition to these methods, however, we will also design the \ttt{String read(String fileName, boolean en)} and \ttt{void write(String fileName, boolean en)}, which reads a DNA string (either encoded or not) from a file and writes a DNA string (either encoded or not) to a file respectively.
+
+Let's start with the \ttt{encode} method. We receive a string that represents a DNA sequence of bases \ttt{"A"}, \ttt{"T"}, \ttt{"G"}, and \ttt{"C"} characters. We want to encode subsequences of side-by-side bases to contain the amount of that base, and the base itself. For example, if we encode \ttt{"AAAATTGCCCCATGGGGGCCCCC"}, we get \ttt{"4A2T1G4C1A1T5G5C"}. As an additional optimization, if there is only one character, we should not prefix it with a \ttt{"1"}, because that \emph{adds} an unnecessary character. Therefore, using the example combined with the optimization, we would get \ttt{"4A2TG4CAT5G5C"}, which takes us from a $35.89\%$ percent decrease to a $55.56\%$ decrease. As the input string increases in size, these differences may become more pronounced. 
+
+
 % \myexample{The \ttt{date} program is a Unix command to retrieve information about the current date and time. Chr}
