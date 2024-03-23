@@ -56,7 +56,7 @@
 
 \usepackage{lmodern}
 % \newcommand{\timesnewroman}{} % uncomment to use Times New Roman fonts
-\newcommand{\mathtime}{}
+% \newcommand{\mathtime}{}
 % \newcommand{\courier}{}
 % \newcommand{\libertinus}{}
 % \newcommand{\palatino}{}
@@ -89,6 +89,8 @@
 \ifdefined\mathtime
   \usepackage[complete, subscriptcorrection, zswash]{mtpro2}
   \input{res/mtpro2-patch}
+\else
+  \usepackage{amssymb}
 \fi
 
 \ifdefined\courier
