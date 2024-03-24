@@ -8,7 +8,7 @@ We store contiguous elements in arrays, all of the same type. This means that, i
 \begin{verbnobox}[\small]
 int[] array = {5, 10, 15, 20, 100, 50};
 \end{verbnobox}
-To retrieve the size of an array, i.e., the number of elements it stores, we access the \emph{.length} field of the array; e.g., \ttt{array.length}. For our example array, we see that its size is six. Moreover, \ttt{array[0]} stores \ttt{5}, and \ttt{array[5]} stores \ttt{50}. Accessing a negative index or beyond the bounds of the length results in an array index out of bounds exception. That is, accessing \ttt{array[-1]} or \ttt{array[6]} crashes the program. A common mistake is to access the index at the length of the array to retrieve the last element. Doing so represents a misunderstanding of how arrays compute indices of elements.
+To retrieve the size of an array, i.e., the number of elements it stores, we access the \emph{.length} field of the array; e.g., \ttt{array.length}. For our example array, we see that its size is six. Moreover, \ttt{array[0]} stores \ttt{5}, and \ttt{array[5]} stores \ttt{50}. Accessing a negative index or beyond the bounds of the length results in an array index out of bounds exception. That is, accessing \ttt{array[-1]} or \ttt{array[6]} crashes the program. A common mistake is to access the index at the length of the array to retrieve the last element. Doing so represents a misunderstanding of array indexing.
 
 To declare an array of some type $T$, called $A$, that stores $N$ elements, we write the following:
 \begin{verbnobox}[\small]
@@ -74,7 +74,6 @@ class SumOfDoubleArrayTester {
   void testSumOfDoubleArray() {
     assertAll(
       () -> assertEquals(0.0, sumOfDoubles(new double[]{})),
-      () -> assertEquals(50.0, sumOfDoubles(new double[]{50.0})),
       () -> assertEquals(100.0, sumOfDoubles(new double[]
                                              {25.0, 50.0, 25.0})));
   }

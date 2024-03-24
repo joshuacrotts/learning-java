@@ -168,8 +168,6 @@ static boolean isNumeric(String n) {
 
 \myexercise{1}{chapter-crl}{Design the \ttt{String stateOfMatter(double t, char u)} method that receives a water temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{`C'} or \ttt{`F'} for Celsius and Fahrenheit respectively. Return a string representing whether the water is a liquid, solid, or gas at sea level.}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{double computeGpa(String grade)} method that translates a letter grade into a number grade. Letter grades are A, B, C, D, and F, possibly followed by + or -. Their numeric values are 4, 3, 2, 1, and 0. There is no F+ or F-. A+ increases the numeric value by 0.3, a - decreases it by 0.3. However, an A+ has value 4.0.}
-
 \myexercise{1}{chapter-crl}{Design the \ttt{String sortThreeStrings(String a, String b, String c)} method that receives three strings and sorts them lexicographically. Return the sorted set of strings as a string itself, separated by commas. For example, if the input is \ttt{Charlie}, \ttt{Able}, \ttt{Baker}, you should return \ttt{Able,Baker,Charlie}.}
 
 \myexercise{1}{chapter-crl}{Design the \ttt{int trickSum(int x, int y, int z)} method that sums the three integer inputs. If one of those values is $17$, however, it and any numbers to its right should not be included in the sum. For example, \ttt{trickSum(13, 17, 3)} resolves to \ttt{13} because, when $y=\ttt{17}$, we add neither $y$ nor $z$ to the resulting sum.}
@@ -224,9 +222,9 @@ Your method should return the total cost of the item after applying the discount
 
 \myexercise{1}{chapter-crl}{Rewrite the \ttt{replaceAB} method to use tail recursion. Name this new version of the method \ttt{replaceABTR}. Hint: you will need to design a \ttt{private static} helper method. The \ttt{replaceABTR} method should only have one parameter.}
 
-\myexercise{1}{chapter-crl}{Elephants have two ears, right? Design the recursive \ttt{int countElephantEars(int n)} that returns the total number of elephant ears that are in a group of $n$ elephants.}
+\myexercise{1}{chapter-crl}{Elephants have two ears, right? Design the recursive \ttt{int countElephantEars(int n)} that returns the total number of elephant ears that are in a group of $n$ elephants. You must solve this recursively!}
 
-\myexercise{1}{chapter-crl}{Rewrite the \ttt{countElephantEars} method to use tail recursion. Name this new version of the method \ttt{countElephantEarsTR}. Hint: you will need to design a \ttt{private static} helper method. The \ttt{countElephantEarsTR} method should only have one parameter.}
+\myexercise{1}{chapter-crl}{Rewrite the \ttt{countElephantEars} method to use tail recursion. Name this new version of the method \ttt{countElephantEarsTR}. Hint: you will need to design a \ttt{private static} helper method. The \ttt{countElephantEarsTR} method should only have one parameter. You must solve this recursively!}
 
 \enlargethispage{-2\baselineskip}
 \myexercise{1}{chapter-crl}{This question has two parts.}
@@ -595,5 +593,13 @@ Design the \ttt{double circleArea(double r, double delta)} method, which receive
 \caption{Left-Riemann Approximation of a Function}
 \label{fig:circlearea}
 \end{figure}
+
+\myexercise{2}{chapter-crl}{In 1964,~\Citet{willans} derived the following formula for computing the $n^\text{th}$ prime number:}
+
+\[
+p_n = 1 + \sum_{i=1}^{2^n}\left\lfloor\left(\frac{n}{\sum_{j=1}^{i}{\left\lfloor{\left({\cos{\frac{(j-1)! + 1}{j}\pi}}\right)^2}\right\rfloor}}\right)^{1/n}\right\rfloor
+\]
+
+While this looks frightening, it is actually straightforward and requires no conditionals. We know that `$n!$' is the factorial of some integer~$n$. The summation, $\sum_{j=1}^{n}{f(i)}$ is, effectively, a loop from $j=1$ to $n$, inclusive, which sums the value returned from~$f(i)$. Finally, $\left\lfloor{n}\right\rfloor$ computes the floor of a number~$n$, which is the next-closest integer to~$n$. E.g., the floor of $3.7$ is $3$. Use this formula to design the \ttt{int nthPrime(int n)} method, which returns the $n^\text{th}$ prime number. You \emph{must} use this formula exactly as specified.
 
 \myexercise{3}{chapter-crl}{Speech-to-text software plays a significant role in accessibility for those who may not be able to type quickly or at all. Design the \ttt{String speechToText(String s)} method that, when given a ``speech string', returns the corresponding text. A speech string, in this context, is a string spoken, in English, by a person, which may or may not contain punctuation. If a speech string contains a word that represents punctuation, e.g., \ttt{"period"}, \ttt{"question mark"}, encode this punctuation in the returned text. For example, \ttt{speechToText("hello period how are you question mark")} returns the string \ttt{"Hello. How are you?"}. You should also account for quotations, e.g., \ttt{speechToText\-("hello quote how are you question mark unquote")} returns the string \ttt{Hello. "how are you?"}.}
