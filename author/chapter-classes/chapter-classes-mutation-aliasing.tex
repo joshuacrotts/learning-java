@@ -479,6 +479,10 @@ class ArrayAliasingTester {
     return A[3];
   }
 
+  static int modify(int[] A) {
+    A = new int[100];
+  }
+
   @Test
   void testBaz() {
     int[] A = new int[]{0, 0, 0, 0, 0};
@@ -494,15 +498,19 @@ class ArrayAliasingTester {
     int res = baz(E);
     assert______(84, D[3] + res);  
     D = new int[]{1, 2, 3, 4, 5, 6, 7};
-
     assert______(E, D);  
+
+    int[] F = new int[]{0, 1, 2, 3, 4};
+    int h1 = F.hashCode();
+    modify(F);
+    assertEquals(h1, F.hashCode());
   }
 }
 \end{lstlisting}
 
 Again, we encourage the readers to stop and think about what kinds of assertions to fill in the blanks. Consider what happens when arrays are passed to methods, then continue on to check your understanding.
 
-We start by examining the \ttt{baz} method, which receives an array of integers $A$, overwrites the value at index $3$ to be $42$, then returns that element. 
+We start by examining the \ttt{baz} method, which receives an array of integers~$A$, overwrites the value at index $3$ to be~$42$, then returns that element. 
 
 Inside the JUnit tester method, we first instantiate an array $A$ to contain five zeroes. Afterwards, we assign, to index 2 of $A$, the value of invoking \ttt{baz(A)}, meaning \ttt{A[2]} is $42$, but so is \ttt{A[3]}, because passing an array to a method passes a copy of the reference to the array. Therefore, the value of the passed array is mutated. We assert whether or not the sum of these two elements is $84$, which is true because $42+42=84$.
 
@@ -510,7 +518,9 @@ Second, we instantiate an array~$B$ to contain six zeroes. This is followed by a
 
 Third, we instantiate yet another array $E$ to contain seven zeroes. We then alias the array $D$ to~$E$, followed by a call to \ttt{baz(E)}, whose result is stored in the \ttt{res} variable. We know for certain that \ttt{res} contains \ttt{42}, and we want to know whether \ttt{D[3]} also contains $42$ to sum to the expected value of $84$. Because $D$ aliases~$E$, it must be the case that \ttt{D[3]} is also $42$, meaning we assert equals.
 
-The last assertion is the result of altering $D$'s reference. Recall that it initially references the new integer array of seven zeroes. The~$D$ array becomes an alias to~$E$, which might suggest that changing $E$ also changes what $D$ points to, but this is not the case. When we instantiate~$E$ to point to the new array of the integers from 1 to 7, $D$ remains aliased to the array of seven zeroes that $E$ was instantiated to. Therefore the last assertion should be not equals.
+The fourth assertion is the result of altering $D$'s reference. Recall that it initially references the new integer array of seven zeroes. The~$D$ array becomes an alias to~$E$, which might suggest that changing $E$ also changes what $D$ points to, but this is not the case. When we instantiate~$E$ to point to the new array of the integers from 1 to 7, $D$ remains aliased to the array of seven zeroes that $E$ was instantiated to. Therefore, the assertion should be not equals.
+
+Finally, we instantiate an array~$F$ to contain the integers from~$0$ to~$4$ inclusive. We then compute the hash code of~$F$ and store it inside~$h_1$. Then, we pass~$F$ to the \ttt{modify} method, which appears to modify the passed reference to point to a new array. In the previous chapter we mentioned ``pass by pseudo-reference,'' which alluded to this problem. When we pass an object to a method, we pass a copy \emph{of} the reference and not the reference itself. This means that changing what the copy points to does not change the reference made outside the method. So, we should assert equals on~$h_1$ and the hash code of~$F$ after invoking \ttt{modify}, since~$F$'s reference is never altered.
 
 \myexample{Some readers may question why we emphasize mutation and aliasing. When working with the Collections API and designing data structures, proper care must be taken to avoid undesired behavior and outcomes. Consider what happens if we design a class \ttt{F} that stores a reference to a \ttt{List<Integer>} as an instance variable. Then, suppose we instantiate two distinct instances of \ttt{F}, namely $f_1$ and $f_2$, each of which receive the same list of numbers. If we then mutate the list somewhere inside of $f_1$, then the list stored as a reference inside $f_2$ is also changed.}
 
