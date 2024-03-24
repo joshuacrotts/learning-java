@@ -46,23 +46,13 @@ A = lw + l\sqrt{\left(\dfrac{w}{2}\right)^2 + h^2} + w\sqrt{\left(\dfrac{l}{2}\r
 
 \noindent Below are some test cases. Hint: when testing this method, you may want to use the \ttt{delta} parameter of \ttt{assertEquals}!
 
-\begin{clrr}[]{}
-\begin{lstlisting}[language=MyJava]
-(*;\textbf{>};*) crazyMath(0)
-(*;\textbf{>};*) crazyMath(1)
-(*;\textbf{>};*) crazyMath(2)
-(*;\textbf{>};*) crazyMath(3)
-(*;\textbf{>};*) crazyMath(10)
-\end{lstlisting}
-\tcblower
-\begin{lstlisting}[language=MyJava]
--0.0
-Infinity
-17.429741427952166
-6.778069159471912
-2.4727699557822547
-\end{lstlisting}
-\end{clrr}
+\begin{verbnobox}[\small]
+crazyMath(0)  => -0.0 
+crazyMath(1)  => Infinity
+crazyMath(2)  => 17.429741427952166
+crazyMath(3)  => 6.778069159471912
+crazyMath(10) => 2.4727699557822547
+\end{verbnobox}
 
 \myexercise{1}{chapter-testingandjava}{The \emph{z-score} is a measure of how far a given data point is away from the mean of a normally-distributed sample. In essence, roughly $68\%$ of data falls between z-scores of $[-1, 1]$, roughly $95\%$ falls between $[-2, 2]$, and $99.7\%$ falls between $[-3, 3]$. This means that extreme outliers have z-scores of either less than $-3$ or greater than $3$.}
  

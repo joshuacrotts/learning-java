@@ -21,7 +21,7 @@ System.out.printf("PI to 2 decimals is %.2f\n", Math.PI);
 System.out.printf("PI with all decimals is %f\n", Math.PI);
 \end{verbnobox}
 
-There are many ways to get creative with \ttt{printf}, including space padding, number formatting, left/right-alignment, and more. We will not discuss these in detail, but instead we provide Table~\ref{format-specifiers} of the most common format specifiers.
+There are many ways to get creative with \ttt{printf},\index{\ttt{printf}} including space padding, number formatting, left/right-alignment, and more. We will not discuss these in detail, but instead we provide Table~\ref{fig:format-specifiers} of the most common format specifiers\index{format specifiers}.
 
 \begin{figure}[htbp!]
 \centering
@@ -45,15 +45,15 @@ Format Specifier & Description \\
 \label{fig:format-specifiers}
 \end{figure}
 
-The \emph{standard input stream} allows us to ``read data from the console.'' We place this phrase in quotes because the standard input stream is not necessarily the console/terminal; it simply refers to reading characters from the keyboard that are then stored inside this data stream.
+The \emph{standard input stream}\index{standard input stream}\index{standard input} allows us to ``read data from the console.'' We place this phrase in quotes because the standard input stream is not necessarily the console/terminal; it simply refers to reading characters from the keyboard that are then stored inside this data stream.
 
-\myexample{Suppose we want to read an integer from the standard input stream. To do so, we first need to instantiate a \ttt{Scanner}, which declares a ``pipe,'' so to speak, from which information is read. It is important to state that, while a \ttt{Scanner} may read from the standard input stream, it can read from other input streams, e.g., files or network connections. We will explore this further in subsequent chapters, but for now, let's declare a \ttt{Scanner} object to read from standard input.}
+\myexample{Suppose we want to read an integer from the standard input stream. To do so, we first need to instantiate a \ttt{Scanner},\ttt{\ttt{Scanner}} which declares a ``pipe,'' so to speak, from which information is read. It is important to state that, while a \ttt{Scanner} may read from the standard input stream, it can read from other input streams, e.g., files or network connections. We will explore this further in subsequent chapters, but for now, let's declare a \ttt{Scanner} object to read from standard input.}
 
 \begin{verbnobox}[\small]
 Scanner in = new Scanner(System.in);
 \end{verbnobox}
 
-The \ttt{Scanner} class has handy methods for retrieving data from the stream it is scanning (which we will dub the \emph{scannee}). As we said in the example prompt, to read an integer from the scannee, we use \ttt{nextInt}, which retrieves and removes the next-available integer from the scannee data stream. Note that the \ttt{Scanner} class is line-buffered, meaning that the data will not be processed by the ``accessors,'' e.g., \ttt{nextInt}, until there is a new-line character in the input stream. To force a new-line, we press the ``Enter''/``Return'' key.
+The \ttt{Scanner} class has handy methods for retrieving data from the stream it is scanning (which we will dub the \emph{scannee}). As we said in the example prompt, to read an integer from the scannee, we use \ttt{nextInt}, which retrieves and removes the next-available integer from the scannee data stream. Note that the \ttt{Scanner} class is line-buffered, meaning that the data will not be processed by the ``retriever methods,'' e.g., \ttt{nextInt}, until there is a new-line character in the input stream. To force a new-line, we press the ``Enter''/``Return'' key.
 
 \begin{verbnobox}[\small]
 Scanner in = new Scanner(System.in);
@@ -61,7 +61,7 @@ int x = in.nextInt();
 System.out.println(x);
 \end{verbnobox}
 
-Running the program and typing in any $32$-bit integer feeds it into standard input, then echos it to standard output. Entering any other non-integer value crashes the program with an \ttt{InputMismatchException} exception. So, what if we want to read in a \ttt{String} from the scannee; would we use \ttt{nextString}? Unfortunately, this is not correct. We need to instead use \ttt{nextLine}. The \ttt{nextLine} method reads a ``line'' of text, as a string, from the scannee. We define a ``line'' as all characters until the first occurrence of a new-line. Invoking \ttt{nextLine} consumes these characters, including the newline, from the input stream, and stores them into a variable, if requested. It does not, however, store the newline in the variable. 
+Running the program and typing in any $32$-bit integer feeds it into standard input, then echos it to standard output. Entering any other non-integer value crashes the program with an \ttt{InputMismatchException} exception. So, what if we want to read in a \ttt{String} from the scannee; would we use \ttt{nextString}? Unfortunately, this is not correct. We need to instead use \ttt{nextLine}. The \ttt{nextLine}\index{\ttt{nextLine}} method reads a ``line'' of text, as a string, from the scannee. We define a ``line'' as all characters until the first occurrence of a new-line. Invoking \ttt{nextLine} consumes these characters, including the newline, from the input stream, and stores them into a variable, if requested. It does not, however, store the newline in the variable. 
 
 \begin{verbnobox}[\small]
 Scanner in = new Scanner(System.in);
@@ -151,11 +151,11 @@ class ThreePointArea {
 \end{lstlisting}
 
 \section{Randomness}
-So-called ``true'' randomness is difficult to implement from a computing standpoint. Thus, for most intents and purposes (i.e., all of those described in this textbook), it is sufficient to use \emph{pseudorandomess} to generate random values. A pseudorandom number generator computes seemingly random values using a deterministic algorithm, which means that the output values from the generator are predictable. Although it might be incredibly difficult to predict values from a pseudorandom number generator, it is theoretically possible, making them insufficient and insecure for cryptographic schemata and algorithms. For writing, say, a word-guessing game that picks a word from a list at random, it is perfectly reasonable to use a pseudorandom number generator.
+So-called ``true'' randomness is difficult to implement from a computing standpoint. Thus, for most intents and purposes (i.e., all of those described in this textbook), it is sufficient to use \emph{pseudorandomess}\index{pseudorandom}\index{pseudorandomness} to generate random values. A pseudorandom number generator computes seemingly random values using a deterministic algorithm, which means that the output values from the generator are predictable. Although it might be incredibly difficult to predict values from a pseudorandom number generator, it is theoretically possible, making them insufficient and insecure for cryptographic schemata and algorithms. For writing, say, a word-guessing game that picks a word from a list at random, it is perfectly reasonable to use a pseudorandom number generator.
 
-Well, how do we generate pseudorandom numbers in Java? There are a few methods, and many textbooks opt to use \ttt{Math.random}, which we will explain, but our examples will largely constitute use of the \ttt{Random} class. Testing methods that rely on randomness is difficult, so our following code snippets do not come with testing suites. 
+Well, how do we generate pseudorandom numbers in Java? There are a few methods, and many textbooks opt to use \ttt{Math.random},\index{\ttt{Math.random()}} which we will explain, but our examples will largely constitute use of the \ttt{Random}\index{\ttt{Random}} class. Testing methods that rely on randomness is difficult, so our following code snippets do not come with testing suites. 
 
-\myexample{Using \ttt{Random}, let's generate an integer between $0$ and $9$, inclusive on both bounds. To do so, we first need to instantiate a \ttt{Random} object, which we will call \ttt{random}. Then, we should invoke \ttt{nextInt} on the \ttt{random} object with an argument of $10$. Passing the argument $n$ to \ttt{nextInt} returns an integer $x \in [0, n-1]$.}
+\myexample{Using \ttt{Random}, let's generate an integer between $0$ and $9$, inclusive on both bounds. To do so, we first need to instantiate a \ttt{Random} object, which we will call \ttt{random}. Then, we should invoke \ttt{nextInt} on the \ttt{random} object with an argument of $10$. Passing the argument $n$ to \ttt{nextInt} returns an integer $x \in [0, n-1]$.\footnote{Readers should note that this version of \ttt{nextInt} is different from te one provided by the \ttt{Scanner} class and cannot be used interchangably.}}
 
 \begin{verbnobox}[\small]
 Random random = new Random();
