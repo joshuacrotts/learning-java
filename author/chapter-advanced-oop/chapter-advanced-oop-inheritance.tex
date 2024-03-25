@@ -282,6 +282,10 @@ final class World {
 }
 \end{lstlisting}
 
+\myexample{Let's design a ``role hierarchy'' system for business users. In this system, there are employees that have different roles. For instance, we have managers, developers, and salespersons. We have two types of developers: junior and senior. An employee may be promotable if it implements the \ttt{IPromotable} interface. First, let's consider the hierarchy and what properties each of these roles have to offer.}
+
+An \ttt{Employee} contains a name and an identifier. \textbf{Continue here with HourlyEmployee and SalaryEmployee}
+
 \myexample{Let's design a class hierarchy to represent Pok\'emon\texttrademark{} evolutions and types. For those unfamiliar, Pok\'emon\texttrademark{} is a Japanese trading card and video-game series (with movies and television shows) produced by Nintendo. In the world of Pok\'emon\texttrademark{}, there are creatures that humans, called trainers, can capture and use to battle other trainers in a competitive turn-based matchup.\footnote{This is a heavily condensed description, but it gets the job done.}}
 
 Pok\'emon, in our simplified system, have hit-points to represent their health, statistics about their power/strength/speed, and up to four ``moves.'' Additionally, they have a level to indicate how strong they are. We will come back to the notion of a ``move,'' or an attack, later. Finally, they also have either one or two types, which are returned via the \ttt{getTypes} method as a \ttt{Set<IType>}.\footnote{We will design \ttt{IType} in a few paragraphs.} Let's design the \ttt{Pokemon} class. Aside from the accessors and mutators, we will add one instance method for adding moves to the \ttt{Pokemon}, as long as there are less than four. 
