@@ -1,6 +1,61 @@
 \section{Inheritance}
 
-Classes may relate to other classes by a hierarchy. In particular, one class, called the \emph{subclass}, can extend another class, called the \emph{superclass}. A subclass inherits all the methods and fields from its superclass. Classes can only extend one class at a time, unlike other programming languages such as C++. 
+When we introduced interfaces, we stated that they were a way of grouping classes that enact similar behaviors. Along a similar vein, \emph{inheritance} exhibits an ``IS-A'' relationship. That is, one class~$C_1$ ``is'' another class if it extends the~$C_2$ class. In this circumstance, $C_1$ is the \emph{subclass}, and $C_2$ is the \emph{superclass}. A subclass inherits all the non-private methods and fields from its superclass. Classes can only extend one class at a time, unlike other programming languages such as C++. 
+
+In Java, every class has an implicit superclass, namely \ttt{Object}, which follows the paradigm that ``everything is an object in Java.'' The \ttt{Object} class serves as a barebones ``template,'' of sorts, that provides the essentials for a class. These include methods for comparing one object against another via \ttt{equals}, computing the hash code via \ttt{hashCode}, and stringifying the class via \ttt{toString}. We have seen these three methods before in a variety of contexts, but we now elaborate on their origins.
+
+\example{When inheriting from a class, as we described, all non-private properties are inherited. So, let's consider an example that we have seen before: the \ttt{Point} class. As we recall, it stores an $x$ and $y$ coordinate. Though, what if we want to store a color inside the \ttt{Point} class? Does it make sense to modify the implementation of \ttt{Point} to now include a color? Absolutely not, because any existing code that makes use of \ttt{Point} presumes only knowledge of two coordinate values and not a color. Consequently, we should \emph{extend} the \ttt{Point} class in a new subclass called \ttt{ColorPoint}. Do \textbf{not} copy any code from the \ttt{Point} class into \ttt{ColorPoint}, because that defeats the purpose of class extension. Our \ttt{ColorPoint} class constructor will call the superclass constructor, via \ttt{super}, to pass the provided $x$ and $y$ coordinates up to the superclass definition. Recall that \ttt{x} and \ttt{y} have private access inside \ttt{Point}, meaning \ttt{ColorPoint} cannot initialize their values directly.}
+
+In designing the \ttt{ColorPoint} class, we will override the superclass implementation of \ttt{equals}, \ttt{hashCode}, and \ttt{toString} to also include the color of the point. What is convenient is that we do not need to repeat the existing comparison, hash code calculation, concatenation code respectively. Instead, we simply call the superclass variant of the method via `\ttt{super.equals}' or `\ttt{super.toString}'. Two \ttt{ColorPoint} instances are equal according to \ttt{equals} if their colors are the same and their coordinate values are equal. What we mean by ``we do not need to repeat the existing comparison,'' we imply that the \ttt{equals} method inside \ttt{ColorPoint} should not (and will not) compare its $x$ and $y$ coordinates to those of the parameter.
+
+Identical to interfaces, we should initialize an instance as its superclass, but instantiate it as a subclass type.
+
+\begin{lstlisting}[language=MyJava]
+class ColorPointTester {
+
+  @Test
+  void testColorPoint() {
+    Point p1 = new ColorPoint(3, 4, "RED");
+    Point p2 = new ColorPoint(4, 3, "GREEN");
+    Point p3 = new ColorPoint(3, 4, "RED");
+    assertAll(
+      () -> assertEquals("Color=RED, [x=3, y=4]", p1.toString()),
+      () -> assertEquals("Color=GREEN, [x=4, y=3]", p2.toString()),
+      () -> assertEquals(p1, p3),
+      () -> assertNotEquals(p1, p2));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Objects;
+
+class ColorPoint {
+
+  private String color;
+
+  ColorPoint(int x, int y, String color) {
+    super(x, y);
+    this.color = color;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    ColorPoint pt = (ColorPoint) o;
+    return this.color.equals(pt.color) && super.equals(pt);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.color) + super.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Color=%s, %s", this.color, super.toString());
+  }
+}
+\end{lstlisting}
 
 \myexample{Suppose we have the \ttt{Alien} class defined as follows, which can move forward by one unit and turn left by 90 degrees in some world that it resides within.\footnote{We base this example off of Karel J. Robot from~\cite{kareljrobot} and~\cite{pattiskarel}.}}
 
@@ -83,7 +138,7 @@ class Alien {
 
 What we have defined is an incredibly primitive alien class that stores its position and direction in a two-dimensional plane. Testing the alien, as we have done, is straightforward, but even such a simple alien definition must turn left three times to mimic the behavior of turning right once. One solution to this problem is to write the \ttt{turnRight} method directly inside \ttt{Alien}. Though, consider a situation in which the code for \ttt{Alien}, or any arbitrary class, is hidden and immutable. In such circumstances, any extendability must come via another means. 
 
-Let's \emph{extend} the \ttt{Alien} class to add a \ttt{turnRight} method. We will call this class \ttt{RightAlien}, which adds a single method: \ttt{turnRight}. The other methods remain the same, since we do not want to overwrite their behavior. One important thing to note is that we call the superclass constructor via the \ttt{super()} invocation. We do so because we want the direction, $x$, and $y$ variables to be correctly initialized when instantiating an instance of \ttt{RightAlien}. As we will demonstrate with future examples, it is also possible to invoke a superclass constructor that receives parameters.
+Let's extend the \ttt{Alien} class to add a \ttt{turnRight} method. We will call this class \ttt{RightAlien}, which adds a single method: \ttt{turnRight}. The other methods remain the same, since we do not want to overwrite their behavior. One important detail is that we invoke the superclass constructor without parameters, because the superclass (namely \ttt{Alien}) has no constructor that receives parameters. We invoke the superclass constructor to ensure that the $x$, $y$, and direction fields are initialized.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -127,7 +182,6 @@ class RightAlien extends Alien {
 \end{lstlisting}
 
 Great, we can turn right with this flavor of the alien! Though, moving forward by one unit is absurdly slow, so let's now design the \ttt{MileMoverAlien} class, which moves ten units for every \ttt{moveForward} call. A mile, in this two-dimensional world, is equal to ten units. Because we want to override the functionality of \ttt{moveForward} from \ttt{Alien}, we must redefine the method in the subclass, and add the \ttt{@Override} annotation. Moreover, we define this particular version of \ttt{moveForward} in terms of \ttt{moveForward} from the superclass. This is a common pattern when overriding methods: we want to reuse the functionality of the superclass, but add some additional behavior. In this case, we want to move ten units forward, instead of one. In order to invoke the superclass definition of \ttt{moveForward}, we prefix the method call with `\ttt{super.}', rather than `\ttt{this.}'. Should we accidentally prefix the method call with `\ttt{this.}', we would be invoking the subclass definition of \ttt{moveForward}, resulting in an infinite loop!\footnote{Omitting `\ttt{this.}' still causes the method to infinitely loop, since not having the qualifier will cause Java to look in the current class definition.} One could make the case and say that this is, in fact, a form of recursion, and indeed this is true, but it is nonsensical recursion because the outcome not only undesired but also never terminates.
-
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
@@ -282,9 +336,58 @@ final class World {
 }
 \end{lstlisting}
 
-\myexample{Let's design a ``role hierarchy'' system for business users. In this system, there are employees that have different roles. For instance, we have managers, developers, and salespersons. We have two types of developers: junior and senior. An employee may be promotable if it implements the \ttt{IPromotable} interface. First, let's consider the hierarchy and what properties each of these roles have to offer.}
+\myexample{Let's design a ``role hierarchy'' system for business users. In this system, there are employees that have different roles. For instance, we have managers, developers, and salespersons. An employee may be promotable if it implements the \ttt{IPromotable} interface. First, let's consider the hierarchy and what properties each of these roles have to offer.}
 
-An \ttt{Employee} contains a name and an identifier. \textbf{Continue here with HourlyEmployee and SalaryEmployee}
+An \ttt{Employee} contains a name and a unique identifier. Employees can be either hourly or salaried, meaning they receive an hourly payrate or a yearly salary. Let's categorize these into \ttt{HourlyEmployee} and \ttt{SalaryEmployee}, where both extend the \ttt{Employee} class. Accordingly, the \ttt{HourlyEmployee} class stores an hourly rate, whereas the \ttt{SalaryEmployee} class stores an annual salary amount.
+
+A \ttt{Manager} is an \ttt{Employee} (either salaried or hourly), and contains a list of \ttt{Employee} objects that they supervise. 
+
+A \ttt{Developer} writes code in a programming language defined as a string instance variable. They also store an integer denoting their number of years of experience. Developers are either hourly or salaried employees. Also, a developer can be either ``junior'' or ``senior,'' and a junior developer is promotable to a senior developer after they have at least five years of experience.
+
+Finally, a \ttt{Salesperson} is an hourly employee, and they store an instance variable denoting their target amount of sales.
+
+Let's start by designing the \ttt{Employee} class. In addition to its properties, employees can \ttt{String work()} and must override the \ttt{toString} method. The \ttt{work} method is \emph{polymorphic}, meaning that an \ttt{Salesperson} may work differently compared to a \ttt{JuniorDeveloper}, but they both ``work,'' in essence. We will say that an \ttt{Employee} works by returning a string with their name and \ttt{" is working."} appended. The unique identifier that an employee has is generated by a statically-incremented counter variable, similar to how we counted instances of the \ttt{Point} class in Chapter~\ref{chapter-classes}.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class EmployeeTester {
+
+  @Test
+  void testEmployee() {
+    Employee e1 = new Employee("Chaitrali");
+    Employee e2 = new Employee("Owen");
+    assertEquals("Chaitrali is working.", e1.work());
+    assertEquals("Owen is working.", e2.work());
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Employee {
+
+  private static int empCounter = 1;
+
+  private String name;
+  private int id;
+
+  Employee(String name) {
+    this.name = name;
+    this.id = empCounter;
+    Employee.empCounter++;
+  }
+
+  String work() {
+    return this.name + " is working.";
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Name=%s, ID=%d", this.name, this.id);
+  } 
+}
+\end{lstlisting}
 
 \myexample{Let's design a class hierarchy to represent Pok\'emon\texttrademark{} evolutions and types. For those unfamiliar, Pok\'emon\texttrademark{} is a Japanese trading card and video-game series (with movies and television shows) produced by Nintendo. In the world of Pok\'emon\texttrademark{}, there are creatures that humans, called trainers, can capture and use to battle other trainers in a competitive turn-based matchup.\footnote{This is a heavily condensed description, but it gets the job done.}}
 
