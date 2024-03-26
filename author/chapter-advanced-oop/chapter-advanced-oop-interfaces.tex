@@ -23,7 +23,7 @@ We cannot write any tests for the \ttt{IShape} interface directly, since it is i
 
 When implementing the methods of an interface in a class, we must mark those methods as \ttt{public} because all interface methods are \ttt{public}, either explicitly or implicitly. In this context, the \ttt{area} and \ttt{perimeter} methods are overridden in the \ttt{Octagon} and \ttt{Pentagon} classes.
 
-\enlargethispage{-2\baselineskip}
+%\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -78,7 +78,7 @@ class Pentagon implements IShape {
 }
 \end{lstlisting}
 
-\enlargethispage{-2\baselineskip}
+%\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Octagon implements IShape {
 
@@ -124,7 +124,7 @@ class Diamond implements ISuit {
 }
 \end{lstlisting}
 
-\enlargethispage{\baselineskip}
+%\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Heart implements ISuit {
     
@@ -229,7 +229,7 @@ class Cat implements IAnimal {
 }
 \end{lstlisting}
 
-\enlargethispage{3\baselineskip}
+%\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Dog implements IAnimal {
 
@@ -263,7 +263,7 @@ class IBox<T> {
 }
 \end{lstlisting}
 
-\enlargethispage{1\baselineskip}
+%\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -400,7 +400,7 @@ class FunctionMap {
 
 \myexample{Java 8 introduced the \ttt{Function} interface, so we do not have to design our own version. Using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can make use of method referencing via the \ttt{::} operator. Let's rewrite the \ttt{addOne} example doing so. We will also show off the fact that Java will auto-box and unbox an integer primitive into its \ttt{Integer} counterpart, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives instead, which are easier to work with. Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, because Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}}
 
-\enlargethispage{-1\baselineskip}
+%\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -441,7 +441,7 @@ interface IExpr {
 
 The simplest (atomic) values in our language are numbers, or literals as they are called. A \ttt{Lit} stores a single integer as an instance variable, and returns this instance variable upon a \ttt{value} invocation, which means \ttt{Lit} must implement the \ttt{IExpr} interface. Testing this class is trivial, so we will only write two tests.
 
-\enlargethispage{5\baselineskip}
+%\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -507,7 +507,7 @@ class Add implements IExpr {
   }
 }
 \end{lstlisting}
-\enlargethispage{1\baselineskip}
+%\enlargethispage{1\baselineskip}
 Thus we have a programming language that interprets numbers and addition expressions! We could add more elements/operators to this language, and we encourage the readers to get creative.
 
 \myexample{Symbolic differentiators are programs that take a mathematical expression and compute its derivative, but non-numerically. That is, it examines and interprets the structure of the expression to calculate the derivative. In this example we will write a symbolic differentiator in Java using interfaces and classes. Note that you do not need any calculus knowledge to follow along.}
@@ -587,7 +587,7 @@ class ConstantExpression implements Expression {
 }
 \end{lstlisting}
 
-\enlargethispage{-5\baselineskip}
+%\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJavaNF]
 import java.util.Objects;
 
@@ -635,7 +635,7 @@ class MonomialExpression implements Expression {
     return Objects.hash(this.VAR, this.COEFFICIENT, this.EXPT); 
   }
 \end{lstlisting}
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJavaNF]
   @Override
   public String toString() { 

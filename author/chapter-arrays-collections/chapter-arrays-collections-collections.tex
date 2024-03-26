@@ -20,7 +20,7 @@ We need a few methods to solve this problem: \ttt{makeList}, \ttt{addToList}, \t
 
 To better relate to the \ttt{ArrayList} class implementation, we will write two versions of the \ttt{makeList} method: one that receives an initial size and one that does not. Designing two methods of the same name that receive different parameter types/quantities is known as \emph{method overloading}\index{method overloading}, and we will see this further in our discussion on \emph{classes}. The \ttt{makeList} method returns an array of integers instantiated to the given size, or a base size of ten elements in the method that does not receive a parameter. Note that, inside of the \ttt{makeList} method that does not receive a parameter, we invoke \ttt{makeList(10)} so as to not repeat ourselves.
 
-\enlargethispage{-3\baselineskip}
+%\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -49,7 +49,7 @@ class DIntArray {
 
 We now want a method that will add a value to a given ``list'' in this fashion. In particular, we know that indices whose elements are $-1$ correspond to ``free/available'' slots for the next value to-be added. The thing is, there is more to consider than just replacing the first-found instance of $-1$ with the desired value. We need to ensure that room exists for this new value; i.e., whether or not there is a $-1$ to begin with. As such, we should write a local helper method that returns a resized list with the values copied over from the old list; the only difference being a doubling in element capacity. Then, inside \ttt{addToList}, we check to see if we were able to properly insert $v$ into the list and, if not, we resize and make a recursive call to \ttt{addToList}.\footnote{We could use \ttt{Arrays.copyOf}, but it is important to understand \emph{how} the copying occurs.} Regarding performance and memory usage, this is not an optimal solution since we could simply add $v$ to index $|A|$ of the new array $A'$, since we know $|A'| = |A|$.
 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertArrayEquals;
@@ -150,7 +150,7 @@ class DIntArray {
 }
 \end{lstlisting}
 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -694,7 +694,7 @@ A \emph{LinkedHashSet}\index{linked hash set}\index{\ttt{LinkedHashSet}} is a se
 
 \myexample{The canonical usage of a set is to remove duplicates from a list. Indeed, let's write the \ttt{removeDuplicatesList} method that receives a list of integers and returns a new list without any duplicates. We will assume that the output order must match the input order. To solve this problem we will create an auxiliary linked hash set data structure, add all elements from the list into the set, then add those values from the set to a new list. When adding a value into a set, if it already exists, it is not added again, as we stated above.}
 
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -741,7 +741,7 @@ class RemoveDuplicatesList {
 
 \myexample{Suppose we want to find all common elements shared between two linked lists of elements, which are unordered. Let's write the \ttt{commonValues} method that, when given two linked lists of integers, returns a sorted ordered list of values that occur in both lists. We should not count values twice, e.g., if the value \ttt{2} occurs twice in the first list, then the resulting output list should only contain one occurrence of \ttt{2}. Because we want the output to be sorted, we can take advantage of a tree set.}
 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -823,7 +823,7 @@ class FindDupMissingTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-1\baselineskip}
+%\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Set;
 import java.util.TreeSet;
@@ -896,7 +896,7 @@ A \emph{TreeMap}\index{tree map}\index{\ttt{TreeMap}} is a map with a determined
 A \emph{LinkedHashMap}\index{linked hash map}\index{\ttt{LinkedHashMap}} is a map with an ordering based on the insertion order of the key/value pairs. All methods in a \ttt{Map} are definitionally implemented by a \ttt{LinkedHashMap}.
 
 \myexample{Perhaps one of the most common use cases for a dictionary-based data structure is to compute the frequency, or count, of some values. Suppose we want to write the \ttt{Set<Integer> mode(List<Integer> ls)} method that, when given a list of integers, returns the mode(s), i.e., the most-frequent value(s). We can use a map to keep track of the numbers seen so far, which are the keys, and their respective frequencies being the values. Because a list of numbers may have multiple modes, we will need to use a three-step algorithm:}
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{enumerate}
   \item Compute the frequencies of each number.
   \item Find the highest frequency.
@@ -926,7 +926,7 @@ class ComputeModeTester {
 }
 \end{lstlisting}
 
-\enlargethispage{5\baselineskip}
+%\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1013,7 +1013,7 @@ class ShareFirstCharacterTester {
 }
 \end{lstlisting}
 
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.List;
@@ -1067,7 +1067,7 @@ class FirstUniqueLetterTester {
 }
 \end{lstlisting}
 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.Map;
@@ -1136,7 +1136,7 @@ class NthMostUniqueCharTester {
 }
 \end{lstlisting}
 
-\enlargethispage{8\baselineskip}
+%\enlargethispage{8\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
 import java.util.HashMap;
@@ -1204,7 +1204,7 @@ Upon retrieving an iterator, we can use a \ttt{while} loop to continuously trave
 
 \myexample{Let's use an iterator to traverse over a \ttt{LinkedHashSet}, whose elements ordering is determined by their insertion order, meaning the iterator should produce them in the order in which they were inserted.}
 
-\enlargethispage{5\baselineskip}
+%\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1258,7 +1258,7 @@ class EnhancedForLoopTester {
 
 \myexample{Not only does the use of an enhanced \ttt{for} loop disallow structural modification, it also does not preserve the order of stacks. For example, suppose we have a stack $S=[10, 20, 30, 40, 50]$, where $50$ is the top of the stack. If we want to print each element of $S$ without iterators or modifying the stack itself, the obvious option is to use an enhanced \ttt{for} loop. Unfortunately, this does not go as expected: it prints the elements in the order they are inserted, i.e., first-in-first-out. Intuitively we may expect the program to output the values via last-in-first-out, i.e., $50, 40, 30, 20, 10$. What's worse is that its \ttt{Iterator} implementation also makes this mistake. The solution proposed by Oracle is to instead use the \ttt{ArrayDeque} class, which is a type of \ttt{Deque} object.\footnote{A \emph{deque}, pronounced as `deck,' is a double-ended queue, meaning we can insert and remove elements from either the front or the rear.}\footnote{See the note listed on Oracle's \ttt{Stack} documentation: \url{https://docs.oracle.com/javase/8/docs/api/java/util/Stack.html}}}
 
-\enlargethispage{-1\baselineskip}
+%\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stack;
 import java.util.Iterator;
@@ -1286,7 +1286,7 @@ class StackPrinter {
 
 \myexample{The unintuitive nature of the enhanced \ttt{for} loop and certain iterators does not stop with stacks, unfortunately. Priority queues are also afflicted as a consequence of their implementation. Let's see what happens when we create a priority queue whose comparator prioritizes the string \ttt{"Joshua"} over all strings and makes the string \ttt{"Jack"} have the lowest priority. In other words, any occurrence of \ttt{"Joshua"} should come before all other strings in the priority queue, whereas any occurrence of \ttt{"Jack"} should come after all other strings in the priority queue. Any strings in between are ordered naturally, i.e., via lexicographical ordering.} 
 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.PriorityQueue;
@@ -1365,7 +1365,7 @@ IntStream is = IntStream.iterate(0, x -> x + 2);
 
 Let us explain this method, but to do so we must introduce \emph{lambda expressions}. A lambda expression is an anonymous function, i.e., a function definition without a name. In the above code snippet, we define a function that receives a value $x$ and returns $x$ plus two. It would be identical to defining a \ttt{private static} method to add two to some integer, but we like lambda expressions due to their locality; it might come across as superfluous to design a method that is used in only one context. Should we want to pass a method reference instead of a lambda expression, this is easily attainable.
 
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
 
@@ -1461,7 +1461,7 @@ class BigIntFibStreamTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-2\baselineskip}
+%\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.BigInteger;
@@ -1518,7 +1518,7 @@ class BigIntFibStream {
 
 So our code now produces a list of \ttt{BigInteger} arrays containing the current Fibonacci value and its successor. Though, is this really what we want? A better solution would be to simply return the first element of the tuple/two-element array. We can achieve this via the \ttt{map} function. \ttt{map} receives a lambda expression as an argument and applies it to every element of the acting stream. Let's modify the code a bit to see an improved output. Excellently, this change means we do not need to loop over our expected/actual lists in the unit testing method, as \ttt{assertEquals} works as intended over \ttt{List} objects.
 
-\enlargethispage{-2\baselineskip}
+%\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -1545,7 +1545,7 @@ class BigIntFibStreamTester {
 }
 \end{lstlisting}
 
-\enlargethispage{6\baselineskip}
+%\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.BigInteger;
@@ -1644,7 +1644,7 @@ class RemoveVowelsStreamTester {
 \end{lstlisting}
 
 Onto the definition; we start by writing the method signature and purpose. Then, we need to complete step one: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. Step two involves us converting each integer into a ``one-string,'' which we can do via the constructor for a \ttt{String} object. Step three requires the use of \ttt{filter}, which is another higher-order function. It receives a lambda expression and returns those objects from the stream that satisfy the filter. Since we want to filter \emph{out} the vowels, we should write a method that determines if a character is vowel, then negate the expression as part of the lambda definition. Lastly we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. The reduce function receives an initial value, i.e., an accumulator $a$ and a binary function $f$. It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly how reduce works; It folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} Due to the simplicity of the \ttt{isVowel} predicate and its implementation in Chapter~\ref{chapter-crl}, we omit its definition.
-\enlargethispage{-4\baselineskip}
+%\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RemoveVowelsStream {
 
@@ -1667,7 +1667,7 @@ The primary benefit of streams is their compositionality. We can chain together 
 
 \myexample{Consider a series of stream operations to find the maximum integer of a list. For the general case, this is straightforward, but what about when the list is empty? It does not make sense to return zero, since the maximum integer in a list may very well be zero, which leads to a false conclusion. The solution, in this case, is the \ttt{Optional} class. An \ttt{Optional} is a container that may or may not contain a value. If so, we may access the value directly via \ttt{.get}. If we do not know whether or not it contains a value, we may use \ttt{.orElse($t$)}, which returns the encapsulated value if it exists, or $t$ otherwise. We can also check, prior to a retrieval, if the \ttt{Optional} contains a value via the \ttt{.isPresent} method. \ttt{Optional} is generic and works over any class type, like almost all other classes from the collections API. To test the return value of a stream operation that returns an \ttt{Optional}, e.g., \ttt{max}, we instantiate an \ttt{Optional} that wraps the resulting value if it exists, or \ttt{Optional.empty()} otherwise.}
 
-\enlargethispage{1\baselineskip}
+%\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

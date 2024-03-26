@@ -93,7 +93,7 @@ class AlienTester {
 }
 \end{lstlisting}
 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Alien {
 
@@ -202,7 +202,7 @@ class MileMoverAlienTester {
 }
 \end{lstlisting}
 
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MileMoverAlien extends Alien {
 
@@ -260,7 +260,7 @@ class WorldObject {
 }
 \end{lstlisting}
 
-\enlargethispage{3\baselineskip}
+%\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class StarObject extends WorldObject {
   
@@ -579,7 +579,60 @@ class JuniorDeveloper extends Developer implements IPromotable {
 }
 \end{lstlisting}
 
-The developer series of classes were certainly a lot to write and design. The last class, namely \ttt{Manager}, is an hourly employee who supervises employees. Their ``work'' is that they are ``supervising'' employee names.... \textbf{CONTINUE HERE}
+The developer series of classes were certainly a lot to write and design. The last class, namely \ttt{Manager}, is an hourly employee who supervises any kind of employee, including other managers. Their ``work'' is that they are ``supervising'' employee names, sorted alphabetically. The only part of this that is more complex than the others is the comparator that we provide to the \ttt{TreeSet}. Because the set stores employee instances, our comparator must receive two employees, but return a comparison based on their name. Let's see what this looks like:
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class EmployeeTester {
+
+  @Test
+  void testManager() {
+    HourlyEmployee m1 = new Manager("Abby", 30.00);
+    m1.addDirectReport(new JuniorDeveloper("Cole", 75000, "Python", 6));
+    m1.addDirectReport(new JuniorDeveloper("Adam", 45000, "Python", 0));
+    m1.addDirectReport(new SalaryEmployee("Pete", 46000));
+    assertAll(
+      () -> assertEquals("Abby manages Adam, Cole, Pete.", m1.work()),
+      () -> assertEquals("Abby, ID=1, Hourly=30.00, Manager", m1.toString()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Collectors;
+import java.util.Set;
+import java.util.TreeSet;
+
+class Manager extends HourlyEmployee {
+
+  private Set<Employee> DIRECT_REPORTS;
+
+  Manager(String name, double hrRate) {
+    super(name, hrRate);
+    this.DIRECT_REPORTS = new TreeSet((e1, e2) -> e1.getName().compareTo(e2.getName()));
+  }
+
+  void addDirectReport(Employee e) {
+    this.DIRECT_REPORTS.add(e);
+  }
+
+  @Override
+  String work() {
+    return String.format("%s supervises %s", 
+                         super.getName(),
+                         this.DIRECT_REPORTS.stream()
+                                            .map(x -> x.getName())
+                                            .collect(Collectors.joining(", ")));
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s, Manager", super.toString());
+  }
+}
+\end{lstlisting}
 
 \myexample{Let's design a class hierarchy to represent Pok\'emon\texttrademark{} evolutions and types. For those unfamiliar, Pok\'emon\texttrademark{} is a Japanese trading card and video-game series (with movies and television shows) produced by Nintendo. In the world of Pok\'emon\texttrademark{}, there are creatures that humans, called trainers, can capture and use to battle other trainers in a competitive turn-based matchup.\footnote{This is a heavily condensed description, but it gets the job done.}}
 

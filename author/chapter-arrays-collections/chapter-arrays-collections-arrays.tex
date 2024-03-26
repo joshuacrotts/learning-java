@@ -100,7 +100,7 @@ class SumOfDoubleArray {
 
 Even though our code works and the tests that we wrote pass without question, there is a bit of verbosity with our loop; all we ever use the iteration variable, $i$, is for accessing a variable. In such circumstances, we may prefer using the enhanced \ttt{for} loop, which abstracts away the index and provides an iteration construct for accessing elements sequentially.
 
-\enlargethispage{\baselineskip}
+%\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class SumOfDoubleArray {
 
@@ -309,7 +309,7 @@ class McqScoreCalculator {
 
 Lastly, the loop variant is just a translation pipeline away. When traversing over arrays, though, it is much more colloquial to use a \ttt{for} loop, since the bounds are known a priori.
 
-\enlargethispage{3\baselineskip}
+%\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class McqScoreCalculator {
 
@@ -342,7 +342,7 @@ We are on our way to understanding the full signature of the \ttt{main} method. 
 
 First, we must explain how terminal arguments work. Terminal arguments are specified after the executable (name) and are separated by spaces. For instance, if our program name is \ttt{calculator}, we might use \ttt{./calculator --add 5 4 17}. Thus, \ttt{args[0]} is \ttt{--add}, \ttt{args[1]} is \ttt{"5"}, \ttt{args[2]} is \ttt{"4"}, and \ttt{args[3]} is \ttt{"17"}. For simplification purposes, we will assume that the first argument is always the operation/help flag, and the remaining values are operands. This means that the program should output \ttt{26}. Let us write a method that parses the operation/help flag. Upon success, it returns \ttt{true} and upon failure, it returns \ttt{false}. This prevents the program from further interpreting bad terminal arguments, e.g., \ttt{./calculator --wrong 5 12}. We will also use \ttt{false} as an indication that the \ttt{help} menu was requested or prompted. Thus, to not duplicate code, we should write another method that displays the relevant program usage information.
 
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Calculator {
 
@@ -394,7 +394,7 @@ class Calculator {
 
 To start, let's see a few example runs of our program, containing a mixture of flags.
 
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{verbnobox}[\small]
 ./ArrayArguments 5 1 2 3 4 5 --sum --max
 sum: 15.000000
@@ -451,7 +451,7 @@ The other ``operations'' methods, as well as their tests, are simple to write, a
 
 Our main method first checks to see if the user entered the ``help'' command and, if so, presents the necessary information for runnning the program. Otherwise, we perform a case analysis on the terminal arguments, looking for the presence of the operation flags. For arbitrary reasons, we output the sum, then the product, then the min, and finally the max, in that order, despite the ordering of the flags. As an exercise, we encourage the readers to modify the program to output the values in the order of the flags. An important detail that some may miss is that we use a sequence of \ttt{if} statements rather than \ttt{if/else if} statements. This is because we want to allow the user to pass multiple flags, and we do not want to restrict them to only one. Thus, we must check for the presence of each flag individually.
 
-\enlargethispage{-2\baselineskip}
+%\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class ArrayArguments {
 
@@ -532,7 +532,7 @@ Note that to access the element at row $i$ and column $j$, we use \ttt{$A[i][j]$
 
 \myexample{Let's solve a slightly harder problem using two-dimensional arrays. Suppose that we want to write a method that returns the number of possible moves that a rook can take to go from the top-left of a (not-necessarily rectangular) board to the bottom-right, assuming that it cannot move left or up. The naive solution to this problem is to use a recursive method that changes its position by one in either direction, stopping once we hit the bottom-right of the board. Assuming the rook starts at $(x, y)$ and the board is $n \times m$, we can write the following method.}
 
-\enlargethispage{5\baselineskip}
+%\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -604,7 +604,7 @@ class RookPathTester {
 }
 \end{lstlisting}
 
-\enlargethispage{6\baselineskip}
+%\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RookPath {
 

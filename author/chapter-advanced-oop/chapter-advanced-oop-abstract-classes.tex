@@ -104,7 +104,7 @@ It might seem strange to use an abstract class, since we could write a \ttt{Spea
 \label{fig:collisiondetection}
 \end{figure}
 
-\enlargethispage{1\baselineskip}
+%\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 abstract class GameObject {
   
@@ -148,7 +148,7 @@ abstract class AxisAlignedBoundingBoxObject extends GameObject {
 
 We declared an abstract class to extend another abstract class; which is perfectly acceptable. Because it makes no sense to instantiate an entity, in and of itself, called \ttt{AxisAlignedBoundingBoxObject}, we declare it as abstract, but we need it to contain the functionality of \ttt{GameObject}, which calls for the inheritance. Normally, we would immediately write an extensive test suite for \ttt{collidesWith}, but because we cannot instantiate an \ttt{AxisAlignedBoundingBox} directly, we cannot test \ttt{collidesWith} at the moment. In a couple of paragraphs, however, this will be possible, with the additions of \ttt{CircleObject} and \ttt{RectangleObject}.
 
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -206,7 +206,7 @@ interface IDrawable {
 }
 \end{lstlisting} 
 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class CircleObject extends AxisAlignedBoundingBoxObject 
                    implements IDrawable {
@@ -436,7 +436,7 @@ As a final corollary point before jumping into the environment details, we must 
 
 The question now is of what type are the keys and values in our map. The keys are string identifiers, and the values are their corresponding abstract syntax trees. Our environment representation/class is extremely simple and almost seems superfluous, but in due time we will add more functionality to justify its existence over a simple \ttt{HashMap} instance. In particular, the \ttt{lookup} method for finding a variable association will remain undefined for now.
 
-\enlargethispage{-1\baselineskip}
+%\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.Map;
@@ -549,7 +549,7 @@ final class NumNode extends AstNode {
 }
 \end{lstlisting}
 
-\enlargethispage{-3\baselineskip}
+%\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class BoolNode extends AstNode {
 
@@ -593,7 +593,7 @@ final class BoolNode extends AstNode {
 
 From here, we arrive at primitive operators via \ttt{PrimNode}. A primitive operator is one akin to addition, subtraction, and so forth. Two additional primitives that we will support are reading an integer from standard input, and printing one to standard output. Primitive operators receive any number of arguments and whose behavior is handled as a case analysis of the \ttt{eval} method. 
 
-\enlargethispage{5\baselineskip}
+%\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -738,7 +738,7 @@ final class Environment {
 
 Our modified version of the environment allows us to implement local/let bindings in a way that respects parent environments. As one of the exercises of this chapter demonstrate, environment extension helps us when adding user-defined functions.
 
-\enlargethispage{-3\baselineskip}
+%\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class LetNode extends AstNode {
 
@@ -781,7 +781,7 @@ final class LetNode extends AstNode {
 
 Finally we arrive at decision-based nodes. The \ttt{IfNode} class represents a conditional expression rather than a statement. Recall the ternary operator; it resolves to a value, unlike Java's \ttt{if} statement. The \ttt{IfNode} class has three children: a predicate, a consequent, and an alternative. The predicate is an abstract syntax tree that represents a boolean expression, and the consequent and alternative are arbitrary abstract syntax tree nodes. The \ttt{IfNode} class will have a \ttt{toString} method that will return a string of the form \ttt{(if <pred> <conseq> <alt>)}. Its evaluator will evaluate the predicate, and then evaluate either the consequent or alternative depending on the result of the predicate.
 
-\enlargethispage{1\baselineskip}
+%\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class IfNode extends AstNode {
   
@@ -823,7 +823,7 @@ final class IfNode extends AstNode {
 
 Finally, at long last, we can write some tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment, which contains no bindings at the start of evaluation. Unfortunately, we still have to write the programs as an abstract syntax tree, but the problems of lexing and parsing raw string input into an abstract syntax tree are reserved for some other time (or perhaps a separate course altogether).
 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

@@ -301,7 +301,7 @@ Notice that we localized the tail recursion to this class and updated the signat
 
 \myexample{Let us get a bit more practice using recursion by integrating strings. Suppose we want to design a method that removes all characters whose position is a multiple of three. For example, given the string \ttt{"ABCDEFGHI"}, we want to return \ttt{"ABDEGH"}, since \ttt{"C"}, \ttt{"F"}, and \ttt{"I"} are located at positions (note the use of position and not index) are divisible by three. Tests are, of course, warranted and necessary.}
 
-\enlargethispage{-3\baselineskip}
+%\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -337,7 +337,7 @@ class DivByThree {
 \end{lstlisting}
 Thinking recursively takes time, and there is no better way to get better than extensive practice. Let us now convert the method into its tail recursive counterpart. Due to the trivial nature of writing tests, we will omit them for our tail recursive version. The algorithm is largely the same, except for the added accumulator that builds the resulting string instead of relying on the recursive unwinding to occur. Our base case concatenates $s$ onto the end of the accumulator.
 
-\enlargethispage{5\baselineskip}
+%\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DivByThree {
 

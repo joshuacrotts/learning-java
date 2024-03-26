@@ -7,7 +7,7 @@ Looping is a fundamental concept in computer programming. Loops allow for repeti
 What follows is a high-level introduction to converting from tail recursive methods to iteration. While you may not understand everything at first, we supplement this with a comprehensive translation schema.
 
 Writing recursive methods is certainly fun.\footnote{The definition of ``fun'' is, of course, relative.} Though, the use of recursion is not always the most intuitive approach to solve a problem according to some programmers/students. Many programming languages offer \emph{iteration} statements, which allow us to perform a task that we might otherwise use recursion to complete. Suppose we have a standard recursive \emph{fact} method. 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{clrr}[]{Standard Recursive Factorial}
 \begin{lstlisting}[language=MyJavaNF]
 static int fact(int n) {
@@ -163,7 +163,7 @@ Finally, in \emph{$TR_\mathbf{Ret}$}, we add the line to return the accumulated 
 
 \subsection{\emph{$TR_\mathbf{H}$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. Each of these play a crucial role in the transition to $I$, and quickly yet correctly identifying these as they fit in tail recursive methods is paramount. Let us re-look at our old factorial friend to see what this entails.
 
-\enlargethispage{\baselineskip}
+%\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 static int fact(int n, int acc) {
   if (n == 0) {
@@ -367,7 +367,7 @@ class SumPrimes {
 }
 \end{lstlisting}
 
-% \enlargethispage{\baselineskip}
+% %\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertTrue;
@@ -417,7 +417,7 @@ class Prime {
 
 The primality tests pass, which means we can put \ttt{isPrime} to work inside of \ttt{sum100Primes}. The method logic is straightforward: initialize our counter c at one. We also need a variable to track the last-found prime integer, so we know from where to start the search. We will call this variable $l$ and initialize it to zero. Finally, a $\mathit{sum}$ variable accumulates the sum of each prime. Inside the loop, we declare another variable $v$, which serves as the value to check for primality, taking on the value of $l + 1$ (if it were just $l$, we would forever check the same value for primality!). Run $v$ through the \ttt{isPrime} method and, if it is prime, assign to $l$ the value of $v$, add $v$ to the sum, and increment $c$. Otherwise, increment $l$ by one.\footnote{We will note that this code is overly verbose for pedagogical purposes.}
 
-\enlargethispage{-4\baselineskip}
+%\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class SumPrimes {
 
@@ -474,7 +474,7 @@ class OddReciprocalSumTester {
 
 The implementation is similarly simple: we create a counter $c$ that increments so long as $c$ is not equal to $n$, accumulating the $\emph{sum}$ of $1$ divided by $2c-1$.
 
-\enlargethispage{\baselineskip}
+%\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class OddReciprocalSum {
 
@@ -503,7 +503,7 @@ With a \ttt{for} loop, we provide three values: an \emph{initializer statement},
 
 \myexample{Suppose we wish to write a program that returns the sum of the integers between two integers $a$ and $b$, inclusive. We know how many integers there are between $a$ and $b$, assuming $a \leq b$, so we should use a \ttt{for} loop to solve this problem.} 
 
-\enlargethispage{-7\baselineskip}
+%\enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -565,7 +565,7 @@ g_5 &= \dfrac{\left(8.2921 + \dfrac{64}{8.2921}\right)}{2} &= 8.0051\\
 
 At each iteration, we square the current guess and determine if the absolute difference between it and $n$ is less than the guess. When so, that iteration of $g_x$ is the square root approximation. Otherwise, we continue to approach the square root value. We cannot reasonably predict when this will occur (that is, how many iterations are necessary), so we use a \ttt{while} loop. Because there are multiple potential points of failure in this algorithm, we make sure to write an extensive test suite. The method itself is a re-telling of the mathematical definition with bits of Java syntax sprinkled about. 
 
-\enlargethispage{2\baselineskip}
+%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -622,7 +622,7 @@ To decrease the level of accuracy, we of course should pass a different value fo
 
 Writing tests for a Fibonacci algorithm is trivial to do and propagates through to the other variants. So, writing tests for the standard recursive algorithm, assuming they are correct, allows us to easily write tests for the others!
 
-\enlargethispage{-3\baselineskip}
+%\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -657,7 +657,7 @@ class Fibonacci {
 
 Our method works and tests pass, which is great, but we can do better by using tail recursion. The tail recursive variant, however, is slightly more complicated than prior tail recursive definitions due to the use of two accumulators. We use two values to compute the ``next'' Fibonacci number: the previous, and the previous' previous. So, storing these as values, say, $a$ and $b$, is sensible, where $a$ is the ``previous' previous,'' and $b$ is the previous. Thus, when making a tail recursive call, we assign $b$ as $a + b$, and $a$ as $b$. We must not forget the driver method!
 
-\enlargethispage{6\baselineskip}
+%\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Fibonacci {
 
@@ -726,7 +726,7 @@ In essence, we generate a local temporary variable to hold onto the old value of
 
 The last stage is simple; we return the result of the other base case, namely $b$ when $n$ is finally one.
 
-\enlargethispage{-6\baselineskip}
+%\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 static int fib(int n) {
   // Holds the previous' prev.

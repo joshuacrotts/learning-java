@@ -4,7 +4,7 @@ A limitation that we have purposefully imposed on our object/class design is the
 
 To access a \ttt{private} instance variable, we design a \ttt{public} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a \ttt{public} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns the instance variable to the parameter. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a point $p$ to $(7, 4)$, but we then want to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which we confirm through the accessor method. Another way of phrasing this is that, when testing a mutator, we care about the \emph{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. Setter methods, or methods that modify outside values or data are definitionally \emph{impure}\index{impure}. Because we want to be able to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove this keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we \emph{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
 
-\enlargethispage{1\baselineskip}
+%\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -47,7 +47,7 @@ class Point {
 
 What are some consequences to mutating an object? One comes through the notion of \emph{object aliasing}. Recall that objects point to references in memory. Therefore if we instantiate a \ttt{Point} $p_1$, then initialize another \ttt{Point} $p_2$ to reference $p_1$, then both objects refer to the same \ttt{Point} instance in memory. If we modify $p_1$ through a setter method, then $p_2$ will reflect the change.
 
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -91,7 +91,7 @@ class PointTester {
 
 This idea carries over to other, more complex classes as well. For example, strings, arrays, lists, and others are all objects, and therefore, they are all subject to object aliasing. Modifying one \ttt{ArrayList} instance will modify all other \ttt{ArrayList} instances that reference the same object. This is a common source of bugs in Java programs, and it is important to be aware of this behavior. In the following example, we will demonstrate aliasing through the \ttt{ArrayList} data structure containing \ttt{Point} objects. We add a series of \ttt{Point} instances to an \ttt{ArrayList}, which is then aliased by another \ttt{ArrayList}. We then add another \ttt{Point} instance to the first \ttt{ArrayList}, followed by a verification that the lists are the same size. Additionally, we traverse over the lists and verify that the elements are the same through the \ttt{==} operator. Remember that \ttt{==} returns whether or not two objects reference the same instance in memory. Because these lists are merely aliases of each other, they will, in fact, contain references to the same \ttt{Point} instances.
 
-\enlargethispage{1\baselineskip}
+%\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -154,7 +154,7 @@ Generics, on the other hand, are a compile-time feature, meaning it is impossibl
 Instead, we must instantiate an array containing (elements of) type \ttt{Object}, followed by a cast to contain (elements of) type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} 
 This is called an \emph{unchecked cast}, and it is a necessary evil in Java to support powerful classes that operate over generic arrays.
 
-% \enlargethispage{9\baselineskip}
+% %\enlargethispage{9\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -181,7 +181,7 @@ We now need to implement the \ttt{add} method, which adds an element to the end 
 To write coherent tests, we should also write the \ttt{get} method, which returns the element at a given index, as well as \ttt{size}, which returns the number of logical elements in the list. 
 For now, we will not worry about bounds checking, but we will return to this in a later chapter on exceptions.
 
-\enlargethispage{5\baselineskip}
+%\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -203,7 +203,7 @@ class MiniArrayListTester {
 }
 \end{lstlisting}
 
-\enlargethispage{6\baselineskip}
+%\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
 
@@ -255,7 +255,7 @@ class MiniArrayList<T> {
 
 We will write two more methods: \ttt{insert} and \ttt{remove}, which inserts an element $e$ at a given index $i$, and removes an element $e$ respectively. These two methods are similar in that they alter the backing array by shifting its values right and left. Accordingly, our implementation will contain the private helper methods \ttt{shiftRight} and \ttt{shiftLeft}. If we attempt to insert an element into a list that must be resized, we call \ttt{resize}. Both \ttt{insert} and \ttt{remove} warrant test cases! Like the \ttt{get} counterpart, neither of these new methods will perform bounds checking, so testing out-of-bounds behavior, for the time being, is not pertinent.
 
-\enlargethispage{-3\baselineskip}
+%\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -288,7 +288,7 @@ class MiniArrayListTester {
 }
 \end{lstlisting}
 
-\enlargethispage{5\baselineskip}
+%\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
   // ... previous code not shown.
@@ -736,7 +736,7 @@ class DoublyLinkedList<T> {
 }
 \end{lstlisting}
 
-\enlargethispage{3\baselineskip}
+%\enlargethispage{3\baselineskip}
 Finally we arrive at element removal, which is not as cut-and-dry. We want to pass the element-to-remove (compared via \ttt{equals}), but we need to adjust the pointers accordingly. In particular, there are four cases to consider:
 
 \begin{enumerate}[label=(\alph*)]
@@ -771,7 +771,7 @@ class DoublyLinkedListTester {
 }
 \end{lstlisting}
 
-\enlargethispage{6\baselineskip}
+%\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
   // ... previous code not shown.
@@ -832,7 +832,7 @@ class AssociationListTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-3\baselineskip}
+%\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJavaNF]
 import java.lang.StringBuilder;
 import java.util.Optional;
@@ -879,7 +879,7 @@ class AssociationList<K, V> {
     return new AssociationList<>(key, value, this);
   }
 \end{lstlisting}
-\enlargethispage{4\baselineskip}
+%\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJavaNF]
   @Override
   public String toString() {

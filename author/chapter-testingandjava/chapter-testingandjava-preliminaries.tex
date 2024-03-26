@@ -266,7 +266,7 @@ q(x) = 4x^4 + 7x^3 + 21x^2 - 65x + 3
 
 Its signature is straightforward: we receive a value of $x$, namely a \ttt{double}, and return a \ttt{double} since we are performing mathematical operations on \ttt{double} values. Again, we return zero as a temporary solution to ensure the program successfully compiles.
 
-\enlargethispage{-1\baselineskip}
+%\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class QuarticFormulaSolver {
 
@@ -303,7 +303,7 @@ class QuarticFormulaSolverTester {
 
 Again, we write tests \emph{before} the method implementation because we know, intuitively, how to solve an equation for a variable, but a computer has to be told how to solve this task. Fortunately for us, a quartic equation solver is nothing more than returning the result of the expression. We, of course, have to use the exponential \ttt{Math.pow} method again (or conjoin several multiplicatives of $x$), but otherwise, it is straightforward.
 
-\enlargethispage{\baselineskip}
+%\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class QuarticFormulaSolver {
 

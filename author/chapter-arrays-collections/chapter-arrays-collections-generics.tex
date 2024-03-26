@@ -60,7 +60,7 @@ class GenericSearchTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-6\baselineskip}
+%\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -85,7 +85,7 @@ class GenericSearch {
 \subsection{Bounded Type Parameters}
 To restrict the type parameter to a certain subset of types, we can use \emph{bounded type parameters}\index{bounded type parameters}\index{type parameters}. As an example, we might wish to restrict a type parameter for a method to only types that implement the \ttt{Comparable} interface. Doing so means that the type parameter has access to any methods defined by the interface, in this case, \ttt{compareTo} being the only available method. To specify a bounded type parameter, we use the \ttt{extends} keyword, e.g., \ttt{<T extends Comparable>}. We denote this as an upper-bound on the type parameter, since we are restricting the type parameter to a subset of types that are ``above'' the specified type. We might also wish to use a lower-bound, which restricts the type parameter to a subset of types that are ``below'' the specified type. For example, if we want to restrict the type parameter to only types that are superclasses of \ttt{Integer}, we can do so by specifying \ttt{<T super Integer>}.
 
-\enlargethispage{1\baselineskip}
+%\enlargethispage{1\baselineskip}
 \myexample{Let's design the \ttt{static <T extends Comparable<T>> T max(List<T> t)} method, which receives a list $t$ of type \ttt{T} and returns the maximum element in the list. Because determining the max element of a list involves comparison-based checking, we must restrict the type parameter to only types that implement an interface for comparing objects, e.g., \ttt{Comparable}. In the previous section we discussed that \ttt{Optional} is a container class that can either hold a value or be empty. An exercise at the end of this section will ask you to use \ttt{Optional} in designing a similar method, rather than returning \ttt{null} as we will show here.}
 
 \begin{lstlisting}[language=MyJava]
@@ -114,7 +114,7 @@ class GenericMaxTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-2\baselineskip}
+%\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparable;
 import java.util.List;
