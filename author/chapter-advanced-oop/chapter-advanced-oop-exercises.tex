@@ -12,6 +12,45 @@ The \emph{Kotlin} programming language supports customized \emph{ranges}. That i
 
 \myexercise{2}{chapter-advanced-oop}{Design the generic static method \ttt{T validateInput(String prompt, String errResp, U extends Predicate<T> p)} that receives a prompt, an error response, and an object that implements the \ttt{Predicate} interface to test whether or not the received value, received through standard input, is valid. If the value is invalid according to the predicate, print the error response and re-prompt the user. Otherwise, return the entered value.}
 
+\myexercise{2}{This exercise has three parts.} In this exercise, you'll be developing a \ttt{Document} interface along with its implementing classes:
+\begin{itemize}
+\item \ttt{TextDocument}
+\item \ttt{SpreadsheetDocument}
+\item \ttt{PresentationDocument}
+\end{itemize}
+
+\noindent The \ttt{Document} interface is defined as follows:
+\begin{verbnobox}[\small]
+interface Document {
+
+  /**
+   * Returns the number of pages in this document.
+   */
+  int numberOfPages();
+
+  /**
+   * Returns a string representing that the Document
+   * is being printed.
+   */
+  default String print() {
+    return "Printing the document!";
+  }
+}
+\end{verbnobox}
+
+Notice that we have a \ttt{default} method, which is one that an implementing class does \textbf{not} have to implement. It provides ``default'' functionality, should the ``implementee'' not want to implement the method (hence the name!).
+
+\begin{enumerate}[label=(\alph*)]
+\item Implement the other three classes with the following specifications:
+\begin{itemize}
+\item A \ttt{TextDocument} consists of 100 pages. When it is printed, it should return a message \ttt{"Printing text document!"}.
+\item A \ttt{SpreadsheetDocument} has 50 pages. When it is printed, it should return a message \ttt{"Printing spreadsheet document!"}.
+\item A \ttt{PresentationDocument} contains 20 pages. It utilizes the default implementation of the \ttt{print} method.
+\end{itemize}
+\item Design the \ttt{PrintingOffice} class, which includes the following static method: \ttt{static OptionalDouble averagePages(List<Document> documents)}. This method calculates and returns the average number of pages across the provided list of \ttt{Document} objects. Remember why we use \ttt{Optional}: if there are no \ttt{Document} objects in the list, we would be dividing by zero if we took the average! 
+\item Inside the \ttt{PrintingOffice} class, design the \ttt{static void printDocuments(List<Document> documents)} method, responsible for invoking the \ttt{print} method on each object in the list of \ttt{Document} instances.
+\end{enumerate}
+
 \myexercise{3}{chapter-advanced-oop}{A \emph{lazy list} is one that, in theory, produces infinite results! Consider the \ttt{ILazyList} interface below:}
 \begin{lstlisting}[language=MyJava]
 interface ILazyList<T> {
@@ -241,7 +280,7 @@ new ProgramNode(
 \end{enumerate}
 
 \myexercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter, and relies on the addition of \ttt{FuncNode} and \ttt{ApplyNode}.}
-Our current version of the interpreter uses \textit{dynamic scoping}. A dynamically-scoped interpreter is one that uses the value of the closest declaration of a variable. This seems like nonsense without an example, so consider the following two code listings.
+Our current version of the interpreter uses \textit{dynamic scoping}. A dynamically-scoped interpreter is one that uses the value of the closest declaration of a variable. This seems like nonsense without an example, so consider the following code listing.
 \begin{lstlisting}[language=MyScheme, frame=single]
 (define f
   (let ([x 10])
@@ -252,7 +291,7 @@ Our current version of the interpreter uses \textit{dynamic scoping}. A dynamica
   (f))
 \end{lstlisting}
 
-Under dynamic scoping, this program outputs \ttt{3}, because the binding of \ttt{x} takes on the value \ttt{3}. On the other hand, if we were using a \textit{lexically-scoped} interpreter, the program would output ten, which seems to make more sense due to the binding that exists immediately above the function declaration. The question is: how do we implement lexical scoping into our interpreter? The answer is via \textit{closures}, which are data structures that couple a function definition with an environment. Then, when we apply a closure to an argument (if it exists), we restore the environment that was captured by the closure. 
+Under dynamic scoping, this program outputs \ttt{3}, because the binding of \ttt{x} takes on the value \ttt{3}. On the other hand, if we were using a \textit{lexically-scoped} interpreter, the program would output \ttt{10}, which seems to make more sense due to the binding that exists immediately above the function declaration. The question is: how do we implement lexical scoping into our interpreter? The answer is via \textit{closures}, which are data structures that couple a function definition with an environment. Then, when we apply a closure to an argument (if it exists), we restore the environment that was captured by the closure. 
 
 To this end, design the \ttt{ClosureNode} class, whose constructor receives a \ttt{FuncNode} and an \ttt{Environment}. The respective \ttt{eval} method returns \ttt{this}, but \ttt{FuncNode} changes slightly. Rather than returning \ttt{this}, we return a \ttt{ClosureNode}, which wraps the current \ttt{FuncNode} and the environment passed to \ttt{eval}. Finally, inside \ttt{ApplyNode}, evaluating the function definition should resolve to a closure. Evaluate the arguments to the closure inside the passed environment, but \textit{extend} the captured environment, and bind the formals to the arguments in this extended environment. The body of the closure's function definition is then evaluated inside this new environment. 
 
