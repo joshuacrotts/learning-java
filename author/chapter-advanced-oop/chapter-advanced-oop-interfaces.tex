@@ -734,3 +734,126 @@ class AddExpression implements Expression {
   }
 }
 \end{lstlisting}
+
+\myexample{Let's clarify the distinction between the \ttt{Comparable} and \ttt{Comparator} interfaces.}Consider an \ttt{Employee} class, which stores an employee's first and last name, as well as their salary. Suppose we want to be able to compare instances of \ttt{Employee}. One option is to make \ttt{Employee} implement the \ttt{Comparable<Employee>} interface. This means that it must override the \ttt{public int compareTo(Employee e)} method. Suppose that our method will return the result of lexicographically comparing the employee's last name.
+
+\begin{lstlisting}[language=MyJava]
+class Employee implements Comparable<Employee> {
+
+  private double salary;
+  private String firstName;
+  private String lastName;
+
+  Employee(String firstName, String lastName, double salary) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.salary = salary;
+  }
+
+  @Override
+  public int compareTo(Employee o) {
+    return this.lastName.compareTo(o.lastName);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("{%s %s, $%.2f}", this.firstName, this.lastName, this.salary);
+  }
+
+  // Getters and setters omitted.
+}
+\end{lstlisting}
+
+Now, if we want to create a list of employees and sort them, we can use the static \ttt{sort} method from the \ttt{Collections} class. 
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Collectors;
+import java.util.List;
+
+class EmployeeTester {
+
+  @Test
+  void testEmployeeComparable() {
+    List<Employee> loe1 = new ArrayList<>();
+    loe1.add(new Employee("John", "Doe", 100000));
+    loe1.add(new Employee("Alex", "Smith", 120000));
+    loe1.add(new Employee("Barbara", "Jones", 140000));
+    loe1.add(new Employee("Cliff", "Brown", 160000));
+    loe1.add(new Employee("Jane", "Davis", 180000));
+    loe1.add(new Employee("Trevor", "Wilson", 200000));
+    loe1.add(new Employee("Peter", "Taylor", 220000));
+    loe1.add(new Employee("Jennifer", "Clark", 240000));
+    Collections.sort(loe1);
+
+    assertEquals("Brown, Clark, Davis, Doe, Jones, Smith, Taylor, Wilson",
+                 loe1.stream()
+                     .map(e -> e.getLastName())
+                     .collect(Collectors.join(", ")));
+  }
+}
+\end{lstlisting}
+
+By default, \ttt{Collections.sort} will sort the given list using the object's \ttt{compareTo} method, which means that the employees will be sorted based on their last name. Note that this is an in-place sorting algorithm, meaning the given list is modified.
+
+Now, suppose that we want to compare employees using a \emph{different} metric. For instance, what if we want to sort the employees based on their first name, or perhaps their salary? One approach would be to change how \ttt{compareTo} is implemented. The problem with this is that any code that relies on the last name ordering is now broken. Plus, it's possible that the \ttt{Employee} class is not accessible, meaning we could not change its implementation if we tried. 
+
+The solution to this predicament is to use a \ttt{Comparator<Employee>}. Comparators, as their name suggests, compare instances of a class. The essential difference between a \ttt{Comparator} and \ttt{Comparable} is that the class of interest, e.g., \ttt{Employee}, should \emph{not} implement \ttt{Comparator}. Rather, we want to create a separate class that represents comparing \ttt{Employee} objects by a different metric.
+
+For example, in the following listing is a class \ttt{EmployeeFirstNameComparator}, which compares employees by their first name. Notice that the \ttt{Comparator} class provides the \ttt{compare} method instead of \ttt{compareTo}. Another difference is that \ttt{compare} receives two arguments rather than one because \ttt{compareTo} relies on \ttt{this} and its other argument to perform the comparison. That is, \ttt{compareTo} returns a comparison result based on \ttt{this} and its argument. By contrast, \ttt{compare} receives \emph{two} instances of the class of interest, and the returned value should be the result of comparing those two objects, however we wish.
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Comparator;
+
+class EmployeeFirstNameComparator implements Comparator<Employee> {
+
+  @Override
+  public int compare(Employee o1, Employee o2) {
+    return o1.getFirstName().compareTo(o2.getFirstName());
+  }
+}
+\end{lstlisting}
+
+We can then pass an instance of this comparator as a second argument to the `Collections.sort` method:
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Collectors;
+import java.util.List;
+
+class EmployeeTester {
+
+  @Test
+  void testEmployeeComparable() {
+    List<Employee> loe1 = new ArrayList<>();
+    // ... assume the same list as before.
+    Collections.sort(loe1, new EmployeeFirstNameComparator());
+    assertEquals("Alex, Barbara, Cliff, Jane, Jennifer, John, Peter, Trevor",
+                 loe1.stream()
+                     .map(e -> e.getFirstName())
+                     .collect(Collectors.joining(", ")));
+  }
+}
+\end{lstlisting}
+
+We can create another comparator for comparing employees based on their salaries. A lower salary indicates a lower index in the ordering relation.
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Comparator;
+
+class EmployeeSalaryComparator implements Comparator<Employee> {
+
+  @Override
+  public int compare(Employee o1, Employee o2) {
+    return Double.compare(o1.getSalary(), o2.getSalary());
+  }
+}
+\end{lstlisting}
