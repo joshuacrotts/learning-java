@@ -896,3 +896,116 @@ class AssociationList<K, V> {
 }
 \end{lstlisting}
 Each association list in our representation stores exactly one association. Each time we extend the association, we create a new list that points to the previous list. This is a very inefficient way to store associations, but it is a common functional way of extending bindings in a programming language, most often in simple interpreted languages.
+
+\myexample{In Chapter~\ref{chapter-arrays-collections}, we began to use the \ttt{Set} data structure from the Collections API. One existing implementation of sets is the \ttt{HashSet}, which stores non-duplicate elements according to their hash codes. In this example we will design a related data structure called a \textit{hash table}\index{hash table}.}
+
+In a hash table, elements are stored according to their hash code. The properties of a hash table and the hashing function guarantee very fast element lookup times, insertions, and removals. A straightforward hashing function is to modulo the hash code of the object by the capacity of the table. This way, every element is guaranteed a valid index into the table. The problem with this approach is that multiple objects may hash to the same ``bucket.'' For example, if the hash code of some object $o_1$ is $100$, and the capacity of the table is $40$, then we would store $o_1$ at index $100 \text{ mod } 40 = 2$. But, consider another object $o_2$ with the hash code $1000$, which we store at index $1000 \text{ mod } 40 = 2$. We cannot store multiple objects at the same index, so we need to perform \emph{collision resolution}. A collision, as we just demonstrated, occurs when two objects hash to the same index. 
+
+As noted in our initial discussion of hashable data structures, there are several algorithms for resolving hash collisions. The simplest, albeit the least performant, is \emph{chaining}, where each index of the hash table stores a list of elements. If two elements hash to the same index, then we walk the list at that index to query the hash table. 
+
+Let's begin by designing the constructor, fields, and method skeletons for the generic \ttt{HashTable} class. It stores an array of list instances, and the constructor instantiates this array to a capacity specified as a static class variable. We will include a second constructor to allow the user of the class to specify a capacity. Our hash table will not be resizable at runtime.
+
+\begin{lstlisting}[language=MyJava]
+import java.util.LinkedList;
+import java.util.List;
+
+class HashTable<T> {
+
+  private static final int DEFAULT_CAPACITY = 50;
+
+  private final List<T>[] ELEMENTS;
+
+  private int size;
+
+  HashTable(int capacity) {
+    this.ELEMENTS = new List<>[capacity];
+    for (int i = 0; i < this.ELEMENTS.length; i++) {
+      this.ELEMENTS[i] = new LinkedList<>();
+    }
+  }
+
+  HashTable() { this(DEFAULT_CAPACITY); }
+
+  /**
+   * Adds a value to the hash table. We compute its hash code, then insert it
+   * onto the end of the bucket at that index in the table. If the value is already
+   * in the hash table, we return false and do not add it.
+   * @param v - value to add.
+   * @return true if the element is not in the hash table; false otherwise.
+   */
+  boolean add(T v) { /* TODO. */ }
+
+  /**
+   * Determines whether an element exists in the hash table. We compute the hash
+   * code of the input parameter, then traverse the bucket at that index.
+   * @param v - value to search for.
+   * @return true if the element is in the hash table; false otherwise.
+   */
+  boolean contains(T v) { /* TODO. */ }
+
+  int size() { return this.size; }
+}
+\end{lstlisting}
+
+The \ttt{add} method relies on \ttt{contains}, so we will design the latter first. We begin by computing the hash code of the given argument, then clamp that value to the bounds of the underlying array.\footnote{Java's modulo operator may return a negative number, so we wrap the operation in a call to \ttt{Math.abs}.} Every index in the table corresponds to a \ttt{LinkedList}, so we traverse the list in search of the element and return whether or not it exists.
+
+Designing \ttt{add} is almost identical to \ttt{contains}: we compute the index-to-insert, traverse the list, and if the element is not in that list, we add it to the end and return \ttt{true}. Otherwise, the element is already in the table and we return \ttt{false}. Upon successfully adding an element to the table, we increment the \ttt{size} instance variable.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import static Assertions.assertFalse;
+import static Assertions.assertTrue;
+
+class HashTableTester {
+
+  @Test
+  void testHashTable() {
+    HashTable<String> t = new HashTable<>();
+    assertAll(
+      () -> assertTrue(t.add("Tarski")),
+      () -> assertTrue(t.add("Quine")),
+      () -> assertTrue(t.add("Russell")),
+      () -> assertTrue(t.add("Boole")),
+      () -> assertFalse(t.add("Tarski")),
+      () -> assertTrue(t.contains("Quine")),
+      () -> assertFalse(t.contains("Carnap")),
+      () -> assertEquals(4, t.size()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class HashTable<T> {
+  // ... other methods not shown.
+
+  /**
+   * Adds a value to the hash table. We compute its hash code, then insert it
+   * onto the end of the bucket at that index in the table. If the value is already
+   * in the hash table, we return false and do not add it.
+   * @param v - value to add.
+   * @return true if the element is not in the hash table; false otherwise.
+   */
+  boolean add(T v) {
+    if (this.contains(v)) { return false; } 
+    else {
+      List<T> bucket = this.BUCKETS[(Math.abs(v.hashCode() % this.BUCKETS.length))];
+      bucket.add(v);
+      this.size++;
+      return true;
+    }
+  }
+
+ /**
+  * Determines whether an element exists in the hash table. We compute the hash
+  * code of the input parameter, then traverse the bucket at that index.
+  * @param v - value to search for.
+  * @return true if the element is in the hash table; false otherwise.
+  */
+  boolean contains(T v) {
+    List<T> bucket = this.BUCKETS[(Math.abs(v.hashCode() % this.BUCKETS.length))];
+    return bucket.stream()
+                 .anyMatch(t -> t.equals(v));
+  }
+}
+\end{lstlisting}
