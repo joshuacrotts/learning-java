@@ -755,11 +755,6 @@ class Employee implements Comparable<Employee> {
     return this.lastName.compareTo(o.lastName);
   }
 
-  @Override
-  public String toString() {
-    return String.format("{%s %s, $%.2f}", this.firstName, this.lastName, this.salary);
-  }
-
   // Getters and setters omitted.
 }
 \end{lstlisting}

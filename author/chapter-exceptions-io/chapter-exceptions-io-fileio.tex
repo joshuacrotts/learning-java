@@ -878,5 +878,21 @@ Our class, namely \ttt{DnaEncode}, supports two static methods: \ttt{String enco
 
 Let's start with the \ttt{encode} method. We receive a string that represents a DNA sequence of bases \ttt{"A"}, \ttt{"T"}, \ttt{"G"}, and \ttt{"C"} characters. We want to encode subsequences of side-by-side bases to contain the amount of that base, and the base itself. For example, if we encode \ttt{"AAAATTGCCCCATGGGGGCCCCC"}, we get \ttt{"4A2T1G4C1A1T5G5C"}. As an additional optimization, if there is only one character, we should not prefix it with a \ttt{"1"}, because that \emph{adds} an unnecessary character. Therefore, using the example combined with the optimization, we would get \ttt{"4A2TG4CAT5G5C"}, which takes us from a $35.89\%$ percent decrease to a $55.56\%$ decrease. As the input string increases in size, these differences may become more pronounced. 
 
+\marginpar{TODO}
+
+\myexample{Let's design a class that counts the frequency of letters of some file.} We first need to arrive at a consensus on how to store these letter frequencies. We could use a \ttt{Map}, but because we only have twenty six possible (alphabetic) letters, let's instead create an array of \ttt{long} values, where each index corresponds to a letter (e.g., \ttt{'a'} corresponds to index $0$, and so forth). 
+
+Our class has two constructors: one that receives a file name and another that does not. The former invokes the latter with \ttt{this()} because the latter instantiates the array. Then, we open the file using a \ttt{BufferedReader}, and line-by-line add the characters of each string to the array.
+
+We will design two \ttt{add} methods, where one receives a character to insert and another that receives a string, where each character thereof is added. As an additional simplification, all letters will be converted into their lowercase counterparts and, if a non-alphabetic character is passed, we do nothing.
+
+Finally, let's design two utility methods: \ttt{List<Character> getNthMostFrequent(int n)} and \ttt{Optional<Integer> computeIndex(char c)}. The \ttt{getNthMostFrequent} method receives an integer $n$ and returns the $n$ most-frequent characters in the array, in descending order of frequency. The \ttt{computeIndex} method receives a alphabetic character~$c$ and returns how frequent it is in relation to the other characters. If the character is not in the frequency map (indicated by a $-1$ at the index), we return the empty optional object.
+
+For the following tests, assume that the input file contains the following text:
+
+\begin{verbnobox}[\small]
+This is a
+\end{verbnobox}
+
 
 % \myexample{The \ttt{date} program is a Unix command to retrieve information about the current date and time. Chr}
