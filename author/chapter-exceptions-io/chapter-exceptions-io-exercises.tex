@@ -180,7 +180,8 @@ Charlie
     \item Design the \ttt{BitInputStream} class, which extends \ttt{InputStream}. This class should also store an instance of an \ttt{InputStream} as a field, as well as an array of bit values.
     \begin{enumerate}[label=(\roman*)]
         \item Design three \ttt{BitInputStream} constructors that mimic the behavior of the \ttt{BitOutputStream} class constructors.
-        \item \marginpar{TODO}.
+        \item Design the \ttt{private int readBit()} method, which reads a bit from the buffer. Your code should call \ttt{read} on the input stream once every eight bits, i.e., every byte. 
+        \item Override the \ttt{public int read()} method, which returns the next bit from the buffer. If you run out of bits to return, read a byte from the input stream. If there are no more bytes to read, return $-1$. Hint: \ttt{read()} itself returns $-1$ when there are no bytes remaining.
     \end{enumerate}
 \end{enumerate}
 
