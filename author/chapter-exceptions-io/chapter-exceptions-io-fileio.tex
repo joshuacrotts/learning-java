@@ -872,154 +872,154 @@ class SudokuSolver {
 }
 \end{lstlisting}
 
-\myexample{In Chapter~\ref{chapter-crl}, we presented an exercise on a text compression technique called \textit{run-length encoding}, without saying that phrase explicitly. In this example we will expand on the idea by designing a program that encodes and decodes strands of DNA using run-length encoding.}
+% \myexample{In Chapter~\ref{chapter-crl}, we presented an exercise on a text compression technique called \textit{run-length encoding}, without saying that phrase explicitly. In this example we will expand on the idea by designing a program that encodes and decodes strands of DNA using run-length encoding.}
 
-Our class, namely \ttt{DnaEncode}, supports two static methods: \ttt{String encode(String dna)}, and \ttt{String decode(String en)} for encoding an uncompressed DNA sequence and decoding respectively. In addition to these methods, however, we will also design the \ttt{String read(String fileName, boolean en)} and \ttt{void write(String fileName, boolean en)}, which reads a DNA string (either encoded or not) from a file and writes a DNA string (either encoded or not) to a file respectively.
+% Our class, namely \ttt{DnaEncode}, supports two static methods: \ttt{String encode(String dna)}, and \ttt{String decode(String en)} for encoding an uncompressed DNA sequence and decoding respectively. In addition to these methods, however, we will also design the \ttt{String read(String fileName, boolean en)} and \ttt{void write(String fileName, boolean en)}, which reads a DNA string (either encoded or not) from a file and writes a DNA string (either encoded or not) to a file respectively.
 
-Let's start with the \ttt{encode} method. We receive a string that represents a DNA sequence of bases \ttt{"A"}, \ttt{"T"}, \ttt{"G"}, and \ttt{"C"} characters. We want to encode subsequences of side-by-side bases to contain the amount of that base, and the base itself. For example, if we encode \ttt{"AAAATTGCCCCATGGGGGCCCCC"}, we get \ttt{"4A2T1G4C1A1T5G5C"}. As an additional optimization, if there is only one character, we should not prefix it with a \ttt{"1"}, because that \emph{adds} an unnecessary character. Therefore, using the example combined with the optimization, we would get \ttt{"4A2TG4CAT5G5C"}, which takes us from a $35.89\%$ percent decrease to a $55.56\%$ decrease. As the input string increases in size, these differences may become more pronounced. 
+% Let's start with the \ttt{encode} method. We receive a string that represents a DNA sequence of bases \ttt{"A"}, \ttt{"T"}, \ttt{"G"}, and \ttt{"C"} characters. We want to encode subsequences of side-by-side bases to contain the amount of that base, and the base itself. For example, if we encode \ttt{"AAAATTGCCCCATGGGGGCCCCC"}, we get \ttt{"4A2T1G4C1A1T5G5C"}. As an additional optimization, if there is only one character, we should not prefix it with a \ttt{"1"}, because that \emph{adds} an unnecessary character. Therefore, using the example combined with the optimization, we would get \ttt{"4A2TG4CAT5G5C"}, which takes us from a $35.89\%$ percent decrease to a $55.56\%$ decrease. As the input string increases in size, these differences may become more pronounced. 
 
-\marginpar{TODO}
+% \marginpar{TODO}
 
-\myexample{Let's design a class that counts the frequency of letters of some file.} We first need to arrive at a consensus on how to store these letter frequencies. We could use a \ttt{Map}, but because we only have twenty six possible (alphabetic) letters, let's instead create an array of \ttt{long} values, where each index corresponds to a letter (e.g., \ttt{'a'} corresponds to index $0$, and so forth). 
+% \myexample{Let's design a class that counts the frequency of letters of some file.} We first need to arrive at a consensus on how to store these letter frequencies. We could use a \ttt{Map}, but because we only have twenty six possible (alphabetic) letters, let's instead create an array of \ttt{long} values, where each index corresponds to a letter (e.g., \ttt{'a'} corresponds to index $0$, and so forth). 
 
-Our class has two constructors: one that receives a file name and another that does not. The former invokes the latter with \ttt{this()} because the latter instantiates the array. Then, we open the file using a \ttt{BufferedReader}, and line-by-line add the characters of each string to the array.
+% Our class has two constructors: one that receives a file name and another that does not. The former invokes the latter with \ttt{this()} because the latter instantiates the array. Then, we open the file using a \ttt{BufferedReader}, and line-by-line add the characters of each string to the array.
 
-We will design two \ttt{add} methods, where one receives a character to insert and another that receives a string, where each character thereof is added. As an additional simplification, all letters will be converted into their lowercase counterparts and, if a non-alphabetic character is passed, we do nothing. This will also come with the \ttt{get} method, which retrieves the frequency count of a given character.
+% We will design two \ttt{add} methods, where one receives a character to insert and another that receives a string, where each character thereof is added. As an additional simplification, all letters will be converted into their lowercase counterparts and, if a non-alphabetic character is passed, we do nothing. This will also come with the \ttt{get} method, which retrieves the frequency count of a given character.
 
-Finally, let's design two utility methods: \ttt{List<Character> getNthMostFrequent(int n)} and \ttt{Optional<Integer> computeIndex(char c)}. The \ttt{getNthMostFrequent} method receives an integer $n$ and returns the $n$ most-frequent characters in the array, in descending order of frequency. The \ttt{computeIndex} method receives a alphabetic character~$c$ and returns how frequent it is in relation to the other characters. If the character is not in the frequency map (indicated by a $-1$ at the index), we return the empty optional object. 
+% Finally, let's design two utility methods: \ttt{List<Character> getNthMostFrequent(int n)} and \ttt{Optional<Integer> computeIndex(char c)}. The \ttt{getNthMostFrequent} method receives an integer $n$ and returns the $n$ most-frequent characters in the array, in descending order of frequency. The \ttt{computeIndex} method receives a alphabetic character~$c$ and returns how frequent it is in relation to the other characters. If the character is not in the frequency map (indicated by a $-1$ at the index), we return the empty optional object. 
 
-The \ttt{getNthMostFrequent} method almost perfectly resembles the solution to an exercise from Chapter~\ref{chapter-arrays-collections}. It involves the use of a priority queue and a custom comparator to first store objects in the priority queue in order of decreasing frequency. Then, we poll $n$ items from the priority queue. 
+% The \ttt{getNthMostFrequent} method almost perfectly resembles the solution to an exercise from Chapter~\ref{chapter-arrays-collections}. It involves the use of a priority queue and a custom comparator to first store objects in the priority queue in order of decreasing frequency. Then, we poll $n$ items from the priority queue. 
 
-For the following tests, assume that the input file contains the following text:
+% For the following tests, assume that the input file contains the following text:
 
-\begin{verbnobox}[\small]
-this is a file
-this has some text
-these are some words with letters
-we have tons of words and letters in this file
-the quick brown fox jumps over the lazy cat
-\end{verbnobox}
+% \begin{verbnobox}[\small]
+% this is a file
+% this has some text
+% these are some words with letters
+% we have tons of words and letters in this file
+% the quick brown fox jumps over the lazy cat
+% \end{verbnobox}
 
-\begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
-import static Assertions.assertEquals;
+% \begin{lstlisting}[language=MyJava]
+% import static Assertions.assertAll;
+% import static Assertions.assertEquals;
 
-import java.util.List;
-import java.util.Optional;
+% import java.util.List;
+% import java.util.Optional;
 
-class LetterFrequencyTester {
+% class LetterFrequencyTester {
 
-  @Test
-  void testFrequency() {
-    LetterFrequency f = new LetterFrequency("file1.txt");
-    assertAll(
-      () -> assertEquals(7, f.get('a')),
-      () -> assertEquals(2, f.get('x')),
-      () -> assertEquals(1, f.get('z')),
-      () -> assertEquals(17, f.computeIndex('e').get()),
-      () -> assertEquals(Optional.empty(), f.computeIndex('g')),
-      () -> assertEquals(List.of('e', 't', 's'), f.getNthMostFrequent(3)));
-  }
-}
-\end{lstlisting}
+%   @Test
+%   void testFrequency() {
+%     LetterFrequency f = new LetterFrequency("file1.txt");
+%     assertAll(
+%       () -> assertEquals(7, f.get('a')),
+%       () -> assertEquals(2, f.get('x')),
+%       () -> assertEquals(1, f.get('z')),
+%       () -> assertEquals(17, f.computeIndex('e').get()),
+%       () -> assertEquals(Optional.empty(), f.computeIndex('g')),
+%       () -> assertEquals(List.of('e', 't', 's'), f.getNthMostFrequent(3)));
+%   }
+% }
+% \end{lstlisting}
 
-\begin{lstlisting}[language=MyJava]
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+% \begin{lstlisting}[language=MyJava]
+% import java.io.BufferedReader;
+% import java.io.IOException;
+% import java.nio.file.Files;
+% import java.nio.file.Paths;
+% import java.util.*;
 
-class LetterFrequency {
+% class LetterFrequency {
 
-  private final long[] FREQUENCY;
+%   private final long[] FREQUENCY;
 
-  LetterFrequency() {
-    this.FREQUENCY = new long[26];
-    for (int i = 0; i < 26; i++) { this.FREQUENCY[i] = -1; }
-  }
+%   LetterFrequency() {
+%     this.FREQUENCY = new long[26];
+%     for (int i = 0; i < 26; i++) { this.FREQUENCY[i] = -1; }
+%   }
 
-  LetterFrequency(String fileName) {
-    this();
-    try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
-      br.lines().forEach(l -> this.add(l));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
+%   LetterFrequency(String fileName) {
+%     this();
+%     try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
+%       br.lines().forEach(l -> this.add(l));
+%     } catch (IOException e) {
+%       throw new RuntimeException(e);
+%     }
+%   }
 
-  /**
-   *
-   * @param c - 
-   */
-  void add(char c) {
-    if (Character.isLetter(c)) {
-      char lc = Character.toLowerCase(c);
-      int idx = lc - 'a';
-      if (this.FREQUENCY[idx] == -1) { this.FREQUENCY[idx] = 1; }
-      else { this.FREQUENCY[idx]++; }
-    }
-  }
+%   /**
+%    *
+%    * @param c - 
+%    */
+%   void add(char c) {
+%     if (Character.isLetter(c)) {
+%       char lc = Character.toLowerCase(c);
+%       int idx = lc - 'a';
+%       if (this.FREQUENCY[idx] == -1) { this.FREQUENCY[idx] = 1; }
+%       else { this.FREQUENCY[idx]++; }
+%     }
+%   }
 
-  /**
-   *
-   * s - 
-   */
-  void add(String s) {
-    s.chars().forEach(c -> this.add((char) c));
-  }
+%   /**
+%    *
+%    * s - 
+%    */
+%   void add(String s) {
+%     s.chars().forEach(c -> this.add((char) c));
+%   }
 
-  /**
-   *
-   * @param c - 
-   * @return 
-   */
-  long get(char c) {
-    char lc = Character.toLowerCase(c);
-    int idx = lc - 'a';
-    return this.FREQUENCY[idx];
-  }
+%   /**
+%    *
+%    * @param c - 
+%    * @return 
+%    */
+%   long get(char c) {
+%     char lc = Character.toLowerCase(c);
+%     int idx = lc - 'a';
+%     return this.FREQUENCY[idx];
+%   }
 
-  /**
-   *
-   * @param n - 
-   * @return 
-   */
-  List<Character> getNthMostFrequent(int n) {
-    // Create a map that maps each letter to its frequency.
-    Map<Character, Long> M = new HashMap<>();
-    for (int i = 0; i < this.FREQUENCY.length; i++) {
-      M.put((char) ('a' + i), this.FREQUENCY[i]);
-    }
+%   /**
+%    *
+%    * @param n - 
+%    * @return 
+%    */
+%   List<Character> getNthMostFrequent(int n) {
+%     // Create a map that maps each letter to its frequency.
+%     Map<Character, Long> M = new HashMap<>();
+%     for (int i = 0; i < this.FREQUENCY.length; i++) {
+%       M.put((char) ('a' + i), this.FREQUENCY[i]);
+%     }
 
-    // Create a priority queue with a comparator that sorts by value.
-    Comparator<Map.Entry<Character, Long>> cmp =
-            (e1, e2) -> e2.getValue().compareTo(e1.getValue());
-    PriorityQueue<Map.Entry<Character, Long>> Q = new PriorityQueue<>(cmp);
-    M.entrySet().forEach(e -> Q.add(e));
+%     // Create a priority queue with a comparator that sorts by value.
+%     Comparator<Map.Entry<Character, Long>> cmp =
+%             (e1, e2) -> e2.getValue().compareTo(e1.getValue());
+%     PriorityQueue<Map.Entry<Character, Long>> Q = new PriorityQueue<>(cmp);
+%     M.entrySet().forEach(e -> Q.add(e));
 
-    // Create a list of the n most frequent letters.
-    List<Character> ls = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
-      ls.add(Q.poll().getKey());
-    }
-    return ls;
-  }
+%     // Create a list of the n most frequent letters.
+%     List<Character> ls = new ArrayList<>();
+%     for (int i = 0; i < n; i++) {
+%       ls.add(Q.poll().getKey());
+%     }
+%     return ls;
+%   }
 
-  /**
-   * 
-   * @param c - 
-   * @return 
-   */
-  Optional<Long> computeIndex(char c) {
-    if (Character.isLetter(c) && this.FREQUENCY[c - 'a'] != -1) {
-      return Optional.of(this.FREQUENCY[c - 'a']);
-    } else {
-      return Optional.empty();
-    }
-  }
-}
-\end{lstlisting}
+%   /**
+%    * 
+%    * @param c - 
+%    * @return 
+%    */
+%   Optional<Long> computeIndex(char c) {
+%     if (Character.isLetter(c) && this.FREQUENCY[c - 'a'] != -1) {
+%       return Optional.of(this.FREQUENCY[c - 'a']);
+%     } else {
+%       return Optional.empty();
+%     }
+%   }
+% }
+% \end{lstlisting}
 
 
 

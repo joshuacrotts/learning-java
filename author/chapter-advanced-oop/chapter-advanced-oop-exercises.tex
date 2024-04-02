@@ -198,6 +198,11 @@ Design the \ttt{void set(int i, T v)} method, which overwrites/assigns, at index
 \myexercise{2}{chapter-advanced-oop}{This exercise involves the doubly-linked list we wrote in the chapter.}
 Design the \ttt{void insert(int i, T v)} method, which inserts the value $v$ at index $i$. As an example, if we insert $4$ into the list $[20, 5, 100, 25]$ at index $2$, the list then becomes $[20, 5, 4, 100, 25]$. If the provided index is out-of-bounds, do nothing.
 
+\myexercise{2}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
+Our interpreter, so far, is very memory inefficient. The reason is not apparent at first glance, but consider every time that we create a \ttt{NumberNode} or, especially, a \ttt{BooleanNode}. There are only two possibilities for a \ttt{BooleanNode}: true and false, which are immutable by design. So, the interpreter should never waste time allocating an instance thereof when it can simply reference an existing one. Such an optimization follows the ``factory'' design pattern, which we will explore in Chapter~\ref{chapter-modern}.
+
+Privatize the \ttt{BooleanNode} constructor, then design the \ttt{static BooleanNode of(boolean b)} method. It receives a boolean value $v$ and returns a reference to a pre-allocated static true or false node. Similarly, also privatize the \ttt{NumberNode} constructor and design the \ttt{static NumberNode of(double v)} method. This method returns a new \ttt{NumberNode} if the given value $v$ is not an integer between $[0, 1000)$. Otherwise, precache those integer values and store them in a private lookup table.
+
 \myexercise{1}{chapter-advanced-oop}{This exercise involves the interpreter we wrote in the chapter.}
 Add the \ttt{"read-number"} and \ttt{"print"} primitive operations to the language. The latter is polymorphic, meaning it can print both numbers and booleans.
 
@@ -218,7 +223,6 @@ interface IFunction<T, R> {
   R apply(T t);
 }
 \end{lstlisting}
-
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Map;

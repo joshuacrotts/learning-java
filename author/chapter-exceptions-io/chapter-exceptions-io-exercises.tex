@@ -155,6 +155,35 @@ Charlie
     \end{enumerate}
 \end{enumerate}
 
+\myexercise{2}{chapter-exceptions-io}{You're interested in determining the letter statistics of a file containing text. In particular, you want to design a program that reports the frequency of each alphabetic character. Design the \ttt{LetterFrequency} class, which has the following methods:}
+
+\begin{enumerate}[label=(\alph*)]
+    \item \ttt{LetterFrequency(String fileName)} is the constructor, which reads a file containing text into a \ttt{long[]} instance variable with $26$ elements. Convert all upper-case letters into lower-case. Index 0 of the (frequency) array corresponds to \ttt{'a'}, and index 25 corresponds to \ttt{'z'}. Before reading the contents of the file, initialize the array to contain all zeroes.
+    \item \ttt{void add(char c)} adds a character $c$ to the frequency map. If $c$ is not alphabetic, throw an \ttt{IllegalArgumentException}.
+    \item \ttt{void add(String s)} calls the other \ttt{add} method on each character in the given string~$s$.
+    \item \ttt{long get(char c)} returns the frequency of a given character, which should be converted to lowercase. If $c$ is not a letter, throw an \ttt{IllegalArgumentException}.
+    \item \ttt{char get(int i)} returns the $i^\text{th}$ most frequent character. If $i \not\in [0, 25)$, throw an \ttt{IllegalArgumentException}.
+    \item \ttt{List<Character> getMostFrequentChars(int n)} returns the~$n$ most frequent characters. If $n \not\in [0, 25)$, throw an \ttt{IllegalArgumentException}. Hint: invoke the \ttt{get} method~$n$ times for values~$1$ to~$n$ inclusive.
+\end{enumerate}
+
+\myexercise{3}{chapter-exceptions-io}{Java provides many forms of input and output stream classes, e.g., \ttt{BufferedReader}/\ttt{BufferedWriter}. Unfortunately, it does not have classes, say \ttt{BitInputStream} and \ttt{BitOutputStream}, for outputting raw bits to a file. In this exercise you will implement these classes.}\footnote{This exercise is common in Java textbooks, and in our opinion, is worth repeating.}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{BitOutputStream} class, which extends \ttt{OutputStream}. It should store two instance variables: an instance of \ttt{OutputStream} and an array of eight integers. Each integer index corresponds to a bit to send to the output.
+    \begin{enumerate}[label=(\roman*)]
+        \item Design three \ttt{BitOutputStream} constructors: one that sets the stored output stream instance to \ttt{null}, a second that receives an \ttt{OutputStream} object and assigns it to the instance variable, and a third that receives a file name, and instantiates the stored output stream as a \ttt{FileOutputStream}. All three constructors should instantiate the array of ``bits.''
+        \item Override the \ttt{public void flush() throws IOException} method from \ttt{OutputStream} to output the bits, as a single byte, to the file. This does \emph{not} mean that you should output the raw \ttt{'1'} and \ttt{'0'} characters that are stored in the buffer. Instead, convert those bits into a single \ttt{int}, and write that value to the output stream. Hint: the bitwise operations \ttt{<<} and \ttt{|} may come in handy.
+        \item Override the \ttt{public void write(int b) throws IOException} method from \ttt{OutputStream} to assign bit $b$ to the next-free index in the array. If you run out of bits to store in the array, call \ttt{this.flush()}. 
+        \item Design the \ttt{void writeBit(int b)} method, which adds a bit to the $i^\text{th}$ index of the array. If the input~$b$ is not a 0 or 1, throw an \ttt{IllegalArgumentException}, otherwise call \ttt{this.write} with~$b$.
+    \end{enumerate}
+
+    \item Design the \ttt{BitInputStream} class, which extends \ttt{InputStream}. This class should also store an instance of an \ttt{InputStream} as a field, as well as an array of bit values.
+    \begin{enumerate}[label=(\roman*)]
+        \item Design three \ttt{BitInputStream} constructors that mimic the behavior of the \ttt{BitOutputStream} class constructors.
+        \item \marginpar{TODO}.
+    \end{enumerate}
+\end{enumerate}
+
 \myexercise{3}{chapter-exceptions-io}{A maze is a grid of cells, each of which is either open or blocked. We can move from one free cell to another if they are adjacent. Design the \ttt{MazeSolver} class, which has the following methods:}
 
 \begin{enumerate}[label=(\alph*)]
