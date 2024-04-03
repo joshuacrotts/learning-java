@@ -2,7 +2,7 @@
 \label{sec:object-mutation-and-aliasing}
 A limitation that we have purposefully imposed on our object/class design is the inability to modify the values of instance variables. Value mutation is a foreign concept in some programming languages, but we have made extensive use of it throughout our time in the land of Java. In this section, we will discuss the implications of allowing instance variable mutation and how it can lead to unintended problems.
 
-To access a \ttt{private} instance variable, we design a \non-\ttt{private} accessor method, which returns the instance variable. To modify a \ttt{private} instance variable, we design a non-\ttt{private} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns it to the corresponding instance variable. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a \ttt{Point} object~$p$ to the position $(7, 4)$, but we then wish to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which is confirmed through the accessor method. 
+To access a \ttt{private} instance variable, we design a non-\ttt{private} accessor method, which returns the instance variable. To \emph{modify} a \ttt{private} instance variable, we design a non-\ttt{private} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns it to the corresponding instance variable. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a \ttt{Point} object~$p$ to the position $(7, 4)$, but we then wish to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which is confirmed through the accessor method. 
 
 Another way of phrasing such an approach is that, when testing a mutator, we care about the \emph{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. Setter methods, or methods that modify outside values or data are definitionally \emph{impure}\index{impure}. Because we want to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove the keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we \emph{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
 
@@ -433,6 +433,7 @@ In particular, passing \ttt{a} to both constructors passes a reference to the sa
   % Equality Check Illustration (optional)
   % ... (Can be an inset showing assertEquals usage)
 \end{tikzpicture}
+\caption{Memory Aliasing Example}
 \label{fig:memoryref}
 \end{figure}
 
@@ -488,15 +489,15 @@ class ClassTester {
 }
 \end{lstlisting}
 
-The object \ttt{e} is instantiated to a new instance of \ttt{E}, which receives the integer \ttt{42} as an argument to the constructor. Thereafter we instantiate an array of ten \ttt{E} objects. The following loop then instantiates each index of the array to a new, distinct \ttt{E} object with the integer \ttt{i} as an argument to the constructor.
+The object \ttt{e} is instantiated to a new instance of \ttt{E}, whose constructor receives \ttt{42} as an argument. Thereafter we instantiate \ttt{arrOfE} to be an array of ten \ttt{E} objects. The following loop then instantiates each index of the array to a new, distinct \ttt{E} object with the integer \ttt{i} as an argument to the constructors.
 
-So, what happens if we compare any arbitrary element $e$ against any other arbitrary element $e'$ such that $e \neq e'$? Because they are all instantiated to distinct instances of \ttt{E}, any equality comparison is false. We can extend this to retrieving the number inside each \ttt{E} object and comparing them. Because they are all distinct objects, and each \ttt{E} instance receives a different number, the equality is false.
+So, what happens if we compare any arbitrary element $e$ against any other arbitrary element $e'$ such that $e \neq e'$? Because they are all instantiated to distinct instances of \ttt{E}, any equality comparison is false. We can extend this to retrieving the number inside each \ttt{E} object and comparing them. Each \ttt{E} instance receives a different value of~$i$, entailing that the equality does not hold.
 
-The second for loop assigns each index of the array to the \ttt{e} object. 
-Then, we can compare any arbitrary element against any other arbitrary element, and they will always be equal, since every element is a reference to the same memory reference. 
-Thus, if we set the number of one arbitrary element, this change propagates to every other element in the list, because again, all references point to the same object.
-Preceding the final assertion is an assignment of a new \ttt{E} instance to index four to box the integer~$2$. 
-Changing any other index modifies \ttt{e}, but does not modify the instance of \ttt{E} at index four; the converse of which also holds.
+The second loop assigns the \ttt{e} object to each index of the array. 
+We can then compare any arbitrary element against any other arbitrary element, and they will always be equal according to both \ttt{==} and \ttt{equals}, since every element is a reference to the same memory reference. 
+Thus, changing the stored integer value at one index propagates to every other element in the array, because again, all references point to the same object.
+Preceding the final assertion is an assignment of a new \ttt{E} instance to index four that boxes the integer~$2$. 
+Changing any index aside from four modifies \ttt{e}, but does not modify the instance of \ttt{E} at index four, the converse of which also holds.
 
 \myexample{Let's get even more practice with aliasing over arrays. Suppose we have the following code segment:}
 
@@ -537,21 +538,23 @@ class ArrayAliasingTester {
 }
 \end{lstlisting}
 
-Again, we encourage the readers to stop and think about what kinds of assertions to fill in the blanks. Consider what happens when arrays are passed to methods, then continue on to check your understanding.
+Again, we encourage the readers to stop and think about what kinds of assertions to fill in the blanks. Consider what happens when arrays are passed to methods, then continue onward to check your understanding.
 
-We start by examining the \ttt{baz} method, which receives an array of integers~$A$, overwrites the value at index $3$ to be~$42$, then returns that element. 
+We start by examining the \ttt{baz} method, which receives an array of integers~$A$ as a parameter, overwrites the value at index~$3$ to be~$42$, then returns that element. 
 
-Inside the JUnit tester method, we first instantiate an array $A$ to contain five zeroes. Afterwards, we assign, to index 2 of $A$, the value of invoking \ttt{baz(A)}, meaning \ttt{A[2]} is $42$, but so is \ttt{A[3]}, because passing an array to a method passes a copy of the reference to the array. Therefore, the value of the passed array is mutated. We assert whether or not the sum of these two elements is $84$, which is true because $42+42=84$.
+Inside the JUnit tester method, we first instantiate an array~$A$ to contain five zeroes. Afterwards, we assign, to index 2 of~$A$, the value of invoking \ttt{baz(A)}, meaning \ttt{A[2]} is $42$, but so is \ttt{A[3]}, because passing an array to a method passes a copy of the reference to the array. 
+Therefore, the index of the passed array is mutated. 
+We assert whether the sum of these two elements is~$84$, which is true because $42+42=84$.
 
-Second, we instantiate an array~$B$ to contain six zeroes. This is followed by an initialization of an array~$C$ to point to~$B$, meaning~$C$ is an alias for~$B$. We then assert whether or not the sum of \ttt{C[3]} and \ttt{baz(B)} is~$84$. The answer relies on an understanding of evaluation order. The plus operator evaluates its arguments from left-to-right. So, before invoking \ttt{baz(B)}, the value of \ttt{C[3]} is zero, so the left-hand side of the addition is zero. Immediately after, we evaluate \ttt{baz(B)}, which mutates not only index $3$ of $B$, but also index $3$ of $C$, because again, $C$ aliases~$B$. The expression now becomes an addition of $0$ and $42$, which is certainly not equal to~$84$.
+Second, we instantiate an array~$B$ to contain six zeroes. This is followed by an initialization of an array~$C$ to point to~$B$, meaning~$C$ is an alias for~$B$. We then assert whether the sum of \ttt{C[3]} and \ttt{baz(B)} is~$84$. The answer relies on an understanding of evaluation order. The plus operator evaluates its arguments from left-to-right. Before invoking \ttt{baz(B)}, the value of \ttt{C[3]} is zero, so the left-hand side of the addition is zero. Immediately after, we evaluate \ttt{baz(B)}, which mutates not only index~$3$ of~$B$, but also index~$3$ of~$C$, because again, $C$ aliases~$B$. The expression is now an addition of~$0$ and~$42$, which is certainly not equal to~$84$.
 
-Third, we instantiate yet another array $E$ to contain seven zeroes. We then alias the array $D$ to~$E$, followed by a call to \ttt{baz(E)}, whose result is stored in the \ttt{res} variable. We know for certain that \ttt{res} contains \ttt{42}, and we want to know whether \ttt{D[3]} also contains $42$ to sum to the expected value of $84$. Because $D$ aliases~$E$, it must be the case that \ttt{D[3]} is also $42$, meaning we assert equals.
+Third, we instantiate yet another array~$E$ to contain seven zeroes. We then alias the array~$D$ to~$E$, followed by a call to \ttt{baz(E)}, whose result is stored in the \ttt{res} variable. We know for certain that \ttt{res} contains \ttt{42}, and we want to know whether \ttt{D[3]} also contains~$42$ to sum to the expected value of $84$. Because~$D$ aliases~$E$, it must be the case that \ttt{D[3]} is also~$42$, meaning we assert equals.
 
-The fourth assertion is the result of altering $D$'s reference. Recall that it initially references the new integer array of seven zeroes. The~$D$ array becomes an alias to~$E$, which might suggest that changing $E$ also changes what $D$ points to, but this is not the case. When we instantiate~$E$ to point to the new array of the integers from 1 to 7, $D$ remains aliased to the array of seven zeroes that $E$ was instantiated to. Therefore, the assertion should be not equals.
+The fourth assertion is the result of altering~$D$'s reference. Recall that~$D$ initially references the new integer array of seven zeroes. The~$D$ array becomes an alias to~$E$, which might suggest that changing~$E$ also changes what~$D$ points to, but this is not the case. When we instantiate~$E$ to point to the new array of the integers from 1 to 7, $D$ remains aliased to the array of seven zeroes that~$E$ was instantiated to. Therefore, the assertion should be not equals.
 
-Finally, we instantiate an array~$F$ to contain the integers from~$0$ to~$4$ inclusive. We then compute the hash code of~$F$ and store it inside~$h_1$. Then, we pass~$F$ to the \ttt{modify} method, which appears to modify the passed reference to point to a new array. In the previous chapter we mentioned ``pass by pseudo-reference,'' which alluded to this problem. When we pass an object to a method, we pass a copy \emph{of} the reference and not the reference itself. This means that changing what the copy points to does not change the reference made outside the method. So, we should assert equals on~$h_1$ and the hash code of~$F$ after invoking \ttt{modify}, since~$F$'s reference is never altered.
+Finally, we instantiate an array~$F$ to contain the integers from~$0$ to~$4$ inclusive. We compute the hash code of~$F$ and store it inside~$h_1$. Then, we pass~$F$ to the \ttt{modify} method, which appears to modify the passed reference to point to a new array. In the previous chapter we mentioned ``pass by pseudo-reference,'' which alluded to this problem. When we pass an object to a method, we pass a copy \emph{of} the reference rather than the reference itself. Changing what the copy points to does not change the reference outside the context of the \ttt{modify} method. So, we should assert equals on~$h_1$ and the hash code of~$F$ after invoking \ttt{modify}, since~$F$'s reference is never altered.
 
-\myexample{Some readers may question why we emphasize mutation and aliasing. When working with the Collections API and designing data structures, proper care must be taken to avoid undesired behavior and outcomes. Consider what happens if we design a class \ttt{F} that stores a reference to a \ttt{List<Integer>} as an instance variable. Then, suppose we instantiate two distinct instances of \ttt{F}, namely $f_1$ and $f_2$, each of which receive the same list of numbers. If we then mutate the list somewhere inside of $f_1$, then the list stored as a reference inside $f_2$ is also changed.}
+\myexample{Some readers may question why we emphasize mutation and aliasing. When working with the Collections API and designing data structures, proper care must be taken to avoid undesired behavior and outcomes. Consider what happens if we design a class \ttt{F} whose constructor receives a \ttt{List<Integer>}, which is assigned directly to an instance variable. Then, suppose we instantiate two distinct instances of \ttt{F}, namely $f_1$ and $f_2$, each of which receive the same (reference to a) list of numbers. If we then mutate the list somewhere inside of $f_1$, then the list stored as a reference inside $f_2$ also contains the change.}
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -586,11 +589,16 @@ class F {
 
 \myexample{Recall the \ttt{LinkedList} class from Chapter~\ref{chapter-arrays-collections}. If you have ever wondered how it works under the hood, now is the time to find out! We will design a \emph{doubly-linked list} data structure that stores arbitrarily-typed elements.}
 
-First, remember the structure of a linked list: they are composed of nodes, which hold the data and a pointer to the next element in the chain/sequence. These types of linked lists are \emph{singly-linked}, because nodes only refer to the successive element. In contrast, our class models a doubly-linked list, since its nodes point to their predecessor and their successor. 
+First, remember the structure of a linked list: it is composed of nodes, which hold the data and a pointer to the next element in the chain/sequence. These types of linked lists are \emph{singly-linked}, because nodes only refer to the successive element. In contrast, our class models a doubly-linked list, since its nodes point to their successor \emph{and} their predecessor. 
 
-We need a generic class that stores references to the first and last elements of the list. Let's create the \ttt{DoublyLinkedList} class to receive a type parameter \ttt{T} and store the first and last nodes as instance variables. It's important to realize that, whoever uses this class will not be exposed to the innards of the class, i.e., how the links are established/constructed/altered/removed. We wish to preserve the idea of encapsulation, after all.
+We need a generic class that stores references to the first and last elements of the list. Let's design the \ttt{DoublyLinkedList} class to receive a type parameter \ttt{T}, and store the first and last nodes as instance variables. It's important to realize that, whoever uses this class will not (and should not) be exposed to the innards of the class, i.e., how the links are established/constructed/altered/removed. After all, we wish to preserve the encapsulation motif.
 
-We run into an eminent problem when declaring the types of the instance variables: what should they be? We need to design a class that encapsulates the value of the node, and holds references to its previous and successor nodes. Some programmers may consider designing a separate \ttt{.java} file for this class, but remember the encapsulation methodology: nobody outside of this class should even be aware that nodes exist in the first place. So, we can create a private and static \ttt{Node<T>} class, which is local to the definition of \ttt{DoublyLinkedList}. A privatized class can only ever be static, because it is nonsense to say that a private class definition belongs to an arbitrary instance of the class in which it resides.\footnote{Such a claim would imply that every instance of the \ttt{DoublyLinkedList} class would carry the data for instantiating nodes, which is wasteful.} We also override the \ttt{toString} to output the underlying stringified data of the node.
+We run into an imminent problem when declaring the types of the instance variables: what \emph{should} they be? 
+We need to design a class that encapsulates the value of the node, and holds references to its previous and successor nodes. 
+Some programmers may consider designing a separate \ttt{.java} file for this class, but remember the encapsulation methodology: nobody outside of this class should even be aware that nodes exist in the first place. 
+So, we can create a private and static \ttt{Node<T>} class, which is local to the definition of \ttt{DoublyLinkedList}. 
+A privatized class can only ever be static, because it is nonsense to say that a private class definition belongs to an arbitrary instance of the class in which it resides.\footnote{Such a claim would imply that every instance of the \ttt{DoublyLinkedList} class would carry the data for instantiating nodes, which is wasteful.} 
+We also override the \ttt{toString} to output a stringified representation of underlying node data.
 
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {
@@ -620,9 +628,10 @@ class DoublyLinkedList<T> {
 }
 \end{lstlisting}
 
-Notice that, in the constructor of \ttt{DoublyLinkedList}, we assign the first and last references to each other, which both point to \ttt{null}. This is because, when the list is empty, there is no first or last element.
+Notice that, in the constructor of \ttt{DoublyLinkedList}, we assign the first and last references to each other, both of which point to \ttt{null}. 
+An empty list contains neither a first nor a last element.
 
-To test the methods that we are about to design, we will override the \ttt{toString} method (of \ttt{DoublyLinkedList}) to print the elements inside brackets, separated by commas and a space. To traverse over the list, however, we should use a custom-defined \ttt{Iterator}, which will be its own localized class definition. We have seen iterators before, but until now we have not implemented one on our own. The idea is, fortunately, very simple: we keep track of the current node, and upon calling \ttt{hasNext}, we return whether or not the node is \ttt{null}. Similarly, invoking \ttt{next} returns the value of the stored node and moves the pointer forward via the ``next'' instance. Finally, we create the \ttt{.iterator} method, which returns an instance of the iterator superclass. We do not want to expose how this particular iterator works, because the caller does not need to be aware of this logic; they are only concerned with iterating over the structure, in this case, a doubly-linked list.
+To test the methods that we are about to design, we will override the \ttt{toString} method (of \ttt{DoublyLinkedList}) to print the elements inside brackets, separated by commas and a space. To traverse over the list, however, we should use a custom-defined \ttt{Iterator}, which will be its own localized class definition. We have seen iterators before, but until now we have not implemented one on our own. The idea is, fortunately, very simple: we keep track of the current node, and upon calling \ttt{hasNext}, we return whether or not the node is \ttt{null}. Similarly, invoking \ttt{next} returns the value of the stored node and moves the pointer forward via the ``next'' instance. Finally, we create the \ttt{.iterator} method, which returns an instance of the iterator superclass. There is no desire to expose the implementation of the iterator to the caller; they are only concerned with iterating over the doubly-linked list.
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Iterator;
@@ -659,7 +668,7 @@ class DoublyLinkedList<T> {
 
 Using the iterator in \ttt{toString} is straightforward: we have a while loop that continues until no more elements are present. We complete two tasks at the same time by having an iterator, which then makes subsequent traversals over the list easier.
 
-Now we can write methods to add, retrieve, and remove elements from the list. To add an elemenet, we need to take the links of \ttt{first} and \ttt{last}, and reassign them accordingly to remain consistent with our doubly-linked list property. If the list is empty, then we just have to assign the new node $n$ to both the \ttt{first} and \ttt{last} references. Otherwise, we set the ``next'' pointer of \ttt{last} to $n$, and set the ``previous'' pointer of $n$ to \ttt{last}. 
+Now we can write methods to add, retrieve, and remove elements from the list. To add an elemenet, we need to take the links of \ttt{first} and \ttt{last}, and reassign them accordingly to remain consistent with our doubly-linked list property. If the list is empty, then we just have to assign the new node~$n$ to both the \ttt{first} and \ttt{last} references. Otherwise, we set the ``next'' pointer of \ttt{last} to~$n$, and set the ``previous'' pointer of~$n$ to \ttt{last}. 
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -708,7 +717,7 @@ class DoublyLinkedList<T> {
 }
 \end{lstlisting}
 
-Retrieving an element is trivial, as it's just a matter of traversing over the list and returning the data at the index of a node. If the index is out of bounds, we return an empty \ttt{Optional}.\footnote{It is, in general, a better idea to use exceptions, but we have not covered them yet.}
+Retrieving an element is trivial, as it's just a matter of traversing over the list and returning the data at the index of a node. If the index is out of bounds, we return an empty \ttt{Optional}.\footnote{It is, in general, a better idea to use exceptions when encountering bad inputs, but we have not covered them yet.}
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -771,7 +780,7 @@ Finally we arrive at element removal, which is not as cut-and-dry. We want to pa
 \begin{enumerate}[label=(\alph*)]
   \item If the element-to-remove $e$ is the first of the list, then its successor is now the first. Its previous pointer is adjusted to now point to \ttt{null}.
   \item If the element-to-remove $e$ is the last of the list, then its predecessor is now the last. Its next pointer is adjusted to now point to \ttt{null}.
-  \item If the element to remove $e$ is neither the first nor the last, we retrieve its previous node $p$, its next node $n$, and assign $p_\emph{next} = n$, and $n_\emph{prev} = p$. This, in effect, ``delinks'' $e$ from the list, which gets consumed by the garbage collector.
+  \item If the element to remove $e$ is neither the first nor the last, we retrieve its previous node $p$, its next node $n$, and assign $p_\emph{next} = n$, and $n_\emph{prev} = p$. This, in effect, ``delinks'' $e$ from the list, and is eventually consumed/reclaimed by the garbage collector.
   \item If the element-to-remove $e$ is not in the list, do nothing.
 \end{enumerate}
 
@@ -830,11 +839,16 @@ class DoublyLinkedList<T> {
 }
 \end{lstlisting}
 
-\myexample{Some programming languages do not come standard with data structures such as \ttt{Map} or, if they do, they are cumbersome to utilize. A substitute for the common mapping data structure is called an \emph{association list}, originating with the Lisp programming language. Its desired purpose is nearly identical to that of a map, but with worse performance implications. In this example we will design such a structure, as if \ttt{Map} did not exist in Java.}
+\myexample{Some programming languages, e.g., C, do not come standard with data structures such as a map. A substitute for the common mapping data structure is called an \emph{association list}, originating with the Lisp programming language~\cite{lisp15}. Its desired purpose is nearly identical to that of a map, but with worse performance implications. In this example we will design such a structure, as if \ttt{Map} did not exist in Java.}
 
-Associations lists, as their name implies, associate values to other values, just like a map. In dynamically-typed languages, e.g., Scheme, association lists accept any type as their key and any type as their value. Therefore, we could have an association list that maps a string to an integer, or an integer to a list of strings, and so on. Should we want to use truly arbitrary types in the list, we can assign \ttt{Object} to both key and value types.
+Associations lists, as their name implies, associate values to other values, like a map. In dynamically-typed languages, e.g., Scheme, association lists accept any type as their key and any type as their value. Therefore, we could have an association list that maps a string to an integer, or an integer to a list of strings, and so on. Should we want to use truly arbitrary types in the list, we can assign \ttt{Object} to both key and value types.
 
-Our association list will support several methods that are related to their functional programming eqiuvalents. In particular, we want a \ttt{lookup} method to retrieve the associated value of some element and an an \ttt{extend} method to add a new association. Note that the \ttt{extend} method will, rather than modifying the current association list, return a new association list with the new association added. This is because we want to preserve the idea of immutability, which is a common theme in functoinal programming. Association lists, therefore, need to have a ``parent'' pointer to keep track of those associations in the list that we extend from.\footnote{In the next section on abstract classes and interpreters, we will revisit this idea in greater detail.} We will also override the \ttt{toString} method to print the associations in a readable format. 
+Our association list will support several methods that are related to their functional programming eqiuvalents. 
+In particular, we want a \ttt{lookup} method to retrieve the associated value of some element and an \ttt{extend} method to add a new association. 
+Note that the \ttt{extend} method will, rather than modifying the current association list, return a new association list with the new association added. 
+We want to preserve the idea of immutability, which is a common theme in functoinal programming.
+Association lists, therefore, need to have a ``parent'' pointer to keep track of those associations in the list that we extend from.\footnote{In the next section on abstract classes and interpreters, we will revisit this idea in greater detail.} 
+We will also override the \ttt{toString} method to print the associations in a readable format. 
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -924,11 +938,21 @@ class AssociationList<K, V> {
   }
 }
 \end{lstlisting}
-Each association list in our representation stores exactly one association. Each time we extend the association, we create a new list that points to the previous list. This is a very inefficient way to store associations, but it is a common functional way of extending bindings in a programming language, most often in simple interpreted languages.
+Each association list in our representation stores exactly one association. 
+Each time we extend the association, we create a new list that points to the previous list. 
+This is a very inefficient way to store and lookup associations, at least when compared to data structures such as a \ttt{HashMap} or \ttt{TreeMap}. But, association lists are commonly used for adding (variable) bindings in a programming language, usually when writing simple interpreted languages.\footnote{This serves as foreshadowing for Chapter~\ref{chapter-advanced-oop}!}
 
-\myexample{In Chapter~\ref{chapter-arrays-collections}, we began to use the \ttt{Set} data structure from the Collections API. One existing implementation of sets is the \ttt{HashSet}, which stores non-duplicate elements according to their hash codes. In this example we will design a related data structure called a \textit{hash table}\index{hash table}.}
+\myexample{In Chapter~\ref{chapter-arrays-collections}, we began to explore and use the \ttt{Set} data structure from the Collections API. One existing implementation of sets is the \ttt{HashSet}, which stores non-duplicate elements according to their hash codes. In this example we will design a related data structure called a \textit{hash table}\index{hash table}.}
 
-In a hash table, elements are stored according to their hash code. The properties of a hash table and the hashing function guarantee very fast element lookup times, insertions, and removals. A straightforward hashing function is to modulo the hash code of the object by the capacity of the table. This way, every element is guaranteed a valid index into the table. The problem with this approach is that multiple objects may hash to the same ``bucket.'' For example, if the hash code of some object $o_1$ is $100$, and the capacity of the table is $40$, then we would store $o_1$ at index $100 \text{ mod } 40 = 2$. But, consider another object $o_2$ with the hash code $1000$, which we store at index $1000 \text{ mod } 40 = 2$. We cannot store multiple objects at the same index, so we need to perform \emph{collision resolution}. A collision, as we just demonstrated, occurs when two objects hash to the same index. 
+Elements in a hash table are stored according to their hash code. 
+The properties of a hash table (and the hashing function) guarantee very fast element lookup times, insertions, and removals. 
+A straightforward hashing function is to modulo the hash code of the object by the capacity of the table. 
+This way, every element is guaranteed a valid index into the table. 
+The problem with this approach is that multiple objects may hash to the same ``bucket.'' 
+For example, if the hash code of some object $o_1$ is $100$, and the capacity of the table is $40$, then we would store $o_1$ at index $100 \text{ mod } 40 = 2$. 
+But, consider another object $o_2$ with the hash code $1000$, which we store at index $1000 \text{ mod } 40 = 2$. 
+We cannot store multiple objects at the same index, so we need to perform \emph{collision resolution}\index{collision resolution}. 
+A collision, as we just demonstrated, occurs when two objects hash to the same index. 
 
 As noted in our initial discussion of hashable data structures, there are several algorithms for resolving hash collisions. The simplest, albeit the least performant, is \emph{chaining}, where each index of the hash table stores a list of elements. If two elements hash to the same index, then we walk the list at that index to query the hash table. 
 
@@ -956,19 +980,21 @@ class HashTable<T> {
   HashTable() { this(DEFAULT_CAPACITY); }
 
   /**
-   * Adds a value to the hash table. We compute its hash code, then insert it
-   * onto the end of the bucket at that index in the table. If the value is already
-   * in the hash table, we return false and do not add it.
+   * Adds a value to the hash table. We compute its hash code, then 
+   * insert it onto the end of the bucket at that index in the table. 
+   * If the value is already in the hash table, we return false and do 
+   * not add it into the table.
    * @param v - value to add.
-   * @return true if the element is not in the hash table; false otherwise.
+   * @return true if the element (*;$\not\in$;*) hash table; false otherwise.
    */
   boolean add(T v) { /* TODO. */ }
 
   /**
-   * Determines whether an element exists in the hash table. We compute the hash
-   * code of the input parameter, then traverse the bucket at that index.
+   * Determines whether an element exists in the hash table. We compute 
+   * the hash code of the input parameter, then traverse the bucket at 
+   * that index.
    * @param v - value to search for.
-   * @return true if the element is in the hash table; false otherwise.
+   * @return true if the element (*;$\in$;*) hash table; false otherwise.
    */
   boolean contains(T v) { /* TODO. */ }
 
@@ -1009,16 +1035,18 @@ class HashTable<T> {
   // ... other methods not shown.
 
   /**
-   * Adds a value to the hash table. We compute its hash code, then insert it
-   * onto the end of the bucket at that index in the table. If the value is already
-   * in the hash table, we return false and do not add it.
+   * Adds a value to the hash table. We compute its hash code, then 
+   * insert it onto the end of the bucket at that index in the table. 
+   * If the value is already in the hash table, we return false and 
+   * do not add it.
    * @param v - value to add.
-   * @return true if the element is not in the hash table; false otherwise.
+   * @return true if the element (*;$\not\in$;*) hash table; false otherwise.
    */
   boolean add(T v) {
     if (this.contains(v)) { return false; } 
     else {
-      List<T> bucket = this.BUCKETS[(Math.abs(v.hashCode() % this.BUCKETS.length))];
+      int idx = Math.abs(v.hashCode() % this.BUCKETS.length);
+      List<T> bucket = this.BUCKETS[idx];
       bucket.add(v);
       this.size++;
       return true;
@@ -1026,13 +1054,15 @@ class HashTable<T> {
   }
 
  /**
-  * Determines whether an element exists in the hash table. We compute the hash
-  * code of the input parameter, then traverse the bucket at that index.
+  * Determines whether an element exists in the hash table. We compute 
+  * the hash code of the input parameter, then traverse the bucket at 
+  * that index.
   * @param v - value to search for.
-  * @return true if the element is in the hash table; false otherwise.
+  * @return true if the element (*;$\in$;*) hash table; false otherwise.
   */
   boolean contains(T v) {
-    List<T> bucket = this.BUCKETS[(Math.abs(v.hashCode() % this.BUCKETS.length))];
+    int idx = Math.abs(v.hashCode() % this.BUCKETS.length);
+    List<T> bucket = this.BUCKETS[idx];
     return bucket.stream()
                  .anyMatch(t -> t.equals(v));
   }
