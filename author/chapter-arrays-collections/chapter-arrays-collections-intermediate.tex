@@ -49,13 +49,13 @@ The tree example from Figure~\ref{fig:binarytree} is, coincidentally, a binary s
       % \vspace{2ex}
     \begin{description}
       \item [\ttt{BinarySearchTree<$T$> $t =$ new BinarySearchTree<>$(v)$}] creates a binary search tree with a root of~$v$.
-      \item [\ttt{BinarySearchTree<$T$> $t =$ new BinarySearchTree<>$(v, \emph{cmp})$}] creates a binary search tree with a root of~$v$ and uses $\emph{cmp}$ as a comparator in the tree when inserting values.
+      \item [\ttt{BinarySearchTree<$T$> $t =$ new BinarySearchTree<>$(v, \mathit{cmp})$}] creates a binary search tree with a root of~$v$ and uses $\emph{cmp}$ as a comparator in the tree when inserting values.
       \item [\ttt{void insert$(v)$}] inserts $v$ into the existing tree using either the stored comparator or the natural ordering of the $T$ type.
       \item [\ttt{BinarySearchTree<$T$> contains$(v)$}] determines whether or not $v$ is in the tree. If so, the subtree where $v$ is the root is returned; \ttt{null} otherwise.
       \item [\ttt{int size$()$}] returns the number of elements in the tree.
-      \item [\ttt{BinarySearchTree<$T$> getLeft()}] returns the left child of the tree, or \ttt{null} if non-existent.
-      \item [\ttt{BinarySearchTree<$T$> getRight()}] returns the right child of the tree, or \ttt{null} if non-existent.
-      \item [\ttt{BinarySearchTree<$T$> getParent()}] returns the parent of the tree, or \ttt{null} if non-existent.
+      \item [\ttt{BinarySearchTree<$T$> getLeft$()$}] returns the left child of the tree, or \ttt{null} if non-existent.
+      \item [\ttt{BinarySearchTree<$T$> getRight$()$}] returns the right child of the tree, or \ttt{null} if non-existent.
+      \item [\ttt{BinarySearchTree<$T$> getParent$()$}] returns the parent of the tree, or \ttt{null} if non-existent.
       \item [\ttt{boolean isLeaf$()$}] returns \ttt{true} if this tree has no children, and \ttt{false} otherwise.
       \item [\ttt{boolean isRoot$()$}] returns \ttt{true} if this tree has no parent, and \ttt{false} otherwise.
     \end{description}
