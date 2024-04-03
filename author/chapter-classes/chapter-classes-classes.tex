@@ -74,13 +74,13 @@ This principle of hiding the implementation details of a class is called \emph{e
 
 Creating an instance of the \ttt{Point} class is identical to creating an instance of any other arbitrary class. Though, we should first explain a slight terminology distinction.
 
-Declaring, or initializing, an object refers to typing the class name followed by the variable name. For instance, the following code declares a \ttt{Point} object \ttt{p}.
+Declaring, or \emph{initializing}\index{initialize}\index{object initialization}, an object refers to typing the class name followed by the variable name. For instance, the following code declares a \ttt{Point} object \ttt{p}.
 
 \begin{verbnobox}[\small]
 Point p;
 \end{verbnobox}
 
-By default, $p$ points to \ttt{null}, since we have not yet created an instance of the \ttt{Point} class. We can create an instance of the \ttt{Point} class by invoking its constructor, an action otherwise called \emph{object instantiation}\index{object instantiation}. We use the \ttt{new} keyword and pass the desired $x$ and $y$ coordinates. 
+By default, $p$ points to \ttt{null}, since we have not yet created an instance of the \ttt{Point} class. We can create an instance of the \ttt{Point} class by invoking its constructor, an action otherwise called \emph{object instantiation}\index{object instantiation}\index{instantiation}. We use the \ttt{new} keyword and pass the desired $x$ and $y$ coordinates. 
 
 \begin{verbnobox}[\small]
 Point p = new Point(3, 4);
