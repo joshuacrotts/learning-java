@@ -399,7 +399,7 @@ Predicates can only be unified with variables if the variable does not have an e
     \item Design the \ttt{BigNat} class, which has a constructor that receives a string. The \ttt{BigNat} class stores a \ttt{List<Integer>} as an instance variable. You will need to convert the given string into said list. Store the digits in reverse order, i.e., the least-significant digit (the ones digit) of the number is the first element of the list.
     \item Override the \ttt{public String toString()} method to return a string representation of the \ttt{BigNat} object. 
     % In particular, place commas between the digits where necessary, e.g., \ttt{"1,000"} and \ttt{"12,345,678"}.
-    \item Override the \ttt{BigNat clone()} method that returns a new \ttt{BigNat} instance that contains the same number.
+    \item Design the \ttt{BigNat clone()} method that returns a new \ttt{BigNat} instance that contains the same number.
     \item Override the \ttt{public boolean equals(Object obj)} method to compare two \ttt{BigNat} values for equality. Remember that you have to cast the given parameter to an instance of the \ttt{BigNat} class. 
     \item Implement the \ttt{Comparable<BigNat>} interface, and override the \ttt{public int compareTo(BigNat b)} method to return the sign of the result of comparing the given \ttt{BigNat} (which we will call $b$) to \ttt{this} \ttt{BigNat} (which we will call $a$). Namely, if $a < b$, return $-1$, if $a > b$, return $1$, otherwise return $0$.
     \item Design the \ttt{void add(BigNat bn)} method, which adds a \ttt{BigNat} to \ttt{this} \ttt{BigNat}. The method should not return anything. Note: this problem is harder than it may look at first glance!
