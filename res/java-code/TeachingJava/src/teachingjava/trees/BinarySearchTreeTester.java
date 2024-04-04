@@ -1,8 +1,6 @@
 package teachingjava.trees;
 
-import org.junit.jupiter.api.Test;
-
-public class BinarySearchTreeTester {
+class BinarySearchTreeTester {
 
   @Test
   void testBst() {

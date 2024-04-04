@@ -717,7 +717,7 @@ These three types, namely grass, water, and fire, are designed as classes that e
 \begin{lstlisting}[language=MyJava]
 class FireType implements Type {
 
-  public static final IType FIRE_TYPE = new FireType();
+  static final IType FIRE_TYPE = new FireType();
 
   private FireType() {}
 }
@@ -726,7 +726,7 @@ class FireType implements Type {
 \begin{lstlisting}[language=MyJava]
 class WaterType implements Type {
 
-  public static final IType WaterType = new WaterType();
+  static final IType WaterType = new WaterType();
 
   private WaterType() {}
 }
@@ -735,7 +735,7 @@ class WaterType implements Type {
 \begin{lstlisting}[language=MyJava]
 class GrassType implements Type {
 
-  public static final IType GRASS_TYPE = new GrassType();
+  static final IType GRASS_TYPE = new GrassType();
 
   private GrassType() {}
 }

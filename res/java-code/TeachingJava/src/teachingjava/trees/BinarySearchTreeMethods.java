@@ -3,7 +3,7 @@ package teachingjava.trees;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BinarySearchTreeMethods {
+class BinarySearchTreeMethods {
 
   static <T extends Comparable<T>> T findMax(BinarySearchTree<T> t) {
     if (t.getRight() == null) {

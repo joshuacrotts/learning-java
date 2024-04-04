@@ -399,9 +399,29 @@ As a means of motivation, let's write a few programs in this language to show it
 \end{lstlisting}
 \end{minipage}
 
-Programming language syntax is often broken up into the nodes of an \emph{abstract syntax tree}, which at a quick glance is nothing more than a description of the operations of a language. To begin, we need to describe our programming language capabilities. To keep things simple, our language will contain integers, variables, a few arithmetic operators, and conditionals. It's important to note that, because we are glossing over the innards of lexing and  parsing, all of our tests will exist in the form of abstract syntax trees. We want an abstract AST node class from which every other AST node inherits. Then, we can design purpose-specific nodes that do what we wish. Every abstract syntax tree has a list of children node. We will also define a \texttt{toString} method that will print out the abstract syntax tree in a readable format. Our abstract syntax tree class uses two constructors: one that receives a list of abstract syntax tree nodes, and another that is variadic over the \ttt{AstNode} type. We implement two different constructors for convenience purposes during testing.
+Programming language syntax is often broken up into the nodes of an \emph{abstract syntax tree}, which at a quick glance is nothing more than a description of the operations of a language. To begin, we need to describe our programming language capabilities. 
+To keep things simple, our language will contain integers, variables, a few arithmetic operators, and conditionals. 
+It's important to note that, because we are glossing over the innards of lexing and  parsing, all of our tests will exist in the form of abstract syntax trees.
+We want an abstract AST node class from which every other AST node inherits. Then, we can design purpose-specific nodes that do what we wish. 
+Every abstract syntax tree has a list of children node. We will also define a \texttt{toString} method that will print out the abstract syntax tree in a readable format. 
+Our abstract syntax tree class uses two constructors: one that receives a list of abstract syntax tree nodes, and another that is variadic over the \ttt{AstNode} type. We implement two different constructors for convenience purposes during testing.
 
-Additionally, we want our abstract syntax trees to be evaluable. Because ``evaluable'' describes a behavior of a class, we should throw this into an interface. We want its method, namely \ttt{eval}, to return something of type \ttt{AstNode} and receive an environment. For the time being, since we do not know what an \ttt{Environment} is, but we can still write the signature for the \ttt{eval} method. Notice, however, that we mark \ttt{eval} as \ttt{abstract} inside \ttt{AstNode}, because it is definitionally impossible to evaluate an \ttt{AstNode}, since evaluation behavior is dependent on the subclasses and how they interact.
+Each abstract syntax tree should be evaluable as a means of reducing the expression to its simplest form. For example, numbers and booleans, the literals of our language, resolve to themselves. Primitive operations apply the operation to its arguments, then ultimately reduce to a value. Conditionals resolve to either of its branches, and ``let'' bindings resolve to its body. We will cover each case one-by-one as we cover the material. For now, though, the abstract syntax tree node class contains the \ttt{eval} method, which denotes how a node is to be evaluated.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
@@ -418,7 +438,7 @@ abstract class AstNode {
     this(List.of(children)); 
   }
 
-  abstract AstNode eval(Environment env);
+  abstract AstNode eval();
 
   List<AstNode> getChildren() { 
     return this.CHILDREN; 
@@ -428,41 +448,36 @@ abstract class AstNode {
 }
 \end{lstlisting}
 
-From here, the simplest three abstract syntax tree nodes are \ttt{VarNode}, \ttt{NumNode}, and \ttt{BoolNode}, corresponding to variables, numbers, and booleans, respectively. Each of these nodes will have a single value, that being the variable name, number, or boolean. The \ttt{eval} methods of the latter two classes resolve to themselves, since evaluating a number or a boolean is itself. The former, that being \ttt{VarNode}, is a little trickier. 
+From here, the simplest two abstract syntax tree nodes are \ttt{NumNode} and \ttt{BoolNode}, corresponding to numbers and booleans literals respectively. Each of these nodes will have a single value, that being the associated number or boolean. Number and boolean literals resolve to themselves, which means that they return \ttt{this} as the object in their corresponding \ttt{eval} methods.
 
-We must consider what happens when we evaluate a variable in any other programming language. The language looks up the variable identifier in the list of accessible bindings and returns whatever is the corresponding value. This location of bindings is called an environment in the programming languages nomenclature, and generally takes the form of a \ttt{HashMap} data structure. Therefore we can store an instance of a \ttt{HashMap} in our \ttt{Environment} class. 
+% We must consider what happens when we evaluate a variable in any other programming language. The language looks up the variable identifier in the list of accessible bindings and returns whatever is the corresponding value. This location of bindings is called an environment in the programming languages nomenclature, and generally takes the form of a \ttt{Map} data structure. Therefore we can store an instance of a \ttt{Map} in our \ttt{Environment} class. 
 
-As a final corollary point before jumping into the environment details, we must override \ttt{equals} and \ttt{hashCode} in these three atomic value classes. In theory, we could override them in the other classes as well. For the time being, because our programs always resolve to one of these three types (and because our test cases only operate over the three), we will only override the definitions in these classes.
+% As a final corollary point before jumping into the environment details, we must override \ttt{equals} and \ttt{hashCode} in these three atomic value classes. In theory, we could override them in the other classes as well. For the time being, because our programs always resolve to one of these three types (and because our test cases only operate over the three), we will only override the definitions in these classes.
 
-The question now is of what type are the keys and values in our map. The keys are string identifiers, and the values are their corresponding abstract syntax trees. Our environment representation/class is extremely simple and almost seems superfluous, but in due time we will add more functionality to justify its existence over a simple \ttt{HashMap} instance. In particular, the \ttt{lookup} method for finding a variable association will remain undefined for now.
+% The question now is of what type are the keys and values in our map. The keys are string identifiers, and the values are their corresponding abstract syntax trees. Our environment representation/class is extremely simple and almost seems superfluous, but in due time we will add more functionality to justify its existence over a simple \ttt{HashMap} instance. In particular, the \ttt{lookup} method for finding a variable association will remain undefined for now.
 
-%\enlargethispage{-1\baselineskip}
-\begin{lstlisting}[language=MyJava]
-import java.util.HashMap;
-import java.util.Map;
+% %\enlargethispage{-1\baselineskip}
+% \begin{lstlisting}[language=MyJava]
+% import java.util.HashMap;
+% import java.util.Map;
 
-final class Environment {
+% final class Environment {
   
-  private final Map<String, AstNode> ENV;
+%   private final Map<String, AstNode> ENV;
 
-  Environment() { 
-    this.ENV = new HashMap<>(); 
-  }
+%   Environment() { 
+%     this.ENV = new HashMap<>(); 
+%   }
 
-  AstNode lookup(String var) { /* TODO. */ }
-}
-\end{lstlisting}
+%   AstNode lookup(String id) { /* TODO. */ }
+% }
+% \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
 class AstTest {
-
-  @Test
-  void testVarNode() {
-    assertEquals("x", new VarNode("x").toString());
-  }
 
   @Test
   void testNumNode() {
@@ -477,36 +492,39 @@ class AstTest {
 }
 \end{lstlisting}
 
+% \begin{lstlisting}[language=MyJava]
+% final class VarNode extends AstNode {
 
-\begin{lstlisting}[language=MyJava]
-final class VarNode extends AstNode {
+%   private final String NAME;
 
-  private final String NAME;
+%   VarNode(String name) {
+%     super();
+%     this.NAME = name;
+%   }
 
-  VarNode(String name) {
-    super();
-    this.NAME = name;
-  }
+%   String getName() {
+%     return this.NAME;
+%   }
 
-  /**
-   * Interpret a variable. We look up the variable in the environment and
-   * return the value associated with it.
-   * @param env - the environment in which to interpret the variable.
-   * @return The result of the variable lookup after interpretation.
-   */
-  @Override
-  AstNode eval(Environment env) {
-    String id = this.NAME;
-    AstNode res = env.lookup(id);
-    return res.eval(env);
-  }
+%   /**
+%    * Interpret a variable. We look up the variable in the environment and
+%    * return the value associated with it.
+%    * @param env - the environment in which to interpret the variable.
+%    * @return The result of the variable lookup after interpretation.
+%    */
+%   @Override
+%   AstNode eval(Environment env) {
+%     String id = this.NAME;
+%     AstNode res = env.lookup(id);
+%     return res.eval(env);
+%   }
 
-  @Override
-  public String toString() { 
-    return this.NAME; 
-  }
-}
-\end{lstlisting}
+%   @Override
+%   public String toString() { 
+%     return this.NAME; 
+%   }
+% }
+% \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
 final class NumNode extends AstNode {
@@ -527,6 +545,10 @@ final class NumNode extends AstNode {
     return this;
   }
 
+  double getValue() {
+    return this.VALUE;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof NumNode)) { return false; }
@@ -541,10 +563,6 @@ final class NumNode extends AstNode {
   @Override
   public String toString() { 
     return Double.toString(this.VALUE); 
-  }
-
-  public double getValue() {
-    return this.VALUE;
   }
 }
 \end{lstlisting}
@@ -568,6 +586,10 @@ final class BoolNode extends AstNode {
   AstNode eval(Environment env) { 
     return this; 
   }
+  
+  boolean getValue() {
+    return this.VALUE;
+  }
 
   @Override
   public boolean equals(Object o) {
@@ -584,14 +606,38 @@ final class BoolNode extends AstNode {
   public String toString() { 
     return Boolean.toString(this.VALUE); 
   }
-
-  public boolean getValue() {
-    return this.VALUE;
-  }
 }
 \end{lstlisting}
 
-From here, we arrive at primitive operators via \ttt{PrimNode}. A primitive operator is one akin to addition, subtraction, and so forth. Two additional primitives that we will support are reading an integer from standard input, and printing one to standard output. Primitive operators receive any number of arguments and whose behavior is handled as a case analysis of the \ttt{eval} method. 
+The next logical step is to add operations via \ttt{PrimNode}. A primitive operator is one akin to addition, subtraction, value equality, and so forth. Primitive operators receive any number of arguments, and behavior of which is handled as a case analysis of the \ttt{eval} method. 
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AstTest {
+
+  @Test
+  void testPrimNode() {
+    assertAll(
+      () -> assertEquals(new NumNode(42),
+                          new PrimNode("+", 
+                          new NumNode(25), 
+                          new NumNode(17)).eval());
+      () -> assertEquals(new NumNode(42),
+                          new PrimNode("*", 
+                          new NumNode(6), 
+                          new NumNode(1), 
+                          new NumNode(7)).eval());
+      () -> assertEquals(new BoolNode(true),
+                          new PrimNode("eq?",
+                          new PrimNode("+", 
+                          new NumNode(5),
+                          new NumNode(37)),
+                          new NumNode(42)).eval())):
+  }
+}
+\end{lstlisting}
 
 %\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -648,7 +694,7 @@ final class PrimNode extends AstNode {
   private AstNode primProduct(List<AstNode> args, Environment env) {
     return new NumNode(args.stream()
                               .map(t -> ((NumNode) t).getValue())
-                              .reduce(1.0, (a, c) -> c * a)));
+                              .reduce(1.0, (a, c) -> c * a));
   }
 
   private AstNode primEq(List<AstNode> args, Environment env) {
@@ -657,15 +703,50 @@ final class PrimNode extends AstNode {
 }
 \end{lstlisting}
 
-We need a way of binding variables to their values, so we shall take a hint from functional programming languages via the \ttt{LetNode} class. The \ttt{LetNode} class has three children: a variable name, a value, and a body. The variable name will be a string, with the value and body both being abstract syntax tree nodes. The \ttt{LetNode} class will have a \ttt{toString} method that will return a string in the form of \ttt{(let ([<var> <exp>]) <body>)}. The \ttt{eval} method will evaluate the value, extend the environment with the new binding, and then evaluate the body with the extended environment. To do this, we need to understand what environment extension entails. Reconsidering our \ttt{Environment} class, we know that it contains a \ttt{HashMap} to designate that environments use maps by design. We may be tempted to write a \ttt{set} method in our \ttt{Environment} class to add an identifier binding to the current environment. Although this works (and will be a necessity in due time), it means that we can only \emph{modify}, or \emph{change}, the environment, which isn't desired. The alternative approach would be to utilize \emph{environment extension}. That is, create a new environment with the old bindings, followed by an insertion of the new binding. Environment extension brings up the issue of variable scope, because different variables are live at different locations in the program. Consider the following program described by the abstract syntax tree:
+The next step after adding the equality comparison operator is to design the conditional expression, namely \ttt{IfNode}. An \ttt{IfNode} contains three components: a predicate, a consequent, and an alternative. The \ttt{eval} method of an \ttt{IfNode} evaluates the predicate, and if it is true, evaluates the consequent, otherwise it evaluates the alternative. The predicate \emph{must} resolve to a boolean, assuming the program is well-formed. 
 
-\begin{verbnobox}[\small]
-new LetNode("x", new NumNode(5), 
- new LetNode("y", new PrimNode("+", new NumNode(6), new VarNode("x")), 
-  new VarNode("y")))
-\end{verbnobox}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AstTest {
   
-Within the inner-most \ttt{PrimNode} expression, $x$ does not exist in its environment, but it does exist in an environment defined above its scope. So, each environment is itself a store a map of identifiers to abstract syntax trees, but they also contain another \ttt{Environment}. If we are at the ``root level'' of the program, this environment is set to \ttt{null}. Correspondingly, Environment contains two constructors: one that receives a parent environment and another without. As such, we must write the \ttt{lookup} method, which finds a variable binding in the current list of bindings and, if it does not exist, recursively looks it up in the parent environment. If we reach the root level environment and the variable does not exist, we return a \ttt{null} value. We also override the \ttt{toString} method to print out the environment in a readable format.
+  @Test
+  void testIfNode() {
+    assertAll(
+      () -> assertEquals(new NumNode(100),
+                          new IfNode(new BoolNode(true),
+                                      new NumNode(100),
+                                      new NumNode(0)).eval()),
+      () -> assertEquals(new BoolNode(false),
+                          new IfNode(new PrimNode("eq?", new NumNode(5), new NumNode(5)),
+                                      new BoolNode(true),
+                                      new BoolNode(false)).eval()));
+  }
+}  
+\end{lstlisting}
+
+With numbers, booleans, primitive operations, and conditionals taken care of, we now come to the challenging part: variable bindings. 
+We need a way of introducing variable bindings to their values, so we shall take a hint from functional programming languages via the \ttt{LetNode} class. 
+The \ttt{LetNode} class has three children: a variable name, a value, and a body. 
+The variable name is a string, with the value and body both being abstract syntax tree nodes. 
+The \ttt{LetNode} class will have a \ttt{toString} method that will return a string in the form of \ttt{(let ([<var> <exp>]) <body>)}. 
+In tandem, we will also write the \ttt{VarNode} class, which represents variable placeholders. In order to do anything meaningful with both classes, we need to discuss the scope of a variable and how to handle the encompassing issues.
+
+The \emph{scope of a variable} refers to its lifetime. Consider the following program in our language. Initially, the program has no variable bindings. After encountering the \ttt{let}, we enter a scope that binds the variable identifier $x$ to $5$. The body of this \ttt{let} is, therefore, the \emph{scope} of~$x$. Inside this body, we encounter yet another variable, namely $y$, which binds $y$ to $10$. The body of this \ttt{let} is the scope of $y$. Outside the scope of the body, $y$ is non-existent.
+\begin{verbnobox}[\small]
+(let ([x 5])
+  (let ([y 10])
+    (* x y)))
+\end{verbnobox}
+When executing this program in our heads, we know that $x$ refers to $5$ and $y$ refers to $10$. To write a programming language, though, we need a formalization of this idea. That is, we must define how to associate variable identifiers to values. Of course, the best data structure for vaue association is a map, and indeed, this is the structure we will use.
+
+Programming languages use \emph{environments} to associate identifiers to values. Upon encountering a variable declaration, we extend the current environment to contain the new binding. This begs the question, ``Why not just modify the environment?'' The answer is that we want to respect the scope of variables. Modifying the environment changes the environment for all scopes, an undesired trait. Instead, we \emph{extend} the environment, which establishes a link between the current environment and the newly-declared environment. This way, we can look up variables in the current environment, and if they do not exist, we can look them up in the parent environment. If the variable does not exist in the parent environment, we return a \ttt{null} value.
+
+Environments, accordingly, contain two instance variables: a \ttt{Map<String, AstNode} and a \ttt{Environment} parent pointer. Our environment class comprises three methods: \ttt{add}, \ttt{lookup}, and \ttt{extend}. 
+
+The \ttt{add} method serves as a means of adding a variable binding to the current environment. The \ttt{lookup} method attempts to find a binding for the given variable identifier using the aforementioned approach. The \ttt{extend} method instantiates a new environment, whose parent is the current existing environment. This newly-instantiated environment, importantly, contains the new variable binding. All programs are initialized with an empty environment, because there are no (locally-declared) variable bindings at the start of a program.
+
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -686,7 +767,6 @@ class EnvironmentTester {
   }
 }
 \end{lstlisting}
-  
 
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
@@ -698,7 +778,8 @@ final class Environment {
   private final Environment PARENT;
 
   Environment() { 
-    this(null); 
+    this.ENV = new HashMap<>(); 
+    this.PARENT = null; 
   }
 
   Environment(Environment parent) { 
@@ -706,39 +787,84 @@ final class Environment {
     this.PARENT = parent; 
   }
 
-  /**
-   * Looks up a variable in the current environment.
-   * @param id - the variable name.
-   * @return the value bound to the variable, 
-   *         or null if it does not exist.
-   */
   AstNode lookup(String id) {
-    if (this.ENV.containsKey(id)) { 
-      return this.ENV.get(id); 
-    } else if (this.PARENT != null) { 
-      return this.PARENT.lookup(id);
-    } else { 
-      return null; 
-    }
+    if (this.ENV.containsKey(id)) { return this.ENV.get(id); }
+    else if (this.PARENT != null) { return this.PARENT.lookup(id); }
+    else { return null; }
   }
 
-  /**
-   * Extends the current environment to contain a new variable binding.
-   * @param id - the variable name.
-   * @param value - the value to bind to the variable.
-   * @return a new environment with the new binding.
-   */
   Environment extend(String id, AstNode value) {
     Environment env = new Environment(this);
     env.ENV.put(id, value);
     return env;
   }
 }
-\end{lstlisting} 
+\end{lstlisting}
 
-Our modified version of the environment allows us to implement local/let bindings in a way that respects parent environments. As one of the exercises of this chapter demonstrate, environment extension helps us when adding user-defined functions.
+Now we can design the \ttt{VarNode} class. The apparent question is, ``How do we evaluate a variable?'' Using environments, we look up the variable identifier and return its associated abstract syntax tree. But, where does the environment come from? The environment is passed as an argument to the \ttt{eval} method, which means that all previously-existing \ttt{eval} methods must be updated to accept an environment as an argument.
 
-%\enlargethispage{-3\baselineskip}
+Variable nodes, on their own, are simple yet relatively unuseful. But, variable nodes simply cannot exist without a means of introducing them into the environment context. This is where the \ttt{LetNode} class comes into play. The \ttt{LetNode} class introduces a new variable binding into the environment. The \ttt{LetNode} has two abstract syntax tree children: an expression and a body. The expression is evaluated and its value is bound to the provided variable identifier in an \emph{extended environment} $e_2$, whose parent is the current environment~$e_1$. The body of the \ttt{LetNode} is evaluated with respect to ethe extended environment, i.e.,~$e_2$.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AstTest {
+
+  @Test
+  void testLetNode() {
+    Environment env = new Environment();
+    assertAll(
+      () -> assertEquals(new NumNode(42),
+                          new LetNode("x", 
+                           new NumNode(42),
+                            new VarNode("x")).eval(env)),
+      () -> assertEquals(new NumNode(42),
+                          new LetNode("x", 
+                           new NumNode(1),
+                            new LetNode("y", 
+                             new NumNode(41),
+                             new PrimNode("+", 
+                              new VarNode("x"), 
+                              new VarNode("y")))).eval(env)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+final class VarNode extends AstNode {
+
+  private final String NAME;
+
+  VarNode(String name) {
+    super();
+    this.NAME = name;
+  }
+
+  String getName() {
+    return this.NAME;
+  }
+
+  /**
+   * Interpret a variable. We look up the variable in the environment and
+   * return the value associated with it.
+   * @param env - the environment in which to interpret the variable.
+   * @return The result of the variable lookup after interpretation.
+   */
+  @Override
+  AstNode eval(Environment env) {
+    String id = this.NAME;
+    AstNode res = env.lookup(id);
+    return res.eval(env);
+  }
+
+  @Override
+  public String toString() { 
+    return this.NAME; 
+  }
+}
+\end{lstlisting}
+  
 \begin{lstlisting}[language=MyJava]
 final class LetNode extends AstNode {
 
@@ -779,49 +905,7 @@ final class LetNode extends AstNode {
 }
 \end{lstlisting}
 
-Finally we arrive at decision-based nodes. The \ttt{IfNode} class represents a conditional expression rather than a statement. Recall the ternary operator; it resolves to a value, unlike Java's \ttt{if} statement. The \ttt{IfNode} class has three children: a predicate, a consequent, and an alternative. The predicate is an abstract syntax tree that represents a boolean expression, and the consequent and alternative are arbitrary abstract syntax tree nodes. The \ttt{IfNode} class will have a \ttt{toString} method that will return a string of the form \ttt{(if <pred> <conseq> <alt>)}. Its evaluator will evaluate the predicate, and then evaluate either the consequent or alternative depending on the result of the predicate.
-
-%\enlargethispage{1\baselineskip}
-\begin{lstlisting}[language=MyJava]
-final class IfNode extends AstNode {
-  
-  IfNode(AstNode predicate, AstNode consequent, AstNode alternative) {
-    super(predicate, consequent, alternative);
-  }
-
-  /**
-   * Interpret an if statement.
-   * @param env - the environment in which to interpret the if statement.
-   * @return The result of the if statement.
-   */
-  @Override
-  AstNode eval(Environment env) {
-    AstNode pred = this.getChildren().get(0);
-    AstNode cons = this.getChildren().get(1);
-    AstNode alt = this.getChildren().get(2);
-
-    // Evaluate the predicate, then interpret one way or the other.
-    if (pred.eval(env).getBooleanValue()) { 
-      return cons.eval(env); 
-    } else { 
-      return alt.eval(env); 
-    }
-  }
-  
-  @Override
-  public String toString() {
-    AstNode p = this.getChildren().get(0);
-    AstNode c = this.getChildren().get(1);
-    AstNode a = this.getChildren().get(2);
-    return String.format("(if %s %s %s)", 
-                          p.toString(), 
-                          c.toString(), 
-                          a.toString());
-  }
-}
-\end{lstlisting}
-
-Finally, at long last, we can write some tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment, which contains no bindings at the start of evaluation. Unfortunately, we still have to write the programs as an abstract syntax tree, but the problems of lexing and parsing raw string input into an abstract syntax tree are reserved for some other time (or perhaps a separate course altogether).
+Finally, at long last, we can write some comprehensive tests! We will store each test in a class called \ttt{InterpTester}, which polymorphically tests the evaluation method of the abstract syntax tree methods. These tests all receive a blank environment representing the global environment, which contains no bindings at the start of evaluation. Unfortunately, we still have to write the programs as an abstract syntax tree, but the problems of lexing and parsing raw string input into an abstract syntax tree are reserved for some other time (or perhaps a separate course altogether).
 
 %\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]

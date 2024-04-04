@@ -2,7 +2,7 @@ package teachingjava.trees;
 
 import java.util.Comparator;
 
-public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
+class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
 
   private BinarySearchTree<T> left;
   private BinarySearchTree<T> right;
@@ -11,14 +11,38 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
 
   private Comparator<T> comparator;
 
-  public BinarySearchTree(T data) {
+  BinarySearchTree(T data) {
     this(data, Comparator.naturalOrder());
   }
 
-  public BinarySearchTree(T data, Comparator<T> comparator) {
+  BinarySearchTree(T data, Comparator<T> comparator) {
     this.data = data;
     this.comparator = comparator;
     this.left = this.right = this.parent = null;
+  }
+
+  T getData() {
+    return this.data;
+  }
+
+  BinarySearchTree<T> getLeft() {
+    return this.left;
+  }
+
+  BinarySearchTree<T> getRight() {
+    return this.right;
+  }
+
+  BinarySearchTree<T> getParent() {
+    return this.parent;
+  }
+
+  boolean isLeaf() {
+    return this.left == null && this.right == null;
+  }
+
+  boolean isRoot() {
+    return this.parent == null;
   }
 
   @Override
@@ -51,30 +75,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
     }
   }
 
-  public T getData() {
-    return this.data;
-  }
-
-  public BinarySearchTree<T> getLeft() {
-    return this.left;
-  }
-
-  public BinarySearchTree<T> getRight() {
-    return this.right;
-  }
-
-  public BinarySearchTree<T> getParent() {
-    return this.parent;
-  }
-
-  public boolean isLeaf() {
-    return this.left == null && this.right == null;
-  }
-
-  public boolean isRoot() {
-    return this.parent == null;
-  }
-
+  @Override
   public String toString() {
     // Return an in-order traversal of the tree.
     return (this.left == null ? "" : this.left.toString() + ", ") + this.data + (this.right == null ? "" : ", " + this.right.toString());

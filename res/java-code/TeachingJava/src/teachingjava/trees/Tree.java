@@ -1,6 +1,6 @@
 package teachingjava.trees;
 
-public interface Tree<T extends Comparable<T>> {
+interface Tree<T extends Comparable<T>> {
 
   void insert(T data);
 
