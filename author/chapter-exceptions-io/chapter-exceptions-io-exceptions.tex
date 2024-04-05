@@ -165,12 +165,18 @@ String s = in.nextLine(); // Throws IllegalStateException!
 \end{verbnobox}
 \subsection{Checked Exceptions}
 
-A \emph{checked exception}\index{checked exception} is one that the programmer must explicitly handle. The compiler will not allow the program to compile if the code that may throw the exception is not wrapped in either a \ttt{try/catch} block, or the method signature does not specify that it throws the exception. Many checked exceptions arise from I/O operations, such as reading from or to a data source. Considering this, we will discuss checked exceptions in the context of I/O operations in the following (non-sub)section.
+A \emph{checked exception}\index{checked exception} is one that the programmer must explicitly handle. 
+Java will fail to compile a program that does not enclose a checked exception type within a \ttt{try/catch} block, or when the method signature does not specify that it throws the exception. 
+Almost all checked exceptions arise from I/O operations, such as reading from or to a data source, so further elaboration at this point the discussion at this point is not particularly helpful.
+We will discuss checked exceptions in the context of I/O operations in the following (non-sub)section.
 
 \subsection{User-Defined Exceptions}
-The programmer can define their own exceptions in terms of other exceptions. Exceptions are nothing more than class definitions, which may be extended and inherited. 
+We can define our own exceptions in terms of other exceptions. 
+Exceptions are nothing more than class definitions, which may be extended/inherited. 
 
-\myexample{Consider defining the \ttt{BadStringInputException} class, which inherits from \ttt{RuntimeException}. We might define this as an exception that is thrown when, after reading the user's input, we find that the input is not a ``alpha string,'' i.e., a string that contains only letters. We can define a constructor that takes a string as an argument, which serves as the message that is passed to the exception.\footnote{We note that, in general, creating new exceptions is rarely beneficial, since Java provides a plethora of exception definitions that cover most use cases.}}
+\myexample{Consider defining the \ttt{BadStringInputException} class, which inherits from \ttt{RuntimeException}}. 
+We might define \ttt{BadStringInputException} as an exception that Java throws when, after reading the user's input, we find that the input is not a ``alpha string,'' i.e., a string that contains only letters. 
+Let's define a constructor that takes a string as an parameter, serving as the exception message.\footnote{We note that, broadly speaking, creating new types of exceptions is rarely beneficial, because Java provides a plethora of exception definitions that cover most use cases.}
 
 \begin{lstlisting}[language=MyJava]
 class BadStringInputException extends RuntimeException {
@@ -181,14 +187,17 @@ class BadStringInputException extends RuntimeException {
 }
 \end{lstlisting}
 
-Then, if we write code that reads a string from the user, we can throw a \ttt{BadStringInput\-Exception} if the input is a non-alphabetic string. The following code segment uses the \ttt{matches} method, which receives a regular expression, and returns whether or not the string satisfies the expression. In particular, \ttt{[a-zA-Z]+} states that there must be at least one lowercase or uppercase character.
+Then, if we write code that reads a string from the user (through standard input), we can throw a \ttt{BadStringInput\-Exception} if said input is a non-alphabetic string. 
+The following code segment uses the \ttt{matches} method, which receives a regular expression and returns whether the string satisfies the expression. 
+More specifically, \ttt{[a-zA-Z]+} states that there must be at least one lowercase or uppercase character in the provided string.
+A method that calls \ttt{readAlphaString} does not need to handle the exception, as it unchecked and will be caught by the runtime system.
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 
 class BadStringInputExceptionExample {
   
-  public static void main(String[] args) {
+  static void readAlphaString() {
     Scanner in = new Scanner(System.in);
     String s = in.nextLine();
     if (!s.matches("[a-zA-Z]+")) { 
