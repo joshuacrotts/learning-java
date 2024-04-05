@@ -3,9 +3,14 @@
 Exceptions, at their core, are effect handlers. We use exceptions to identify and respond to events that occur at runtime. Java uses objects to implement an exception type hierarchy, with \ttt{Throwable} being the highest class in the chain. Any subclass or instance of \ttt{Throwable} can be thrown by Java. We will discuss several different exception types by categorizing them into one of two categories: unchecked versus checked checked exceptions.
 
 \subsection{Unchecked Exceptions}
-In general, we handle exceptions at either compile time or runtime. The exceptions, themselves, are thrown at runtime, but certain exceptions must be explicitly handled and referenced by the program. An \emph{unchecked exception} is a form of exception whose behavior is dictated by the runtime system, or is caught by the programmer manually. A convenience factor of unchecked exceptions is that we do not \emph{have} to explicitly state what happens when one is thrown. It should also note that the \ttt{RuntimeException} class serves as the superclass of all unchecked exceptions.
+We handle exceptions at either compile time or runtime. The exceptions themselves are thrown at runtime, but some exceptions must be explicitly handled and referenced by the program. An \emph{unchecked exception}\index{unchecked exception} is a form of exception whose behavior is dictated by the runtime system, or is caught by the programmer manually. A convenience factor of unchecked exceptions is that we do not \emph{have} to explicitly state what happens when one is thrown. We should also note that the \ttt{RuntimeException} class serves as the superclass of all unchecked exceptions.
 
-\myexample{Consider what happens when a program contains code that may or may not invoke a division-by-zero. If the divide-by-zero operation occurs, Java automatically throws an \ttt{ArithmeticException} with a relevant explanation of the problem. The exception halts the program at the point thereof, but what's interesting is that we can control the behavior of an unchecked exception via the \ttt{try/catch} combination. Inside a \ttt{try} block we place the code that might throw the exception. Inside the corresponding \ttt{catch} block, we initialize an exception variable to whatever the desired caught exception is, e.g., \ttt{ArithmeticException}, and we handle it inside of the block. Let's write a method that does nothing more than divides the sum of two numbers by the third.}
+\myexample{Consider what happens when a program contains code that may or may not divide a numeric value by zero.}
+If the bad division operation occurs, Java automatically throws an \ttt{ArithmeticException} with a relevant explanation of the problem, that being a divide-by-zero. 
+The exception halts program execution at the point thereof, but what's interesting is that we can control the behavior of an unchecked exception through a \ttt{try/catch} block. 
+Within a \ttt{try} block, we include the code that potentially raises the exception. 
+In the associated \ttt{catch} block, we declare a variable for the exception we aim to catch, such as \ttt{ArithmeticException}, and then manage it within that block.
+Let's write a method that does nothing more than divides the sum of two numbers by the third.
 
 \begin{lstlisting}[language=MyJava]
 import java.lang.ArithmeticException;
@@ -27,9 +32,23 @@ class ArithmeticExceptionExample {
 } 
 \end{lstlisting}
 
-We define two versions of \ttt{div}, where the first does not perform an explicit check for the exception and the second does. In the latter we print a message to the standard error stream and return zero. The preferable resolution is certainly up to the programmer, but in general it makes more sense to throw the exception and halt program execution, in this instance, rather than propagating a zero up to the caller. Another solution might be to return an \ttt{Optional} from the method, but \ttt{Optional} is more about compositionality rather than exceptions.
+We define two versions of \ttt{div}, where the first does not perform an explicit check for the exception, and the second does. 
+In the latter, we print a message to the standard error stream and return zero. 
+The preferable resolution is certainly up to the programmer, but it makes more sense in this scenario to throw the exception and halt program execution, rather than propagating a zero up to the caller. 
+Another solution might be to return an \ttt{Optional} from the method, but the \ttt{Optional} class is more about compositionality of stream methods rather than exceptions.
 
-\myexample{In the above example, we catch the \ttt{ArithmeticException} handled by Java. Though, suppose we have a situation in which \emph{we} want to throw the exception. Because the problem arises from a bad parameter, it would be wise to throw an \ttt{IllegalArgumentException}, which designates exactly what its name suggests. We manually check to see if the divisor, namely $c$, is zero and, if so, we throw a new \ttt{IllegalArgumentException}. Because \ttt{IllegalArgumentException} is an unchecked exception, the caller needs not to handle nor necessarily know that it may invoke the exception. Should we want to signal that as a hint, in the method signature we can specify that the method potentially throws an \ttt{IllegalArgumentException}. As the callee that defines the location of an exception invocation, we \emph{only} throw the exception; it is not our responsibility to control the outcome. We can test a new version of \ttt{div} by testing whether or not it throws an exception through the \ttt{assertThrows} and \ttt{assertDoesNotThrow} assertion methods. The thing is, though, neither \ttt{assertThrows} nor \ttt{assertDoesNotThrow} are not as simple as they appear on the surface; we need to specify \emph{which} exception the code might throw as a reference to the class definition.\footnote{To reference a class definition as an object, we access \ttt{.class} on the class as if it were a static method.} Additionally, it must be passed as something that is executable. Fortunately, we have worked with executable constructs before: lambda/anonymous functions! Simply wrap the code that might raise an exception inside a lambda, and it works as expected.}
+\myexample{In the preceding example, we catch the \ttt{ArithmeticException} that Java throws.} 
+Though, suppose we have a situation in which \emph{we} want to throw the exception. 
+Because the \ttt{div} problem arises from a bad parameter, we might wish to throw an \ttt{IllegalArgumentException}, which designates exactly what its name suggests. 
+We insert a conditional check to test if the divisor, namely $c$, is zero and, if so, we throw a new \ttt{IllegalArgumentException}. 
+Because \ttt{IllegalArgumentException} is an unchecked exception, the caller needs not to handle nor necessarily know that it may raise the exception. 
+Should we want to signal that as a hint, the method signature may specify that the method potentially throws an \ttt{IllegalArgumentException}. 
+As the callee that defines the location of an exception invocation, we \emph{only} throw the exception; it is not our responsibility to control the outcome. 
+We can unit test a new version of \ttt{div} by determining whether it throws an exception through the \ttt{assertThrows} and \ttt{assertDoesNotThrow} assertion methods. 
+The thing is, though, neither \ttt{assertThrows} nor \ttt{assertDoesNotThrow} are not as simple as they appear on the surface; we need to specify \emph{what} exception the code might throw as a reference to the class definition.\footnote{To reference a class definition as an object, we access \ttt{.class} on the class as if it were a static method.} 
+Additionally, the argument must be passed as an executable argument. 
+Remember though have worked with executable constructs before via lambda/anonymous functions! 
+Simply wrap the code that might raise an exception inside a lambda, and everything works as expected.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertDoesNotThrow;
@@ -54,7 +73,7 @@ import java.lang.IllegalArgumentException;
 
 class IllegalArgumentExceptionExample {
   
-  void div(int a, int b, int c) throws IllegalArgumentException {
+  int div(int a, int b, int c) throws IllegalArgumentException {
     if (c == 0) { 
       throw new IllegalArgumentException("div: / by zero"); 
     } else { 
@@ -64,7 +83,9 @@ class IllegalArgumentExceptionExample {
 }
 \end{lstlisting}
 
-What if we wanted to call \ttt{div} from a separate method and process the exception ourselves? Indeed, this is doable. Should we wish to retrieve the exception message (i.e., the message passed to the exception constructor), we can via the \ttt{.getMessage} method, which is helpful for producing custom error messages/responses, or redirecting the message to a different destination.
+What if we wanted to call \ttt{div} from a separate method and process the exception ourselves? 
+Indeed, this is doable. 
+Should we wish to retrieve the exception message (i.e., the message passed to the exception constructor), we can via calling the \ttt{.getMessage} method on the exception object, which is helpful for producing custom error messages/responses or redirecting the message to a different destination.
 
 %\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -72,7 +93,7 @@ import java.lang.IllegalArgumentException;
 
 class IllegalArgumentExceptionExample {
   
-  void div(int a, int b, int c) throws IllegalArgumentException {
+  int div(int a, int b, int c) throws IllegalArgumentException {
     if (c == 0) { 
       throw new IllegalArgumentException("div: / by zero"); 
     } else { 
@@ -90,7 +111,9 @@ class IllegalArgumentExceptionExample {
 }
 \end{lstlisting}
 
-\myexample{Arrays and strings both produce unchecked exceptions, resulting from indexing errors, via \ttt{ArrayIndexOutOfBoundsException} and \ttt{StringIndexOutOfBounds\-Exception} respectively, both of which inherit from the \ttt{IndexOutOfBoundsException} class. We imagine that these have both been received, with great frustration, from the readers a indeterminate number of times. Of course, an index out of bounds exception stems from accessing data beyond the permissible bounds of some collection or structure.}
+\myexample{Arrays and strings both produce unchecked exceptions when incorrectly indexed via \ttt{ArrayIndexOutOfBoundsException} and \ttt{StringIndexOutOfBounds\-Exception}} respectively, both of which inherit from the \ttt{IndexOutOfBoundsException} class. 
+We imagine that these have both been received, in great frustration, from the readers a indeterminate number of times. 
+An index out of bounds exception stems from accessing data beyond the permissible bounds of some collection or structure.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -122,11 +145,19 @@ class IndexOutOfBoundsExceptionExampleTester {
 }
 \end{lstlisting} 
 
-Another uncomfortably common unchecked exception that many Java programmers encounter is the \ttt{NullPointerException}, most often discovered when referencing an object that has yet to be instantiated. 
+Another uncomfortably common unchecked exception that many Java programmers encounter is the \ttt{NullPointerException}. 
+The \ttt{NullPointerException} most often discovered when referencing an object that has yet to be instantiated, or was accidentally never instantiated at all.
 
-\myexample{Casting an object to a type that it is not results in an unchecked \ttt{ClassCastException}. By ``to a type that it is not,'' we mean to say that the object is either not an instance of the type or is not a subtype of the type. Primitive datatypes are not subject to this exception, as they are not objects.\footnote{No pun intended.} All primitive datatypes, except for booleans, can be cast into one another. E.g., \ttt{int x = (int) `A';} is valid, as is \ttt{char c = (char) 65;}. On the other hand, \ttt{String x = (String) new Integer(5);} is not valid, as \ttt{Integer} is not a subclass of \ttt{String}. We can treat \ttt{List<T>} as an \ttt{AbstractList<T>} by performing a runtime cast, e.g., \ttt{AbstractList<T> x = (AbstractList<T>) ls;}, where \ttt{ls} is defined as being of type \ttt{List<T>}.}
+\myexample{Casting an object of type~$\tau_1$ to an incompatible type~$\tau_2$ results in an unchecked \ttt{ClassCastException}. 
+By ``an incompatible type,'' we mean to say that the object is either not an instance of the~$\tau_2$ type, or $\tau_1$ and $tau_2$ are not in a superclass/subclass relationship. 
+Primitive datatypes are not subject to this exception, as they are not objects.\footnote{No pun intended.} 
+All primitive datatypes, minus booleans, can be casted into one another. E.g., \ttt{int x = (int) `A';} is valid, as is \ttt{char c = (char) 65;}. 
+On the other hand, \ttt{String x = (String) new Integer(5);} is not valid, as \ttt{Integer} is not a subclass of \ttt{String} or vice-versa. 
+We can treat \ttt{List<T>} as an \ttt{AbstractList<T>} by performing a cast, e.g., \ttt{AbstractList<T> x = (AbstractList<T>) ls;}, where \ttt{ls} is defined as being of type \ttt{List<T>}.}
 
-\myexample{Sometimes, a program can encounter a state in which it cannot continue. In this case, we can throw an \ttt{IllegalStateException}, designating that the program has reached a point that it should not normally. An example might be attempting to access a closed \ttt{Scanner} instance.}
+\myexample{Sometimes, a program can reach a state where continuing is impossible or illogical.} 
+In these circumstances, we can throw an \ttt{IllegalStateException}, designating that the program has reached a point that it should not under normal pretenses. 
+An example is attempting to access a closed \ttt{Scanner} instance.
 \begin{verbnobox}[\small]
 Scanner in = new Scanner(System.in);
 in.close();
@@ -134,7 +165,7 @@ String s = in.nextLine(); // Throws IllegalStateException!
 \end{verbnobox}
 \subsection{Checked Exceptions}
 
-A checked exception is one that the programmer must explicitly handle. The compiler will not allow the program to compile if the code that may throw the exception is not wrapped in either a \ttt{try/catch} block, or the method signature does not specify that it throws the exception. Many checked exceptions arise from I/O operations, such as reading from or to a data source. Considering this, we will discuss checked exceptions in the context of I/O operations in the following (non-sub)section.
+A \emph{checked exception}\index{checked exception} is one that the programmer must explicitly handle. The compiler will not allow the program to compile if the code that may throw the exception is not wrapped in either a \ttt{try/catch} block, or the method signature does not specify that it throws the exception. Many checked exceptions arise from I/O operations, such as reading from or to a data source. Considering this, we will discuss checked exceptions in the context of I/O operations in the following (non-sub)section.
 
 \subsection{User-Defined Exceptions}
 The programmer can define their own exceptions in terms of other exceptions. Exceptions are nothing more than class definitions, which may be extended and inherited. 
