@@ -695,8 +695,8 @@ final class PrimNode extends AstNode {
 
   private AstNode primProduct(List<AstNode> args, Environment env) {
     return new NumNode(args.stream()
-                              .map(t -> ((NumNode) t).getValue())
-                              .reduce(1.0, (a, c) -> c * a));
+                           .map(t -> ((NumNode) t).getValue())
+                           .reduce(1.0, (a, c) -> c * a));
   }
 
   private AstNode primEq(List<AstNode> args, Environment env) {
