@@ -192,9 +192,12 @@ class ISuitTester {
 
 One extra piece of information that we should share is that we can instantiate objects in different ways. 
 To demonstrate why this is significant, suppose we initialize an object~$s_1$ to be of type \ttt{ISuit}, but instantiate it as type \ttt{Diamond}. 
-Then, we initialize another object~$s_2$ to type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. 
+Then, we initialize another object~$s_2$ to be of type \ttt{Diamond} and instantiate it as type \ttt{Diamond}. 
 We would expect that~$s_1$ and~$s_2$ are equivalent, but this is not the case. 
-Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. Because $s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. Should we want to be able to invoke \ttt{diamondCount} on $s_1$, we need to \emph{downcast}\index{downcast} $s_1$ to type \ttt{Diamond}.
+Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. 
+Because~$s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. 
+On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. 
+Should we want to invoke \ttt{diamondCount} on the ~$s_1$ object, we need to \emph{downcast}\index{downcast} $s_1$ to type \ttt{Diamond}.
 
 \begin{verbnobox}[\small]
 ISuit s1 = new Diamond();
@@ -204,7 +207,13 @@ s2.diamondCount();             // Works but not polymorphic.
 ((Diamond) s1).diamondCount(); // Works but downcasts.
 \end{verbnobox}
 
-\myexample{Animals are a common example of an interface. Imagine that, in our domain of animals, every animal can speak one way or another. Speaking involves returning a string representing the sound that the animal makes. By designing the \ttt{IAnimal} interface, we can group all animals that can speak together. We can then design classes that implement the \ttt{IAnimal} interface and provide an implementation of the \ttt{speak} method. When testing the latter, we can write tests that instantiate a collection of \ttt{IAnimal} instances, and invoke \ttt{speak} on each of them polymorphically. In doing so we get a refresher of the Java stream API.}
+\myexample{Animals are a common example of an interface.} 
+Imagine that, in our domain of animals, every animal can speak one way or another. 
+Speaking involves returning a string representing the sound that the animal makes. 
+By designing the \ttt{IAnimal} interface, we can group all animals that have the capability of ``speaking'' together. 
+We can follow this by designing classes to implement the \ttt{IAnimal} interface, which provide an implementation of the \ttt{speak} method. 
+When testing these classes, we can instantiate a collection of \ttt{IAnimal} instances, and invoke \ttt{speak} on each of them polymorphically. 
+In doing so, we debut a refresher of the stream API.
 
 \begin{lstlisting}[language=MyJava]
 interface IAnimal {
@@ -268,9 +277,19 @@ class Dog implements IAnimal {
 }
 \end{lstlisting}
 
-\myexample{Suppose we want to design an interface that boxes an arbitrary value. We have seen this idea through autoboxing and autounboxing of the primitive datatypes and the wrapper classes, but our interface extends the concept to any type. We can define an interface that requires that any class that implements it provide an implementation of the \ttt{box}, \ttt{get}, and \ttt{set} methods. Boxing a value means that we can pass it around as a reference rather than as a raw value. Recall that passing primitives to methods is by value and, therefore, the method cannot change the value of the primitive. If, however, we box the primitive, then we can pass the boxed value to a method and change the value of the boxed value. We will first design the generic \ttt{IBox} interface, and then we will design a class that implements the methods.} 
+\myexample{Suppose we want to design an interface that ``boxes'' an arbitrary value.} 
+We have seen this idea through Java's autoboxing and autounboxing mechanisms of the primitive datatypes via the wrapper classes. 
+Our interface, however, extends the concept to any type. 
+We can define an interface that requires any class to implement it provide an implementation of the \ttt{box}, \ttt{get}, and \ttt{set} methods. 
+Boxing a value means that we can pass it around as a \emph{reference} rather than as a raw value. 
+Recall that, in Java, we pass primitives to methods by value and, therefore, any changes to the argument are not preserved outside the method body. 
+If, however, we box the primitive, the box is passed by reference, and it is then possible to manipulate the contents of the box. 
+We will first design the generic \ttt{IBox} interface, then we will design a class that implements the methods specified by the interface.
 
-Interestingly, interfaces may have static methods. Our \ttt{IBox} interface has a static \ttt{box} method that returns a box of the type passed in as an argument. This is useful because we can call the \ttt{box} method without having to instantiate a class that implements the \ttt{IBox} interface. We can then use the \ttt{get} and \ttt{set} methods to retrieve and change the value of the box.
+Interestingly, interfaces can contain static methods. 
+Our \ttt{IBox} interface has the static \ttt{box} method, which returns a box that encapsulates the provided value. 
+The \ttt{box} method can be used without having to instantiate a class that implements the \ttt{IBox} interface. 
+From there, we can write the \ttt{get} and \ttt{set} methods to retrieve and change the value of the box.
 
 \begin{lstlisting}[language=MyJava]
 interface IBox<T> {
@@ -338,9 +357,10 @@ class IntegerBox implements IBox<Integer> {
 
 \myexample{The Java Swing API is a graphics framework for designing graphical interfaces and drawing shapes/images.} 
 In addition to these capabilities, it also supports user input through the keyboard, mouse, and other means. 
-Compared to a class like \ttt{Scanner}, which waits for the user to press ``Enter'' when they are finished typing input, the Swing API allows for dynamic input and is constantly monitored by the program. 
+Compared to a class such as \ttt{Scanner}, which waits for the user to press ``Enter'' when they are finished typing input, the Swing API allows for dynamic input and whose events are processed as they occur.
 We call the part of the program that listens and processes events an \emph{event listener}. 
-A popular example is the \ttt{ActionListener} interface, which is used to listen for a broad classification of events. 
+A popular example in Java is the \ttt{ActionListener} interface, which is used to listen for a broad classification of events, ranging from button clicks to menu selections. 
+When an event occurs, the \ttt{ActionListener} interface is notified and can then respond to the event however the programmer desires. 
 The \ttt{ActionListener} interface has a single method, \ttt{actionPerformed}, that is invoked when an event occurs. 
 The \ttt{actionPerformed} method receives an \ttt{ActionEvent} object that contains information about the event that occurred, which is then usable by the method to determine what to do in response to the event. 
 Because graphical interface design goes beyond the scope of this textbook, we will omit a code example, but we mention action listeners to demonstrate that interfaces are not limited to the examples we have seen thus far. 
@@ -348,9 +368,15 @@ Moreover, the Swing API provides more specific listeners for processing keyboard
 We could, for instance, design a class that implements the \ttt{MouseListener} interface and provides an overriding implementation of the \ttt{mouseClicked} method. 
 Then, inside a Java Swing graphical component, we might hook the class as a mouse listener and, when the user clicks the mouse, the \ttt{mouseClicked} method is invoked.
 
-\myexample{An amazing insight into the power of interfaces is already present in Java, but deriving it ourselves is useful. Consider the notion of first-class functions: the concept in which functions and data are equivalent, and we can pass functions around as arguments and return them from other functions. In Java, we can pass functions around as arguments, mimicing first-class functions, by designing a \emph{functional interface}.}
+\myexample{An amazing insight into the power of interfaces is already present in Java, but deriving it ourselves is useful.} 
+Consider the notion of first-class methods: the concept in which methods and data are equivalent, wherein both can be passed to and returned from methods. In Java, we can pass methods around as arguments, mimicing first-class methods, by designing a \emph{functional interface}.
 
-Let's design the generic \ttt{Function<T, V>} interface, which quantifies over two types \ttt{T}, representing the input type, and \ttt{V}, representing the output type. The \ttt{Function<T, V>} interface has a single static method, \ttt{apply}, that receives an argument of type \ttt{T} and returns a value of type \ttt{V}. We can then design a class that implements the \ttt{Function<T, V>} interface and provides an implementation of the \ttt{apply} method. We can then pass the class around as an argument to other methods, and invoke the \ttt{apply} method on the class to get the result of the function. An incredibly simple example is \ttt{AddOne}, which implements the \ttt{Function<Integer, Integer>} interface and adds one to its input. We make the constructor of the implementing class private to prevent any unnecessary instantiations; we only want to use the class as a first-class function rather than an object.
+Let's design the generic \ttt{Function<T, V>} interface, which quantifies over two types \ttt{T}, representing the input type, and \ttt{V}, representing the output type. 
+The \ttt{Function<T, V>} interface has a single static method, \ttt{apply}, which receives an argument of type \ttt{T} and returns a value of type \ttt{V}. 
+We can then design a class that implements the \ttt{Function<T, V>} interface and provides an implementation of the \ttt{apply} method. 
+Then, by passing the class around as an argument to other methods, we can invoke the \ttt{apply} method on the class to get the method result.
+An incredibly simple example is \ttt{AddOne}, which implements the \ttt{Function<Integer, Integer>} interface and adds one to its input. 
+We mark the constructor of the implementing class as private to prevent any unnecessary instantiations; the class itself should only ever be utilized as a first-class citizen rather than an object.
 
 \begin{lstlisting}[language=MyJava]
 interface Function<T, V> {
@@ -384,7 +410,11 @@ class AddOne implements Function<Integer, Integer> {
 }
 \end{lstlisting}
 
-So far, we have not demonstrated the potential of first-class functions in Java with our design. Suppose we have a list of \ttt{Integer} values $l=v_1, v_2, ..., v_n$ and a function $f$, and we want to apply $f$ to each element thereof. That is, we will create a new list $l'=f(v_1), f(v_2), ..., f(v_n)$. Normally, we would need to write a specific function for each function $f$, but by passing a functional interface, we can write a single method that receives this list and a function $f$ and applies $f$ to each element of the list. This operation, in general, is called \ttt{map}, which we saw during our discussion on streams!\footnote{Do not confuse this with the concept of a map/dictionary from our data structures/collections discussion.}
+So far, we have not demonstrated the potential of first-class methods in Java with our design. Suppose that~$l$ is a list of \ttt{Integer} values $v_1, v_2, ..., v_n$ and $f : \ttt{Integer} \to \ttt{Integer}$. 
+We want to apply~$f$ to each element of the list~$l$ and produce a new list that is the result of mapping~$f$ over~$l$. 
+That is, we will create a new list $l'=f(v_1), f(v_2), ..., f(v_n)$. 
+By passing a class that implements a functional interface, we can design a single method that receives a list and a function~$f$, rather than having to redundantly design several methods to work over multiple variants of~$f$. 
+This operation, in the functional programming domain, is called \ttt{map}, which we saw during our discussion on streams in Chapter~\ref{chapter-arrays-collections}.\footnote{Do not confuse this with the concept of a map/dictionary from our data structures/collections discussion.}
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -427,7 +457,11 @@ class FunctionMap {
 }
 \end{lstlisting}
 
-\myexample{Java 8 introduced the \ttt{Function} interface, so we do not have to design our own version. Using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can make use of method referencing via the \ttt{::} operator. Let's rewrite the \ttt{addOne} example doing so. We will also show off the fact that Java will auto-box and unbox an integer primitive into its \ttt{Integer} counterpart, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives instead, which are easier to work with. Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, because Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}}
+\myexample{Java 8 introduced the \ttt{Function} interface, so we do not have to design our own version.} 
+When using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can instead opt to use method referencing via the \ttt{::} operator. 
+Let's rewrite the \ttt{addOne} example doing so. 
+Concurrently, we will show off the fact that Java autoboxes and unboxes primitives into wrapper class counterparts in the functional interface, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives, which are easier to work with. 
+Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, since Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}
 
 %\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -456,7 +490,14 @@ class FunctionMapTester {
 }
 \end{lstlisting}
 
-\myexample{Now that we have interfaces, we can write a very simple expression tree interpreter! What do we mean by this? Consider the arithmatic expression $5 + (3 + 4)$. According to the standard order-of-operations, we evaluate the parenthesized sub-expressions first, then reduce outer expressions. So, in our case, we add $3$ and $4$ to get $7$, followed by an addition of $5$. We can represent this idea as an evaluation tree, where we travel from bottom-up, evaluating sub-expressions as they are encountered. How does this relate to interfaces? Suppose we create the \ttt{IExpr} interface, which contains a single method: \ttt{int value}, which returns the value of an expression.}
+\myexample{Now that we have interfaces, we can write a very simple expression tree interpreter!} 
+What do we mean by this? 
+Consider the arithmatic expression `$5 + (3 + 4)$'. 
+According to the standard order-of-operations, we evaluate the parenthesized sub-expressions first, then reduce outer expressions. 
+So, in our case, we add~$3$ and~$4$ to get~$7$, followed by an addition of~$5$. 
+We can represent this idea as an evaluation tree, where we travel from bottom-up, evaluating sub-expressions as they are encountered. 
+How does this idea relate to interfaces? 
+Suppose we create the \ttt{IExpr} interface, which contains a single method: \ttt{int value}, which returns the value of an expression.
 
 \begin{lstlisting}[language=MyJava]
 interface IExpr {
