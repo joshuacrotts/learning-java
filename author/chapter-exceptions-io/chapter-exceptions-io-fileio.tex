@@ -1,6 +1,7 @@
 \section{File I/O}
 
-Presumably this section discusses file input and output syntax and semantics. Although this is correct, we will also elaborate on reading data from different sources such as websites and even network connections through sockets. 
+Presumably this section discusses the syntax and semantics of file input and output. 
+Although this is correct, we will explain reading data from ``non-plain-text'' sources such as websites and network connections through sockets. 
 
 \subsection{Primitive I/O Classes}
 
@@ -34,11 +35,21 @@ class FileInputStreamExample {
 }
 \end{lstlisting}
 
-Recall that in the previous section we mentioned checked exceptions, and deferred the discussion until generalized input and output. Now that we are here, we can refresh our memory and actually put them to use. A checked exception\index{checked exception} is an exception enforced at compile-time.We emphasize the word enforced because the exception is not handled until runtime, but we must place the code that may throw the checked exception within a \ttt{try/catch} block, as we did with the file input stream example. Namely, the \ttt{FileInputStream} constructor is defined to potentially throw a \ttt{FileNotFoundException}, whereas its \ttt{read} method throws a generalized \ttt{IOException} if some kind of input error occurs. Since \ttt{FileNotFoundException} is a subclass/subexception type of \ttt{IOException}, we could omit the distinct catch clause for this exception. 
+Recall that in the previous section we mentioned checked exceptions, and deferred the discussion until generalized input and output. 
+Now that we are here, we can refresh our memory and actually put them to use. 
+A checked exception\index{checked exception} is an exception enforced at compile-time. 
+We emphasize the word ``enforced'' because the exception is not handled until runtime, but we must place the line(s) that possibly throws the checked exception within a \ttt{try/catch} block. 
+Namely, in the preceding code, the \ttt{FileInputStream} constructor is defined to potentially throw a \ttt{FileNotFoundException}, whereas its \ttt{read} method throws a generalized \ttt{IOException} if an input malfunction occurs. 
+Since \ttt{FileNotFoundException} is a subclass/subexception type of \ttt{IOException}, we could omit the distinct \ttt{catch} clause for this exception. 
 
-When reading from an input source that is not \ttt{System.in}, it is imperative to always close the stream resource. So, after we read the data from our file input stream object \ttt{fis}, inside the \ttt{finally} block, we should invoke \ttt{.close} on the instance, which releases the allocated system resources and deems the file no longer available.\footnote{We can check whether an input stream is available via the \ttt{.available} method.} Expanding upon the \ttt{finally} block a bit more, we will say that it is a segment of code that \emph{always} executes, no matter if the preceding code threw an exception. The finally block is useful for releasing resources, e.g,. opened input streams, that otherwise may not be released. Many programmers often forget to close a resource, and then are left to wonder why a file is either corrupted, overwritten, or some other alternative. To remediate this problem, we can use the \emph{try-with-resources} construct, which autocloses the resource.\footnote{Not every resource can be autoclosed; the class of interest must explicitly implement the \ttt{AutoCloseable} interface to be wrapped inside a try-with-resources block.}
+When reading from an input source that is not \ttt{System.in}, it is imperative to always close the stream resource.
+So, after we read the data from our file input stream object \ttt{fis}, inside the \ttt{finally} block, we invoke \ttt{.close} on the instance to release the allocated system resources and deem the file no longer available.\footnote{We can check whether an input stream is available via the \ttt{.available} method.} 
+Expanding upon the \ttt{finally} block a bit more, it is a segment of code that \emph{always} executes, no matter if the preceding code threw an exception. The finally block is useful for releasing resources, e.g., opened input streams, that otherwise may not be released in the event of an exception or program redirection. 
+Many programmers often forget to close a resource, and then are left to wonder why a file is either corrupted, overwritten, or some other alternative. 
+To remediate this problem, Java provides the \emph{try-with-resources} construct, which autocloses the resource.\footnote{Not every resource can be autoclosed; the class of interest must explicitly implement the \ttt{AutoCloseable} interface to be wrapped inside a try-with-resources block.}
 
-\myexample{Let's use the try-with-resources block to copy the contents of one file to another. In essence, we will write a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.}
+\myexample{Let's use the try-with-resources block to copy the contents of one file to another.} 
+In essence, we will write a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
@@ -59,10 +70,16 @@ class FileCopyExample {
 }
 \end{lstlisting}
 
-The file input and output stream classes read data as raw bytes from their source/destination streams. In most circumstances, we probably want to read characters from a data source or to a data destination. To do so, we can instead opt to use the \ttt{FileReader} class, which extends \ttt{Reader} rather than the \ttt{InputStream} class. Namely, \ttt{FileReader} is for reading text, whereas \ttt{FileInputStream} is for reading raw byte content of a file. Therefore a \ttt{FileReader} can read only textual files, i.e., files without an encoding, e.g., \ttt{.pdf}, \ttt{.docx}, and so forth.
+The file input/output stream classes receive/send data as raw bytes from their source/destination streams. 
+In most instances, we probably want to read \emph{characters} from a data source or to a data destination rather than the raw bytes themselves.
+To do so, we can instead opt to use the \ttt{FileReader} class, which extends \ttt{Reader} rather than the \ttt{InputStream} class. 
+Namely, \ttt{FileReader} is for reading textual data, whereas \ttt{FileInputStream} is for reading raw byte content of a file. 
+Therefore a \ttt{FileReader} can read only textual files, i.e., files without an encoding, examples include \ttt{.pdf}, \ttt{.docx}, and so forth.
 
-\myexample{Using \ttt{FileReader}, we will once again write an ``echo'' program, which reads data from its file source and outputs it to standard output. Of course, we may want to output data to a file, in which case we use the dual to \ttt{FileReader}, namely \ttt{FileWriter}. In summary, \ttt{FileWriter} provides several methods for writing strings and characters to a data destination. In this example we will also write some data to a test file, then examine its output based on the method invocations that we make.}
-
+\myexample{Using \ttt{FileReader}, we will once again write an ``echo'' program to read data from its file source and writes its contents to standard output.} 
+Of course, we may want to output data to a file, in which case we use the dual to \ttt{FileReader}, that being \ttt{FileWriter}. 
+In summary, \ttt{FileWriter} provides several methods for writing strings and characters to a data destination. 
+In the following example we will also write some data to a test file, then examine its output based on our choice of method invocations.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
@@ -91,9 +108,19 @@ class FileReaderWriterExamples {
 
 \end{lstlisting}
 
-If we open the \ttt{file2.out}, we see that it outputs \ttt{"Here is a string"} on one line, followed by \ttt{"Here is another string"} on the next line. Then, we might expect it to output the numeric strings \ttt{"9"}, \ttt{"71"}, and \ttt{"33"} all on the same line. The \ttt{write} method will coerce (valid) numbers into their ASCII character counterparts, meaning that the file contains the tab character, an uppercase \ttt{`G'}, and the exclamation point \ttt{`!'}. As we will soon demonstrate, working directly with \ttt{FileReader} and \ttt{FileWriter} is rarely advantageous. 
+If we open \ttt{file2.out}, we see that it contains \ttt{"Here is a string"} on one line, followed by \ttt{"Here is another string"} on the next line. 
+Then, we might expect it to output the numeric strings \ttt{"9"}, \ttt{"71"}, and \ttt{"33"} all on the same line. 
+The \ttt{write} method coerces (valid) integers into their ASCII character counterparts, meaning that the file contains the tab character, an uppercase \ttt{`G'}, and the exclamation point \ttt{`!'}. 
+As we will soon demonstrate, working directly with \ttt{FileReader} and \ttt{FileWriter} is rarely advantageous. 
 
-The problem with the file input and output stream classes, as well as the file reader and writer classes, is that they interact directly with the operating system using low-level operations. Constantly invoking these low-level operations is expensive on the CPU for various reasons, and these classes read/write byte-after-byte of data, which is horribly inefficient. The \ttt{BufferedReader} and \ttt{BufferedWriter} classes aim to alleviate this problem by instantiating buffers for data. Then, when the buffer is full, the data is flushed to either the source or destination. This way, the program makes fewer operating system-level calls, improving overall program performance. To read from a stream, as suggested, we use \ttt{BufferedReader}. Its constructor receives an instance of the \ttt{Reader} class, which may be one of several classes. For example, to read from a file, we wrap a \ttt{FileReader} inside the constructor of \ttt{BufferedReader}. Wrapping a \ttt{FileReader} inside a \ttt{BufferedReader} allows the buffered reader to interplay (using its optimization techniques) with the file reader, which in turn interacts with the operating system. To output data using buffered I/O, we use the analogous \ttt{BufferedWriter} class, which receives a \ttt{Writer} instance. 
+The problem with the file input and output stream classes, as well as the file reader and writer classes, is that they interact directly with the operating system using low-level operations. 
+Constantly calling these low-level operations is expensive on the CPU because they read individual bytes, sequentially, which is horribly inefficient. 
+The \ttt{BufferedReader} and \ttt{BufferedWriter} classes aim to alleviate this problem by utilizing data buffers. 
+A better approach is to read data in chunks, rather than byte-by-byte, to reduce the number of operating system-level calls.
+When the allocated buffer is full, the data within is flushed to either the source or destination. 
+By chunking the data in this manner, we reduce the number of times that the program interacts with the operating system, which consequently reduces the CPU overhead.
+To read from a stream using buffers, we use the \ttt{BufferedReader} class. Its constructor receives a \ttt{Reader} instance, which may be one of several classes. 
+For example, to read from a file, we provide a \ttt{FileReader} to the \ttt{BufferedReader} constructor. Wrapping a \ttt{FileReader} inside a \ttt{BufferedReader} allows the buffered reader to interplay (using its optimization techniques) with the file reader, which in turn interacts with the operating system. To output data using buffers, we use the analogous \ttt{BufferedWriter} class, which receives a \ttt{Writer} instance. 
 
 \begin{figure}[tp]
   \small

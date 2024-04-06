@@ -189,7 +189,7 @@ This is a common pattern when overriding methods: we want to reuse the functiona
 In this case, we want to move ten units forward, instead of one. 
 In order to invoke the superclass' \ttt{moveForward}, we prefix the method call with `\ttt{super.}', rather than `\ttt{this.}'. 
 Should we accidentally prefix the method call with `\ttt{this.}', we would be invoking the subclass definition of \ttt{moveForward}, resulting in an infinite loop!\footnote{Omitting `\ttt{this.}' still causes the method to infinitely loop, since not having the qualifier will cause Java to look in the current class definition.} 
-One could make the case and say that this is, in fact, a form of recursion, and indeed this is true, but it is nonsensical recursion because the outcome not only undesired but also never terminates.
+One could make the case and say that this is, in fact, a form of recursion, and indeed this is true, but it is nonsensical recursion because the outcome is not only undesired, but it also never terminates.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
