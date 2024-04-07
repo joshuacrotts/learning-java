@@ -496,8 +496,8 @@ Consider the arithmatic expression `$5 + (3 + 4)$'.
 According to the standard order-of-operations, we evaluate the parenthesized sub-expressions first, then reduce outer expressions. 
 So, in our case, we add~$3$ and~$4$ to get~$7$, followed by an addition of~$5$. 
 We can represent this idea as an evaluation tree, where we travel from bottom-up, evaluating sub-expressions as they are encountered. 
-How does this idea relate to interfaces? 
-Suppose we create the \ttt{IExpr} interface, which contains a single method: \ttt{int value}, which returns the value of an expression.
+How does the notion of evaluation trees relate to interfaces? 
+Suppose we create the \ttt{IExpr} interface, which encompasses the \ttt{int value} method to resolve to the value of an expression.
 
 \begin{lstlisting}[language=MyJava]
 interface IExpr {
@@ -509,7 +509,9 @@ interface IExpr {
 }
 \end{lstlisting}
 
-The simplest (atomic) values in our language are numbers, or literals as they are called. A \ttt{Lit} stores a single integer as an instance variable, and returns this instance variable upon a \ttt{value} invocation, which means \ttt{Lit} must implement the \ttt{IExpr} interface. Testing this class is trivial, so we will only write two tests.
+The simplest (atomic) values in our language are numbers, or numeric literals. 
+A \ttt{Lit} stores a single integer as an instance variable, and returns this instance variable upon a \ttt{value} invocation, which means \ttt{Lit} should implement the \ttt{IExpr} interface. 
+Testing this class is trivial, so we will only write two tests.
 
 %\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -539,7 +541,11 @@ class Lit implements IExpr {
 }
 \end{lstlisting}
 
-How do we add two numbers? Or, rather, how do we represent the addition of two numbers? This question comes through the answer to our question of representing literal values. Addition expressions store two \ttt{IExpr} expressions as instance variables, and (mutually) recursively calls their \ttt{value} methods, followed by a summation. Note the parallelism to how we do this when evaluating expressions either on paper or in our heads.
+How do we add two numbers? 
+Or, rather, how do we represent the addition of two (literal) numbers? 
+This question comes via the answer to our other question of representing literal values. 
+Additive expressions store two \ttt{IExpr} objects as instance variables, and (mutually) recursively calls their \ttt{value} methods, followed by a summation to those results. 
+Note the parallelism to how we do this when manually evaluating, say, parenthesized addition expressions.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -578,17 +584,31 @@ class Add implements IExpr {
 }
 \end{lstlisting}
 %\enlargethispage{1\baselineskip}
-Thus we have a programming language that interprets numbers and addition expressions! We could add more elements/operators to this language, and we encourage the readers to get creative.
+Thus, we now have a programming language that interprets numbers and addition expressions! 
+We could add more elements/operators to this language, and we encourage the readers to get creative.
 
-\myexample{Symbolic differentiators are programs that take a mathematical expression and compute its derivative, but non-numerically. That is, it examines and interprets the structure of the expression to calculate the derivative. In this example we will write a symbolic differentiator in Java using interfaces and classes. Note that you do not need any calculus knowledge to follow along.}
+\myexample{Symbolic differentiators are programs that take a mathematical expression and compute its derivative, but non-numerically.} 
+That is, symbolic differentiators examine and interpret the structure of an expression to calculate its derivative. 
+In this example, we will write a symbolic differentiator in Java using interfaces and classes. Note that you do not need any calculus knowledge to reasonably follow along and understand the high-level and pertinent object-oriented details.
 
-The formal definition of the derivative of a function is not a necessary detail to concern ourselves of; but in short, it measures the instantaneous rate-of-change at a given point of the function, i.e., the slope of the line tangent to the point. There are several rules for computing derivatives of functions, all of which are common exercises in an introductory calculus course. We want to be able to construct expressions in such a way that it is trivial to differentiate their components. As an example, the derivative of the expression $3x^2 - 16x + 100$ is $6x - 6$ due to specific rules that we will explain shortly. The idea, however, is that we have a large expression to find the derivative of, and by differentiating its subcomponents, we obtain the derivative of the larger. Let's see what all we need to do.
+The formal definition of the derivative of a function is not a necessary detail to concern ourselves of; but in short, it measures the instantaneous rate-of-change at a given point of the function, i.e., the slope of the line tangent to the point. 
+There are several rules for computing derivatives of functions, all of which are served as common exercises in an introductory calculus course. 
+We want to be able to construct expressions in such a way that it is trivial to differentiate their(sub-)components. 
+As an example, the derivative of the expression $3x^2 - 16x + 100$ is $6x - 6$ due to specific rules that we will explain shortly. 
+The idea, however, is that we have a large expression to find the derivative of, and by differentiating its sub-components, we obtain the derivative of the larger, similar to our arithmetic expression resolver. 
+Let's see what all we need to do.
 
-First, let's design the \ttt{Expression} interface, which contains one method to compute the derivative of an \ttt{Expression}: \ttt{Expression derivative(String v)}. Expressions in calculus are differentiated with respect to a given variable, e.g., $x$, so we need to pass that to any expression that we wish to differentiate. Now, any class that implements \ttt{Expression} must override \ttt{derivative}. 
+First, let's design the \ttt{Expression} interface, which houses one method, to compute the derivative of an \ttt{Expression}: \ttt{Expression derivative(String v)}. Any class that implements \ttt{Expression} must override \ttt{derivative}. 
+We differentiate expressions with respect to a given variable, e.g.,~$x$, so we need to pass that variable to any expression that we wish to differentiate. 
 
-Using some basic calculus derivative shortcuts/rules, we can easily think of two more types of expressions: constants (e.g., $3$, $0$, $27$) and monomials (e.g., $ax^n$ where $a, n$ are integers). So, let's design the \ttt{ConstantExpression} and \ttt{MonomialExpression} classes, the former of which has a constructor that receives a single integer $c$, whereas the latter stores the variable, the coefficient $a$, and finally the exponent $n$. To make working with these expressions easier, as well as ensuring testibility, we will override the \ttt{equals}, \ttt{hashCode}, and \ttt{toString} methods.
+Using some basic calculus derivative shortcuts/rules, we can easily think of two more types of expressions: numeric constants (e.g., $3$, $0$, $27$) and monomials (e.g., $ax^n$ where $a, n$ are integers). 
+So, let's design the \ttt{ConstantExpression} and \ttt{MonomialExpression} classes, the former of which has a constructor that receives a single integer~$c$, whereas the latter stores the variable~$v$, the coefficient~$a$, and finally the exponent~$n$. 
+To make working with these expressions easier, as well as ensuring testibility, we will override the \ttt{equals}, \ttt{hashCode}, and \ttt{toString} methods.
 
-The derivative of a constant $c$ is always zero, because the slope of a straight line, namely $f(x) = c$ is zero, i.e., non-changing. On the other hand, a monomial follows a different rule based off its coefficient and exponent: the derivative of $ax^n$ is $anx^{n-1}$ for any $n > 1$. If $n=1$, then this trivially becomes a constant. There is one more edge-case to consider: if the given variable $v$ does not match the variable of the monomial, then the derivative is zero since it is differentiating with respect to a free variable. 
+The derivative of a constant~$c$ is always zero, because the slope of a straight line, namely $f(x) = c$ is zero, i.e., non-changing. 
+On the other hand, a monomial follows a different rule based off its coefficient and exponent: the derivative of $ax^n$ is $anx^{n-1}$ for any $n > 1$. 
+If $n=1$, then this trivially becomes a constant. 
+There is one more edge-case to consider: if the given variable~$v$ does not match the variable of the monomial, then the derivative is zero because the monomial does not depend on the variable~$v$.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -716,7 +736,11 @@ class MonomialExpression implements Expression {
 }
 \end{lstlisting}
 
-Let's move into compositional expressions: expressions that contain expressions as instance variables. Such an example is an additive operator; the derivative of the expression $(f(x) + g(x))' = f'(x)~+~g'(x)$, where $f'$ is the derivative of $f$. In summary, the derivative of a sum is the sum of the derivatives of its operands. To represent sequential operands, e.g., $x + y + z + \cdots + w$, we will store the expressions in a list. Note that our symbolic differentiator neither simplifies expressions nor combines like terms.
+Let's move into compositional expressions, i.e., those that contain expressions as instance variables. 
+Such an example is an additive operator: the derivative of the expression $(f(x) + g(x))' = f'(x)~+~g'(x)$, where~$f'$ is the derivative of~$f$. 
+In summary, the derivative of a sum is the sum of the derivatives of its operands. 
+To represent sequential operands, e.g., $x + y + z + \cdots + w$, we will store the expressions in a list. 
+Note that our symbolic differentiator neither simplifies expressions nor combines like terms.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -805,7 +829,12 @@ class AddExpression implements Expression {
 }
 \end{lstlisting}
 
-\myexample{Let's clarify the distinction between the \ttt{Comparable} and \ttt{Comparator} interfaces.}Consider an \ttt{Employee} class, which stores an employee's first and last name, as well as their salary. Suppose we want to be able to compare instances of \ttt{Employee}. One option is to make \ttt{Employee} implement the \ttt{Comparable<Employee>} interface. This means that it must override the \ttt{public int compareTo(Employee e)} method. Suppose that our method will return the result of lexicographically comparing the employee's last name.
+\myexample{Let's clarify the distinction between the \ttt{Comparable} and \ttt{Comparator} interfaces.}
+Consider an \ttt{Employee} class, which stores an employee's first and last name, as well as their salary. 
+Suppose we want to be able to compare \ttt{Employee} instances. 
+One option to do so is to declare \ttt{Employee} to implement the \ttt{Comparable<Employee>} interface. 
+Therefore, \ttt{Employee} must override the \ttt{public int compareTo(Employee e)} method. 
+Further suppose that our method will return the result of lexicographically comparing the employee's last name.
 
 \begin{lstlisting}[language=MyJava]
 class Employee implements Comparable<Employee> {
@@ -863,13 +892,23 @@ class EmployeeTester {
 }
 \end{lstlisting}
 
-By default, \ttt{Collections.sort} will sort the given list using the object's \ttt{compareTo} method, which means that the employees will be sorted based on their last name. Note that this is an in-place sorting algorithm, meaning the given list is modified.
+By default, \ttt{Collections.sort} will sort the provided collection using the object's \ttt{compareTo} method. So, in this case, the employees are sorted based on their last name. Note that \ttt{Collections.sort} uses an in-place\index{in-place sorting} sorting algorithm, which means that the original list is modified.
 
-Now, suppose that we want to compare employees using a \emph{different} metric. For instance, what if we want to sort the employees based on their first name, or perhaps their salary? One approach would be to change how \ttt{compareTo} is implemented. The problem with this is that any code that relies on the last name ordering is now broken. Plus, it's possible that the \ttt{Employee} class is not accessible, meaning we could not change its implementation if we tried. 
+Now, suppose that we want to compare employees using a \emph{different} metric. 
+For instance, what if we want to sort the employees based on their first name, or perhaps their salary? 
+One approach would be to change how \ttt{compareTo} is implemented in the \ttt{Employee} class. 
+The problem with this is that any code that relies on the last name ordering is now broken. 
+Plus, it's possible that the source code of the \ttt{Employee} class is immutable, a commonality when working with third-party libraries or legacy codebases.
 
-The solution to this predicament is to use a \ttt{Comparator<Employee>}. Comparators, as their name suggests, compare instances of a class. The essential difference between a \ttt{Comparator} and \ttt{Comparable} is that the class of interest, e.g., \ttt{Employee}, should \emph{not} implement \ttt{Comparator}. Rather, we want to create a separate class that represents comparing \ttt{Employee} objects by a different metric.
-
-For example, in the following listing is a class \ttt{EmployeeFirstNameComparator}, which compares employees by their first name. Notice that the \ttt{Comparator} class provides the \ttt{compare} method instead of \ttt{compareTo}. Another difference is that \ttt{compare} receives two arguments rather than one because \ttt{compareTo} relies on \ttt{this} and its other argument to perform the comparison. That is, \ttt{compareTo} returns a comparison result based on \ttt{this} and its argument. By contrast, \ttt{compare} receives \emph{two} instances of the class of interest, and the returned value should be the result of comparing those two objects, however we wish.
+A solution to this predicament is to use a \ttt{Comparator} object. 
+Comparators, as their name suggests, compare instances of a class. 
+The essential difference between a \ttt{Comparator} and \ttt{Comparable} is that the class of interest, e.g., \ttt{Employee}, should \emph{not} implement \ttt{Comparator}. 
+Rather, we want to create a separate class that represents a comparison between \ttt{Employee} objects by an arbitrary metric. 
+For example, in the following listing is a class \ttt{EmployeeFirstNameComparator}, which compares employees by their first name. 
+Notice that the \ttt{Comparator} class provides the \ttt{public int compare(T o1, T o2)} method instead of \ttt{compareTo}. 
+Another difference is that \ttt{compare} receives two arguments rather than one, because \ttt{compareTo} relies on \ttt{this} and its other argument to perform the relevant comparison. 
+That is, \ttt{compareTo} returns a comparison result based on \ttt{this} and its argument. 
+By contrast, \ttt{compare} receives \emph{two} instances of the class of interest, and the returned value should be the result of however we choose to compare those two objects.
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
@@ -883,7 +922,7 @@ class EmployeeFirstNameComparator implements Comparator<Employee> {
 }
 \end{lstlisting}
 
-We can then pass an instance of this comparator as a second argument to the `Collections.sort` method:
+We can then pass an instance of this comparator as a second argument to the \ttt{Collections.sort} method:
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -909,7 +948,8 @@ class EmployeeTester {
 }
 \end{lstlisting}
 
-We can create another comparator for comparing employees based on their salaries. A lower salary indicates a lower index in the ordering relation.
+Let's create another comparator for comparing employees based on their salaries. 
+A lower salary indicates a lower index in the ordering relation.
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
@@ -918,7 +958,7 @@ class EmployeeSalaryComparator implements Comparator<Employee> {
 
   @Override
   public int compare(Employee o1, Employee o2) {
-    return Double.compare(o1.getSalary(), o2.getSalary());
+    return (int) Math.signum(o1.getSalary() - o2.getSalary());
   }
 }
 \end{lstlisting}
