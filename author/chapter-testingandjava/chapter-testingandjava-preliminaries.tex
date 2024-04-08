@@ -1,6 +1,7 @@
 \section{A First Glimpse at Java}
 
-It makes little sense to avoid the topic at hand, so let us jump right in and write a program! We have seen \emph{functions}\index{function} before, as well as some mathematics operations, perhaps in a different (language) context. 
+It makes little sense to avoid the topic at hand, so let's jump right in and write a program! 
+We have seen \emph{functions}\index{function} before, as well as some mathematics operations, perhaps in a different (language) context. 
 
 \myexample{Our program will consist of a function that converts a given temperature in Fahrenheit to Celsius.}
 
@@ -18,15 +19,24 @@ class TempConverter {
 }
 \end{lstlisting}
 
-All code, in Java, belongs to a \emph{class}\index{class}. Classes have much more complex and concrete definitions that we will investigate in due time, but for now, we may think of them as the homes of our functions. By the way, functions in Java are called \emph{methods}\index{method}.\footnote{The reasoning is simple: a method belongs to a class. Other programming languages, e.g., C++ or Python, do not restrict the programmer to writing code only within a class. Thus, there is a distinction between functions, which do not reside within a class, and methods.} Again, this slight terminology differentiation is not without its reasons, but for all intents and purposes, functions are methods and vice versa. The class we have defined in the previous listing is called \ttt{TempConverter}, giving rise to believe that the class does something related to temperature conversion.
+All code, in Java, belongs to a \emph{class}\index{class}. 
+Classes have much more complex and concrete definitions that we will investigate in due time, but for now, we may think of them as the homes of our functions. 
+By the way, functions in Java are called \emph{methods}\index{method}.\footnote{The reasoning is simple: a method belongs to a class. Other programming languages, e.g., C++ or Python, do not restrict the programmer to writing code only within a class. Thus, there is a distinction between functions, which do not reside within a class, and methods.} 
+Again, this slight terminology differentiation is not without its reasons, but for all intents and purposes, functions are methods and vice versa. 
+The class we have defined in the previous listing is called \ttt{TempConverter}, giving rise to believe that the class does something related to temperature conversion.
 
-We write the \ttt{fToC} method, whose \emph{return type}\index{return type} is a \ttt{double}, and has one \emph{parameter}\index{parameter}, which is also a \ttt{double}. A \ttt{double} is a floating-point value, meaning it potentially has decimals. For our method, this choice makes sense, because if we were to instead receive an \ttt{int}, we would not be able to convert temperatures such as \ttt{35.5} degrees Fahrenheit to Celsius. 
+We wrote the \ttt{fToC} method \emph{signature}\index{method signature}\index{signature}, whose \emph{return type}\index{return type} is a \ttt{double}, and has one \emph{parameter}\index{parameter}, which is also a \ttt{double}. 
+A \ttt{double} is a floating-point value, meaning it potentially has decimals. 
+For our method, this choice makes sense, because if we were to instead receive an integer \ttt{int}, we would not be able to convert temperatures such as \ttt{35.5} degrees Fahrenheit to Celsius. 
 
-The \ttt{static} keyword that we wrote has significance, but for now, consider it a series of six mandatory key presses (plus one for the space thereafter).
+The \ttt{static} keyword that we wrote also has significance, but for now, consider it a series of six mandatory key presses (plus one for the space thereafter).
 
 Above this method \emph{signature}\index{signature} is a Java documentation comment, providing a brief summary of the method's purpose, as well as the data it receives as parameters and its return value, should it be necessary. 
 
-Inside its method body lies a single \ttt{return}, in which we return \ttt{0.0}. Returning a value is what a \emph{method call}\index{method call}, or \emph{method invocation}\index{method invocation}, resolves to. For example, if we were to call \ttt{fToC} with any arbitrary \ttt{double} value, the call would be substituted with \ttt{0.0}. This is otherwise called \emph{method application}\index{method application}.
+Inside its \emph{body}\index{method body}\index{body} lies a single \ttt{return}, in which we return \ttt{0.0}. 
+The \emph{return value}\index{return value} is what a \emph{method call}\index{method call}, or \emph{method invocation}\index{method invocation}, resolves to. 
+For example, if we were to call \ttt{fToC} with any arbitrary \ttt{double} value, the call would be substituted with \ttt{0.0}. 
+Passing a value, or an \emph{argument}\index{argument}, to a method is sometimes called \emph{method application}\index{method application}.
 
 \begin{verbnobox}[\small]
 fToC(5)     -> 0.0
@@ -34,7 +44,11 @@ fToC(78)    -> 0.0
 fToC(-3123) -> 0.0
 \end{verbnobox}
 
-Of course, this method is meaningless without an implementation. We want to design \emph{test cases}\index{test cases} to ensure the method works as expected. Test cases verify the correctness (or incorrectness) of a method. We, as the readers, know how to convert a temperature from Fahrenheit to Celsius, but telling a computer to do such a conversion is not as obvious at first glance. To test our methods, we will use the \emph{JUnit} testing framework\index{JUnit}. To create a test for \ttt{fToC}, we will make a second class called \ttt{TempConverterTester} to house a single method: \ttt{testFToC}.
+Of course, the \ttt{fToC} method is meaningless without a complete implementation. 
+Before we write the rest of the method body, however, we should design \emph{test cases}\index{test cases} to ensure it works as expected. 
+Test cases verify the correctness (or incorrectness) of a method. 
+We, as the readers, know how to convert a temperature from Fahrenheit to Celsius, but telling a computer to do such a conversion is not as obvious at first glance. 
+To test our methods, we will use the \emph{JUnit} testing framework\index{JUnit}. Creating tests for \ttt{fToC} is straightforward; we will make a second class called \ttt{TempConverterTester} to house a single method: \ttt{testFToC}.
 
 \begin{lstlisting}[language=MyJava]
 class TempConverterTester {
@@ -47,9 +61,15 @@ class TempConverterTester {
 }
 \end{lstlisting}
 
-We want JUnit to recognize that \ttt{fToC} contains testing code, so we prepend the \ttt{@Test} annotation to the method signature. In its body, we call \ttt{Assertions\-.assertAll}, which receives a series of methods that are ran in succession. In our case, we want to assert that our \ttt{fahrToCel} method should return \ttt{0} degrees Celsius when given a temperature of \ttt{32} degrees Fahrenheit. The first parameter to \ttt{assertEquals} is the expected value of the test, i.e., what we want (and know) it to produce. The second parameter is the actual value of the test, i.e., what our code produces. 
+We want JUnit to recognize that \ttt{fToC} contains testing code, so we prepend the \ttt{@Test} annotation to the method signature. 
+In its body, we call \ttt{Assertions\-.assertAll}, which receives a series of methods that are ran in succession. 
+In our case, we want to assert that our \ttt{fToC} method should return \ttt{0} degrees Celsius when given a temperature of \ttt{32} degrees Fahrenheit. 
+The first parameter to \ttt{assertEquals} is the expected value of the test, i.e., what we want (and know) it to produce. 
+The second parameter is the actual value of the test, i.e., what our code produces. 
 
-When writing tests, it is important to consider \emph{edge cases}\index{edge case} and all possible branches of a method implementation. Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. So, let us add a few more test cases.\footnote{To condense our code, we exclude the \ttt{TempConverter} class name out of conciseness. On the other hand, we can omit the \ttt{Assertions} class name by importing the two methods as shown in the listing.}
+When writing tests, it is important to consider \emph{edge cases}\index{edge case} and all possible branches of a method implementation. 
+Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. 
+So, let us add a few more test cases.\footnote{To condense our code, we exclude the \ttt{TempConverter} class name out of conciseness. On the other hand, we can omit the \ttt{Assertions} class name by importing the two methods as shown in the listing.}
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
