@@ -75,51 +75,51 @@ void main() {
 
 Note that nameless classes (or the methods contained within) cannot be referenced from outside the definition of the class, nor can we write and execute JUnit tests. So, the utility of nameless classes is little, in our opinion.
 
-\subsection{String Templates and Interpolation}
+% \subsection{String Templates and Interpolation}
 
-Consider the following code, which instantiates an array of $512$ elements to contain random floating-point values between $[0, 512)$:
+% Consider the following code, which instantiates an array of $512$ elements to contain random floating-point values between $[0, 512)$:
 
-\begin{verbnobox}[\small]
-final int COUNT = 512;
-double[] arr = new double[COUNT];
-for (int i = 0; i < arr.length; i++) {
-  arr[i] = Math.random() * arr.length;
-}
-double total = Arrays.stream(arr).sum();
-double avg = total / arr.length;
-\end{verbnobox}
+% \begin{verbnobox}[\small]
+% final int COUNT = 512;
+% double[] arr = new double[COUNT];
+% for (int i = 0; i < arr.length; i++) {
+%   arr[i] = Math.random() * arr.length;
+% }
+% double total = Arrays.stream(arr).sum();
+% double avg = total / arr.length;
+% \end{verbnobox}
 
-Suppose that we want to output a message containing the total and average of the data in the \ttt{arr} array. There are a few ways that we could achieve this goal: (1) string concatenation, (2) string formatting.
+% Suppose that we want to output a message containing the total and average of the data in the \ttt{arr} array. There are a few ways that we could achieve this goal: (1) string concatenation, (2) string formatting.
 
-String concatenation is, of course, straightforward but means we cannot easily format the resulting output string. Plus, string concatenation is slow, requiring a new string for each concatenation operation.
+% String concatenation is, of course, straightforward but means we cannot easily format the resulting output string. Plus, string concatenation is slow, requiring a new string for each concatenation operation.
 
-\begin{verbnobox}[\small]
-String res = "The sum of " + COUNT + " rand nums is " + total + ". "
-             + "The avg is " + avg + ".";
-\end{verbnobox}
+% \begin{verbnobox}[\small]
+% String res = "The sum of " + COUNT + " rand nums is " + total + ". "
+%              + "The avg is " + avg + ".";
+% \end{verbnobox}
 
-On the other hand, let's see what we get through \ttt{String.format}, which composes one string with the provided data. The problem with this approach is that it requires knowing the format specifiers for arbitrary data (see the table from Chapter~\ref{chapter-testingandjava}).
+% On the other hand, let's see what we get through \ttt{String.format}, which composes one string with the provided data. The problem with this approach is that it requires knowing the format specifiers for arbitrary data (see the table from Chapter~\ref{chapter-testingandjava}).
 
-\begin{verbnobox}[\small]
-String res = String.format("The sum of %d rand nums is %lf. The avg is %lf.",
-                           COUNT, total, avg);
-\end{verbnobox}
+% \begin{verbnobox}[\small]
+% String res = String.format("The sum of %d rand nums is %lf. The avg is %lf.",
+%                            COUNT, total, avg);
+% \end{verbnobox}
 
-Other programming languages, e.g., Python, support \emph{string interpolation}, which is a technique to embed content directly in a string without the need for format specifiers and repetitive concatenation. We embed the variables in a special ``format string,'' which resolve at runtime to their values.
+% Other programming languages, e.g., Python, support \emph{string interpolation}, which is a technique to embed content directly in a string without the need for format specifiers and repetitive concatenation. We embed the variables in a special ``format string,'' which resolve at runtime to their values.
 
-Prior to JDK 22, Java provided no mechanism for string interpolation. Nowadays, however, Java has several avenues for supporting string interpolation via \emph{string templates}. To declare a string that uses string interpolation, we must use the \ttt{STR} constant. We follow this by a string literal that may or may not contain expressions that resolve to values. These expressions much be enclosed via \ttt{\textbackslash$\{\}$}. Let's see such an example.
+% Prior to JDK 22, Java provided no mechanism for string interpolation. Nowadays, however, Java has several avenues for supporting string interpolation via \emph{string templates}. To declare a string that uses string interpolation, we must use the \ttt{STR} constant. We follow this by a string literal that may or may not contain expressions that resolve to values. These expressions much be enclosed via \ttt{\textbackslash$\{\}$}. Let's see such an example.
 
-\begin{verbnobox}[\small]
-String res = 
-  STR."The sum of \{COUNT} rand nums is \{total}. The avg is \{avg}.";
-\end{verbnobox}
+% \begin{verbnobox}[\small]
+% String res = 
+%   STR."The sum of \{COUNT} rand nums is \{total}. The avg is \{avg}.";
+% \end{verbnobox}
 
-The resulting string stored in \ttt{res}, at runtime, contains the values in the variables \ttt{COUNT}, \ttt{total}, and \ttt{512}, where the latter two are indeterminate. Though, what if we want to round the floating-point variables to, say, two decimals? The \ttt{FMT} constant is here to save the day. It uses the same format specifiers as those for traditional string formatting, e.g., \ttt{\%d}, but can be integrated with string templates. Let's see an example; we will format the \ttt{total} and \ttt{average} variables to use two and four decimal places respectively. Moreover, this example causes the resulting string to be longer than our textbox allows. In other such circumstances where we might break the string literal manually and conjoin them with a concatenation operator, Java provides a solution to this as well. Three side-by-side double-quotes will parse all following lines as a string without the need to manually insert concatenation operations. Be aware, though, that doing so adds a newline character at the point of the break, which may or may not be desired.
+% The resulting string stored in \ttt{res}, at runtime, contains the values in the variables \ttt{COUNT}, \ttt{total}, and \ttt{512}, where the latter two are indeterminate. Though, what if we want to round the floating-point variables to, say, two decimals? The \ttt{FMT} constant is here to save the day. It uses the same format specifiers as those for traditional string formatting, e.g., \ttt{\%d}, but can be integrated with string templates. Let's see an example; we will format the \ttt{total} and \ttt{average} variables to use two and four decimal places respectively. Moreover, this example causes the resulting string to be longer than our textbox allows. In other such circumstances where we might break the string literal manually and conjoin them with a concatenation operator, Java provides a solution to this as well. Three side-by-side double-quotes will parse all following lines as a string without the need to manually insert concatenation operations. Be aware, though, that doing so adds a newline character at the point of the break, which may or may not be desired.
 
-\begin{verbnobox}[\small]
-String res = FMT."""
-  The sum of \{COUNT\} rand nums is %.2f\{total}.
-  The avg is %.4f\{avg}.
-  """
-\end{verbnobox}
+% \begin{verbnobox}[\small]
+% String res = FMT."""
+%   The sum of \{COUNT\} rand nums is %.2f\{total}.
+%   The avg is %.4f\{avg}.
+%   """
+% \end{verbnobox}
 

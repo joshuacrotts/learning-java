@@ -89,9 +89,11 @@ class TempConverterTester {
 }
 \end{lstlisting}
 
-Floating-point arithmetic can cause precision/rounding errors. So, as an optional third argument to \ttt{assertEquals}, we might provide a \emph{delta}\index{delta argument}, which allows for precision up to a certain amount to be accepted as a valid answer. For example, our tolerance for the fourth and fifth test cases is \ttt{0.01}, meaning that if our actual value is less than $\pm 0.01$ away from the expected value, the test case succeeds.
+Computers are, unfortunately, not perfect; floating-point operations may result in precision/rounding errors. 
+So, as an optional third argument to \ttt{assertEquals}, we can provide a \emph{delta}\index{delta argument}, which allows for precision up to a certain amount to be accepted as a valid answer. 
+For example, our tolerance for the fourth and fifth test cases is \ttt{0.01}, meaning that if our actual value is less than~$\pm 0.01$ away from the expected value, the test case succeeds.
 
-Now that we have copious amounts of tests, we can write our method definition. Of course, it is trivial to write.
+Now that we have copious amounts of tests, we can write our method definition. Of course, it is trivial and follows the well-known mathematical definition.
 
 \begin{lstlisting}[language=MyJava]
 class TempConverter {
@@ -107,9 +109,16 @@ class TempConverter {
 }
 \end{lstlisting}
 
-This definition brings up a few points about Java's type system. The primitive mathematics operations account for the types of its arguments. So, for instance, subtracting two integers will produce another integer. More noteworthy, perhaps, a division of two integers produces another integer, even if that result seems to be incorrect. Thus, \ttt{5 / 9} results in the integer \ttt{0}. If, however, we treat at least one of the operands as a floating-point value, we receive a correct result of approximately \ttt{0.555555}: \ttt{5.0 / 9}. Java by default uses the standard order of operations when evaluating mathematics expressions, so we force certain operations to occur first via parentheses.\footnote{By ``standard,'' we mean the widely-accepted paradigm of parentheses first, then exponents, followed by left-to-right multiplication/division, and finally left-to-right addition/subtraction.}
+The definition of \ttt{fToC} brings up a few points about Java's type system. 
+The primitive mathematics operations account for the types of its arguments. 
+So, for instance, subtracting two integers will produce another integer. 
+More noteworthy, perhaps, a division of two integers produces another integer, even if that result seems to be incorrect. 
+Thus, \ttt{5 / 9} results in the integer \ttt{0}. 
+If, however, we treat at least one of the operands as a floating-point value, we receive a correct result of approximately \ttt{0.555555}: \ttt{5.0 / 9}. 
+Java by default uses the standard order of operations when evaluating mathematics expressions, so we force certain operations to occur first via parentheses.\footnote{By ``standard,'' we mean the widely-accepted paradigm of parentheses first, then exponents, followed by left-to-right multiplication/division, and finally left-to-right addition/subtraction.}
 
-Unlike some programming languages that are \emph{dynamically-typed}, e.g., Scheme, Python, JavaScript, the Java programming language requires the programmer to specify the types of variables.\footnote{In Java 10, the \ttt{var} keyword was introduced, which automatically infers the type of a given expression.} Java has several default \emph{primitive datatypes}\index{primitive datatypes}, which are the simplest reducible form of a variable. Such types include \ttt{int}, \ttt{char}, \ttt{double}, \ttt{boolean}, and others. Integers, or \ttt{int}, are any positive or negative number without decimals. Doubles, or \ttt{double}, are values with decimals. Characters, or \ttt{char}, are a single character enclosed by single quotes, e.g., \ttt{\q{X}\q}. Finally, booleans, or \ttt{boolean}, are either \ttt{true} or \ttt{false}. There are other Java data types that specify varying levels of precision for given values. Integers are 32-bit signed values, meaning they have a range of $[-2^{31}, 2^{31})$. The \ttt{short} data type, on the contrary, is 16-bit signed. Beyond this is the \ttt{byte} data type that, as its name suggests, stores 8-bit signed integers. Floating-point values are more tricky, but while \ttt{double} uses 64 bits of precision, the \ttt{float} data type uses 32 bits of precision.
+Unlike some programming languages that are \emph{dynamically-typed}, e.g., Scheme, Python, JavaScript, the Java programming language requires the programmer to specify the types of variables~\citep[Chapter~5]{copl}.\footnote{In Java 10, the \ttt{var} keyword was introduced, which automatically infers the type of a given expression~\citep[Chapter~14]{java}.} 
+Java has several default \emph{primitive datatypes}\index{primitive datatypes}, which are the simplest reducible form of a variable. Such types include \ttt{int}, \ttt{char}, \ttt{double}, \ttt{boolean}, and others. Integers, or \ttt{int}, are any positive or negative number without decimals. Doubles, or \ttt{double}, are values with decimals. Characters, or \ttt{char}, are a single character enclosed by single quotes, e.g., \ttt{\q{X}\q}. Finally, booleans, or \ttt{boolean}, are either \ttt{true} or \ttt{false}. There are other Java data types that specify varying levels of precision for given values. Integers are 32-bit signed values, meaning they have a range of $[-2^{31}, 2^{31})$. The \ttt{short} data type, on the contrary, is 16-bit signed. Beyond this is the \ttt{byte} data type that, as its name suggests, stores 8-bit signed integers. Floating-point values are more tricky, but while \ttt{double} uses 64 bits of precision, the \ttt{float} data type uses 32 bits of precision.
 
 \myexample{Let us write a method that receives two three-dimensional vectors and returns the distance between the two. We can, effectively, think of this as the distance between two points in a three-dimensional plane. Therefore because each vector contains three components, we need six parameters, where each triplet represents the vectors $v_1$ and $v_2$.}
 

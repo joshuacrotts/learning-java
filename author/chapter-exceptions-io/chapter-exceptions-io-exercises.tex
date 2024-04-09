@@ -194,7 +194,7 @@ Charlie
 
     We can use a backtracking algorithm to solve this problem: start at a cell and mark it as visited. Then, recursively try to move to each of its neighbors, marking the path with a \ttt{`*'} character. If you reach the maze exit, then return \ttt{true}. Otherwise, backtrack and try another path. By ``backtrack,'' we mean that you should remove the \ttt{`*'} character from the path. If you have tried all possible paths from a cell and none of them lead to the exit, then return \ttt{false}. We provide a skeleton of the class below.
 
-    \item \ttt{void output(String fileName, char[][] soln)} outputs the given solution to the maze to a file specified by the parameter. Refer to the above descriptoin for the format of the output file and the input \ttt{char[][]} solution.
+    \item \ttt{void output(String fileName, char[][] soln)} outputs the given solution to the maze to a file specified by the parameter. Refer to the above description for the format of the output file and the input \ttt{char[][]} solution.
 
 \begin{lstlisting}[language=MyJava]
 class MazeSolver {
@@ -226,7 +226,7 @@ class MazeSolver {
    */
   private boolean solveHelper(int r, int c, char[][] sol) { 
     /* TODO. */ 
-}
+  }
 }
 \end{lstlisting}
 \end{enumerate}
