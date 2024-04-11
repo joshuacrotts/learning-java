@@ -126,7 +126,7 @@ In the average case, we land somewhere in the middle of finding the element imme
 In the worst-case, the list is in reversed order. So, we must insert each element in the correct position, with respect to every other element. Therefore we are upper and lower-bounded by $\mathcal{O}(n^2)$ and $\Omega(n^2)$ respectively.
 
 \subsection{Formalizing Big-Oh, Big-Omega, and Theta}
-We have described the Big-Oh, Big-Omega, and Theta notations informally. When proving the asymptotic bounds of a mathematical function, we often need a formal proof thereof. We will now describe the formalism of these notations.
+We have informally introduced Big-Oh, Big-Omega, and Theta notations. For proving a mathematical function's asymptotic bounds, a formal demonstration is essential. In the following subsections, we will outline these important demonstrations.
 
 \subsubsection*{Big-Oh}
 A function $f(n) = \mathcal{O}(g(n))$ if there exists a constant $c > 0$ and a point $n_0$ such that $f(n) \leq cg(n)$ for every $n$ greater than or equal to $n_0$. Interestingly, we can describe all three notations in terms of limits. We can say that $f(n) = \mathcal{O}(g(n))$ if $\lim_{n \to \infty} \frac{f(n)}{g(n)} < \infty$. Unfortunately there is no hard-and-fast rule to apply when finding the $c$ and $n_0$ constants. What is convenient about it, however, is that multiple solutions may work, hence the existential quantifiers in the equality definition.

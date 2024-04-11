@@ -49,3 +49,12 @@
 
 % Hyphenate tt font
 \DeclareFontFamily{OT1}{cmtt}{\hyphenchar \font=-1}
+
+\let\oldfrac\frac% Store \frac
+\renewcommand{\frac}[2]{%
+  \mathchoice
+    {\oldfrac{#1}{#2}}% display style
+    {#1/#2}% text style
+    {#1/#2}% script style
+    {#1/#2}% script-script style
+}

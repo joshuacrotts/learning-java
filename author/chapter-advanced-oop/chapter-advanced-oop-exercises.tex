@@ -71,7 +71,7 @@ class FactorialLazyList implements ILazyList<Integer> {
   }
 
   @Override
-  public int next() {
+  public Integer next() {
     this.fact *= this.n;
     this.n++;
     return this.fact;
@@ -383,7 +383,7 @@ Second, design the \ttt{TailCallUtils} final class to contain a private construc
 
 Finally, run the factorial test that we provided earlier in its JUnit suite. It should pass and not stack overflow, hence the inclusion of an \ttt{assertDoesNotThrow} call.
 
-\myexercise{3}{chapter-arrays-collections}{Recall the unification exercise from Chapter~\ref{chapter-arrays-collections}. We can take the idea of unification a step further, which is the basis for almost all logic programming languages such as Prolog. For instance, take the expression \ttt{p(X, f(Y))}; attempting to unify this with \ttt{p(q(r(x)), f(b(x)))} returns a unification assignment of \ttt{X : q(r(x)), Y : b(x)}. It is possible for a unification to not return any possible assignment. As an example, unifying \ttt{p(a, b)} with \ttt{p(Y, Y)} returns an empty assignment because it is not possible to unify \ttt{a} with \ttt{Y}, then unify \ttt{b} with \ttt{Y}.}
+\myexercise{3}{chapter-advanced-oop-collections}{Recall the unification exercise from Chapter~\ref{chapter-arrays-collections}. We can take the idea of unification a step further, which is the basis for almost all logic programming languages such as Prolog. For instance, take the expression \ttt{p(X, f(Y))}; attempting to unify this with \ttt{p(q(r(x)), f(b(x)))} returns a unification assignment of \ttt{X : q(r(x)), Y : b(x)}. It is possible for a unification to not return any possible assignment. As an example, unifying \ttt{p(a, b)} with \ttt{p(Y, Y)} returns an empty assignment because it is not possible to unify \ttt{a} with \ttt{Y}, then unify \ttt{b} with \ttt{Y}.}
 
 Design three classes: \ttt{Variable}, \ttt{Constant}, and \ttt{Predicate}. Each of these should implement the \ttt{IUnifiable} interface, which supplies one method: \ttt{Assignment unify(IUnifiable u, Assignment as)}. An \ttt{Assignment} is simply a mapping of \ttt{IUnifiable} objects to \ttt{IUnifiable} objects, resembling a map data structure. Variables in this small language will be represented as uppercased letters, whereas constants are lowercase. If two \ttt{IUnifiable} objects cannot be unified, then \ttt{unify} should return \ttt{null}.
 

@@ -26,8 +26,16 @@
 \usepackage{array}
 \usepackage{url}
 \usepackage{natbib}
-\usepackage[colorlinks=true, citecolor=purple]{hyperref}
+\usepackage{hyperref}
 \usepackage[nottoc,numbib]{tocbibind}
+\hypersetup{
+  hidelinks,
+  urlcolor=black,
+  colorlinks=true,    % Enables coloring of links
+  citecolor=purple,   % Sets color for citations
+  linkcolor=black,    % Sets color for internal links like \ref (default to black, which appears as standard text)
+}
+
 
 % typesetting
 \usepackage{pdfpages}
