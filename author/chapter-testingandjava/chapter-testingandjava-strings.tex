@@ -1,6 +1,13 @@
 \section{Strings}
 
-\emph{Strings}, as you might recall, are a sequence of characters. Characters, of course, are enclosed by single quotes, e.g., \ttt{\q{}x\q{}}. A Java \ttt{String} is enclosed by double quotes. e.g., \ttt{"Hello!"}. Strings may contain any number of characters and any kind of character, including no characters at all or only a single character. There is an apparent distinction between \ttt{\q{}x\q{}} and \ttt{"x"}: the former is a \ttt{char} and the latter is a \ttt{String}. Note the capitalization on the word \ttt{String}; the case sensitivity is important, because \ttt{String} is not one of the primitive datatypes that we described in the previous section. Rather, it is a sequence of \ttt{char} values combined together ``under-the-hood,'' so to speak. We can declare a \ttt{String} as a variable using the keyword combined with a variable name, just as we might for primitives. 
+\emph{Strings}, as you might recall from another programming language, are sequences of characters. 
+Characters are enclosed by single quotes, e.g., \ttt{\q{}x\q{}}. 
+A Java \ttt{String} is enclosed by double quotes. e.g., \ttt{"Hello!"}. 
+Strings may contain any number of characters and any kind of character, including no characters at all or only a single character. 
+There is an apparent distinction between \ttt{\q{}x\q{}} and \ttt{"x"}: the former is a \ttt{char} and the latter is a \ttt{String}. 
+Note the capitalization on the word \ttt{String}; the case sensitivity is important, because \ttt{String} is not one of the primitive datatypes that we described in the previous section. 
+Rather, it is a sequence of \ttt{char} values coalesed into one value ``under-the-hood,'' so to speak. 
+We can declare a \ttt{String} as a variable using the keyword combined with a variable name, just as we do for primitives. 
 
 \begin{lstlisting}[language=MyJava]
 class NewStringTests {
@@ -17,32 +24,41 @@ class NewStringTests {
   %\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
     \small
     \begin{tcolorbox}[title=String Class]
-      A \emph{string}\index{string} is an immutable sequence of characters. Strings are indexed from $0$ to $|S|-1$, where $|S|$ is the number of characters of $S$.
+      A \emph{string}\index{string} is an immutable sequence of characters. Strings are indexed from~$0$ to~$|S|-1$, where~$|S|$ is the number of characters of~$S$.
       \vspace{2ex}
     \begin{description}
-      \item[\ttt{$S_1$ + $S_2$}] adds the characters from $S_2$ onto the end of $S_1$, producing a new string.
-      \item[\ttt{int $S$.length()}] returns the number of characters in $S$.
-      \item[\ttt{char $S$.charAt($i$)}] retrieves the $(i + 1)^\text{th}$ character in $S$. We can also say that this retrieves the character at index $i$ of $S$.
-      \item[\ttt{String $S$.substring($i$, $j$)}] returns a new string containing the characters from index $i$, inclusive, to index $j$, exclusive. The number of extracted characters is $j - i$. We will use the notation $S' \sqsubseteq S$ to denote that $S'$ is a substring of $S$.
-      \item[\ttt{String $S$.substring($i$)}] returns a new string from index $i$ to the end of $S$.
-      \item[\ttt{int $S$.indexOf($S'$)}] returns the index of the first instance of $S'$ in $S$, or $-1$ if $S' \not\sqsubseteq S$.
-      \item[\ttt{boolean $S$.contains($S'$)}] returns \ttt{true} if $S' \sqsubseteq S$; \ttt{false} otherwise.
-      \item[\ttt{String $S$.repeat($n$)}] returns a new string containing $n$ copies of $S$.
-      \item[\ttt{String String.valueOf($v$)}] returns a stringified version of $v$, where $v$ is some primitive value.
-      \item[\ttt{int Integer.parseInt($S$)}] returns the integer representation of a string $S$, if it can be parsed as such.
+      \item[\ttt{$S_1$ + $S_2$}] adds the characters from~$S_2$ onto the end of~$S_1$, producing a new string.
+      \item[\ttt{int $S$.length()}] returns the number of characters in~$S$.
+      \item[\ttt{char $S$.charAt($i$)}] retrieves the $(i + 1)^\text{th}$ character in~$S$. We can also say that this retrieves the character at index~$i$ of~$S$.
+      \item[\ttt{String $S$.substring($i$, $j$)}] returns a new string containing the characters from index~$i$, inclusive, to index~$j$, exclusive. The number of extracted characters is $j - i$. We will use the notation $S' \sqsubseteq S$ to denote that~$S'$ is a substring of~$S$.
+      \item[\ttt{String $S$.substring($i$)}] returns a new string from index~$i$ to the end of~$S$.
+      \item[\ttt{int $S$.indexOf($S'$)}] returns the index of the first instance of~$S'$ in~$S$, or~$-1$ if $S' \not\sqsubseteq S$.
+      \item[\ttt{boolean $S$.contains($S'$)}] returns \ttt{true} if~$S' \sqsubseteq S$; \ttt{false} otherwise.
+      \item[\ttt{String $S$.repeat($n$)}] returns a new string containing~$n$ copies of~$S$.
+      \item[\ttt{String String.valueOf($v$)}] returns a stringified version of~$v$, where~$v$ is some primitive value.
+      \item[\ttt{int Integer.parseInt($S$)}] returns the integer representation of a string~$S$ if it can be parsed as such.
     \end{description}
   \end{tcolorbox}
     \caption{Useful String Methods.}
     \label{fig:strings}
   \end{figure}
 
-We can conjoin, or \emph{concatenate}\index{concatenation}, strings together with the \ttt{+} operator. Concatenating one string $s_2$ onto the end of another string $s_1$ creates a new string $s_3$, copies the characters from $s_1$ as well as the characters from $s_2$, in that order. 
+We can conjoin, or \emph{concatenate}\index{concatenation}\index{concatenate}, strings together with the \ttt{+} operator. 
+Concatenating one string~$s_2$ onto the end of another string~$s_1$ creates a new string~$s_3$ by copying the characters from~$s_1$ and~$s_2$, in that order. 
 
-Figure~\ref{fig:strings} states that strings are immutable, so how can we possibly combine them without altering one or the other? When concatenating strings, Java creates a new string that is the result of the concatenation, leaving the two untouched.\footnote{Hence, a series of repeated concatenations is inefficient. The performance implications of this are addressed in a subsequent chapter.}
+Figure~\ref{fig:strings} states that strings are immutable, so how can we possibly combine them without altering one or the other? 
+When concatenating two strings~$s_1$ and~$s_2$, Java creates a new string that is the result of the concatenation, leaving~$s_1$ and~$s_2$ unaltered.\footnote{Hence, a series of repeated string concatenations is inefficient. The performance implications of this are addressed in a subsequent chapter.}
 
-To retrieve the number of characters in a string, invoke \ttt{.length} on the string. Note that the empty string has length zero, and spaces count towards the length of a string, since spaces are characters. For instance, the length of \ttt{"  a  "} is five because there are two spaces, followed by a lowercase `\ttt{a}', followed by two more spaces.
+To retrieve the number of characters in a string, invoke \ttt{.length} on the string. 
+The empty string has length zero, and spaces/whitespace characters count towards the length of a string, since spaces \emph{are} characters. 
+For instance, the length of \ttt{"  a  "} is five because there are two spaces, followed by a lowercase \ttt{'a'}, followed by two more spaces.
 
-Comparing strings for equality seems straightforward: we can use \ttt{==} to compare one string versus another. Doing this is a common beginner pitfall! Strings are \emph{objects} and cannot be compared for value-equality using the \ttt{==} operator. Introducing this term ``value-equality'' insinuates that strings can, in fact, be compared using \ttt{==}, which is theoretically correct. The problem is that the result of this comparison only compares the memory addresses of the strings. In other words, \ttt{$s_1$ == $s_2$} returns whether the two strings reference, or point to, the same string in memory. 
+Comparing strings for equality seems straightforward: we can use \ttt{==} to compare one string versus another. 
+Using \ttt{==} for determining string equality is a common Java beginner pitfall! 
+Strings are \emph{objects} and cannot be compared for value-equality using the \ttt{==} operator. 
+Introducing this term ``value-equality'' insinuates that strings can, in fact, be compared using \ttt{==}, which is theoretically correct. 
+The problem is that the result of a comparison using \ttt{==} compares the memory addresses of the strings. 
+In other words, \ttt{$s_1$ == $s_2$} returns whether the two strings reference, or point to, the same string in memory. 
  
 \begin{lstlisting}[language=MyJava]
 class NewStringTests {
@@ -55,7 +71,15 @@ class NewStringTests {
 }
 \end{lstlisting}
 
-In the above code snippet we declare $s_1$ as the \emph{string literal}\index{string literal} \ttt{"Hello"}, then initialize $s_2$ to point to $s_1$. So there are, in effect, two pointers to the string literal \ttt{"Hello"}. Let us try something a little more tricky: suppose we declare three strings, where $s_1$ is the same as before, $s_2$ is the string literal \ttt{"Hello"}, and $s_3$ is the string literal \ttt{"World"}. Comparing $s_1$ to $s_2$, strangely enough, also outputs true, but why? It seems that $s_1$ and $s_2$ reference different string literals, even though they contain the same characters. Indeed, this is the case, but Java performs an optimization called \emph{string pool caching}\index{string pool cache}. That is, if two strings \emph{are} the same string literal, it makes little sense for them to point to two distinct references entirely because strings are immutable. Therefore, Java optimizes these into references to a single allocated string literal. Comparing $s_1$ or $s_2$ with $s_3$ outputs false, which is the anticipated result.
+In the above code snippet we declare~$s_1$ as the \emph{string literal}\index{string literal} \ttt{"Hello"}, then initialize~$s_2$ to point to~$s_1$. 
+So there are, in effect, two references to the string literal~\ttt{"Hello"}. 
+Let's try something a little more tricky: suppose we declare three strings, where~$s_1$ is the same as before,~$s_2$ is the string literal \ttt{"Hello"}, and~$s_3$ is the string literal \ttt{"World"}. 
+Comparing~$s_1$ to~$s_2$, strangely enough, also outputs true, but why? 
+It seems that~$s_1$ and~$s_2$ reference different string literals, even though they contain the same characters. 
+Indeed, the latter is obviously the case, but Java performs an optimization called \emph{string pool caching}\index{string pool cache}. 
+That is, if two strings \emph{are} the same string literal, it makes little sense for them to point to two distinct references, entirely because strings are immutable. 
+Therefore, Java optimizes these references to point to a single allocated string literal. 
+Comparing~$s_1$ or~$s_2$ with~$s_3$ outputs false, which is the anticipated result.
 
 \begin{lstlisting}[language=MyJava]
 class NewStringTests {
@@ -70,7 +94,14 @@ class NewStringTests {
 }
 \end{lstlisting}
 
-If we want to circumvent Java's string caching capabilities, we need a way of \emph{instantiating} a new string for our variables to reference. We use the power of \ttt{new String} to create a brand new, non-cached string reference. We treat this as a method, of sorts, called the \emph{object constructor}. We will revisit constructors in our discussion on objects and classes, but for now, consider it a method for creating a distinct \ttt{String} instance. This method is \emph{overloaded} to receive either zero or one parameter. The latter implementation receives a \ttt{String}, which is copied into the new \ttt{String} instance. If we pass a string literal to the constructor, it copies the characters \emph{from} the literal into the new string. At this point, the only possible object to be equal to $s_1$ is $s_1$ itself or another string that points to its value.
+If we want, for some reason, to circumvent Java's string caching capabilities, we need a way of \emph{instantiating}\index{instantiation} a new string for our variables to reference. 
+We use the power of \ttt{new String} to create a brand new, non-cached string reference. 
+We treat this as a method, of sorts, called the \emph{object constructor}\index{constructor}. 
+In Chapter~\ref{chapter-classes}, we will reintroduce constructors in our discussion on objects and classes, but for now, consider it (namely \ttt{new String}) as a method for creating distinct \ttt{String} instances. 
+This method is \emph{overloaded}\index{method overloading} to receive either zero or one parameter. 
+The latter implementation receives a \ttt{String}, whose characters are copied into the new \ttt{String} instance. 
+If we pass a string literal to the constructor, it copies the characters \emph{from} the literal into the new string. 
+At this point, the only possible object to be equal to~$s_1$ is~$s_1$ itself or another string that points to its value.
 
 \begin{lstlisting}[language=MyJava]
 class NewStringTests {
@@ -88,7 +119,11 @@ class NewStringTests {
 }
 \end{lstlisting}
 
-Now, what if we want to compare strings for their content, i.e., their characters? The \ttt{String} class provides a handy \ttt{equals} method that we invoke on instances of strings. Two strings $s_1$ and $s_2$ are equal if they are \emph{lexicographically equal}. In essence, this is a long and scary word to represent the concept of ``containing the same characters.'' Lexicographical comparisons are case-sensitive, meaning that uppercase and lowercase letters are different according to Java.
+Now, what if we want to compare strings for their content, i.e., their characters? 
+The \ttt{String} class provides a handy \ttt{equals} method that we invoke on instances of strings. 
+Two strings~$s_1$ and~$s_2$ are equal if they are \emph{lexicographically equal}. 
+In essence, this is a long and scary word to represent the concept of ``containing the same characters.'' 
+Lexicographical comparisons are case-sensitive, meaning that uppercase and lowercase letters are report an unequal comparison.
 
 \begin{lstlisting}[language=MyJava]
 class StringLexicographicallyEqual {
@@ -103,7 +138,8 @@ class StringLexicographicallyEqual {
 }
 \end{lstlisting}
 
-Let us veer into the discussion on the lexicographical ordering of strings. Like numbers, strings are comparable and can be, e.g., ``less than'' another. According to Java, one string is less than another if it is lexicographically less than another, and this idea extends to all comparison operators aside from equality. Memorizing the string ordering rules is cumbersome, so we propose the S.N.U.L. acronym. In general, special characters (S) are less than numbers (N), which are less than uppercase characters (U), which are less than lowercase characters (L). For a full description with the exceptions to our generalization, view an ASCII table, which provides the numerical equivalents of all standard American keyboard characters. 
+Let's veer into the discussion on the lexicographical ordering of strings. 
+Like numbers, strings are comparable and can be, e.g., ``less than'' another. According to Java, one string is less than another if it is lexicographically less than another, and this idea extends to all comparison operators aside from equality. Memorizing the string ordering rules is cumbersome, so we propose the S.N.U.L. acronym. In general, special characters (S) are less than numbers (N), which are less than uppercase characters (U), which are less than lowercase characters (L). For a full description with the exceptions to our generalization, view an ASCII table, which provides the numerical equivalents of all standard American keyboard characters. 
 
 \myexample{Java returns the distance between the first non-equal characters in a string using \ttt{compareTo}. For instance, \ttt{"hello".compareTo("hi")} returns \ttt{-4} because the distance from the first non-equal characters, those being \ttt{'e'} and \ttt{'i'}, is minus four characters, since \ttt{'i'} is greater than \ttt{'e'}. If we compare \ttt{"hello"} against \ttt{"Hello"}, we get \ttt{32}, because according to the ASCII table, \ttt{'h'} corresponds to the integer $104$, and \ttt{'H'} corresponds to the integer $72$, and their difference is $104 - 72$. Of course, comparing \ttt{"hello"} against \ttt{"hello"} produces zero, indicating that they contain the same characters.}
 

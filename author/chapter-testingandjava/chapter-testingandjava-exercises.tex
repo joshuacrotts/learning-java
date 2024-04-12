@@ -68,19 +68,19 @@ Z = \dfrac{x - \mu}{\sigma}
 \log_b(n) = \dfrac{\log_{b'}(n)}{\log_{b'}(b)}
 \]
 
-\myexercise{1}{chapter-testingandjava}{Design the \ttt{double pdf(double mean, double stddev, double x)} that calculates the probability density of a given value $x$ in a normal distribution with mean $\mu$ and standard deviation $\sigma$. The formula for the probability density function (PDF) of a normal distribution is as follows:}
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double pdf(double mean, double stddev, double x)} that calculates the probability density of a given value~$x$ in a normal distribution with mean~$\mu$ and standard deviation~$\sigma$. The formula for the probability density function (PDF) of a normal distribution is as follows:}
 
 \[
 f(x) = \dfrac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}    
 \]
 
-\myexercise{1}{chapter-testingandjava}{Design the \ttt{double lawOfCosines(double a, double b, double theta)} method that, when given two side lengths of a triangle $a, b$ and the angle between those two sides $\theta$ in degrees, returns the length of the third side $c$. The formula, which is the law of cosines, is listed below. Hint: \ttt{Math.cos} receives a value in radians; we can convert a value from degrees to radians using \ttt{Math.toRadians}.}
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double lawOfCosines(double a, double b, double theta)} method that, when given two side lengths of a triangle~$a, b$ and the angle between those two sides~$\theta$ in degrees, returns the length of the third side~$c$. The formula, which is the law of cosines, is listed below. Hint: \ttt{Math.cos} receives a value in radians; we can convert a value from degrees to radians using \ttt{Math.toRadians}.}
 
 \[
 c = \sqrt{a^2+b^2-2ab\cos{\theta}}    
 \]
 
-\myexercise{1}{chapter-testingandjava}{Design the \ttt{double angle(double a, double b, double c)} method that, when given three side lengths of a triangle $a$, $b$, and $c$, returns the angle $\theta$ opposite to that of $c$ in degrees. The formula for this computation is listed below. Hint: arccosine in Java is \ttt{Math.acos}.}
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double angle(double a, double b, double c)} method that, when given three side lengths of a triangle~$a$,~$b$, and~$c$, returns the angle $\theta$ opposite to that of~$c$ in degrees. The formula for this computation is listed below. Hint: arccosine in Java is \ttt{Math.acos}.}
 
 \[
 \theta = \cos^{-1}\left(\dfrac{a^2+b^2-c^2}{2ab}\right)  
