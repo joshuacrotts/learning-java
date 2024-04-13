@@ -139,19 +139,39 @@ class StringLexicographicallyEqual {
 \end{lstlisting}
 
 Let's veer into the discussion on the lexicographical ordering of strings. 
-Like numbers, strings are comparable and can be, e.g., ``less than'' another. According to Java, one string is less than another if it is lexicographically less than another, and this idea extends to all comparison operators aside from equality. Memorizing the string ordering rules is cumbersome, so we propose the S.N.U.L. acronym. In general, special characters (S) are less than numbers (N), which are less than uppercase characters (U), which are less than lowercase characters (L). For a full description with the exceptions to our generalization, view an ASCII table, which provides the numerical equivalents of all standard American keyboard characters. 
+Like numbers, strings are comparable and can be, e.g., ``less than'' another. 
+According to Java (as well as most other programming languages), one string is less than another if it is lexicographically less than another, and this idea extends to all (string) comparison operations; not just equality. 
+Memorizing the string ordering rules is cumbersome, so we propose the S.N.U.L. acronym. 
+In general, special characters (S) are less than numbers (N), which are less than uppercase characters (U), which are less than lowercase characters (L).\footnote{We say ``in general'' because certain characters that we might view as special, e.g., \ttt{'@'}, have a larger numeric value than numbers, e.g., \ttt{'2'}.} 
+For a full description with the exceptions to our generalization, view an ASCII table, which provides the numerical equivalents of all standard American keyboard characters. 
 
-\myexample{Java returns the distance between the first non-equal characters in a string using \ttt{compareTo}. For instance, \ttt{"hello".compareTo("hi")} returns \ttt{-4} because the distance from the first non-equal characters, those being \ttt{'e'} and \ttt{'i'}, is minus four characters, since \ttt{'i'} is greater than \ttt{'e'}. If we compare \ttt{"hello"} against \ttt{"Hello"}, we get \ttt{32}, because according to the ASCII table, \ttt{'h'} corresponds to the integer $104$, and \ttt{'H'} corresponds to the integer $72$, and their difference is $104 - 72$. Of course, comparing \ttt{"hello"} against \ttt{"hello"} produces zero, indicating that they contain the same characters.}
+\myexample{Java returns the distance between the first non-equal characters in a string using \ttt{compareTo}.} 
+For instance, \ttt{"hello".compareTo("hi")} returns \ttt{-4} because the distance from the first non-equal characters, those being \ttt{'e'} and \ttt{'i'}, is minus four characters, since \ttt{'i'} is greater than \ttt{'e'}. 
+If we compare \ttt{"hello"} against \ttt{"Hello"}, we get \ttt{32}, because according to the ASCII table, \ttt{'h'} corresponds to the integer~$104$, and \ttt{'H'} corresponds to the integer~$72$, and their difference is $104 - 72$. 
+Of course, comparing \ttt{"hello"} against \ttt{"hello"} produces zero, indicating that they contain the same characters.
 
-Strings are \emph{indexed from zero}, which means that the characters in the string are located at \emph{indices} from zero to the length of the string minus one. So, for example, in the string \ttt{"hello"}, the character \ttt{'h'} is at index zero, \ttt{'e'} is at index one, \ttt{'l'} is at index two, \ttt{'l'} is at index three, and \ttt{'o'} is at index four. Knowing this fact is crucial to working with helper methods such as \ttt{charAt}, \ttt{indexOf}, and \ttt{substring}, which we will now discuss.
+Strings are \emph{indexed from zero}, which means that the characters in the string are located at \emph{indices} from zero to the length of the string minus one. 
+So, for example, in the string \ttt{"hello"}, the character \ttt{'h'} is at index zero, \ttt{'e'} is at index one, \ttt{'l'} is at index two, \ttt{'l'} is at index three, and \ttt{'o'} is at index four. 
+Knowing this fact is crucial to working with helper methods such as \ttt{charAt}, \ttt{indexOf}, and \ttt{substring}, which we will now discuss.
 
-\myexample{To retrieve the character at a given index, we invoke \ttt{charAt} on the string: \ttt{"hello".charAt(1)} returns \ttt{'e'}. Attempting to index out of bounds with either a negative number or a number that is equal to or exceeds the length of the string results in a \ttt{StringIndexOutOfBoundsException} error.}
+\myexample{To retrieve the character at a given index, we invoke \ttt{charAt} on the string: \ttt{"hello".charAt(1)} returns \ttt{'e'}.} 
+Attempting to index out of bounds with either a negative number or a number that is equal to or exceeds the length of the string results in a \ttt{StringIndexOutOfBoundsException} exception.
 
-\myexample{We can use \ttt{indexOf} to find the index of the first occurrence of some value in a string. To demonstrate, \ttt{"hello, how are you?".indexOf("are")} returns \ttt{11} because the substring \ttt{"are"} occurs starting at index $11$ of the provided string. If the supplied value is not present in the string, \ttt{indexOf} returns $-1$.}
+\myexample{We can use \ttt{indexOf} to find the index of the first occurrence of some value in a string.} 
+To demonstrate, \ttt{"hello, how are you?".indexOf("are")} returns \ttt{11} because the substring \ttt{"are"} occurs starting at index~$11$ of the provided string. 
+If the supplied argument is not present in the string, \ttt{indexOf} returns~$-1$.
 
-\myexample{A \emph{substring} of a string $s$ is a sequence of existing characters inside $s$. We can extract a substring from some string $s$ using the \ttt{substring} method: \ttt{"abcde".substring(2, 4)} returns \ttt{"cd"}. Note that the last index is exclusive, meaning that, as a rule of thumb, the number of characters returned in the substring is equal to the second argument minus the first argument. There is also a handy second version of this method that receives only one argument: it returns the substring from the given index up to the end of the string. E.g., \ttt{"abcdefg".substring(1)} returns everything but the first character, i.e., \ttt{"bcdefg"}.}
+\myexample{A \emph{substring} of a string~$s$ is a sequence of subsequent characters inside~$s$.} 
+We can extract a substring~$s'$ from some string~$s$ using the \ttt{substring} method: \ttt{"abcde".substring(2, 4)} returns \ttt{"cd"}. 
+Note that the last index is exclusive, meaning that, as a rule of thumb, the number of characters returned in the substring is equal to the second argument minus the first argument. 
+There is also a handy second version of this method that receives only one argument: it returns the substring from the given index up to the end of the string. 
+For example, \ttt{"abcdefg".substring(1)} returns everything but the first character, namely \ttt{"bcdefg"}.
 
-\myexample{We can convert between datatypes, such as an integer to a string and vice versa, using the \ttt{String.valueOf} and \ttt{Integer.parseInt} methods respectively. Passing any non-string primitive value as an argument to \ttt{valueOf} converts it into a string. Oppositely, if we pass a string that represents an integer to \ttt{parseInt}, we obtain the corresponding integer. The \ttt{Double.parseDouble} and \ttt{Boolean.parseBoolean} methods behave similarly. Passing an invalid string, i.e., one that does not represent the respective datatype, results in Java throwing a \ttt{NumberFormatException} error.}
+\myexample{We can convert between datatypes, such as an integer to a string and vice versa, using the \ttt{String.valueOf} and \ttt{Integer.parseInt} methods respectively.} 
+Passing any non-string primitive value as an argument to \ttt{valueOf} converts it into its string counterpart.
+Oppositely, if we pass a string that represents an integer to \ttt{parseInt}, we obtain the corresponding integer. 
+The \ttt{Double.parseDouble} and \ttt{Boolean.parseBoolean} methods behave similarly. 
+Passing an invalid string, i.e., one that does not represent the respective datatype, results in Java throwing a \ttt{NumberFormatException} exception.
 
 \begin{verbnobox}[\small]
 String s1 = String.valueOf(1234);

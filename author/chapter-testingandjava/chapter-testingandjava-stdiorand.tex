@@ -1,9 +1,20 @@
 \section{Standard I/O}
-Early on in a Java programmer's career, they encounter the issue of reading from the ``console,'' or standard input, as well as the dubiously useful act of debugging by printing data to standard output. Many programmers are aptly familiar with these when coming from other programming languages.
+Early on in a Java programmer's career, they encounter the issue of reading from the ``console,'' or standard input, as well as the dubiously useful act of debugging by printing data to standard output. 
+Many programmers are aptly familiar with both of these topics when coming from other programming languages.
 
-First, we need to discuss the nature of the \emph{standard data streams}. Java (and the operating system in general), utilizes three standard data streams: standard input, standard output, and standard error. We can think of these as sources for reading data from and writing data to. The \emph{standard output stream} is often accessed using the \ttt{System.out} class, then through its various methods, e.g., \ttt{println}, \ttt{print}, and \ttt{printf}. To output a line to standard output, we invoke \ttt{System.out.println} with a string (or some other datatype that is coerced into a string). For relaying messages to the user in a terminal-based application or even when debugging a program, outputting information to standard output is a good idea. On the other hand, sometimes a program fails or the programmer wants to output an error message. It is possible to output error messages to standard output, since they are otherwise indistinguishable. Java has a dedicated \emph{standard error stream} for outputting error messages and logs via \ttt{System.err}. We glossed over this method, but let's discuss \ttt{printf} in more detail due to its inherent power.
+First, we need to discuss \emph{standard data streams}\index{standard data streams}. Java (and the operating system in general) utilizes three standard data streams: standard input, standard output, and standard error. 
+We can think of these as sources for reading data from and writing data to. 
+The \emph{standard output stream}\index{standard output stream} is often accessed using the \ttt{System.out} class and through its various methods, e.g., \ttt{println}, \ttt{print}, and \ttt{printf}. 
+To output a line of data to standard output, we invoke \ttt{System.out.println} with a string (or some other datatype that is coerced into a string). 
+For relaying messages to the user in a terminal-based application, or even when debugging, outputting information to standard output is a good idea. 
+On the other hand, sometimes a program fails or the programmer wants to output an error message. 
+It is possible to output error messages to standard output, since they are otherwise indistinguishable. 
+Though, Java has a dedicated \emph{standard error stream}\index{standard error stream} for outputting error messages and logs via \ttt{System.err}. 
+Now, let's discuss \ttt{printf} in more detail due to its inherent power.
 
-The \ttt{printf} method originates from C, but is handy for printing multiple values at once without resorting to unnecessary string concatenation. In addition, it preserves the formatting of the data, which is handy when wanting to treat a \ttt{double} as a floating-point number in a string representation. It receives at least one argument: a format string, and is one of several \emph{variadic methods} that we will discuss. A format string contains special format characters and possibly other text. 
+The \ttt{printf} method originates from C, and is handy for printing multiple values at once without resorting to unnecessary string concatenation. 
+In addition, it preserves the formatting of the data, which is useful when wanting to treat a \ttt{double} as a floating-point number in a string representation. 
+It receives at least one argument: a \emph{format string}\index{format string}, and is one of several \emph{variadic methods} that we will discuss. A format string contains special \emph{format characters}\index{format characters} and possibly other characters. 
 
 \myexample{To output an \ttt{int} or \ttt{long} using \ttt{printf}, we use the \ttt{\%d} format specifier.}
 \begin{verbnobox}[\small]
@@ -12,7 +23,9 @@ System.out.printf("The value of x is %d\n", x);
 System.out.printf("We can inline ints 42 or as literals %d\n", 42);
 \end{verbnobox}
 
-\myexample{To output a \ttt{double} using \ttt{printf}, we use the \ttt{\%f} format specifier. We can also specify the number of digits \ttt{n} to print after the decimal point by using the format specifier \ttt{.\%nf}. Note that floating a decimal to $n$ digits does not change the value of that variable; rather, it only changes its string/output representation.}
+\myexample{To output a \ttt{double} using \ttt{printf}, we use the \ttt{\%f} format specifier.} 
+We can also specify the number of digits \ttt{n} to print after the decimal point by using the format specifier \ttt{.\%nf}. 
+Note that floating a decimal to~$n$ digits does not change the value of that variable; rather, it only changes its string/output representation.
 
 \begin{verbnobox}[\small]
 double x = 42.0;
@@ -21,7 +34,8 @@ System.out.printf("PI to 2 decimals is %.2f\n", Math.PI);
 System.out.printf("PI with all decimals is %f\n", Math.PI);
 \end{verbnobox}
 
-There are many ways to get creative with \ttt{printf},\index{\ttt{printf}} including space padding, number formatting, left/right-alignment, and more. We will not discuss these in detail, but instead we provide Table~\ref{fig:format-specifiers} of the most common format specifiers\index{format specifiers}.
+There are many ways to get creative with \ttt{printf},\index{\ttt{printf}} including space padding, number formatting, left/right-alignment, and more. 
+We will not discuss these in detail, but instead we provide Table~\ref{fig:format-specifiers} of the most common format specifiers\index{format specifiers}.
 
 \begin{figure}[htbp!]
 \centering
@@ -45,15 +59,21 @@ Format Specifier & Description \\
 \label{fig:format-specifiers}
 \end{figure}
 
-The \emph{standard input stream}\index{standard input stream}\index{standard input} allows us to ``read data from the console.'' We place this phrase in quotes because the standard input stream is not necessarily the console/terminal; it simply refers to reading characters from the keyboard that are then stored inside this data stream.
+The \emph{standard input stream}\index{standard input stream}\index{standard input} allows us to ``read data from the console.'' 
+We place this phrase in quotes because the standard input stream is not necessarily the console/terminal; it simply refers to reading characters from the keyboard that are then added into the data stream.
 
-\myexample{Suppose we want to read an integer from the standard input stream. To do so, we first need to instantiate a \ttt{Scanner}, which declares a ``pipe,'' so to speak, from which information is read. It is important to state that, while a \ttt{Scanner} may read from the standard input stream, it can read from other input streams, e.g., files or network connections. We will explore this further in subsequent chapters, but for now, let's declare a \ttt{Scanner} object to read from standard input.}
+\myexample{Suppose we want to read an integer from the standard input stream.} 
+To do so, we first need to instantiate a \ttt{Scanner}\index{\ttt{Scanner}}, which declares a ``pipe,'' so to speak, from which information is read. 
+It is important to state that, while a \ttt{Scanner} may read from the standard input stream, it can also read from other input streams, e.g., files or network connections. 
+We will explore this further in subsequent chapters, but for now, let's declare a \ttt{Scanner} object to read from standard input.
 
 \begin{verbnobox}[\small]
 Scanner in = new Scanner(System.in);
 \end{verbnobox}
 
-The \ttt{Scanner} class has handy methods for retrieving data from the stream it is scanning (which we will dub the \emph{scannee}). As we said in the example prompt, to read an integer from the scannee, we use \ttt{nextInt}, which retrieves and removes the next-available integer from the scannee data stream. Note that the \ttt{Scanner} class is line-buffered, meaning that the data will not be processed by the ``retriever methods,'' e.g., \ttt{nextInt}, until there is a new-line character in the input stream. To force a new-line, we press the ``Enter''/``Return'' key.
+The \ttt{Scanner} class has handy methods for retrieving data from the stream it is scanning (which we will dub the \emph{scannee}). 
+As we said in the example prompt, to read an integer from the scannee, we use \ttt{nextInt}, which retrieves and removes the next-available integer from the scannee data stream. 
+Note that the \ttt{Scanner} class, by default, is line-buffered\index{line buffered}, meaning that the data will not be processed by the ``retriever methods,'' e.g., \ttt{nextInt}, until there is a new-line character in the input stream. To force a new-line, we press the ``Enter''/``Return'' key.
 
 \begin{verbnobox}[\small]
 Scanner in = new Scanner(System.in);
@@ -61,7 +81,15 @@ int x = in.nextInt();
 System.out.println(x);
 \end{verbnobox}
 
-Running the program and typing in any $32$-bit integer feeds it into standard input, then echos it to standard output. Entering any other non-integer value crashes the program with an \ttt{InputMismatchException} exception. So, what if we want to read in a \ttt{String} from the scannee; would we use \ttt{nextString}? Unfortunately, this is not correct. We need to instead use \ttt{nextLine}. The \ttt{nextLine}\index{\ttt{nextLine}} method reads a ``line'' of text, as a string, from the scannee. We define a ``line'' as all characters until the first occurrence of a new-line. Invoking \ttt{nextLine} consumes these characters, including the newline, from the input stream, and stores them into a variable, if requested. It does not, however, store the newline in the variable. 
+Running the program and typing in any~$32$-bit integer feeds it into the standard input stream, then echos it to standard output. 
+Entering any non-integer value crashes the program with an \ttt{InputMismatchException} exception. 
+So, what if we want to read in a \ttt{String} from the scannee; would we use \ttt{nextString}? 
+Unfortunately, this is not correct. 
+We need to instead use \ttt{nextLine}. T
+The \ttt{nextLine}\index{\ttt{nextLine}} method reads a ``line'' of text, as a string, from the scannee. 
+We define a ``line'' as all characters until the first occurrence of a line break. 
+Invoking \ttt{nextLine} consumes these characters, including the newline, from the input stream, and stores them into a variable, if requested. 
+It does not, however, store the new-line character in the returned string. 
 
 \begin{verbnobox}[\small]
 Scanner in = new Scanner(System.in);
@@ -69,7 +97,16 @@ String line = in.nextLine();
 System.out.println(line);
 \end{verbnobox}
 
-Typing in some characters, which may or may not be numbers, followed by a new-line, stores them in the \ttt{line} variable, excluding said new-line. Though, what happens if we prompt for an integer \emph{then} a string? The program does something quite strange. We type the integer, hit ``Return,'' and the program terminates as if it did not prompt for a string. This is because of how both \ttt{nextInt} and \ttt{nextLine} behave: \ttt{nextInt} consumes all data up to but excluding an integer from the input stream; ignoring leading whitespaces. So, after consuming the integer, a new-line character remains in the input stream buffer. Then, \ttt{nextLine} intends to wait until a newline is in the buffer. Because the input stream buffer presently contains a new-line, it takes everything before the new-line, which comprises the empty string, and consumes both said empty string and the new-line from the buffer. To circumvent this issue, we can insert a call to \ttt{nextLine} in between the calls to \ttt{nextInt} and \ttt{nextLine}, thereby consuming the lone new-line character, clearing the buffer. Notice that we do not put a return value on the left-hand side of this intermediate \ttt{nextLine} invocation; this is because such a variable would hold the empty string, which for the purposes of this program is a worthless (variable) assignment.
+Typing in some characters, which may or may not be numbers, followed by a new-line, stores them in the \ttt{line} variable, excluding said new-line. 
+Though, what happens if we prompt for an integer, \emph{then} a string? 
+Our program behaves quite strangely. 
+We type the integer, hit ``Return,'' and the program terminates as if it did not prompt for a string. 
+This is because of how both \ttt{nextInt} and \ttt{nextLine} work: \ttt{nextInt} consumes all data up to but excluding an integer from the input stream; ignoring any preceding whitespaces. 
+So, after consuming the integer, a new-line character remains in the input stream buffer. 
+Then, \ttt{nextLine} intends to wait until a newline is in the buffer. 
+Because the input stream buffer presently contains a new-line, it consumes everything before the new-line, which comprises the empty string, meaning that both the empty string and the new-line are removed the buffer. 
+To circumvent this problem, we insert a call to \ttt{nextLine} in between the calls to \ttt{nextInt} and \ttt{nextLine}, thereby consuming the lone new-line character and, in effect, clearing the buffer. 
+Notice that we do not put a return value on the left-hand side of this intermediate \ttt{nextLine} invocation; this is because such a variable would hold the empty string, which for the purposes of this program is a meaningless (variable) assignment.
 
 \begin{verbnobox}[\small]
 Scanner in = new Scanner(System.in);
@@ -78,7 +115,10 @@ in.nextLine();
 String line = in.nextLine();
 \end{verbnobox}
 
-\myexample{Let's reimplement Python's \ttt{input} function, which receives a \ttt{String} serving as a prompt for the user to enter data. To make it a bit more user-friendly and elegant, we will add a colon and a space after the given prompt. Because we open a \ttt{Scanner} that reads from the standard input stream, there is no need to worry about, say, calling \ttt{nextInt} prior to invoking \ttt{input}. If, on the other hand, we declared a static global \ttt{Scanner} that reads standard input, and we use that to read an integer \emph{and} inside \ttt{input}, we would be in trouble. In our case, the possible scanners connected to the standard input stream differ, so this (the integer-input problem) never occurs.}
+\myexample{Let's reimplement Python's \ttt{input} function, which receives a \ttt{String} serving as a prompt for the user to enter data.} 
+To make it a bit more user-friendly and elegant, we will add a colon and a space after the given prompt. 
+Because we open a \ttt{Scanner} to read from the standard input stream, there is no need to worry about, say, calling \ttt{nextInt} prior to invoking \ttt{input}.
+If, on the other hand, we declared a static global \ttt{Scanner} that reads standard input, and we use that to read an integer \emph{inside} \ttt{input}, we would be in trouble. 
 
 \begin{verbnobox}[\small]
 static String input(String prompt) {
@@ -88,7 +128,10 @@ static String input(String prompt) {
 }
 \end{verbnobox}
 
-\myexample{Suppose we want to write a method that reads three Cartesian points, as integers, from standard input, and computes the area of the triangle that comprises these points. We can type all integers on the same line, as separated by spaces, because \ttt{nextInt} only parses the \emph{next} integer delimited by spaces. And, as we said before, \ttt{nextInt} skips over existing trailing spaces in the input stream buffer, so those spaces are omitted. From there, we use the formula for computing the area of the triangle from those points.} 
+\myexample{Suppose we want to design a method that reads three Cartesian points, as integers, from standard input, and computes the area of the triangle that comprises these points.} 
+We can type all integers on the same line, as separated by spaces, because \ttt{nextInt} only parses the \emph{next} integer in the input stream, delimited by whitespace. 
+And, as we said before, \ttt{nextInt} skips over existing trailing spaces in the input stream buffer, so those spaces are omitted. 
+From there, we use the formula for computing the area of the triangle from those points.
 \[
 \dfrac{x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3 (y_1 - y_2)}{2}
 \]
@@ -115,7 +158,9 @@ class ThreePointArea {
   }
 }
 \end{lstlisting}
-We make a note that reading data from a scanner inside a static method that computes some value is not a very good idea; a better solution would be to read the data inside the \ttt{main} method, then call \ttt{computeThreePointArea} with the six arguments representing each point.
+
+We make a note that reading data from a scanner inside a static method to compute some value is not a very good idea. 
+A better alternative solution is to read the data inside a different, unrelated method, e.g., \ttt{main}, then call \ttt{computeThreePointArea} with the six arguments representing each point.
 
 %\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -151,7 +196,10 @@ class ThreePointArea {
 \end{lstlisting}
 
 \section{Randomness}
-So-called ``true'' randomness is difficult to implement from a computing standpoint. Thus, for most intents and purposes (i.e., all of those described in this textbook), it is sufficient to use \emph{pseudorandomess}\index{pseudorandom}\index{pseudorandomness} to generate random values. A pseudorandom number generator computes seemingly random values using a deterministic algorithm, which means that the output values from the generator are predictable. Although it might be incredibly difficult to predict values from a pseudorandom number generator, it is theoretically possible, making them insufficient and insecure for cryptographic schemata and algorithms. For writing, say, a word-guessing game that picks a word from a list at random, it is perfectly reasonable to use a pseudorandom number generator.
+So-called ``true'' randomness is difficult to implement from a computability standpoint. 
+Thus, for most intents and purposes (i.e., all of those described in this textbook), it is sufficient to use \emph{pseudorandomess}\index{pseudorandom}\index{pseudorandomness} when generating random values. 
+A \emph{pseudorandom number generator} (PRNG) computes appearingly random values using a deterministic algorithm, which means that the output values from the generator are predictable. 
+Although it might be incredibly difficult to predict pseudorandomly-generated numbers, it is theoretically possible, which makes those numbers insufficient and insecure for cryptographic schemata and algorithms. For writing, say, a word-guessing game that picks a word from a list at random, it is perfectly reasonable to use a pseudorandom number generator.
 
 Well, how do we generate pseudorandom numbers in Java? There are a few methods, and many textbooks opt to use \ttt{Math.random},\index{\ttt{Math.random()}} which we will explain, but our examples will largely constitute use of the \ttt{Random}\index{\ttt{Random}} class. Testing methods that rely on randomness is difficult, so our following code snippets do not come with testing suites. 
 
