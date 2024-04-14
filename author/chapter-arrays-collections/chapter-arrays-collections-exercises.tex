@@ -189,6 +189,20 @@ There is a simple recursive algorithm to solve this problem: if you have searche
 
 Design the \ttt{double[] linearRegression(double[] xs, double[] ys)} method that, when given two arrays of doubles $\emph{xs}$ and $\emph{ys}$, returns a two-element array containing the y-intercept and the slope, respectively. If the two arrays are not of the same length, return \ttt{null}.
 
+\myexercise{2}{chapter-arrays-collections}{The correlation coefficient~$r$ is a measure of the strength and direction of a linear relationship between two variables~$x$ and~$y$. The value of~$r$ is always between~$-1$ and~$1$. When $r>0$, there is a positive linear relationship between $x$ and $y$. When $r<0$, there is a negative linear relationship between $x$ and $y$. When $r=0$ or is approximately zero, there is no (or little) linear relationship between~$x$ and~$y$. The formula for the correlation coefficient is as follows~\citep{stats}:}
+
+\[
+    r = \frac{1}{n-1}\cdot\frac{1}{S_x\cdot{}S_y}\cdot\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})  
+\]
+
+Where~$n$ is the number of data points,~$x_i$ and~$y_i$ are the~$i^\text{th}$ data points,~$\bar{x}$ and~$\bar{y}$ are the means of~$x$ and~$y$ respectively, and~$S_x$ and~$S_y$ are the sample standard deviations of~$x$ and~$y$ respectively. To compute the sample standard deviation of a set of values~$S$, we use the formula~\citep{stats}:
+
+\[
+    S_x = \sqrt{\frac{\sum_{i=1}^{|S|}(x_i - \bar{x})^2}{|S|-1}}
+\]
+
+Design the \ttt{double correlationCoefficient(double[] xs, double[] ys)} method that, when given two arrays of doubles~$\emph{xs}$ and~$\emph{ys}$, returns the correlation coefficient between the two arrays. If the two arrays are not of the same length, return \ttt{null}.
+
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{List<Integer> sumEvenMultOdd(int[] A)} method that, when given an array of integers $A$, returns a \ttt{List<Integer>} whose first element is the sum of all elements at even indices of $A$, and whose second element is the product of all elements at odd indices of $A$. If you encounter a zero at an odd index, do not continue to multiply values (i.e., don't keep multiplying subsequent values and return the multiplied value before you encountered the zero, since the product will forever be zero from that point onward).}
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{Set<List<Integer{>}{>} twoSum(int[] A, int t)} method that, when given an array of integers $A$ and a target $t$, returns all possible pairs of numbers in $A$ that sum to $t$. For example, if $A=\{2, 2, 4, 10, 6, -2\}$ and $t=4$, we return a set containing two two-element lists: $\{2, 2\}$ and $\{6, -2\}$. Do not add a pair that already exists in the set or a pair that, by reversing the pair, we get a pair in the existing set. E.g., $\{-2, 6\}$ should not be added to the set. 
