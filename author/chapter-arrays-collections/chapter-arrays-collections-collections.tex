@@ -1103,11 +1103,11 @@ class FirstUniqueLetter {
 
 \myexample{One final example that we will consider is the \ttt{nthMostUniqueChar} method that, when given a string $s$ and an integer $n$, returns the $n^\text{th}$ most unique character in the string, or \ttt{null} if there is no such character. If there are multiple characters that share the same position, we return the first one in terms of lexicographical ordering.}
 
-For example, consider the string \ttt{"abbabdcaadaababcdcc"} and $n=3$. The most unique characters are \ttt{'a', 'b', 'c'}, so the third most unique character is \ttt{'c'}.
+For example, consider the string \ttt{"abbabdcaadaababcdcc"} and $n=3$. The most unique characters are \ttt{'a', 'b', 'c'}, so the third most unique character is \ttt{\q{}c\q{}}.
 
 Another example is the string \ttt{"aabbcc"} and $n=2$. The most unique characters are \ttt{'a', 'b', 'c'}, but all three have the same frequency of two, meaning they are all equally unique. In this case, we return the empty string.
 
-A third example is the string \ttt{"aaaabccccc"} and $n=2$. The most unique characters are \ttt{'c', 'a', 'b'}, so the second most unique character is \ttt{'a'}.
+A third example is the string \ttt{"aaaabccccc"} and $n=2$. The most unique characters are \ttt{'c', 'a', 'b'}, so the second most unique character is \ttt{\q{}a\q{}}.
 
 First, we will count the frequency of each character, then use a \ttt{PriorityQueue} to store the characters in order of their frequency from greatest to least. We will then remove the first $n-1$ characters from the queue and return the first character of the remaining queue. This approach should raise some eyebrows, because if the frequency is the value in a map, how can we construct a comparator? In other circumstances you need access to a particular key to obtain its corresponding value. In this instance, though, we can generate the \emph{entry set} for the map of characters to frequencies, which is a set of \ttt{Map.Entry<K, V>} objects where $K$ is the key type and $V$ is the value type. Our priority queue comparator receives two such entries $e$ and $f$, and performs the following comparison:
 

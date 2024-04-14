@@ -51,7 +51,7 @@ When concatenating two strings~$s_1$ and~$s_2$, Java creates a new string that i
 
 To retrieve the number of characters in a string, invoke \ttt{.length} on the string. 
 The empty string has length zero, and spaces/whitespace characters count towards the length of a string, since spaces \emph{are} characters. 
-For instance, the length of \ttt{"  a  "} is five because there are two spaces, followed by a lowercase \ttt{'a'}, followed by two more spaces.
+For instance, the length of \ttt{"  a  "} is five because there are two spaces, followed by a lowercase \ttt{\q{}a\q{}}, followed by two more spaces.
 
 Comparing strings for equality seems straightforward: we can use \ttt{==} to compare one string versus another. 
 Using \ttt{==} for determining string equality is a common Java beginner pitfall! 
@@ -119,7 +119,24 @@ class NewStringTests {
 }
 \end{lstlisting}
 
-Now, what if we want to compare strings for their content, i.e., their characters? 
+\myexample{One final point to make about string equality is that string concatenation is not subject to the same optimization as string literals.} 
+Consider the following code snippet, which creates two string literals $s_1$ and $s_2$. Then, we concatenate~$s_1$ and~$s_2$ into a string $s_3$, and separately concatenate the string literals themselves into the string~$s_4$. 
+What we observe is that~$s_3$ and~$s_4$ do not point to the same reference, even though they contain the same characters.
+
+\begin{lstlisting}[language=MyJava]
+class NewStringTests {
+
+  public static void main(String[] args) {
+    String s1 = "Hello";
+    String s2 = "World";
+    String s3 = s1 + s2;
+    String s4 = "Hello" + "World";
+    System.out.println(s3 == s4); // false
+  }
+}
+\end{lstlisting}
+
+\myexample{What if we want to compare strings based on their character content rather than by reference?} 
 The \ttt{String} class provides a handy \ttt{equals} method that we invoke on instances of strings. 
 Two strings~$s_1$ and~$s_2$ are equal if they are \emph{lexicographically equal}. 
 In essence, this is a long and scary word to represent the concept of ``containing the same characters.'' 
@@ -142,19 +159,19 @@ Let's veer into the discussion on the lexicographical ordering of strings.
 Like numbers, strings are comparable and can be, e.g., ``less than'' another. 
 According to Java (as well as most other programming languages), one string is less than another if it is lexicographically less than another, and this idea extends to all (string) comparison operations; not just equality. 
 Memorizing the string ordering rules is cumbersome, so we propose the S.N.U.L. acronym. 
-In general, special characters (S) are less than numbers (N), which are less than uppercase characters (U), which are less than lowercase characters (L).\footnote{We say ``in general'' because certain characters that we might view as special, e.g., \ttt{'@'}, have a larger numeric value than numbers, e.g., \ttt{'2'}.} 
+In general, special characters (S) are less than numbers (N), which are less than uppercase characters (U), which are less than lowercase characters (L).\footnote{We say ``in general'' because certain characters that we might view as special, e.g., \ttt{\q{}@\q{}}, have a larger numeric value than numbers, e.g., \ttt{\q{}2\q{}}.} 
 For a full description with the exceptions to our generalization, view an ASCII table, which provides the numerical equivalents of all standard American keyboard characters. 
 
 \myexample{Java returns the distance between the first non-equal characters in a string using \ttt{compareTo}.} 
-For instance, \ttt{"hello".compareTo("hi")} returns \ttt{-4} because the distance from the first non-equal characters, those being \ttt{'e'} and \ttt{'i'}, is minus four characters, since \ttt{'i'} is greater than \ttt{'e'}. 
-If we compare \ttt{"hello"} against \ttt{"Hello"}, we get \ttt{32}, because according to the ASCII table, \ttt{'h'} corresponds to the integer~$104$, and \ttt{'H'} corresponds to the integer~$72$, and their difference is $104 - 72$. 
+For instance, \ttt{"hello".compareTo("hi")} returns \ttt{-4} because the distance from the first non-equal characters, those being \ttt{\q{}e\q} and \ttt{\q{}\q}, is minus four characters, since \ttt{\q{}i\q{}} is greater than \ttt{\q{}e\q{}}. 
+If we compare \ttt{"hello"} against \ttt{"Hello"}, we get \ttt{32}, because according to the ASCII table, \ttt{\q{}h\q{}} corresponds to the integer~$104$, and \ttt{\q{}H\q{}} corresponds to the integer~$72$; their difference is $104 - 72$. 
 Of course, comparing \ttt{"hello"} against \ttt{"hello"} produces zero, indicating that they contain the same characters.
 
 Strings are \emph{indexed from zero}, which means that the characters in the string are located at \emph{indices} from zero to the length of the string minus one. 
-So, for example, in the string \ttt{"hello"}, the character \ttt{'h'} is at index zero, \ttt{'e'} is at index one, \ttt{'l'} is at index two, \ttt{'l'} is at index three, and \ttt{'o'} is at index four. 
+So, for example, in the string \ttt{"hello"}, the character \ttt{\q{}h\q{}} is at index zero, \ttt{\q{}e\q{}} is at index one, \ttt{\q{}l\q{}} is at index two, \ttt{\q{}l\q{}} is at index three, and \ttt{\q{}o\q{}} is at index four. 
 Knowing this fact is crucial to working with helper methods such as \ttt{charAt}, \ttt{indexOf}, and \ttt{substring}, which we will now discuss.
 
-\myexample{To retrieve the character at a given index, we invoke \ttt{charAt} on the string: \ttt{"hello".charAt(1)} returns \ttt{'e'}.} 
+\myexample{To retrieve the character at a given index, we invoke \ttt{charAt} on the string: \ttt{"hello".charAt(1)} returns \ttt{\q{}e\q{}}.} 
 Attempting to index out of bounds with either a negative number or a number that is equal to or exceeds the length of the string results in a \ttt{StringIndexOutOfBoundsException} exception.
 
 \myexample{We can use \ttt{indexOf} to find the index of the first occurrence of some value in a string.} 

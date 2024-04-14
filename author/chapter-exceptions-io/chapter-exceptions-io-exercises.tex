@@ -139,7 +139,7 @@ Charlie
     VIN: 1G4HDSLVRLX
     Number of Previous Owners: 2
     Title Status: Salvaged
-    MSRP: \$20,475.00
+    MSRP: $20,475.00
 \end{verbnobox}
 
     \item Now, design the \ttt{CarDatabase} class, whose (no parameter) constructor instantiates a \ttt{List<Car>} instance variable to store the list of cars. Then, design the following methods:
@@ -158,7 +158,7 @@ Charlie
 \myexercise{2}{chapter-exceptions-io}{You're interested in determining the letter statistics of a file containing text. In particular, you want to design a program that reports the frequency of each alphabetic character. Design the \ttt{LetterFrequency} class, which has the following methods:}
 
 \begin{enumerate}[label=(\alph*)]
-    \item \ttt{LetterFrequency(String fileName)} is the constructor, which reads a file containing text into a \ttt{long[]} instance variable with $26$ elements. Convert all upper-case letters into lower-case. Index 0 of the (frequency) array corresponds to \ttt{'a'}, and index 25 corresponds to \ttt{'z'}. Before reading the contents of the file, initialize the array to contain all zeroes.
+    \item \ttt{LetterFrequency(String fileName)} is the constructor, which reads a file containing text into a \ttt{long[]} instance variable with $26$ elements. Convert all upper-case letters into lower-case. Index 0 of the (frequency) array corresponds to \ttt{\q{}a\q{}}, and index 25 corresponds to \ttt{\q{}z\q{}}. Before reading the contents of the file, initialize the array to contain all zeroes.
     \item \ttt{void add(char c)} adds a character $c$ to the frequency map. If $c$ is not alphabetic, throw an \ttt{IllegalArgumentException}.
     \item \ttt{void add(String s)} calls the other \ttt{add} method on each character in the given string~$s$.
     \item \ttt{long get(char c)} returns the frequency of a given character, which should be converted to lowercase. If $c$ is not a letter, throw an \ttt{IllegalArgumentException}.
@@ -166,13 +166,38 @@ Charlie
     \item \ttt{List<Character> getMostFrequentChars(int n)} returns the~$n$ most frequent characters. If $n \not\in [0, 25)$, throw an \ttt{IllegalArgumentException}. Hint: invoke the \ttt{get} method~$n$ times for values~$1$ to~$n$ inclusive.
 \end{enumerate}
 
+\myexercise{2}{chapter-exceptions-io}{This exercise has two parts.}
+A \emph{stack-based} programming language is one that uses a stack to keep track of variables, values, and the results of expressions. These types of languages have existed for several decades, and in this exercise you will implement such a language.
+
+Design the \ttt{StackLanguage} class, whose constructor receives no parameters. The class contains two instance methods: \ttt{void readFile(String f)} and \ttt{double interpret()}. 
+
+\begin{itemize}
+    \item The \ttt{readFile} method reads a series of ``stack commands'' from the file. These can be stored however you feel necessary in the class, but you should not interpret anything in this method, nor should you throw any exceptions. You may want to create a private static class for storing commands.
+    \item The \ttt{interpret} method interprets the stored list of instructions. If no instructions have been received by a \ttt{readFile} command, throw an \ttt{IllegalStateException}. Here are the following possible instructions:
+
+    \begin{enumerate}[label=(\alph*)]
+        \item \ttt{DECL $v$ $X$} declares that $v$ is a variable with value $X$.
+        \item \ttt{PUSH $X$} pushes a number $X$ to the stack. 
+        \item \ttt{POP $v$} pops the top-most number off the stack and stores it in a variable~$v$. If $v$ has not been declared, an \ttt{IllegalArgumentException} is thrown.
+        \item \ttt{PEEK $v$} stores the value at the top of the stack in the variable~$v$. If $v$ has not been declared, an \ttt{IllegalArgumentException} is thrown.
+        \item \ttt{ADD $X$} adds $X$ to the top-most number on the stack.
+        \item \ttt{SUB $X$} subtracts $X$ from the top-most number on the stack.
+        \item \ttt{XCHG $v$} swaps the value on the top of the stack with the value stored in variable~$v$. If~$v$ has not been declared as a variable, an \ttt{IllegalArgumentException} is thrown.
+        \item \ttt{DUP} duplicates the value at the top of the stack.
+    \end{enumerate}
+    If the command is none of these, then throw an \ttt{UnsupportedOperationException}. You may assume that all commands, otherwise, are well-formed (i.e., they contain the correct number of arguments and the types thereof are correct).
+    After interpreting all instructions, the value that is returned is the top-most value on the stack. If there is no such value, throw a \ttt{NoSuchElementException}.
+
+    Hint: use a \ttt{Map} to store variable identifiers to values.
+\end{itemize}
+
 \myexercise{3}{chapter-exceptions-io}{Java provides many forms of input and output stream classes, e.g., \ttt{BufferedReader}/\ttt{BufferedWriter}. Unfortunately, it does not have classes, say \ttt{BitInputStream} and \ttt{BitOutputStream}, for outputting raw bits to a file. In this exercise you will implement these classes.}\footnote{This exercise is common in Java textbooks, and in our opinion, is worth repeating.}
 
 \begin{enumerate}[label=(\alph*)]
     \item Design the \ttt{BitOutputStream} class, which extends \ttt{OutputStream}. It should store two instance variables: an instance of \ttt{OutputStream} and an array of eight integers. Each integer index corresponds to a bit to send to the output.
     \begin{enumerate}[label=(\roman*)]
         \item Design three \ttt{BitOutputStream} constructors: one that sets the stored output stream instance to \ttt{null}, a second that receives an \ttt{OutputStream} object and assigns it to the instance variable, and a third that receives a file name, and instantiates the stored output stream as a \ttt{FileOutputStream}. All three constructors should instantiate the array of ``bits.''
-        \item Override the \ttt{public void flush() throws IOException} method from \ttt{OutputStream} to output the bits, as a single byte, to the file. This does \emph{not} mean that you should output the raw \ttt{'1'} and \ttt{'0'} characters that are stored in the buffer. Instead, convert those bits into a single \ttt{int}, and write that value to the output stream. Hint: the bitwise operations \ttt{<<} and \ttt{|} may come in handy.
+        \item Override the \ttt{public void flush() throws IOException} method from \ttt{OutputStream} to output the bits, as a single byte, to the file. This does \emph{not} mean that you should output the raw \ttt{\q{}1\q{}} and \ttt{\q{}0\q{}} characters that are stored in the buffer. Instead, convert those bits into a single \ttt{int}, and write that value to the output stream. Hint: the bitwise operations \ttt{<<} and \ttt{|} may come in handy.
         \item Override the \ttt{public void write(int b) throws IOException} method from \ttt{OutputStream} to assign bit $b$ to the next-free index in the array. If you run out of bits to store in the array, call \ttt{this.flush()}. 
         \item Design the \ttt{void writeBit(int b)} method, which adds a bit to the $i^\text{th}$ index of the array. If the input~$b$ is not a 0 or 1, throw an \ttt{IllegalArgumentException}, otherwise call \ttt{this.write} with~$b$.
     \end{enumerate}
@@ -259,7 +284,7 @@ Any of these flags should be composable with another, with the exception of \ttt
     \item Add support for the \ttt{-F} flag that, when immediately followed by a delimiter, uses that delimiter as a ``field separator'' when parsing input lines. For example, \ttt{-F,} uses a comma as the delimiter.
     \item Add the \ttt{-h} flag that ignores the first row in all subsequent commands. This is particularly useful when working with files that have headers, e.g., comma-separated value files.
     \item Next, add the \ttt{'{print ...}'} command. That is, the user should be able to type an open brace, followed by \ttt{print}, then some data, then a closing brace, all enclosed by single quotes. The \ttt{print} command receives multiple possible values, including `column labels', i.e., \ttt{$N$}, where $N$ is a column number. For example, \ttt{awk -F, '{print \$1}' input.csv} should print the first column of each row in the input file. 
-    \item After getting the previous command to work, add support for inlined prefix operations in the \ttt{print} command. That is, suppose we want to print the sum of the second and fourth column of each row. To do this, we might write \ttt{awk -h -F, '{print (+ \$2 \$4)}' input.csv}. For simplicity, you may assume that there are only four operations: \ttt{'+'}, \ttt{'-'}, \ttt{'*'}, and \ttt{'/'}. 
+    \item After getting the previous command to work, add support for inlined prefix operations in the \ttt{print} command. That is, suppose we want to print the sum of the second and fourth column of each row. To do this, we might write \ttt{awk -h -F, '{print (+ \$2 \$4)}' input.csv}. For simplicity, you may assume that there are only four operations: \ttt{\q{}+\q{}}, \ttt{\q{}-\q{}}, \ttt{'*'}, and \ttt{'/'}. 
     \item After getting the previous command to work, add multiple-argument support for \ttt{print}. That is, if we want to compute the product of the first three columns, output a string saying \ttt{" multiplied is " }, followed by the product, we could write \ttt{awk -h -F, '{print \$1,\$2,\$3 " multiplied is " (* \$1 \$2 \$3) }'}. Note that the delimiter between the column labels must match that passed by \ttt{-F}, otherwise there is no separator.
     \item After getting the previous command to work, add support for conditional expressions. That is, suppose we want to print the second column of a row only if it has a value greater than $200$. We can achieve this via \ttt{"awk -h -F, '{print \$2(> \$2 200)}'}. If you \emph{really} want a challenge, you can add support for inlining other arithmatic expressions into a conditional. For example, if we want to print the third column only if the sum of the first two columns exceeds $1000$, we might write \ttt{awk -h -F, '{print \$3(> (+ \$1 \$2) 1000)}'}.
     \item Finally, add the \ttt{-v=N:V} flag that acts as a variable map that can be used in a print command. That is, suppose we want to create a variable called \ttt{val} and assign to it \ttt{30}. We can do this via \ttt{-v=val:30}, then reference it in a \ttt{print} via \ttt{\$}, e.g., \ttt{awk -F, '{print \$val}'}.

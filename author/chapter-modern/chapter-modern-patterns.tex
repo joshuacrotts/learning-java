@@ -138,13 +138,15 @@ class Fraction {
   }
 
   @Override
-  public String toString() { return String.format("%d/%d", this.num, this.den); }
+  public String toString() { 
+    return String.format("%d/%d", this.num, this.den); 
+  }
 }
 \end{lstlisting}
 
 Notice that one of our test cases loops five hundred thousand times, repeatedly allocating the same fraction, namely $1/2$. It is almost certainly true that, whatever application uses the \ttt{Fraction} class, will not need separate/distinct instances of a fraction. Accordingly, we are unnecessarily allocating \ttt{Fraction} instances, taking a lot of CPU time and memory. The solution is to introduce a form of caching, wherein we create a lookup table of the most ``common'' fractions and, whenever someone wants to construct a \ttt{Fraction}, we first determine if it can be polled from the table. If not, we have no choice but to allocate the fraction. We call this the \emph{factory} pattern, because we have a class that represents and processes the creation of \ttt{Fraction} objects, rather than allowing the user to directly instantiate one themselves. 
 
-In designing the \ttt{FractionFactory} class, we declare a five-hundred element array to store the fractions $1/n$, where $n$ is an integer such that $1 \leq n \leq 500$. Its constructor allocates the fraction ``cache.'' We now need a method to take the role of building fractions; namely a \ttt{Fraction create(int num, int den)} method, which either looks up and returns the shared instance of a common fraction, or allocates a new instance.
+In designing the \ttt{FractionFactory} class, we declare a five-hundred element array to store the fractions~$1/n$, where~$n$ is an integer such that $1 \leq n \leq 500$. Its constructor allocates the fraction ``cache.'' We now need a method to take the role of building fractions; namely a \ttt{Fraction create(int num, int den)} method, which either looks up and returns the shared instance of a common fraction, or allocates a new instance.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -219,7 +221,8 @@ class PersonDatabase {
       String line;
       while ((line = br.readLine()) != null) {
         String[] tokens = line.split(",");
-        this.DATABASE.put(tokens[0], PersonFactory.create(tokens[0], tokens[1]));
+        this.DATABASE.put(tokens[0], 
+                          PersonFactory.create(tokens[0], tokens[1]));
       }
     } catch (IOException ex) { ex.printStackTrace(); }
   }
@@ -242,7 +245,7 @@ class PersonFactory {
       case "student" -> new Student(name);
       case "faculty" -> new Faculty(name);
       case "staff" -> new Staff(name);
-      default -> throw new IllegalArgumentException("create: invalid role");
+      default -> throw new IllegalArgumentException("invalid role "+role);
     };
   }
 }
@@ -291,7 +294,7 @@ class Staff extends Person {
 }
 \end{lstlisting}
 
-If we assume that our input records are line-separated and comma-delimited, then we can write a simple test case to verify that the \ttt{PersonDatabase} class correctly reads the file and creates the appropriate \ttt{Person} objects. The following file (titled \ttt{"records1.dat"}) will be used for testing purposes.
+If we assume that our input records are line-separated and comma-delimited, then we can write a simple test case to verify that the \ttt{PersonDatabase} class correctly reads the file and creates the appropriate \ttt{Person} objects. The following file (titled \ttt{"records1.dat"}) will be used for testing purposes. As expected, all tests pass.
 
 \begin{verbnobox}[\small]
 Willard Van Orman Quine,faculty
@@ -310,16 +313,19 @@ class PersonDatabaseTester {
   void testPersonDatabase() {
     PersonDatabase db = new PersonDatabase();
     db.readFile("records1.dat");
+    String n1 = "William Van Orman Quine";
+    String n2 = "Alan Mathison Turing";
+    String n3 = "John von Neumann";
+    String n4 = "Stephen Cole Kleene";
     assertAll(
-      () -> assertTrue(db.lookup("Willard Van Orman Quine") instanceof Faculty),
-      () -> assertTrue(db.lookup("Alan Mathison Turing") instanceof Student),
-      () -> assertTrue(db.lookup("John von Neumann") instanceof Staff),
-      () -> assertTrue(db.lookup("Stephen Cole Kleene") instanceof Faculty));
+      () -> assertTrue(db.lookup(n1) instanceof Faculty),
+      () -> assertTrue(db.lookup(n2) instanceof Student),
+      () -> assertTrue(db.lookup(n3) instanceof Staff),
+      () -> assertTrue(db.lookup(n4) instanceof Faculty));
   }
 }
 \end{lstlisting}
 
-As expected, all tests pass.
 
 \subsection{Builder}
 
@@ -344,7 +350,8 @@ class UrlTester {
                        .port(80)
                        .path("search");
     assertAll(
-      () -> assertEquals("http://www.google.com:80/search", url.toString()));
+      () -> assertEquals("http://www.google.com:80/search", 
+                         url.toString()));
   }
 }
 \end{lstlisting}
@@ -588,6 +595,7 @@ class GroceryListTotalVisitorTester {
 
   @Test
   void testGroceryListTotalVisitor() {
+    IGroceryItemVisitor<Double> vs = new GroceryListTotalVisitor();
     List<IGroceryItem> groceryList = List.of(
       new Fruit("apple", 4),
       new Fruit("banana", 2),
@@ -597,13 +605,11 @@ class GroceryListTotalVisitorTester {
     assertAll(
       () -> assertEquals(0, 
                          List.of().stream()
-                                  .mapToDouble(item -> 
-                                   item.visit(new GroceryListTotalVisitor()))
+                                  .mapToDouble(item -> item.visit(vs))
                                   .sum()),
       () -> assertEquals(5.60, 
                          groceryList.stream()
-                                    .mapToDouble(item -> 
-                                     item.visit(new GroceryListTotalVisitor()))
+                                    .mapToDouble(item -> item.visit(vs))
                                     .sum()));
   }
 }

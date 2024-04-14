@@ -123,7 +123,6 @@ For frame 10:
 
 The resulting array contains $n$ rows to represent $n$ players, where the first element of a row is the player name alpabetized, and the second is their score.
 
-
 \myexercise{2}{chapter-arrays-collections}{We can represent matrices as two-dimensional arrays. For example, the matrix}
 
 \[
@@ -177,6 +176,18 @@ To rotate a matrix, take its transposition, then reverse each row. You may assum
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{boolean canSum(int[] A, int t)} method that, when given an array of integers $A$ and a target $t$, determines whether or not there exists a gruop of numbers in $A$ that sum to $t$. For example, if $A=\{2, 4, 10, 8\}$ and $t=9$, then \ttt{canSum} returns false because there is no possible selection of integers from $A$ that sum to $9$. On the other hand, if $A=\{3, 7, 4, 5, 9\}$ and $t=8$, then we return true because $3+5=8$. If $A=\{2, 4, 2, 11, 5, 4\}$ and $t=9$, then we return true because $1+4+4=9$, but also $4+5=9$ and $5+4=9$.}
 
 There is a simple recursive algorithm to solve this problem: if you have searched through the entire array, return whether or not the target is zero. Otherwise, make two recursive calls: one for where you choose the current number and a second for where you do not. By ``choose,'' we mean to say that the current number is subtracted from the target value. By ``current number,'' we mean to suggest a method that resembles the tail recursive linear search algorithm. You'll need to design a helper method to solve this problem using this approach.
+
+\myexercise{2}{chapter-arrays-collections}{\emph{Linear regression} is used to compute a ``line of best-fit'' for a collection of $(x, y)$ points. In particular, we find the equation for a line $y = \hat{\alpha} + \hat{\beta}x$, where $\hat{\alpha}$ is the y-intercept and $\hat{\beta}$ is the slope. The formulas for $\hat{\alpha}$ and $\hat{\beta}$ are as follows~\citep{linear-regression}:}
+
+\[
+    \hat\alpha = \frac{\sum_{i=1}^{n}y_i \sum_{i=1}^{n}x_i^2 - \sum_{i=1}^{n}x_i \sum_{i=1}^{n}x_i{}y_i}{n  \sum_{i=1}^{n}x_i^2 - \left(\sum_{i=1}^{n}x_i\right)^2}
+\]
+
+\[
+    \hat{\beta} = \frac{n \sum_{i=1}^{n}x_i{}y_i - \sum_{i=1}^{n}x_i \sum_{i=1}^{n}y_i}{n \sum_{i=1}^{n}x_i^2 - \left(\sum_{i=1}^{n}x_i\right)^2}
+\]
+
+Design the \ttt{double[] linearRegression(double[] xs, double[] ys)} method that, when given two arrays of doubles $\emph{xs}$ and $\emph{ys}$, returns a two-element array containing the y-intercept and the slope, respectively. If the two arrays are not of the same length, return \ttt{null}.
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{List<Integer> sumEvenMultOdd(int[] A)} method that, when given an array of integers $A$, returns a \ttt{List<Integer>} whose first element is the sum of all elements at even indices of $A$, and whose second element is the product of all elements at odd indices of $A$. If you encounter a zero at an odd index, do not continue to multiply values (i.e., don't keep multiplying subsequent values and return the multiplied value before you encountered the zero, since the product will forever be zero from that point onward).}
 

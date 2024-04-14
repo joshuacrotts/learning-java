@@ -418,7 +418,7 @@ atof("-0.000000") => -0.000000
 
 \myexercise{2}{chapter-crl}{Design the \ttt{int compareTo(String s1, String s2)} method that receives two strings $s_1$ and $s_2$, and compares their contents lexicographically. If \ttt{s1} is less than \ttt{s2}, return \ttt{-1}. If \ttt{s1} is greater than \ttt{s2}, return \ttt{1}. Otherwise, return \ttt{0}. Note that our implementation of \ttt{compareTo} will differ from Java's in that, if \ttt{s1} has less characters than \ttt{s2}, we return \ttt{-1}; if \ttt{s2} has less characters than \ttt{s1}, we return \ttt{1}. Otherwise, we do the character-by-character comparison.}
 
-\myexercise{2}{chapter-crl}{File names are often compared lexicographically. For example, a file with name \ttt{"File12.txt"} is greater than \ttt{"File1.txt"} because \ttt{'.'} is less than \ttt{'2'}. Design the \ttt{int compareFiles(String f1, String f2)} method that would fix this ordering to return the more sensible ordering. That is, if a file has a prefix and a suffix, where the only differing piece is the number, then make the file with the lower number return a negative number. Take the following examples as motivation.}
+\myexercise{2}{chapter-crl}{File names are often compared lexicographically. For example, a file with name \ttt{"File12.txt"} is greater than \ttt{"File1.txt"} because \ttt{\q{}.\q{}} is less than \ttt{\q{}2\q{}}. Design the \ttt{int compareFiles(String f1, String f2)} method that would fix this ordering to return the more sensible ordering. That is, if a file has a prefix and a suffix, where the only differing piece is the number, then make the file with the lower number return a negative number. Take the following examples as motivation.}
 
 %\enlargethispage{3\baselineskip}
 \begin{verbnobox}[\small]

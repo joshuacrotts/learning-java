@@ -35,13 +35,13 @@ class ApiConnection {
       URL url = new URL(baseUrl.toString());
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setRequestMethod("GET");
-      int resp = conn.getResponseCode();
-      if (resp != 200) {
-        throw new RuntimeException("main: response code "+resp+" was not 200.");
+      if (conn.getResponseCode() != 200) {
+        throw new RuntimeException("response code was not 200.");
       } else {
         // Read the response from the connection line-by-line.
         try (BufferedReader br = new BufferedReader(
-                                  new InputStreamReader(conn.getInputStream()))) {
+                                   new InputStreamReader(
+                                     conn.getInputStream()))) {
           StringBuffer response = new StringBuffer();
           String inputLine = null;
           while ((inputLine = input.readLine()) != null) { 
@@ -91,13 +91,13 @@ class ApiConnection {
       URL url = new URL(baseUrl.toString());
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setRequestMethod("GET");
-      int resp = conn.getResponseCode();
-      if (resp != 200) {
-        throw new RuntimeException("main: response code "+resp+" was not 200.");
+      if (conn.getResponseCode() != 200) {
+        throw new RuntimeException("response code was not 200.");
       } else {
         // Read the response from the connection line-by-line.
         try (BufferedReader br = new BufferedReader(
-                                  new InputStreamReader(conn.getInputStream()))) {
+                                   new InputStreamReader(
+                                     conn.getInputStream()))) {
           StringBuffer response = new StringBuffer();
           String inputLine = null;
           while ((inputLine = input.readLine()) != null) {

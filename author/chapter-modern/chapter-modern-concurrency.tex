@@ -636,11 +636,12 @@ class TimeEchoServer {
         System.out.printf("Client connected: %s\n", 
                           client.getInetAddress().toString());
         PrintWriter pw = new PrintWriter(
-                          new OutputStreamWriter(client.getOutputStream()), 
-                                                 true);
+                          new OutputStreamWriter(
+                            client.getOutputStream()), 
+                            true);
         // Echo the server time to the client.
         pw.println("The server time is " + java.time.LocalDateTime.now());
-        // Echo that the client has disconnected, then close their connection.
+        // Echo client disconnection, then close.
         System.out.printf("Client disconnected: %s\n", 
                           client.getInetAddress().toString());
         client.close();
@@ -689,15 +690,16 @@ class CountryPopulationRankServer {
     // Set up the thread pool.
     try (ServerSocket ss = new ServerSocket(this.PORT)) {
       while (true) {
-        Socket skt = ss.accept();
+        Socket s = ss.accept();
         BufferedReader br = new BufferedReader(
-                              new InputStreamReader(skt.getInputStream()));
+                              new InputStreamReader(s.getInputStream()));
         // Read in the country from the user.
         String line = br.readLine();
         int country = Integer.parseInt(line) - 1;
         PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
         // Output the nth most populous country.
-        pw.printf("%d country: %s\n", country + 1, this.COUNTRIES.get(country));
+        pw.printf("%d country: %s\n", country + 1, 
+                  this.COUNTRIES.get(country));
         socket.close();
       }
     } catch (IOException ex) { 
@@ -774,7 +776,8 @@ class Server {
       System.out.printf("Server connected on port %d...\n", this.PORT);
       while (this.running) {
         Socket client = server.accept();
-        System.out.printf("Client %s connected!\n", client.getInetAddress());
+        System.out.printf("Client %s connected!\n", 
+                          client.getInetAddress());
         Client c = new Client(client, this);
         this.CLIENTS.add(c);
         this.THREAD_POOL.execute(c);
@@ -814,7 +817,8 @@ class Client implements Runnable {
   Client(Socket socket) {
     this.SOCKET = socket;
     this.SERVER = server;
-    this.IN = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    this.IN = new BufferedReader(
+                new InputStreamReader(socket.getInputStream()));
     this.OUT = new PrintWriter(socket.getOutputStream(), true);
     this.loggedIn = false;
     this.connected = true;
@@ -846,7 +850,7 @@ class Client {
       case "/login" -> { return this.handleLoginCmd(msg); }
       case "/send"  -> { return this.handleSendCmd(msg); }
       case "/quit"  -> { return this.handleQuitCmd(); }
-      default -> throw new IllegalArgumentException("parseCmd: bad cmd " + cmd);
+      default -> throw new IllegalArgumentException("bad cmd " + cmd);
     }
   }
 }
@@ -912,7 +916,7 @@ class Client {
         }
       }
       default -> {
-        throw new IllegalArgumentException("send: bad task " + t.getType());
+        throw new IllegalArgumentException("bad task "+t.getType());
       }
     }
   }
