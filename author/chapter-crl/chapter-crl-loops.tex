@@ -1,13 +1,20 @@
 \section{Loops}
 
-Looping is a fundamental concept in computer programming. Loops allow for repetition of actions or tasks. As we stated in the previous section on recursion, any tail recursive algorithm may be translated into an algorithm that uses loops. In this section, we will describe this translation pipeline as a sequence of steps, then begin to distance ourselves from recursion when it is suboptimal.
+Looping is a fundamental concept in computer programming. 
+Loops allow for repetition of actions or tasks. 
+As we stated in the previous section on recursion, any tail recursive algorithm may be translated into an algorithm that uses loops. 
+In this section, we will describe this translation as a sequential pipeline of steps, then begin to distance ourselves from recursion when it is suboptimal.
 
 \subsection{Translation Pipeline for Tail Recursive Methods}
 \subsubsection*{A Coarse-Grained Approach}
-What follows is a high-level introduction to converting from tail recursive methods to iteration. While you may not understand everything at first, we supplement this with a comprehensive translation schema.
+What follows is a high-level introduction to converting from tail recursive methods to iteration. 
+While you may not understand everything at first, we supplement this with a comprehensive translation schema.
 
-Writing recursive methods is certainly fun.\footnote{The definition of ``fun'' is, of course, relative.} Though, the use of recursion is not always the most intuitive approach to solve a problem according to some programmers/students. Many programming languages offer \emph{iteration} statements, which allow us to perform a task that we might otherwise use recursion to complete. Suppose we have a standard recursive \emph{fact} method. 
-%\enlargethispage{2\baselineskip}
+Writing recursive methods is certainly fun.\footnote{The definition of ``fun'' is, of course, relative.} 
+Though, recursion is not always the best approach to solve a problem according to some programmers/students. 
+Many programming languages offer \emph{iteration} statements, which allow us to perform a task that we might otherwise use recursion to complete. 
+Suppose we have a standard recursive \emph{fact} method. 
+
 \begin{clrr}[]{Standard Recursive Factorial}
 \begin{lstlisting}[language=MyJavaNF]
 static int fact(int n) {
@@ -31,11 +38,15 @@ static int factTR(int n,
 }
 \end{lstlisting}
 \end{clrr}
-The first step in converting a recursive method into its iterative counterpart is to rewrite it using tail recursion. Something we, of course, already know how to do from the previous section. 
-Notice that, in order to ``tail-recursify'' \texttt{fact}, we had to add an extra parameter that keeps track of the ``current result.''\footnote{Some tail recursive methods need more than one extra parameter---it is a case-by-case basis.} The reason for converting recursive methods into tail recursion is because of their direct relation to iteration.\footnote{A method definition may already be tail recursive depending on the circumstance.} Let us look a little deeper into this and find out why.
 
-Our iterative version of \texttt{fact} should move all ``accumulator'' variables into the method body. E.g., \texttt{acc} will now be declared locally to the \texttt{fact} method. In addition to this movement, all accumulator-to-local variables should have an ``iterative purpose statement,'' which mimics the documentation comment for the accumulator parameter.
+The first step in converting a recursive method into its iterative counterpart is to rewrite it using tail recursion. 
+Notice that, in order to ``tail-recursify'' \texttt{fact}, we had to add an extra parameter that keeps track of the ``current result.''\footnote{Some tail recursive methods need more than one extra parameter---it is a case-by-case basis.} 
+The reason for converting recursive methods into tail recursion is because of their direct relation to iteration.\footnote{A method definition may already be tail recursive depending on the circumstance.} 
+Let us look a little deeper into this idea and discover why.
 
+Our iterative version of \texttt{fact} moves all ``accumulator'' variables into the method body. 
+For instance, \texttt{acc} is now declared locally within the \texttt{fact} method. 
+In addition to this modification, all accumulator-to-local variables should have an ``iterative purpose statement,'' which mimics the documentation comment for the accumulator parameter.
 
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
@@ -45,7 +56,18 @@ static int fact(int n) {
 }
 \end{lstlisting}
 
-Second, we must describe the syntax of a loop. A \texttt{while} loop is the construct of choice, and it has two components: a condition denoted as a predicate, and a body. The loop checks to see if the given predicate is true and, if so, executes the body of the loop. On the other hand, if the predicate is false, we jump down to below the loop. Each pass through the loop, it re-verifies that the predicate holds true. Unlike expressions, however, a \texttt{while} loop, itself, does not resolve to some value. It is called a \emph{statement} because of this property. Let us begin by defining the predicate of our loop. To answer this, we ask, then answer, the question of the base case(s) for our tail recursive method. As we see, our base case is true when $n$ is zero. Therefore our loop should continue to execute as long as $n$ is not zero. One tail recursive method call correlates directly with one loop iteration. So, let us remove the \texttt{if}/\texttt{else} statement chain and substitute them by a loop whose condition is nothing more than the negated base case(s).
+Second, we must describe the syntax of a loop. 
+A \texttt{while} loop is the construct of choice, and it has two components: a condition denoted as a predicate, and a body. 
+The loop checks to see if the given predicate is true and, if so, executes the body of the loop. 
+On the other hand, if the predicate is false, pogram control jumps down to immediately below the loop body. 
+Each pass through the loop, it re-verifies that the predicate has not been falsified. 
+Unlike expressions, however, a \texttt{while} loop itself does not resolve to a value and is therefore a statement. 
+Let's continue by defining the predicate of our loop. 
+To do so, we ask, then answer, the question of the base case(s) for our tail recursive method. 
+As shown, the base case is true when~$n$ is zero. 
+Therefore, our loop continues to execute its body as long as~$n$ is not zero. 
+One tail recursive method call correlates directly with one loop iteration. 
+So, let's remove the \texttt{if}/\texttt{else} statement chain, and substitute them with a loop, whose predicate is nothing more than the negated base case(s).
 
 \begin{lstlisting}[language=MyJava]
 static int fact(n) {
@@ -57,7 +79,11 @@ static int fact(n) {
 }
 \end{lstlisting}
 
-Finally, we come to the heart of the loop. Within, we update variables according to how they are updated in the tail recursive call. Namely, as we saw, $n$ is decremented by $1$, and $\emph{acc}$ is multiplied by $n$. We must be careful, however, because the order of these statements is significant! In the tail recursive method call to \texttt{fact}, the $n$ that is decremented is passed to the method, whereas the original value of $n$ is used when multiplying by $\emph{acc}$. As a result, the accumulator update should come first.
+Finally, we come to the heart of the loop: its body.
+Within, we update variables according to how they are updated in the tail recursive call. 
+Namely,~$n$ is decremented by~$1$, and $\emph{acc}$ is multiplied by~$n$. 
+We must be cautious, however, because the order of these statements is significant! 
+In the tail recursive method call to \texttt{fact}, the~$n$ that is decremented is passed to the method, whereas the original value of $n$ is used when multiplying by $\emph{acc}$. As a result, the accumulator update should come first.
 
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
@@ -70,7 +96,10 @@ static int fact(int n) {
 }
 \end{lstlisting}
 
-We are almost done. The loop body is now complete, with each modification pairing precisely with some piece of the tail recursive version. All that remains is the base case return statement. In our tail recursive method, once we hit the base case, we return \texttt{acc}. We model this, of course, using a return outside the loop.
+We are almost done; the loop body is now complete, with each modification corresponding precisely with a piece of the tail recursive version. 
+All that remains is the base case return statement. 
+In our tail recursive method, once we hit the base case, we return \texttt{acc}. 
+We model returning (a value) from the base case with a return statement beneath the loop.
 
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
@@ -84,7 +113,9 @@ static int fact(int n) {
 }
 \end{lstlisting}
 
-Excellent, we now have an iterative version of the factorial method! Let us compare these two side-by-side, color-coding their similarities. Base cases are \textcolor{red}{red}, accumulated variables/steps are \textcolor{darkyellow}{yellow}, and return values are \textcolor{darkgreen}{green}. 
+Excellent, we now have an iterative version of the factorial method! 
+Let's compare these two implementations side-by-side, color-coding their similarities. 
+Base cases are \textcolor{red}{red}, accumulated variables/steps are \textcolor{darkyellow}{yellow}, and return values are \textcolor{darkgreen}{green}. 
 
 \begin{clrr}[]{Tail Recursive versus Iterative Factorial}
 \begin{lstlisting}[language=MyJavaNF]
@@ -116,9 +147,12 @@ static int fact(int n) {
 \end{clrr}
 
 \subsubsection*{A Fine-Grained Approach}
-What we just saw was a fast-paced, high-level overview of the conversion process from tail recursive methods into methods that use while loops. Let’s take a step back and slow our approach to better understand each piece. We first want to describe a general outline of the steps to success in this translation pipeline. 
+What we just saw was a fast-paced, high-level overview of the conversion process from tail recursive methods into methods that use while loops. 
+Let's take a step back and slow our approach to better understand each part. 
+We first want to describe a general outline of the steps-to-success in the translation pipeline. 
 
-Of course, the goal, in due time, is to work our way from \emph{$TR$} to $I$, but there are a few highly important intermediary components to this process. Note that the lines from $P$ to $R$, and $R$ to $TR$ are not as important for this section of the transformation.
+The goal, in due time, is to work our way from~\emph{$TR$} to~$I$, but there are a few highly important intermediary components to this process. 
+Note that the lines from~$P$ to~$R$, and~$R$ to~$TR$ are not as important for this section of the transformation.
 
 \begin{figure}[h!]
 \centering
@@ -151,17 +185,22 @@ Of course, the goal, in due time, is to work our way from \emph{$TR$} to $I$, bu
 \caption{Fine-Grained Translation Pipeline}
 \end{figure}
 
-$TR$ is the tail recursive method derived either from the problem statement $P$ or the standard recursive step $R$. From here, we make our way to \emph{$TR_\mathbf{H}$}, denoting the ``color-coding'' phase, where we mark the three sub components of a tail recursive method, those being the base case(s), updated variables in the tail recursive call, and returned values from the base case. 
+$TR$ is the tail recursive method derived either from the problem statement~$P$ or the standard recursive step~$R$. 
+From here, we make our way to~\emph{$TR_\mathbf{H}$}, denoting the ``color-coding'' phase, wherein we mark the three sub components of a tail recursive method, those being the base case(s), updated variables in the tail recursive call, and returned values from the base case. 
 
-\emph{$TR_\mathbf{IVP}$}, or ``Iterative Variable Purpose,'' is a step following the method signature, but preceding the loop definition. In this step, we examine the updated variables/accumulators marked in \emph{$TR_\mathbf{H}$} and localize them into variables not passed as arguments to a method, but rather as a sequence of value updates. Moreover, we add comments to these variable declarations explaining their purpose.
+\emph{$TR_\mathbf{IVP}$}, or ``Iterative Variable Purpose,'' is a step following the method signature, but preceding the loop definition. 
+In~\emph{$TR_\mathbf{IVP}$}, we examine the updated variables/accumulators marked in~\emph{$TR_\mathbf{H}$} and localize them into variables that are not passed as arguments to a method, but rather as a sequence of value updates. 
+Moreover, we add comments to these variable declarations explaining their purpose.
 
-\emph{$TR_\mathbf{C}$} is the step wherein we write the \ttt{while} keyword, followed by the negated base case condition(s) as a series of conjunctions.
+\emph{$TR_\mathbf{C}$} is the step wherein we write the \ttt{while} keyword, followed by the negated base case condition(s) as a series of conjunctions (i.e., logical AND).
 
-\emph{$TR_\mathbf{B}$} is where we design the body of our loop, which contains update statements to our localized iterative variables rather than arguments to a recursive call.
+\emph{$TR_\mathbf{B}$} is where we design the body of our loop, which contains update statements to our localized iterative variables, rather than arguments to a recursive call.
 
-Finally, in \emph{$TR_\mathbf{Ret}$}, we add the line to return the accumulated local variable(s). $I$ is the output translation.
+Finally, in~\emph{$TR_\mathbf{Ret}$}, we add the line to return the accumulated local variable(s). $I$ is the output translation.
 
-\subsection{\emph{$TR_\mathbf{H}$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. Each of these play a crucial role in the transition to $I$, and quickly yet correctly identifying these as they fit in tail recursive methods is paramount. Let us re-look at our old factorial friend to see what this entails.
+\subsection{\emph{$TR_\mathbf{H}$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. 
+Each of these play a crucial role in the transition to~$I$, and quickly yet correctly identifying these as they fit in tail recursive methods, is paramount. 
+Let us re-look at our old factorial friend to see what this entails.
 
 %\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -174,7 +213,8 @@ static int fact(int n, int acc) {
 }
 \end{lstlisting}
 
-Marking the base case(s) is usually rather simple, as they are most often the selection statements that return a value rather than a recursive method invocation. So, the only instance of this in the above definition is $n == 0$. So, we highlight this in a color, e.g., \textcolor{red}{red}.
+Marking the base case(s) is usually rather simple, as they are most often the selection statements that return a value rather than a recursive method invocation. 
+So, the only instance of this in the above definition is~$n == 0$, meaning we highlight it in \textcolor{red}{red}.
 
 \begin{lstlisting}[language=MyJava]
 static int fact(int n, int acc) {
@@ -186,7 +226,9 @@ static int fact(int n, int acc) {
 }
 \end{lstlisting}
 
-To coincide with the base case(s), we also want to highlight the returned values that are not recursive calls. Only one exists, namely $\emph{acc}$. Let us highlight this in \textcolor{darkgreen}{green}.
+To coincide with the base case(s), we also want to highlight the returned values that are not recursive calls. 
+Only one exists, namely~$\emph{acc}$. 
+Let's highlight~$\emph{acc}$ in \textcolor{darkgreen}{green}.
 
 \begin{lstlisting}[language=MyJava]
 static int fact(int n, int acc) {
@@ -198,7 +240,10 @@ static int fact(int n, int acc) {
 }
 \end{lstlisting}
 
-We are almost done. Now, we want to highlight variables passed to the (tail) recursive call that are updated. When we say updated, we mean ``modified'' insofar as they are not simply copied verbatim, e.g., $f(n) = f(n)$, in which we see $n$ remains unaltered. Fortunately, both $n$ and $\emph{acc}$ are updated ($n$ is decremented by one; $\emph{acc}$ is multiplied by $n$). Let us highlight these changes in \textcolor{darkyellow}{yellow}. 
+Now, we want to highlight updated variables that are passed to the (tail) recursive call(s). 
+When we say updated, we mean ``modified'' insofar as they are not copied verbatim, e.g., $f(n) = f(n)$, in which we see~$n$ remains unaltered across method calls. 
+Conveniently, both~$n$ and~$\emph{acc}$ are updated ($n$ is decremented by one; $\emph{acc}$ is multiplied by~$n$). 
+Let's highlight these changes in \textcolor{darkyellow}{yellow}. 
 
 \begin{lstlisting}[language=MyJava]
 static int fact(int n, int acc) {
@@ -210,7 +255,12 @@ static int fact(int n, int acc) {
 }
 \end{lstlisting}
 
-\subsection{\emph{$TR_\mathbf{IVP}$}:} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. The same holds true for local variables defined to substitute accumulators. Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. Consider, once more, the tail recursive factorial definition. We use $\emph{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. We can simply insert this as an addendum to our Java documentation comment.
+\subsection{\emph{$TR_\mathbf{IVP}$}:} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. 
+The necessity also holds true for local variables defined as accumulator substitutions. 
+Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. 
+Consider, once more, the tail recursive factorial definition. 
+We use $\emph{acc}$ to accumulate the result as a parameter, indicating the need for an accumulator statement. 
+We can simply insert this as an addendum to our Java documentation comment.
 
 \begin{lstlisting}[language=MyJava]
 /**
@@ -225,7 +275,8 @@ static int fact(int n, int acc) {
 }
 \end{lstlisting}
 
-In the translation to a loop, we move $\emph{acc}$ to the body of the method, and write a similar iterative variable purpose.\footnote{By ``move,'' we mean ``remove'' but not ``delete.''} Note that the value the initialized variable receives depends on the problem/context, but it always matches whatever value is passed to a tail recursive helper method.
+In the translation to a loop, we move~$\emph{acc}$ to the body of the method, and write a similar iterative variable purpose.\footnote{By ``move,'' we mean ``remove'' but not ``delete.''} 
+The value that we initialize a local accumulator variable to depends on the problem/context, but it always matches whatever value is passed to a tail recursive helper method.
 
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
@@ -234,9 +285,13 @@ static int fact(int n) {
 }
 \end{lstlisting}
 
-Writing these imperative variable purposes, akin to accumulator statements, helps us organize what variables change and, more importantly, when and how they change. 
+Writing these imperative variable purposes, akin to accumulator statements, help us organize what variables change and, more importantly, how they change. 
 
-\subsection{\emph{$TR_\mathbf{C}$}:} Up next is where we take our base case condition, highlighted in red, and insert it as the negated condition for our loop. First, we add the \ttt{while} keyword to our method, then follow this with a set of parentheses and an exclamation point immediately after the opening parenthesis but before the closing. Inside these parentheses we insert the base case condition. To be safe, you should also insert parentheses for the base case, which ensures that the correct expression is negated by the logical `not' operator. Follow this with an opening and closing brace set.
+\subsection{\emph{$TR_\mathbf{C}$}:} Up next is where we take our base case condition, highlighted in red, and insert it as the negated condition for our loop. 
+First, we add the \ttt{while} keyword to our method, then follow this with a set of parentheses, and an exclamation point immediately after the opening parenthesis but before the closing parenthesis. 
+Inside these parentheses, we place the base case condition. 
+To be safe, one should also insert parentheses for the base case, which ensures that the correct expression is negated by the logical `not' operator. 
+Follow this with an opening and closing brace set.
 
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
@@ -248,15 +303,21 @@ static int fact(int n) {
 }
 \end{lstlisting}
 
-\subsection{\emph{$TR_\mathbf{B}$}:} Finally we get to the fun part of this translation process: the body of our loop. Here we need to make a design choice of what variables to update and when they should be updated. We take the \textcolor{darkyellow}{yellow} highlighted tail recursive arguments, create assignment statements out of them, and insert them into the body of our loop. To do so, we need to follow two principles:
+\subsection{\emph{$TR_\mathbf{B}$}:} Finally, we get to the fun part of this translation process: the body of our loop. 
+We need to make a design choice of what variables to update and how they should be updated. 
+We take the \textcolor{darkyellow}{yellow} highlighted tail recursive arguments, create assignment statements out of them, and insert them into the body of our loop. 
+To this end, we need to follow two principles:
 
-\textbf{Rule of Reassignment}: In any tail recursive call, if we pass an expression $e$ which updates parameter $p$, then in the loop body, we directly reassign $p$ to $e$.
+\textbf{Rule of Reassignment}: In any tail recursive call, if we pass an expression~$e$ which updates parameter~$p$, then in the loop body, we directly reassign~$p$ to~$e$.
 
-\textbf{Rule of Update}: If we have two parameters $p$ and $q$ that are updated as part of the tail recursive call, and $p$'s value is used as part of updating $q$, then $q$ must be modified before $p$.
+\textbf{Rule of Update}: If we have two parameters~$p$ and~$q$ that are updated as part of the tail recursive call, and~$p$'s value is used as part of updating~$q$, then~$q$ must be modified before~$p$.
 
-The rule of reassignment is straightforward: we have an expression that resolves to some value, which corresponds precisely to those highlighted arguments. This expression is converted into an assignment statement to the locally-declared variable. 
+The rule of reassignment is straightforward: we have an expression that resolves to some value, which corresponds precisely to those highlighted arguments. 
+This expression is converted into an assignment statement to the locally-declared variable. 
 
-The rule of update, on the other hand, is not as straightforward. Essentially, we use this rule to ensure that variables whose value depends on another are not prematurely updated. Consider the following incorrect update of $n$ before updating $\emph{acc}$:
+The rule of update, on the other hand, is not as straightforward. 
+Essentially, we use this rule to ensure that variables whose value depends on another are not prematurely updated. 
+Consider the following incorrect update of~$n$ before updating $\emph{acc}$:
 \begin{figure}[H]
 \centering
 \begin{minipage}{.4\textwidth}
@@ -284,7 +345,12 @@ Iteration \# & \texttt{n} & \texttt{acc}\\
 \end{tabular}
 \end{minipage}
 \end{figure}
-We see that this variable update ordering produces $0$, which does not match our recursive trace! We get zero thanks in part due to the final multiplication before our loop condition is falsified. Let us now try the other possible ordering, in which $\emph{acc}$ is updated before $n$. Hence, we are now in the second attempt of completing $TR_\emph{B}$:
+
+We see that this variable update ordering produces~$0$, which does not match our recursive trace! 
+We receive zero thanks in part due to the final multiplication before our loop condition is falsified. 
+Let's now try the other possible ordering, in which $\emph{acc}$ is updated before~$n$. 
+Hence, we are now in the second attempt of completing $TR_\emph{B}$:
+
 \begin{figure}[H]
 \centering
 \begin{minipage}{.4\textwidth}
@@ -312,13 +378,15 @@ Iteration \# & \texttt{n} & \texttt{acc}\\
 \end{tabular}
 \end{minipage}
 \end{figure}
-This results in $120$, which matches our recursive trace. Therefore, without loss of generality, we can conclude that we should update the accumulator variable before updating $n$ in this circumstance.
 
-Determining the correct order of update, according to the rules we specify, may take a few tries to get right. The idea is to match the result of a tail recursive trace done previously that is known to be correct.
+This ordering correctly results in~$120$, which matches our recursive trace. 
+Therefore, without loss of generality, we can conclude that we should update the accumulator variable before updating~$n$ in this circumstance.
+
+Determining the correct order of update, according to the rules we specify, may take a few tries to get right. The idea is to match the result of previously-verified tail recursive traces.
 
 \subsection{\emph{$TR_\mathbf{Ret}$}:}
-In our final stage of translation, we add the necessary return statement(s) that serve to return the accumulated result from our loop. We highlighted these values in \textcolor{darkgreen}{green} during the highlighting/color-coding stage.
-
+In our final translation stage, we add the necessary return statement(s) that serve to return the accumulated result from our loop. 
+We highlighted these return values in \textcolor{darkgreen}{green} during the highlighting/color-coding stage.
 
 \begin{lstlisting}[language=MyJava]
 static int fact(int n) {
@@ -332,25 +400,47 @@ static int fact(int n) {
 }
 \end{lstlisting}
 
-And that is it; the translation pipeline is complete, and we now know how to translate a tail recursive method into one that uses a loop.
+The translation pipeline is complete, and we now know how to mechanically translate a tail recursive method into one that uses a loop.
 
-The astute reader might question the need for a tail recursion-to-iteration translation schema. We mentioned the term tail call optimization in the previous section on recursion, and will now explain the relation to loops.
+The astute reader might question the need for a tail recursion-to-iteration translation schema. 
+We mentioned the term tail call optimization in the previous section on recursion, and will now explain the relation to loops.
 
-Recall the benefit of tail recursion over standard recursion: it uses only one (replaceable) activation record. Though, because we can translate any tail recursive method into an iterative algorithm, we forgo the stack in its entirety.
+Recall the benefit of tail recursion over standard recursion: it uses only one (replaceable) activation record. 
+Though, because we can translate any tail recursive method into an iterative algorithm, we forgo the stack in its entirety.
 
-From here we might ask a similar question: can we translate any standard recursive method into one that uses tail recursion (and by transitivity, iteration)? In general, the answer is yes, through a concept called \emph{continuation-passing style}\index{continuation-passing style}. Because of how difficult it is to implement continuations in Java, we will omit any further discussion, but interested readers should delve into functional programming if this equivalence is intriguing.
+From here we might ask a similar question: can we translate any standard recursive method into one that uses tail recursion (and by transitivity, iteration)? 
+In general, the answer is yes, through a concept called \emph{continuation-passing style}\index{continuation-passing style}. 
+Because of how difficult it is to implement continuations in Java, we will omit any further discussion, but interested readers should delve into functional programming if this equivalence is intriguing~\citep{eopl, tls, schemetlp}.
 
 \section{Iteration Constructs}
 
-Perhaps the related equivalence to tail recursion is too abstract for some to digest. Indeed, we believe the relationship is somewhat far-fetched at first glance, but after enough practice, it becomes clear. We will now discuss loops from a non-translation perspective. That is, if we assume the translation diagram from before, we are going straight from the problem statement $P$ to the iterative solution $I$.
+Perhaps the related equivalence to tail recursion is too abstract for some to digest. 
+Indeed, we believe the relationship is somewhat far-fetched at first glance, but after enough practice, it becomes clearer. 
+We will now discuss loops from a non-translation perspective. 
+That is, if we assume the translation diagram from before, we are going straight from the problem statement~$P$ to the iterative solution~$I$.
 
-As we stated, loops are statements in Java, meaning they do not, themselves, resolve to a value. Therefore any and all lines of code executed inside the body of a loop must be statements rather than expressions.
+As we stated before, loops are statements in Java, meaning they do not, themselves, resolve to a value. 
+Therefore, any and all lines of code executed inside the body of a loop must be statements rather than expressions.
 
-\myexample{Suppose we want to print the first one hundred prime integers. Recall the definition of primality: a positive integer $n$ is prime if it is divisible by only one and itself. Without loops, we would otherwise solve this task using recursion. Although summing prime values is not a too terribly complicated task, it requires a bit of a verbose set of methods, should we choose to do it tail recursively. Instead, let us try and use loops to our advantage. We want to continue looping until we have summed one hundred prime values. Fortunately there is exactly one correct test case for this method, so writing an elaborate test suite is superfluous.}
+\myexample{Suppose we want to print the first one hundred prime integers.} 
+Recall the definition of primality: a positive integer~$n$ is prime if it is divisible by only one and itself. 
+Without loops, we would otherwise solve this task using recursion. 
+Although summing prime values is not a too terribly complicated task, it requires a verbose set of methods, should we choose to do it tail recursively. 
+Instead, let's try and use loops to solve the problem. 
+We want to continue looping until we have summed one hundred prime values. 
+Fortunately, there is exactly one correct test case for this method, so writing an elaborate test suite is superfluous.
 
-Declaring an integer counter $c$ is mandatory. Our loop condition, therefore, is to continue so long as we have not reached one hundred prime values. When designing loop conditions, we ask ourselves the question, ``What should be true after the loop?,'' and design the condition around the answer. Our counter $c$ will be exactly one hundred upon loop completion, so the condition is the negated version of this expression.\footnote{Rather than \ttt{(!(c == 100))}, we can write \ttt{(c != 100)} to achieve the same effect.}
+Declaring an integer counter~$c$ is mandatory. 
+Our loop condition, therefore, executes so long as we have not encountered one hundred prime values. 
+When designing loop conditions, we ask ourselves the question, ``What should be true after the loop?,'' and design the condition around the answer. 
+Our counter~$c$ will be exactly one hundred upon loop completion, so the condition is the negated version of this expression.\footnote{Rather than \ttt{(!(c == 100))}, we can write \ttt{(c != 100)} to achieve the same effect.}
 
-Up next we need a method to determine if a value is prime. We presented the definition of primality before, and it is also known that we only need to check up to the square root of $n$ for primality. Let us design such a method, writing the appropriate tests. Our condition is to continue so long as a variable, $i$, is less than or equal to the square root of our input number. The variable $i$ serves as a counter towards our number; if we find that $n$ is not divisible by any numbers from two up to the square root of $n$, then it must be prime.\footnote{We cast the result of \ttt{Math.sqrt} to an integer because it returns a \ttt{double} rather than an \ttt{int} datatype.} Note the edge cases of zero and one, which are both non-prime.
+Up next, we need to write a method that determines the primality of an integer. 
+We presented the definition of primality before, and it is also known mathematically that we only need to check up to~$\sqrt{n}$ for primality~\citep{riesel}. 
+Let's design such a method, writing the appropriate tests. 
+The loop condition is to continue so long as a variable,~$i$, is less than or equal to the square root of our input number. 
+The variable~$i$ serves as a counter towards our number; if we find that~$n$ is not divisible by any numbers from two up to~$\sqrt{n}$, then it must be prime.\footnote{We cast the result of \ttt{Math.sqrt} to an integer because it returns a \ttt{double} rather than an \ttt{int} datatype.} 
+Note the edge cases of zero and one, both of which are non-prime.
 
 \begin{lstlisting}[language=MyJava]
 class SumPrimes {
@@ -415,7 +505,15 @@ class Prime {
 }
 \end{lstlisting}
 
-The primality tests pass, which means we can put \ttt{isPrime} to work inside of \ttt{sum100Primes}. The method logic is straightforward: initialize our counter c at one. We also need a variable to track the last-found prime integer, so we know from where to start the search. We will call this variable $l$ and initialize it to zero. Finally, a $\mathit{sum}$ variable accumulates the sum of each prime. Inside the loop, we declare another variable $v$, which serves as the value to check for primality, taking on the value of $l + 1$ (if it were just $l$, we would forever check the same value for primality!). Run $v$ through the \ttt{isPrime} method and, if it is prime, assign to $l$ the value of $v$, add $v$ to the sum, and increment $c$. Otherwise, increment $l$ by one.\footnote{We will note that this code is overly verbose for pedagogical purposes.}
+The primality tests pass, which means we can put \ttt{isPrime} to work inside of \ttt{sum100Primes}. 
+The method logic is straightforward: initialize our counter $c$ to one. 
+We also need a variable to track the last-found prime integer, so we know from where to start the search. 
+We will call this variable~$l$ and initialize it to zero. 
+Finally, a $\mathit{sum}$ variable accumulates the sum of each prime. 
+Inside the loop, we declare another variable~$v$, which serves as the value to check for primality, taking on the value of~$l + 1$ (if it were just~$l$, it would forever check the same value for primality!). 
+Run~$v$ through the \ttt{isPrime} method and, if it is prime, assign to~$l$ the value of~$v$, add~$v$ to the sum, and increment~$c$. 
+Otherwise, increment~$l$ by one.\footnote{We will note that this code is overly verbose for pedagogical purposes.}
+Running the code produces~$24133$: the desired answer.
 
 %\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -448,9 +546,11 @@ class SumPrimes {
 }
 \end{lstlisting}
 
-Running the code produces $24133$: the desired answer.
-
-\myexample{Suppose we want to compute the sum of the first $n$ odd reciprocals. That is, $\frac{1}{1} + \frac{1}{3} + \frac{1}{5} + \cdots + \frac{1}{2n-1}$. Again, we might do this recursively, but let us try and write an iterative algorithm. The signature is straightforward: we want to receive some integer $n$ and compute the sum of $n$ odd reciprocals. Our tests are trivial to write with the employment of a calculator.}
+\myexample{Suppose we want to compute the sum of the first~$n$ odd reciprocals.} 
+That is, $\frac{1}{1} + \frac{1}{3} + \frac{1}{5} + \cdots + \frac{1}{2n-1}$. 
+Again, we might choose to this recursively, but let's try and design an iterative algorithm. 
+Its signature is straightforward: the method receives some integer~$n$, and compute the sum of~$n$ odd reciprocals. 
+Our tests are trivial to write with the employment of a calculator.
 
 
 \begin{lstlisting}[language=MyJava]
@@ -472,7 +572,7 @@ class OddReciprocalSumTester {
 }
 \end{lstlisting}
 
-The implementation is similarly simple: we create a counter $c$ that increments so long as $c$ is not equal to $n$, accumulating the $\emph{sum}$ of $1$ divided by $2c-1$.
+The implementation is similarly simple: we create a counter~$c$ that increments so long as~$c$ is not equal to~$n$, accumulating the~$\emph{sum}$ of~$1$ divided by~$2c-1$.
 
 %\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -495,13 +595,22 @@ class OddReciprocalSum {
 }
 \end{lstlisting}
 
-Note the cast of the denominator from an \ttt{int} to a \ttt{double}; what happens if we omit the cast? Our tests fail because dividing two integers produces another integer, which is not desired when all of our numbers are less than or equal to one.\footnote{Equivalently, we might multiply $c$ by $2.0$, or subtract $1.0$; all of these coerce the \ttt{int} into a \ttt{double}, thereby allowing correct division.}
+Note the cast of the denominator from an \ttt{int} to a \ttt{double}; what happens if we omit the cast? 
+Our tests would fail, because dividing two integers produces another integer, which is not desired when all of our numbers are less than or equal to one.\footnote{Equivalently, we might multiply~$c$ by~$2.0$, or subtract~$1.0$; all of these coerce\index{type coercion}\index{coerce} the \ttt{int} into a \ttt{double}, thereby allowing correct division.}
 
-While loops are reserved for when cases of termination are unknown. That is, we may or may not know when a while loop condition becomes false. Thus far, all methods that we have written use deterministic and predictable termination cases; we increment a counter until hitting some upper-bound. The use of \ttt{while} is unnecessary in these circumstances due to the equivalent \ttt{for} construct.
+While loops are reserved for when we do not know the point of termination. 
+Thus far, all methods that we have written use predictable termination cases; we increment a counter until hitting an upper-bound. 
+The \ttt{while} loop is unnecessary in these circumstances due to the equivalent \ttt{for} construct.
 
-With a \ttt{for} loop, we provide three values: an \emph{initializer statement}, a conditional expression, and a \emph{step statement}. We have previously seen conditional expressions as they are the basis for our \ttt{while} condition. An initializer statement, as its name suggests, declares a variable and initializes it to some value. Stepping statements determine how to change a value between iterations of the loop. In our \ttt{while} loops, notice how we always incremented the counter by one at the end of the loop. Stepping statements take care of this for us, reducing the need for such simple statements in the loop body.
+With a \ttt{for} loop, we supply to it three constructs: an \emph{initializer statement}, a conditional expression, and a \emph{step statement}.
+We have previously seen conditional expressions being that they are the basis for our \ttt{while} loop condition. 
+An initializer statement, as its name suggests, declares a variable and initializes it to a value. 
+Stepping statements determine how to change a value between iterations of the loop. 
+In our \ttt{while} loops, notice how we always increment the counter by one at the end of the loop body. 
+Stepping statements take care of this action for us, reducing the need for such simple statements in the loop body.
 
-\myexample{Suppose we wish to write a program that returns the sum of the integers between two integers $a$ and $b$, inclusive. We know how many integers there are between $a$ and $b$, assuming $a \leq b$, so we should use a \ttt{for} loop to solve this problem.} 
+\myexample{Suppose we want to design a program that returns the sum of the integers between two integers~$a$ and~$b$, inclusive.} 
+We know a priori how many integers there are between~$a$ and~$b$, assuming~$a \leq b$, so we should use a \ttt{for} loop to solve this problem.
 
 %\enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -522,7 +631,8 @@ class SumIntervalTester {
 }
 \end{lstlisting}
 
-We want to iterate from $i = a$ so long as $i \leq b$. We use the variable $i$ out of convention; one could easily use any other unused identifier.
+We want to iterate from~$i = a$ so long as~$i \leq b$. 
+We use the variable~$i$ out of convention; one could easily use any other unused identifier.
 
 \begin{lstlisting}[language=MyJava]
 class SumInterval {
@@ -547,13 +657,20 @@ class SumInterval {
 }
 \end{lstlisting}
 
-\myexample{Let's write an example of an unpredictable loop; one that best suits the use of \ttt{while}. Suppose we want to manually compute the square root of some positive value, i.e., without Java's implementation. A simple algorithm to use is \emph{Newton's Approximation}:}
+\myexample{Let's write an example of an unpredictable loop; one that best suits the use of \ttt{while}.} 
+Suppose we want to manually compute the square root of some positive value, i.e., without Java's implementation. 
+A simple algorithm to use is \emph{Newton's Approximation}:
 
 \[
     g_{x+1} = \dfrac{\left(g_x + \dfrac{n}{g_x}\right)}{2}
 \]
 
-Where $g_x$ is called a ``guess.'' The idea is to continuously apply this formula until we are ``close enough'' to the square root. Close-enough is a heuristic whose value, when very small, increases the running time of our loop. Small values of $g_x$ indicate a closer approximation to the true square root of $n$. For instance, suppose $n=64$ and $\Delta=0.1$. Applying the formula (initializing $g_0$ to $n$) gets us the following trace:
+Where~$g_x$ is called a ``guess.'' 
+The idea is to continuously apply the Newton's Approximation formula until we are ``close enough'' to the square root. 
+``Close-enough'' is a heuristic whose value, when very small, increases the running time of our loop. 
+Small values of~$g_x$ indicate a closer approximation to the true square root of~$n$. 
+For instance, suppose~$n=64$ and~$\Delta=0.1$. 
+Applying the formula (initializing~$g_0$ to~$n$) gets us the following trace:
 
 \begin{align*}
 g_1 &= \dfrac{\left(64 + \dfrac{64}{64}\right)}{2} &= 32.500\\
@@ -563,7 +680,12 @@ g_4 &= \dfrac{\left(10.474 + \dfrac{64}{10.474}\right)}{2} &= 8.2921\\
 g_5 &= \dfrac{\left(8.2921 + \dfrac{64}{8.2921}\right)}{2} &= 8.0051\\
 \end{align*}
 
-At each iteration, we square the current guess and determine if the absolute difference between it and $n$ is less than the guess. When so, that iteration of $g_x$ is the square root approximation. Otherwise, we continue to approach the square root value. We cannot reasonably predict when this will occur (that is, how many iterations are necessary), so we use a \ttt{while} loop. Because there are multiple potential points of failure in this algorithm, we make sure to write an extensive test suite. The method itself is a re-telling of the mathematical definition with bits of Java syntax sprinkled about. 
+At each iteration, we square the current guess and determine if the absolute difference between it and~$n$ is less than the guess. 
+When so, that iteration of~$g_x$ is the square root approximation. 
+Otherwise, we continue to approach the square root value. 
+We cannot reasonably predict when this will occur (that is, how many iterations are necessary), so we use a \ttt{while} loop. 
+Because there are multiple potential points of failure in this algorithm, we make sure to write an extensive test suite. 
+The method itself is a re-telling of the mathematical definition with bits of Java syntax sprinkled about. 
 
 %\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -611,16 +733,26 @@ class NewtonApproximation {
 }
 \end{lstlisting}
 
-To decrease the level of accuracy, we of course should pass a different value for the $\mathit{delta}$ argument. Conversely, to see a higher level of precision, a $\mathit{delta}$ that is closer (but not equal to) to zero is necessary. Our implementation of the square root algorithm is far from optimal, but it exists to demonstrate the necessity of \ttt{while} loops. Though it is important to note that the expressive power of both \ttt{for} and \ttt{while} is largely irrelevant if we only concern ourselves with their semantics; they are equal in power. This means that any \ttt{for} loop is representable with a \ttt{while} and vice-versa. Depending on the circumstance, however, one might be preferable over the other. We reiterate that \ttt{for} loops should be used when we know how many iterations there are for a certain task, whereas \ttt{while} loops are for indeterminate termination conditions. 
+To decrease the level of accuracy, we should pass a different value for the~$\mathit{delta}$ argument. 
+Conversely, to see a higher level of precision, a~$\mathit{delta}$ that is closer (but not equal to) to zero is necessary. 
+Our implementation of the square root algorithm is far from optimal, but it exists to demonstrate the unapparent necessity of \ttt{while} loops. 
+Though, it is important to note that, the power of both \ttt{for} and \ttt{while} is largely irrelevant when we concern ourselves only with their semantics; they are equal in expressbility.
+This means that any \ttt{for} loop is representable with a \ttt{while} and vice-versa. 
+Depending on the circumstance, however, one might be preferable over the other. 
+We reiterate that \ttt{for} loops should be used when we know how many iterations there are for a certain task, whereas \ttt{while} loops are for indeterminate termination conditions. 
 
-\myexample{We will write one more example of first writing a recursive algorithm, then its tail recursive version, then its iterative counterpart. Suppose we want to write a method to determine the $n^\text{th}$ Fibonacci number. The \emph{Fibonacci sequence} is defined recursively as follows:}
+\myexample{We will write one more example of first writing a recursive algorithm, then its tail recursive version, then its iterative counterpart.} 
+Suppose we want to write a method to determine the~$n^\text{th}$ Fibonacci number. 
+The \emph{Fibonacci sequence} is defined recursively as follows:
+
 \begin{align*}
   \emph{Fib}(0) &= 0\\
   \emph{Fib}(1) &= 1\\
   \emph{Fib}(n) &= \emph{Fib}(n - 1) + \emph{Fib}(n - 2)
 \end{align*}
 
-Writing tests for a Fibonacci algorithm is trivial to do and propagates through to the other variants. So, writing tests for the standard recursive algorithm, assuming they are correct, allows us to easily write tests for the others!
+Writing tests for a Fibonacci algorithm is trivial to do and propagates through to the other variants. 
+So, writing tests for the standard recursive algorithm, assuming they are correct, allows us to easily propagate tests for the tail recursive and iterative algorithms.
 
 %\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -642,8 +774,9 @@ class FibonacciTester {
 }
 \end{lstlisting}
 
-The standard recursive algorithm is trivial to write but also horribly inefficient; because we make two recursive calls to $\emph{Fib}$, we end up computing the same data multiple times, resulting in an \emph{exponential time algorithm}\index{exponential time}. In other words, small inputs, e.g., $\emph{Fib}(40)$, will take a very long time to finish.
-
+The standard recursive algorithm is trivial to write, but is also horribly inefficient. 
+Because we make two recursive calls to $\emph{Fib}$, we end up computing the same data multiple times, resulting in an \emph{exponential time algorithm}\index{exponential time}. 
+In other words, small inputs, e.g., $\emph{Fib}(40)$, will take an absurdly long time to finish.
 
 \begin{lstlisting}[language=MyJava]
 class Fibonacci {
@@ -655,7 +788,12 @@ class Fibonacci {
 }
 \end{lstlisting}
 
-Our method works and tests pass, which is great, but we can do better by using tail recursion. The tail recursive variant, however, is slightly more complicated than prior tail recursive definitions due to the use of two accumulators. We use two values to compute the ``next'' Fibonacci number: the previous, and the previous' previous. So, storing these as values, say, $a$ and $b$, is sensible, where $a$ is the ``previous' previous,'' and $b$ is the previous. Thus, when making a tail recursive call, we assign $b$ as $a + b$, and $a$ as $b$. We must not forget the driver method!
+Our method works and all tests pass, which is great, but we can do better by using tail recursion. 
+The tail recursive variant, however, is slightly more complicated than prior tail recursive definitions, due to the need to use two accumulators. 
+We use two variables to compute the ``next'' Fibonacci number: the previous, and the previous' previous. 
+So, storing these values as variables, say,~$a$ and~$b$, is sensible, where~$a$ is the ``previous' previous,'' and~$b$ is the previous. 
+Thus, when making a tail recursive call, we assign~$b$ as~$a + b$, and~$a$ as~$b$. 
+We cannot forget the driver method!
 
 %\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]

@@ -165,7 +165,7 @@ For a full description with the exceptions to our generalization, view an ASCII 
 \myexample{Java returns the distance between the first non-equal characters in a string using \ttt{compareTo}.} 
 For instance, \ttt{"hello".compareTo("hi")} returns \ttt{-4} because the distance from the first non-equal characters, those being \ttt{\q{}e\q} and \ttt{\q{}\q}, is minus four characters, since \ttt{\q{}i\q{}} is greater than \ttt{\q{}e\q{}}. 
 If we compare \ttt{"hello"} against \ttt{"Hello"}, we get \ttt{32}, because according to the ASCII table, \ttt{\q{}h\q{}} corresponds to the integer~$104$, and \ttt{\q{}H\q{}} corresponds to the integer~$72$; their difference is $104 - 72$. 
-Of course, comparing \ttt{"hello"} against \ttt{"hello"} produces zero, indicating that they contain the same characters.
+Comparing \ttt{"hello"} against \ttt{"hello"} produces zero, indicating that they contain the same characters.
 
 Strings are \emph{indexed from zero}, which means that the characters in the string are located at \emph{indices} from zero to the length of the string minus one. 
 So, for example, in the string \ttt{"hello"}, the character \ttt{\q{}h\q{}} is at index zero, \ttt{\q{}e\q{}} is at index one, \ttt{\q{}l\q{}} is at index two, \ttt{\q{}l\q{}} is at index three, and \ttt{\q{}o\q{}} is at index four. 
