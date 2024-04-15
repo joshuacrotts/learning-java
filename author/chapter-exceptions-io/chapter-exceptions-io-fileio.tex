@@ -110,7 +110,7 @@ class FileReaderWriterExamples {
 
 If we open \ttt{file2.out}, we see that it contains \ttt{"Here is a string"} on one line, followed by \ttt{"Here is another string"} on the next line. 
 Then, we might expect it to output the numeric strings \ttt{"9"}, \ttt{"71"}, and \ttt{"33"} all on the same line. 
-The \ttt{write} method coerces (valid) integers into their ASCII character counterparts, meaning that the file contains the tab character, an uppercase \ttt{`G'}, and the exclamation point \ttt{`!'}. 
+The \ttt{write} method coerces (valid) integers into their ASCII character counterparts, meaning that the file contains the tab character, an uppercase \ttt{\q{G}\q{}}, and the exclamation point \ttt{`!'}. 
 As we will soon demonstrate, working directly with \ttt{FileReader} and \ttt{FileWriter} is rarely advantageous. 
 
 The problem with the file input and output stream classes, as well as the file reader and writer classes, is that they interact directly with the operating system using low-level operations. 

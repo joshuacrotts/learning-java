@@ -539,7 +539,7 @@ Priority queues base priority on one of two contributing factors: either the \em
 
 A \emph{comparator}\index{comparator} is a way of comparing two arbitrary ``things,'' whether these things are numbers (i.e., the wrapper classes), strings, or another kind of object, we can define custom ways of comparing \emph{any} non-primitive datatype.
 
-\myexample{Let us design a \ttt{Comparator}\index{\ttt{Comparator}} for prioritizing strings that start with the lowercase letter \ttt{`p'}. Comparators are constructed like other objects via \ttt{new}, but something interesting about their implementation is that we must specify \emph{how} to compare two objects. Therefore when we create a new instance of \ttt{Comparator} we must also override its \ttt{compare} method. This method's signature varies based on the parameterized type provided to the comparator, but since we want to compare strings, we should declare it as follows:}
+\myexample{Let us design a \ttt{Comparator}\index{\ttt{Comparator}} for prioritizing strings that start with the lowercase letter \ttt{\q{p}\q{}}. Comparators are constructed like other objects via \ttt{new}, but something interesting about their implementation is that we must specify \emph{how} to compare two objects. Therefore when we create a new instance of \ttt{Comparator} we must also override its \ttt{compare} method. This method's signature varies based on the parameterized type provided to the comparator, but since we want to compare strings, we should declare it as follows:}
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;

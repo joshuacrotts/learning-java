@@ -1,8 +1,13 @@
 \section{Conditionals}
 
-Decisions are otherwise called \emph{conditionals}. We have seen conditionals before, but in this section we will reintroduce them as a concept and discuss the intricacies of Java's conditionals, including the different logical operators and behaviors thereof.
+Computer programs constantly make decisions through \emph{conditionals}. 
+We have seen conditionals before, but in this section we will reintroduce them as a concept and discuss the intricacies of Java's conditionals, including the different logical operators and behaviors thereof.
 
-In Java, we use \ttt{if} to designate a branch in code. We supply to it a conditional expression, or a \emph{predicate}\index{predicate}, which resolves to either true or false. In essence, predicates resolve to boolean values. For example, if we want to return $5$ if two integers $a$ and $b$ are the same value, we write the following:
+In Java, we use \ttt{if} to designate a branch in code. 
+We supply to it a conditional expression, or a \emph{predicate}\index{predicate}, which resolves to either true or false. 
+In essence, predicates resolve to boolean values. 
+For example, if we want to return~$5$ when two integers~$a$ and~$b$ are the same value, we write the following:
+
 \begin{lstlisting}[language=MyJava]
 static int foo() {
   int a = ...;
@@ -11,7 +16,10 @@ static int foo() {
   return 0;
 }
 \end{lstlisting}
-The \ttt{==} operator compares primitive values for equality, as we stated in our Java primer. If we want to use the result of a (boolean) method as the condition, we might want to inline the invocation. 
+
+The \ttt{==} operator compares primitive values for equality, as we stated in our Java primer. 
+If we want to use the result of a (boolean) method as the condition, we might want to inline the invocation. 
+
 %\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 static boolean bar() {
@@ -23,9 +31,16 @@ static int foo() {
   return 0;
 }
 \end{lstlisting}
-We negate conditional expressions using the exclamation point operator, i.e., \ttt{!}. That is, if $e$ is an expression that returns a boolean value, $\ttt{!}e$ flips the output value from true to false or vice versa. We can chain conditional expressions together using the logical AND/OR operators, namely \ttt{\&\&} and \ttt{||} respectively. All boolean subexpressions that comprise a larger expression, conjoined by \ttt{\&\&}, must be true for the overall expression to be true. On the other hand, when boolean expressions are conjoined by \ttt{||}, only one must be true. 
 
-Both logical AND and logical OR are called \emph{short-circuiting operators}. Regarding the former, if we have the expression $e = e_1 \;\ttt{\&\&}\;e_2$, and $e_1$ resolves to false, then $e_2$ is not evaluated, because both operands must be true for the result of the AND to be true. Logical OR works similarly; if we have the expression $e = e_1\;\ttt{||}\;e_2$, and $e_1$ resolves to true, then $e_2$ is not evaluated, because only one operand has to be true for the result of the OR to be true.
+We negate conditional expressions using the exclamation point operator, i.e., \ttt{!}. 
+That is, if~$e$ is an expression that returns a boolean value,~$\ttt{!}e$ flips the output value from true to false and vice versa. 
+We can chain conditional expressions together using the logical AND/OR operators, namely \ttt{\&\&} and \ttt{||} respectively. 
+All boolean subexpressions that comprise a larger expression, conjoined by \ttt{\&\&}, must be true for the overall expression to be true. 
+On the other hand, when boolean expressions are conjoined by \ttt{||}, only one must be true for the overall expression to be true. 
+
+Both logical AND and logical OR are \emph{short-circuiting operators}. 
+Regarding the former, if we have the expression $e = e_1 \;\ttt{\&\&}\;e_2$, and~$e_1$ resolves to false, then~$e_2$ is not evaluated; recall that both operands of a logical AND must be true for the result to be true, so evaluating the second operand is unnecessary.
+Logical OR works similarly: if we have the expression $e = e_1\;\ttt{||}\;e_2$, and $e_1$ resolves to true, then $e_2$ is not evaluated, because only one operand has to be true for the result of the OR to be true.
 
 \begin{lstlisting}[language=MyJava]
 static int foo() {
@@ -40,7 +55,14 @@ static int foo() {
 }
 \end{lstlisting}
 
-In addition to \ttt{if}, Java also has \ttt{else} and \ttt{else if} for extending the possible outcomes of a condition. When the predicate of a preceding \ttt{if} is false and an \ttt{else} block is attached, its code is evaluated. Moreover, when the predicate of a preceding \ttt{if} is false and an \ttt{else if} block is attached, the condition to the \ttt{else if} is evaluated. The former pairing represents a binary outcome, whereas the latter corresponds to more than two possible outcomes. Multiple \ttt{if} statements ``stacked above one another'' results in their sequential evaluation since Java assumes they are disjoint code segments. The \ttt{else if} block, on the contrary, executes only when its preceding \ttt{if} condition resolves to false. In the following code listing, we show an example of two sets of conditional statements; the former uses only \ttt{if} and the latter takes advantage of \ttt{if}, \ttt{else if}, and \ttt{else}. Accordingly, the left-hand listing returns $20$ and the right-hand listing returns $10$.
+In addition to \ttt{if}, Java also has \ttt{else} and \ttt{else if} for extending the possible outcomes of a condition. 
+When the predicate of a preceding \ttt{if} is false and an \ttt{else} block is attached, its code is evaluated. 
+Moreover, when the predicate of a preceding \ttt{if} is false and an \ttt{else if} block is attached, the condition to the \ttt{else if} is evaluated. 
+The former pairing represents a binary outcome, whereas the latter corresponds to more than two possible outcomes. 
+Multiple \ttt{if} statements ``stacked above one another'' results in their sequential evaluation, since Java assumes they are disjoint code segments. 
+The \ttt{else if} block, on the contrary, executes exactly when its preceding \ttt{if} condition resolves to false. 
+In the following code listing, we show an example of two sets of conditional statements; the former uses only \ttt{if} and the latter takes advantage of \ttt{if}, \ttt{else if}, and \ttt{else}. 
+Accordingly, the left-hand listing returns~$20$ and the right-hand listing returns~$10$.
 
 \begin{clrr}[]{}
 \begin{lstlisting}[language=MyJavaNF]
@@ -66,8 +88,13 @@ static int foo() {
 \end{lstlisting}
 \end{clrr}
 
-\myexample{Suppose we want to translate a \ttt{String} grade into its grade-point average equivalent, treating pluses and minuses as grade increment or decrements. Our grading schema has no grade higher than a $4.0$, and all failing grades result in a zero. After writing the tests, we can use a series of \ttt{if} and \ttt{else if} statements as a case analysis on the letter grade. Afterwards, once we have the base GPA according to the letter, we apply the plus or minus given the aforementioned criteria. When determining the initial GPA value, were we to use a series of \ttt{if} statements as opposed to \ttt{if}/\ttt{else if}/\ttt{else}, every predicate would need to be evaluated regardless of whether it is meaningful. By ``meaningful,'' we mean to suggest that, for instance, once we know the GPA is a 4.0, it makes no sense to determine if the grade is a \ttt{`B'}, since we know from the previous branch that it is an \ttt{`A'}. The \ttt{else if} statements are skipped over if a preceding condition resolves to true.}
-
+\myexample{Suppose we want to translate a \ttt{String} grade into its grade-point average equivalent, treating pluses and minuses as fractional grade increment or decrements.} 
+Our grading schema has no grade higher than a~$4.0$, and all failing grades (i.e., F+, F, F-) result in a~$0.0$ grade-point average. 
+After writing the tests, we can use a series of \ttt{if} and \ttt{else if} statements as a case analysis on the letter grade. 
+Once we have the base GPA according to the provided letter, we apply the plus or minus given the aforementioned criteria. 
+When determining the initial GPA value, were we to use a series of \ttt{if} statements as opposed to \ttt{if}/\ttt{else if}/\ttt{else}, every predicate would need to be evaluated regardless of whether it is meaningful. 
+By ``meaningful,'' we mean to suggest that, for instance, once we know the GPA is a~$4.0$, it makes no sense to determine if the grade is a \ttt{\q{B}\q{}}, since we know from the previous branch that it is an \ttt{\q{A}\q{}}. 
+The \ttt{else if} statements are skipped over if a preceding condition resolves to true.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -114,9 +141,18 @@ class GpaCalculator {
 }
 \end{lstlisting}
 
-The latter two \ttt{if} statements, as we said, apply increments or decrements based on whether the grade is a \ttt{+} or a \ttt{-}. We use the not-equal-to operator, \ttt{!=}, to circumvent having to apply a negation on the outside, i.e., \ttt{!(letter == `A')}. The bodies of these cases, however, appear to be foreign, and indeed, we introduce the \emph{ternary operator}. Because \ttt{if} is a statement, there is no way to inline a conditional into an expression. The ternary operator is a fix to this problem. We read ${r = p\;?\;c\;:\;a}$ as follows: ``if $p$ is true, assign $c$ to $r$, otherwise assign $a$ to $r$.'' Inlining conditional expressions in this fashion reduces code clutter but should be used sparingly. We could write all \ttt{if} statements as ternary operations, but doing so would obfuscate our logic.
+The latter two \ttt{if} statements, as we said, apply increments or decrements based on whether the grade is a \ttt{+} or a \ttt{-}.
+We use the not-equal-to operator \ttt{!=} to circumvent having to apply a negation on the outer condition, i.e., \ttt{!(letter == \q{}A\q{})}. 
+The bodies of these cases, however, are unfamiliar; here we introduce the \emph{ternary operator}\index{ternary operator}\index{conditional expression}\index{ternary expression}. 
+Because \ttt{if} is a statement, there is no way to inline a conditional into an expression. 
+Ternary operators are the remedy to this problem. 
+We read ${r = p\;?\;c\;:\;a}$ as follows: ``if $p$ is true, assign $c$ to $r$, otherwise assign $a$ to $r$.'' 
+Inlining conditional expressions in this fashion reduces code clutter, but should be used sparingly. We could write all \ttt{if} statements as ternary operations, but doing so possibly obfuscates the logic of our code.
 
-Aside from the `\ttt{if}'/`\ttt{else if}'/`\ttt{else}' trio, plus the ternary operator, Java has the \ttt{switch}/\ttt{case} statements, which serve to help simplify case analysis problems. A \ttt{switch} statement receives an expression $e$ that resolves to some value $v$. Inside the \ttt{switch} exists \ttt{case} statements, corresponding to possible outcomes of $e$'s evaluation. For instance, if we wanted to write a method that determines the number of days there are in a given (non-leap year) month, we might be inclined to use several \ttt{if} statements, which is prone to errors. Let us see the answer to this problem using \ttt{switch} and \ttt{case} statements.
+Aside from the `\ttt{if}'/`\ttt{else if}'/`\ttt{else}' trio, plus the ternary operator, Java has the \ttt{switch}/\ttt{case} statements, which serve to help simplify repetitive case analysis problems. 
+A \ttt{switch} statement receives an expression~$e$ that resolves to some value~$v$. 
+Inside the \ttt{switch} block exists \ttt{case} statements, corresponding to outcomes of $e$'s evaluation. 
+For instance, if we wanted to design a method that determines the number of days there are in a given (non-leap year) month, we might be inclined to use several \ttt{if} statements. Instead, let's see the answer to this problem using \ttt{switch} and \ttt{case} statements.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -167,4 +203,11 @@ class MonthToDays {
 }
 \end{lstlisting}
 
-We evaluate $m$ inside the \ttt{switch} statement, and it resolves to one of twelve possible strings, assuming the input is a valid and capitalized month. If, for instance, the string is \ttt{"February"}, we assign $\mathit{days}$ to $28$ and perform a \ttt{break}. Cases that comprise a \ttt{switch} block can ``fall through'' to the next case, meaning that if we did not insert a \ttt{break}, the program would fall all the way to the \ttt{default} case and assign $31$ to $\mathit{days}$. Default cases correspond to ``anything other data,'' similar to \ttt{else} blocks. In our case, we place all months that have thirty-one days in the default case to reduce the number of lines in our code. In the case of a month having thirty days, there are four possibilities, and we stack these atop one another to state that these months should have $30$ assigned to $\mathit{days}$. If we wanted to omit the \ttt{break} statements, we might instead inline \ttt{return} statements directly, since we do not do anything aside from return $\mathit{days}$ at the end of the method. Of course, this solution only works when the resulting target of a \ttt{switch} block \emph{is} the desired value.
+We evaluate the argument~$m$ inside the \ttt{switch} statement, and it resolves to one of twelve possible strings, assuming the input is a valid and capitalized month. 
+If, for instance, the string is \ttt{"February"}, we assign $\mathit{days}$ to~$28$ and perform a \ttt{break}. 
+Cases that comprise a \ttt{switch} block can ``fall through'' to the next case, meaning that if we did not insert a \ttt{break}, the program would fall all the way to the \ttt{default} case and assign~$31$ to $\mathit{days}$. 
+Default cases correspond to ``anything other data,'' akin to \ttt{else} blocks. 
+In our example, we place all months that have thirty-one days in the default case to reduce the number of lines in our code. 
+When a month has thirty days, there are four possibilities, and so we stack these atop one another to state that these months should have~$30$ assigned to $\mathit{days}$. 
+Should we wanted to omit \ttt{break} statements, we might instead inline \ttt{return} statements directly, since nothing else occurs outside the \ttt{switch} block aside from return $\mathit{days}$ at the end of the method. 
+Of course, this solution only works when the resulting target of a \ttt{switch} block \emph{is} the desired value.
