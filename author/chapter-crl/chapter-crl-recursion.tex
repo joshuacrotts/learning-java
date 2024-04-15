@@ -1,9 +1,13 @@
 \section{Recursion}
 
-In this section we reintroduce recursion as a means of problem decomposition and repetition. We present two forms: standard recursion and tail recursion, as well as the issues that come with both in Java. The discussion starts with a review of basic arithmetic and how it is translatable into recursion.
+In this section we reintroduce recursion as a means of problem decomposition and repetition. 
+We present two forms: standard recursion and tail recursion, as well as the issues that come with both forms in Java. 
+The discussion starts with a review of basic arithmetic and its relation to recursion.
 
 \subsection{Standard Recursion}
-You may or may not have seen recursion before, but in theory the concept is quite simple: a method $f$ is \emph{recursive} if, somewhere in the definition of \emph{f}, it invokes itself. For example, in the following code segment, we define $f$ to be a method of arbitrary arguments that calls itself from its body. 
+You may or may not have seen recursion before, but in theory the concept is quite simple: a method~$f$ is \emph{recursive} if, somewhere in the definition of \emph{f}, it invokes itself. 
+For example, in the following code segment, we define~$f$ to be a method of arbitrary arguments that calls itself from its body. 
+
 \begin{verbnobox}[\small]
 static int f(...) {
   ...
@@ -11,15 +15,30 @@ static int f(...) {
   ...
 }
 \end{verbnobox}
-Some may question the need for recursive methods, as it appears to be circular; why would we ever want a method to call itself? There are two reasons, where the former is what we consider to be less significant than the latter:
+
+Some may question the need for recursive methods, as it appears to be circular; why would we ever want a method to call itself? 
+There are two reasons, where the former is what we consider to be a less significant reason than the latter:
 
 \begin{enumerate}
     \item It allows the programmer to repeat a given segment of code.
     \item We can compose the solution to a big problem by combining the solutions to smaller problems.
 \end{enumerate}
-So, we may certainly use recursion to repeat a task and, by transitivity, we will do that, but we primarily write recursive methods to solve some large problem by breaking it down into smaller problems that we know how to solve.
 
-\myexample{Let us consider the question of addition. Consider a context where we have access to only three methods: \ttt{addOne}, \ttt{subOne}, and \ttt{isZero}, all of which are trivially defined. We also have access to conditional statements and method calls. Finally, we have an identity that $m + 0 = m$ for any natural number $m$. Here's the problem that we want to solve: we want to add two natural numbers $m$ and $n$, but how do we do that? Think about how humans calculate the sum of two natural numbers (perhaps some do it differently from others, but the general process is the same). Since we do not have a \ttt{+} operator in this context, we have to try a different approach. Recall the identity that we have at our disposal: $m + 0 = m$. Is there a way we can make use of the identity? Imagine that we want to solve $3 + 4$ in this context. Can we rewrite this expression that takes advantage of those methods that we have at our disposal? Indeed, we can rewrite this as a series of calls to \ttt{subOne} and \ttt{addOne}, but we will first show this in math notation.}
+So, we may certainly use recursion to repeat a task, but we primarily design recursive methods to solve large problems by breaking them down into small, simple problems that we know how to solve.
+
+\myexample{Let's consider the question of addition.} 
+Consider a context where we have access to only three methods: \ttt{addOne}, \ttt{subOne}, and \ttt{isZero}, all of which are trivially defined. 
+We also have access to conditional statements and method calls. 
+Finally, we have an identity that~$m + 0 = m$ for any natural number~$m$. 
+Here's the problem that we want to solve: we want to add two natural numbers~$m$ and~$n$, but how do we do that? 
+Think about how humans calculate the sum of two natural numbers (perhaps some do it differently from others, but the general process is the same). 
+Since we do not have a \ttt{+} operator in this context, we have to try a different approach. 
+Recall the identity that we have at our disposal: $m + 0 = m$. 
+Is there a way we can make use of the identity? 
+Imagine that we want to solve~$3 + 4$ in this context. 
+Can we rewrite this expression that takes advantage of those methods that we have at our disposal? 
+Indeed, we can rewrite $3+4$ as a series of calls to \ttt{subOne} and \ttt{addOne}, but we will first show this idea in math notation.
+
 \begin{align*}
     &= 3 + 4\\
     &= (3 + 3) + 1\\
@@ -27,9 +46,19 @@ So, we may certainly use recursion to repeat a task and, by transitivity, we wil
     &= (((3 + 1) + 1) + 1) + 1\\
     &= ((((3 + 0) + 1) + 1) + 1) + 1
 \end{align*}
-To solve $3 + 4$, we need to solve $3 + 3$, which means we need to solve $3 + 2$, which means we need to solve $3 + 1$, which means we need to solve $3 + 0$. Substituting $3$ for $m$ gives us the identity, meaning this expression resolves to $m$, namely $3$. Recursively breaking down a problem into smaller problems is called \emph{invoking the recursion}. Namely, we invoke the function of interest, \ttt{+}, inside its own definition. As part of this, we decrement $n$ by one in attempt to head towards the identity, or the problem that we know how to solve. Such a problem is called the \emph{base case} to our recursive method. How do we know what the base case is for this particular problem? We use our predicate for detecting if a value is zero, of course.
 
-We still have work to do after reaching the base case, however. Even though we may substitute $3+0$ for $3$, we have to add one to these resulting values. Let us see what this looks like.
+To solve $3 + 4$, we need to solve $3 + 3$, which means we need to solve $3 + 2$, which means we need to solve $3 + 1$, which means we need to solve $3 + 0$. 
+Substituting~$3$ for~$m$ produces the identity, meaning this expression resolves to~$m$, namely~$3$. 
+Recursively breaking down a problem into smaller problems is called \emph{invoking the recursion}. 
+Namely, we invoke the method of interest, \ttt{+}, inside its own definition. 
+As part of this, we decrement~$n$ by one in attempt to head towards the identity, or the problem that \emph{we know} how to solve. 
+Such a problem is called the \emph{base case} to a recursive method. 
+How do we know when and where to analyze~$m$ as a base case? 
+We know that~$m$ is the base case when~$n$ is zero because of the known identity.
+
+We still have work to do after reaching the base case, however. 
+Even though we may substitute $3+0$ for $3$, we have to add one to these resulting values. Let's examine this.
+
 \begin{align*}
     &= ((((3 + 0) + 1) + 1) + 1) + 1\\
     &= (((3 + 1) + 1) + 1) + 1\\
@@ -38,7 +67,15 @@ We still have work to do after reaching the base case, however. Even though we m
     &= 6 + 1\\
     &= 7
 \end{align*}
-Upon reaching the base case, using the pieces generated by the recursion, we create the solution to our overall problem. In other words, to solve $3 + 1$, we had to solve $3 + 0$, whose base case resolves to $3$. We can walk back up this series of recursive calls, filling in the gaps to the previously-unknown solutions. Because $3 + 0 = 3$, we know the answer to $3 + 1$. This propagates all the way back through the recursive calls and we arrive at our desired solution of $7$. Traversing through these recursive calls backwards while building the solution to the overall problem is called \emph{unwinding the recursion}. Now that we understand the logic of our problem, we can encode it into the Java language. First, of course, we want to design our tests.
+
+Upon reaching the base case, using the pieces generated by the recursion, we create the solution to our overall problem. 
+In other words, to solve $3 + 1$, we had to solve $3 + 0$, whose base case resolves to~$3$. 
+We subsequently walk back up through the series of recursive calls, filling in the gaps to previously-unknown solutions. 
+Because $3 + 0 = 3$, we know the answer to $3 + 1$. 
+The substitution continuously propagates back through the recursive calls, and we arrive at our desired solution of~$7$. 
+Traversing through the recursive calls backwards, while building the solution to the overall problem, is called \emph{unwinding the recursion}. 
+Now that we understand the logic of our problem, let's design the method in Java. 
+First, of course, we want to design our tests.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -49,10 +86,10 @@ class AddTester {
   @Test
   void testAdd() {
     assertAll(
-      () -> assertEquals(7, Add.add(3, 4)),
-      () -> assertEquals(12, Add.add(11, 1)),
-      () -> assertEquals(6, Add.add(0, 6)),
-      () -> assertEquals(6, Add.add(6, 0)));
+      () -> assertEquals(7, add(3, 4)),
+      () -> assertEquals(12, add(11, 1)),
+      () -> assertEquals(6, add(0, 6)),
+      () -> assertEquals(6, add(6, 0)));
   }
 }
 \end{lstlisting}
@@ -69,7 +106,10 @@ class Add {
   }
 }
 \end{lstlisting}
-Our recursive implementation is nothing more than restating the mathematical definition, which is certainly convenient. Let us trace through a sequence of recursive calls from a method invocation.
+
+Our recursive implementation is nothing more than a restatement of the mathematical definition, which is convenient. 
+Let's trace through a sequence of recursive calls from invoking \ttt{add(3, 4)}.
+
 \begin{align*}
     \text{Is }\ttt{4} \text{ zero?} &\text{ No! }\ttt{return addOne(add(3, 3))}\\
     \text{Is }\ttt{3} \text{ zero?} &\text{ No! }\ttt{return addOne(add(3, 2))}\\
@@ -77,7 +117,9 @@ Our recursive implementation is nothing more than restating the mathematical def
     \text{Is }\ttt{1} \text{ zero?} &\text{ No! }\ttt{return addOne(add(3, 0))}\\
     \text{Is }\ttt{0} \text{ zero?} &\text{ Yes! }\ttt{return 3.}
 \end{align*}
+
 Once we reach the base case, we unwind the recursive calls, substituting our known values for their previously-unknown values.
+
 \begin{align*}
     \text{We now know }\ttt{add(3, 0)} \text{ is }\ttt{3}\text{. So, } &\ttt{return addOne(add(3, 0))} \text{ is } \ttt{return 4}\\
     \text{We now know }\ttt{add(3, 1)} \text{ is }\ttt{4}\text{. So, } &\ttt{return addOne(add(3, 1))} \text{ is } \ttt{return 5}\\
@@ -85,19 +127,28 @@ Once we reach the base case, we unwind the recursive calls, substituting our kno
     \text{We now know }\ttt{add(3, 3)} \text{ is }\ttt{3}\text{. So, } &\ttt{return addOne(add(3, 3))} \text{ is } \ttt{return 7}\\
     \text{We now know }\ttt{add(3, 4)} \text{ is }\ttt{7}\text{. So, } &\text{we are done.} 
 \end{align*}
-Recursion, as we stated before, composes the solution to a large problem by first solving smaller problems.
 
-\myexample{Consider the factorial mathematical operation. The factorial of a natural number $n$ obeys the following definition:}
+Recursion, as we stated before, composes the solution to a large problem by first solving smaller ``easier'' problems.
+
+\myexample{Consider the factorial mathematical operation.}
+The factorial of a natural number~$n$ obeys the following definition:
+
 \begin{align*}
     0! &= 1\\
     n! &= n \cdot (n - 1) \cdot (n - 2) \cdot \ldots \cdot 1
 \end{align*}
-What is interesting about factorial is its relation to recursion. To solve $n!$, we need to solve $(n-1)!$, which means we need to solve $(n-2)!$, all the way down to our base case of $0!=1$. Rewriting the prior definition to instead use recursion gets us the following: 
+
+Factorial is a naturally-recursive mathematical operation. 
+To solve~$n!$, we need to solve $(n-1)!$, which means we need to solve $(n-2)!$, all the way down to our base case of $0!=1$. 
+Rewriting the prior definition to use explicit recursion gets us the following: \
+
 \begin{align*}
     0! &= 1\\
     n! &= n \cdot (n - 1)!
 \end{align*}
-We should trace through a factorial invocation to see its behavior.
+
+Let's trace through a factorial invocation.
+
 \begin{align*}
     5! &= 5 \cdot 4!\\
     4! &= 4 \cdot 3!\\
@@ -105,7 +156,12 @@ We should trace through a factorial invocation to see its behavior.
     2! &= 2 \cdot 1!\\
     1! &= 1 \cdot 0!
 \end{align*}
-So, after the recursive calls, we reach our base case. We still have work to do afterwards much like \ttt{add}. Rather than \ttt{addOne}, we extend our context to include multiplication for the sake of brevity, and use that as an operation. Therefore when unwinding the recursive calls we get the following trace:
+
+So, after the recursive calls, we hit our base case. 
+We still have work to do afterwards, much like how \ttt{add} unwinds its recursion. 
+Rather than \ttt{addOne}, we extend our context to include multiplication for the sake of brevity, and use that as an operation. 
+Therefore, when unwinding the recursive calls, we get the following trace:
+
 \begin{align*}
 0! &= 1\\
 1! &= 1 \cdot 1\\
@@ -115,7 +171,9 @@ So, after the recursive calls, we reach our base case. We still have work to do 
 5! &= 5 \cdot 24\\
    &= 120
 \end{align*}
-Now let us encode this into Java, again with tests taking precedence over the method definition.
+
+Now let's design the \tt{factorial} method in Java, again with tests taking immediate precedence over the method definition.
+
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -144,7 +202,9 @@ class Factorial {
   }
 }
 \end{lstlisting}
-Once more will we derive a trace, but this time of the \ttt{fact} method.
+
+Once more will we derive a trace, but this time of the \ttt{fact} method when invoked with~$5$.
+
 \begin{align*}
     \text{Is }\ttt{5} \text{ zero?} &\text{ No! }\ttt{return 5 * fact(4)}\\
     \text{Is }\ttt{4} \text{ zero?} &\text{ No! }\ttt{return 4 * fact(3)}\\
@@ -153,7 +213,9 @@ Once more will we derive a trace, but this time of the \ttt{fact} method.
     \text{Is }\ttt{1} \text{ zero?} &\text{ No! }\ttt{return 1 * fact(0)}\\
     \text{Is }\ttt{0} \text{ zero?} &\text{ Yes! }\ttt{return 1}
 \end{align*}
+
 Upon arriving at the base case, we begin to unwind the recursive calls.
+
 \begin{align*}
     &\text{We now know }\ttt{fact(0)} \text{ is }\ttt{1}\text{. So, } \ttt{return 1 * 1} \text{ is } \ttt{return 1}\\
     &\text{We now know }\ttt{fact(1)} \text{ is }\ttt{2}\text{. So, } \ttt{return 2 * 1} \text{ is } \ttt{return 2}\\
@@ -165,11 +227,24 @@ Upon arriving at the base case, we begin to unwind the recursive calls.
 Voil\`a, we get our desired solution.
 
 \subsection{Tail Recursion and Accumulators}
-In the previous section we discussed recursion, or what we will refer to as \emph{standard recursion}. This style of recursion is popular because of its ease-of-use and relative correlation to mathematical definitions. Aside from this, unfortunately, there is a significant problem with standard recursion: it is a memory hog and potential recipe for disaster. The reason does not easily present itself to the programmer, and we have to dive deeper into how Java makes method calls.
+In the previous section, we discussed recursion, or what we will refer to as \emph{standard recursion}\index{standard recursion}. 
+This style of recursion is popular because of its ease-of-use and relative correlation to mathematical definitions. 
+Unfortunately, there is a significant problem with standard recursion: it is a memory hog and potential recipe for disaster. 
+The reason does not easily present itself to the programmer, and we have to dive deeper into how Java makes method calls to fully explain what goes awry.
 
-Each time Java invokes a method, it pushes an \emph{activation record} to its \emph{method call stack}. The call stack is a location in memory where all method invocations reside. Activation records contain information about the method that was called, such as the arguments, the number of locally-defined variables, and other miscellaneous data. More importantly, activation records designate the ``return location'' of a method. When a method call returns, it is popped off the call stack. The stack memory, or lack thereof, is the root cause of problems with our standard recursion. Let us demonstrate this predicament with an example trace of \ttt{add} whose second argument, namely $n$, is incredibly large; over two million.
+Each time Java invokes a method, it pushes an \emph{activation record}\index{activation record}\index{stack frame} to its \emph{method call stack}\index{method call stack}. 
+The call stack is a location in memory where all method invocations reside. 
+Activation records contain information about the method that was called, such as its arguments, the locally-defined variables, and other miscellaneous data. 
+More importantly, activation records designate the ``return location'' of a method. 
+When a method call returns, it is popped off the top of the call stack. 
+The call stack's memory, or lack thereof, is the root cause of problems with standard recursion. 
+Let us demonstrate this predicament with an example trace of \ttt{add} whose second argument is incredibly large; over two million.
 
-As we stated, calling a method pushes its activation record to the method call stack, so invoking \ttt{add(3, 2000000)} pushes one record. Then, because two million is certainly not zero, we then recursively call \ttt{add(3, 1999999)} and push that record to the call stack. This idea continues until we reach a point where there is not enough memory to push another activation record to the (call) stack, in which a \ttt{StackOverflowException} is thrown by the Java Virtual Machine. We want a way of writing recursive algorithms without having to waste so much memory and risk a stack overflow of the call stack. A potential solution to our problem is via \emph{tail recursion}\index{tail recursion} through \emph{accumulator-passing style}\index{accumulator-passing style}.
+As we stated, calling a method pushes its activation record to the method call stack, so invoking \ttt{add(3, 2000000)} pushes one record. 
+Then, because two million is certainly not zero, we then recursively call \ttt{add(3, 1999999)} and push that record to the call stack. 
+This idea continues until we reach a point where there is not enough memory to push another activation record onto the (call) stack, in which a \ttt{StackOverflowException} is thrown by the Java Virtual Machine. 
+We need a way of writing recursive algorithms without having to waste so much memory and risk a stack overflow of the call stack. 
+A potential solution to our problem is via \emph{tail recursion}\index{tail recursion} through \emph{accumulator-passing style}\index{accumulator-passing style}.
 
 \begin{figure}
 \begin{center}
@@ -195,9 +270,18 @@ As we stated, calling a method pushes its activation record to the method call s
 \end{center}
 \caption{Pushing of \ttt{add} Activation Records to the Call Stack}
 \end{figure}
-A method $f$ is tail-recursive if all recursive calls are in \emph{tail position}. At first glance, this definition appears circular. But, consider this piece: an expression is in tail position if it is in the last-to-perform operation before a method return. When relating this to recursive methods, it implies that any invocation of $f$ occurs as the last-evaluated operation prior to a return from the method. Both \ttt{add} and \ttt{fact} were non-tail recursive because each have extra work to do after the recursive calls step; that work being an unwinding of the recursive calls. Tail recursive functions do not need to unwind anything because they (for the most part) accumulate the result to an overall problem in an argument to the tail recursive method.
 
-\myexample{We want to compute the factorial of some number using tail recursion. Let us design a template for this method. We know that the method must be called where the call is in tail position, so we can add this as a preliminary step. Up next we can copy the logic of the previous standard recursive algorithm with the added exception that we do not return one from the base case, but instead return an accumulated result. The goal is to construct, or generate, the factorial of some $n$ as an argument to the method.}
+A method~$f$ is \emph{tail recursive}\index{tail recursive} if all recursive calls are in \emph{tail position}\index{tail position}. 
+At first glance, this definition appears circular due to the similar terms used. 
+But, consider this piece: an expression is in tail position if it is in the last-to-perform operation before a method returns. 
+Both \ttt{add} and \ttt{fact} are non-tail recursive methods, because each have extra work to do; that work being an unwinding of the recursive calls. 
+Tail recursive functions do not need to unwind anything because they (for the most part) accumulate the result to an overall problem in an argument to the tail recursive method.
+
+\myexample{We want to compute the factorial of some number using tail recursion.} 
+Let's design a template for such a method. 
+We know that the method must be called where the call is in tail position, so we can add it as a preliminary step. 
+Up next, we can copy the logic of the previous standard recursive algorithm with the added exception that we do not return one from the base case, but instead return an accumulated result. 
+The goal is to construct, or generate, the factorial of some~$n$ as an argument to the method.
 
 \begin{lstlisting}[language=MyJava]
 class FactorialTailRecursive {
@@ -212,9 +296,16 @@ class FactorialTailRecursive {
 }
 \end{lstlisting}
 
-Observe that the only change to the base case occurs in the body of the condition. So, the first argument to \ttt{factTR}, i.e., $n$, still trends towards the base case and, hence, should be the decrement of $n$. On the other hand, \ttt{acc} stores an accumulated factorial result. Consequently, we must multiply the accumulator by $n$, thereby with every recursive call, the accumulator approaches the correct solution.
+Observe that the only change to the base case occurs in the body of the condition. 
+So, the first argument to \ttt{factTR}, i.e., $n$, still trends towards the base case and, hence, should be the decrement of~$n$. 
+Oppositely, \ttt{acc} stores an accumulated factorial result. 
+We multiply the accumulator variable by~$n$ with every (tail) recursive call, meaning that the accumulator approaches the solution.
 
-Let us perform a trace of \ttt{factTR} to see how we build the result in the \ttt{acc} parameter. One extra factor to consider is the initial/starting value of our accumulator argument. This value depends on the context of the problem, and for factorial, the only reasonable value is one. E.g., if we initialize \ttt{acc} to zero, then we would continuously multiply and store zero as the argument to the recursive call, thereby always returning zero as the factorial of any number.
+Let's perform a trace of \ttt{factTR} to see how we build the result in the \ttt{acc} parameter. 
+One extra factor to consider is the initial/starting value of our accumulator argument. 
+The starting value of a tail recursive method depends on the context of the problem, and for factorial, the only reasonable value is one. 
+For example, if we initialize \ttt{acc} to zero, then we would continuously multiply and store zero as the argument to the recursive call and always return zero as the factorial of any number.
+
 \begin{align*}
     \text{Is }\ttt{5} \text{ zero?} &\text{ No! }\ttt{return factTR(4, 5)}\\
     \text{Is }\ttt{4} \text{ zero?} &\text{ No! }\ttt{return factTR(3, 20)}\\
@@ -223,7 +314,17 @@ Let us perform a trace of \ttt{factTR} to see how we build the result in the \tt
     \text{Is }\ttt{1} \text{ zero?} &\text{ No! }\ttt{return factTR(0, 120)}\\
     \text{Is }\ttt{0} \text{ zero?} &\text{ Yes! }\ttt{return 120}
 \end{align*}
-Because we have the result, its value is simply returned from the method. We do not need to unwind the recursive calls since there is no extra work to be done after making the recursive calls in the first place. Even still, some may question how this avoids a stack overflow error because we still push an activation record to the call stack each time we invoke \ttt{factTR}, right? Indeed, this solution does not solve the stack overflow problem, because Java does not employ the necessary optimizations to do so. What might one of those solutions be, in fact? As a hypothesis, because the method is tail recursive, the Java compiler could detect this and, instead of pushing a new activation record to the call stack, it overwrites the preexisting record, hence using constant space and only one record. Overriding the existing activation record is permissible since we do not unwind the stack. Recall with standard recursion that we push an activation record to the call stack in the first place to remember the context of ``how deep we are'' into the recursion and what values we must substitute back into the unknowns during the unwinding phase. Conversely, when looking at the tail recursive approach, we build the result alongside heading towards the base case, meaning previous recursive calls are made irrelevant. Let's see what this looks like in the model of a stack.
+
+The base case simply returns the accumulated value from the method. 
+We do not need to unwind the recursive calls, since there is no extra work to be done after making the recursive calls in the first place. 
+Even still, some may question how this avoids a stack overflow error, because we still push an activation record to the call stack each time we invoke \ttt{factTR}, right? 
+Indeed, this solution does not solve the stack overflow problem, because Java does not employ the necessary optimizations to do so. 
+What might one of those solutions be, in fact? As a hypothesis, because the method is tail recursive, the Java compiler could detect this and, instead of pushing a new activation record to the call stack, overwrite the preexisting record, hence using constant space and only one record. 
+Overriding the existing activation record is permissible, since we do not unwind the stack.
+Recall with standard recursion that we push an activation record to the call stack to remember the context of ``how deep we are'' into the recursion, in addition to what values we must substitute back into the unknowns during the unwinding phase. 
+Conversely, when examining the tail recursive approach, we build the result alongside heading towards the base case, meaning previous recursive calls are irrelevant. 
+Let's see what this looks like in the model of a stack.
+
 \begin{figure}
 \begin{center}
 \begin{tikzpicture}[
@@ -274,10 +375,17 @@ Because we have the result, its value is simply returned from the method. We do 
 \caption{Simulated Tail Recursion with ``Multiple Stacks''}
 \end{figure}
 
-The transitions between each ``stack'' represent the same stack wherein each represents a point in time. After the invocation of \ttt{factTR(5, 1)}, we recursively call \ttt{factTR(4, 5)} and replace the previous activation record. This follows suit until we hit the base case and return the accumulator.
+The transitions between each ``stack'' represent the same stack wherein they represent a point in time. 
+Following the invocation of \ttt{factTR(5, 1)}, we recursively call \ttt{factTR(4, 5)}, and replace the previous activation record. 
+This follows suit until we hit the base case and return the accumulator.
 
-One problem with tail recursion is its exposure of an accumulator to the caller of the method. The user of such a factorial function should not need to worry about what value to pass as the initial accumulator; they only want a method that computes the factorial of some natural number. The solution is to write a \emph{driver method} and introduce \emph{method access modifiers}. Driver methods, in short, serve to ``jump start'' the logic for some other, perhaps more complex, method. We should refactor the logic from \ttt{factTR} into a helper method that is inaccessible from outside the class. To do so, we affix the \ttt{private} keyword in front of \ttt{static}. Private methods are unreachable/not callable from outside the class in which it is declared.
-
+Tail recursion often exposes its use of an accumulator to the caller of the method. 
+The user of such a factorial function should not need to worry about what value to pass as the initial accumulator; they only want a method that computes the factorial of some natural number. 
+The solution is to write a \emph{driver method}\index{driver method} and introduce \emph{method access modifiers}\index{method access modifiers}. 
+Driver methods, in short, serve to ``jump start'' the logic for some other, perhaps more complex, method. 
+We should refactor the logic from \ttt{factTR} into a helper method that is inaccessible from outside the class. 
+To do so, we affix the \ttt{private} keyword in front of \ttt{static}. 
+Private methods are unreachable/not callable from outside the class in which it is declared.
 
 \begin{lstlisting}[language=MyJava]
 class FactorialTailRecursive {
@@ -296,9 +404,15 @@ class FactorialTailRecursive {
 }
 \end{lstlisting}
 
-Notice that we localized the tail recursion to this class and updated the signature of \ttt{factTR} to only have one parameter. We designate \ttt{factTR} as the driver method for jump-starting the tail recursion that occurs in \ttt{factHelper}. Driver methods, in general, should share the same signature with their standard recursion method counterparts, so as to not expose the innard implementation of a method to the caller. Hiding method implementation in this fashion is called \emph{encapsulation}\index{encapsulation}. 
+Notice that we localized the tail recursive method to this class and updated the signature of \ttt{factTR} to only have one parameter. 
+We designate \ttt{factTR} as the driver method for jump-starting the tail recursion that occurs in \ttt{factHelper}. 
+Driver methods should share the same signature with their standard recursion method counterparts so as to not expose the innard implementation of a method to the caller. 
+Hiding method implementation in this fashion is called \emph{encapsulation}\index{encapsulation}. 
 
-\myexample{Let us get a bit more practice using recursion by integrating strings. Suppose we want to design a method that removes all characters whose position is a multiple of three. For example, given the string \ttt{"ABCDEFGHI"}, we want to return \ttt{"ABDEGH"}, since \ttt{"C"}, \ttt{"F"}, and \ttt{"I"} are located at positions (note the use of position and not index) are divisible by three. Tests are, of course, warranted and necessary.}
+\myexample{Let us get a bit more practice with recursion by integrating strings into the mixture.} 
+Suppose that we want to design a method that removes all characters whose position is a multiple of three. 
+For example, given the string \ttt{"ABCDEFGHI"}, we want to return \ttt{"ABDEGH"}, since \ttt{"C"}, \ttt{"F"}, and \ttt{"I"} are located at positions (note the use of position and not index) are divisible by three. 
+Tests are, of course, warranted and necessary.
 
 %\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -320,7 +434,11 @@ class DivByThreeTests {
 }
 \end{lstlisting}
 
-We can break our input down into two cases: when the string does not have at least three characters, and otherwise. If the string has less than three characters, we return the string itself. Otherwise, we want to compose a new string containing the first two characters, skipping the third, and recursing on the rest. In the ``otherwise'' case, we are guaranteed that the input string has at least three characters, implying that \ttt{substring(3)} will not fail. Because the \ttt{substring} method of one argument is exclusive, if the provided index is the end of the string, the empty string is returned.
+We break our input down into two cases: when the string does not have at least three characters, and otherwise. 
+If the string has less than three characters, we return the string itself. 
+If the string has at least three characters, we compose a new string containing the first two characters, skipping the third, and recursing on the rest. 
+In the \ttt{else} case, we are guaranteed that the input string has at least three characters, implying that \ttt{substring(3)} can never fail. 
+Because the \ttt{substring} method of one argument is exclusive, if the provided index is the end of the string, the empty string is returned.
 
 \begin{lstlisting}[language=MyJava]
 class DivByThree {
@@ -334,7 +452,11 @@ class DivByThree {
   }
 }
 \end{lstlisting}
-Thinking recursively takes time, and there is no better way to get better than extensive practice. Let us now convert the method into its tail recursive counterpart. Due to the trivial nature of writing tests, we will omit them for our tail recursive version. The algorithm is largely the same, except for the added accumulator that builds the resulting string instead of relying on the recursive unwinding to occur. Our base case concatenates $s$ onto the end of the accumulator.
+
+Thinking recursively takes time, and there is no better way to get better than extensive practice. Let's now convert the method into its tail recursive counterpart. 
+Due to the trivial nature of writing tests, we omit them for our tail recursive version. 
+The algorithm remains largely the same, except for the added accumulator, which builds the resulting string rather than relying on the recursive unwinding to compose the solution. 
+Our base case concatenates~$s$ onto the end of the accumulator.
 
 %\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -354,7 +476,11 @@ class DivByThree {
 }
 \end{lstlisting}
 
-So, we have explored both standard and tail recursive methods, and how a programming language might optimize tail recursive calls. The thing is, tail recursion has a direct correspondence to loops, i.e., \ttt{while}. In fact, some programming languages convert all tail recursive functions into their iterative counterparts, alleviating the need for a stack whatsoever. Replacing tail recursion, or tail recursive calls, with iteration is known as \emph{tail call optimization}.\footnote{Java is one of many imperative languages that does not support tail call optimization, meaning that tail calls, unfortunately, continue to blow up the procedure call stack.} In the next section, we will discuss a translation pipeline from tail recursion to loops in greater detail, as well as describe the syntax and semantics of Java iteration structures.
+So, we have explored both standard and tail recursive methods, and how a programming language might optimize tail recursive calls. 
+The thing is, tail recursion has a direct correspondence to loops, i.e., \ttt{while}. 
+In fact, some programming languages convert all tail recursive functions into their iterative counterparts, alleviating the need for a stack whatsoever.
+Replacing tail recursion, or tail recursive calls, with iteration is known as \emph{tail call optimization}\index{tail call optimization}.\footnote{Java is one of many imperative languages that does not support tail call optimization, meaning that tail calls, unfortunately, continue to blow up the procedure call stack.} 
+In the next section, we will discuss a translation pipeline from tail recursion to loops in greater detail, as well as describe the syntax and semantics of Java iteration structures.
 
 % \begin{enumerate}
 %   \item \mcq{What is a recursive method in Java?}{A method that calls other methods exclusively,A method that never returns,A method that calls itself within its own body,A method that can only be called once}
