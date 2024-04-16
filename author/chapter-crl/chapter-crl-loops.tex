@@ -822,9 +822,12 @@ class Fibonacci {
 }
 \end{lstlisting}
 
-Our tail recursive implementation has two base cases instead of one due to the two base cases of the mathematical recursive definition. It may be a little difficult to visualize the initial accumulator values (i.e., the starting values of $a$ and $b$), but just consider the base case(s) of the standard recursive algorithm and let this/these guide your decision.
+Our tail recursive implementation has two base cases instead of one due to the two base cases of the mathematical recursive definition. 
+It may be difficult to visualize the initial accumulator values (i.e., the starting values of $a$ and $b$), but just consider the base case(s) of the standard recursive algorithm, and let this/these guide your decision.
 
-Finally we arrive at the iterative algorithm. To avoid any confusion in the conversion process, we will use our translation pipeline. Skipping a few steps up to $TR_\emph{C}$:
+Finally we arrive at the iterative algorithm. 
+To avoid any confusion in the conversion process, we will use our translation pipeline. 
+Skipping a few steps up to $TR_\emph{C}$:
 
 \begin{clrr}[]{Initial Translation of Fibonacci \emph{$TR$} To $I$}
 \begin{lstlisting}[language=MyJavaNF]
@@ -856,13 +859,20 @@ static int fib(int n) {
 \end{lstlisting}
 \end{clrr}
 
-The question now is, what do we use as the \ttt{while} loop condition? We are obviously decreasing $n$ by one with each (tail) recursive call, but since we have two base cases, what do we do? Realistically, we only need to use the loop for one base case: namely $n == 1$, since the only other possibility for $n$ is if it is zero, in which we return zero. Therefore, our loop conditional is the negated condition of $n == 1$, namely $(!(n == 1))$. From here, we run into another problem: according to the rule of update, since $b$'s value depends on $a$, we need to update $b$ before $a$, but because $a$'s value depends on $b$, we are at a bit of an impasse. Fear not, because we have an amendment to $TR_\emph{B}$, which adds the \emph{rule of temporary}.
+The question now is, what do we use as the \ttt{while} loop condition? 
+We are obviously decreasing~$n$ by one with each (tail) recursive call, but since we have two base cases, what do we do? 
+Realistically, we only need to use the loop for one base case: namely~$n == 1$, since the only other possibility for~$n$ is if it is zero (meaning that we return zero). 
+Therefore, our loop conditional is the negated condition of~$n == 1$, namely $(!(n == 1))$. 
+At this point, we run into another problem: according to the rule of update, because~$b$'s value depends on~$a$, we need to update~$b$ before~$a$, but because~$a$'s value depends on~$b$, we are at a bit of an impasse. 
+Fear not, because we have an amendment to~$TR_\emph{B}$, which introduces the \emph{rule of temporary}.
 
-\textbf{Rule of Temporary}: If two parameters $p$ and $q$ depend on each other, introduce a temporary variable $t_p$, assign $p$ to $t_p$, update $p$, then update $q$ using $t_p$ in place of $p$.
+\textbf{Rule of Temporary}: If two parameters~$p$ and~$q$ depend on each other, introduce a temporary variable~$t_p$, assign~$p$ to~$t_p$, update~$p$, then update~$q$ using~$t_p$ in place of~$p$.
 
-In essence, we generate a local temporary variable to hold onto the old value of one of our accumulators. Following this logic, we create the variable $t_a$, assign to it $a$, update $a$, then update $b$ using $t_a$ in place of $a$. Since $n$ does not a dependent variable, its ordering in the mix is irrelevant.
+In essence, we generate a local temporary variable to hold onto the old value of one of our accumulators. 
+Following this logic, we create the variable~$t_a$, assign to it~$a$, update~$a$, then update~$b$ using~$t_a$ in place of~$a$. 
+Since~$n$ does not a dependent variable, its ordering in the mix is irrelevant.
 
-The last stage is simple; we return the result of the other base case, namely $b$ when $n$ is finally one.
+The last stage is simple; we return the result of the other base case, namely~$b$ when~$n$ is one.
 
 %\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -886,11 +896,12 @@ static int fib(int n) {
 }
 \end{lstlisting}
 
-The Fibonacci sequence is predictable in that we know how many iterations are necessary to compute a result. Therefore, a \ttt{for} loop seems like a reasonable substitute to \ttt{while} in this circumstance. 
+The Fibonacci sequence is predictable, in that we know how many iterations are necessary to compute a result. 
+Therefore, a \ttt{for} loop seems like a reasonable substitute to \ttt{while} in this circumstance. 
 
-We still must declare variables $a$ and $b$, but instead of decrementing $n$, we can instead localize an accumulator $i$ (initialized as $n$) to, counter-intuitively, decrement towards the base case. 
+We still must declare variables~$a$ and~$b$, but instead of decrementing~$n$, we instead localize an accumulator~$i$ (initialized as~$n$) to, counter-intuitively, decrement towards the base case. 
 
-No significant changes in the implementation are made, aside from a new local variable to count down from $n$ until it hits one.
+No significant changes to the implementation are made, aside from a new local variable to count down from~$n$ until it hits one.
 
 \begin{lstlisting}[language=MyJava]
 static int fib(int n) {
@@ -909,7 +920,13 @@ static int fib(int n) {
 }
 \end{lstlisting}
 
-\myexample{We can use two keywords to alter the control flow of a loop: \ttt{break} and \ttt{continue}. We saw \ttt{break} when working with the \ttt{switch} keyword and statement, but in the context of loops its meaning has more significance. Suppose that we're writing the \ttt{int findFirstVowel(String s)} method that returns the first occurrence of a vowel in a string $s$, and $-1$ if it has no vowels. The \ttt{break} statement will be used to exit the loop body early upon finding a vowel. We will traverse over the string characters using a \ttt{for} loop and terminate if we reach the end of the string, hence the inclusion of the \ttt{i < s.length()} condition. Our implementation must also include a method to determine whether or not a character is a vowel. We could write ten separate clauses for checking if a character is the uppercased or lowercased version of the vowel, or we could eliminate half by simply converting the character to either case and only checking those.}
+\myexample{We can use two keywords to alter the control flow of a loop: \ttt{break} and \ttt{continue}.} 
+We saw \ttt{break} when working with the \ttt{switch} keyword and statement, but in the context of loops, its meaning is more significant. 
+Suppose that we're designing the \ttt{int findFirstVowel(String s)} method, which returns the first occurrence of a vowel in a string~$s$, and~$-1$ if it has no vowels. 
+The \ttt{break} statement allows us to exit the loop body early upon finding a vowel. 
+We will traverse over the string characters using a \ttt{for} loop and terminate if we reach the end of the string, hence the inclusion of the \ttt{i < s.length()} condition. 
+Our implementation must also include a method to determine whether a character is a vowel. 
+We \emph{could} write ten separate clauses for checking if a character is the uppercased or lowercased version of the vowel, or we could eliminate half by simply converting the character to either case, and check only those characters.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -966,13 +983,20 @@ class FindFirstVowel {
 }
 \end{lstlisting}
 
-\myexample{To better illustrate how \ttt{break} and \ttt{continue} work, let's write a method that has no real utility, but demonstrates the utility of these keywords. Our method, namely \ttt{countOdds}, will count the number of odd integers generated by a random number generator from 1 to 100. Though, to make it more interesting, we will not count odd numbers less than $50$, and if we ever generate a number greater than 95, we stop looping and return the count. The idea is to use \ttt{break} when we generate a number between $96$ and $100$, and to use \ttt{continue} to skip over incrementing the counter if we find a number less than $50$. The \ttt{continue} keyword jumps program control to the top of the loop, skipping over any remaining statements in the body. Because this program relies solely on random chance, writing tests is not helpful. In the code segment, using an \ttt{else} statement would be preferred over the superfluous use of \ttt{continue}, but we demo it to at least portray its existence. The only way to exit the infinite \ttt{while} loop is to use either \ttt{break}, \ttt{return}, or stop the program some other way (e.g., through a program crash or forced termination).}
+\myexample{To better illustrate how \ttt{break} and \ttt{continue} work, let's write a method that has no real purpose, but serves to demonstrate the utility of these keywords.} 
+Our method, namely \ttt{countOdds}, counts the number of odd integers generated by a random number generator from 1 to 100. 
+To spice it up, we will not count odd integers less than~$50$, and if we ever generate a number greater than 95, we stop looping and return the count. 
+The idea is to use \ttt{break} when we generate a integer between~$96$ and~$100$, and to use \ttt{continue} to skip over incrementing the counter if we find a number less than~$50$. 
+The \ttt{continue} keyword shifts program control to the top of the loop, skipping over any remaining statements in the body. 
+Because this program relies solely on random chance, writing tests is not helpful. 
+In the code snippet, using an \ttt{else} statement is preferred over the superfluous use of \ttt{continue}, but we demo it to at least portray its existence. 
+The only way to exit the infinite \ttt{while} loop is to either \ttt{break}, \ttt{return}, or stop the program some other way (e.g., through a program crash or forced termination).
 
 \begin{lstlisting}[language=MyJava]
 class RandomNumbers {
 
   /**
-   * 
+   * Counts the number of odd values generated by a random number generator.
    * @return the number of odd values counted.
    */
   static int countOdds() {
@@ -989,7 +1013,10 @@ class RandomNumbers {
 }
 \end{lstlisting}
 
-\myexample{Let's write one more example of a loop where we go directly from the problem statement to the code in question. Suppose we're writing a method that receives some string $s$, a ``search string'' $f$, and a replacement string $r$, and our goal is to replace all occurrences of $f$ with $r$ without helper methods in the \ttt{String} class, e.g., \ttt{indexOf}, \ttt{contains}, and certainly not \ttt{replace}. Of course, we start by writing the signature, documentation comments, and a handful of tests. We emphasize writing more tests than perhaps normal for this specific problem due to its complexity and number of ``edge cases,'' i.e., cases in which a method might not account for because of their obscurity.}
+\myexample{Let's write one more example of a loop where we go directly from the problem statement to the code in question.} 
+Suppose we're designing a method that receives some string~$s$, a ``search string''~$f$, and a replacement string~$r$, with a goal of replacing all occurrences of~$f$ with~$r$ without helper methods in the \ttt{String} class, e.g., \ttt{indexOf}, \ttt{contains}, and certainly not \ttt{replace}. 
+We start by writing the signature, documentation comments, and a handful of tests. 
+We emphasize writing more tests than what may be considered normal for this specific problem due to its complexity and number of ``edge cases,'' i.e., cases in which a method might not account for because of their obscurity.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -1020,7 +1047,17 @@ class FindReplaceTester {
 }
 \end{lstlisting}
 
-Now we complete the implementation of \ttt{replace}, which breaks down into a few cases: while traversing, are did we find the start of the search string $f$, did we find the end of $f$, and did we encounter a break in $f$? Let's go from the start to the end in our analysis. When traversing over the input string $s$, if we find the character that starts $f$ in $s$, we increment a counter $c$, and continue counting as long as the characters in the particular substring of $s$ match the characters in $f$. As an example, in the string $s=\ttt{"hello"}$, if $f=\ttt{"ell"}$, once our traversal finds \ttt{"e"}, we increment $c$ by one to designate that we matched one character of $f$. We continue this until we either hit the end of $f$, the end of $s$, or we find a non-matching character. In the former instance, we append the replacement string $r$ onto our newly-constructed string $s'$, because it indicates that we encountered a full match of $f$ inside $s$, meaning it is of course replaced by $r$. In the second instance, we reach the end of $s$, meaning that we are out of characters to match. Therefore, we either copy over the last $c$ characters from $s$ into $s'$ if we have not also hit the end of $f$, or $r$ otherwise. For example, if $s=\ttt{"hello"}$, and $f=\ttt{"low"}$, we reach the end of $s$ prior to finishing the substring $f$, meaning that we only copy over those final characters of $s$ and do not append $r$. Conversely, if $f=\ttt{"lo"}$ in that instance, we instead substitute the suffix \ttt{"lo"} with whatever is the value of $r$. Finally, when we encounter a non-matching character, we terminate the current replacement strategy and simply append the last $c$ characters of $s$ onto $s'$ and move the index forward.
+Now, we complete the implementation of \ttt{replace}, which reduces into a few cases: while traversing, did we find the start of the search string~$f$, did we find the end of~$f$, and did we encounter a break in~$f$? 
+Let's go from the start to the end in our analysis. 
+When traversing over the input string~$s$, if we find the character that starts~$f$ in~$s$, we increment a counter~$c$, and continue counting as long as the characters in the particular substring of~$s$ match the characters in~$f$. 
+As an example, in the string $s=\ttt{"hello"}$, if $f=\ttt{"ell"}$, once our traversal finds \ttt{"e"}, we increment~$c$ by one to designate that we matched one character of~$f$. 
+We continue this process until we either reach the end of~$f$, the end of~$s$, or we find a non-matching character. 
+In the former instance, we append the replacement string~$r$ onto our newly-constructed string~$s'$, because it indicates that we encountered a full match of~$f$ inside~$s$, meaning it is to be replaced by~$r$. 
+In the second instance, we reach the end of~$s$, meaning that we are out of characters to match. 
+Therefore, we either copy over the last~$c$ characters from~$s$ into~$s'$ if we have not also reached the end of~$f$, or~$r$ otherwise. 
+For example, if $s=\ttt{"hello"}$, and $f=\ttt{"low"}$, we reach the end of~$s$ prior to finishing the substring~$f$, meaning that we only copy over those final characters of~$s$ and do not append~$r$. 
+Conversely, if $f=\ttt{"lo"}$ in that instance, we instead substitute the suffix \ttt{"lo"} with~$r$. 
+Finally, when we encounter a non-matching character, we terminate the current replacement strategy and simply append the last~$c$ characters of~$s$ onto~$s'$ and move the index forward.
 
 \begin{lstlisting}[language=MyJava]
 import java.lang.StringBuilder;
