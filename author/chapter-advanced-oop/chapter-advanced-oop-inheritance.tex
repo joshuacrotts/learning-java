@@ -713,33 +713,37 @@ class Manager extends HourlyEmployee {
 }
 \end{lstlisting}
 
-\myexample{Let's design a class hierarchy to represent Pok\'emon\texttrademark{} evolutions and types. For those unfamiliar, Pok\'emon\texttrademark{} is a Japanese trading card and video-game series (with movies and television shows) produced by Nintendo. In the world of Pok\'emon\texttrademark{}, there are creatures that humans, called trainers, can capture and use to battle other trainers in a competitive turn-based matchup.\footnote{This is a heavily condensed description, but it gets the job done.}}
+\myexample{Let's design a class hierarchy for a series of Mythicritters objects. In the exotic land of Mythicritters, there are three kinds of creatures: \ttt{Mage}, \ttt{Warrior}, and \ttt{Rogue}. Beneath these, each creature can transform into a more powerful form: \ttt{Archmage}, \ttt{Berserker}, and \ttt{Assassin}.}
 
-Pok\'emon, in our simplified system, have hit-points to represent their health, statistics about their power/strength/speed, and up to four ``moves.'' Additionally, they have a level to indicate how strong they are. We will come back to the notion of a ``move,'' or an attack, later. Finally, they also have either one or two types, which are returned via the \ttt{getTypes} method as a \ttt{Set<IType>}.\footnote{We will design \ttt{IType} in a few paragraphs.} Let's design the \ttt{Pokemon} class. Aside from the accessors and mutators, we will add one instance method for adding moves to the \ttt{Pokemon}, as long as there are less than four. 
+Mythicritters have a set number of health points, statistics about their power/strength/speed, and two kinds of ``attacks.'' 
+Additionally, they have a level to indicate how strong they are. 
+We will come back to the notion of an attack later. 
+Finally, they also have either one or two types, which are returned via the \ttt{getTypes} method as a \ttt{Set<IType>}.\footnote{We will design \ttt{IType} in a few paragraphs.} 
+Let's design the \ttt{Mythicritter} class. Aside from the accessors and mutators, we will add one instance method for adding attacks to the \ttt{Mythicritter}, as long as there are less than two. 
 
 \begin{lstlisting}[language=MyJava]
 import java.util.HashSet;
 import java.util.Set; 
 
-class Pokemon {
+class Mythicritter {
   
-  private int maxHp;
-  private int currentHp;
+  private int maxHealth;
+  private int currentHealth;
   private int level;
   private int power;
-  private Set<Move> moves;
+  private Set<IAttack> attacks;
 
-  Pokemon(int maxHp, int level, int power) {
-    this.maxHp = maxHp;
-    this.currentHp = this.maxHp;
+  Mythicritter(int maxHealth, int level, int power) {
+    this.maxHealth = maxHealth;
+    this.currentHealth = this.maxHealth;
     this.level = level;
     this.power = power;
-    this.moves = new HashSet<>();
+    this.attacks = new HashSet<>();
   }
 
-  void addMove(Move m) { 
-    if (this.moves.size() < 4) {
-      this.moves.add(m);
+  void addAttack(Attack a) { 
+    if (this.attacks.size() < 4) {
+      this.attacks.add(a);
     }
   }
 
@@ -749,20 +753,23 @@ class Pokemon {
 }
 \end{lstlisting}
 
-As we stated, Pok\'emon have moves, or ways to combat an opponent. Moves have a type, a base attack statistic, and a number representing how many ``power points'' that the move has remaining. Each time an attack is used, its power point counter is decremented. Once it reaches zero, the move can no longer be used. Moves also inhabit exactly one type, which cannot change.
+As we stated, Mythicritter have attacks, or ways to combat an opponent. 
+Attack have a type, a base power statistic, and a number representing how many ``uses'' that the attack has remaining. 
+Each time an attack is used, its usage counter is decremented. 
+Once it reaches zero, the attack can no longer be used. Attacks also inhabit exactly one type, which cannot change.
 
 \begin{lstlisting}[language=MyJava]
-class Move {
+class Attack {
 
   private final IType TYPE;
-  private final int NUM_POWER_POINTS;
-  private int remainingPowerPoints;
-  private int baseDamage;
+  private final int NUM_USES;
+  private int remainingUses;
+  private int basePower;
 
-  Move(String name, int numPowerPoints, int baseDamage, IType type) {
+  Attack(String name, int numUses, int basePower, IType type) {
     this.name = name;
     this.baseDamage = baseDamage;
-    this.NUM_POWER_POINTS = numPowerPoints;
+    this.NUM_USES = numUses;
     this.TYPE = type;
   }
 
@@ -770,17 +777,27 @@ class Move {
 }
 \end{lstlisting}
 
-Finally, Pok\'emon, as well as moves, have types. Types in the world of Pok\'emon are a property of the Pok\'emon, which affect the power of their moves, as well as what types they are weak against. All in all, it is akin to a game of ``Rock, paper, scissors.'' That is, scissors beats paper, paper beats rock, and rock beats scissors. Pok\'emon and move types work similarly; if a move is \ttt{WaterType} and the Pok\'emon it is used against is \ttt{FireType}, the move is ``super effective'' against the Pok\'emon. The defending Pok\'emon thus takes more damage than it would otherwise. Conversely, if a move is \ttt{ElectricType} and the Pok\'emon is \ttt{RockType}, the move is ``not very effective'' against the Pok\'emon. The defending Pok\'emon thus takes less damage than it would otherwise. 
+Finally, Mythicritters, as well as attacks, have associated types. 
+Types in the world of Mythicritters are a property thereof, which affect the power of their attacks, as well as what types they are vulnerable to/strong against. 
+All in all, it is akin to a game of ``Rock, paper, scissors.'' 
+That is, scissors beats paper, paper beats rock, and rock beats scissors. Mythicritters and attack types work similarly: if an attack is \ttt{ZapType} and the Mythicritter it is used against is \ttt{OceanicType}, the attack is ``enhanced'' against the Mythicritter. 
+The defending Mythicritter thus takes more damage than it would otherwise. 
+Conversely, if an attack is \ttt{InfernoType} and the Mythicritter is \ttt{BoulderType}, the attack is ``vulnerable'' against the Mythicritter. 
+The defending Mythicritter thus takes less damage than it would otherwise. 
 
-Now, let's design a ``base interface'' that other classes implement. An \ttt{IType} contains two methods: \ttt{Set<IType> weakTo()} and \ttt{Set<IType> strongAgainst()}, which returns sets to represent the types that a type is weak to or strong against. These methods will call upon a data structure that we will denote as a ``type registry,'' which defines the relationships from one type to another. Interestingly, this means that the methods inside \ttt{IType} should have a body to reference the type registry, but in the previous section we stated that the methods of an interface must not have bodies. \emph{Default methods} of an interface, on the contrary, may have bodies, and serve as a ``default implementation'' of a method in the event that an interface does not override its definition.
+Now, let's design a ``base interface'' that other classes implement. 
+An \ttt{IType} contains two methods: \ttt{Set<IType> vulnerableTo()} and \ttt{Set<IType> strongAgainst()}, which returns sets to represent the types that a type is vulnerable to or strong against. 
+These methods will call upon a data structure that we will denote as a ``type registry,'' which defines the relationships from one type to another. 
+Interestingly, this means that the methods inside \ttt{IType} should have a body to reference the type registry, but in the previous section we stated that the methods of an interface must not have bodies. 
+\emph{Default methods}\index{default method} of an interface, on the contrary, may have bodies, and serve as a ``default implementation'' of a method in the event that an interface does not override its definition.
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Set;
 
 interface IType {
 
-  default Set<IType> weakTo() {
-    return TypeRegistry.weakTo(this);
+  default Set<IType> vulnerableTo() {
+    return TypeRegistry.vulnerableTo(this);
   }
 
   default Set<IType> strongAgainst() {
@@ -789,38 +806,42 @@ interface IType {
 }
 \end{lstlisting}
 
-Out of conciseness, let's design only three types: \ttt{GrassType}, \ttt{WaterType}, and \ttt{FireType}. Repeating the rock-paper-scissors analogy, grass types are strong against water but weak to fire. Water types are strong against fire but weak to grass. Fire types are strong against grass but weak to water. 
+Out of conciseness, let's design only three types: \ttt{ZapType}, \ttt{OceanicType}, and \ttt{FlameType}. Repeating the rock-paper-scissors analogy, zap types are strong against oceanic type but weak to flame type. Oceanic types are strong against flame type but weak to zap. Flame types are strong against zap but weak to oceanic. 
 
-These three types, namely grass, water, and fire, are designed as classes that exist solely for the purposes of instantiating exactly one instance thereof. Types do not need to be instantiated multiple times since they are immutable and do not contain any relevant state. We are taking advantage of a \emph{design paradigm} called \emph{singleton}. The class constructors are private to prevent outside instantiation of the types, but the sole instance is public, static, and final for global, unrestricted, and immutable access.
+These three types, namely zap, oceanic, and flame, are designed as classes that exist solely for the purposes of instantiating exactly one instance thereof. 
+Types do not need to be instantiated multiple times since they are immutable and do not contain any relevant state. 
+We are taking advantage of a \emph{design paradigm} called \emph{singleton}. 
+The class constructors are private to prevent outside instantiation of the types, but the sole instance is public, static, and final for global, unrestricted, and immutable access.
 
 \begin{lstlisting}[language=MyJava]
-class FireType implements Type {
+class FlameType implements IType {
 
-  static final IType FIRE_TYPE = new FireType();
+  static final IType FLAME_TYPE = new FlameType();
 
-  private FireType() {}
+  private FlameType() {}
 }
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-class WaterType implements Type {
+class OceanicType implements IType {
 
-  static final IType WaterType = new WaterType();
+  static final IType OCEANIC_TYPE = new OceanicType();
 
-  private WaterType() {}
+  private OceanicType() {}
 }
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-class GrassType implements Type {
+class ZapType implements IType {
 
-  static final IType GRASS_TYPE = new GrassType();
+  static final IType ZAP_TYPE = new ZapType();
 
-  private GrassType() {}
+  private ZapType() {}
 }
 \end{lstlisting}
 
-The aforementioned type registry is a class that stores two maps of type weaknesses and strengths. It provides two static methods: \ttt{weakTo} and \ttt{strongAgainst}, identical to the \ttt{IType} interface, which tap into the map data structures for querying.
+The aforementioned type registry is a class that stores two maps of type weaknesses and strengths. 
+It provides two static methods: \ttt{vulnerableTo} and \ttt{strongAgainst}, identical to the \ttt{IType} interface, which tap into the map data structures for querying.
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Map;
@@ -828,20 +849,20 @@ import java.util.Set;
 
 class TypeRegistry {
 
-  private static final Map<IType, Set<IType>> weaknesses =
-    Map.of(WaterType.WATER_TYPE, Set.of(GrassType.GRASS_TYPE),
-           GrassType.GRASS_TYPE, Set.of(FireType.FIRE_TYPE),
-           FireType.FIRE_TYPE, Set.of(WaterType.WATER_TYPE));
+  private static final Map<IType, Set<IType>> vulnerabilities =
+    Map.of(OceanicType.OCEANIC_TYPE, Set.of(ZapType.ZAP_TYPE),
+           ZapType.ZAP_TYPE, Set.of(FlameType.FLAME_TYPE),
+           FlameType.FLAME_TYPE, Set.of(OceanicType.OCEANIC_TYPE));
 
   private static final Map<IType, Set<IType>> strengths =
-    Map.of(WaterType.WATER_TYPE, Set.of(FireType.FIRE_TYPE),
-           GrassType.GRASS_TYPE, Set.of(WaterType.WATER_TYPE),
-           FireType.FIRE_TYPE, Set.of(GrassType.GRASS_TYPE));
+    Map.of(OceanicType.OCEANIC_TYPE, Set.of(FlameType.FLAME_TYPE),
+           ZapType.ZAP_TYPE, Set.of(OceanicType.OCEANIC_TYPE),
+           FlameType.FLAME_TYPE, Set.of(ZapType.ZAP_TYPE));
 
   private TypeRegistry() {};
 
-  static Set<IType> weakTo(IType t) {
-    return weaknesses.getOrDefault(t, Set.of());
+  static Set<IType> vulnerableTo(IType t) {
+    return vulnerabilities.getOrDefault(t, Set.of());
   }
 
   static Set<IType> strongAgainst(IType t) {
@@ -850,22 +871,32 @@ class TypeRegistry {
 }
 \end{lstlisting}
 
-Inside the \ttt{Pokemon} class, let's design two methods: \ttt{weakTo} and \ttt{strongAgainst}, both of which invoke the type registry. The problem, though, is that we potentially need to take the union of two sets, since a \ttt{Pokemon} stores a set of types. To compensate, we can use streams to take the union of multiple sets, which collapses the problem from handling both one and two sets independently into just handling a stream. To combine the sets, we can use the \ttt{flatMap} stream method, which is a higher-order method to apply a lambda expression to a list of collections, then flatten the result into a single collection. Namely, we take the sets of types, map the \ttt{weakTo} or \ttt{strongAgainst} over those types, creating a stream of sets of types. These are then converted into streams themselves and then flattened into a single stream. Finally, we collect those results into a set. 
+Inside the \ttt{Mythicritter} class, let's design two methods: \ttt{vulnerableTo} and \ttt{strongAgainst}, both of which invoke the type registry. 
+The problem, though, is that we potentially need to take the union of two sets, since a \ttt{Mythicritter} stores a set of types. 
+To compensate, we can use streams to take the union of multiple sets, which collapses the problem from handling both one and two sets independently into just handling a stream. 
+To combine the sets, we can use the \ttt{flatMap} stream method, which is a higher-order method to apply a lambda expression to a list of collections, then flatten the result into a single collection. 
+Namely, we take the sets of types, map the \ttt{vulnerableTo} or \ttt{strongAgainst} over those types, creating a stream of sets of types. 
+These are then converted into streams themselves and then flattened into a single stream. 
+Finally, we collect those results into a set. 
 
-Before we write these two methods, however, let's actually create a \ttt{Pokemon} to show off our hard work. Let's design the \ttt{Chimchar} class, which is a fire type \ttt{Pokemon}, hence the subclass/superclass relationship. We will instantiate it to start off with 20 hit points, level 5, and have a base ``power'' statistic of 4. Because we must also pass the type information to the superclass constructor, we need to invoke \ttt{super(...)} with information provided from the subclass contructor in addition to the type(s). After creating the subclass instance, we can write tests for the type registry. 
+Before we write these two methods, however, let's actually create a \ttt{Mythicritter} instance to show off our hard work. 
+Let's design the \ttt{Mage} class, which is a zap type \ttt{Mythicritter}, hence the subclass/superclass relationship. 
+We will instantiate it to start off with 50 health, level 1, and have a base ``power'' statistic of 4. 
+Because we must also pass the type information to the superclass constructor, we need to invoke \ttt{super(...)} with information provided from the subclass contructor in addition to the type(s). 
+After creating the subclass instance, we can write tests for the type registry. 
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Set;
 
-class Chimchar extends Pokemon {
+class Mage extends Mythicritter {
 
-  Chimchar(int hp, int level, int power) {
-    super(hp, level, power);
+  Mage(int health, int level, int power) {
+    super(health, level, power);
   }
 
   @Override
   Set<IType> getTypes() {
-    return Set.of(FireType.FIRE_TYPE);
+    return Set.of(ZapType.ZAP_TYPE);
   }
 }
 \end{lstlisting}
@@ -876,71 +907,77 @@ import static Assertions.assertEquals;
 
 import java.util.Set;
 
-class PokemonTester {
+class MythicritterTester {
 
   @Test
-  void testPokemon() {
-    Pokemon p1 = new Chimchar(20, 5, 4);
+  void testMythicritter() {
+    Mythicritter p1 = new Mage(50, 1, 4);
     assertAll(
-      () -> assertEquals(Set.of(WaterType.WATER_TYPE),
+      () -> assertEquals(Set.of(FlameType.FLAME_TYPE),
                          p1.weakTo()),
-      () -> assertEquals(Set.of(GrassType.GRASS_TYPE),
+      () -> assertEquals(Set.of(OceanicType.OCEANIC_TYPE),
                          p1.strongAgainst()));
   }
 }
 \end{lstlisting}
 
-Finally, let's represent an important component of Pok\'emon: evolution! A Pok\'emon can evolve from one form to another, which we will represent through evolution. From this, a Pok\'emon's type can change, as do its base statistics and health. For example, the evolution of Chimchar into Monferno adds \ttt{FightingType} to its type set. We can change the type that a \ttt{Pokemon} inhabits by overriding the \ttt{getTypes} method: we retrieve the superclass type set, then add the new type earned by evolving.
+Finally, let's represent an important component of Mythicritters: transformations! A Mythicritter can transform from one form to another. 
+From this, a Mythicritter's type can change, as do its base statistics and health. 
+For example, the transformation of Mage into Archmage adds the \ttt{MythicalType} to its type set. 
+We can change the type that a \ttt{Mythicritter} inhabits by overriding the \ttt{getTypes} method: we retrieve the superclass type set, then add the new type earned by transforming, should it exist.
 
-To make evolution a bit more interesting, we will design the \ttt{IEvolvable} interface, which is implemented by any evolvable Pok\'emon. This interface contains two methods: \ttt{boolean canEvolve()} and \ttt{Pokemon evolve()}. The former describes the requirements before a Pok\'emon can evolve, e.g., whether or not it has to be at a certain level. The latter \ttt{evolve} method returns a new instance of the evolution if it can evolve, and itself otherwise. 
+To make transformation a bit more interesting, we will design the \ttt{ITransformable} interface, which is implemented by any transformable Mythicritter. 
+This interface contains two methods: \ttt{boolean canTransform()} and \ttt{Mythicritter transform()}. 
+The former describes the requirements before a Mythicritter can transform, e.g., whether or not it has to be at a certain level. 
+The latter \ttt{transform} method returns a new instance of the transformation if it can transform, and itself otherwise. 
 
-Designing an interface in this way means that \ttt{Pokemon} that evolve into a form, but cannot evolve thereafter must also override these methods to return \ttt{false} and themselves respectively.
+Designing an interface in this way means that Mythicritters that transform once, but cannot transform thereafter must also override the methods in the \ttt{ITransformable} interface to return \ttt{false} and themselves respectively.
 
-For contextualization, the evolution of Chimchar is Monferno. Chimchar can evolve into Monferno once it reaches level 14. Because \ttt{FightingType} is almost a carbon copy of the other three types, we omit its inclusion.
+For contextualization, Mages transform into Archmages. A Mage can transform into an Archmage once it reaches level 30. Because \ttt{MythicalType} is almost a carbon copy of the other three types, we omit its inclusion.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class PokemonTester {
+class MythicritterTester {
 
   @Test 
-  void testEvolution() {
-    Pokemon p1 = new Chimchar(21, 5);
-    Pokemon p2 = new Chimchar(54, 14);
+  void testTransformation() {
+    Mythicritter p1 = new Mage(20, 1, 4);
+    Mythicritter p2 = new Mage(1000, 40, 100);
     assertAll(
-      () -> assertFalse(p1.canEvolve()),
-      () -> assertTrue(p1.evolve() instanceof Chimchar),
-      () -> assertTrue(p2.canEvolve()),
-      () -> assertTrue(p2.evolve() instanceof Monferno));
+      () -> assertFalse(p1.canTransform()),
+      () -> assertTrue(p1.transform() instanceof Mage),
+      () -> assertTrue(p2.canTransform()),
+      () -> assertTrue(p2.transform() instanceof Archmage));
   }
 }
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-interface IEvolvable {
+interface ITransformable {
 
-  boolean canEvolve();
+  boolean canTransform();
 
-  Pokemon evolve();
+  Mythicritter transform();
 }
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-class Chimchar extends Pokemon implements IEvolvable {
+class Mage extends Mythicritter implements ITransformable {
   // ... previous methods not shown.
 
   @Override
-  public boolean canEvolve() {
-    return this.getLevel() >= 14;
+  public boolean canTransform() {
+    return this.getLevel() >= 30;
   }
 
   @Override
-  public Pokemon evolve() {
-    if (!this.canEvolve()) {
+  public Mythicritter transform() {
+    if (!this.canTransform()) {
       return this;
     } else {
-      return new Monferno(super.getHp(), super.getLevel());
+      return new Archmage(super.getHp() * 2, super.getLevel(), super.getPower() * 3);
     }
   }
 }
@@ -951,30 +988,30 @@ import java.util.Set;
 import java.util.Stream;
 import java.util.Collectors;
 
-class Monferno extends Chimchar implements IEvolvable {
+class Archmage extends Mage implements ITransformable {
 
-  Monferno(int hp, int level, int power) {
-    super(hp, level, power);
+  Archmage(int health, int level, int power) {
+    super(health, level, power);
   }
 
   @Override 
-  public boolean canEvolve() {
+  public boolean canTransform() {
     return false;
   }
 
   @Override
-  public Pokemon evolve() {
+  public Mythicritter transform() {
     return this;
   }
 
   @Override
   Set<Type> getTypes() {
     Stream<IType> ot = super.getTypes().stream();
-    Stream<IType> nt = Set.of(FightingType.FIGHTING_TYPE).stream();
+    Stream<IType> nt = Set.of(MythicalTypeType.MYTHICAL_TYPE).stream();
     return Stream.concat(ot, nt)
                  .collect(Collectors.toSet());
   }
 }
 \end{lstlisting}
 
-We went through all of this trouble to create a complex system, so what is its intended purpose? With a bit of work up front, we made it easy to extend this system to include new types, new kinds of Pok\'emon, and much more.\footnote{We did not do anything with the moves of a Pokemon; this may be a good place to start expanding upon if you are interested!}
+We went through all of this trouble to create a complex system, so what is its intended purpose? With a bit of work up front, we made it easy to extend this system to include new types, new kinds of Mythicritters, and much more.\footnote{We did not do anything with the attacks of a Mythicritter; this may be a good place to start expanding upon if you are interested!}
