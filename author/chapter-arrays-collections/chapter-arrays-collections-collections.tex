@@ -309,13 +309,21 @@ T(n) &= \sum_{i=1}^{n-1}{i}\\
      &= \dfrac{n^2}{2}
 \end{align*}
 
-Therefore, to remove $1,000,000$ elements from the front of an \ttt{ArrayList}, we need to perform roughly $1,000,000^2/{2}$ operations, which is an astronomical number, even for computers of today. 
+Therefore, to remove~$1,000,000$ elements from the front of an \ttt{ArrayList}, we need to perform roughly $1,000,000^2/{2}$ operations, which is an astronomical number, even for computers of today.
 Removing elements from other indices, excluding the rear, will incur a (smaller) similar penalty due to shifts. 
 As we will examine later in this chapter, there are better data structure choices when we need to consistently remove elements from the front of a list.
 
-\myexample{We made a big deal about growing the underlying array when we run out of room to add new elements. We could ask a similar question about what to do when we, say, remove a ton of elements from a large list. If our list contains one million elements and we then clear the list, it makes little sense, at first glance, to have space allocated for one million non-existent values. Though, Java's implementation of \ttt{ArrayList} does not decrease the size of the backing array, preferring performance over memory usage. The reasoning behind this choice is straightforward: suppose we have an \ttt{ArrayList} of $500$ elements and we remove $250$ elements. Is it fair to decrease the size of the list by a factor of two? If so, what happens when we add one more element, totaling to $251$? We then have to grow the list, again, wasting valuable time.}
+\myexample{We made a big deal about growing the underlying array when we run out of room to add new elements.} 
+We could ask a similar question about what to do when we remove lots of elements from a substantially large list. 
+For instance, if our list contains one million elements, and we then clear the list, it makes little sense (at first glance) to have allocated space for one million non-existent values.
+Though, Java's implementation of \ttt{ArrayList} does \emph{not} decrease the size of the backing array, preferring performance over memory usage. 
+The reasoning behind this design choice is as follows: suppose we have an \ttt{ArrayList} of~$500$ elements and we remove~$250$ elements. 
+Is it a good idea to decrease the size of the list by a factor of two? 
+If so, what happens when we add one more element, totaling to~$251$? 
+We then have to grow the underlying array, again, wasting valuable time.
 
-\myexample{Consider the following code. What does $s$ contain after execution?}
+\myexample{Consider the following code. What does~$s$ contain after execution?}
+
 \begin{verbnobox}[\small]
 List<Integer> ls1 = new ArrayList<>();
 ls1.add(10);
@@ -324,7 +332,15 @@ ls2.add(20);
 ls1.add(30);
 String s = ls1.toString() + " " + ls2.toString();
 \end{verbnobox}
-Should you be unaware of aliasing, you might say it resolves to \ttt{"[10, 30] [20]"}. \emph{Aliasing}\index{aliasing} is a form of object-sharing. When allocating any type of \emph{object}, whether that object is an array, an \ttt{ArrayList}, a \ttt{String}, or something else, we assign a reference \emph{to} that object in memory via the variable declaration. That is, in the preceding code, \ttt{ls1} references the location, in memory, of an \ttt{ArrayList}. Correspondingly, when we declare \ttt{ls2} and assign to it \ttt{ls1}, we are not copying over the values from \ttt{ls1} into \ttt{ls2}; we are expressing that \ttt{ls2} should reference the same list as referenced by \ttt{ls1}. Therefore by asserting \ttt{ls2} as an alias of \ttt{ls1}, any modifications made to either is reflected when referencing the other. In this instance, $s$ resolves to \ttt{"[10, 20, 30] [10, 20, 30]"}
+
+Should you be unaware of aliasing, you might say it resolves to \ttt{"[10, 30] [20]"}. 
+\emph{Aliasing}\index{aliasing} is a form of object-sharing. 
+When allocating any type of \emph{object}, whether that object is an array, an \ttt{ArrayList}, a \ttt{String}, or something else, we assign a reference \emph{to} that object in memory via the variable declaration. 
+That is, in the preceding code, \ttt{ls1} references the location, in memory, of an \ttt{ArrayList}. 
+Correspondingly, when we declare \ttt{ls2} and assign to it \ttt{ls1}, we are not copying over the values from \ttt{ls1} into \ttt{ls2}.
+Rather, we are expressing that \ttt{ls2} references the same list as referenced by \ttt{ls1}. 
+Therefore, by asserting that \ttt{ls2} as an alias of \ttt{ls1}, any modifications made to either is reflected when referencing the other. 
+In this instance,~$s$ resolves to \ttt{"[10, 20, 30] [10, 20, 30]"}
 
 \myexample{Consider two methods \ttt{void increment(int x)}, which increments an integer variable, and \ttt{void increment(ArrayList<Integer> ls, int idx)}, which increments the value at a given index in a list of integers.}
 
@@ -338,7 +354,15 @@ static void incrementList(ArrayList<Integer> ls, int idx) {
 }
 \end{verbnobox}
 
-If we then pass a variable to the \ttt{incrementInt} method, we might expect the resulting value, outside of the method, to also be incremented. Unfortunately, that is not what happens--in the following code segment, we see that the primitive variable \ttt{y} remains unchanged outside of the method invocation. This happens because primitive values are \emph{passed by value}. In essence, methods receive a copy of the value, which means that the original variable is not modified, and the change made inside the scope of \ttt{incrementInt} is rendered useless. Compare this to what happens if we pass an \ttt{ArrayList<Integer>} to \ttt{incrementList}: we see that the change occurs both inside and outside the scope of the method body. Objects, e.g., \ttt{String}, \ttt{ArrayList}, arrays, and so forth, when supplied as arguments to methods, are passed by a paradigm that we will call \emph{pseudo-reference}.\footnote{The emphasis on calling this ``pseudo-reference'' is to provide an intuition for those readers who may know about true pass-by-reference, while satisfying those who want to angrily shout that Java is strictly pass-by-value.} Passing by pseudo-reference means to suggest that we are not truly passing the argument by reference, and this is correct. Objects in Java are still passed by value, but instead of creating a copy of the object, the method receives an object reference value, which points to the location in memory where the object is allocated. Therefore, any changes made to the value inside the method are reflected outside.
+If we pass a variable to the \ttt{incrementInt} method, we might expect the resulting value, outside of the method, to also be incremented. 
+This is a misconception---in the following code segment, we observe that the primitive variable \ttt{y} remains unchanged outside of the method invocation. 
+This happens because primitive values are \emph{passed by value}. 
+Methods receive a copy of the variable value, which means that the original variable is not modified, and the change(s) made inside the scope of \ttt{incrementInt} are non-existent outside its scope. 
+Compare this to what happens if we pass an \ttt{ArrayList<Integer>} to \ttt{incrementList}: we see that the change occurs both inside and outside the scope of the method body. 
+Objects, e.g., \ttt{String}, \ttt{ArrayList}, arrays, and so forth, when supplied as arguments to methods, are passed by what we call \emph{pseudo-reference}.\footnote{The emphasis on calling this ``pseudo-reference'' is to provide an intuition for those readers who may know about true pass-by-reference, while satisfying those who want to angrily shout that Java is strictly pass-by-value.} 
+Passing by pseudo-reference means to suggest that we are not truly passing the argument by reference, and this is correct. 
+Objects in Java are still passed by value, but instead of creating a copy of the object, the method receives an object reference value, which points to the location in memory where the object is allocated. 
+Therefore, any changes made to the value inside the method are reflected outside the method.
 
 \begin{verbnobox}[\small]
 int y = 5;
@@ -355,14 +379,24 @@ incrementList(ls, 0);
 assertEquals(6, ls.get(0)); // Assertion after increment.
 \end{verbnobox}
 
-\myexample{We have seen the repeated use of the \ttt{Integer} and \ttt{Double} classes when parameterizing the types for \ttt{ArrayList}, but what is the point? Could we not instead opt for \ttt{int} and \ttt{double}, as we have traditionally? The answer is a resounding no; we must take advantage of the luxury that is \emph{autoboxing} and \emph{autounboxing} through the \emph{wrapper classes}. The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Character}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. Parameterized types only work with class types; primitive datatypes are disallowed. So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. We can certainly declare an \ttt{Integer} using the following overly-verbose syntax:}
+\myexample{We have seen the repeated use of the \ttt{Integer} and \ttt{Double} classes when parameterizing the types for \ttt{ArrayList}, but what is the point?} 
+Could we not instead opt for \ttt{int} and \ttt{double}, as we have traditionally? 
+The answer is a resounding no; we must take advantage of the luxury that is Java \emph{autoboxing} and \emph{autounboxing} through the \emph{wrapper classes}. 
+The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Character}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. 
+Parameterized types only work with class types; not primitives. 
+So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. 
+We can certainly declare an \ttt{Integer} using the following overly-verbose syntax:
 
 \begin{verbnobox}[\small]
 Integer x = new Integer(42);
 int y = x.getValue(); // y = 42.
 \end{verbnobox}
 
-We explicitly wrap the integer literal $42$ in $x$, which is of \ttt{Integer} type, then unwrap its value to be stored in $y$. Manually wrapping and unwrapping primitives is tiresome and only introduces redundant code, hence why Java autoboxes and autounboxes as needed. For example, if we declare an \ttt{ArrayList} of \ttt{Integer} values, then add the primitive integer literal \ttt{42} to the list, Java will autobox the literal into its \ttt{Integer} wrapper. Going the other direction, if we want to iterate over the values in the list, we might use the enhanced-for loop. If Java did not support autounboxing, we would instead have to use \ttt{Integer} as opposed to \ttt{int} in the loop variable declaration. 
+We explicitly wrap the integer literal~$42$ in~$x$, which is of \ttt{Integer} type, then unwrap its value to be stored in~$y$. 
+Manually wrapping and unwrapping primitives is tiresome and results in redundant code, hence why Java autoboxes and autounboxes values as necessary. 
+For example, if we declare an \ttt{ArrayList} of \ttt{Integer} values, then add the primitive integer literal \ttt{42} to the list, Java autoboxes the literal into its \ttt{Integer} wrapper class. 
+Going the other direction, if we want to iterate over the values in the list, we might use the enhanced-for loop. 
+If Java did not natively support autounboxing, we instead have to use \ttt{Integer} in the loop variable declaration. 
 
 \begin{verbnobox}[\small]
 ArrayList<Integer> al = new ArrayList<>();
@@ -372,7 +406,11 @@ for (int e : al) {
 }
 \end{verbnobox}
 
-\myexample{Testing is always important when writing programs, as this text has emphasized from the first page. Writing test cases for lists, naively, is cumbersome due to the repetition of \ttt{.add} method calls when populating the list. Instead, Java has the convenient \ttt{List.of} method, which receives any number of arguments. Let us see an example of this method.}
+\myexample{Testing is always important when writing programs, as this text has emphasized from the first page.} 
+Naively writing test cases for lists is cumbersome due to the repetition of \ttt{.add} method calls. 
+As an alternative, Java has the convenient \ttt{List.of} method, which receives any number of arguments and stores them in an \emph{immutable list}.
+Because the resulting list is immutable, its contents cannot be updated/added/removed. 
+If we want the list to be mutable, we can pass it to a \ttt{new ArrayList<>(...)}, which is exemplified at the bottom of the following listing:
 
 \begin{verbnobox}[\small]
 // Old way:
@@ -385,10 +423,15 @@ ls1.add(42);
 // New way:
 List<Integer> ls2 = new ArrayList<>(List.of(5, 40, 4, 42));
 \end{verbnobox}
-Using \ttt{List.of} raises a question: does \ttt{List.of} only receive four integer arguments? What if I want to specify more than four, or less than four? The answer to this excellent question is that \ttt{List.of} is a \emph{variadic-argument method}\index{variadic-argument method}. Methods may be written to receive any number of arguments, which are then collapsed into a traversable data structure.
 
-\myexample{Suppose we want to write a variadic method that computes the average of any number of given \ttt{double} values. Without variadic-argument methods, we must wrap these in a list or an array, then pass it to the method. Variadic arguments allow us to specify any desired number of arguments, and it is the responsibility of the method to interpret those values as a traversable data structure. So, to iterate over such a structure, we can use the enhanced-for loop.}
+Using \ttt{List.of} raises a question: does \ttt{List.of} only receive four integer arguments? 
+What if I want to specify more than four arguments, or less than four? 
+The answer to this excellent question is that \ttt{List.of} is a \emph{variadic-argument method}\index{variadic-argument method}. 
+Variadic methods receive any number of arguments, which collapse into an iterable data structure.
 
+\myexample{Suppose we want to design a variadic method that computes the average of some \ttt{double} values.} 
+Without variadic-argument methods, we would need to explicitly wrap these values into a list or an array, then pass it to the method. 
+With them, we invoke the method with however many values we wish.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -422,7 +465,8 @@ class NumAverage {
 }
 \end{lstlisting}
 
-\myexample{If we want to, say, specify that a method must receive at least two parameters, those being a \ttt{String} and an \ttt{int}, followed by zero or more \ttt{String} values, we may declare the first two parameters, then incorporate the variadic notation for the last. Doing so ensures that we pass the required parameters, but any thereafter are optional but variadic nonetheless.}
+\myexample{If we want to, say, specify that a method receives at least two parameters, those being a \ttt{String} and an \ttt{int}, followed by zero or more \ttt{String} values, we may declare the first two parameters, then incorporate the variadic notation for the those remaining parameters.} 
+Doing so ensures that we pass the required parameters, but any thereafter are optional but variadic nonetheless.
 
 \begin{lstlisting}[language=MyJava]
 class RequiredVariadicParameters {
@@ -432,12 +476,27 @@ class RequiredVariadicParameters {
 \end{lstlisting}
 
 \subsubsection*{\ttt{LinkedList} Class}
-\emph{Linked lists}\index{linked list} remove us from the shackles of array-based data structures, in that, as their name implies, they are a series of \emph{nodes}\index{node}, or elements, linked together in a chain of sorts. These nodes need not be adjacent in memory, but rather reference each other to find what comes next in the chain/list. For instance, if we create a linked list, it has a \emph{front}\index{head}/\emph{head} element that always references, or points, to the first element in the list (upon initialization, the head refers to nothing). If we add a new element, the head now points to this first element. Subsequent additions to the list continue growing the chain and links. Namely, element 1 points to element 2, element 2 to 3, and so on. 
+\emph{Linked lists}\index{linked list} remove us from the shackles of array-based data structures in that, as their name implies, they are a series of \emph{nodes}\index{node}, or elements, linked together in a chain of sorts. 
+These nodes need not be adjacent in memory (like the elements of arrays), but rather reference each other to find what comes next in the chain/list. 
+For instance, if we create a linked list, it has a \emph{front}\index{head}/\emph{head} element that always references, or points, to the first element in the list (upon initialization, the head refers to nothing). 
+If we add a new element, the head now points to this first element. 
+Subsequent additions to the list continue growing the chain and links. 
+Namely, element 1 points to element 2, element 2 to 3, and so on. 
 
-Elements have an associated index and value, but linked lists are not constrained to a static size even in the underlying implementation! So, we can add and remove links from the chain whenever we please with no shuffling of values around aside from links within the chain. Removing elements from the front of a linked list is constant time, and scales linearly with the number of elements in the list rather than a quadratic growth.
+Elements have an associated index and value, but linked lists are not constrained to a static size, even in the underlying implementation. 
+So, we can add and remove links from the chain whenever we please with no shuffling of values around aside from links within the chain. 
+Removing elements from the front of a linked list takes constant time, and scales linearly with the number of elements in the list rather than as a quadratic growth.
 
-Of course, these advantages are not without their disadvantages. Reading and modifying elements are slower operations than the array counterparts since the elements are not contiguous blocks in memory. Recall that with an \texttt{ArrayList}, because elements are placed side-by-side in memory, we know the location of any arbitrary index in the array list by a multiplicative offset of the starting index and the ``byte-size'' of each element. Linked lists do not provide this guarantee and should not be treated as such. Adding and removing elements are ``faster'' in the sense that, as we stated, copying values over to a new array is out of the question. Because of this, though, we need to iterate/traverse through the list each time we wish to reference a provided index. The same goes for inserting elements into the list. Adding or removing elements from the front or rear of the list, on the other hand, are instant operations since we keep track of the first element of the list (and we can, similarly, keep track of the last!). Linked lists are also the backbone of many other data structures as we will soon see.
-% The \emph{linked list} data structure belongs to the first of these three, similar to an array list. Unlike these, though, linked lists are not backed by an array. Rather, elements in a linked list are chained together, so to speak, via \emph{nodes}. Recall that with an \texttt{ArrayList}, because elements are placed side-by-side in memory, we know the location of any arbitrary index in the array list by a multiplicative offset of the starting index and the ``byte-size'' of each element. Linked lists do not provide this guarantee and should not be treated as such. \emph{Singly-linked list} nodes point to their successor nodes in the list. That is, the \emph{head} of the list points to the second element, which points to the third, and so on until we reach the end of the list whose ``next'' pointer is \texttt{null}. Accordingly, each node is located somewhere in memory that is unpredictable, meaning we lose the constant access time granted by array lists.
+Of course, these advantages are not without their disadvantages. 
+Reading and modifying elements are slower operations than their array counterparts since the elements are not contiguous blocks in memory. 
+Recall that, with an \texttt{ArrayList}, because elements sequentially located in memory, we know the location of any arbitrary index in the array list as a multiplicative offset of the starting index and the ``byte-size'' of each element. 
+Accordingly, each node is located at an unpredictable place in memory, meaning we lose the constant access time granted by array lists.
+Adding and removing elements are ``faster'' in the sense that, as we stated, linked lists do not copy and resize buffers. 
+Because of this, we need to iterate/traverse through the linked list each and every time we want to reference a provided index. 
+The same goes for inserting elements into the list. 
+Adding or removing elements from the front or rear of the list, on the other hand, are instant (constant time) operations, since we keep track of the first element of the list (and we can, similarly, keep track of the last!). 
+Linked lists are also the backbone of many other data structures, as we will soon see.
+
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Linked Lists]
@@ -455,7 +514,6 @@ Of course, these advantages are not without their disadvantages. Reading and mod
   \caption{Useful \ttt{LinkedList}-based Methods.}
   \label{fig:linkedlists}
 \end{figure}
-
 
 \subsubsection*{\ttt{Stack} Class}
 \begin{figure}[tp]
@@ -477,11 +535,22 @@ Of course, these advantages are not without their disadvantages. Reading and mod
   \caption{Useful \ttt{Stack}-based Methods.}
   \label{fig:stacks}
 \end{figure}
-Imagine you are washing dishes, by hand, at the kitchen sink. These dishes are assorted in a single stack to your left. A dish cannot be removed from anywhere but the top of the stack because displacement anywhere else will destroy the stack. Additionally, further imagine that people are, to your dismay, adding more dishes to the stack. Again, dishes cannot be added anywhere else but the top of the stack. 
 
-The \emph{stack}\index{stack} data structure is as simple as it sounds---a collection of elements that operate on the principle of last-in-first-out, or LIFO\index{last-in-first-out}. In other words, the last thing that we enter is the first thing removed. Stack implementations contain at least the following operations: \textsc{pop}\index{pop} and \textsc{push}\index{push}, where the former removes the top-most element from the stack (if one exists), and the latter adds a new element to the top of the stack. There may also exist an operation to view, but not remove, the top-most element via \textsc{peek}\index{peek}. 
+Imagine you are washing dishes, by hand, at the kitchen sink. 
+The dishes are assorted in a single stack to your left. 
+A dish cannot be removed from anywhere but the top of the stack, because displacement anywhere else will destroy the stack. 
+Additionally, further imagine that people are, to your dismay, adding more dishes to the stack. 
+Again, dishes cannot be added anywhere else but the top of the stack, otherwise it disrupts the stack.
 
-Stacks have the advantages of instant insertion and removal times but are obviously not as flexible as an array or linked list. A practical example of a stack data structure would be an ``undo'' function in a document-editing program---whenever an action is made, it is pushed to an event stack. An ``undo'' event would resemble popping an action off this stack. We illustrate this concept in Figure~\ref{fig:stackundo}.
+The \emph{stack}\index{stack} data structure is as simple as it sounds---a collection of elements that operate on the principle of last-in-first-out, or LIFO\index{last-in-first-out}. 
+In other words, the last thing that we enter is the first thing removed. 
+Stack implementations contain at least the following operations: \textsc{pop}\index{pop} and \textsc{push}\index{push}, where the former removes the top-most element from the stack (if one exists), and the latter adds a new element to the top of the stack. 
+There may also exist an operation to view, but not remove, the top-most element via \textsc{peek}\index{peek}. 
+
+Stacks have the advantages of instant insertion and removal times, but are obviously not as flexible as an array or linked list. 
+A practical example of a stack data structure would be to implement an ``undo'' function in a document-editing program---whenever an action is made, it is pushed to an event stack. 
+An ``undo'' event resembles popping an action off this stack. 
+We illustrate this concept in Figure~\ref{fig:stackundo}.
 
 \begin{figure}[ht]
 \begin{center}
@@ -492,11 +561,11 @@ Stacks have the advantages of instant insertion and removal times but are obviou
 ]
 
 % Stack nodes
-\node[stacknode] (top) at (0, 0) {Paste Text};
-\node[stacknode] (node1) at (0, -1) {Highlight Paragraph};
-\node[stacknode] (node2) at (0, -2) {Change Font Size};
-\node[stacknode] (node3) at (0, -3) {Add Paragraph};
-\node[stacknode] (bottom) at (0, -4) {Remove Text};
+\node[stacknode] (top) at (0, 0) {Paste Number};
+\node[stacknode] (node1) at (0, -1) {Highlight Sentence};
+\node[stacknode] (node2) at (0, -2) {Change Font Color};
+\node[stacknode] (node3) at (0, -3) {Add Footnote};
+\node[stacknode] (bottom) at (0, -4) {Remove Figure};
 
 % Arrows
 \draw[->] (top.south) -- (node1.north);
@@ -518,11 +587,18 @@ Stacks have the advantages of instant insertion and removal times but are obviou
 \end{figure}
 
 \subsubsection*{\ttt{Queue} Interface}
-Imagine you are in line at an amusement park for the most intense roller coaster in the world. Another, perhaps more generic term for a ``line'' is a \emph{queue}\index{queue}. In this metaphor, riders enqueue the line at the back and board the roller coaster (and hence dequeue from the line) at the front. 
+Imagine you are in line at an amusement park for the most intense roller coaster in the world. 
+Another, perhaps more generic term for a ``line'' is a \emph{queue}\index{queue}.
+In this metaphor, riders enqueue the line at the back and board the roller coaster (and hence dequeue from the line) at the front. 
 
-What we have described is a practical example of the queue data structure. In a queue, elements are enqueued, or inserted, to the back of the line and are dequeued, or removed, from the front. Queues operate on the principle of first-in-first-out, or FIFO\index{first-in-first-out}. The implementation of a queue data structure may contain different names for their operations, but at their core should contain operations for inserting an element to the back of the queue (e.g., \textsc{enqueue}\index{enqueue}) and removing an element from the front of the queue (e.g., \textsc{dequeue}\index{dequeue}). 
+What we have described is a practical example of the queue data structure. 
+In a queue, elements are enqueued, or inserted, onto the back of the queue, and are dequeued, or removed, from the front. 
+Queues operate on the principle of first-in-first-out, or FIFO\index{first-in-first-out}. 
+The implementation of a queue data structure may contain different names for their operations, but at their core should contain operations for inserting an element to the back of the queue (e.g., \textsc{enqueue}\index{enqueue}) and removing an element from the front of the queue (e.g., \textsc{dequeue}\index{dequeue}). 
 
-Like the operations of a stack, these are also constant-time, since we keep a reference to the front and rear elements of a queue. Queues, consequently, share similar drawbacks to stacks in that elements are not randomly accessible, i.e., we only know what exists at the front and rear of a queue instantaneously. Figure~\ref{fig:printerqueue} demonstrates the task queue of a printer, which has a sequence of files to print one after the other.
+Like the operations of a stack, \textsc{enqueue} and \textsc{dequeue} are also constant-time, since we store references to the front and rear elements of a queue. 
+Queues, consequently, share similar drawbacks to stacks in that elements are not randomly accessible, i.e., we only know what exists at the front and rear of a queue instantaneously. 
+Figure~\ref{fig:printerqueue} demonstrates the task queue of a printer, which has a sequence of files to print, one after another.
 
 \begin{figure}[ht]
 \begin{center}
@@ -533,10 +609,10 @@ Like the operations of a stack, these are also constant-time, since we keep a re
 ]
 
 % Queue nodes
-\node[queuenode] (front) at (0, 0) {\texttt{exam1.txt}};
-\node[queuenode] (node1) at (3, 0) {\texttt{project.png}};
-\node[queuenode] (node2) at (6, 0) {\texttt{pocs.pdf}};
-\node[queuenode] (node3) at (9, 0) {\texttt{journal.txt}};
+\node[queuenode] (front) at (0, 0) {\texttt{exam2.txt}};
+\node[queuenode] (node1) at (3, 0) {\texttt{graph.png}};
+\node[queuenode] (node2) at (6, 0) {\texttt{learningjava.pdf}};
+\node[queuenode] (node3) at (9, 0) {\texttt{diary.txt}};
 
 % Arrows
 \draw[->] (front.east) -- (node1.west);
@@ -555,11 +631,18 @@ Like the operations of a stack, these are also constant-time, since we keep a re
 \label{fig:printerqueue}
 \end{figure}
 
-Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. Instead, \texttt{Queue} is an \emph{interface}\index{interface} that other classes implement whose structure resembles a queue. To create a first-in-first-out queue data structure, we may initialize a variable to be a \texttt{Queue} then instantiate it as a \texttt{LinkedList}. Thankfully, the \texttt{LinkedList} class contains all relevant methods for operating a FIFO-based queue.
+Unfortunately and inconveniently, there is no \ttt{Queue} class in Java. 
+Instead, \texttt{Queue} is an \emph{interface}\index{interface} that other classes implement whose structure models the behavior of a queue. 
+To create a first-in-first-out queue data structure, we initialize a variable to be a \texttt{Queue}, then instantiate it as a \texttt{LinkedList}. 
+Thankfully, the \texttt{LinkedList} class contains all the relevant methods for operating a FIFO-based queue.
+
 \begin{verbnobox}[\small]
 Queue<Integer> q = new LinkedList<>();
 \end{verbnobox}
-Treating \texttt{q} as a queue rather than a linked list is easy thanks to the methods supplied by the \texttt{LinkedList}\index{\ttt{LinkedList}} implementation. Figure~\ref{fig:queues} shows some of these handy methods. 
+
+Treating \texttt{q} as a queue rather than a linked list is easy thanks to the methods supplied by the \texttt{LinkedList}\index{\ttt{LinkedList}} implementation. 
+Figure~\ref{fig:queues} shows some of these handy methods. 
+
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Queue]
@@ -595,7 +678,8 @@ Treating \texttt{q} as a queue rather than a linked list is easy thanks to the m
   \label{fig:priorityqueues}
 \end{figure}
 
-\emph{Priority queues}\index{priority queues} are the final sequential data structure that we will discuss from the Collections API\@. Though, placing it in this section is slightly disingenuous because, while priority queues have an ordering in their underlying data structure, saying that elements correspond to an index is largely incorrect. Priority queues, as their name suggests, rank items in the queue by a score called the \emph{priority}\index{priority}. Elements with the highest priority are at the ``front'' of the priority queue. Inserting elements into a priority queue potentially alters the positioning of preexisting elements.
+\emph{Priority queues}\index{priority queues} are the final sequential data structure that we will discuss from the Collections API\@. 
+Though, placing it in this section is slightly disingenuous because, while priority queues have an ordering in their underlying data structure, saying that elements correspond to an index is largely incorrect. Priority queues, as their name suggests, rank items in the queue by a score called the \emph{priority}\index{priority}. Elements with the highest priority are at the ``front'' of the priority queue. Inserting elements into a priority queue potentially alters the positioning of preexisting elements.
 
 Priority queues base priority on one of two contributing factors: either the \emph{natural ordering}\index{natural ordering} of elements, or a \emph{comparator object}\index{comparator object}. The natural ordering of elements is straightforward: natural ordering for numbers is their standard numeric ordering. For strings, the natural ordering is by lexicographical ordering. These, however, are not as interesting as comparators, which we will now discuss.
 
