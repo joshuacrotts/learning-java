@@ -1,33 +1,51 @@
 \section{Collections}
 \label{section:chapter-arrays-collections-collections}
 In this section we will introduce the \emph{Java Collections API}. In doing so we will discuss three broad classifications of data structures provided by the API:
+
 \begin{enumerate}
     \item Sequential-based
     \item Dictionary-based
     \item Set-based
 \end{enumerate}
-Note that our discussion is not all-inclusive of every data structure in the API, but we present those that we feel are most valuable to this course.
+
+Our discussion will not be all-inclusive of every data structure in the API, but we present those that we feel are most valuable to readers.
 
 \subsection{Sequential-Based Data Structures}
-We categorize data structures that have an ordering over the natural numbers as \emph{sequential-based}. That is, each element has an index where it ``lives'' for its lifetime. Each index is, similar to standard arrays, numbered from zero to the size of the collection minus one. Let us now take a dive into these different collections.
+We categorize data structures that have an ordering over the natural numbers as \emph{sequential-based}. 
+That is, each element has an index where it ``lives'' for its lifetime. 
+Each index is, similar to standard arrays, numbered from zero to the size of the collection minus one. 
+Let's now dive into these different sequential collections.
 
 \subsubsection*{\ttt{ArrayList} Class}
-Arrays are fixed-size data structures; once they are initialized, they cannot, themselves, be resized. A solution to this problem is to create a new array $A'$ of the same type with a new size and copy the elements from the old array to $A'$. Doing so is not difficult but cumbersome to repeatedly implement. Consider a situation in which the number of elements to store is unknown at compile-time. We, therefore, cannot use an array without repeated resizing. The correct and colloquial solution involves the \ttt{ArrayList} class.
+Arrays are fixed-size data structures; once they are initialized, they cannot, themselves, be resized. 
+A solution to this problem (i.e., the problem of non-resizable arrays) is to create a new array~$A'$ of the same type with a new size, and copy the elements from the old array into~$A'$. 
+Doing so is not difficult, but cumbersome to repeatedly implement. 
+Consider a situation in which the number of elements to store is unknown at compile-time. 
+We, therefore, cannot use an array without repeated resizing. 
+The correct and colloquial solution involves the \ttt{ArrayList} class.
 
-First, however, let us see how we might go about implementing a \emph{dynamic array}, called a \emph{list}, using only methods. Suppose we want to store positive integers in this list. We also want to be able to add, set, and retrieve elements at a specified index. We will continue to work with arrays for the time being to demonstrate what goes wrong with this ideology, and then to understand the power of the \ttt{ArrayList}.
+First, however, let's see how we might go about implementing a \emph{dynamic array}, called a \emph{list}, using only methods. 
+Suppose we want to store positive integers in this list. 
+We also want to be able to add, set, and retrieve elements at a specified index. 
+We will continue to work with arrays for the time being to demonstrate what roadblocks we encounter with this approach, and then to understand the power of the \ttt{ArrayList}.
 
-We need a few methods to solve this problem: \ttt{makeList}, \ttt{addToList}, \ttt{getFromList}, and \ttt{setInList}. At the end of the day, we want the programmer who uses these methods to not worry about resizing the array themselves; the logic within handles the dirty work.
+We need to design a few methods: \ttt{makeList}, \ttt{addToList}, \ttt{getFromList}, and \ttt{setInList}. 
+At the end of the day, we want the programmer who uses these methods to not worry about resizing the array themselves; the logic within handles the ``dirty work.''
 
-To better relate to the \ttt{ArrayList} class implementation, we will write two versions of the \ttt{makeList} method: one that receives an initial size and one that does not. Designing two methods of the same name that receive different parameter types/quantities is known as \emph{method overloading}\index{method overloading}, and we will see this further in our discussion on \emph{classes}. The \ttt{makeList} method returns an array of integers instantiated to the given size, or a base size of ten elements in the method that does not receive a parameter. Note that, inside of the \ttt{makeList} method that does not receive a parameter, we invoke \ttt{makeList(10)} so as to not repeat ourselves.
+To better relate the problem to the \ttt{ArrayList} class implementation, we will design two versions of the \ttt{makeList} method: one that receives an initial size and one that does not. 
+Designing two methods of the same name that receive different parameter types/quantities is known as \emph{method overloading}\index{method overloading}, and we will see this further in our discussion on \emph{classes} in Chapter~\ref{chapter:classes}. 
+The \ttt{makeList} method returns an array of integers instantiated to the given size, or a base size of ten elements in the method that does not receive a parameter. 
+Inside of the \ttt{makeList} method that does not receive a parameter, we invoke \ttt{makeList(10)} so as to not repeat code logic.
 
 %\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
   /**
-   * Creates an array of the given size.
-   * @param size - 
-   * @return 
+   * Creates a ``dynamic array'' of the given size. Each free slot
+   * is simulated with a value of -1.
+   * @param size - initial size of the list.
+   * @return integer array with size slots.
    */
   static int[] makeList(int size) {
     int[] array = new int[size];
@@ -38,8 +56,8 @@ class DIntArray {
   }
 
   /**
-   * Creates an array with ten spaces.
-   * @return 
+   * Creates a ``dynamic array'' with ten spaces.
+   * @return integer array with ten slots.
    */
   static int[] makeList() {
     return makeList(10);
@@ -47,7 +65,13 @@ class DIntArray {
 }
 \end{lstlisting}
 
-We now want a method that will add a value to a given ``list'' in this fashion. In particular, we know that indices whose elements are $-1$ correspond to ``free/available'' slots for the next value to-be added. The thing is, there is more to consider than just replacing the first-found instance of $-1$ with the desired value. We need to ensure that room exists for this new value; i.e., whether or not there is a $-1$ to begin with. As such, we should write a local helper method that returns a resized list with the values copied over from the old list; the only difference being a doubling in element capacity. Then, inside \ttt{addToList}, we check to see if we were able to properly insert $v$ into the list and, if not, we resize and make a recursive call to \ttt{addToList}.\footnote{We could use \ttt{Arrays.copyOf}, but it is important to understand \emph{how} the copying occurs.} Regarding performance and memory usage, this is not an optimal solution since we could simply add $v$ to index $|A|$ of the new array $A'$, since we know $|A'| = |A|$.
+We now want a method that adds a value to a given ``dynamic list,'' in this fashion. 
+In particular, we know that indices whose elements are~$-1$ correspond to ``free/available'' slots for the next value to-be added. 
+The thing is, there is more to consider than just replacing the first-found instance of~$-1$ with the desired value. 
+We need to ensure that room exists for this new value, i.e., whether there is a~$-1$ (free slot) to begin with. 
+As such, we should design a local helper method that returns a resized list with the values copied over from the old list; the only difference being a doubling in element capacity. 
+Then, inside \ttt{addToList}, we check to see if we were able to properly insert~$v$ into the list and, if not, resize and make a recursive call to \ttt{addToList}.\footnote{We could use \ttt{Arrays.copyOf}, but it is important to understand \emph{how} the copying occurs.} 
+Regarding performance and memory usage, this is a suboptimal solution, since we could simply add~$v$ to index~$|A|$ of the new array~$A'$, knowing that~$|A'| = |A|$.
 
 %\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -73,8 +97,8 @@ class DIntArray {
   /**
    * Doubles the capacity of a list, returning a 
    * new list with the old elements copied over.
-   * @param list - 
-   * @return
+   * @param list - old dynamic list to resize.
+   * @return a new resized dynamic list.
    */
   private static int[] resize(int[] list) {
     int[] newList = new int[list.length * 2];
@@ -92,9 +116,9 @@ class DIntArray {
   /**
    * Adds a value to the next-available spot in the list.
    * We define next-available as the first -1 we find from the left.
-   * @param list - 
-   * @param v - 
-   * @return
+   * @param list - list to add v into.
+   * @param v - integer to insert.
+   * @return new list with v added.
    */
   static int[] addToList(int[] list, int v) {
     boolean added = false;
@@ -116,16 +140,21 @@ class DIntArray {
 }
 \end{lstlisting}
 
-We have two methods to go: \ttt{getFromList} and \ttt{setInList}. The former retrieves an element at a given index and the latter replaces the element at a given index. Both methods receive an index $i$ that must be in-bounds, where in-bounds refers to not only the bounds of the array, i.e., neither negative nor exceeding the length of the list, but also the logical indices. The \emph{logical indices} of a list are the indices in which elements exist. For our purposes, these indices are from zero up until and excluding the first instance of $-1$. We will also write a helper method that retrieves the index of the first ``free'' slot of a list, i.e., the first occurrence of $-1$.
+We have two remaining methods to design: \ttt{getFromList} and \ttt{setInList}. 
+The former retrieves an element at a given index and the latter replaces the element at a given index. 
+Both methods receive an index~$i$ that must be in-bounds, where in-bounds refers to not only the bounds of the array, i.e., neither negative nor exceeding the length of the list, but also the logical indices. 
+The \emph{logical indices}\index{logical index} of a list are the indices in which (real) elements exist. 
+For our purposes, these indices are from zero up until and excluding the first instance of~$-1$. We will also design a helper method to retrieve the index of the first ``free'' slot of a list, i.e., the (index of the) first occurrence of~$-1$.
 
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
   /**
-   *
-   * @param list - 
-   * @param idx - 
-   * @return 
+   * Retrieves a value at a given index from the specified
+   * dynamic list.
+   * @param list - dynamic list. 
+   * @param idx - index to retrieve. 
+   * @return value at the given index.
    */
   static int getFromList(int[] list, int idx) {
     int upperBound = getFirstFreeSlot(list);
@@ -137,9 +166,9 @@ class DIntArray {
   }
 
   /**
-   *
-   * @param list - 
-   * @return 
+   * Finds the first ``free slot'' in a given dynamic list.
+   * @param list - dynamic list.
+   * @return index of first occurrence of -1, or -1 if it doesn't exist.
    */
   private static int getFirstFreeSlot(int[] list) {
     for (int i = 0; i < list.length; i++) {
@@ -155,11 +184,11 @@ class DIntArray {
 class DIntArray {
 
   /**
-   *
-   * @param list - 
-   * @param idx - 
-   * @param v - 
-   * @return 
+   * Sets a value in a dynamic list. 
+   * @param list - dynamic list.
+   * @param idx - index to replace.
+   * @param v - value to replace at the index.
+   * @return new dynamic list with the replaced value.
    */
   static int[] setInList(int[] list, int idx, int v) {
     int upperBound = getFirstFreeSlot(list);
@@ -177,13 +206,22 @@ class DIntArray {
 }
 \end{lstlisting}
 
-It should be noted that our implementation is a \emph{functional list}, which means that the (old) passed list, in and of itself, is not altered. Rather, we create a new list with each successive modification.
+It should be noted that our implementation is a \emph{persistent list}\index{persistent}\index{persistency}, which means that the (old) passed list, in and of itself, is not altered. 
+Rather, we create a new list with each successive modification.
 
-So, the problems of relying only on methods become clear: we have no way of keeping track of when/where the last \emph{logical element} is located. By assuming an input of only positive integers, we can say that the first occurrence of a $-1$ marks the next-available spot to add a value. Sentinel indicators like these fall apart once we allow for different inputs, e.g., negative numbers. 
+So, the problems of relying only on methods become clear: we have no way of keeping track of when/where the last \emph{logical element} is located. 
+By assuming an input of only positive integers, we can say that the first occurrence of a~$-1$ marks the next-available spot to add a value. \emph{Sentinel indicators}\index{sentinel}\index{sentinel indicator} like these fall apart once we allow different kinds of inputs, e.g., negative numbers. 
 
-The Java \ttt{ArrayList} class is a dynamic list data structure, is our first look at a ``powerful'' data structure insofar as its capabilities are concerned. Additionally, it is the first class that incorporates \emph{parameterized types}. With arrays, we must specify the type upon declaration; the \ttt{ArrayList} class is \emph{generic} in the sense that it operates on any type, whether that is \ttt{Integer}, \ttt{String}, or anything else, making it an incredibly flexible data structure. 
+The Java \ttt{ArrayList}\index{\ttt{ArrayList}} class is a dynamic list data structure, is our first look at a ``powerful'' data structure insofar as its capabilities are concerned. 
+Additionally, it is the first class that we have seen to incorporate \emph{parameterized types}\index{parameterized types}\index{type parameterization}. 
+With arrays, we specify the type upon declaration; the \ttt{ArrayList} class is \emph{generic}\index{generic} in the sense that it operates over any type, whether that is \ttt{Integer}, \ttt{String}, or anything else, making it an incredibly flexible data structure. 
 
-What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation of the underlying data structure. Underneath these lies a primitive array that is resized whenever necessary, similar to our resizing method. Thankfully, us as the programmers need not to worry about its implementation, but understanding it is key to grasping just what makes it better than our previous approach of writing static methods that receive and return lists. First, like we said, our methods-based implementation of dynamic lists is restricted to one datatype, namely \ttt{int}, and also uses $-1$ as the ``sentinel.'' Conversely, \ttt{ArrayList} stores a number that references the next-available spot, meaning we do not need to waste time traversing the list for each and every instance of adding or modifying elements.
+What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation of the underlying data structure. 
+Underneath lies a primitive array that is resized whenever necessary, similar to our resizing method. 
+Thankfully, us as the programmers need not to worry about its implementation, but understanding it is key to grasping just what makes an improvement over our previous design of creating static methods that receive and return lists. 
+First, like we said, our methods-based implementation of dynamic lists is restricted to one datatype, namely \ttt{int}, and also uses~$-1$ as a ``sentinel.'' 
+Conversely, \ttt{ArrayList} stores a number that references the next-available spot, meaning we do not need to waste time traversing the list for each and every instance of adding or modifying elements. 
+The \ttt{ArrayList} class also does not use an arbitrary sentinel value that cannot be used as an element.
 
 \begin{figure}[tp]
 %\begin{wrapfigure}[25]{r}[0.75in]{0.55\textwidth}
@@ -207,19 +245,34 @@ What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation
   \label{fig:arraylists}
 \end{figure}
 
-To declare an \ttt{ArrayList} called $A$, we write the following, where $T$ is a class representing the type of elements contained within:
+To declare an \ttt{ArrayList} called~$A$, we write the following, where~$T$ is a class representing the type of~$A$'s elements:
+
 \begin{verbnobox}[\small]
 List<T> A = new ArrayList<>();
 \end{verbnobox}
-This initializes a \ttt{List} $A$, but instantiates it as a new \ttt{ArrayList}.\footnote{The reason behind this \emph{polymorphic} choice will become apparent in subsequent chapters.} Notice that we do not specify the number of elements to store like we would an array. Indeed, because lists are dynamic in size, there is no need to specify a default. Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this can be changed by passing a size argument between the parentheses.
+
+This initializes a \ttt{List}~$A$, but instantiates it as a new \ttt{ArrayList}.\footnote{The reason behind this \emph{polymorphic} choice will become apparent in subsequent chapters.} 
+Notice that we do not specify the capacity, like we would an array. 
+Indeed, because lists are dynamic, there is no need to specify a default. 
+Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this \emph{can} be changed by passing a size argument between the parentheses.
+
 \begin{verbnobox}[\small]
 List<T> A = new ArrayList<>(100);
 \end{verbnobox}
-You might be tempted to ask, ``Why might that be necessary?'', which is a great question. Remember that resizing an array depends on the number of pre-existing elements. Thus, the fewer resizes there are, the better, hence why we double the array capacity in our functional list implementation. If we know that we might have a lot of elements to add to the list from the start, it is a good idea to specify this as a parameter to the \ttt{ArrayList}. On average, adding a value to the end of an \ttt{ArrayList} is a \emph{constant cost}\index{constant cost}, or occurs instantaneously, because we know exactly where the next free spot is located. We cannot forget the time it takes to resize, however, so we declare that the \ttt{.add} method takes constant time with respect to \emph{amortized analysis}\index{amortized analysis}. In essence, sometimes we have to perform a resize-and-copy operation, but on average, we do not need to consider the cost thereof.
 
-Like arrays, modifying elements in-place and retrieval also has a constant cost; the underlying data structure is an array after all. We retrieve a value at a given index using \ttt{.get}, and we replace an existing value at a given index using \ttt{.set}.
+You might be tempted to ask, ``Why might it be a good idea to provide a capacity of my own?'', which is a great question. 
+Remember that resizing an array depends on the number of pre-existing elements. 
+Thus, the fewer (number of) resizes there are, the better, hence why we double the array capacity in our functional list implementation. 
+If we know that we might have a lot of elements to add to the list from the start, it is helpful to provide this as an argument to the \ttt{ArrayList}. 
+On average, adding a value to the end of an \ttt{ArrayList} is a \emph{constant cost}\index{constant cost}, or occurs instantaneously, because we know exactly where the next free spot is located. 
+We cannot forget the time needed to resize, however, so we declare that the \ttt{.add} method takes constant time with respect to \emph{amortized analysis}\index{amortized analysis}. 
+In essence, sometimes we perform a resize-and-copy operation, but on average, we do not, meaning the considered cost is negligible.
 
-\myexample{If we instantiate an \ttt{ArrayList} of integers $\ttt{ls1}$, we can perform several operations to demonstrate our understanding.}
+Like arrays, modifying elements in-place and retrieval also has a constant cost; the underlying data structure is an array after all. 
+We retrieve a value at a given index using \ttt{.get}, and we replace an existing value at a given index using \ttt{.set}.
+
+\myexample{If we instantiate an \ttt{ArrayList} of integers~$\ttt{ls1}$, we can perform several operations to demonstrate our understanding.}
+
 \begin{verbnobox}[\small]
 List<Integer> ls1 = new ArrayList<>();
 ls1.add(439);
@@ -232,15 +285,22 @@ ls1.set(1, 212);
 ls1.add(677);
 ls1.toString()   => {439, 212, 654, 523, 677}
 \end{verbnobox}
-Finally, we can remove an element, when given its index, using \ttt{.remove}. Be aware that removing elements is not as simple as adding. Suppose that, from the previous example, we invoke $\ttt{ls1.remove}(2)$, which removes the value $654$. We cannot simply have a slot/index with a missing value. So, Java compensates by shifting all values to the right of the removed value over by one.
 
-\myexample{Consider a situation in which we have an \ttt{ArrayList} that contains $1,000,000$ arbitrary integers. If we continuously remove elements from the front of the list, we shift each and every value down by one index. Propagating this through all one million elements results in a hefty cost of $999,999 + 999,998 + \cdots + 3 + 2 + 1$ shifts. So, removing $n$ elements from the front of an \ttt{ArrayList} is representable as an equation of time $T$.}
+Finally, we can remove an element, when given its index, using \ttt{.remove}. 
+Be aware that removing elements is not as simple as adding one. 
+Suppose that, from the previous example, we invoke $\ttt{ls1.remove}(2)$, which removes the value~$654$. 
+The slot where~$654$ previously existed cannot be vacant, so the \ttt{ArrayList} class compensates by shifting all elements to the right of the removed element one index to the left.
+
+\myexample{Consider a situation in which we have an \ttt{ArrayList} that contains $1,000,000$ arbitrary integers.} 
+If we continuously remove elements from its front, each and every value is shifted down by one index. 
+Propagating the act of shifting through all one million elements results in a hefty operational cost of $999,999 + 999,998 + \cdots + 3 + 2 + 1$ shifts. 
+So, removing~$n$ elements from the front of an \ttt{ArrayList} is representable as an equation of time~$T$:
 
 \[
 T(n) = (n - 1) + (n - 2) + (n - 3) + \cdots + 3 + 2 + 1
 \]
 
-We can collapse this into an arithmetic series from $1$ to $n-1$:
+We can collapse this into an arithmetic series from~$1$ to~$n-1$:
 
 \begin{align*}
 T(n) &= \sum_{i=1}^{n-1}{i}\\
@@ -249,7 +309,9 @@ T(n) &= \sum_{i=1}^{n-1}{i}\\
      &= \dfrac{n^2}{2}
 \end{align*}
 
-Therefore, to remove $1,000,000$ elements from the front of an \ttt{ArrayList}, we need to perform roughly $1,000,000^2/{2}$ operations, which is an astronomical number, even for computers of today. Removing elements from other indices, excluding the rear, will incur similar, yet smaller, shifting cost penalties. As we will see later in this chapter, other data structures are significantly better choices if it is a desire to quickly poll elements from the front.
+Therefore, to remove $1,000,000$ elements from the front of an \ttt{ArrayList}, we need to perform roughly $1,000,000^2/{2}$ operations, which is an astronomical number, even for computers of today. 
+Removing elements from other indices, excluding the rear, will incur a (smaller) similar penalty due to shifts. 
+As we will examine later in this chapter, there are better data structure choices when we need to consistently remove elements from the front of a list.
 
 \myexample{We made a big deal about growing the underlying array when we run out of room to add new elements. We could ask a similar question about what to do when we, say, remove a ton of elements from a large list. If our list contains one million elements and we then clear the list, it makes little sense, at first glance, to have space allocated for one million non-existent values. Though, Java's implementation of \ttt{ArrayList} does not decrease the size of the backing array, preferring performance over memory usage. The reasoning behind this choice is straightforward: suppose we have an \ttt{ArrayList} of $500$ elements and we remove $250$ elements. Is it fair to decrease the size of the list by a factor of two? If so, what happens when we add one more element, totaling to $251$? We then have to grow the list, again, wasting valuable time.}
 
