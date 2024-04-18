@@ -679,13 +679,23 @@ Figure~\ref{fig:queues} shows some of these handy methods.
 \end{figure}
 
 \emph{Priority queues}\index{priority queues} are the final sequential data structure that we will discuss from the Collections API\@. 
-Though, placing it in this section is slightly disingenuous because, while priority queues have an ordering in their underlying data structure, saying that elements correspond to an index is largely incorrect. Priority queues, as their name suggests, rank items in the queue by a score called the \emph{priority}\index{priority}. Elements with the highest priority are at the ``front'' of the priority queue. Inserting elements into a priority queue potentially alters the positioning of preexisting elements.
+Though, placing priority queues in this section feels a bit disingenuous because, while priority queues have an ordering in their underlying data structure, saying that elements correspond to an index is a misnomer. 
+Priority queues, as the name suggests, rank items in the queue by a score called the \emph{priority}\index{priority}. 
+Elements with the highest priority are at the ``front'' of the priority queue. 
+Inserting elements into a priority queue potentially alters the positioning of preexisting elements.
 
-Priority queues base priority on one of two contributing factors: either the \emph{natural ordering}\index{natural ordering} of elements, or a \emph{comparator object}\index{comparator object}. The natural ordering of elements is straightforward: natural ordering for numbers is their standard numeric ordering. For strings, the natural ordering is by lexicographical ordering. These, however, are not as interesting as comparators, which we will now discuss.
+Priority queues base priority on one of two contributing factors: either the \emph{natural ordering}\index{natural ordering} of elements, or a \emph{comparator object}\index{comparator object}. 
+The natural ordering of elements is straightforward: natural ordering for numbers is their standard numeric ordering from least to greatest. 
+For strings, the natural ordering is their lexicographical ordering. 
+Natural ordering, however, are not as interesting as comparators, which we will now discuss.
 
-A \emph{comparator}\index{comparator} is a way of comparing two arbitrary ``things,'' whether these things are numbers (i.e., the wrapper classes), strings, or another kind of object, we can define custom ways of comparing \emph{any} non-primitive datatype.
+A \emph{comparator}\index{comparator} is a way of comparing two arbitrary ``things.'' 
+Whether these ``things'' are numbers (i.e., the wrapper classes), strings, or another kind of object, we can define custom ways of comparing \emph{any} non-primitive datatype.
 
-\myexample{Let us design a \ttt{Comparator}\index{\ttt{Comparator}} for prioritizing strings that start with the lowercase letter \ttt{\q{p}\q{}}. Comparators are constructed like other objects via \ttt{new}, but something interesting about their implementation is that we must specify \emph{how} to compare two objects. Therefore when we create a new instance of \ttt{Comparator} we must also override its \ttt{compare} method. This method's signature varies based on the parameterized type provided to the comparator, but since we want to compare strings, we should declare it as follows:}
+\myexample{Let's design a \ttt{Comparator}\index{\ttt{Comparator}} for prioritizing strings that start with the lowercase letter \ttt{\q{p}\q{}}}.
+Comparators are constructed like all other objects via \ttt{new}, but something interesting about their implementation is that we must specify \emph{how} to compare two objects. 
+Therefore, when we create a new instance of \ttt{Comparator}, we must also override its \ttt{compare} method. 
+The \ttt{compare} method's signature varies based on the parameterized type provided to the comparator, but since we want to compare strings, we should declare it as follows:
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
@@ -709,9 +719,21 @@ class PriorityQueueByP {
 }
 \end{lstlisting}
 
-We now must specify how to compare \ttt{s1} and \ttt{s2} to achieve our goal. Strangely enough, if we want to say that \ttt{s1} has a higher priority than \ttt{s2}, we must return a negative value, similar to the natural ordering of strings (this idea extends to any type we wish to compare, however). Fortunately this is not as strange once we understand \emph{why} the negative value is required. A value of $-1$ comes prior to $1$ when placing numbers in ascending order. This means that, when comparing an arbitrary value $t_1$ against $t_2$, to say that $t_1$ comes before $t_2$, we return a negative value. Conversely, to say that $t_1$ comes after $t_2$, we return a positive number.  
+We now must describe how we want to compare~\ttt{s1} and~\ttt{s2} to achieve our goal.
+Strangely enough, if we want to say that~\ttt{s1} has a higher priority than~\ttt{s2}, we must return a negative value, similar to the natural ordering of strings (this idea extends to any type we wish to compare, however). 
+Fortunately, this is not as strange once we understand \emph{why} the negative value is required. 
+A value of~$-1$ comes prior to~$1$ when placing numbers in ascending order. 
+Consequently, when comparing an arbitrary value~$t_1$ against~$t_2$, to say that~$t_1$ comes before~$t_2$, we return a negative integer. Conversely, to say that~$t_1$ comes after~$t_2$, we return a positive number.
 
-Let's perform a case analysis on the input strings. If both strings are non-empty, we grab their first character. If both start with `p', then their ordering depends on a standard lexicographical comparison of the rest of the strings. If the first character of $s_1$ is `p', however, we return $-1$ to designate that $s_1$ has a higher priority than $s_2$. Conversely, if $s_2$ starts with `p', then we return $1$ to designate the opposite. If neither start with $p$, then again we perform a lexicographical comparison on the entire strings. Algorithm~\ref{alg:pseudocodepriority} displays the pseudocode for the comparator, but as we will see, we can translate this, verbatim, into Java syntax. The last line of \ttt{priorityByP} instantiates a new \ttt{PriorityQueue}\index{\ttt{PriorityQueue}} whose constructor receives the \ttt{Comparator}\index{\ttt{Comparator}} that we just designed. 
+Let's perform a case analysis on the input strings. 
+If both provided strings are non-empty, we retrieve their first character. 
+If both start with \ttt{'p'}, then their ordering depends on a standard lexicographical comparison of the rest of the strings. 
+If the first character of~$s_1$ is \ttt{'p'}, however, we return~$-1$ to designate that~$s_1$ has a higher priority than~$s_2$. 
+Conversely, if~$s_2$ starts with \ttt{'p'}, then we return~$1$ to designate the opposite. 
+If neither start with~$p$, then again we perform a lexicographical comparison on the entire strings. 
+Algorithm~\ref{alg:pseudocodepriority} displays the pseudocode for the comparator, but as we will see, we can translate this, verbatim, into Java syntax. 
+The last line of \ttt{priorityByP} instantiates a new \ttt{PriorityQueue}\index{\ttt{PriorityQueue}} whose constructor receives the \ttt{Comparator}\index{\ttt{Comparator}} that we just designed. 
+
 \begin{algorithm}[H]
 \begin{algorithmic}
 \Procedure{Compare}{$s_1$, $s_2$}
@@ -791,7 +813,9 @@ class PriorityQueueByP {
   }
 }
 \end{lstlisting}
+
 The output is as follows:
+
 \begin{verbnobox}[\small]
 park
 pecking
@@ -801,20 +825,45 @@ barks
 hello
 shrub
 \end{verbnobox}
-Why is this what the priority queue outputs? If we reason about this with our comparator, it becomes clear. \ttt{park} has the highest priority because it starts with `p' and has a substring that comes before the rest of those strings starting with `p'. The strings \ttt{pecking}, \ttt{peek}, and \ttt{pool} come next for similar reasons. Finally, none of the strings \ttt{barks}, \ttt{hello}, and \ttt{shrub} start with `p', so we simply compare based on the strings themselves. The underlying implementation of how the priority queue works is beyond the scope of this textbook. These details are generally reserved for a textbook or course on advanced data structures, which follows the course designed for the audience of this text.
+
+With the provided comparator, \ttt{park} has the highest priority because it starts with \ttt{'p'} and has a substring that comes before the rest of those strings starting with \ttt{'p'}. 
+The strings \ttt{pecking}, \ttt{peek}, and \ttt{pool} come next for similar reasons. 
+Finally, none of the strings \ttt{barks}, \ttt{hello}, and \ttt{shrub} start with \ttt{'p'}, so we compare based on the strings themselves. 
+The underlying implementation of \emph{how} the priority queue works and enforces ordering is beyond the scope of this textbook. 
+Such details are reserved for a textbook or course on advanced data structures, which follows the course designed for the audience of this text.
 
 \subsection{Set-Based Data Structures}
-\emph{Sets} are unordered collections of non-duplicate elements. Does this definition sound familiar? It should; it perfectly mirrors the mathematical definition of a set. Java has a few nuances to its definition of sets that we will now see. We consider these data structures \emph{set-based} since they all rely on the ``no-duplicate'' philosophy.
+\emph{Sets} are unordered collections of non-duplicate elements. 
+Does this definition sound familiar? 
+It should; it perfectly mirrors the mathematical definition of a set. 
+Java has a few nuances to its definition of sets that we will now see. 
+We consider these data structures \emph{set-based} since they all rely on the ``no-duplicate'' philosophy.
 
 \subsubsection*{\ttt{Set} Interface}
-A \emph{Set}\index{set}\index{\ttt{Set}} in Java is an interface rather than a class. This is because Java has a hierarchy for differing implementations of sets. We will discuss three: \emph{HashSet}, \emph{TreeSet}, and \emph{LinkedHashSet}. While all three disallow duplicate elements, the latter two impose an ordering on their elements, which goes against the standard mathematical definition, but for practical reasons.
+A \emph{Set}\index{set}\index{\ttt{Set}} in Java is an interface rather than a class. 
+This is because Java has a hierarchy for differing implementations of sets. 
+We will discuss three such implementations: \emph{HashSet}, \emph{TreeSet}, and \emph{LinkedHashSet}. 
+While all three disallow duplicate elements, the latter two impose an ordering on their elements, which goes against the standard mathematical definition, but for practical reasons.
 
 \subsubsection*{\ttt{HashSet} Class}
-In the implementation of a \ttt{HashSet}\index{hash set}\index{\ttt{HashSet}}, the existence of objects in the set is primarily determined by the \ttt{hashCode()} method of the objects, which computes their hash codes. These hash codes are used to decide in which 'bucket' within the hash table an object should be placed. It's important, though, to note that hash codes are not used for comparing the equality of the content of objects. Unlike the \ttt{==} operator, which checks if two references point to the same object in memory, the respective \ttt{equals()} method is used to compare the actual content of the objects. When adding an object to a \ttt{HashSet}, if the hash code of the object matches the hash code of any existing object in the corresponding bucket, the equals() method is then used to check for actual content equality to ensure that no duplicate objects (in terms of content) are added to the set. In other words, two objects that are equal in terms of \ttt{equals()} must have the same hashcode, but the converse is not necessarily true. Anything more than these details goes beyond the scope of this textbook, but we will provide a small synopsis of hashable data structures.
+In the implementation of a \ttt{HashSet}\index{hash set}\index{\ttt{HashSet}}, the existence of objects in the set is determined by the \ttt{hashCode()} method of the objects, which computes their hash codes. 
+These hash codes are used to decide in which `bucket' within the hash table an object should be placed. 
+It's important, though, to note that hash codes are not used for comparing the equality of the content of objects. 
+Unlike the \ttt{==} operator, which checks if two references point to the same object in memory, the respective \ttt{equals()} method is used to compare the actual content of the objects. 
+When adding an object to a \ttt{HashSet}, if the hash code of the object matches the hash code of any existing object in the corresponding bucket, the \ttt{equals()} method is then used to check for actual content equality to ensure that no duplicate objects (in terms of content) are added to the set. 
+In other words, two objects that are equal in terms of \ttt{equals()} must have the same hashcode, but the converse is not necessarily true. 
+Anything more than these details goes beyond the scope of this textbook, but we will provide a small synopsis of hashable data structures.
 
-A hashable data structure most often comes with a hash table, which is similar to an array, where elements are stored. Hashable data structures are known for their fast lookup times thanks to something called a \emph{hash function}\index{hash function}, which is a mathematical function used to compute the location to store a value in a hash table. Consider a hash function $H(v)$, whose range is the set of integers $[0, n)$ where $n$ is the number of elements of the hash table. Running $v$ (which is some arbitrary value to insert) through the hash function $H$ returns an index of the hash table. Evaluating $H$ is, in optimal conditions, a constant-time algorithm, hence determining if a value exists in such a data structure is also constant-time. This begs the question of what happens if there exists an output of $H$ such that $H(v') = H(v)$ for distinct inputs $v, v'$. In subsequent computer science courses, students learn how to resolve these conflicts that are called \emph{hash collisions}\index{hash collisions}, through approaches such as linear and quadratic probling, as well as chaining. The previous paragraph briefly discussed this through the `buckets' analogy and \ttt{equals}, but e will ignore such complexities and use hashable data structures at face value.  
+A hashable data structure is most often designed as a hash table, which is similar to an array, where elements are stored. 
+Hashable data structures are known for their fast lookup times, thanks to a \emph{hash function}\index{hash function}: a mathematical function used to compute the location to store a value in a hash table. 
+Consider a hash function~$H(v)$, whose range is the set of integers~$[0, n)$, where~$n$ is the number of elements of the hash table. 
+Running~$v$ (which is an arbitrary argument) through the hash function~$H$ returns an index of the hash table. 
+Evaluating~$H$ is, in optimal conditions, a constant-time algorithm, hence determining value existence in a hash table also runs in constant-time. 
+This begs the question of what happens if there exists an output of~$H$ such that~$H(v') = H(v)$, but $v' \neq v$. 
+In subsequent computer science courses, students learn how to resolve \emph{hash collisions}\index{hash collisions} through techniques such as linear and quadratic probling, as well as chaining.\footnote{In Chapter~\ref{chapter:classes}, we will implement a simple hash table that uses chaining to resolve hash collisions.}
+%The previous paragraph briefly discussed this through the `buckets' analogy and \ttt{equals}, but we will ignore such complexities and use hashable data structures at face value.  
 
-Use hashsets when you do not care about element ordering or ``position'' in the set, but want to ensure no duplicates exist.
+Use hashsets when you do not care about element ordering or ``position'' in the set, and want to ensure no duplicates exist.
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Sets]
@@ -833,12 +882,18 @@ Use hashsets when you do not care about element ordering or ``position'' in the 
 \end{figure}
 
 \subsubsection*{\ttt{TreeSet} Class}
-A \emph{TreeSet}\index{tree set}\index{\ttt{TreeSet}} is a set with a determined order, either by a natural ordering or that defined by a \ttt{Comparator}, like a priority queue. All methods in a \ttt{Set} are definitionally implemented by a \ttt{TreeSet}.
+A \emph{TreeSet}\index{tree set}\index{\ttt{TreeSet}} is a set with determined order, either by the natural ordering of the elements or one defined by a \ttt{Comparator}, similar to a priority queue. 
+All methods in a \ttt{Set} are, definitionally, implemented by a \ttt{TreeSet}.
 
 \subsubsection*{\ttt{LinkedHashSet} Class}
-A \emph{LinkedHashSet}\index{linked hash set}\index{\ttt{LinkedHashSet}} is a set with an ordering based on the insertion order of the elements. All methods in a \ttt{Set} are definitionally implemented by a \ttt{LinkedHashSet}.
+A \emph{LinkedHashSet}\index{linked hash set}\index{\ttt{LinkedHashSet}} is a set with an ordering based on the insertion order of the elements. 
+All methods in a \ttt{Set} are, definitionally, implemented by a \ttt{LinkedHashSet}.
 
-\myexample{The canonical usage of a set is to remove duplicates from a list. Indeed, let's write the \ttt{removeDuplicatesList} method that receives a list of integers and returns a new list without any duplicates. We will assume that the output order must match the input order. To solve this problem we will create an auxiliary linked hash set data structure, add all elements from the list into the set, then add those values from the set to a new list. When adding a value into a set, if it already exists, it is not added again, as we stated above.}
+\myexample{The canonical usage of a set is to remove duplicates from a list.} 
+Indeed, let's design the \ttt{removeDuplicatesList} method that receives a list of integers and returns a new list without any duplicates. 
+We will add a postcondition requirement that the output order of the integers must match the input order. 
+To solve this problem, we will create an auxiliary linked hash set data structure, add all elements from the list into the set, then add those values from the set to a new list. 
+When adding a value into a set, if it already exists, it is not re-added.
 
 %\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -885,7 +940,10 @@ class RemoveDuplicatesList {
 }
 \end{lstlisting}
 
-\myexample{Suppose we want to find all common elements shared between two linked lists of elements, which are unordered. Let's write the \ttt{commonValues} method that, when given two linked lists of integers, returns a sorted ordered list of values that occur in both lists. We should not count values twice, e.g., if the value \ttt{2} occurs twice in the first list, then the resulting output list should only contain one occurrence of \ttt{2}. Because we want the output to be sorted, we can take advantage of a tree set.}
+\myexample{Suppose we want to find all common elements shared between two linked lists of elements, which are unordered.} 
+Let's design the \ttt{commonValues} method that, when given two linked lists of integers, returns a sorted-ordered list of the values that occur in both lists. 
+We should not count values twice, e.g., if \ttt{2} occurs twice in the first list, then the resulting output list should only contain one occurrence of \ttt{2}. 
+Let's take advantage of a tree set to store the common values in order, and then add those values to a new linked list.
 
 %\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -947,7 +1005,9 @@ class CommonValuesTester {
 }
 \end{lstlisting}
 
-\myexample{We are given an array of numbers from $1$ to $n$ where one number is missing and one is duplicated. Let's design the \ttt{findDupMissing} method that returns an array of two elements: the first of which is the missing number and the second of which is the duplicate value. It makes sense to use a \ttt{TreeSet} since, that way, we can store the numbers in order and find out which one is omitted through one traversal, and find the only duplicate.}
+\myexample{We are given an array of numbers from~$1$ to~$n$, where one number is missing and one is duplicated. 
+Let's design the \ttt{findDupMissing} method that returns an array of two elements: the first of which is the missing number and the second of which is the duplicate value. 
+It makes sense to use a \ttt{TreeSet} since, that way, we can store the numbers in order and find out which one is omitted through one traversal, and find the only duplicate.}
 
 
 \begin{lstlisting}[language=MyJava]
@@ -1009,13 +1069,19 @@ class FindDupMissing {
 \end{lstlisting}
 
 \subsection{Dictionary-Based Data Structures}
-Dictionaries maps elements from one type $K$ to elements of another type $V$. These types $K$ and $V$ do not necessarily need to be distinct. 
+Dictionaries map elements from one type~$K$ to elements of another type~$V$. The types~$K$ and~$V$ do not necessarily need to be distinct. 
 
 \subsubsection*{\ttt{Map} Interface}
-Java has an interface called \ttt{Map}\index{map}\index{\ttt{Map}} rather than a class because, like sets, there is a hierarchy for differing implementations of maps. We will discuss three: \emph{HashMap}, \emph{TreeMap}, and \emph{LinkedHashMap}. Maps contain keys and values; the keys are mapped to values in the map. Additionally, maps cannot contain duplicate keys.
+Java has an interface called \ttt{Map}\index{map}\index{\ttt{Map}} rather than a class because, like sets, there is a hierarchy for differing implementations of maps. 
+We will discuss three: \emph{HashMap}, \emph{TreeMap}, and \emph{LinkedHashMap}.
+Maps contain keys and values; the keys are mapped to values in the map. 
+A key/value pairing is called an \emph{entry}\index{entry}, or an \emph{association}\index{association}.
+Maps cannot contain duplicate keys, because it would be ambiguous to have two identical keys mapping to different values.
 
 \subsubsection*{\ttt{HashMap} Class}
-\emph{HashMaps}\index{hash map}\index{\ttt{HashMap}} base existence of keys in the map by their hashcode and a hashtable, identical to a hashset. For a greater detail of how hashable data structures work, please refer to that subsection.
+\emph{HashMaps}\index{hash map}\index{\ttt{HashMap}} base existence of keys in the map by their hashcode and a hash table, identical to a hash set. 
+For a greater detail of how hashable data structures work, please refer to the previous subsection.
+
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Maps]
@@ -1036,12 +1102,18 @@ Java has an interface called \ttt{Map}\index{map}\index{\ttt{Map}} rather than a
 \end{figure}
 
 \subsubsection*{\ttt{TreeMap} Class}
-A \emph{TreeMap}\index{tree map}\index{\ttt{TreeMap}} is a map with a determined order, either by a natural ordering of the keys or that defined by a comparator. All methods in \texttt{Map} are definitionally implemented by a \texttt{TreeMap}.
+A \emph{TreeMap}\index{tree map}\index{\ttt{TreeMap}} is a map with a determined order, either by a natural ordering of the keys or that defined by a comparator. 
+All methods in \texttt{Map} are, definitionally, implemented by a \texttt{TreeMap}.
 
 \subsubsection*{\ttt{LinkedHashMap} Class}
-A \emph{LinkedHashMap}\index{linked hash map}\index{\ttt{LinkedHashMap}} is a map with an ordering based on the insertion order of the key/value pairs. All methods in a \ttt{Map} are definitionally implemented by a \ttt{LinkedHashMap}.
+A \emph{LinkedHashMap}\index{linked hash map}\index{\ttt{LinkedHashMap}} is a map with an ordering based on the insertion order of the key/value pairs. 
+All methods in a \ttt{Map} are, definitionally, implemented by a \ttt{LinkedHashMap}.
 
-\myexample{Perhaps one of the most common use cases for a dictionary-based data structure is to compute the frequency, or count, of some values. Suppose we want to write the \ttt{Set<Integer> mode(List<Integer> ls)} method that, when given a list of integers, returns the mode(s), i.e., the most-frequent value(s). We can use a map to keep track of the numbers seen so far, which are the keys, and their respective frequencies being the values. Because a list of numbers may have multiple modes, we will need to use a three-step algorithm:}
+\myexample{Perhaps one of the most common use cases for a dictionary-based data structure is to compute the frequency, or count, of some values.} 
+Suppose we want to design the \ttt{mode} method that, when given a list of integers, returns the mode(s), i.e., the most-frequent value(s). 
+We can use a map to keep track of the numbers seen so far, which are the keys, and their respective frequencies being the values. 
+Because a list of numbers may have multiple modes, we will need to use a three-step algorithm:
+
 %\enlargethispage{4\baselineskip}
 \begin{enumerate}
   \item Compute the frequencies of each number.
@@ -1049,8 +1121,7 @@ A \emph{LinkedHashMap}\index{linked hash map}\index{\ttt{LinkedHashMap}} is a ma
   \item Find all numbers that match this frequency.
 \end{enumerate}
 
-
-Traversing over a map is straightforward: we can obtain a \emph{key set}\index{key set}, which is a set of keys, and each corresponding value takes one call to the \ttt{.get} method.
+Traversing over a map is straightforward: we obtain a \emph{key set}\index{key set}, which is a set of the keys in a map, and each corresponding value is retrieved via one call to the \ttt{.get} method.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -1117,7 +1188,9 @@ class ComputeMode {
 }
 \end{lstlisting}
 
-\myexample{Let's design the \ttt{sharesFirstChar} method that, when given an array of strings, returns a \ttt{Map<Character, Set<String>{>}} such that each alphabetized character maps to a set of alphabetized strings that start with that character. We will further assume that this is a case-insensitive mapping. Consider the following input and output example:}
+\myexample{Let's design the \ttt{sharesFirstChar} method that, when given an array of strings, returns a \ttt{Map<Character, Set<String>{>}} such that each alphabetized character maps to a set of alphabetized strings that start with that character.} 
+We will further assume a case-insensitive mapping. 
+Consider the following input and output example:
 
 \begin{verbnobox}[\small]
 sharesFirstChar(["she", "sells", "sea", "shells", "by", "the", "sea"])
@@ -1126,8 +1199,9 @@ sharesFirstChar(["she", "sells", "sea", "shells", "by", "the", "sea"])
       <'t' : {"the"}>]
 \end{verbnobox}
 
-Because we want both the sets and maps to be alphabetized, the use of a \ttt{TreeSet} and \ttt{TreeMap} is appropriate. So, we will first traverse over the input list and instantiate a map whose keys are the first letters of each word and whose value is a new instance of a \ttt{TreeSet}. A second traversal is then used to populate those sets.
-
+Because we want both the sets and maps to be alphabetized, the use of a \ttt{TreeSet} and \ttt{TreeMap} is appropriate. 
+So, we will first traverse over the input list and instantiate a map whose keys are the first letters of each word, and whose value is a new instance of a \ttt{TreeSet}. 
+We then populate the sets via a second traversal over the list.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -1194,7 +1268,11 @@ class ShareFirstCharacter {
 }
 \end{lstlisting}
 
-\myexample{Let's design the \ttt{firstUniqueLetter} method that, when given a string, returns the first non-repeated letter. If there is no non-repeated letter, we will return the empty string. Because we care about the insertion order, we should use a \ttt{LinkedHashMap} whose keys are characters in the string and whose values are frequency counts. The idea is to count the frequency of each (letter) character, when lowercased, then traverse over the linked map and find the first key whose (value) frequency is one. Because we now understand how to combine \ttt{get} and \ttt{put} to insert and increment frequency counts, we will instead opt to use \ttt{getOrDefault}, which removes the need for the conditional.\footnote{This problem comes courtesy of \ttt{frew@mclean.com} on \ttt{codingbat.com}. Thanks!}}
+\myexample{Let's design the \ttt{firstUniqueDigit} method that, when given a string, returns the first non-repeated digit.} 
+If there is no non-repeated digit, then return the empty string. 
+Because we care about the insertion order, we should use a \ttt{LinkedHashMap} whose keys are characters in the string and whose values are frequency counts. 
+The idea is to count the frequency of each (digit) character, then traverse over the linked map and find the first key whose (value) frequency is one. 
+Because we now understand how to combine \ttt{get} and \ttt{put} to insert and increment frequency counts, we will instead opt to use \ttt{getOrDefault}, which removes the need for the conditional.\footnote{This problem is similar to one created by \ttt{frew@mclean.com} on \ttt{codingbat.com}. Thanks!}
 
 
 \begin{lstlisting}[language=MyJava]
@@ -1206,9 +1284,9 @@ class FirstUniqueLetterTester {
   @Test
   void testFirstUniqueLetter() {
     assertAll(
-      () -> assertEquals("m", firstUniqueLetter("Morning")),
-      () -> assertEquals("w", firstUniqueLetter("sweeps")),
-      () -> assertEquals("", firstUniqueLetter("Abra-cadabracad!")));
+      () -> assertEquals("3", firstUniqueLetter("1211312121")),
+      () -> assertEquals("2", firstUniqueLetter("0099828776")),
+      () -> assertEquals("", firstUniqueLetter("11223344")));
   }
 }
 \end{lstlisting}
@@ -1221,17 +1299,17 @@ import java.util.Map;
 class FirstUniqueLetter {
 
   /**
-   * Returns the first unique letter in a string. If there is no unique
-   * letter, then the empty string is returned.
+   * Returns the first unique digit in a string, as a string. 
+   * If there is no unique digit, then the empty string is returned.
    * @param s - string.
-   * @return first unique letter as a string.
+   * @return first unique digit as a string.
    */
   static String firstUniqueLetter(String s) {
     Map<Character, Integer> M = new LinkedHashMap<>();
-    // Count the frequency of each lowercased letter.
+    // Count the frequency of each digit
     for (int i = 0; i < s.length(); i++) {
-      String c = s.substring(i, i + 1).toLowerCase();
-      if (Character.isLetter(c.charAt(0))) {
+      String c = s.substring(i, i + 1);
+      if (Character.isDigit(c.charAt(0))) {
         M.put(c.charAt(0), M.getOrDefault(c.charAt(0), 0) + 1);
       }
     }
@@ -1247,23 +1325,33 @@ class FirstUniqueLetter {
 }
 \end{lstlisting}
 
-\myexample{One final example that we will consider is the \ttt{nthMostUniqueChar} method that, when given a string $s$ and an integer $n$, returns the $n^\text{th}$ most unique character in the string, or \ttt{null} if there is no such character. If there are multiple characters that share the same position, we return the first one in terms of lexicographical ordering.}
+\myexample{One final example that we will consider is the \ttt{nthMostUniqueChar} method that, when given a string~$s$ and an integer~$n$, returns the~$n^\text{th}$ most unique character in the string, or \ttt{null} if there is no such character.} 
+If there are multiple characters that share the same position, we return the first one in terms of lexicographical ordering.
 
-For example, consider the string \ttt{"abbabdcaadaababcdcc"} and $n=3$. The most unique characters are \ttt{'a', 'b', 'c'}, so the third most unique character is \ttt{\q{}c\q{}}.
+For example, consider the string \ttt{"abbabdcaadaababcdcc"} and~$n=3$. 
+The most unique characters are \ttt{'a', 'b', 'c'}, so the third most unique character is \ttt{\q{}c\q{}}.
 
-Another example is the string \ttt{"aabbcc"} and $n=2$. The most unique characters are \ttt{'a', 'b', 'c'}, but all three have the same frequency of two, meaning they are all equally unique. In this case, we return the empty string.
+Another example is the string \ttt{"aabbcc"} and~$n=2$. 
+The most unique characters are \ttt{'a', 'b', 'c'}, but all three have the same frequency of two, meaning they are all equally unique. 
+In this case, we return the empty string.
 
-A third example is the string \ttt{"aaaabccccc"} and $n=2$. The most unique characters are \ttt{'c', 'a', 'b'}, so the second most unique character is \ttt{\q{}a\q{}}.
+A third example is the string \ttt{"aaaabccccc"} and~$n=2$. 
+The most unique characters are \ttt{'c', 'a', 'b'}, so the second most unique character is \ttt{\q{}a\q{}}.
 
-First, we will count the frequency of each character, then use a \ttt{PriorityQueue} to store the characters in order of their frequency from greatest to least. We will then remove the first $n-1$ characters from the queue and return the first character of the remaining queue. This approach should raise some eyebrows, because if the frequency is the value in a map, how can we construct a comparator? In other circumstances you need access to a particular key to obtain its corresponding value. In this instance, though, we can generate the \emph{entry set} for the map of characters to frequencies, which is a set of \ttt{Map.Entry<K, V>} objects where $K$ is the key type and $V$ is the value type. Our priority queue comparator receives two such entries $e$ and $f$, and performs the following comparison:
+First, we will count the frequency of each character, then use a \ttt{PriorityQueue} to store the characters in order of their frequency from greatest to least. 
+We will then remove the first~$n-1$ characters from the priority queue, and return the first character of the remaining queue. 
+This approach may raise some eyebrows, because if the frequency is the value in a map, how can we construct a comparator? 
+In other circumstances, one needs access to a particular key to obtain its corresponding value. 
+In this instance, though, we can generate the \emph{entry set} for the map of characters to frequencies, which is a set of \ttt{Map.Entry<K, V>} objects, where~$K$ is the key type and~$V$ is the value type. 
+Our priority queue comparator receives two such entries~$e$ and~$f$, and performs the following comparison:
 
 \begin{itemize}
   \item If $e_k \neq f_k$, return $f_v - e_v$.
   \item Else, return the lesser of $e_k$ and $f_k$.
 \end{itemize}
 
-
-Of course, we know that $K$ is \ttt{Character} and $V$ is \ttt{Integer} representing the characters mapped to their frequencies. To retrieve the key and value from an \ttt{Map.Entry} object, we use the \ttt{getKey()} and \ttt{getValue()} methods respectively. 
+We know that~$K$ is \ttt{Character} and~$V$ is \ttt{Integer} representing the characters mapped to their frequencies. 
+To retrieve the key and value from an \ttt{Map.Entry} object, we use the \ttt{getKey()} and \ttt{getValue()} methods respectively. 
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
