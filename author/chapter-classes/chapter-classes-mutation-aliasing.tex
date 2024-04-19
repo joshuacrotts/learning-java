@@ -1,5 +1,6 @@
 \section{Object Mutation and Aliasing}
-\label{sec:object-mutation-and-aliasing}
+\label{chapter-classes-mutation-aliasing}
+
 A limitation that we have purposefully imposed on our object/class design is the inability to modify the values of instance variables. Value mutation is a foreign concept in some programming languages, but we have made extensive use of it throughout our time in the land of Java. In this section, we will discuss the implications of allowing instance variable mutation and how it can lead to unintended problems.
 
 To access a \ttt{private} instance variable, we design a non-\ttt{private} accessor method, which returns the instance variable. To \emph{modify} a \ttt{private} instance variable, we design a non-\ttt{private} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns it to the corresponding instance variable. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a \ttt{Point} object~$p$ to the position $(7, 4)$, but we then wish to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which is confirmed through the accessor method. 

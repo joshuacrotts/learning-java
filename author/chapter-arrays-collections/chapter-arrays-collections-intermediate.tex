@@ -1,7 +1,10 @@
 \section{Tree-Based Data Structures}
-At the start of section~\ref{section:chapter-arrays-collections-collections}, we distinguished between three types of data structures: array-based, dictionary-based, and set-based. To close off this part of the chapter, we will dive into a more advanced data structure category: tree-based structures.
+At the start of section~\ref{section:chapter-arrays-collections-collections}, we distinguished between three types of data structures: array-based, dictionary-based, and set-based. 
+To close off this part of the chapter, we will dive into a more advanced data structure category: tree-based structures.
 
-A \emph{tree} is a recursive data structure by nature. Trees are comprised of \emph{nodes} and \emph{edges} between nodes. Let's draw a simple tree that stores some arbitrary numbers.
+A \emph{tree} is a recursive data structure by nature. 
+Trees comprise \emph{nodes} and \emph{edges} between nodes. 
+Let's draw a simple tree that stores some arbitrary numbers.
 
 \begin{figure}[ht]
 \centering
@@ -25,18 +28,18 @@ A \emph{tree} is a recursive data structure by nature. Trees are comprised of \e
 \end{figure}
 
 The example in Figure~\ref{fig:binarytree} is called a \emph{binary tree} because all nodes have at most two children. 
-The top-most node in the tree, $7$ is called the \emph{root}, which has two children that are trees themselves $3$ and $41$. 
-The root has a depth of zero, whereas $3$ and $41$ have depth of one. 
-A node $m$ is a child of node $a$ if there is a direct edge between $a$ and $m$, where the depth level of $a$ is exactly one fewer than $m$'s depth level. 
-We consider a node $m$ to be a descendant of node $a$ if there is a sequence of edges from $a$ to $m$, where the depth level of $a$ is at least one fewer than $m$'s depth level. 
-The \emph{height} of a tree $T$ is the maximum of the depth of $T$'s root and its children. 
-In the example, the tree's height is three due to the path from $7$ to $26$.
+The top-most node in the tree,~$7$ is called the \emph{root}, which has two children that are trees themselves~$3$ and~$41$. 
+The root has a \emph{depth} of zero, whereas~$3$ and~$41$ have depth of one. 
+A node~$m$ is a child of node~$a$ if there is a direct edge between~$a$ and~$m$, where the depth level of~$a$ is exactly one fewer than~$m$'s depth level. 
+We consider a node~$m$ to be a \emph{descendant} of node~$a$ if there is a sequence of edges from~$a$ to~$m$, where the depth level of~$a$ is at least one fewer than~$m$'s depth level. 
+The \emph{height} of a tree~$T$ is the maximum of the depth of~$T$'s root and its children. 
+In the example, the tree's height is three due to the path from~$7$ to~$26$.
 
 At this point the reader may await us to show them a collections API implementation of a tree. 
 Unfortunately, Java provides no implementation of trees in its collections API. 
 To compensate, we provide a library that mimics what Java might provide. In this library we include the \ttt{BinarySearchTree} class, alongside a few other tree implementations that are more complex. 
 The difference between a binary search tree and a standard binary tree is that the elements are ordered. 
-All nodes to the left of a node $T$ are ``less than'' $T$, whereas all nodes to the right of $T$ are greater than $T$.
+All nodes to the left of a node~$T$ are ``less than''~$T$, whereas all nodes to the right of~$T$ are greater than~$T$.
 The tree example from Figure~\ref{fig:binarytree} is, coincidentally, a binary search tree.
 
 \begin{figure}[tp]

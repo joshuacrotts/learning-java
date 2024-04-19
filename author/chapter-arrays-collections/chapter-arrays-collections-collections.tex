@@ -33,7 +33,7 @@ We need to design a few methods: \ttt{makeList}, \ttt{addToList}, \ttt{getFromLi
 At the end of the day, we want the programmer who uses these methods to not worry about resizing the array themselves; the logic within handles the ``dirty work.''
 
 To better relate the problem to the \ttt{ArrayList} class implementation, we will design two versions of the \ttt{makeList} method: one that receives an initial size and one that does not. 
-Designing two methods of the same name that receive different parameter types/quantities is known as \emph{method overloading}\index{method overloading}, and we will see this further in our discussion on \emph{classes} in Chapter~\ref{chapter:classes}. 
+Designing two methods of the same name that receive different parameter types/quantities is known as \emph{method overloading}\index{method overloading}, and we will see this further in our discussion on \emph{classes} in Chapter~\ref{chapter-classes}. 
 The \ttt{makeList} method returns an array of integers instantiated to the given size, or a base size of ten elements in the method that does not receive a parameter. 
 Inside of the \ttt{makeList} method that does not receive a parameter, we invoke \ttt{makeList(10)} so as to not repeat code logic.
 
@@ -860,7 +860,7 @@ Consider a hash function~$H(v)$, whose range is the set of integers~$[0, n)$, wh
 Running~$v$ (which is an arbitrary argument) through the hash function~$H$ returns an index of the hash table. 
 Evaluating~$H$ is, in optimal conditions, a constant-time algorithm, hence determining value existence in a hash table also runs in constant-time. 
 This begs the question of what happens if there exists an output of~$H$ such that~$H(v') = H(v)$, but $v' \neq v$. 
-In subsequent computer science courses, students learn how to resolve \emph{hash collisions}\index{hash collisions} through techniques such as linear and quadratic probling, as well as chaining.\footnote{In Chapter~\ref{chapter:classes}, we will implement a simple hash table that uses chaining to resolve hash collisions.}
+In subsequent computer science courses, students learn how to resolve \emph{hash collisions}\index{hash collisions} through techniques such as linear and quadratic probling, as well as chaining.\footnote{In Chapter~\ref{chapter-classes}, we will implement a simple hash table that uses chaining to resolve hash collisions.}
 %The previous paragraph briefly discussed this through the `buckets' analogy and \ttt{equals}, but we will ignore such complexities and use hashable data structures at face value.  
 
 Use hashsets when you do not care about element ordering or ``position'' in the set, and want to ensure no duplicates exist.
@@ -1473,12 +1473,15 @@ class IteratorTester {
 } 
 \end{lstlisting}
 
-Should we want to traverse over the data again, we need to instantiate another instance of the iterator, because there is no way to reset the ``position'' of an iterator; they are ``one-time use'' objects.
+Should we want to traverse over the data again, we need to instantiate another instance of the iterator, because there is no way to reset the ``position'' of an iterator; they are a kind of ``one-time use'' objects.
 
-It should be stated that the enhanced \ttt{for} loop is nearly identical to the job of an \ttt{Iterator}, so a programmer may wonder why not use the former over the latter. Inside an enhanced \ttt{for} loop, we cannot modify the data structure, meaning that we cannot add, insert, remove, or change elements. On the other hand, iterators allow structural modification. We would not recommend altering the data structure, even if it is permissible by Java, since doing so can result in irksome bugs. 
+It should be stated that the enhanced \ttt{for} loop is nearly identical to the job of an \ttt{Iterator}, so a programmer may wonder why not use the former over the latter. 
+Inside an enhanced \ttt{for} loop, the data structure in question is immutable, meaning that we cannot add, insert, remove, or change elements. 
+On the other hand, iterators allow structural modification. 
+We would recommend not altering the data structure while traversing, even if it is permissible by Java, because doing so can produce irksome bugs. 
 
-\myexample{Let's now iterate over the \ttt{LinkedHashSet} using an enhanced \ttt{for} loop. We can do so by placing the type on the left-hand side of the element declaration. Our test will simply subtract the elements from left-to-right, since subtraction is not commutative, we can quickly verify the correctness of our result.}
-
+\myexample{Let's now iterate over the \ttt{LinkedHashSet} using an enhanced \ttt{for} loop.} We can do so by placing the type on the left-hand side of the element declaration. 
+Our test subtracts the elements from left-to-right.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
@@ -1501,7 +1504,13 @@ class EnhancedForLoopTester {
 }
 \end{lstlisting}
 
-\myexample{Not only does the use of an enhanced \ttt{for} loop disallow structural modification, it also does not preserve the order of stacks. For example, suppose we have a stack $S=[10, 20, 30, 40, 50]$, where $50$ is the top of the stack. If we want to print each element of $S$ without iterators or modifying the stack itself, the obvious option is to use an enhanced \ttt{for} loop. Unfortunately, this does not go as expected: it prints the elements in the order they are inserted, i.e., first-in-first-out. Intuitively we may expect the program to output the values via last-in-first-out, i.e., $50, 40, 30, 20, 10$. What's worse is that its \ttt{Iterator} implementation also makes this mistake. The solution proposed by Oracle is to instead use the \ttt{ArrayDeque} class, which is a type of \ttt{Deque} object.\footnote{A \emph{deque}, pronounced as `deck,' is a double-ended queue, meaning we can insert and remove elements from either the front or the rear.}\footnote{See the note listed on Oracle's \ttt{Stack} documentation: \url{https://docs.oracle.com/javase/8/docs/api/java/util/Stack.html}}}
+\myexample{Not only does the use of an enhanced \ttt{for} loop disallow structural modification, it also does not preserve the order of specific data structures.} 
+For example, suppose we have a stack $S=[10, 20, 30, 40, 50]$, where~$50$ is the top of the stack. 
+If we want to print each element of~$S$ without iterators or modifying the stack itself, the obvious option is to use an enhanced \ttt{for} loop. 
+Unfortunately, this does not go as expected: it prints the elements in the order they are inserted, i.e., first-in-first-out. 
+Intuitively, we may expect the program to output the values via last-in-first-out, i.e., $50, 40, 30, 20, 10$. 
+What's worse is that its \ttt{Iterator} implementation also makes the glaring mistake. 
+The solution proposed by Oracle is to instead use the \ttt{ArrayDeque} class, which is a type of \ttt{Deque} object.\footnote{A \emph{deque}, pronounced as `deck,' is a double-ended queue, meaning we can insert and remove elements from either the front or the rear.}\footnote{See the note listed on Oracle's \ttt{Stack} documentation: \url{https://docs.oracle.com/javase/8/docs/api/java/util/Stack.html}}
 
 %\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -1529,7 +1538,11 @@ class StackPrinter {
 }
 \end{lstlisting}
 
-\myexample{The unintuitive nature of the enhanced \ttt{for} loop and certain iterators does not stop with stacks, unfortunately. Priority queues are also afflicted as a consequence of their implementation. Let's see what happens when we create a priority queue whose comparator prioritizes the string \ttt{"Joshua"} over all strings and makes the string \ttt{"Jack"} have the lowest priority. In other words, any occurrence of \ttt{"Joshua"} should come before all other strings in the priority queue, whereas any occurrence of \ttt{"Jack"} should come after all other strings in the priority queue. Any strings in between are ordered naturally, i.e., via lexicographical ordering.} 
+\myexample{The unintuitive nature of the enhanced \ttt{for} loop and certain iterator behavior does not stop with stacks, unfortunately.}
+Priority queues are also afflicted as a consequence of their implementation. 
+Let's see what happens when we create a priority queue whose comparator prioritizes the string \ttt{"Joshua"} over all strings and makes the string \ttt{"Jack"} have the lowest priority. 
+In other words, any occurrence of \ttt{"Joshua"} should come before all other strings in the priority queue, whereas any occurrence of \ttt{"Jack"} should come after all other strings in the priority queue. 
+Any strings in between are ordered naturally, i.e., via lexicographical ordering.
 
 %\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -1572,16 +1585,27 @@ class PriorityQueuePrinting {
 }
 \end{lstlisting}
 
-By traversing over the elements with an enhanced \ttt{for} loop, we notice that the elements are printed in a seemingly random order that does not obey our comparator. One solution here is to convert the priority queue to an array, sort the array using \ttt{Arrays.sort}, then print the contents of the array using \ttt{Arrays.toString}. Remember that if we only pass the array itself to \ttt{println}, we see the hash code of the array is printed instead of its elements. 
+By traversing over the elements with an enhanced \ttt{for} loop, we notice that the elements are printed in a seemingly random order that does not obey our comparator. 
+One solution here is to convert the priority queue to an array, sort the array using \ttt{Arrays.sort}, then print the contents of the array using \ttt{Arrays.toString}. 
+Remember that, if we only pass the array itself to \ttt{println}, we see the hash code of the array is printed instead of its elements. 
 
-One complication to concern ourselves with is how we convert the priority queue (or any collection) to an array using \ttt{.toArray(...)}. This method receives an array of some type \ttt{T} and, if it is large enough to store all the elements of the collection, it is populated. Otherwise, an array of the same type \ttt{T} is returned. To summarize, if we want to convert the priority queue of strings to an array, we must pass \ttt{new String[0]} to the \ttt{.toArray} method. The returned array is then sorted and printed.\footnote{In the next section we will discuss a much easier way to mimic this using a new collection type called \emph{streams}.} 
+One complication to concern ourselves with is how we convert the priority queue (or any collection) to an array using \ttt{.toArray(...)}. 
+It receives an array of some type \ttt{T} and, if it is large enough to store all the elements of the collection, it is populated. 
+Otherwise, an array of the same type \ttt{T} is returned. 
+To summarize, if we want to convert the priority queue of strings into an array, we must pass \ttt{new String[0]} to the \ttt{.toArray} method. 
+The returned array is then sorted and printed.\footnote{In the next section, we will discuss a much easier way to replicate \ttt{toArray} using a new collection type called \emph{streams}.} 
 
-A final intricacy of this process is that we need to pass the comparator of the priority queue to \ttt{Arrays.sort}, otherwise it will sort the elements based on the natural ordering, which is certainly undesired. We do not have direct access to the comparator that we created in the \ttt{initPriorityQueue} method, but we can retrieve the comparator used by the priority queue via \ttt{.comparator}. 
+A final intricacy of conversion process is that we need to pass the comparator of the priority queue to \ttt{Arrays.sort}, otherwise it sorts the elements based on their natural ordering, which is certainly undesired. 
+We do not have direct access to the comparator that we created in the \ttt{initPriorityQueue} method, but we can retrieve the comparator used by the priority queue via the priority queue \ttt{.comparator} method. 
 
 \section{Streams}
-\emph{Streams} are, in effect, a \emph{lazy} collection of ``things.'' By lazy, we mean to say that, if a result is not necessary, or requested, then it is not computed.
+\emph{Streams} are, in effect, a \emph{lazy} collection of ``things.'' 
+By ``lazy,'' we mean to say that, if a result is not necessary nor requested, then it is not computed.
 
-\myexample{Consider a situation in which we invoke a method called \ttt{omega()}, which is defined as an infinite loop, as the argument to the \ttt{foo} method, giving us \ttt{foo(omega())}. In Java, all arguments are evaluated \emph{eagerly}, which means that, in effect, takes an eternity to terminate. Unfortunately for the caller of \ttt{foo}, we do not even use the value of $x$, meaning we computed \ttt{omega()} for absolutely no reason whatsoever. This means that, because \ttt{omega} never terminates, \ttt{foo} similarly never returns a result.} 
+\myexample{Consider a situation where we invoke the \ttt{omega()} method, which is defined as an infinite loop, as the argument to the \ttt{foo} method, giving us \ttt{foo(omega())}.} 
+In Java, all arguments are evaluated \emph{eagerly}, meaning that the arguments are evaluated before the method is applied.
+Unfortunately for the caller of \ttt{foo}, the body thereof does not make use of~$x$, meaning we evaluate \ttt{omega()} for no reason whatsoever. 
+This means that, because \ttt{omega} never terminates, \ttt{foo} similarly never returns a result.
 
 \begin{verbnobox}[\small]
 static int omega() {
@@ -1595,20 +1619,33 @@ static int foo(int x) {
 }
 \end{verbnobox}
 
-If Java supported \emph{lazy evaluation} for method calls, we would not be in this predicament. Our discussion is not entirely driven by a desire for lazy evaluation, but rather the desire for easily-composable operations; lazy evaluation is a perk in that it allows us to design infinite data structures! An ``infinite'' data structure raises some important questions about how to store ``infinite'' data. Imagine that we want to compute a list that contains every positive even integer. We can represent this as the following inductive set:
+If Java supported \emph{lazy evaluation} for method calls, we would not have this problem.
+Our discussion is not entirely driven by a desire for lazy evaluation, but rather the desire for easily-composable operations; lazy evaluation is a perk in that it allows us to design infinite data structures! 
+An ``infinite'' data structure raises some important questions about how to store ``infinite'' data. 
+Imagine that we want to compute a list that contains every positive even integer. We can represent this as the following inductive set:
+
 \begin{align*}
     &0 \in S\\
     &\text{If } x \in S,\text{ then }x + 2 \in S
 \end{align*}
-Therefore $S$ is a set containing countably-infinite values. Implementing $S$ in Java, as an \ttt{ArrayList}, might contain a \ttt{for} loop with a condition that we do not know how to solve! In this case, since we do not know how many values to add, we might design an infinite loop via \ttt{while (true)}, but then the loop never ends. Eventually the program runs out of memory due to adding values to the never-ending list. The solution, as we have suggested, is to use streams.\footnote{For those coming from another language such as Python, a stream is equivalent to a \emph{generator}.}
 
-To create a stream of infinite data is to recreate our inductive set definition inside a \ttt{IntStream} instance and the \ttt{iterate} static method.
+Therefore,~$S$ is a set containing countably-infinite values. 
+Implementing~$S$ in Java, as an \ttt{ArrayList}, might contain a \ttt{for} loop with a condition that we do not know how to solve! 
+Because we do not know how many values to add, we may be tempted to design an infinite loop via \ttt{while (true)}, but then the loop never ends, and eventually the program runs out of memory due to adding values to the never-ending list. 
+The solution, as we have suggested, is to use streams.\footnote{For those coming from another language such as Python, a stream is equivalent to a \emph{generator}.}
+
+
+To create a stream of infinite data is to recreate our inductive set definition inside a \ttt{IntStream} instance and invoke the \ttt{iterate} static method.
 
 \begin{verbnobox}[\small]
 IntStream is = IntStream.iterate(0, x -> x + 2);
 \end{verbnobox}
 
-Let us explain this method, but to do so we must introduce \emph{lambda expressions}. A lambda expression is an anonymous function, i.e., a function definition without a name. In the above code snippet, we define a function that receives a value $x$ and returns $x$ plus two. It would be identical to defining a \ttt{private static} method to add two to some integer, but we like lambda expressions due to their locality; it might come across as superfluous to design a method that is used in only one context. Should we want to pass a method reference instead of a lambda expression, this is easily attainable.
+Let's explain this method, but to do so we must simultaneously introduce \emph{lambda expressions}. 
+A lambda expression is an anonymous function, i.e., a function definition without a name. 
+In the above code snippet, we define a function that receives a value~$x$ and returns~$x$ plus two. 
+It would be identical to defining a \ttt{private static} method to add $2$ to some given integer, but we like lambda expressions due to their locality; it might come across as superfluous to design a method that is used in only one context. 
+It is also possible to pass a \emph{method reference} instead of a lambda expression.
 
 %\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -1624,7 +1661,10 @@ class PositiveEvens {
 }   
 \end{lstlisting}
 
-The \ttt{IntStream} instance declares a stream that, when requested/prompted, invokes and populates the stream. Because it is impossible to represent an infinite data structure in Java with modern computers, we should limit how many values we want from this stream. Indeed, the \ttt{.limit} method computes exactly $n$ elements from the stream. So, to compute the first ten elements of our $\emph{is}$ \ttt{IntStream}, we invoke \ttt{.limit(10)} on our $\emph{is}$ stream. 
+The \ttt{IntStream} instance declares a stream that, when requested/prompted, invokes and populates the stream. 
+Because it is impossible to represent a truly infinite data structure in Java with modern computers, we need to limit how many values we want from this stream. 
+Indeed, the \ttt{.limit} method computes exactly~$n$ elements from the stream. 
+So, to compute the first ten elements of our $\emph{is}$ \ttt{IntStream}, we invoke \ttt{.limit(10)} on our $\emph{is}$ stream. 
 
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
@@ -1636,7 +1676,11 @@ class PositiveEvens {
   }
 }
 \end{lstlisting}
-Now, suppose we want to view these ten elements. Right now they are consolidated into an \ttt{IntStream}, but we need to convert them to a list of sorts. The solution is to convert the values into a \ttt{Stream<Integer>} via \ttt{.boxed()}, and then to a list using the convenient \ttt{.toList()} method.
+
+Now, suppose we want to view these ten elements. 
+Right now, they are consolidated to an \ttt{IntStream}, but we need to convert them to a list of sorts. 
+The solution is to convert the values into a \ttt{Stream<Integer>} via \ttt{.boxed()}, and then to a list using the convenient \ttt{.toList()} method.
+
 \begin{lstlisting}[language=MyJava]
 import java.util.IntStream;
 import java.util.List;
@@ -1651,7 +1695,9 @@ class PositiveEvens {
 }
 \end{lstlisting}
 
-\myexample{Suppose we want a stream of infinitely repeating \ttt{"a"} strings. We can easily do this via the \ttt{generate} method, which acts as the stream constructor, receiving a lambda expression to continuously generate new elements.}
+\myexample{Suppose we want a stream of infinitely repeating \ttt{"a"} strings.} 
+We can easily create one via the \ttt{generate} method, which acts as the stream constructor, receiving a lambda expression to continuously generate new elements.
+
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 
@@ -1665,11 +1711,19 @@ class AGenerator {
 }
 \end{lstlisting}
 
-Again, it is important to understand what is going on under the hood of a stream. Elements thereof only generate when we request them through some accessory means, e.g., \ttt{limit}. As we previously suggested, attempting to access an infinite stream without a limit causes the program to hang and eventually crash with an \ttt{OutOfMemoryError} exception.
+Again, it is important to understand what happens under the hood of a stream. 
+Elements thereof only generate when we request them through some accessory means, e.g., \ttt{limit}. 
+As we previously suggested, attempting to access an infinite stream (without a limit) causes the program to hang and eventually crash with an \ttt{OutOfMemoryError} exception.
 
-\myexample{Imagine we want to create a stream of all of the Fibonacci numbers. The thing is, eventually we will reach the $32$-bit limit for the \ttt{int} datatype, so we should take advantage of the \ttt{BigInteger} class, which allows us to represent arbitrarily-large integers.\footnote{Worrying about \emph{how} the \ttt{BigInteger} class works for now is unnecessary as our current plan is to demonstrate stream properties.} Also, this time we will write a method that returns the stream instance rather than creating it in the \ttt{main} method.}
+\myexample{Imagine we want to create a stream of all of the Fibonacci numbers.} 
+The thing is, we eventually reach the~$32$-bit limit of the \ttt{int} datatype, so we should take advantage of the \ttt{BigInteger} class, allowing us to represent arbitrarily-large integers.\footnote{Worrying about \emph{how} the \ttt{BigInteger} class works for now is unnecessary as our current plan is to demonstrate stream properties.} 
+Also, this time, we will design a method that returns the stream instance rather than creating one in the \ttt{main} method.
 
-Here's what we need to do: we will use \ttt{iterate} to generate new values in the sequence. There is a slight problem in that the Fibonacci sequence has two starting (accumulator) values: $0$ and $1$. The issue is that \ttt{iterate} receives only one ``initializer'' value. To circumvent this predicament we can simply pass an array that contains the current and ``next'' Fibonacci values. Inside the lambda expression we of course receive an array of values, from which we can compute the next Fibonacci number. This time, however, instead of using \ttt{IntStream}, we will generalize to the \ttt{Stream} class since our initial value(s) is not an integer.
+Here's what we need to do: let's use \ttt{iterate} to generate new values in the sequence. There is a slight problem in that the Fibonacci sequence has two starting (accumulator) values:~$0$ and~$1$. 
+The issue is that \ttt{iterate} receives only one ``initializer'' value. 
+To circumvent this predicament, we can pass an array that contains the current and ``next'' Fibonacci values. 
+Inside the lambda expression, we receive an array of values, from which we compute the next Fibonacci number. 
+Instead of using \ttt{IntStream}, however, we generalize to the \ttt{Stream} class, since our initial value(s) is not an integer.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
@@ -1760,7 +1814,12 @@ class BigIntFibStream {
   \label{fig:streams-searching}
 \end{figure}
 
-So our code now produces a list of \ttt{BigInteger} arrays containing the current Fibonacci value and its successor. Though, is this really what we want? A better solution would be to simply return the first element of the tuple/two-element array. We can achieve this via the \ttt{map} function. \ttt{map} receives a lambda expression as an argument and applies it to every element of the acting stream. Let's modify the code a bit to see an improved output. Excellently, this change means we do not need to loop over our expected/actual lists in the unit testing method, as \ttt{assertEquals} works as intended over \ttt{List} objects.
+Our code now produces a list of \ttt{BigInteger} arrays containing the current Fibonacci value and its successor. 
+Though, is this really what we want? 
+A better solution would be to return the \emph{first} element of the tuple/two-element array, which is attainable via the \ttt{map} method. 
+\ttt{map} receives a lambda expression as an argument and applies it to every element of the acting stream. 
+Let's modify the code to see an improved output. 
+Conveniently, the change means we need not loop over our expected/actual lists in the unit testing method, as \ttt{assertEquals} works operates correctly over \ttt{List} objects.
 
 %\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -1811,11 +1870,17 @@ class BigIntFibStream {
 }
 \end{lstlisting}
 
-We will now take a bit more of a look at \ttt{map}, as well as other useful \emph{higher-order functions} such as \ttt{filter} and \ttt{reduce}.
+Let's now look a bit more at \ttt{map}, as well as other useful \emph{higher-order functions} such as \ttt{filter} and \ttt{reduce}.
 
-A \emph{higher-order function} is a function that takes functions as parameters. We saw that \ttt{map} receives a lambda expression and applies it to every element of a stream. 
+A \emph{higher-order function} is a function that receives functions as parameters. 
+We saw that \ttt{map} receives a lambda expression and applies it to every element of a stream. 
 
-\myexample{Let's design the \ttt{sqList} method that receives a \ttt{List<Integer>} and squares each element using the Stream API. The method should return a new list. A motif presented throughout stream methods is that they do not modify the original data. We should use \ttt{map} to apply a lambda expression that receives an integer and returns its square. Fortunately for us, we can convert any collection into a stream using the \ttt{.stream()} method. From there, we use a simple \ttt{map} invocation to arrive at our desired outcome.}
+\myexample{Let's design the \ttt{sqList} method that receives a \ttt{List<Integer>} and squares each element using the Stream API.} 
+The method should return a new list. 
+A motif presented throughout stream methods is that they do not modify the original data. 
+We should use \ttt{map} to apply a lambda expression that receives an integer and returns its square. 
+Fortunately for us, we can convert any collection into a stream using the \ttt{.stream()} method. 
+From there, we use a \ttt{map} invocation to arrive at our desired outcome.
 
 
 \begin{lstlisting}[language=MyJava]
@@ -1856,16 +1921,18 @@ class SqList {
 }
 \end{lstlisting}    
 
-\myexample{Now, let's write the \ttt{removeVowels} method, which receives a string and removes all vowels, returning a new string in the process. This requires a few techniques that we have learned, but also means we need to use \ttt{filter} and \ttt{reduce}. Here's the idea:}
+\myexample{Now, let's design the \ttt{removeVowels} method, which receives a string and removes all vowels, returning a new string in the process.} 
+This requires a few techniques that we have learned, but also means we need to use \ttt{filter} and \ttt{reduce}. Here's the idea:
 
 \begin{enumerate}
-    \item Convert the given \ttt{String} into a stream of integers representing the ASCII values of characters.
+    \item Convert the given \ttt{String} into a stream of integers representing the numeric ASCII values of characters.
     \item Convert each integer to a ``one-string,'' i.e., a \ttt{String} of one character. The reasoning behind this decision will become clear later.
     \item Filter out vowels from the stream.
     \item Accumulate the characters in a new string.
 \end{enumerate}
 
-Of course, we begin by writing a few tests. Fortunately, writing tests is simple for this method, whereas the implementation is the most complex seen thus far.
+We always begin by writing a few tests. 
+The tests we design are simple, whereas the method implementation is the most complex seen thus far.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -1886,12 +1953,18 @@ class RemoveVowelsStreamTester {
 }
 \end{lstlisting}
 
-Onto the definition; we start by writing the method signature and purpose. Then, we need to complete step one: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. 
+Onto the definition: we start by writing the method signature and purpose. 
+Then, we need to complete step one of the algorithm: convert the given string into a stream of ASCII integers, which is achievable via the \ttt{.chars} method. It returns an \ttt{IntStream} of integer ASCII values. 
 
-Step two involves us converting each integer into a ``one-string,'' which we can do via the constructor for a \ttt{String} object. Step three requires the use of \ttt{filter}, which is another higher-order function. It receives a lambda expression and returns those objects from the stream that satisfy the filter. Since we want to filter \emph{out} the vowels, we should write a method that determines if a character is vowel, then negate the expression as part of the lambda definition. 
+Step two of the algorithm is to convert each integer into a ``one-string,'' which we can do via the constructor for a \ttt{String} object. 
+Step three requires \ttt{filter}, which is another higher-order function; it receives a lambda expression and returns those objects from the stream that satisfy the filter. 
+Since we want to filter \emph{out} the vowels, we should design a method that determines if a character is vowel, then negate the expression as part of the lambda definition. 
 
-Lastly we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. The reduce function receives an initial value, i.e., an accumulator $a$ and a binary function $f$. It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly how reduce works; It folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} Due to the simplicity of the \ttt{isVowel} predicate and its implementation in Chapter~\ref{chapter-crl}, we omit its definition.
-%\enlargethispage{-4\baselineskip}
+Lastly, we arrive at accumulating the characters into a new string, requiring us to use \ttt{reduce}: yet another higher-order function. 
+The \ttt{reduce} method receives an initial value, i.e., an accumulator~$a$ and a binary function/method~$f$. 
+It then applies the binary function to each value in the stream and the running accumulator. If this reminds you of tail recursion, then indeed, that is exactly how \ttt{reduce} works it folds over the list/stream of values, building the result in the accumulator variable.\footnote{In other functional programming languages, \ttt{reduce} is commonly called \ttt{foldr}.} 
+Due to the simplicity of the \ttt{isVowel} predicate and its inclusion in Chapter~\ref{chapter-crl}, we omit its definition.
+
 \begin{lstlisting}[language=MyJava]
 class RemoveVowelsStream {
 
@@ -1910,9 +1983,19 @@ class RemoveVowelsStream {
 \end{lstlisting}
 
 \subsubsection*{Optional Type}
-The primary benefit of streams is their compositionality. We can chain together multiple operations, sequentially, to compute a result. Though, there are instances in which a value may not exist, and the stream has to account for these somehow.
+The primary benefit of streams is their compositionality; we can chain together multiple operations, sequentially, to compute a result. 
+Though, there are instances in which a value may not exist, and the stream has to account for these cases somehow.
 
-\myexample{Consider a series of stream operations to find the maximum integer of a list. For the general case, this is straightforward, but what about when the list is empty? It does not make sense to return zero, since the maximum integer in a list may very well be zero, which leads to a false conclusion. The solution, in this case, is the \ttt{Optional} class. An \ttt{Optional} is a container that may or may not contain a value. If so, we may access the value directly via \ttt{.get}. If we do not know whether or not it contains a value, we may use \ttt{.orElse($t$)}, which returns the encapsulated value if it exists, or $t$ otherwise. We can also check, prior to a retrieval, if the \ttt{Optional} contains a value via the \ttt{.isPresent} method. \ttt{Optional} is generic and works over any class type, like almost all other classes from the collections API. To test the return value of a stream operation that returns an \ttt{Optional}, e.g., \ttt{max}, we instantiate an \ttt{Optional} that wraps the resulting value if it exists, or \ttt{Optional.empty()} otherwise.}
+\myexample{Consider a series of stream operations to find the maximum integer of a list.} 
+For the general case, this is straightforward, but what about when the list is empty? 
+It does not make sense to return~$0$, since the maximum integer in a list may very well be~$0$, which leads to a false conclusion. 
+The solution, in this case, is the \ttt{Optional} class. 
+An \ttt{Optional} is a container that may or may not contain a value. 
+If an \ttt{Optional} does contain a value, we access the value directly via \ttt{.get}. 
+If we do not know whether or not it contains a value, we can use \ttt{.orElse($t$)}, which returns the encapsulated value if it exists, or~$t$ otherwise. 
+We can also check, prior to a retrieval, if the \ttt{Optional} contains a value via the \ttt{.isPresent} method. 
+\ttt{Optional} is generic and works over any class type, like almost all other classes from the collections API. 
+To test the return value of a stream operation that returns an \ttt{Optional}, e.g., \ttt{max}, we instantiate an \ttt{Optional} that wraps the resulting value if it exists, or \ttt{Optional.empty()} otherwise.
 
 %\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -1941,4 +2024,5 @@ class OptionalTester {
 }
 \end{lstlisting}
 
-Optional values, like we stated, work wonders with the compositionality of streams; if a value does not exist, the stream API will propagate an \ttt{empty} instance of \ttt{Optional} up the chain rather than displaying an error or crashing the program. As part of the design philosophy of the class, those decisions, i.e., whether to crash the program or not, remain a choice left for the implementing programmer.
+Optional values, like we stated, work wonders with the compositionality of streams; if a value does not exist, the stream API will propagate an \ttt{empty} instance of \ttt{Optional} up the chain rather than displaying an error or crashing the program. 
+As part of the design philosophy of the text, those decisions, i.e., whether to crash the program or not, remain as a choice to the implementing programmer.
