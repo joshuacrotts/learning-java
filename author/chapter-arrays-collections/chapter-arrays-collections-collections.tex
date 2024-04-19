@@ -1422,7 +1422,9 @@ class NthMostUniqueChar {
 \end{lstlisting}
 
 \section{Iterators}
-We know how to iterate, or traverse, over a simple data structure, e.g., an array. The idea is to use an index and continuously increment the index until we are at the end bounds of the array. Below is a simple example of summing the elements of an array, which we have seen repeatedly by now.
+We know how to iterate, or traverse, over a simple data structure such as an array. 
+The idea is to use a variable for the index and continuously increment it until we reach the upper bound of the array. 
+Below is a simple example where we sum the elements of an array.
 
 \begin{verbnobox}[\small]
 static int sum(int[] arr) {
@@ -1432,11 +1434,20 @@ static int sum(int[] arr) {
 }
 \end{verbnobox}
 
-The problem is that not all data structures, as we have undoubtedly seen, are sequential; sets and maps are two examples of non-sequential data structures, so how do we traverse over those? One option is the enhanced-for loop, but as we will show later this approach has its drawbacks, even though its syntax is straightforward. Stacks and queues are another example of data structures that are not necessarily sequential. \emph{Iterator} objects are the answer to this problem. Iterators provide a mechanism for traversing over a generalized data structure. Any data structure whose class definition implements \ttt{Iterator} must define at least two methods: \ttt{boolean hasNext} and \ttt{T next}, which determines whether or not we are at the end of the traversal and retrieves the next element respectively. Note that \ttt{T}, for the time being, simply means ``any type.'' All of the Java collections implement \ttt{Iterator}, we can retrieve the corresponding \ttt{Iterator} object via the \ttt{.iterator} method. 
+The problem is that not all data structures, as we have undoubtedly seen, are sequential; sets and maps are two examples of non-sequential data structures, so how do we traverse over those? 
+One option is the enhanced-for loop, but as we will show later, this approach has its drawbacks, even though its syntax is straightforward. 
+Stacks and queues are another example of data structures that are not necessarily sequential. 
+\emph{Iterator} objects are one answer to the traversability problem. 
+Iterators provide a mechanism for traversing over a data structure. 
+Any data structure whose class definition implements \ttt{Iterator} must define at least two methods: \ttt{boolean hasNext} and \ttt{T next}, which determines whether we are at the end of the traversal, and retrieves the next element, respectively. 
+Note that \ttt{T}, for the time being, simply means ``any type,'' and is related to type parameterization.
+All of the Java collections implement \ttt{Iterator}, we can retrieve the corresponding \ttt{Iterator} object via the \ttt{.iterator} method. 
 
-Upon retrieving an iterator, we can use a \ttt{while} loop to continuously traverse over the data structure until no more elements remain to be visited. The elements of the iterator are generated on-the-fly; only upon calling \ttt{next} is the value truly read from the data structure itself. Much like the rest of the Collections API, we must pass the parameterized type to the \ttt{Iterator} initialization so that it knows what to substitute for \ttt{T} in the \ttt{next} method.
+Upon retrieving an iterator, we can use a \ttt{while} loop to continuously retrieve elements in the data structure until no more elements remain to be visited. 
+The elements of the iterator are generated on-the-fly; only upon calling \ttt{next} is the value truly read from the data structure itself. 
+Much like the rest of the Collections API, we must pass the parameterized type to the \ttt{Iterator} initialization, so that it knows what type to substitute for \ttt{T}.
 
-\myexample{Let's use an iterator to traverse over a \ttt{LinkedHashSet}, whose elements ordering is determined by their insertion order, meaning the iterator should produce them in the order in which they were inserted.}
+\myexample{Let's use an iterator to traverse over a \ttt{LinkedHashSet}, whose element ordering is determined by their insertion order, meaning that the iterator should produce them in the order that they were inserted.}
 
 %\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -1462,7 +1473,7 @@ class IteratorTester {
 } 
 \end{lstlisting}
 
-Should we want to traverse over the data again, we need to produce yet another instance of the iterator because there is no way to reset the ``position'' of an iterator; they are a type of one-time use objects.
+Should we want to traverse over the data again, we need to instantiate another instance of the iterator, because there is no way to reset the ``position'' of an iterator; they are ``one-time use'' objects.
 
 It should be stated that the enhanced \ttt{for} loop is nearly identical to the job of an \ttt{Iterator}, so a programmer may wonder why not use the former over the latter. Inside an enhanced \ttt{for} loop, we cannot modify the data structure, meaning that we cannot add, insert, remove, or change elements. On the other hand, iterators allow structural modification. We would not recommend altering the data structure, even if it is permissible by Java, since doing so can result in irksome bugs. 
 
