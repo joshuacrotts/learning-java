@@ -1,11 +1,20 @@
 \section{Object Mutation and Aliasing}
 \label{chapter-classes-mutation-aliasing}
 
-A limitation that we have purposefully imposed on our object/class design is the inability to modify the values of instance variables. Value mutation is a foreign concept in some programming languages, but we have made extensive use of it throughout our time in the land of Java. In this section, we will discuss the implications of allowing instance variable mutation and how it can lead to unintended problems.
+A limitation that we have purposefully imposed on our object/class design is the inability to modify the values of instance variables. 
+Value mutation is a foreign concept in some programming languages, but we have made extensive use of it throughout our time in the land of Java. 
+In this section, we discuss the implications of instance variable mutation, and how it can lead to unintended problems, but also how it can be used to our advantage.
 
-To access a \ttt{private} instance variable, we design a non-\ttt{private} accessor method, which returns the instance variable. To \emph{modify} a \ttt{private} instance variable, we design a non-\ttt{private} mutator method\index{mutator method}\index{setter method}, which takes in a parameter and assigns it to the corresponding instance variable. Let's return to the \ttt{Point} class to demonstrate. Suppose that we instantiate a \ttt{Point} object~$p$ to the position $(7, 4)$, but we then wish to change or modify either coordinate. We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which is confirmed through the accessor method. 
+To access a \ttt{private} instance variable, we design a non-\ttt{private} accessor method, which returns the instance variable. 
+To \emph{modify} a \ttt{private} instance variable, we design a non-\ttt{private} mutator method\index{mutator method}\index{setter method}, which receives a parameter and assigns its value to the corresponding instance variable. 
+Let's return to the \ttt{Point} class to demonstrate. 
+Suppose that we instantiate a \ttt{Point} object~$p$ to the position $(7, 4)$, but we then wish to change or modify either coordinate. 
+We can do so by calling the \ttt{setX} or \ttt{setY} methods, respectively. 
+Testing setter methods is important to verify that a change occurred when invoking the setter/mutator method, which is confirmed through the accessor method. 
 
-Another way of phrasing such an approach is that, when testing a mutator, we care about the \emph{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. Setter methods, or methods that modify outside values or data are definitionally \emph{impure}\index{impure}. Because we want to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove the keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we \emph{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
+Another way of phrasing such an approach is that, when testing a mutator, we care about the \emph{side-effect}\index{side-effect} of the method rather than what it returns, namely nothing. 
+Setter methods, or methods that modify outside values or data are definitionally \emph{impure}\index{impure}. 
+Because we want to alter an instance variable, these can no longer be marked as \ttt{final}, so we remove the keyword.\footnote{This is not to suggest that we should never use \ttt{final} instance variables. In fact, we \emph{should} use \ttt{final} instance variables whenever possible, since object mutation introduces the possibility of easy-to-overlook bugs.}
 
 %\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -48,7 +57,11 @@ class Point {
 }
 \end{lstlisting}
 
-What are some consequences to mutating an object? One comes through the notion of \emph{object aliasing}. Recall that objects point to references in memory. Therefore if we instantiate a \ttt{Point} $p_1$, then initialize another \ttt{Point} $p_2$ to $p_1$, then both objects refer to the same \ttt{Point} instance in memory. If we modify $p_1$ through a setter method, then $p_2$ is also affected.
+What are some consequences to mutating an object? 
+One comes through the notion of \emph{object aliasing}. 
+Recall that objects point to references in memory. 
+Therefore, if we instantiate a \ttt{Point}~$p_1$, then initialize another \ttt{Point}~$p_2$ to~$p_1$, then both objects refer to the same \ttt{Point} instance in memory. 
+If we modify~$p_1$ through a setter method, then~$p_2$ is also affected.
 
 %\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -92,9 +105,17 @@ class PointTester {
 }
 \end{lstlisting}
 
-This idea carries over to other, more complex classes as well. For example, strings, arrays, lists, and others are all objects, and therefore, are subject to object aliasing. Modifying one \ttt{ArrayList} instance will modify all other \ttt{ArrayList} instances that reference the same object. This is a common source of bugs in Java programs, and it is important to be aware of this behavior. 
+Aliasing carries over to other, more complex classes as well.
+For example, strings, arrays, lists, and others are all objects, and therefore, are subject to object aliasing. 
+Modifying one \ttt{ArrayList} instance will modify all other \ttt{ArrayList} instances that reference the same object. 
+Unintentional aliasing (or its associated actions) is a common source of bugs in Java programs, and it is important to be aware of this behavior. 
 
-In the following example, we will demonstrate aliasing through the \ttt{ArrayList} data structure containing \ttt{Point} objects. We add a series of \ttt{Point} instances to an \ttt{ArrayList}, which is then aliased by another \ttt{ArrayList}. We then add another \ttt{Point} instance to the first \ttt{ArrayList}, followed by a verification that the lists are the same size. We traverse over the lists and verify that the elements are the same through the \ttt{==} operator. Remember that \ttt{==} returns whether or not two objects reference the same instance in memory. Because these lists are merely aliases of each other, they will, in fact, contain references to the same \ttt{Point} instances.
+In the following example, we will demonstrate aliasing through the \ttt{ArrayList} data structure containing \ttt{Point} objects.
+We add a series of \ttt{Point} instances to an \ttt{ArrayList}, which is then aliased by another \ttt{ArrayList}. 
+We then add another \ttt{Point} instance to the first \ttt{ArrayList}, followed by a verification that the lists are the same size. 
+We traverse over the lists and verify that the elements are the same through the \ttt{==} operator. 
+Remember that \ttt{==} returns whether or not two objects reference the same instance in memory. 
+Because these lists are merely aliases of each other, they will, in fact, contain references to the same \ttt{Point} instances.
 
 %\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -127,11 +148,21 @@ class PointTester {
 }
 \end{lstlisting}
 
-\myexample{Now that we have classes, accessibility, and mutation, we can implement generic data structures such as an \ttt{ArrayList}. In this example we will design a class that matches the behavior of the \ttt{ArrayList} class. Let's design a class \ttt{MiniArrayList}, which operates over any type using generics. Like generic static methods, we must qualify the generic type, but unlike static methods, however, we qualify the type over the class declaration, meaning that all instance methods observe/respect the qualifier and do not need to be separately quantified. Static methods still necessitate the generic qualifier in their signatures. }
+\myexample{Now that we have classes, accessibility, and mutation, we can implement generic data structures such as an \ttt{ArrayList}.} 
+In this example, we will design a class that matches the behavior of the \ttt{ArrayList} class. 
+Let's design the \ttt{MiniArrayList} class, which operates over any type using generics. 
+Like generic static methods, we must quantify the generic type, but unlike static methods, however, we quantify the type over the class declaration, meaning that all instance methods observe/respect the quantify and do not need to be separately quantified. 
+Static methods still necessitate the generic quantifier in their signatures.\footnote{Static methods are not tied to any instance of the class (nor its generic type), so they must be quantified separately.}
 
-In addition to the class header, what else does an \ttt{ArrayList} store? A backing array of elements and its corresponding length, of course! The array, as we described in Chapter~\ref{chapter-arrays-collections}, dynamically resizes as we add or insert elements. The logical size of the array, i.e., the number of presently-existing elements is its \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is its \ttt{capacity}. 
+In addition to the class header, what else does an \ttt{ArrayList} store? 
+Certainly, a backing array of elements and its corresponding length. 
+The array, as we described in Chapter~\ref{chapter-arrays-collections}, ``dynamically resizes'' as we add or insert elements. 
+The logical size of the array, i.e., the number of presently-existing elements is its \ttt{size}, whereas the current capacity, i.e., how many elements can currently be stored without a resize, is its \ttt{capacity}. 
 
-Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify. Interestingly, this shows off a great example of one constructor calling another of the same class, an idea called \emph{constructor chaining}. ``Ten,'' however, is a magic number: a number whose context is the only thing that determines its meaning. So, let's refactor it into a constant class variable with an identifier.
+Our class will provide two constructors: one that instantiates the backing array to store ten elements, and another that allows the user to specify the initial capacity. 
+Interestingly, this shows off a great example of one constructor calling another of the same class, an idea called \emph{constructor chaining}. 
+``Ten,'' however, is a magic number: a number whose context is the only thing that determines its meaning. 
+So, let's refactor it into a constant class variable with a relevant identifier.
 
 \begin{lstlisting}[language=MyJava]
 class MiniArrayList<T> {
@@ -153,7 +184,8 @@ class MiniArrayList<T> {
 }
 \end{lstlisting}
 
-Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. We now must instantiate the array inside the second constructor. 
+Notice that we declare an array of type \ttt{T} to store the elements of our mini array list. 
+We now must instantiate the array inside the second constructor. 
 The problem we immediately encounter is that we cannot instantiate an array of a generic type, because Java arrays utilize runtime information about the element type. 
 Generics, on the other hand, are a compile-time feature, meaning it is impossible to directly instantiate an array of a generic type. 
 Instead, we must instantiate an array containing (elements of) type \ttt{Object}, followed by a cast to contain (elements of) type \ttt{T}.\footnote{To be pedantic, the array is of type \ttt{Object[]}, and we cast it to type \ttt{T[]}.} 
@@ -941,7 +973,7 @@ class AssociationList<K, V> {
 \end{lstlisting}
 Each association list in our representation stores exactly one association. 
 Each time we extend the association, we create a new list that points to the previous list. 
-This is a very inefficient way to store and lookup associations, at least when compared to data structures such as a \ttt{HashMap} or \ttt{TreeMap}. But, association lists are commonly used for adding (variable) bindings in a programming language, usually when writing simple interpreted languages.\footnote{This serves as foreshadowing for Chapter~\ref{chapter-advanced-oop}!}
+This is a very inefficient way to store and lookup associations, at least when compared to data structures such as a \ttt{HashMap} or \ttt{TreeMap}. But, association lists are commonly used for adding (variable) bindings in a programming language, usually when writing simple interpreted languages.\footnote{This serves as foreshadowing for~\cref{chapter-classes}!}
 
 \myexample{In Chapter~\ref{chapter-arrays-collections}, we began to explore and use the \ttt{Set} data structure from the Collections API. One existing implementation of sets is the \ttt{HashSet}, which stores non-duplicate elements according to their hash codes. In this example we will design a related data structure called a \textit{hash table}\index{hash table}.}
 
