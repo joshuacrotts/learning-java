@@ -845,3 +845,42 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
   }
 }
 \end{lstlisting}
+
+\subsection{Priority Queue Sort}
+As a bonus, let's briefly discuss the priority queue sort, which leverages the power of, you guessed it: a priority queue.
+Recall from Chapter~\ref{chapter-arrays-collections} that priority queues sort elements based on their priority, which itself is defined as either the natural ordering of the elements or a custom comparator. 
+The priority queue sort algorithm works by first adding all elements from the given list into the queue, then repeatedly removing the maximum element from the heap, and placing it at the end of a list. 
+Each time an element is polled from the priority queue, its underlying structure is adjusted to reassign the maximum element to the top of the queue.
+
+We create a priority queue from the list, repeatedly poll the queue until it is empty, and add the polled elements to the rear of a new list. 
+Remember that inserting elements onto the front of an \ttt{ArrayList} list is slow, so we return a \ttt{LinkedList} instead.\footnote{The other sorting algorithms return instances of \ttt{AbstractList} to guarantee (constant-time) random access to elements. 
+The heap sort, on the contrary, will instead return an \ttt{AbstractSequentialList} to ensure that adding elements to the front of the list is constant-time. 
+The \ttt{LinkedList} class is a subclass of \ttt{AbstractSequentialList}.}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.*;
+
+interface IHeapSort<V extends Comparable<V>> {
+  AbstractSequentialList<V> heapSort(List<V> ls);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.lang.Comparable;
+import java.util.*;
+
+class FunctionalHeapSort<V extends Comparable<V>> 
+                          implements IHeapSort<V> {
+
+  @Override
+  public AbstractSequentialList<V> heapSort(List<V> ls) {
+    PriorityQueue<V> pq = new PriorityQueue<>(ls);
+    AbstractSequentialList<V> sorted = new LinkedList<>();
+    while (!pq.isEmpty()) {
+      sorted.add(pq.poll());
+    }
+    return sorted;
+  }
+}
+\end{lstlisting}

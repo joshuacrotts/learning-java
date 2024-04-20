@@ -1,17 +1,34 @@
 \section{Classes}
 \label{chapter-classes-classes}
 
-From the first page, we have made prolific use of classes, but in this section we will finally venture into the inner workings of a class, and how to create our own.
+From the first page, we have made prolific use of classes, but in this chapter, we finally venture into the inner workings of a class, and how to create our own.
 
-\emph{Classes}\index{classes}\index{class} are blueprints for \emph{objects}\index{object}. When we create a class, we declare a new type of object. We encapsulate data and methods inside class definitions for later usage.
+\emph{Classes}\index{classes}\index{class} are blueprints for \emph{objects}\index{object}. 
+When we create a class, we declare a new type of object. 
+Classes encapsulate data and method definitions for later use.
 
-As we stated, we have repeatedly used classes, e.g., strings, arrays, \ttt{Scanner}, \ttt{Random}, as well as those classes from the Collections API. Until now, however, we viewed these as forms of abstraction, whose details were not important. 
+As we stated, we have repeatedly used classes \emph{and} objects, e.g., strings, arrays, \ttt{Scanner}, \ttt{Random}, as well as classes from the Collections API. 
+Until now, however, we viewed these as forms of abstraction, whose details were not important. 
 
-To create a class, we use the \ttt{class} keyword, followed by the name of the class. The name of the class should be capitalized, and should, in general, describe a noun. All Java files describe a class and must be named accordingly. We, of course, have seen this repeatedly before, but we omitted the details.
+To create a class, we use the \ttt{class} keyword, followed by the name of the class. 
+The name of the class should be capitalized and, in general, describe a noun. 
+All Java files describe a class and must be named accordingly. 
+We previously omitted the details of class creation and merely used them as a means to design methods.
 
-Classes can \emph{inherit} methods from other classes, a relationship called the superclass/subclass hierarchy. For now we will only mention that the \ttt{Object} class is the ``ultimate'' superclass, in which all classes are implicit subclasses. The \ttt{Object} class, in particular, has three methods that we will override in almost every class that we write: \ttt{equals}, for comparing two classes for equality, \ttt{toString}, a means of ``stringifying'' an object, and a third: \ttt{hashCode}, the significance of which we will return to soon. In subsequent chapters we will dive more into inheritance and hierarchies.
+Classes can \emph{inherit} methods from other classes, a relationship called the superclass/subclass hierarchy. 
+For now, we will only mention that the \ttt{Object} class is the ``ultimate'' superclass, in which all classes are implicit subclasses. 
+The \ttt{Object} class, in particular, has three methods that we will override in almost every class that we design: \ttt{equals}, for comparing two classes for equality, \ttt{toString}, a means of ``stringifying'' an object, and a third: \ttt{hashCode}, the significance of which we will return to soon. 
+In subsequent sections, we dive more into inheritance and hierarchies.
 
-\myexample{Let's create a class called \ttt{Point}, which stores two \ttt{int} values representing the Cartesian coordinates $x$ and $y$. By ``store,'' we mean to say that $x$ and $y$ are \emph{instance variables}\index{instance variables} of the \ttt{Point} class, also sometimes called \emph{attributes}, \emph{fields}, or \emph{members} (in Java, we conventionally use the ``instance variables'' term). Instance variables denote the values associated with an arbitrary \emph{instance} of that object (an instance may also be defined as an entity). For example, if we have a \ttt{Point} object \ttt{p}, then \ttt{p} has two instance variables, \ttt{x} and \ttt{y}, which are the $x$ and $y$ coordinates of \ttt{p}. Then, if we declare another point \ttt{p2}, then \ttt{p2} will have its own instance variables \ttt{x} and \ttt{y}, which are independent of \ttt{p}'s instance variables. In almost all circumstances, instance variables of a class should be marked as \ttt{private}. Instance variables that are \ttt{private} denotes that direct access to their values is granted only within the class definition. For the time being, instance variables are immutable. Thus, every instance variable will use the \ttt{final} keyword in its declaration, alongside the \ttt{UPPER\_CASE} naming convention.}
+\myexample{Let's design the \ttt{Point} class, which stores two \ttt{int} values representing two Cartesian coordinates~$x$ and~$y$.} 
+By ``store,'' we mean to say that~$x$ and~$y$ are \emph{instance variables}\index{instance variables} of the \ttt{Point} class, also sometimes called \emph{attributes}, \emph{fields}, or \emph{members} (in Java, we conventionally use the ``instance variables'' term). 
+Instance variables denote the values associated with an arbitrary \emph{instance} of that object (an instance may also be defined as an entity). 
+For example, if we declare a \ttt{Point} object \ttt{p}, then \ttt{p} has two instance variables, \ttt{x} and \ttt{y}, which are the~$x$ and~$y$ coordinates of \ttt{p}.
+If we declare another \ttt{Point} object \ttt{p2}, then \ttt{p2} has its own instance variables \ttt{x} and \ttt{y}, which are independent of \ttt{p}'s instance variables. 
+In almost all circumstances, instance variables of a class should be marked as \ttt{private}. 
+Instance variables that are \ttt{private} are accessible only to those methods within the class definition. 
+For the time being, instance variables are immutable. 
+Thus, every instance variable will use the \ttt{final} keyword in its declaration, alongside the \ttt{UPPER\_CASE} naming convention.
 
 Speaking of \emph{access modifiers}\index{access modifier}, we should mention the four that Java provides, even though we make prolific use of only three:
 
@@ -21,7 +38,10 @@ Speaking of \emph{access modifiers}\index{access modifier}, we should mention th
   \item A class, variable, or method declared without an access modifier, also called the \emph{default access modifier}, behaves similarly to \ttt{public}, only that it is accessible only to/by classes in the same package. Packages are a means of organizing classes into groups, similar to directories.
 \end{itemize}
 
-The fourth and final access modifier is \ttt{protected}, which is similar to the default access modifier, but allows subclasses to access the variable or method.\footnote{If you have not heard of inheritance/subclasses yet, do not worry, as we will cover this in the next chapter; we explain it here to describe the relevant difference between the access modifiers.} We will not use \ttt{protected} in this text, but it is worth mentioning. As a corollary of sorts, any time that \ttt{protected} \emph{can} be used, there is almost certainly a better design alternative, whether that means marking the variable/method as \ttt{private} or \ttt{public}, we are of the opinion that \ttt{protected} has few benefits. Moreover, because we will not use \ttt{protected}, the use of \ttt{public} will be infrequent and only when necessary.\footnote{Some methods, as we will soon see and have seen previously, are required to be \ttt{public}. For example, the \ttt{main} method must be marked as \ttt{public}.}
+The fourth and final access modifier is \ttt{protected}, which is similar to the default access modifier, but allows subclasses to access the variable or method.\footnote{If you have not heard of inheritance/subclasses yet, do not worry, as we will cover this in the next chapter; we explain it here to describe the relevant difference between the access modifiers.} 
+We will not use \ttt{protected} in this text, but it is worth mentioning. 
+As a corollary of sorts, any time that \ttt{protected} \emph{can} be used, there is almost certainly a better design alternative, whether that means marking the variable/method as \ttt{private} or \ttt{public}, we are of the opinion that \ttt{protected} has few benefits. 
+Moreover, because we will not use \ttt{protected}, the use of \ttt{public} will be infrequent and only when necessary.\footnote{Some methods, as we will soon see and have seen previously, are required to be \ttt{public}. For example, the \ttt{main} method must be marked as \ttt{public}.}
 
 \begin{lstlisting}[language=MyJava]
 class Point {
@@ -31,11 +51,18 @@ class Point {
 }
 \end{lstlisting}
 
-We now want a way to create an instance of a \ttt{Point}. We declare instances of objects using the \ttt{new} keyword followed by the class constructor. \emph{Constructors}\index{constructor} are special methods that are called when we wish to create a new object of that class. Our \ttt{Point} class constructor can receive parameters, which we can use to initialize the relevant $x$ and $y$ instance variables. So, let's declare the constructor for our \ttt{Point} class. Constructors, in general, should be \ttt{non-private}, as we will need to call them from outside the class definition. On a case-by-case basis, this changes accordingly, as some classes are local to another class definition and are thereby private.\footnote{There are also design patterns, as exemplified in Chapter~\ref{chapter-modern}, that rely on a class constructor being private to prohibit unnecessary object instantiation.} 
+We now want a way to create an instance of a \ttt{Point}. 
+Instances of objects are made using the \ttt{new} keyword, followed by the class constructor. 
+\emph{Constructors}\index{constructor} are special methods that instantiate an instance of a class. 
+Our \ttt{Point} class constructor will receive parameterss, which we will use to initialize the relevant~$x$ and~$y$ instance variables. 
+So, let's design the constructor for our \ttt{Point} class. 
+Constructors, in general, should be \ttt{non-private}, as we need to call them from outside the class definition. 
+On a case-by-case basis, this changes accordingly, as some classes are local to another class definition, and are thereby private.\footnote{There are also design patterns, as exemplified in Chapter~\ref{chapter-modern}, that rely on a class constructor being private to prohibit unnecessary object instantiation.} 
 
 Constructors are also special in that they do not have an explicit return type, but they are non-void in that they return an object of the class type.
 
-All classes in Java that can be instantiated have a \emph{default constructor} when no class is specified by the implementer of the class.\footnote{In Chapter~\ref{chapter-advanced-oop}, we will see that some classes and types cannot be instantiated.} The default constructor of a class receives no arguments and serves only to be able to create an instance of the class.
+All classes in Java that can be instantiated have a \emph{default constructor} only when no constructor is specified by the class implementer.\footnote{Later in this chapter, we will see that some classes and types cannot be instantiated.} 
+The default constructor of a class receives no arguments and serves only to be able to create an instance of the class.
 
 \begin{lstlisting}[language=MyJava]
 class Point {
@@ -50,9 +77,16 @@ class Point {
 }
 \end{lstlisting}
 
-Remember that the purpose of the constructor is to initialize the class instance variables. So, unless we wish to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. The ``current object'' references the object that a method is called on. 
+Remember that the purpose of the \ttt{Point} constructor is to initialize the class instance variables. 
+So, unless we want to use distinct identifiers for referencing the parameters and instance variables, we need to use the \ttt{this} keyword.\footnote{Some software engineers and projects use identifier prefixes to refer to instance variables.} 
+The \ttt{this} keyword refers to the current object, and aids in distinguishing between instance variables and parameters. 
+The ``current object'' references the object that a method is called on. 
 
-Inside the constructor, we assign the value of the parameter \ttt{x} to the instance variable \ttt{x}. Should we opt to not use \ttt{this} on the left-hand variable identifier, then the parameter \ttt{x} would shadow the instance variable \ttt{x}, meaning that writing \ttt{x = x} assigns the parameter to itself. At last, we can create a \ttt{Point} object by calling the constructor, but wait, we have no way of accessing/referring to the instance variables of the \ttt{Point} object! We need to create \emph{accessor methods}\index{accessor method} to retrieve the values of the instance variables. Accessor methods are non-private and should do exactly one thing: return the respective instance variable.
+Inside the constructor, we assign the value of the parameter \ttt{x} to the instance variable \ttt{x}. 
+Should we not use \ttt{this} on the left-hand variable identifier, then the parameter \ttt{x} would \emph{shadow}\index{variable shadowing}\index{shadow} the instance variable \ttt{x}, meaning that writing \ttt{x = x} assigns the parameter to itself. 
+At last, we can create a \ttt{Point} object by calling the constructor, but wait, we have no way of accessing/referring to the instance variables of the \ttt{Point} object! 
+We need to create \emph{accessor methods}\index{accessor method} to retrieve the values of the instance variables. 
+Accessor methods are non-private and have strictly one purpose: to return the respective instance variable value.
 
 %\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -72,23 +106,30 @@ class Point {
 }
 \end{lstlisting}
 
-This principle of hiding the implementation details of a class is called \emph{encapsulation}\index{encapsulation}. Encapsulation is a key principle of object-oriented programming, and is one of the primary reasons why object-oriented programming is so powerful. It can be dangerous to directly modify or access the fields of an object.\footnote{By ``dangerous,'' we mean to suggest that it is prone to logic errors.} 
+The principle of hiding the implementation details of a class and its properties is called \emph{encapsulation}\index{encapsulation}. 
+Encapsulation is a fundamental idea of object-oriented programming, and is one of the primary reasons why object-oriented programming is so powerful. 
+It can be dangerous to directly modify or access the fields of an object.\footnote{By ``dangerous,'' we mean to suggest that it is prone to logic errors.} 
 
-Creating an instance of the \ttt{Point} class is identical to creating an instance of any other arbitrary class. Though, we should first explain a slight terminology distinction.
+Creating an instance of the \ttt{Point} class is identical to creating an instance of any other arbitrary class.
+Though, we should first explain a slight terminology distinction.
 
-Declaring, or \emph{initializing}\index{initialize}\index{object initialization}, an object refers to typing the class name followed by the variable name. For instance, the following code declares a \ttt{Point} object \ttt{p}.
+Declaring, or \emph{initializing}\index{initialize}\index{object initialization}, an object refers to typing the class name followed by the variable name. 
+For instance, the following code declares/initializes a \ttt{Point} object \ttt{p}.
 
 \begin{verbnobox}[\small]
 Point p;
 \end{verbnobox}
 
-By default, $p$ points to \ttt{null}, since we have not yet created an instance of the \ttt{Point} class. We can create an instance of the \ttt{Point} class by invoking its constructor, an action otherwise called \emph{object instantiation}\index{object instantiation}\index{instantiation}. We use the \ttt{new} keyword and pass the desired $x$ and $y$ coordinates. 
+By default,~$p$ points to \ttt{null}, since we have not yet created an instance of the \ttt{Point} class. 
+We can create an instance of the \ttt{Point} class by invoking its constructor, an action otherwise called \emph{object instantiation}\index{object instantiation}\index{instantiation}. 
+We use the \ttt{new} keyword and pass the desired~$x$ and~$y$ integer coordinates. 
 
 \begin{verbnobox}[\small]
 Point p = new Point(3, 4);
 \end{verbnobox}
 
-We should write some tests to ensure that our \ttt{Point} class is working as expected. We note that this may seem redundant for such a simple class and the fact that the accessor methods do nothing more than retrieve instance variable values, but it is a good habit for beginning object-oriented programmers.
+We should write some tests to ensure that our \ttt{Point} class is working as expected. 
+We note that this may seem redundant for such a simple class, and the fact that the accessor methods do nothing more than retrieve instance variable values, but it is a good habit for beginning object-oriented programmers.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -105,7 +146,12 @@ class PointTester {
 }
 \end{lstlisting}
 
-Of course, testing the accessor methods is a little boring, so let's override the \ttt{toString} method to print a stringified representation of the \ttt{Point} class. Every object in Java has a \ttt{toString} method, which returns a string representation of the object. By default, the \ttt{toString} method returns the class name followed by the object's hashcode. We can override the \ttt{toString} method by declaring a \ttt{public} method with the signature \ttt{public String toString()} (note that this is one instance where \ttt{public} cannot be avoided.) We can then return a string representation of the object. In this case, we will return a string of the form \ttt{"(x=$x$, y=$y$)"}, where $x$ and~$y$ refer to the respecitve instance variables. 
+Of course, testing the accessor methods is a little boring, so let's override the \ttt{toString} method to print a stringified representation of the \ttt{Point} class. 
+Every object in Java has a \ttt{toString} method, which returns a string representation of the object. 
+By default, the \ttt{toString} method returns the class name followed by the object's hashcode. 
+We can override the \ttt{toString} method by declaring a method with the signature \ttt{public String toString()} (note that this is one instance where \ttt{public} cannot be avoided.) 
+We can then return a string representation of the object. 
+In this case, we will return a string of the form \ttt{"(x=$x$, y=$y$)"}, where~$x$ and~$y$ refer to the respecitve instance variables. 
 
 %\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -119,7 +165,8 @@ class Point {
 }
 \end{lstlisting}
 
-Testing the \ttt{toString} method provides more interesting results, since it requires us to not only override the default implementation of \ttt{toString}, but it also ensures that our constructor correctly initializes the instance variables. Because we will refer to $p$ across several methods, we can declare it as an instance variable of our \ttt{PointTester} class so as to reduce the redundant object instantiation.
+Testing the \ttt{toString} method provides more interesting results, since it requires us to not only override the default implementation of \ttt{toString}, but it also ensures that our constructor correctly initializes the instance variables. 
+Because we will refer to~$p$ across several tester methods, we can declare it as an instance variable of our \ttt{PointTester} class so as to reduce redundant object instantiation.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -142,11 +189,31 @@ class PointTester {
 }
 \end{lstlisting}
 
-In addition to the \ttt{toString} method, we might also write other methods associated with a \ttt{Point} object. For example, we might want to calculate the distance between two points. We can write a \ttt{public} method that takes a \ttt{Point} object as a parameter and returns the distance between the two points, the first being the \emph{implicit parameter}, and the second being the \emph{explicit parameter}. We say the first is \emph{implicit} because, under the hood, all class methods take an implicit parameter, which is the object on which the method is called, which is accessible through the \ttt{this} pointer. We say the second is \emph{explicit} because we explicitly pass the object as a parameter. 
+In addition to the \ttt{toString} method, we might also design other methods associated with a \ttt{Point} object. 
+For example, we might want to calculate the distance between two points. 
+We can design a method that takes a \ttt{Point} object as a parameter and returns the distance between the two points, the first being the \emph{implicit parameter}, and the second being the \emph{explicit parameter}. 
+We say the first is \emph{implicit} because, under the hood, all class methods receive an implicit parameter, which is the object on which the method is called, which is accessible through the \ttt{this} pointer. 
+We say the second is \emph{explicit} because we explicitly pass the object as a parameter. 
+So, in the following example,~\ttt{p1} is the implicit parameter, and \ttt{p2} is the explicit parameter.
 
-This is also a good time to bring up another terminology distinction. Some programming languages use \emph{functions}, others use \emph{procedures}, \emph{subroutines}, or \emph{methods}. Going from simplest to most complex, subroutines are simply a sequence of instructions that are executed in order. Procedures are subroutines that return a value. Functions are procedures that take parameters. Methods are functions that are associated with a class. In Java, we use the term \emph{method} to refer to all of these, since all methods must be associated with a class. A language like C++, on the other hand, distinguishes between the two: \emph{functions} refer to subroutines, procedures, or parameter-receiving procedures that are not associated with a class; \emph{methods} are subroutines, procedures, or functions embedded inside a class definition.
+\begin{verbnobox}[\small]
+final Point P1 = new Point(3, 4);
+final Point P2 = new Point(6, 42);
+double dist = p1.distance(p2);
+\end{verbnobox}
 
-Returning to the \ttt{Point} class, we will now write \ttt{distance}, which receives a \ttt{Point} as a parameter and returns the Euclidean distance from \ttt{this} point to the parameter. Before doing so, however, we should write a few tests. Conveniently, the three points that we test all have a distance of five between each other.
+This is also a good time to bring up another terminology distinction. 
+Some programming languages use \emph{functions}, others use \emph{procedures}, \emph{subroutines}, or \emph{methods}. 
+Going from simplest to most complex, subroutines are simply a sequence of instructions that are executed in order. 
+Procedures are subroutines that return a value. 
+Functions are procedures that receive parameters. 
+Methods are functions that are associated with a class. 
+In Java, we use the term \emph{method} to refer to all functions, procedures, and subroutines, since all methods must be associated with a class. 
+A language like C++, on the other hand, distinguishes between the two: \emph{functions} refer to subroutines, procedures, or parameter-receiving procedures that are not associated with a class; \emph{methods} are subroutines, procedures, or functions embedded inside a class definition.
+
+Returning to the \ttt{Point} class, we will now design \ttt{distance}, which receives a \ttt{Point} as a parameter and returns the Euclidean distance from \ttt{this} point to the parameter. 
+Before doing so, however, we should write a few tests. 
+Conveniently, the three points that we test all have a distance of five between each other.
 
 %\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -188,12 +255,19 @@ class Point {
 }
 \end{lstlisting}
 
-  The \ttt{distance} method is called an \emph{instance method} because it is associated with an instance of the class. We can also write \emph{static methods}, which are not associated with an object, but rather the class holistically. Static methods are useful for utility methods that are not associated with a particular instance of the class. All methods designed up until this chapter were static methods, which were not associated with the class in which they resided, because the classes we designed were used only to write the methods themselves.
+The \ttt{distance} method is called an \emph{instance method} because it is associated with an instance of the class. 
+We can also write \emph{static methods}, which are not associated with an object, but rather the class holistically. 
+Static methods are useful as utility methods that are not associated with a particular instance of the class. 
+All methods that we designed up until this chapter were static methods, which were not associated with the class in which they resided, because the classes we designed were used only to hold the methods themselves.
 
 \subsubsection*{Method Overloading}
-A method is identified by two attributes: its name, and its signature. Java allows us to \emph{overload}\index{method overloading} a method or constructor by using the same identifier but different parameters.
+A method is identified by two attributes: its name and its signature. 
+Java allows us to \emph{overload}\index{method overloading} a method or constructor by using the same identifier, but different parameters.
 
-\myexample{Let's overload the \ttt{distance} method by writing a version that does not receive a parameter at all, and instead returns the magnitude/distance from the point to the origin. Fortunately this is extremely easy, because we can make use of the existing \ttt{distance} method that does receive a \ttt{Point}; we can pass it the origin point, namely \ttt{new Point(0, 0)}, and everything works out wonderfully! Because this version of \ttt{distance} simply refers to the existing definition, which we have thoroughly tested, we will omit a separate tester.}
+\myexample{Let's overload the \ttt{distance} method by designing a version that does not receive a parameter at all, and instead returns the magnitude/distance from the point to the origin.} 
+Fortunately, this is extremely easy, because we can make use of the existing \ttt{distance} method that \emph{does} receive a \ttt{Point}. 
+Namely, we pass it the origin point, i.e., \ttt{new Point(0, 0)}, and everything works wonderfully. 
+Because this version of \ttt{distance} merely refers to the existing definition, which we have thoroughly tested, we will omit a separate set of tests.
 
 \begin{lstlisting}[language=MyJava]
 class Point {
@@ -210,9 +284,13 @@ class Point {
 }
 \end{lstlisting} 
 
-We could, if desired, overload the \ttt{Point} constructor as well. Though, it makes little sense to do so in this specific instance, since a point is defined by its two coordinate members. In subsequent sections, however, we will overload the constructor and demonstrate its utility/practicality.
+We could, if desired, overload the \ttt{Point} constructor as well. 
+Though, it makes little sense to do so in this specific context, because a point is defined by its two coordinate members. 
+In subsequent sections, however, we will overload other class constructors to demonstrate its utility/practicality.
 
-\myexample{Let's design the static \ttt{avgDist} method, which receives a \ttt{List<Point>} and computes the average distance away from the origin. We already have a method to compute the distance of a point to the origin, so let's take advantage of the stream API to map \ttt{distance} to every point, then find the average of those resulting double values. This method will return an \ttt{OptionalDouble} in the event that the provided list is empty, which serves as a wrapper around the \ttt{Optional<Double>} type.}
+\myexample{Let's design the static \ttt{avgDist} method, which receives a \ttt{List<Point>} and computes the average distance away each \ttt{Point} is from the origin.} 
+We already have a method to compute the distance of a point to the origin, so let's take advantage of the stream API to map \ttt{distance} to every point, then find the average of those resulting double values. 
+The \ttt{avgDist} method returns an \ttt{OptionalDouble} in the event that the provided list is empty, which serves as a wrapper around the \ttt{Optional<Double>} type.
 
 %\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -263,9 +341,13 @@ class Point {
 }
 \end{lstlisting}
 
-\myexample{Let's create the static \ttt{random} method, which returns a \ttt{Point} object with random $x$ and $y$ coordinates. We will use the \ttt{Random} class to generate a random radius and angle as a polar coordinate. Then, we will convert the polar coordinate to Cartesian coordinates. Let's also add a parameter that specifies the maximum radius.}
+\myexample{Let's design the static \ttt{random} method, which returns a \ttt{Point} object with random~$x$ and~$y$ coordinates. 
+We will use the \ttt{Random} class to generate a random radius and angle as a polar coordinate. 
+Then, we will convert the polar coordinate to Cartesian coordinates. 
+Let's also add a parameter that specifies a maximum radius.}
 
-Because the \ttt{random} method generates a random point, we cannot reasonably write a test that asserts the exact location of the point without prior knowledge of the random seed. Instead, we can write a test that asserts whether the point is within a certain radius of the origin. 
+Because the \ttt{random} method generates a random point, we cannot reasonably write a test that asserts the exact location of the point without prior knowledge of the random seed. 
+Instead, we can write a test that asserts whether the point is within a certain radius of the origin. 
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -306,9 +388,14 @@ class Point {
 }
 \end{lstlisting}
 
-We have seen static methods, but what about static variables? A static variable\index{static variable} is a variable that is associated with the class and not a specific instance thereof. Static variables are shared among all instances of a class.
+We have seen static methods, but what about static variables? 
+A \emph{static variable}\index{static variable} is a variable that is associated with the class and not a specific instance thereof. 
+Static variables are shared among all instances of a class.
 
-\myexample{Suppose we want to keep track of how many instances of \ttt{Point} have been instantiated. Since this is a property of the \ttt{Point} class rather than an instance of the class, we can declare a static variable \ttt{count} to keep track of the number of instances, which we increment inside the constructor. To remain consistent with our recurring theme of encapsulation, \ttt{count} will be declared as \ttt{private}, and we will write a static method \ttt{getCount} to retrieve the number of instances, which is invoked on the class.\footnote{It is also possible to invoke a static method on an instance of the class, but it is considered bad practice and unnecessary.} When testing, we need to be careful to only instantiate instances of \ttt{Point} when we are ready to check the status of \ttt{count}, since the static \ttt{count} variable is updated inside the constructor.}
+\myexample{Suppose that we want to count how many instances of \ttt{Point} have been instantiated in a running program.}
+Since counting instances is a property of the \ttt{Point} class, rather than an instance \emph{of} the class, we can declare a static variable \ttt{count} to keep track of the number of instances, which we increment inside the constructor. 
+To remain consistent with our recurring theme of encapsulation, \ttt{count} will be declared as \ttt{private}, and we will design a static method \ttt{getCount} to retrieve the number of instances, which is invoked on the class.\footnote{It is also possible to invoke a static method on an instance of the class, but it is considered bad practice and unnecessary.} 
+When testing, we need to be careful to only instantiate instances of \ttt{Point} when we are ready to check the status of \ttt{count}, since the static \ttt{count} variable is updated inside the constructor.
 
 %\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
