@@ -120,7 +120,9 @@ A better approach is to read data in chunks, rather than byte-by-byte, to reduce
 When the allocated buffer is full, the data within is flushed to either the source or destination. 
 By chunking the data in this manner, we reduce the number of times that the program interacts with the operating system, which consequently reduces the CPU overhead.
 To read from a stream using buffers, we use the \ttt{BufferedReader} class. Its constructor receives a \ttt{Reader} instance, which may be one of several classes. 
-For example, to read from a file, we provide a \ttt{FileReader} to the \ttt{BufferedReader} constructor. Wrapping a \ttt{FileReader} inside a \ttt{BufferedReader} allows the buffered reader to interplay (using its optimization techniques) with the file reader, which in turn interacts with the operating system. To output data using buffers, we use the analogous \ttt{BufferedWriter} class, which receives a \ttt{Writer} instance. 
+For example, to read from a file, we provide a \ttt{FileReader} to the \ttt{BufferedReader} constructor. 
+Wrapping a \ttt{FileReader} inside a \ttt{BufferedReader} allows the buffered reader to interplay (using its optimization techniques) with the file reader, which in turn interacts with the operating system. 
+To output data using buffers, we use the analogous \ttt{BufferedWriter} class, which receives a \ttt{Writer} instance. 
 
 \begin{figure}[tp]
   \small
@@ -174,7 +176,11 @@ class BufferedReaderWriterExample {
 }
 \end{lstlisting}
 
-The benefits of buffered I/O are not obvious to us as the programmers who use these classes. We can, however, directly compare the timed performance of buffered I/O to non-buffered I/O. The following code shows two implementations of reading the contents of a very large file and echoing them to another. We have two defined methods: \ttt{buffered} and \ttt{nonbuffered}, which utilize the \ttt{BufferedReader/Writer} and \ttt{FileInput/\-OutputStream} classes respectively. Upon testing, we see that the buffered variant takes around three seconds to finish, whereas the nonbuffered version took over four minutes!
+The benefits of buffered I/O are not obvious to us as the programmers who use these classes. 
+We can, however, directly compare the execution time of buffered I/O to non-buffered I/O operations. 
+The following code shows two implementations of reading the contents of a very large file and echoing them to another. 
+We have defined two methods: \ttt{buffered} and \ttt{nonbuffered}, which utilize the \ttt{BufferedReader/Writer} and \ttt{FileInput/\-OutputStream} classes respectively. 
+Upon testing, we see that the buffered variant takes around three seconds to finish, whereas the nonbuffered version took over four minutes!
 
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
@@ -201,7 +207,11 @@ class PerformanceExamples {
 }
 \end{lstlisting}  
 
-The classes that we have explored thus far are primarily for reading/writing either binary or text data. Perhaps we want to output values that are not strictly strings or raw bytes, e.g., integers, doubles, floats, and other primitives datatypes. To do so, we can instantiate a \ttt{PrintWriter} instance, which itself receives an instance of the \ttt{Writer} class. A concern for some programmers may be that we lose the benefits of buffered I/O, but this is not the case; the constructor for \ttt{PrintWriter} wraps the writer object that it receives in an instantiation of a \ttt{BufferedWriter} object. Therefore, we do not forgo any performance gains from buffered writing, while gaining the ability to write non-strictly-text data.
+The classes that we have explored thus far are primarily for reading/writing either binary or text data. 
+Perhaps we want to output values that are not strictly strings or raw bytes, e.g., integers, doubles, floats, and other primitives datatypes. 
+To do so, we can instantiate a \ttt{PrintWriter} instance, which itself receives an instance of the \ttt{Writer} class. 
+A concern for some programmers may be that we lose the performance benefits of buffered I/O, but this is not the case; the constructor for \ttt{PrintWriter} wraps the writer object that it receives in an instantiation of a \ttt{BufferedWriter} object. 
+Therefore, we do not forgo any performance gains from buffered writing, while gaining the ability to write non-strictly-text data.
 
 \begin{figure}[tp]
   \small
@@ -246,9 +256,21 @@ false
 This is a formatted string with & and 42 and 2.718282 and true
 \end{verbnobox}
 
-We now have methods for reading strings and raw bytes, as well as methods for outputting all primitives and formatted strings to data destinations. We still have one problem: how can we output the representation of an object? For example, take the \ttt{BigInteger} class; it has associated instance variables and fields that we also need to store. For this particular class, it might be tempting to store a stringified representation, but this is not an optimal solution because, what if a class has a field that itself is an object? We would need to recursively stringify the object, which is not a good idea. Instead, we can use the \ttt{ObjectOutputStream} and \ttt{ObjectInputStream} classes, which allow us to \emph{serialize} and \emph{deserialize} objects. Serialization is the process of converting an object into a stream of (transmittable) bytes, whereas deserialization is the opposite process. In summary, when we serialize objects, we save the object itself, alongside any relevant information about the object, e.g., its fields, instance variables, and so forth. Upon deserializing said object, we can restore the object to its original state, initializing its fields. Suppose, on the contrary,
+We now have methods for reading strings and raw bytes, as well as methods for outputting all primitives and formatted strings to data destinations.
+We still have one problem: how can we output the representation of an object? For example, take the \ttt{BigInteger} class; it has associated instance variables and fields that we also need to store. 
+For this particular class, it might be tempting to store a stringified representation, but this is not an optimal solution because, what if a class has a field that itself is an object? 
+We would need to recursively stringify the object, which is prone to mistakes and requires updating the ``stringification'' any time a field is added, removed, or altered. 
+Instead, we can use the \ttt{ObjectOutputStream} and \ttt{ObjectInputStream} classes, which \emph{serialize} and \emph{deserialize} objects respectively. 
+Serialization\index{serialization} is the process of converting an object into a stream of (transmittable) bytes, whereas deserialization is the opposite process. 
+In summary, when we serialize objects, we save the object itself, alongside any relevant information about the object, e.g., its fields, instance variables, and so forth. 
+Upon deserializing said object, we can restore the object to its original state, initializing its fields.
 
-\myexample{Let's use \ttt{ObjectInput/OutputStream} classes to serialize an object of type \ttt{Player}, which has a name, score, health, and array of top scores. To designate that an object can be serialized, it must implement the \ttt{Serializable} interface. This interface is a \emph{marker interface}\index{marker interface}, meaning that it has no methods to implement. Instead, it is a flag that tells the compiler that the class can be serialized. Our example will also demonstrate the idea that classes can contain other class definitions, which is useful for grouping related classes together. The \ttt{ObjectStreamExample} class defines the private and static \ttt{Player} class as described above. Should we open the \ttt{player.out} file, we see that it contains incomprehensible data; this is because the data is intended to be read only by a program.}
+\myexample{Let's use \ttt{ObjectInput/OutputStream} classes to serialize an object of type \ttt{Player}, which has a name, score, health, and array of top scores.} 
+To designate that an object can be serialized, it must implement the \ttt{Serializable} interface. 
+\ttt{Serializable} is a \emph{marker interface}\index{marker interface}, meaning that it has no methods to implement. 
+Instead, it is a ``flag,'' of sorts, that informs the compiler that the class can be serialized. 
+The \ttt{ObjectStreamExample} class defines the private and static \ttt{Player} class as described above. 
+Should we open the \ttt{player.out} file, we see that it contains incomprehensible data; the data within is intended to be read only by a program.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.Serializable;
@@ -280,7 +302,10 @@ class ObjectStreamExample {
 }
 \end{lstlisting}
 
-Suppose, on the contrary, that we store objects as strings in a file. This has two problems: first, as we said before, we would need to recursively serialize all compositional objects of the object that we are serializing. Second, we would need to write a parser to read the stringified object and reinitialize its fields. In essence, we have to reinvent worse versions of preexisting classes.
+Suppose, on the contrary, that we want to store objects as strings in a file. 
+This has two problems: first, as we said before, we would need to recursively serialize all compositional objects of the object that we are serializing. 
+Second, we would need to write a parser to read the stringified object and reinitialize its fields. 
+In essence, we have to reinvent worse versions of pre-existing classes.
 
 \begin{figure}[tp]
   \small
@@ -297,9 +322,13 @@ Suppose, on the contrary, that we store objects as strings in a file. This has t
 \label{fig:sccons}
 \end{figure}
 
-\myexample{In the first chapter we saw how to use the \ttt{Scanner} class to read from standard input. Indeed, standard input is a source of data input, but we can wrap any instance of \ttt{InputStream} or \ttt{File} inside a \ttt{Scanner} to take advantage of its helpful data-parsing methods. Let's design a method that reads a series of values that represent \ttt{Employee} data for a company. We just saw that we can take advantage of \ttt{Serializable} to do this for us, but it is helpful to see how we can also use a \ttt{Scanner} to solve a similar problem.}
+\myexample{In~\Cref{chapter-testingandjava}, we saw how to use the \ttt{Scanner} class to read from standard input.} 
+Indeed, standard input is a source of data input, but we can wrap any instance of \ttt{InputStream} or \ttt{File} inside a \ttt{Scanner} to take advantage of its helpful data-parsing methods. 
+Let's design a method that reads a series of values representing \ttt{Employee} data for a company. 
+We just saw that we can take advantage of \ttt{Serializable} to do this for us, but it is helpful to see how we can also use a \ttt{Scanner} to solve a similar problem.
 
-We will say that an \ttt{Employee} contains an employee identification number, a first name, a last name, a salary, and whether or not they are full-time staff. Each row in the file contains an \ttt{Employee} record.
+We will say that an \ttt{Employee} contains an employee identification number, a first name, a last name, a salary, and whether or not they are full-time staff. 
+Each row in the file contains an \ttt{Employee} record.
 
 \begin{lstlisting}[language=MyJava]
 class Employee {
@@ -327,7 +356,9 @@ class Employee {
 }
 \end{lstlisting}
 
-Our method will return a list of \ttt{Employee} instances that has been populated after reading the data from the file. In particular, the \ttt{nextLong}, \ttt{nextDouble}, \ttt{nextBoolean}, and \ttt{next} methods will be helpful. The \ttt{next} method, whose behavior is not obvious from the name, returns the next sequence of characters prior to a whitespace. 
+Our method returns a \ttt{List<Employee>} that has been populated after reading the data from the file. 
+In particular, the \ttt{nextLong}, \ttt{nextDouble}, \ttt{nextBoolean}, and \ttt{next} methods will be helpful. 
+The \ttt{next} method, whose behavior is not obvious from the name, returns the next sequence of characters prior to a whitespace. 
 
 To test, we will create a file containing the following contents:
 
@@ -392,7 +423,8 @@ class EmployeeScanner {
 }
 \end{lstlisting}
 
-At this point we have seen several methods and classes for reading data from different data sources. Let's now write a few more meaningful programs.
+At this point, we have seen several methods and classes for reading data from different data sources. 
+Let's now write a few more meaningful programs.
 
 \begin{figure}[tp]
   \small
@@ -428,7 +460,9 @@ At this point we have seen several methods and classes for reading data from dif
   \label{fig:scin}
 \end{figure}
 
-\myexample{Let's write a program that reads a file containing integers and outputs, to another file, the even integers. Because our input file has only integers, we can use the \ttt{Scanner} class for reading the data and \ttt{PrintWriter} to output those even integers. To make the program a bit more interesting, we will read the input file from the terminal arguments, and output the even integers to a file whose name is the same as the input file, but instead with the \ttt{.out} extension.}
+\myexample{Let's write a program that reads a file containing integers, then outputs (to another file) the even integers.} 
+Because our input file has only integers, we can use the \ttt{Scanner} class for reading the data and \ttt{PrintWriter} to output those even integers. 
+To make the program a bit more interesting, we will read the input file from the terminal arguments, and output the even integers to a file whose name is the same as the input file, but instead with the \ttt{.out} extension.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
@@ -460,14 +494,19 @@ class EvenIntegers {
 }
 \end{lstlisting}
 
-\myexample{Let's write a program that returns an array containing the number of lines, words, and characters (including whitespaces but excluding newlines) in a given file. The array indices correspond to those quantities respectively. To simplify the program, words will be considered strings as separated by spaces. For example, if the file contains the following contents:}
+\myexample{Let's write a program that returns an array containing the number of lines, words, and characters (including whitespaces but excluding newlines) in a given file.} 
+The array indices correspond to those quantities respectively. 
+To simplify the program, words will be considered strings as separated by spaces. 
+For example, if the file contains the following contents:
 
 \begin{verbnobox}[\small]
 This is a test file.
 It contains three lines.
 Here is the last line.
 \end{verbnobox}
-The returned array should be \ttt{[3, 14, 46]}. This way we can write JUnit tests to verify that our program works as intended.
+
+The returned array should be \ttt{[3, 14, 46]}. 
+We can write JUnit tests to verify that our program works as intended.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -515,11 +554,14 @@ class LineWordCharCounter {
 }
 \end{lstlisting}
 
-\myexample{Going further with terminal arguments, let's write a program that receives multiple file names from the terminal, and outputs a file with all of the data concatenated into one. We will throw an exception if the user passes in files that do not all share the same extension. As an example, should the user input}
+\myexample{Going further with terminal arguments, let's write a program that receives multiple file names from the terminal, and outputs a file with all of the data concatenated into one.} 
+We will throw an exception if the user passes in files that do not all share the same extension. As an example, should the user input the following:
+
 \begin{verbnobox}[\small]
 java ConcatenateFiles file1.txt file2.txt file3.txt output-file.txt
 \end{verbnobox}
-then the program should output a file \ttt{output-file.txt} that contains the contents of \ttt{file1.txt}, \ttt{file2.txt}, and \ttt{file3.txt} in that order. 
+
+Then the program should output a file \ttt{output-file.txt} that contains the contents of \ttt{file1.txt}, \ttt{file2.txt}, and \ttt{file3.txt}, in that order. 
 
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
@@ -596,7 +638,10 @@ class ConcatenateFiles {
 \section{Modern I/O Classes \& Methods}
 Aside from the aforementioned classes for working with files and I/O, Java's later versions provide methods and classes that achieve the same task as those that we might otherwise need to write several lines of code. 
 
-\myexample{To read the lines from a given file, we might open the file using a \ttt{BufferedReader} and \ttt{FileReader} object, read the values into some collection, e.g., a list, then process those lines accordingly. This gets repetitive, so it might be a good idea to write a method that does this for us, and is an exercise that we provide to the reader. Java 8 introduced two classes: \ttt{Files} and \ttt{Path} that work with files and paths respectively. Let's use a handy method from \ttt{Files}, namely \ttt{readAllLines}, to, as its name implies, read the lines from an input file. }
+\myexample{To read the lines from a given file, we might open the file using a \ttt{BufferedReader} and \ttt{FileReader} object, read the values into some collection, e.g., a list, then process those lines accordingly.} 
+Repeatedly writing these almost identical lines of code is repetitive, so it might be a good idea to write a method that does this for us, and is an exercise that we provide to the reader. 
+Java 8 introduced two classes: \ttt{Files} and \ttt{Path} that work with files and paths respectively. 
+Let's use a handy method from \ttt{Files}, namely \ttt{readAllLines} to, as its name implies, read the lines from an input file and store them in a \ttt{List<String>}.
 
 \begin{lstlisting}[language=MyJava]
 import java.nio.file.Files;
@@ -615,13 +660,25 @@ class ReadAllLines {
 }
 \end{lstlisting}
 
-We still need to catch an \ttt{IOException} because \ttt{readAllFiles} might throw one in the event of some I/O error. What may be slightly disappointing is the fact that we cannot wrap this in a try-with-resources block because \ttt{readAllLines} opens and closes the file it receives, resulting in what might appear to be less succinct code. Moreover, the method receives a \ttt{Path}, rather than a \ttt{String}, which we believe to be an attempt made by Java to prevent the programmer from needing to mess with strings and other input resources directly. 
+We still need to catch an \ttt{IOException} because \ttt{readAllFiles} might throw one in the event of some I/O error. 
+What may be slightly disappointing is the fact that we cannot wrap this in a try-with-resources block, because \ttt{readAllLines} opens and closes the file it receives, resulting in what might appear to be less succinct code. 
+Moreover, the method receives a \ttt{Path}, rather than a \ttt{String}, which we believe to be an attempt made by Java to prevent the programmer from needing to mess with strings and other input resources directly. 
 
-\myexample{Unfortunately, \ttt{readAllLines} is extremely memory-inefficient, requiring us to store a list of every line in the file. Of course, this seems self-explanatory; why would we not want this in the first place? Consider an extremely large dataset, where the input contains one billion rows. Storing this data directly into running memory is not a particularly viable option, at least at the time of writing this text. A solution is to process each line one at a time, similar to how we work with a \ttt{BufferedReader} instance. As the section title suggests, though, there is a better way that incorporates streams into the mix. The \ttt{Files} class provides the \ttt{lines} method, which returns a stream of the lines in the file. Therefore, appealing to the lazy nature of streams, if we never actually use the data from the stream, nothing happens at all. This is a meaningless exercise, so let's write a method that solves the \ttt{1BR} challenge: given a file of data points representing measurements of temperatures in differing locations, return an alphabetized string containing the location and, separated by an equals sign, the minimum, maximum, and average temperatures across all data points for that location.}
+\myexample{Unfortunately, \ttt{readAllLines} is extremely memory-inefficient, requiring us to store a list of every line in the file.} 
+Consider an extremely large dataset, where the input contains one billion rows. Storing this data directly into running memory is not a particularly viable option, at least at the time of writing this text. 
+A solution is to process each line one at a time, similar to how we work with a \ttt{BufferedReader} instance. 
+As the section title suggests, though, there is a better way that incorporates streams into the mix. 
+The \ttt{Files} class provides the \ttt{lines} method, which returns a stream of the lines in the file. 
+Therefore, appealing to the lazy nature of streams, if we never actually use the data from the stream, nothing happens at all. 
+This is a meaningless exercise, so let's write a method that solves the \ttt{1BR} challenge: given a file of data points representing measurements of temperatures in differing locations, return an alphabetized string containing the location and, separated by an equals sign, the minimum, maximum, and average temperatures across all data points for that location~\Citep{1br}.
 
-To start this problem, let's consider our options: we have one billion rows of text in the following format: \ttt{"LOCATION;TEMP"}, so storing this in direct memory is a challenge that we will not overcome. Instead, let's create a \ttt{Map} that maps location identifiers to \ttt{Measurement} objects. A \ttt{Measurement} stores a number of occurrences, its minimum, maximum, and total-accrued temperature. Each line we read will either update an existing \ttt{Measurement} in the map or insert a new key/value pair.
+To start the exercise, let's consider our options: we have one billion rows of text in the following format: \ttt{"LOCATION;TEMP"}, so storing this in direct memory is a challenge that we will not overcome. 
+Instead, let's create a \ttt{Map} that maps location identifiers to \ttt{Measurement} objects. 
+A \ttt{Measurement} stores a number of occurrences, its minimum, maximum, and total-accrued temperature. 
+Each line we read either updates an existing \ttt{Measurement} in the map or inserts a new key/value pair.
 
-To start, let's design the skeleton for our method, which we will name \ttt{computeTemperatures}, as well as the \ttt{Measurement} private class. Moreover, when instantiating a new \ttt{Measurement} instance, its current minimum, maximum, and total are all equal to the value on the current line.
+To start, let's design the skeleton for our method, which we will name \ttt{computeTemperatures}, as well as the \ttt{Measurement} private class. 
+Moreover, when instantiating a new \ttt{Measurement} instance, its current minimum, maximum, and total are all equal to the value on the current line.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
@@ -669,9 +726,15 @@ class TemperatureComputer {
 }
 \end{lstlisting}
 
-As stated, using a map is the appropriate data structure, so let's instantiate a \ttt{HashMap} due to its quick lookup times. Then, we declare, inside a try-with-resources, a \ttt{Stream<String>}, returned by the \ttt{lines} method. Once either the stream is fully consumed, the stream is closed, or the program execution finishes the try block, the file is also closed. From the stream, we could use a traditional for-each loop, but let's use stream operations instead. For every line $l$, we want to split it on the semicolon, retrieve the location and temperature, then update the map as necessary. Because we need to update the state of an object if it exists in the map, we will utilize the \ttt{putIfAbsent} method, which returns the associating \ttt{Measurement} if the key-to-put already exists.
+As stated, using a map is the appropriate data structure, so let's instantiate a \ttt{HashMap} due to its quick lookup times. 
+Then, we declare, inside a try-with-resources, a \ttt{Stream<String>}, returned by the \ttt{lines} method. 
+Once either the stream is fully consumed, the stream is closed, or the program execution finishes the try block, then the file is also closed. 
+From the stream, we could use a traditional for-each loop, but let's use stream operations instead. 
+For every line, we want to split it on the semicolon, retrieve the location and temperature, then update the map as necessary. 
+Because we need to update the state of an object if it exists in the map, we will utilize the \ttt{putIfAbsent} method, which returns the associating \ttt{Measurement} if the key-to-put already exists.
 
-Lastly, we must conjoin the sorted pairs in the map with commas, which we can do via the \ttt{sorted()} and \ttt{Collectors.joining()} methods. In addition to this, we added a \ttt{toString} method to \ttt{Measurement} that returns a formatted string containing the minimum, average, and maximum temperatures floated to one decimal. Due to how trivial this is, we omit it in the listing.
+Lastly, we must conjoin the sorted pairs in the map with commas, which we can do via the \ttt{sorted()} and \ttt{Collectors.joining()} methods. 
+In addition to this, we added a \ttt{toString} method to \ttt{Measurement} that returns a formatted string containing the minimum, average, and maximum temperatures floated to one decimal.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
@@ -713,13 +776,25 @@ class TemperatureComputer {
 }
 \end{lstlisting}
 
-With inputs as large as what we assume them to be, we must make reasonable considerations with our choice of data structure. We could, theoretically, use a \ttt{TreeMap} and have the program autosort the measurement map pairs, but this is a performance penalty that is greater than using the \ttt{sorted} method as provided by the stream API over the map keys. In our tests, using a \ttt{TreeMap} amounted to a forty second performance penalty.
+With inputs as large as what we assume them to be, we must make reasonable considerations with our choice of data structure. 
+We could, theoretically, use a \ttt{TreeMap} and have the program autosort the measurement map pairs, but this is a performance penalty that is greater than using the \ttt{sorted} method as provided by the stream API over the map keys. 
+In our tests, using a \ttt{TreeMap} amounted to a forty second performance penalty.
 
-\myexample{Our last example of working with File I/O is a simple Sudoku solver. \emph{Sudoku} is a game where the objective is to fill each row, column, and sub-grid with exactly one of possible entries, generally from $1$ to $9$. There are nine $3\times{3}$ subgrids that form a square, which results in a $9\times{9}$ grid.}
+\myexample{Our last example of working with File I/O is a simple Sudoku solver.} 
+\emph{Sudoku} is a game where the objective is to fill each row, column, and sub-grid with exactly one of possible entries, generally from~$1$ to~$9$. 
+There are nine~$3\times{3}$ subgrids that form a square, which results in a~$9\times{9}$ grid.
 
-The most straightforward algorithm to solve a Sudoku puzzle is via a backtracking algorithm. That is, we try to place a number in a cell and, if it leads to success, we continue with the solution. Otherwise, we undo the placement and try again. We will use File I/O to read in a partial Sudoku puzzle and to write the solution out to another file.
+The most straightforward way to mechanically solve a Sudoku puzzle is via a backtracking algorithm. 
+That is, we try to place a number in a cell and, if it leads to success, we continue with the solution. 
+Otherwise, we undo the placement and try again.
+We will use I/O to read in a partial Sudoku puzzle and to write the solution out to another file.
 
-Let's write the \ttt{SudokuSolver} class, whose constructor receives a file that represents a partial Sudoku puzzle. The input specification contains nine rows and nine columns, with dots to denote a missing number. From here, we will design the \ttt{boolean solve()} method, which returns whether or not a solution exists. If there is one, it is stored in an instance variable of the class. We will also design the \ttt{void output(String fileName)} method to output the solution to a file. If there is no solution, the program will throw an \ttt{IllegalStateException} to indicate a failure.
+Let's write the \ttt{SudokuSolver} class, whose constructor receives a file that represents a partial Sudoku puzzle. 
+The input specification contains nine rows and nine columns, with dots to denote a missing number. 
+From here, we will design the \ttt{boolean solve()} method, which returns whether or not a solution exists. 
+If there is one, it is stored in an instance variable of the class. 
+We will also design the \ttt{void output(String fileName)} method to output the solution to a file. 
+If there is no possible solution, the program will throw an \ttt{IllegalStateException} to indicate a failure.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
@@ -760,14 +835,21 @@ class SudokuSolver {
 }
 \end{lstlisting}
 
-Our \ttt{solve} method jump-starts a backtracking algorithm that attempts to solve the puzzle using recursion. Let's design a private helper method to receive the row $r$ and column $c$ of the cell to fill. If $r$ and $c$ are both equal to $N$, then we have reached the end of the board and therefore have a solution. Otherwise, we need to find the next empty cell to fill. This is a three-step process:
+Our \ttt{solve} method jump-starts a backtracking algorithm that attempts to solve the puzzle using recursion. 
+Let's design a private helper method to receive the row~$r$ and column~$c$ of the cell to fill. 
+If~$r$ and~$c$ are both equal to~$N$, then we have reached the end of the board and therefore have a solution. 
+Otherwise, we need to find the next empty cell to fill. 
+This is a three-step process:
+
 \begin{enumerate}[label=(\roman*)]
-  \item First, if the $y$ coordinate is equal to $N$, then we have reached the end of the row and need to move onto the next.
+  \item First, if the~$y$ coordinate is equal to~$N$, then we have reached the end of the row and need to move onto the next.
   \item If the cell is not empty, we move onto the next cell.
   \item If the cell is empty, we try to place a number in the cell. If the number is valid, we continue with the solution. Otherwise, we undo the placement and try again.
 \end{enumerate}
 
-What does it mean for a number to be valid? A number is valid in its placement if it does not already exist in the row, column, or subgrid. Let's write another private helper method that, when given a cell at row $r$ and column $c$, and a number $n$, determines whether or not the number is valid.
+What does it mean for a number to be valid? 
+A number is valid in its placement if it does not already exist in the row, column, or subgrid. 
+Let's write another private helper method that, when given a cell at row~$r$ and column~$c$, and a number~$n$, determines whether or not the number is valid.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
@@ -863,7 +945,9 @@ class SudokuSolver {
 }
 \end{lstlisting}
 
-Finally, the \ttt{output} method is straightforward. We use a \ttt{PrintWriter} to write the solution to a file. If there is no solution, meaning the solution instance variable is set to \ttt{null}, we throw an \ttt{IllegalStateException}.
+Finally, the \ttt{output} method is straightforward. 
+We use a \ttt{PrintWriter} to write the solution to a file. 
+If there is no solution (meaning the solution instance variable is set to \ttt{null}), then we throw an \ttt{IllegalStateException}.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;

@@ -982,8 +982,8 @@ The properties of a hash table (and the hashing function) guarantee very fast el
 A straightforward hashing function is to modulo the hash code of the object by the capacity of the table. 
 This way, every element is guaranteed a valid index into the table. 
 The problem with this approach is that multiple objects may hash to the same ``bucket.'' 
-For example, if the hash code of some object $o_1$ is $100$, and the capacity of the table is $40$, then we would store $o_1$ at index $100 \text{ mod } 40 = 2$. 
-But, consider another object $o_2$ with the hash code $1000$, which we store at index $1000 \text{ mod } 40 = 2$. 
+For example, if the hash code of some object~$o_1$ is~$100$, and the capacity of the table is $40$, then we would store $o_1$ at index $100 \text{ mod } 40 = 2$. 
+But, consider another object~$o_2$ with the hash code~$1000$, which we store at index $1000 \text{ mod } 40 = 2$. 
 We cannot store multiple objects at the same index, so we need to perform \emph{collision resolution}\index{collision resolution}. 
 A collision, as we just demonstrated, occurs when two objects hash to the same index. 
 
