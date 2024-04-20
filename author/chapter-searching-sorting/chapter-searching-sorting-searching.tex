@@ -1,14 +1,27 @@
 \section{Searching}
 
 \subsection{Linear Search}
-The \emph{linear search} algorithm is a sequential searching algorithm. That is, we check element-by-element to determine if the element we are looking for is in the list. If the element is in the list, we return the index of the element. If the element is not in the list, we (generally) return $-1$. Linear search is nonsensical for non-constant-time access data structures, such as linked lists, because the whole point of linear search is to retrieve an element at its index quickly, then determine if it is the element we are searching. 
+The \emph{linear search} algorithm is a sequential searching algorithm. 
+That is, we check element-by-element to determine if the element we are looking for is in the list. 
+If the element is in the list, we return the index of the element. 
+If the element is not in the list, we (generally) return~$-1$, because~$-1$ is not a valid (list) index in Java. 
+Linear search is nonsensical for non-constant-time access data structures, such as linked lists, because the whole point of linear search is to retrieve an element at its index quickly, then determine if it is the element we are searching. 
 
 \subsubsection*{Standard Recursive Linear Search}
-We might think that a standard recursive linear search works, and indeed it is possible to write such an algorithm, but in Java it is almost nonsensical to do so. Consider the possible base cases: if the list is empty, what do we return? As described earlier, we might return $-1$, but think about what happens when the recursive calls unwind. If we add one to the result of the recursive calls when searching, then if the element is not in the list, the returned value will always be the length of the list minus one. Should we find the desired element, we might return zero, which works as expected. It's only in the cases when we do not find the element that we run into trouble. There are two possible solutions: throw an exception if the element is not present, or simply do not use a standard recursive linear search.\footnote{Some languages, e.g., Scheme, use \emph{continuations} to represent ``jump-out'' states; allowing the program to forgo unwinding the call stack when returning $-1$. Since Java does not support continuations by defauilt, we cannot use this methodology.} We might also think to use \ttt{Optional}, but this is not a good idea either, since we would need to check the result of the recursive calls, which detracts from the simplicity of the algorithm.
+We might think that a standard recursive linear search works, and indeed it is possible to write such an algorithm, but in Java it is almost nonsensical to do so. 
+Consider the possible base cases: if the list is empty, what do we return? 
+As described earlier, we might choose to return~$-1$, but think about what happens when the recursive calls unwind. 
+If we add one to the result of the recursive calls when searching, then if the element is not in the list, the returned value will always be the length of the list minus one. 
+Should we find the desired element, we might return zero, which works as expected. 
+It's only in the cases when we do not find the element that we run into trouble. There are two possible solutions: throw an exception if the element is not present, which subverts program control to the exception handler, or simply do not use a standard recursive linear search.\footnote{Some languages, e.g., Scheme, use \emph{continuations} to represent ``jump-out'' states; allowing the program to forgo unwinding the call stack when returning $-1$. Since Java does not support continuations by defauilt, we cannot use this methodology.} 
+We might also think to use \ttt{Optional}, but this is not a good idea either, since we would need to check the result of the recursive calls, which detracts from the simplicity of the algorithm.
 
 Another reason why the standard-recursive version is suboptimal is because we have no way of passing the index-to-check; we instead must create sublists of the original list, which is horribly inefficient (at least in Java).
 
-First, let's create an interface for designing linear search algorithms. Recall when we stated that the data structure should guarantee constant-access times. The \ttt{List} interface does not provide this promise, so we will instead opt for a generic \ttt{AbstractList<V>}, where \ttt{V} is any comparable type. The method provided by the interface should receive the list and the element to search.
+First, let's create an interface for designing linear search algorithms. 
+Recall when we stated that the data structure should guarantee constant-access times. 
+The \ttt{List} interface does not provide this promise, so we will instead opt for a generic \ttt{AbstractList<V>}, where \ttt{V} is any comparable type, which guarantees that any list type that extends \ttt{AbstractList} guarantees constant-access time for elements. 
+The method provided by the interface should receive the list and the element to search.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -106,7 +119,9 @@ As demonstrated, we must handle the no-element case as an exception, which would
 
 \subsubsection*{Tail Recursive Linear Search}
 
-The tail recursive linear search is much more intuitive to understand compared to its standard recursive counterpart---we use an accumulator to keep track of the current index, and if we reach the end of the list, a $-1$ is returned. If we find the element $v$, we return the index, which does not unwind the stack since there is no work remaining after each tail call, making this extremely efficient (again, at least in comparison to the standard recursive version).
+The tail recursive linear search is much more intuitive to understand compared to its standard recursive counterpart. 
+We use an accumulator to keep track of the current index, and if we reach the end of the list, then~$-1$ is returned. 
+If we find the element~$v$, we return its index, which does not unwind the stack, since there is no work remaining after each tail call, making this extremely efficient (again, at least in comparison to the standard recursive version).
 
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
@@ -129,7 +144,9 @@ class TailRecursiveLinearSearch<V extends Comparable<V>>
 
 \subsubsection*{Loop Linear Search}
 
-Even though the tail recursive linear search is relatively straightforward to understand, almost all linear search implementations prefer the iterative version, or one that uses a loop, which we will now show. As an exercise, the readers should go through the process described in Chapter~\ref{chapter-crl} to convert the tail recursive method into an iterative method. We do not do so here because we know the upper-bound of a linear search, so even though a \ttt{while} loop is correct, it offers no advantages over a \ttt{for} loop.
+Even though the tail recursive linear search is relatively straightforward to understand, almost all linear search implementations prefer the iterative version, or one that uses a loop, which we will now show. 
+As an exercise, the readers should go through the process described in Chapter~\ref{chapter-crl} to convert the tail recursive method into an iterative method. 
+We do not do so here because we know the upper-bound of a linear search, so even though a \ttt{while} loop works, it offers no advantages over a \ttt{for} loop.
 
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
@@ -151,11 +168,24 @@ class LoopLinearSearch<V extends Comparable<V>>
 
 \subsection{Binary Search}
 
-Binary search is the alternative to linear search, and fortunately proves to be significantly faster, but with a catch: the data must be sorted in order to correctly use a binary searching algorithm. Here's how it works: we check the middle element $e$ of the list against our target value $k$ and, if they are equal, we return the middle element index. If $e < k$, we know that $k$ is greater than all elements to the left of $e$ because the data is in sorted order. Therefore, we can check exclusively on the right-half. This idea applies to the left-half as well; if $e > k$, then $k$ must be less than all elements to the right of the middle. 
+Binary search is the alternative to linear search, and fortunately proves to be significantly faster, but with a catch: the data must be sorted in order to correctly use a binary searching algorithm. 
+Here's how it works: we compare the middle element~$e$ of the list against our target value~$k$ and if they are equal, we return the middle element index. 
+If~$e < k$, we know that~$k$ is greater than all elements to the left of~$e$ because the data is in sorted order. 
+Therefore, we can search exclusively on the right-half. 
+Without loss of generality, this idea applies to the left-half as well; if~$e > k$, then~$k$ must be less than all elements to the right of the middle. 
 
-Binary search makes even less sense to design as a standard-recursive algorithm because of the fact that we have to search separate partitions of the list. So, we will only design tail-recursive and loop versions. The tail-recursive variant is extremely simple and directly follows from the English description of the algorithm: we keep track of the indices to search between $l$ and $h$, assuming $l \leq h$. Given this assumption we compute the middle element index as $(l + h) / 2$, and recursively update $l$/$h$ as necessary to change the bounds of the search ``zone.'' If $l > h$, the bounds have crossed, meaning the search element does not exist in the list. 
+Binary search makes even less sense to design as a standard-recursive algorithm because of the fact that we have to search separate partitions of the list. 
+So, we will only design tail-recursive and loop versions. 
+The tail-recursive variant is extremely simple and directly follows from the English description of the algorithm: we keep track of the indices to search between~$l$ and~$h$, assuming~$l \leq h$. 
+Given this assumption we compute the middle element index as~$(l + h) / 2$, and recursively update~$l$/$h$ as necessary to change the bounds of the search ``zone.'' 
+If~$l > h$, the bounds have crossed, meaning the search element does not exist in the list. 
 
-When we state that binary search is faster than linear search, this is of course relative to the problem context; if we want to search an unsorted list exactly once, then taking the time to sort the data, then run binary search, it is not optimal. Repeatedly searching for elements in a list containing many values should be done with first sorting the list, then binary searching. As an example, if we were to use linear search on a sorted list containing half a billion elements for an element that is not present, we must check all half a billion values. Compare this to binary search, which is logarithmic in the number of elements. So, taking the base two logarithm of our input size places an upper-bound of twenty-nine comparisons (after rounding). To say that this is a substantial performance increase is underselling it to the max.
+When we state that binary search is faster than linear search, this is of course relative to the problem context; if we want to search an unsorted list exactly once, then taking the time to sort the data, then run binary search, it is not optimal. 
+Repeatedly searching for elements in a list containing many values should be done by first sorting the list, then repeatedly binary searching. 
+As an example, if we were to use linear search on a sorted list containing half a billion elements for an element that is not present, we must check all half a billion values. 
+Binary search, on the other hand, is logarithmic in the number of elements. 
+So, taking the base two logarithm of our input size places an upper-bound of~$30$ comparisons (after rounding). 
+To say that binary search is a substantial performance increase over linear search is underselling its potential to the extreme.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -267,9 +297,17 @@ class LoopBinarySearch<V extends Comparable<V>>
 \end{lstlisting}
 
 \subsection{Using Comparators for Searching}
-Recall the use of comparators from~\ref{chapter-arrays-collections} when discussing priority queues. Our implementations of linear and binary search, at the moment, require the generic class we parameterize over to be \ttt{Comparable}, which can be slightly limiting on the types of classes we can search through, because it is not feasible to modify a class that already exists in the Java library. Plus, having to go back and write a definition of \ttt{compareTo} in a Java source file is cumbersome. The solution to this problem is to define a custom \ttt{Comparator} object and pass that to the search methods. Namely, we can add a second method to the binary search generic interface that receives an instance of \ttt{Comparator}, which is then internally utilized by our search algorithms. 
+Recall the use of comparators from~\ref{chapter-arrays-collections} when discussing priority queues. 
+Our implementations of linear and binary search, at the moment, require the generic class that we parameterize over to be \ttt{Comparable}, which can be slightly limiting on the types of classes we can search over because it is not feasible to modify a class that already exists in the Java library. 
+Plus, having to go back and write a definition of \ttt{compareTo} in a Java source file is cumbersome, and is outright irresponsible to amend if the class already contains a definition of \ttt{compareTo}.
+The solution to this problem is to define a custom \ttt{Comparator} object and pass that to the search methods. 
 
-\myexample{Let's amend our definition of \ttt{IBinarySearch} to also include a method that receives the \ttt{Comparator} object. Note that we need to specify in the definition of the comparator that the type it receives should be a superclass of the list element type. Therefore we will use the dual to \ttt{extends}: namely \ttt{super}, in the parameterized type. Note that we do not necessarily care about the type variable of this element, so we can use a wildcard `\ttt{?}' instead of using another letter from the alphabet. With this modification, however, it no longer makes as much sense to quantify that \ttt{V} extends \ttt{Comparable<V>}, because the latter method does not require its type to implement that interface. So, let's remove it from the interface signature and move it down to the type quantification.}
+\myexample{Let's amend our definition of \ttt{IBinarySearch} to also include a method that receives the \ttt{Comparator} object.} 
+Note that we need to specify in the definition of the comparator that the type it receives should be a superclass of the list element type. 
+Therefore, we will use the dual to \ttt{extends}: namely \ttt{super}, in the parameterized type.
+We do not necessarily care about the type variable of this element, so we can use a wildcard `\ttt{?}' instead of another random letter from the alphabet. 
+With this modification, however, it no longer makes as much sense to quantify that \ttt{V} extends \ttt{Comparable<V>}, because the latter method does not require its type to implement that interface. 
+So, let's remove it from the interface signature and move it down to the type quantification.
 
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
@@ -284,7 +322,10 @@ interface IBinarySearch {
 }
 \end{lstlisting}
 
-Now, of course, we do not want to have to rewrite the entire definition of \ttt{binarySearch} just to make use of a different comparator, and indeed, we do not have to do so. All we must do is move the logic of the search into the version that receives a comparator and update the one that operates over comparable elements. This means that we need to instantiate a \ttt{Comparator} that uses the \ttt{compareTo} method from the elements, which is trivial to do via a lambda expression. We also must change the definition from using \ttt{compareTo}, which comes from \ttt{Comparable} to use \ttt{compare} from the \ttt{c} object.
+Now, we do not want to have to rewrite the entire definition of \ttt{binarySearch} just to make use of a different comparator, and indeed, we do not have to do so. 
+All we must do is move the logic of the search into the version that receives a comparator and update the other one that operates over comparable elements. 
+This means that we need to instantiate a \ttt{Comparator} that uses the \ttt{compareTo} method from the elements, which is trivial to do via a lambda expression. 
+We also must change the definition from using \ttt{compareTo}, which comes from \ttt{Comparable} to use \ttt{compare} from the \ttt{c} object.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -348,4 +389,5 @@ class TailRecursiveBinarySearch implements IBinarySearch {
 }
 \end{lstlisting}
 
-We leave changing the loop variant to use comparators as an exercise. It does not make sense to update \ttt{ILinearSearch} because linear search uses \ttt{equals} for comparing objects rather than \ttt{.compareTo} or \ttt{.compare}.
+We leave changing the loop variant to use comparators as an exercise. 
+It does not make sense to update \ttt{ILinearSearch} because linear search uses \ttt{equals} for comparing objects, rather than \ttt{.compareTo} or \ttt{.compare}, since directionality of the comparison is not necessary for linear search.
