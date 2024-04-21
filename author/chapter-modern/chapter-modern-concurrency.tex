@@ -682,9 +682,139 @@ Consumed: 4
 Consumed: 5
 \end{verbnobox}
 
+\myexample{Suppose that we have a very large collection of files, and we want to count the number of occurrences of a specific word in all of them.}
+The standard approach would be to read in each file, then count the number of occurrences of the word. 
+Let's design the \ttt{countWordInFiles} method that, when given a word to search for and a directory, returns a \ttt{Map<String, Integer>} of file names to the number of occurrences of the word in each file.
+Java provides the \ttt{Files.walk} method, which returns a stream of all paths in a directory, including subdirectories.
+We can leverage \ttt{walk} to read in the \ttt{.txt} files in a directory, then process each file sequentially to count the number of occurrences of the given word.
+We will also design the \ttt{process} method that reads in a file and counts the number of occurrences of a word.\footnote{In the code listing, the \ttt{process} method reads in the file as a stream of lines, then splits each line into space-separated tokens using the \ttt{flatMap} method. The \ttt{flatMap} method is used to flatten the stream of streams into a single stream of words.}
+These occurrences are added to a map that is passed as a parameter.
+So, to recap, we read in all \ttt{.txt} files in a directory, then process each file to count the number of occurrences of a word, storing the results in a map.
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Map;
+
+interface IFileSearcher {
+
+  /**
+   * Count the number of occurrences of the word in all .txt
+   * files in the given directory. The word is case-insensitive.
+   * Different implementations of the method may use different
+   * strategies to count the occurrences.
+   * @param word - the word to count.
+   * @param dir - the directory to search.
+   * @return a map from file names to the number of occurrences.
+   */
+  Map<String, Integer> countWordInFiles(String word, String dir);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Stream;
+
+class StandardFileSearcher implements IFileSearcher {
+
+  @Override
+  public Map<String, Integer> countWordInFiles(String word,
+                                               String dir) {
+    // Find all .txt files in the given directory.
+    try (Stream<Path> paths = Files.walk(Path.of(dir))) {
+      List<String> files = paths.filter(Files::isRegularFile)
+                                .map(Path::toString)
+                                .filter(f -> f.endsWith(".txt"))
+                                .toList();
+
+      // Count the number of occurrences of the word in each file.
+      Map<String, Integer> M = new TreeMap<>();
+      files.forEach(f -> process(f, word, M));
+      return M;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * Count the number of occurrences of the word in the given file.
+   * @param file - the file to process.
+   * @param word - the word to count.
+   * @param M - the map to store the count.
+   */
+  static void process(String file, String word, Map<String, Integer> M) {
+    try (Stream<String> lines = Files.lines(Path.of(file))) {
+      Stream<String> words = lines.flatMap(l -> Stream.of(l.split(" ")));
+      M.put(file, (int) words.filter(w -> w.equalsIgnoreCase(word))
+                             .count());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+}
+\end{lstlisting}
+
+Testing the program with the word ``the'' and a directory of over~$3,000$ \ttt{.txt} files, we find that the program runs in about~$12$ seconds.\footnote{This statistic was measured on a ThinkPad X1 Carbon Gen 11.}
+Depending on how many files there are, and how large they are, the ``standard'' algorithm could take even longer to finish.
+We can speed up the process by using multiple threads to read in the files concurrently.
+The idea is to have a \emph{pool} of threads\index{thread pool}, each of which reads in a file and counts the number of occurrences of the word.
+When a thread finishes with a ``task,'', it moves on to the next file in the queue, if any remain.
+We can use Java's \ttt{ExecutorService} to manage the pool of threads, and a sychronized \ttt{LinkedBlockingQueue} to store the files that need to be processed.
+We want to utilize as many threads as the runtime allows, so we can call \ttt{Runtime.getRuntime().availableProcessors()} to determine the number of threads that we should pass to the \ttt{Executors.newFixedThreadPool} method.
+The \ttt{process} method does not change between the implementations, so we omit it from the code listing.
+
+\begin{lstlisting}[language=MyJava]
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+class MultithreadedFileSearcher implements IFileSearcher {
+  // ... other methods not shown.
+
+  @Override
+  public Map<String, Integer> countWordInFiles(String word,
+                                               String dir) {
+    // Find all .txt files in the given directory.
+    try (Stream<Path> paths = Files.walk(Path.of(dir))) {
+      Queue<String> files = paths.filter(Files::isRegularFile)
+                                 .map(Path::toString)
+                                 .filter(f -> f.endsWith(".txt"))
+                                 .collect(Collectors.toCollection
+                                    (LinkedBlockingQueue::new));
+
+      // Count the number of occurrences of the word in each file.
+      int cores = Runtime.getRuntime().availableProcessors();
+      ExecutorService es = Executors.newFixedThreadPool(cores);
+      Map<String, Integer> M = new ConcurrentSkipListMap<>();
+      files.forEach(f -> es.execute(() -> process(f, word, M)));
+      // Block until all tasks are complete.
+      es.shutdown();
+      try {
+        boolean term = es.awaitTermination(1, TimeUnit.MINUTES);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+      return M;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+}
+\end{lstlisting}
+
+Rerunning the program with the same input, we find that the program finishes in less than~$3$ seconds, which is a significant improvement over the single-threaded version.
+
 \subsection{Network Programming}
 
-Computers that communicate with one another is not a revolutionary idea, but being able to write programs that act as \emph{clients} and \emph{servers} is certainly cool. 
+Computers communicating with one another is not a revolutionary concept, but being able to write programs that act as \emph{clients} and \emph{servers} is certainly cool. 
 A server\index{server} is a program that listens for incoming connections over a network and processes them accordingly. 
 Clients connect to servers to do different things, e.g., receive information from a server, talk to other connected clients, and so on. 
 In this section, we will demonstrate Java's networking/socket API and how to write a few programs that incorporate a server.
@@ -802,7 +932,7 @@ Clients can connect to the server and send messages to each other.
 The server will be multithreaded so that it can simultaneously serve clients. 
 First, we need to decide on a protocol for communication between the server and the clients. 
 For this example, to minimize the number of features necessary to convey the important ideas, we will only allow the user to log into the ``room,'' type messages to all users in the room, or to disconnect via the \ttt{\textbackslash{quit}} command. 
-The server houses a \emph{thread pool} that spins up a thread to communicate with a connected client. 
+The server houses a thread pool\index{thread pool} that spins up a thread to communicate with a connected client. 
 Fortunately for us, because we are in Java, we have access to synchronized data structures such as \ttt{Vector}. 
 Therefore, we do not need to manually insert locks into a data structure for storing those connected clients. 
 After a server receives a client, as we stated, we dedicate a thread to that user, then resume listening for more clients.
@@ -859,9 +989,10 @@ class Server {
   private boolean running;
 
   Server(int port) {
+    int cores = Runtime.getRuntime().availableProcessors();
     this.running = true;
     this.PORT = port;
-    this.THREAD_POOL = Executors.newCachedThreadPool();
+    this.THREAD_POOL = Executors.newFixedThreadPool(cores);
     this.CLIENTS = new Vector<>();
     this.TASKS = new LinkedBlockingQueue<>();
     this.THREAD_POOL.execute(new TaskHandler(this));

@@ -1,17 +1,27 @@
 \section{Design Patterns}
 
-Part of the reason that we have spent so much time discussing object-oriented design is because it is a fundamental aspect of software engineering. In particular, we have discussed the importance of designing classes that are cohesive, loosely coupled, and adhere to the single responsibility principle. We have also discussed the importance of designing classes that are extensible, and how to do so through the use of inheritance and polymorphism. As software engineers, we are responsible for designing and implementing software that is scalable and maintainable. Scalable software does not explode in complexity when adding new features/functionality, or as the user-base grows. Maintainable software, on the other hand, is simple to understand and make incremental changes and fixes as time passes. 
+Part of the reason that we have spent so much time discussing object-oriented design is because it is a fundamental aspect of software engineering. 
+In particular, we have talked about the importance of designing classes that are cohesive, loosely coupled, and adhere to the single responsibility principle. 
+We have also discussed the importance of designing classes that are extensible, and how to do so through the use of inheritance and polymorphism. 
+As software engineers, we are responsible for designing and implementing software that is scalable and maintainable. 
+Scalable software does not explode in complexity when adding new features/functionality, or as the user-base grows. 
+Maintainable software, on the other hand, is simple to understand and make incremental changes and fixes as time passes. 
 
-In this section we will discuss several \emph{design patterns}\index{design patterns}, which are common solutions to specific problems that arise largely in the context of object-oriented design. Design patterns are, of course, not specific to Java and can be implemented in any reasonable object-oriented language. 
+In this section, we will discuss several \emph{design patterns}\index{design patterns}, which are common solutions to specific problems that arise largely in the context of object-oriented design. 
+Design patterns are, of course, not specific to Java and can be implemented in any reasonable object-oriented language. 
 
 \subsection{Command}
 
-The \emph{command}\index{command pattern} pattern is a simple pattern that encapsulates a request, of sorts, to some type of handler. The handler knows nothing about the request itself, only that the handler acts as a dispatch for invoking the request.
+The \emph{command}\index{command pattern} pattern is a simple pattern that encapsulates a request, of sorts, to some type of handler. 
+The handler knows nothing about the request itself, only that the handler acts as a dispatch for invoking the request.
 
-\myexample{Suppose that we're writing a game that involves moving a player around an environment. We want to write a class that handles moving the player, but remains independent of the player implementation. First, we will say that the player executes some type of \ttt{Command}, which is an interface containing a sole \ttt{execute} method. Then, we will write a \ttt{Player} class containing \ttt{move} and \ttt{jump} methods, where the former increments their $x$ coordinate and jump increments their $y$ coordinate, starting from the origin.}
+\myexample{Suppose that we're writing a game that involves moving a player around an environment.} 
+We want to design a class that handles moving the player, but remains independent of the player implementation. 
+First, we will say that the player executes some type of \ttt{ICommand}, which is an interface containing a sole \ttt{execute} method. 
+Then, we will design the \ttt{Player} class containing \ttt{move} and \ttt{jump} methods, where the former increments their~$x$ coordinate and jump increments their~$y$ coordinate, starting from the origin.
 
 \begin{lstlisting}[language=MyJava]
-interface Command {
+interface ICommand {
 
   void execute();
 }
@@ -29,10 +39,11 @@ class Player {
 }
 \end{lstlisting}
 
-Now, we will write two subtypes of \ttt{Command}, namely \ttt{MoveCommand} and \ttt{JumpCommand}, that each implement \ttt{execute}, the only difference being the intended behavior. The \ttt{MoveForward} command receives the \ttt{Player} instance and a direction, whereas \ttt{JumpCommand} only needs to receives a \ttt{Player} instance. 
+Now, we will design two subtypes of \ttt{ICommand}, namely \ttt{MoveCommand} and \ttt{JumpCommand}, that each implement \ttt{execute}, where the only difference is the intended behavior. 
+The \ttt{MoveForward} command receives the \ttt{Player} instance and a direction, whereas \ttt{JumpCommand} only needs to receives a \ttt{Player} instance. 
 
 \begin{lstlisting}[language=MyJava]
-class MoveCommand implements Command {
+class MoveCommand implements ICommand {
 
   private Player player;
 
@@ -44,7 +55,7 @@ class MoveCommand implements Command {
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-class JumpCommand implements Command {
+class JumpCommand implements ICommand {
   
   private Player player;
 
@@ -55,15 +66,18 @@ class JumpCommand implements Command {
 }
 \end{lstlisting}
 
-Lastly, we must implement a ``command dispatch handler,'' of sorts, which we might envision to be a controller. In particular, we will write \ttt{InputHandler} to store two commands that respond to presses to an `X button' and presses to a `Y button'. The methods to `press' each button correspond to invoking \ttt{execute} on the respective commands. The general idea behind the command pattern is that we can pass any arbitrary implementation of a command to this handler to change/update the behavior of a button press or action in the handler. 
+Lastly, we must implement a ``command dispatch handler,'' of sorts, which we might envision to be a controller. 
+In particular, we will design the \ttt{InputHandler} class to store two commands that respond to presses to an `X button' and presses to a `Y button'. 
+The methods to `press' each button correspond to invoking \ttt{execute} on the respective commands. 
+The general idea behind the command pattern is that we can pass an arbitrary implementation of a command to the handler to change/update the behavior of a button press or action. 
 
 \begin{lstlisting}[language=MyJava]
 class InputHandler {
 
-  private Command xButton;
-  private Command yButton;
+  private ICommand xButton;
+  private ICommand yButton;
 
-  InputHandler(Command xButton, Command yButton) {
+  InputHandler(ICommand xButton, ICommand yButton) {
     this.xButton = xButton;
     this.yButton = yButton;
   }
@@ -74,7 +88,8 @@ class InputHandler {
 }
 \end{lstlisting}
 
-Now, we can test the system. Under other circumstances we would write JUnit tests before writing the separate commands, but we needed to write the handler before writing coherent tests. 
+Now, we can test the system.
+Under other circumstances we would write JUnit tests before writing the separate commands, but we needed to create the handler before writing coherent tests. 
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -98,11 +113,13 @@ class CommandTester {
 }
 \end{lstlisting}
 
-As shown, we have decoupled the player from the handler, and the handler from the implementation of the commands. This, consequently, allows us to alter or modify the behavior of commands without redesigning the handler or player classes.
+As shown, we have decoupled the player from the handler, and the handler from the implementation of the commands. 
+This, consequently, allows us to alter or modify the behavior of commands without redesigning the handler or player classes.
 
 \subsection{Factory}
 
-\myexample{To showcase our next pattern, we will design the \ttt{Fraction} class to represent mathematical fractions containing integer numerators and denominators. This example greatly resembles the rational number class in a previous chapter, but we introduce a twist to exemplify the benefits of the \emph{factory}\index{factory pattern} pattern.}
+\myexample{To showcase our next pattern, we will design the \ttt{Fraction} class to represent mathematical fractions containing integer numerators and denominators.} 
+This example greatly resembles the rational number class presented in~\Cref{chapter-classes}, but we introduce a twist to exemplify the benefits of the \emph{factory}\index{factory pattern} pattern.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -144,9 +161,16 @@ class Fraction {
 }
 \end{lstlisting}
 
-Notice that one of our test cases loops five hundred thousand times, repeatedly allocating the same fraction, namely $1/2$. It is almost certainly true that, whatever application uses the \ttt{Fraction} class, will not need separate/distinct instances of a fraction. Accordingly, we are unnecessarily allocating \ttt{Fraction} instances, taking a lot of CPU time and memory. The solution is to introduce a form of caching, wherein we create a lookup table of the most ``common'' fractions and, whenever someone wants to construct a \ttt{Fraction}, we first determine if it can be polled from the table. If not, we have no choice but to allocate the fraction. We call this the \emph{factory} pattern, because we have a class that represents and processes the creation of \ttt{Fraction} objects, rather than allowing the user to directly instantiate one themselves. 
+Notice that one of our test cases loops five hundred thousand times, repeatedly allocating the same fraction, namely~$1/2$. 
+It is almost certainly true that, whatever application uses the~\ttt{Fraction} class, will not need separate/distinct instances of a fraction. 
+Accordingly, we are unnecessarily allocating \ttt{Fraction} instances, using a lot of CPU time and memory. 
+The solution is to design a form of object caching, wherein we create a lookup table of the most ``common'' fractions and, whenever someone wants to construct a \ttt{Fraction}, we first determine if it can be polled from the table. 
+If not, we have no choice but to allocate the fraction. 
+We call this the \emph{factory} pattern, because we have a class that represents and processes the creation of \ttt{Fraction} objects, rather than allowing the user to directly instantiate one themselves. 
 
-In designing the \ttt{FractionFactory} class, we declare a five-hundred element array to store the fractions~$1/n$, where~$n$ is an integer such that $1 \leq n \leq 500$. Its constructor allocates the fraction ``cache.'' We now need a method to take the role of building fractions; namely a \ttt{Fraction create(int num, int den)} method, which either looks up and returns the shared instance of a common fraction, or allocates a new instance.
+In designing the \ttt{FractionFactory} class, we declare a five-hundred element array to store the fractions~$1/n$, where~$n$ is an integer such that $1 \leq n \leq 500$. 
+Its constructor allocates the fraction ``cache.'' 
+We now need a method to take the role of building fractions; namely a \ttt{Fraction create(int num, int den)} method, which either looks up and returns the shared instance of a common fraction or allocates a new instance.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -197,17 +221,25 @@ class FractionFactory {
 }
 \end{lstlisting}
 
-\myexample{Imagine that we have a file of data containing information about a ``Person,'' which entails their university records. A person can be a student, faculty, or staff member, and each type of person contains a name. For the purposes of this example, this is the only information that we care about, but we could easily extend it to include other datapoints. The idea is that we want to read in these records and create a \ttt{Person} object for each record. We could store `type' of person as, say, an enum, or a string, but this is not ideal. Instead, we will use the \emph{factory} pattern to create a \ttt{Person} object for each record, and the factory will determine the subclass of person based on the record.}
+\myexample{Imagine that we have a file of data containing information about a ``Person,'' which entails their university records.} 
+A person can be either a student, faculty, or staff member, and each type of person contains a name. 
+For the purposes of this example, this is the only information that we care about, but we could easily extend the classes to include other datapoints. 
+The idea is that we want to read in these records and create a \ttt{Person} object for each record. 
+We could store `type' of person as, say, an enum, or a string, but this is not ideal, because the type of the person is already available as a property of the class itself. 
+Instead, let's use the \emph{factory} pattern to create a \ttt{Person} object for each record, and the factory will instantiate the subclass type of person based on the record.
 
-Namely, let's create the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{String getRole()} method to-be overridden in each subclass. We will also write the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that takes a \ttt{name} and \ttt{role} as arguments, and returns the relevant subclass of \ttt{Person}.
+Let's design the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{String getRole()} method to-be overridden in each subclass. 
+We will also design the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. 
+Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that receives a \ttt{name} and \ttt{role} as parameters, and returns the relevant subclass of \ttt{Person}.
 
-To read the input file, we will write the \ttt{PersonDatabase} class, which stores a \ttt{Map} of \ttt{Person} objects, where the key is the name of the person and the value is the \ttt{Person} object. The \ttt{PersonDatabase} class contains a \ttt{readFile} method that takes a \ttt{String} argument representing the path to the file, and reads the file line-by-line, creating a \ttt{Person} object for each record and storing it in the \ttt{Map}.
+To read the input file, we will design the \ttt{PersonDatabase} class, which stores a \ttt{Map} of \ttt{Person} objects, where the key is the name of the person and the value is the \ttt{Person} object. 
+The \ttt{PersonDatabase} class contains a \ttt{readFile} method that takes a \ttt{String} argument representing the path to the file, and reads the file line-by-line, creating a \ttt{Person} object for each record and storing it in the \ttt{Map}.
 
 \begin{lstlisting}[language=MyJava]
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class PersonDatabase {
@@ -217,14 +249,12 @@ class PersonDatabase {
   PersonDatabase() { this.DATABASE = new HashMap<>(); }
 
   void readFile(String path) {
-    try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-      String line;
-      while ((line = br.readLine()) != null) {
-        String[] tokens = line.split(",");
-        this.DATABASE.put(tokens[0], 
-                          PersonFactory.create(tokens[0], tokens[1]));
-      }
-    } catch (IOException ex) { ex.printStackTrace(); }
+    List<String> lines = Files.readAllLines(Paths.get(path));
+    lines.forEach(l -> {
+      String[] tokens = l.split(",");
+      this.DATABASE.put(tokens[0], 
+                        PersonFactory.create(tokens[0], tokens[1]));
+    });
   }
 
   Person lookup(String name) { return this.DATABASE.get(name); }
@@ -294,7 +324,9 @@ class Staff extends Person {
 }
 \end{lstlisting}
 
-If we assume that our input records are line-separated and comma-delimited, then we can write a simple test case to verify that the \ttt{PersonDatabase} class correctly reads the file and creates the appropriate \ttt{Person} objects. The following file (titled \ttt{"records1.dat"}) will be used for testing purposes. As expected, all tests pass.
+If we assume that our input records are line-separated and comma-delimited, then we can write a simple test case to verify that the \ttt{PersonDatabase} class correctly reads the file and creates the appropriate \ttt{Person} objects. 
+The following file (titled \ttt{"records1.dat"}) will be used for testing purposes. 
+As expected, all tests pass.
 
 \begin{verbnobox}[\small]
 Willard Van Orman Quine,faculty
@@ -329,11 +361,17 @@ class PersonDatabaseTester {
 
 \subsection{Builder}
 
-When creating instances of classes, it is not always feasible or possible to pass all of the necessary arguments to a constructor. The \emph{builder} pattern allows us to write ``partial constructors,'' i.e., methods that take a subset of the arguments and return an object that contains the partial arguments. 
+When creating instances of classes, it is not always feasible or possible to pass all of the necessary arguments to a constructor. 
+The \emph{builder} pattern allows us to write ``partial constructors,'' i.e., methods that take a subset of the arguments and return an object with partially-populated fields.
 
-\myexample{Suppose that we are designing a \ttt{URL} class to represent a URL, which contains a schema, host, port, and path. We want to write a \ttt{URLBuilder} class that allows us to construct a \ttt{URL} object by passing arguments one-at-a-time to a series of methods. In particular, each instance variable, namely \ttt{\_schema}, \ttt{\_host}, \ttt{\_port}, and \ttt{\_path}, has a corresponding method of the same name sans the underscore. Each method returns \ttt{this}, which allows us to chain method calls together. Moreover, returning \ttt{this} and forgoing the constructor means we do not need to unnecessarily allocate a new \ttt{Url} object for every method call.}
+\myexample{Suppose that we are designing a \ttt{Url} class to represent a URL, which contains a schema, host, port, and path.} 
+We will design the \ttt{Url} class that allows us to construct a \ttt{Url} object by passing arguments one-at-a-time to a series of methods. 
+In particular, each instance variable, namely \ttt{\_schema}, \ttt{\_host}, \ttt{\_port}, and \ttt{\_path} have corresponding methods of the same name, sans the underscore. 
+Each method returns \ttt{this}, which allows us to chain method calls together. 
+Moreover, returning \ttt{this} and forgoing the constructor means we do not need to unnecessarily allocate a new \ttt{Url} object for every method call.
 
-We will designate that a ``complete'' URL is one that has, at the very least, a schema and a host. To complement this, we now design the \ttt{build} method that returns a \ttt{Url} object if the schema and host are non-\ttt{null}, otherwise, it throws an \ttt{IllegalStateException}. When the optional fields are not specified, they are set to default values, namely \ttt{0} for the port and \ttt{""} for the path.
+We will designate that a ``complete'' URL is one that, at the very least, contains a schema and a host. 
+To complement this, we now design the \ttt{build} method that returns a \ttt{Url} object if the schema and host are non-\ttt{null}, otherwise, it throws an \ttt{IllegalStateException}. When the optional fields are not specified, they are set to default values, namely \ttt{0} for the port and \ttt{""} for the path.
 
 To test the implementation, we chain together a series of method calls on a \ttt{Url} instance and verify that the resulting \ttt{Url} object is correct through its \ttt{toString} representation.
 
@@ -404,16 +442,24 @@ class Url {
 }
 \end{lstlisting}
 
-Partially-constructed objects may seem odd at first, but they are useful in situations where we want to instantiate an object piecemeal, i.e., one instance variable at a time. Plus, we can reuse the same builder with multiple objects. As an example, suppose that we want to create a \ttt{Url} for a particular host and schema, but without a specific port or path. We can then reuse this object repeatedly to populate an partially-constructed instance with differing ports and paths, rather than having to unnecessarily repeat the known schema and host.
+Partially-constructed objects may seem odd at first, but they are useful in situations where we want to instantiate an object piecemeal, i.e., one instance variable at a time. 
+Plus, we can reuse the same builder with multiple objects. 
+As an example, suppose that we want to create a \ttt{Url} for a particular host and schema, but without a specific port or path. 
+We can then reuse this object repeatedly to populate an partially-constructed instance with differing ports and paths, rather than having to unnecessarily repeat the known schema and host.
 
 \subsection{Visitor}
 
-The \emph{visitor} pattern is the most complex pattern that we will work with, but it offers a host of benefits. Consider a situation in which we do not have access to classes, but want to modify their implementation to add some functionality. In particular, if those classes support the use of visitors, then we can design almost any type of functionality without needing to modify those classes at all.
+The \emph{visitor}\index{visitor} pattern is the most complex pattern that we will work with, but it offers a host of benefits. 
+Consider a situation in which we do not have access to class definitions, but want to modify their implementation to add some functionality.\footnote{Further assume that we cannot use reflection or similar runtime techniques.} 
+In particular, if those classes support the use of visitors, then we can design almost any type of functionality without needing to modify those classes at all.
 
-\myexample{Let's write a visitor that prints out a programming language expression in a human-readable format. In particular, we will use a simplified version of the interpreter from~\cref{chapter-classes}. First, we need to write the visitor interface, which contains a \ttt{visit} method for each type of expression, namely \ttt{NumNode}, \ttt{PrimNode}, \ttt{VarNode}, and \ttt{LetNode}. Each \ttt{visit} method takes an expression of the corresponding type as an argument and returns a string.}
+\myexample{Let's design a visitor that prints out a programming language expression in a human-readable format.} 
+We will use a simplified version of the programming language that we wrote an interpreter for in~\Cref{chapter-classes}. 
+First, we need to design the visitor interface, which contains a \ttt{visit} method for each type of expression, namely \ttt{NumNode}, \ttt{PrimNode}, \ttt{VarNode}, and \ttt{LetNode}. 
+Each variant of the \ttt{visit} method receives an expression of the corresponding type as a parameter and returns a string.
 
 \begin{lstlisting}[language=MyJava]
-interface ExpressionVisitor {
+interface IExpressionVisitor {
   
   String visit(NumNode node);
   String visit(PrimNode node);
@@ -422,31 +468,37 @@ interface ExpressionVisitor {
 }
 \end{lstlisting}
 
-Next, we need to modify the \ttt{AstNode} class to include an abstract \ttt{visit} method that receives a \ttt{Visitor} object and calls the appropriate \ttt{visit} method using polymorphic dispatch. 
+Next, we need to modify the \ttt{AstNode} class to include an abstract \ttt{visit} method that receives a \ttt{Visitor} object, and calls the appropriate \ttt{visit} method using polymorphic dispatch. 
 
 \begin{lstlisting}[language=MyJava]
 class AstNode {
   // ... other methods and variables not shown.
 
-  abstract String visit(ExpressionVisitor visitor);
+  public abstract String visit(IExpressionVisitor visitor);
 }
 \end{lstlisting}
 
-Now, we update each subclass to override the \ttt{visit} method and call the appropriate \ttt{visit} method. Fortunately this is trivial, since all we must do is add the method signature and call \ttt{visit} with \ttt{this} as the argument to represent that the visitor is visiting the current node. Because this is consistently redundant, we will only show the implementation of the \ttt{NumNode} class, but the remaining classes are identical with respect to this method.\footnote{Remember that we said that we could not alter/update these classes (or rather that the visitor pattern guarantees this invariant), but we rely on the assumption that they support the visitor pattern, which is the only internal modification.}
+Now, we update each subclass to override the \ttt{visit} method and call the appropriate \ttt{visit} method. 
+Fortunately, this is trivial, since all we must do is add the method signature and call \ttt{visit} with \ttt{this} as the argument to represent that the visitor is visiting the current node. 
+Because making this alteration is consistently redundant, we will only show the implementation of the \ttt{NumNode} class, but the remaining classes are identical with respect to this method.\footnote{Remember that we said that we could not alter/update these classes (or rather that the visitor pattern guarantees this invariant), but we rely on the assumption that they support the visitor pattern, which serves as the only internal modification.}
 
 \begin{lstlisting}[language=MyJava]
 class NumNode extends AstNode {
   // ... other methods and variables not shown.
 
-  String visit(ExpressionVisitor visitor) {
+  @Override
+  public String visit(IExpressionVisitor visitor) {
     return visitor.visit(this);
   }
 }
 \end{lstlisting}
 
-From here, we need to design a variant of the interface that implements the expression printing behavior. Thus we will write the \ttt{ExpressionPrinterVisitor} class, which implements the \ttt{ExpressionVisitor} interface. The \ttt{ExpressionPrinterVisitor} class overrides the respective methods from the \ttt{ExpressionVisitor} interface to prints out the expression, to standard output, in a ``stringified'' format.
+From here, we need to design a variant of the interface that implements the expression printing behavior. 
+Thus, we will write the \ttt{ExpressionPrinterVisitor} class, which implements the \ttt{IExpressionVisitor} interface. 
+The new class, namely \ttt{ExpressionPrinterVisitor}, overrides the respective methods from the \ttt{IExpressionVisitor} interface to print the expression, to standard output, in a ``stringified'' format.
 
-The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{ExpressionVisitor} to \ttt{ExpressionPrinterVisitor}, followed by a call to \ttt{visit} on the root node of the expression tree. The result is a string representation of the expression, which we then verify.
+The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{IExpressionVisitor} to \ttt{ExpressionPrinterVisitor}, followed by a call to \ttt{visit} on the root node of the expression tree. 
+The result is a string representation of the expression, which we then verify.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -483,7 +535,7 @@ class ExpressionPrinterVisitorTester {
 \begin{lstlisting}[language=MyJava]
 import java.lang.StringBuilder; 
 
-class ExpressionPrinterVisitor implements ExpressionVisitor {
+class ExpressionPrinterVisitor implements IExpressionVisitor {
 
   @Override
   public String visit(NumNode node) {
@@ -533,7 +585,11 @@ class ExpressionPrinterVisitor implements ExpressionVisitor {
 }
 \end{lstlisting}
 
-\myexample{As another example, suppose that we have classes to represent items at a grocery store. Namely, we have a \ttt{IGroceryItem} interface, and subtypes \ttt{Fruit}, \ttt{Milk}, and \ttt{Cereal}. Additionally, we can extend the \ttt{IGroceryItemVisitor} interface, which itself contains corresponding ``visit'' methods for each subtype to describe how we wish to visit an \ttt{IGroceryItem} object. Let's take advantage of Java's generics to allow a specification of the return type for \ttt{visit} methods. A visitor that always returns nothing severely limits the capabilities of the visitor pattern.}
+\myexample{As another example, suppose that we have classes to represent items at a grocery store.} 
+Namely, we have a \ttt{IGroceryItem} interface, and subtypes \ttt{Fruit}, \ttt{Milk}, and \ttt{Cereal}. 
+Additionally, we can extend the \ttt{IGroceryItemVisitor} interface, which itself contains corresponding ``visit'' methods for each subtype to describe how to visit an \ttt{IGroceryItem} object. 
+Let's take advantage of Java's generics to allow a specification of the return type for \ttt{visit} methods. 
+A visitor that always returns nothing severely limits the capabilities of the visitor pattern.
 
 \begin{lstlisting}[language=MyJava]
 interface IGroceryItemVisitor<R> {
@@ -551,7 +607,10 @@ interface IGroceryItem {
 }
 \end{lstlisting}
 
-The subtypes of \ttt{IGroceryItem}, as we stated, are \ttt{Fruit}, \ttt{Milk}, and \ttt{Cereal}. Fruits have a name and a weight in ounces, milk is either skim milk or regular (designated by a boolean) and a weight in fluid ounces, and cereal has a mascot and a weight in ounces. While we are in the realm of modern Java, let's once again use records to our advantage to remove redundant code. Conveniently, this means that we only have to override the \ttt{visit} method in each record type.
+The subtypes of \ttt{IGroceryItem}, as we stated, are \ttt{Fruit}, \ttt{Milk}, and \ttt{Cereal}. 
+Fruits have a name and a weight in ounces, milk is either skim milk or regular (designated by a boolean) and a weight in fluid ounces, and cereal has a mascot and a weight in ounces. 
+While we are in the realm of modern Java, let's once again use records to our advantage to remove redundant code. 
+Conveniently, this means that we only have to override the \ttt{visit} method in each record type.
 
 \begin{lstlisting}[language=MyJava]
 record Fruit(String name, int oz) implements IGroceryItem {
@@ -583,9 +642,14 @@ record Cereal(String mascot, int oz) implements IGroceryItem {
 }
 \end{lstlisting}
 
-Now, let's extend the capabilities of our classes by designing a visitor that calculates the total price of a grocery list. Namely, we will write the \ttt{GroceryListTotalVisitor} class, which implements the \ttt{IGroceryItemVisitor} interface. The \ttt{GroceryListTotalVisitor} class overrides the respective methods from the \ttt{IGroceryItemVisitor} interface to calculate the total price of the grocery list. For the sake of example, fruits are priced at $\$0.25$ per ounce, milk is priced at $\$2.00$ by the gallon, and cereal is priced at $\$0.10$ per ounce. If the milk is skim, we add $\$0.50$ to its price.
+Now, let's extend the capabilities of our classes by designing a visitor that calculates the total price of a grocery list. 
+Let's design the \ttt{GroceryListTotalVisitor} class, which implements the \ttt{IGroceryItemVisitor} interface. 
+The new visitor, \ttt{GroceryListTotalVisitor}, overrides the respective methods from the \ttt{IGroceryItemVisitor} interface to calculate the total price of the grocery list. 
+For the sake of the example, fruits are priced at~$\$0.25$ per ounce, milk is priced at~$\$2.00$ by the gallon, and cereal is priced at~$\$0.10$ per ounce. 
+If the milk is skim, we add~$\$0.50$ to its price.
 
-The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{IGroceryItemVisitor} to \ttt{GroceryListTotalVisitor}, followed by a call to \ttt{visit} on each item in the grocery list. The result is the total price of the grocery list, which we then verify.
+The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{IGroceryItemVisitor} to \ttt{GroceryListTotalVisitor}, followed by a call to \ttt{visit} on each item in the grocery list. 
+The result is the total price of the grocery list, which we then verify.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
