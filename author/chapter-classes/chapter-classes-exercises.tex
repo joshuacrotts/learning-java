@@ -213,7 +213,28 @@ Then, design the following methods:
 
 As an added optimization, we should cache whether the current relation is one of these properties when prompted. If we do not add a pair to the relation, then it makes little sense to recompute whether or not is, say, reflexive. Implement this as an optimization, however you wish, into the class.
 
-\myexercise{1}{chapter-classes}{This exercise has twelve parts. A complex number $c \in \mathbb{C}$ has two components: a real number $a$ and an imaginary number $b$. Together, these create $a + bi$. In this exercise you will design a class that operates over complex numbers.}
+\myexercise{2}{chapter-classes}{This exercise has five parts.}
+Repeated string concatenation is a common performance issue in Java. 
+As we know, Java \ttt{String} objects are immutable, which means that concatenation creates a new \ttt{String} objects. 
+This is fine for small strings, but for larger strings (or concatenation operations performed in a loop), this can be a performance bottleneck. 
+Each concatenation requires copying the entire string. 
+Java provides the \ttt{StringBuilder} class to alleviate the issue. 
+In this exercise, you will design a \ttt{MiniStringBuilder} class that mimics the behavior of \ttt{StringBuilder}. 
+You cannot use \ttt{StringBuilder} or the older \ttt{StringBuilder} classes in your implementation.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \ttt{MiniStringBuilder} class, which stores a \ttt{char[]} as an instance variable. The class should also store a variable to keep track of the number of ``logical characters'' that are in-use by the buffer.
+    \item Design two constructors for the \ttt{MiniStringBuilder} class: one that receives no arguments and initializes the default capacity of the underlying \ttt{char[]} array to~$20$, and another that receives a \ttt{String}~$s$ and initializes the \ttt{char[]} array to the characters of~$s$. 
+    \item Design the \ttt{void append(String s)} method, which appends the given string~$s$ onto the end of the current string stored in the buffer. The given string should not simply be appended onto the end of the buffer, but rather added to the end of the previous string in the buffer. If the buffer runs out of space, reallocate the array to be twice its current size, similar to how we reallocate the array in the \ttt{MiniArrayList} example class.
+    \item Design the \ttt{void clear()} method, which resets the \ttt{char[]} array to the default size of~$20$.
+    \item Override the \ttt{public String toString()} method, which returns the \ttt{char[]} array as a \ttt{String} object.
+\end{enumerate}
+
+\myexercise{2}{chapter-classes}{This exercise has twelve parts.} 
+A complex number $c \in \mathbb{C}$ has two components: a real number~$a$ and an imaginary number~$b$. 
+Together, these components compose into~$a + bi$. 
+In this exercise you will design a class that operates over complex numbers.
+
 \begin{enumerate}[label=(\alph*)]
     \item Design the \ttt{ComplexNumber} class, whose constructor receives two \ttt{double} values: $a$ and $b$. Store these as instance variables.
     \item Design the empty constructor that initializes $a$ and $b$ to $0$ and $0$ respectively. 
