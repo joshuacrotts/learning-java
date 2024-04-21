@@ -1,7 +1,11 @@
 \section{Verbosity}
 
 \subsection{Main Method and Anonymous Classes}
-All the way in the first chapter, we introduced the \ttt{main} method, and stated that all methods must belong inside a class. Prior to Java version 21, this was indeed true. Java 21, however, introduced a much cleaner syntax for writing the main method that does not need \ttt{public}, nor \ttt{static}, nor the input array of strings. These changes make Java much more beginner-friendly. Let's see what a ``Hello, world!'' program looks like with the improvements.
+All the way back in~\Cref{chapter-testingandjava}, we introduced the \ttt{main} method, and stated that all methods must belong inside a class. 
+Prior to Java version 21, this was indeed true. 
+Java 21, however, has a much cleaner and succinct syntax for writing the \ttt{main} method that does not need \ttt{public}, nor \ttt{static}, nor the input array of strings. 
+These changes make Java much more beginner-friendly. 
+Let's see what a ``Hello, world!'' program looks like with the improvements.
 
 \begin{lstlisting}[language=MyJava]
 class MainMethod {
@@ -12,7 +16,8 @@ class MainMethod {
 }
 \end{lstlisting}
 
-Additionally, this change means that any methods that we want to reference/invoke within \ttt{main} (that are defined inside the respective class) do not need to be categorized as static. For instance, let's once again write the \ttt{double fToC(double f)} method, only this time, we will call it from inside the \ttt{main} method.
+Additionally, these changes mean that any methods that we want to reference/invoke within \ttt{main} (that are defined inside the respective class) do not need to be marked as static. 
+For instance, let's once again write the \ttt{double fToC(double f)} method, only this time, we will call it from inside the \ttt{main} method.
 
 \begin{lstlisting}[language=MyJava]
 class MainMethod {
@@ -27,9 +32,14 @@ class MainMethod {
 }
 \end{lstlisting}
 
-Whether or not we label \ttt{fToC} as static is irrelevant in this circumstance. Unfortunately, if we want to write unit tests for this method, it needs to be \ttt{static}, as we cannot reference it outside the class definition without the static qualifier. Though, what if we could write unit tests within the \ttt{MainMethod} class, rather than writing an entirely separate file? Making this alteration couples the logic of the method with the tests, which, in a large project is not an advisable choice. 
+Whether we label \ttt{fToC} as static is irrelevant in this circumstance. 
+Unfortunately, if we want to create unit tests for this method, it needs to be \ttt{static}, as we cannot reference it outside the class definition without the static qualifier. 
+Though, what if we could write unit tests within the \ttt{MainMethod} class, rather than writing an entirely separate file? 
+Making such an alteration couples the logic of the method with the tests, which, in a large project is not an advisable choice. 
 
-To write the unit test, all we need is the \ttt{void testFToC()} method and prepend the \ttt{@Test} annotation.\footnote{The respective import statements are also necessary.} Then, our IDE will automatically detect that we have a test method in the file and is executable.\footnote{We will note that we could have done this back in Chapter~\ref{chapter-testingandjava}, but we favor separating the tests and the method definition, even if this means we must use the \ttt{static} keyword.} Since we wish to emphasize writing tests before the (method) implementation, we will place the testing method above the method that it tests. 
+To write the unit test, all we need is the \ttt{void testFToC()} method and prepend the \ttt{@Test} annotation.\footnote{The respective import statements are also necessary.} 
+Then, our IDE will automatically detect that we have a test method in the file and is executable.\footnote{We will note that we could have done this back in Chapter~\ref{chapter-testingandjava}, but we favor separating the tests and the method definition, even if this means we must use the \ttt{static} keyword.} 
+Since we wish to emphasize writing tests \emph{before} the (method) implementation, we place the testing method above the method that it tests. 
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -56,7 +66,8 @@ class MainMethod {
 }
 \end{lstlisting}
 
-In addition to a less-verbose \ttt{main} method, Java 21 also introduces \emph{nameless/anonymous classes}, which reduces the required keystrokes even further by removing the need for a class definition. So, if all we want to do is write the \ttt{main} method (and perhaps other methods callable from \ttt{main}), we might write the following:
+In addition to a less-verbose \ttt{main} method, Java 21 also introduces \emph{nameless/anonymous classes}, which reduces the required keystrokes even further by removing the need for a class definition. 
+So, if all we want to do is write the \ttt{main} method (and perhaps other methods callable from \ttt{main}), we might write the following:
 
 \begin{lstlisting}[language=MyJava]
 /**
@@ -73,7 +84,8 @@ void main() {
 }
 \end{lstlisting}
 
-Note that nameless classes (or the methods contained within) cannot be referenced from outside the definition of the class, nor can we write and execute JUnit tests. So, the utility of nameless classes is little, in our opinion.
+Note that nameless classes (or the methods contained within) cannot be referenced from outside the definition of the class, nor can we write and execute JUnit tests. 
+So, the utility of nameless classes is little, in our opinion.
 
 % \subsection{String Templates and Interpolation}
 
