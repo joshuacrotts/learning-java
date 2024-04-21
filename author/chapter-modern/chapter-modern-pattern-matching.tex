@@ -1,8 +1,14 @@
 \section{Pattern Matching}
 
-Pattern matching is a powerful tool for working with data. It allows the programmer to create temporary bindings for identifiers that match a given pattern. This is useful for extracting data from a data structure, or for testing whether a data structure matches a given pattern. Java added support for pattern matching inside \ttt{switch} expressions in Java 21. Prior to this version, the best that could be done was to use \ttt{instanceof} to test whether an object was an instance of a given class or interface, and then cast the object to that type. Pattern matching is significantly more concise.
+Pattern matching is a powerful tool for working with data. 
+It allows the programmer to declare temporary bindings for identifiers that match a given pattern. 
+Pattern matching helps when extracting data out of a data structure, or when testing whether a data structure inhibits a certain pattern. 
+Java added support for pattern matching inside \ttt{switch} expressions in Java 21.
+Prior to Java 21, the best that could be done was to use \ttt{instanceof} to test whether an object was an instance of a given class or interface, and then cast the object to that type. 
+Pattern matching is significantly more concise.
 
-\myexample{Suppose we want to write a method that uses pattern matching to compute the perimeter of an \ttt{IShape}. We can do this by matching on the shape and then computing the perimeter for each type of shape.}
+\myexample{Suppose we want to write a method that uses pattern matching to compute the perimeter of an \ttt{IShape}.} 
+We can do this by matching on the shape and then computing the perimeter for each type of shape.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -24,7 +30,11 @@ class PatternMatchingTester {
 }
 \end{lstlisting}
 
-The definitions of \ttt{Rectangle}, \ttt{Circle}, \ttt{Triangle}, and \ttt{IShape} are trivial and have been shown in previous chapters. The \ttt{perimeter} method, which is static inside \ttt{PatternMatching}, is shown below. We return the result of a \ttt{switch} expression, which matches against the possible subtypes of \ttt{IShape}. We create a temporary binding for the identifier \ttt{shape} that is bound to the \ttt{IShape} object passed into the method. This, in effect, casts the \ttt{IShape} to the subtype that is pattern matched, and we can then access the respective non-private methods and fields of the specific subtype rather than being restricted to only members of the \ttt{IShape} interface.
+The definitions of \ttt{Rectangle}, \ttt{Circle}, \ttt{Triangle}, and \ttt{IShape} are trivial and have been shown in previous chapters. 
+The \ttt{perimeter} method, which is static inside \ttt{PatternMatching}, is shown below.
+We return the result of a \ttt{switch} expression, which matches against the possible subtypes of \ttt{IShape}. 
+We create a temporary binding for the identifier \ttt{shape} that is bound to the \ttt{IShape} object passed into the method. 
+This, in effect, casts the \ttt{IShape} to the subtype that is pattern matched, and we can then access the respective non-private methods and fields of the specific subtype rather than being restricted to only members of the \ttt{IShape} interface.
 
 \begin{lstlisting}[language=MyJava]
 imoprt java.lang.IllegalArgumentException;
@@ -49,7 +59,11 @@ class PatternMatching {
 
 We can also use ``guard expressions'' when constructing patterns to only match a pattern if a condition holds for that pattern.
 
-\myexample{Suppose that we want to write a factorial method using pattern matching. We can do this by matching on the argument to the factorial method. If the argument is zero, we return one. Otherwise, we return the argument multiplied by the factorial of the argument minus one. We can use a guard expression to ensure that the argument is non-negative.}
+\myexample{Suppose that we want to design a factorial method that uses pattern matching.} 
+We can do so by matching on the argument to the factorial method. 
+If the argument is zero, we return one.
+Otherwise, we return the argument multiplied by the factorial of the argument minus one. 
+We can use a guard expression to ensure that the argument is non-negative.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -85,9 +99,13 @@ class Factorial {
 }
 \end{lstlisting}
 
-Notice that we have to use the wrapper class, since Java permits only special types of pattern matching over the primitive data types, and otherwise works with objects. As an example, we could replace the first case with a match against the literal zero, since Java autounboxes the \ttt{Integer} object to a primitive \ttt{int}, e.g., \ttt{case 0 -> 1;}. Unfortunately we cannot use guard expressions over primitives.
+Notice that we have to use the wrapper class, since Java permits only special types of pattern matching over the primitive data types, and otherwise works with objects. 
+As an example, we could replace the first case with a match against the literal zero, since Java autounboxes the \ttt{Integer} object to a primitive \ttt{int}, e.g., \ttt{case 0 -> 1;}. 
+Unfortunately, we cannot use guard expressions over primitives.
 
-Pattern matching is not restricted to switch-case expressions. We can also use pattern matching in cases where we check the instance of an object, namely in the \ttt{equals} method. As an example, traditional \ttt{equals} methods look like the following:
+Pattern matching is not restricted to switch-case expressions. 
+We can also use pattern matching in cases where we check the instance of an object, namely in the \ttt{equals} method. 
+As an example, the traditional \ttt{equals} methods look like the following:
 
 \begin{verbnobox}[\small]
 @Override
@@ -102,7 +120,8 @@ public boolean equals(Object o) {
 }
 \end{verbnobox}
 
-The need to cast the object to the type of the class on its own separate line is tedious. Pattern matching allows us to write the \ttt{equals} method in a more concise manner by providing an identifier to the pattern that is bound to the object being tested. We can wrap this in either an \ttt{if} statement or as a logical AND, because the pattern matching expression returns a boolean and fails to match if the object is not an instance of the stated class.
+The need to cast the object to the type of the class on its own separate line is tedious. Pattern matching allows us to write the \ttt{equals} method in a more concise manner by providing an identifier to the pattern that is bound to the object being tested. 
+We can wrap the check in either an \ttt{if} statement or as a logical AND, because the pattern matching expression returns a boolean and fails to match if the object is not an instance of the stated class.
 
 \begin{verbnobox}[\small]
 @Override
@@ -115,7 +134,8 @@ public boolean equals(Object o) {
 }
 \end{verbnobox}
 
-\myexample{Suppose that we want to override the \ttt{equals} method inside \ttt{Rectangle} using pattern matching. It's possible to use an \ttt{if} statement rather than resolving the \ttt{instanceof} check in an expression, but the latter is much more concise and solves the same problem.}
+\myexample{Suppose that we want to override the \ttt{equals} method inside \ttt{Rectangle} using pattern matching.} 
+It's possible to use an \ttt{if} statement rather than resolving the \ttt{instanceof} check in an expression, but the latter is much more concise and solves the same problem.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -164,9 +184,16 @@ class Rectangle implements IShape {
 
 \subsection{Record Types}
 
-Our perimeter pattern matcher is helpful and convenient, but what is not-so-convenient is that we have to write a lot of boilerplate code to design, for example, a class that represents a rectangle. Each subtype of \ttt{IShape} needs instance variables, a constructor, and accessors at a minimum. Moreover, we need to manually extract the fields from the object that is bound by the variable binding. In modern Java, we can utilize \emph{record types}, which are immutable classes whose boilerplate code (as described previously) is generated by the compiler. We can also add our own methods to the record type, but we cannot add instance or static variables.
+Our perimeter pattern matcher is helpful and convenient, but what is not-so-convenient is that we have to write a lot of boilerplate code to design, for example, a class that represents a rectangle. 
+Each subtype of \ttt{IShape} needs instance variables, a constructor, and accessors at a minimum. 
+Moreover, we have to manually extract the fields from the object that is bound by the variable binding. 
+In modern (versions of) Java, we can utilize \emph{record types}, which are immutable classes whose boilerplate code (as described previously) is generated by the compiler. 
+We can also add our own methods to the record type, but we cannot add instance or static variables.
 
-\myexample{Using record types, let's write a small interpreter for a simple language that supports arithmetic expressions and boolean expressions. Instead of the interface approach that we took before, we will use records and pattern matching to evaluate the expressions. With this, our interpreter will make use of \ttt{var}: a new keyword for a variable whose type is inferred from the type of the expression on the right-hand side of the assignment operator. This allows us to omit long and complex types such as \ttt{BigDecimal}.} 
+\myexample{Using record types, let's design a small interpreter for a simple language that supports arithmetic expressions and boolean expressions, similar to the one in~\Cref{chapter-classes}.}
+Instead of the interface approach that we took before, we will use records and pattern matching to evaluate the expressions. 
+With this, our interpreter makes use of \ttt{var}: a new keyword for a variable whose type is inferred from the type of the expression on the right-hand side of the assignment operator. 
+Type inferencing allows us to omit the specification of verbose and complex types such as \ttt{BigDecimal}.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -224,16 +251,30 @@ class Evaluator {
 }
 \end{lstlisting}
 
-In the interpreter, we pattern match on the constructors of our record types. For example, in the \ttt{eval} method, when pattern matching on the \ttt{Add} constructor. We create temporary bindings for the identifiers \ttt{left} and \ttt{right} that are bound to the respective \ttt{Expr} objects that are passed into the constructor. We then recursively call \ttt{eval} on these objects and add the results together. We do the same for the other constructors of \ttt{Expr}. To make testing the program easier, we designed a secondary constructor for \ttt{Number} that receives an integer and converts it to a \ttt{BigDecimal}. Note that self-defined constructors of a record can only reference other constructors via \ttt{this(...)}.
+In the interpreter, we pattern match on the constructors of our record types. 
+For example, inside the \ttt{eval} method, when pattern matching on the \ttt{Add} constructor, we create temporary bindings for the identifiers \ttt{left} and \ttt{right} that are bound to the respective \ttt{Expr} objects passed into the constructor. 
+We then recursively call \ttt{eval} on these objects and add the results together. 
+We do the same for the other constructors of \ttt{Expr}. 
+To make testing the program easier, we designed a secondary constructor for \ttt{Number} that receives an integer and converts it to a \ttt{BigDecimal}. 
+Note that self-defined constructors of a record can only reference other constructors via \ttt{this(...)}.
 
-\myexample{Let's use some of Java's modern features to write a lexer and parser for the interpreter that we designed in~\cref{chapter-classes}. We presented this as an exercise to the readers at the end, but we imagine it was quite a hassle, if the readers restrict themselves to older versions of Java. In particular, we can use of records and pattern matching to greatly reduce the amount of necessary boilerplate code. Our language capabilities will be greatly reduced for the time being, however, since our focus is the lexing and parsing of the raw language rather than its evaluation. Therefore, let's restrict the language to supporting numbers, symbols, and s-expressions, i.e., expressions enclosed by parentheses. Below we present some examples of strings within this language.}
+\myexample{Let's use some of Java's modern features to write a lexer and parser for the interpreter that we designed in~\Cref{chapter-classes}.} 
+We presented this as an exercise to the readers, but we imagine it was quite a hassle if they restricted themselves to older versions of Java. 
+In particular, we can use records and pattern matching to greatly reduce the amount of necessary boilerplate code. 
+Our language capabilities will be greatly reduced for the time being, however, since our focus is the lexing and parsing of the raw language rather than its evaluation. 
+Therefore, let's restrict the language to supporting numbers, symbols, and s-expressions, i.e., expressions enclosed by parentheses. 
+Below we present some examples of expressible programs this language.
+
 \begin{verbnobox}[\small]
 7
 (+ 2 40)
 (+ 10 (* 4 5) 30)
 \end{verbnobox}
 
-For the uninformed, a \emph{lexer}\index{lexer} is a program that converts input into \emph{tokens}, also called a tokenizer. Tokens are components of an input string. For example, we might convert the string \ttt{"(+ 2 3)"} into five tokens: 
+For the uninformed, a \emph{lexer}\index{lexer} is a program that converts input into \emph{tokens}, also called a tokenizer. 
+Tokens are components of an input string. 
+For example, we can create five tokens from the input string \ttt{"(+ 2 3)"}: 
+
 \begin{verbnobox}[\small]
 L_PAREN "("
 SYMBOL "+"
@@ -241,9 +282,18 @@ NUMBER "2"
 NUMBER "40"
 R_PAREN ")"
 \end{verbnobox}
-It is the job of the lexer to categorize the input into patterns that the programmer ascribes, e.g., \ttt{NUMBER} or \ttt{SYMBOL}. Our lexer will assume tokens are separated by whitespace, which for the most part, this holds true. Consider the simplest case of applying an operator to a list of operands: \ttt{"(+ 2 40)"}. Should we split this example string on the space character, we accidentally group \ttt{"(+"}, an undesired token. The solution is to add a whitespace after each opening parenthesis and a whitespace before each closing parenthesis. 
 
-Before we write the lexer and test cases, we need to determine what comprises a token. Tokens have token types, e.g., \ttt{L\_PAREN} and so forth, as well as an associated string. In the case of, say, a \ttt{NUMBER}, the associated string \emph{is} that number represented by the token, e.g,. \ttt{40}. Let's use a Java record to represent a \ttt{Token}, and an enumeration for the types of tokens. We will integrate tokens into the lexer tests, so it makes little sense to write separate tests for tokens and token types.
+It's the job of the lexer to categorize the input into patterns ascribed by the programmer, e.g., \ttt{NUMBER} or \ttt{SYMBOL}. 
+Our lexer assumes that tokens are separated by whitespace, and for the most part, this holds true. 
+Consider the simplest case of applying an operator to a list of operands: \ttt{"(+ 2 40)"}. 
+Should we delimit the string on the space character, we accidentally group an opening parenthesis and the plus into \ttt{"(+"}, an undesired token. 
+The solution is to add a whitespace after each opening parenthesis and a whitespace before each closing parenthesis. 
+
+Before we write the lexer and test cases, we need to determine what comprises a token. 
+Tokens have token types, e.g., \ttt{L\_PAREN} and so forth, as well as an associated string. 
+In the case of, say, a \ttt{NUMBER}, the associated string \emph{is} that number represented by the token, e.g,. \ttt{40}. 
+Let's use a Java record to represent a \ttt{Token}, and an enumeration for the types of tokens. 
+We will integrate tokens into the lexer tests, so it makes little sense to write separate tests for tokens and token types.
 
 \begin{lstlisting}[language=MyJava]
 enum TokenType { L_PAREN, R_PAREN, NUMBER, SYMBOL }
@@ -253,7 +303,11 @@ enum TokenType { L_PAREN, R_PAREN, NUMBER, SYMBOL }
 record Token(TokenType type, String data) { }
 \end{lstlisting}
 
-The implementation of the lexer is not complicated---the static \ttt{lex} method receive a \ttt{String} and returns a \ttt{Queue<Token>} containing all identified tokens. As we stated earlier, we first add the required spacing, then split on the whitespace character, producing a \ttt{String[]} of raw tokens. Then, we iterate over these strings and enqueue an instance of \ttt{Token} with the respective token type and data. For identifying numbers, we simply determine if an attempt to parse the string as a number results in an exception and, if not, it becomes a \ttt{NUMBER} token. Otherwise, the only option (assuming we identify parentheses before this case) is some kind of symbol token.
+The implementation of the lexer is not complicated---the static \ttt{lex} method receive a \ttt{String} and returns a \ttt{Queue<Token>} containing all identified tokens. 
+As we stated earlier, we first add the required spacing, then split on the whitespace character, producing a \ttt{String[]} of raw tokens. 
+Then, we iterate over these strings and enqueue an instance of \ttt{Token} with the respective token type and data. 
+For identifying numbers, we determine if an attempt to parse the string as a number results in an exception and, if not, it resolves to a \ttt{NUMBER} token. 
+Otherwise, the only option (assuming we identify parentheses before this case) is some kind of symbol token.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -339,13 +393,27 @@ class Lexer {
 }
 \end{lstlisting}
 
-As we see, we can make use of streams and collectors to populate the queue of tokens. The \ttt{createToken} method is responsible for creating the respective token type from the input. Subsequent updates to the grammar of the language would result in only needing to update \ttt{createToken} rather than requiring a change to the internals of the lexer algorithm itself. Suppose that we want to add boolean literals into the language. Thus, we need two modifications: 1) add a boolean \ttt{TokenType} and 2) add a clause in the switch expression to return a \ttt{Token} that represents a \ttt{TokenType.BOOLEAN} or something similar.
+As shown, we can make use of streams and collectors to populate the queue of tokens. 
+The \ttt{createToken} method is responsible for creating the respective token type from the input. 
+Subsequent updates to the grammar of the language would result in only needing to update \ttt{createToken} rather than requiring a change to the internals of the lexer algorithm itself. 
+Suppose that we want to add boolean literals into the language. Thus, we need two modifications: 1) add a boolean \ttt{TokenType} and 2) add a clause in the switch expression to return a \ttt{Token} that represents a \ttt{TokenType.BOOLEAN} or something similar.
 
-\myexample{We will break the mini-project into two separate examples since both the lexer and parser are complicated pieces of the puzzle. The parser receives tokens and, in general, creates an abstract syntax tree to represent the input data.\footnote{We say ``in general'' because a parser might also forego an AST and go straight to an interpreter or program instructions.}}
+\myexample{We will break the mini-project into two separate examples since both the lexer and parser are complicated pieces of the puzzle.} 
+The parser receives tokens and, in general, creates an abstract syntax tree to represent the input data.\footnote{We say ``in general'' because a parser might also forego an AST and go straight to an interpreter or program instructions.}
 
-Our parser implementation contains a single static method: \ttt{parse}, which receives a queue of tokens and returns the root of an abstract syntax tree. We need to create three kinds of abstract syntax trees: \ttt{NumNode}, \ttt{SymbolNode}, and \ttt{SExprNode}, all of which extend the abstract \ttt{AstNode} class. An \ttt{AstNode}, like the one presented from~\cref{chapter-classes}, contains a list of children, as well as a way to add children to that list. The former two subclasses, namely \ttt{NumNode} and \ttt{SymbolNode}, store their data, i.e., the number and symbol respectively, as instance variables inside their class definitions. Because we have seen these two class definitions previously, we will omit their implementation. What we have not seen before, however, is \ttt{SExprNode}. Because our language is so small, an \ttt{SExprNode} is identical to an \ttt{AstNode} aside from the fact that it is not abstract.
+Our parser implementation contains a single static method: \ttt{parse}, which receives a queue of tokens and returns the root of an abstract syntax tree. 
+We need to create three kinds of abstract syntax trees: \ttt{NumNode}, \ttt{SymbolNode}, and \ttt{SExprNode}, all of which extend the abstract \ttt{AstNode} class. 
+An \ttt{AstNode}, like the one presented from~\cref{chapter-classes}, contains a list of children, as well as a way to add children to that list. 
+The former two subclasses, namely \ttt{NumNode} and \ttt{SymbolNode}, store their data, i.e., the number and symbol respectively, as instance variables inside their class definitions. 
+Because we have seen these two class definitions previously, we will omit their implementation. 
+What we have not seen before, however, is the \ttt{SExprNode} class. 
+Because our language is so small, an \ttt{SExprNode} is identical to an \ttt{AstNode} aside from the fact that it is not abstract.
 
-To parse the list of tokens, we peek at the head of the queue and match on its type. If it is a number or a symbol, we instantiate an instance of the appropriate subclass type. If we encounter a left parenthesis, then we must do more work, that work being to parse the contents inside the parentheses. We traverse over the tokens until we encounter a right parenthesis, recursively parsing and adding each abstract syntax tree node to a running \ttt{SExprNode} instance. Because the process is recursive, we handle the cases in which an s-expression is nested inside another, which was the case in the third test case from the lexer tester.
+To parse the list of tokens, we peek at the head of the queue and match on its type. 
+If it is either a number or a symbol, we instantiate an instance of the appropriate subclass type. 
+If we encounter a left parenthesis, then we must do more work, that work being to parse the contents inside the parentheses. 
+Namely, we traverse over the tokens until we encounter a right parenthesis, recursively parsing and adding each abstract syntax tree node to a running \ttt{SExprNode} instance. 
+Because the process is recursive, we handle the cases in which an s-expression is nested inside another, which was the case in the third test case from the lexer tester.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -444,6 +512,12 @@ class Parser {
 }
 \end{lstlisting}
 
-Fortunately the parser is also not to difficult to understand. We perform a case analysis on the token and either return an abstract syntax tree node or create one from an s-expression.
+Fortunately, the parser is also not too terribly difficult to understand. 
+We perform a case analysis on the token and either return an abstract syntax tree node or create one from an s-expression.
 
-We decided to write a helper method, \ttt{parseFirstToken}, as a precursor to more advanced features in the language. Many special forms are represented as s-expressions and should be converted into appropriate abstract syntax tree nodes. As an example, we can write a conditional expression, i.e., \ttt{(cond pred cons alt)} via an s-expression. Therefore it makes logical sense to have a separate method that reads the first token and instantiates the correct node for that token, whether it be a \ttt{CondNode} or something else. Our implementation simply has one case, \ttt{default}, since we do not have conditional expressions, but we encourage the readers to add them as language features!
+We decided to write a helper method, \ttt{parseFirstToken}, as a precursor to more advanced features in the language. 
+Many special forms are represented as s-expressions and should be converted into appropriate abstract syntax tree nodes. 
+As an example, we can write a conditional expression, i.e., \ttt{(cond pred cons alt)} via an s-expression. 
+Therefore, it makes logical sense to have a separate method that reads the first token and instantiates the correct node for that token, whether it be a \ttt{CondNode} or something else. 
+Our implementation has only one case, \ttt{default}, since we do not have conditional expressions, but we encourage the readers to add them as additional language features!
+
