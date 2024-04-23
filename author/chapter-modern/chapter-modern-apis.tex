@@ -49,10 +49,11 @@ class ApiConnection {
       // Create a URL with the link, then concatenate each parameter.
       StringBuilder baseUrl = new StringBuilder(webUrl);
       for (String s : parameters.keySet()) { 
-        baseUrl.append(String.format("%s&%s", s, parameters.get(s))); 
+        baseUrl.append(String.format("%s=%s\&", s, parameters.get(s))); 
       }
     
       // Open the connection and set the request to GET.
+      baseUrl = baseUrl.delete(baseUrl.length() - 1); // Remove the last \&.
       URL url = new URL(baseUrl.toString());
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setRequestMethod("GET");

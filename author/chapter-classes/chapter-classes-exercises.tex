@@ -512,7 +512,7 @@ class PrimNode extends AstNode {
   \begin{enumerate}[label=(\roman*)] 
   \item First, evaluate each argument of the function call. This will result in several evaluated abstract syntax trees, which should be stored in a list. 
   \item We then want to create an environment in which the formal parameters are bound to their arguments. Overload the extend method in \ttt{Environment} to now receive a list of string identifiers and a list of (evaluated) AST arguments. Bind each formal to its corresponding AST, and return the extended environment. 
-  \item Evaluate the function identifier to get its function definition as an abstract syntax tree.
+  \item Evaluate the function abstract syntax tree to get its function definition as an abstract syntax tree.
   \item Call \ttt{eval} on the function body and pass the new (extended) environment.
   \end{enumerate}
   This seems like a lot of work (because it is), but it means you can write really cool programs, including those that use recursion!
