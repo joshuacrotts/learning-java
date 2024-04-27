@@ -415,6 +415,25 @@ atof("0")         => 0.0
 atof("-0.000000") => -0.000000
 \end{verbnobox}
 
+\myexercise{1}{chapter-crl}{Wordle is a game created by Josh Wardle, where the objective is to guess a word with a given number of turns, inspired by Mastermind~\Citep{wordle}. In this exercise, you will implement a stage of the Wordle game.}
+
+Design the \ttt{String guessWord(String W, String G)} method that, when given a string~$W$ and a ``guess'' string~$G$, returns a new string with the following properties:
+
+\begin{itemize}
+    \item If $|W| \neq |G|$, return \ttt{null}.
+    \item For every index $i$, if $W_i = G_i$, append $W_i$ to the output string. If $W_i \neq G_i$ but $G_i \in W$, append an asterisk to the output string. Otherwise, output a dash.
+\end{itemize}
+
+Below are some example inputs and outputs.
+
+\begin{verbnobox}[\small]
+guessWord("PLANS", "TRAP")  => null
+guessWord("PLANS", "TRAIN") => "--A-*"
+guessWord("PLANS", "PLANE") => "PLAN-"
+guessWord("PLANS", "PLANS") => "PLANS"
+guessWord("PLANS", "SNLPA") => "*****";
+\end{verbnobox}
+
 \myexercise{2}{chapter-crl}{Design the \ttt{int indexOf(String s, String k)} method, which receives two strings $s$, $k$, and returns the first index of $k$ in $s$. Note that $k$ may be any arbitrary string and not just a a single character. If $k$ is not in $s$, return \ttt{-1}. You \textbf{cannot} use the \ttt{indexOf} method provided by the \ttt{String} class.}
 
 \myexercise{2}{chapter-crl}{Design the \ttt{String substring(String s, int a, int b)} method, which receives a string and two integers $a$, $b$, and returns the substring between these indices. If either are out of bounds of the string, return \ttt{null}. You \textbf{cannot} use the \ttt{substring} method(s) provided by the \ttt{String} class.}
