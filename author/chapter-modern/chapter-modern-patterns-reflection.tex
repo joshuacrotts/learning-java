@@ -6,7 +6,7 @@ We made an example of reflection in~\Cref{chapter-classes} to pass around a clas
 \myexample{Suppose that we want to be able to search, then invoke, a method based on its name.} 
 Reconsider the primitive calculator example from many chapters ago, where we utilize a case dispatch on the operator received as a terminal argument. 
 As we add functions to the system, we must proportionally add code in the \ttt{main} method to account for the new case, which is tiresome at best. 
-Java allows us to lookup a method, at runtime, using its reflection API, and pass parameters accordingly. 
+Java allows us to lookup a method and pass parameters, at runtime, using its reflection API.
 As a substitute for terminal arguments (and the \ttt{main} method in general), we will pass an ``argument array'' to a static \ttt{calculate} method, so we can easily run unit tests.
 
 \begin{lstlisting}[language=MyJava]
@@ -141,6 +141,7 @@ The \ttt{execute} method is generated all the time, but we only care about its c
 For example, if we write a class definition or a variable, it is nonsensical to place it inside the \ttt{execute} method body, since in the former case it would not compile, and in the latter case it would be local to only that version of \ttt{execute}. 
 So, we need a way of determining whether or not a piece of code \emph{is} a declaration/definition. 
 All declarations in our subset of Java will be restricted to the following grammar:
+\\
 
 \setlength{\grammarparsep}{20pt plus 1pt minus 1pt} % increase separation between rules
 \setlength{\grammarindent}{12em} % increase separation between LHS/RHS 
@@ -185,7 +186,8 @@ class JavaRepl {
    * - ArrayList<Integer> foo;
    */
   private boolean isVariableDeclaration(String s) {
-    return s.matches("[a-zA-Z_\\[\\]<>]+\\s*[a-zA-Z0-9_]+(\\s*=\\s*.+?)?;");
+    return s.matches("[a-zA-Z_\\[\\]<>]+\\s*[a-zA-Z0-9_]+"
+                   + "(\\s*=\\s*.+?)?;");
   }
 
   /**
@@ -196,7 +198,8 @@ class JavaRepl {
    * - String baz(ArrayList<Integer> foo) {}
    */
   private boolean isMethodDeclaration(String s) {
-    return s.matches("[a-zA-Z_\\[\\]<>]+\\s+[a-zA-Z0-9_]+\\(.*?\\)\\s*\\{.*?\\}");
+    return s.matches("[a-zA-Z_\\[\\]<>]+\\s+[a-zA-Z0-9_]+
+                   + "\\(.*?\\)\\s*\\{.*?\\}");
   }
 
   /**
@@ -271,7 +274,9 @@ class JavaRepl {
       pw.println(String.format("class Interp%d %s", this.classNo,
                                this.classNo == 0
                                ? "{" 
-                               : "extends Interp" + (this.classNo - 1) + " {"));
+                               : "extends Interp" 
+                                  + (this.classNo - 1) 
+                                  + " {"));
 
       // If it's a declaration, it cannot be inside a method.
       if (this.isDeclaration(src)) {
@@ -314,18 +319,19 @@ class JavaRepl {
     // ... other instantiations not shown.
     this.JAVAC = ToolProvider.getSystemJavaCompiler();
     this.DS = new DiagnosticCollector<>();
-    this.FILE_MANAGER = this.JAVAC.getStandardFileManager(this.DS, null, null);
+    this.FILE_MANAGER = 
+      this.JAVAC.getStandardFileManager(this.DS, null, null);
   }
 
   /**
    * Continuously loops, reading in lines of input representing valid Java
-   * programs. These are converted into statements/expressions that are fed into
-   * a skeleton Java class file. We use Java's runtime compiler to execute
-   * these, and the reflection API to dynamically load the class at runtime.
+   * programs. These are converted into statements/expressions that are 
+   * fed into a skeleton Java class file. We use Java's runtime compiler 
+   * to execute these, and the reflection API to dynamically load the 
+   * class at runtime.
    */
   private void executeRepl() throws Exception {
     List<File> programs = new ArrayList<>();
-
     while (true) {
       // For now assume that one line is the entire program.
       StringBuilder sb = new StringBuilder();
@@ -335,8 +341,9 @@ class JavaRepl {
 
       // Create the compiler from these files.
       var units = this.FILE_MANAGER.getJavaFileObjectsFromFiles(programs);
-      this.task = (JavacTask) this.JAVAC.getTask(null, this.FILE_MANAGER, this.DS,
-                                                 null, null, units);
+      this.task = (JavacTask) this.JAVAC.getTask(null, this.FILE_MANAGER, 
+                                                 this.DS, null, null, 
+                                                 units);
 
       // Compile the list of programs.
       boolean ok = this.task.call();
@@ -382,12 +389,12 @@ class JavaRepl {
   /**
    * Continuously loops, reading in lines of input representing valid Java
    * programs. These are converted into statements/expressions that are
-   * fed into a skeleton Java class file. We use Java's runtime compiler to
-   * execute these, and the reflection API to dynamically load the class at runtime.
+   * fed into a skeleton Java class file. We use Java's runtime compiler 
+   * to execute these, and the reflection API to dynamically load the 
+   * class at runtime.
    */
   private void executeRepl() throws Exception {
     List<File> programs = new ArrayList<>();
-
     while (true) {
       // ... compilation omitted.
       if (!ok) {

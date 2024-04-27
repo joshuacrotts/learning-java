@@ -602,7 +602,7 @@ If so, it awaits on the condition variable, which releases the held lock and put
 When the producer acquires the lock, it adds an element to the list, then issues a signal to the condition variable, which wakes up the consumer thread. 
 The signal causes the consumer to reacquire the lock, check if the list is empty, and, if not, remove (and process) the head element from the list, followed by releasing the lock.
 
-For the sake of our example, suppose that a producer adds data to the list using a random number generator.\footnote{The \ttt{Random} class is thread-safe.} 
+For the sake of our example, suppose that a producer adds data to the list using a random number generator.\footnote{The \ttt{Random} class is thread-safe~\Citep{java}.} 
 That is, we generate a random number, determine if it is within a specific range and, if so, add data to the list. 
 This then means that the producer thread signals on the condition variable, awaking the consumer.
 

@@ -212,7 +212,7 @@ class FractionFactory {
    * Creates a new Fraction instance, or looks it up in the cache.
    * @param num - numerator of fraction.
    * @param den - denominator of fraction.
-   * @return a new instance of Fraction, or a shared instance if it was cached.
+   * @return a new instance of Fraction, or a shared instance if cached.
    */
   Fraction create(int num, int den) {
     return den >= 1 && den <= LIMIT ? this.CACHE[den - 1] 

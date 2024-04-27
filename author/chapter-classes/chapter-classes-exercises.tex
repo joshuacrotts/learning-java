@@ -254,6 +254,21 @@ In this exercise you will design a class that operates over complex numbers.
     Hint: use \ttt{add} and \ttt{mul} to your advantage.
 \end{enumerate}
 
+\myexercise{1}{chapter-classes}{This exercise has 2 parts.}
+\begin{enumerate}[label=(\alph*)]
+  \item Design the \ttt{Accumulator} class, which stores an instance variable of type \ttt{Number}. The \ttt{Accumulator} constructor receives a value of type \ttt{T} and stores it as an instance variable.
+  \item Design the \ttt{apply} method, which receives a \ttt{Number} and adds it to the instance variable, then returns the instance variable. If \ttt{apply} has only received integers as arguments, then the result should be interpreted as an integer and not a floating-point value. We're recreating a challenge invented by Paul Graham called the ``Accumulator Factory.''
+
+  As an example, consider the following sequence.
+  \begin{verbnobox}[\small]
+Accumulator acc1 = new Accumulator(1);
+acc1.apply(5);
+acc1.apply(7);
+assertEquals(13, acc1.apply(0));
+assertEquals(15.3, acc1.apply(2.3));
+  \end{verbnobox}[\small]
+\end{enumerate}
+
 \myexercise{1}{chapter-classes}{This exercise has 3 parts.}
 
 The \emph{Kotlin} programming language supports customized \emph{ranges}. That is, we can define an interval using dot notation, e.g., \ttt{1..10}, then query a value over that interval. For instance, \ttt{x in 1..10} returns whether or not \ttt{x} is between \ttt{1} and \ttt{10}, inclusive. This comparison, however, extends beyond primitive datatypes; ranges may operate over classes. For example, we can create a range \ttt{"hi".."howdy"}, which defines the range of strings in between \ttt{"hi"} and \ttt{"howdy"}.
@@ -266,7 +281,7 @@ The \emph{Kotlin} programming language supports customized \emph{ranges}. That i
 
 \myexercise{2}{chapter-classes}{Design the generic static method \ttt{T validateInput(String prompt, String errResp, U extends Predicate<T> p)} that receives a prompt, an error response, and an object that implements the \ttt{Predicate} interface to test whether or not the received value, received through standard input, is valid. If the value is invalid according to the predicate, print the error response and re-prompt the user. Otherwise, return the entered value.}
 
-\myexercise{2}{This exercise has three parts.} In this exercise, you'll be developing a \ttt{Document} interface along with its implementing classes:
+\myexercise{2}{chapter-classes}{This exercise has three parts.} In this exercise, you'll be developing a \ttt{Document} interface along with its implementing classes:
 \begin{itemize}
 \item \ttt{TextDocument}
 \item \ttt{SpreadsheetDocument}
@@ -637,7 +652,7 @@ Second, design the \ttt{TailCallUtils} final class to contain a private construc
 
 Finally, run the factorial test that we provided earlier in its JUnit suite. It should pass and not stack overflow, hence the inclusion of an \ttt{assertDoesNotThrow} call.
 
-\myexercise{3}{chapter-classes-collections}{Recall the unification exercise from Chapter~\ref{chapter-arrays-collections}. We can take the idea of unification a step further, which is the basis for almost all logic programming languages such as Prolog. For instance, take the expression \ttt{p(X, f(Y))}; attempting to unify this with \ttt{p(q(r(x)), f(b(x)))} returns a unification assignment of \ttt{X : q(r(x)), Y : b(x)}. It is possible for a unification to not return any possible assignment. As an example, unifying \ttt{p(a, b)} with \ttt{p(Y, Y)} returns an empty assignment because it is not possible to unify \ttt{a} with \ttt{Y}, then unify \ttt{b} with \ttt{Y}.}
+\myexercise{3}{chapter-classes}{Recall the unification exercise from Chapter~\ref{chapter-arrays-collections}. We can take the idea of unification a step further, which is the basis for almost all logic programming languages such as Prolog. For instance, take the expression \ttt{p(X, f(Y))}; attempting to unify this with \ttt{p(q(r(x)), f(b(x)))} returns a unification assignment of \ttt{X : q(r(x)), Y : b(x)}. It is possible for a unification to not return any possible assignment. As an example, unifying \ttt{p(a, b)} with \ttt{p(Y, Y)} returns an empty assignment because it is not possible to unify \ttt{a} with \ttt{Y}, then unify \ttt{b} with \ttt{Y}.}
 
 Design three classes: \ttt{Variable}, \ttt{Constant}, and \ttt{Predicate}. Each of these should implement the \ttt{IUnifiable} interface, which supplies one method: \ttt{Assignment unify(IUnifiable u, Assignment as)}. An \ttt{Assignment} is simply a mapping of \ttt{IUnifiable} objects to \ttt{IUnifiable} objects, resembling a map data structure. Variables in this small language will be represented as uppercased letters, whereas constants are lowercase. If two \ttt{IUnifiable} objects cannot be unified, then \ttt{unify} should return \ttt{null}.
 

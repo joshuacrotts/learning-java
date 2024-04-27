@@ -84,7 +84,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{int[] twoDimToOneDim(int[][] A)} method, which will flatten a given two-dimensional array of integers into a one-dimensional array. Hint: figure out how many elements the resulting one-dimensional array should have, and only then figure out how to position elements.}
 
-\myexercise{3}{chapter-arrays-collections}{Design the \ttt{boolean canBalanceArray(int[] A)} method, which determines whether or not an array of integers $A$ can be split into a partition that balances each side. Use the following examples as motivation.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{boolean canBalanceArray(int[] A)} method, which determines whether or not an array of integers $A$ can be split into a partition that balances each side. Use the following examples as motivation.}
 
 \begin{verbnobox}[\small]
 canBalanceArray(new int[]{1, 1, 1, 1, 5})    => false
@@ -95,13 +95,21 @@ canBalanceArray(new int[]{3, 2, 1, 0})       => true
 canBalanceArray(new int[]{10})               => false
 \end{verbnobox}
 
-\myexercise{3}{chapter-arrays-collections}{A \emph{span} is the distance between a value and another, distinct occurrence of the same value. Design the \ttt{int largestSpan(int[] A)} method that, when given a non-empty array of integers $A$, returns the largest span. It may be beneficial to write the \ttt{firstIndexOf} and \ttt{lastIndexOf} methods to help in your design process. Use the following examples as motivation.}
+\myexercise{2}{chapter-arrays-collections}{A \emph{span} is the distance between a value and another, distinct occurrence of the same value. Design the \ttt{int largestSpan(int[] A)} method that, when given a non-empty array of integers $A$, returns the largest span. It may be beneficial to write the \ttt{firstIndexOf} and \ttt{lastIndexOf} methods to help in your design process. Use the following examples as motivation.}
 
 \begin{verbnobox}[\small]
 largestSpan(new int[]{4, 2, 3, 2, 5})             => 3
 largestSpan(new int[]{1, 2, 3, 4, 5})             => 1
 largestSpan(new int[]{5, 4, 4, 4, 3, 4, 1, 4, 1}) => 7
 \end{verbnobox} 
+
+\myexercise{1}{chapter-arrays-collections}{A \emph{fixed window} is a ``window,'' or sub-array, of an array. Design the \ttt{List<List<Integer>> computeFixedWindows(int[] A, int k)} method that, when given an array of integers~$A$ and an integer~$k$, returns a list of lists $L$ where each list in~$L$ is a fixed window of size~$\leq{k}$ that moves through~$A$.}
+
+For example, if $A = [1, 2, 3, 4, 5, 6, 7]$ and $k=2$, then \ttt{computeFixedWindows} returns $\{\{1, 2\}\{3, 4\}, \{5, 6\}, \{7\}\}$. 
+
+\myexercise{1}{chapter-arrays-collections}{A \emph{sliding window} is a ``window,'' or subarray, of an array that slides ``through the elements'' of an array. Design the \ttt{List<List<Integer>> computeSlidingWindows(int[] A, int k)} method that, when given an array of integers~$A$ and an integer~$k$, returns a list of lists $L$ where each list in~$L$ is a sliding window of exactly size~$k$ that moves through~$A$.}
+
+For example, if $A = [1, 2, 3, 4, 5, 6, 7]$ and $k=2$, then \ttt{computeSlidingWindows} returns $\{\{1, 2\}, \{2, 3\}, \{3, 4\}, \{4, 5\}, \{5, 6\}, \{6, 7\}\}$. Note the difference between the sliding window and the fixed window.
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{String[][] computeBowlingScores(String[] S, int[][][] scores)} method that ocmputes the bowling score for each player name in $S$. The scores are separated by rows, where the $i^\text{th}$ row corresponds to the $i^\text{th}$ name in $S$. Each row contains ten arrays of 3-element arrays. These triples, as we will call them, correspond to a bowling frame. The first nine frames only use the first two slots of the triple, whereas the last may use all three.}
 

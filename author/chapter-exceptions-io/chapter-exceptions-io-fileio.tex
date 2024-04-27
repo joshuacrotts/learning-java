@@ -44,12 +44,13 @@ Since \ttt{FileNotFoundException} is a subclass/subexception type of \ttt{IOExce
 
 When reading from an input source that is not \ttt{System.in}, it is imperative to always close the stream resource.
 So, after we read the data from our file input stream object \ttt{fis}, inside the \ttt{finally} block, we invoke \ttt{.close} on the instance to release the allocated system resources and deem the file no longer available.\footnote{We can check whether an input stream is available via the \ttt{.available} method.} 
-Expanding upon the \ttt{finally} block a bit more, it is a segment of code that \emph{always} executes, no matter if the preceding code threw an exception. The finally block is useful for releasing resources, e.g., opened input streams, that otherwise may not be released in the event of an exception or program redirection. 
+Expanding upon the \ttt{finally} block a bit more, it is a segment of code that \emph{always} executes, no matter if the preceding code threw an exception.\index{\ttt{finally}} 
+The \ttt{finally} block is useful for releasing resources, e.g., opened input streams, locks, that otherwise may not be released in the event of an exception or program redirection.\footnote{A lock is a construct used in concurrent programs, which we will exemplify in~\Cref{chapter-modern}.} 
 Many programmers often forget to close a resource, and then are left to wonder why a file is either corrupted, overwritten, or some other alternative. 
-To remediate this problem, Java provides the \emph{try-with-resources} construct, which autocloses the resource.\footnote{Not every resource can be autoclosed; the class of interest must explicitly implement the \ttt{AutoCloseable} interface to be wrapped inside a try-with-resources block.}
+To remediate this problem, Java provides the \emph{try-with-resources}\index{try-with-resources} construct, which autocloses the resource.\footnote{Not every resource can be autoclosed; the class of interest must explicitly implement the \ttt{AutoCloseable} interface to be wrapped inside a try-with-resources block.}
 
-\myexample{Let's use the try-with-resources block to copy the contents of one file to another.} 
-In essence, we will write a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.
+\myexample{Let's use the try-with-resources block to copy the contents of one file into another.} 
+In essence, we will design a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.
 
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
@@ -70,7 +71,7 @@ class FileCopyExample {
 }
 \end{lstlisting}
 
-The file input/output stream classes receive/send data as raw bytes from their source/destination streams. 
+The file input/output stream classes receive/send data as raw bytes from their source/destination streams.
 In most instances, we probably want to read \emph{characters} from a data source or to a data destination rather than the raw bytes themselves.
 To do so, we can instead opt to use the \ttt{FileReader} class, which extends \ttt{Reader} rather than the \ttt{InputStream} class. 
 Namely, \ttt{FileReader} is for reading textual data, whereas \ttt{FileInputStream} is for reading raw byte content of a file. 
