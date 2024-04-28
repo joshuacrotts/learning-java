@@ -1598,6 +1598,66 @@ The returned array is then sorted and printed.\footnote{In the next section, we 
 A final intricacy of conversion process is that we need to pass the comparator of the priority queue to \ttt{Arrays.sort}, otherwise it sorts the elements based on their natural ordering, which is certainly undesired. 
 We do not have direct access to the comparator that we created in the \ttt{initPriorityQueue} method, but we can retrieve the comparator used by the priority queue via the priority queue \ttt{.comparator} method. 
 
+\myexample{Gilmore and Kushagra are playing a game of ``pick the maximum.''}
+The rules are that Gilmore removes the maximum value from a given list of numbers, then Kushagra does the same.
+Kushagra then puts their number into another list, followed by Gilmore's number (okay, this isn't exactly a competitive game).
+We want to see what the resulting list would be for a given input.
+Let's design the \ttt{List<Integer> maximalMoves(List<Integer> ls)} method that, when given a list of numbers, and playing the game as aforementioned, returns the moves made by the players.
+The naive approach is to traverse the list and remove the maximum element for each and every value. 
+Unfortunately, this algorithm is terribly slow, being quadratic in the number of required iterations.
+A more performant method is to add each item to a maximal priority queue (i.e., a priority queue whose comparator sorts items from greatest to least), withdraw two items at a time, and add them to the resulting list in the opposite order.
+To create a comparator that uses ``greatest'' as the ``highest'' priority metric, we can use the \ttt{Collections.reverseOrder} method, which returns a comparator that sorts items in reverse order.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Collections;
+
+class MaximalMovesTester {
+
+  @Test
+  void testMaximalMoves() {
+    assertAll(
+      () -> assertEquals(List.of(), 
+                         maximalMoves(List of())),
+      () -> assertEquals(List.of(4, 5, 3, 2, 0, 1), 
+                         maximalMoves(List.of(0, 1, 2, 3, 4, 5))),
+      () -> assertEquals(List.of(45, 60, 35, 25, 45, 25, 10, 15, 5), 
+                         maximalMoves(List.of(20, 40, 30, 25, 45, 25, 15, 10, 5, 60, 35))));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+import java.util.PriorityQueue;
+
+class MaximalMoves {
+
+  /**
+   * Given a list of numbers, returns the moves made by the players
+   * @param ls - list of numbers.
+   * @return list of moves.
+   */
+  static List<Integer> maximalMoves(List<Integer> ls) {
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    pq.addAll(ls);
+    List<Integer> moves = new ArrayList<>();
+    // We will assume that the list has an even number of elements.
+    for (int i = 0; i < ls.size() - 1; i += 2) {
+      moves.add(pq.poll());
+      moves.add(pq.poll());
+    }
+    return moves;
+  }
+}
+\end{lstlisting}
+
+
+
 \section{Streams}
 \emph{Streams} are, in effect, a \emph{lazy} collection of ``things.'' 
 By ``lazy,'' we mean to say that, if a result is not necessary nor requested, then it is not computed.
