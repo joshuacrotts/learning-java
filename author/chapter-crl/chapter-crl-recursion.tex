@@ -242,7 +242,7 @@ Let us demonstrate this predicament with an example trace of \ttt{add} whose sec
 
 As we stated, calling a method pushes its activation record to the method call stack, so invoking \ttt{add(3, 2000000)} pushes one record. 
 Then, because two million is certainly not zero, we then recursively call \ttt{add(3, 1999999)} and push that record to the call stack. 
-This idea continues until we reach a point where there is not enough memory to push another activation record onto the (call) stack, in which a \ttt{StackOverflowException} is thrown by the Java Virtual Machine. 
+This idea continues until we reach a point where there is not enough memory to push another activation record onto the (call) stack, in which a \ttt{StackOverflowError} is thrown by the Java Virtual Machine. 
 We need a way of writing recursive algorithms without having to waste so much memory and risk a stack overflow of the call stack. 
 A potential solution to our problem is via \emph{tail recursion}\index{tail recursion} through \emph{accumulator-passing style}\index{accumulator-passing style}.
 

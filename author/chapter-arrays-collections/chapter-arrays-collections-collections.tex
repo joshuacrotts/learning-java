@@ -1329,14 +1329,14 @@ class FirstUniqueLetter {
 If there are multiple characters that share the same position, we return the first one in terms of lexicographical ordering.
 
 For example, consider the string \ttt{"abbabdcaadaababcdcc"} and~$n=3$. 
-The most unique characters are \ttt{'a', 'b', 'c'}, so the third most unique character is \ttt{\q{}c\q{}}.
+The most unique characters are \ttt{\q{}a\q{}, \q{}b\q{}, \q{}c\q{}}, so the third most unique character is \ttt{\q{}c\q{}}.
 
 Another example is the string \ttt{"aabbcc"} and~$n=2$. 
-The most unique characters are \ttt{'a', 'b', 'c'}, but all three have the same frequency of two, meaning they are all equally unique. 
+The most unique characters are \ttt{\q{}a\q{}, \q{}b\q{}, \q{}c\q{}}, but all three have the same frequency of two, meaning they are all equally unique. 
 In this case, we return the empty string.
 
 A third example is the string \ttt{"aaaabccccc"} and~$n=2$. 
-The most unique characters are \ttt{'c', 'a', 'b'}, so the second most unique character is \ttt{\q{}a\q{}}.
+The most unique characters are \ttt{\q{}c\q{}, \q{}a\q{}, \q{}b\q{}}, so the second most unique character is \ttt{\q{}a\q{}}.
 
 First, we will count the frequency of each character, then use a \ttt{PriorityQueue} to store the characters in order of their frequency from greatest to least. 
 We will then remove the first~$n-1$ characters from the priority queue, and return the first character of the remaining queue. 
@@ -1441,7 +1441,7 @@ Stacks and queues are another example of data structures that are not necessaril
 Iterators provide a mechanism for traversing over a data structure. 
 Any data structure whose class definition implements \ttt{Iterator} must define at least two methods: \ttt{boolean hasNext} and \ttt{T next}, which determines whether we are at the end of the traversal, and retrieves the next element, respectively. 
 Note that \ttt{T}, for the time being, simply means ``any type,'' and is related to type parameterization.
-All of the Java collections implement \ttt{Iterator}, we can retrieve the corresponding \ttt{Iterator} object via the \ttt{.iterator} method. 
+All of the Java collections implement \ttt{Iterator}, and we can retrieve the corresponding \ttt{Iterator} object via the \ttt{.iterator} method. 
 
 Upon retrieving an iterator, we can use a \ttt{while} loop to continuously retrieve elements in the data structure until no more elements remain to be visited. 
 The elements of the iterator are generated on-the-fly; only upon calling \ttt{next} is the value truly read from the data structure itself. 
@@ -1626,7 +1626,8 @@ class MaximalMovesTester {
       () -> assertEquals(List.of(4, 5, 3, 2, 0, 1), 
                          maximalMoves(List.of(0, 1, 2, 3, 4, 5))),
       () -> assertEquals(List.of(45, 60, 35, 25, 45, 25, 10, 15, 5), 
-                         maximalMoves(List.of(20, 40, 30, 25, 45, 25, 15, 10, 5, 60, 35))));
+                         maximalMoves(List.of(20, 40, 30, 25, 45, 
+                                              25, 15, 10, 5, 60, 35))));
   }
 }
 \end{lstlisting}
@@ -1643,7 +1644,8 @@ class MaximalMoves {
    * @return list of moves.
    */
   static List<Integer> maximalMoves(List<Integer> ls) {
-    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    PriorityQueue<Integer> pq = 
+      new PriorityQueue<>(Collections.reverseOrder());
     pq.addAll(ls);
     List<Integer> moves = new ArrayList<>();
     // We will assume that the list has an even number of elements.
@@ -1773,7 +1775,7 @@ class AGenerator {
 
 Again, it is important to understand what happens under the hood of a stream. 
 Elements thereof only generate when we request them through some accessory means, e.g., \ttt{limit}. 
-As we previously suggested, attempting to access an infinite stream (without a limit) causes the program to hang and eventually crash with an \ttt{OutOfMemoryError} exception.
+As we previously suggested, attempting to access an infinite stream (without a limit) causes the program to hang and eventually crash with an \ttt{OutOfMemoryError} error.
 
 \myexample{Imagine we want to create a stream of all of the Fibonacci numbers.} 
 The thing is, we eventually reach the~$32$-bit limit of the \ttt{int} datatype, so we should take advantage of the \ttt{BigInteger} class, allowing us to represent arbitrarily-large integers.\footnote{Worrying about \emph{how} the \ttt{BigInteger} class works for now is unnecessary as our current plan is to demonstrate stream properties.} 

@@ -160,10 +160,10 @@ Like numbers, strings are comparable and can be, e.g., ``less than'' another.
 According to Java (as well as most other programming languages), one string is less than another if it is lexicographically less than another, and this idea extends to all (string) comparison operations; not just equality. 
 Memorizing the string ordering rules is cumbersome, so we propose the S.N.U.L. acronym. 
 In general, special characters (S) are less than numbers (N), which are less than uppercase characters (U), which are less than lowercase characters (L).\footnote{We say ``in general'' because certain characters that we might view as special, e.g., \ttt{\q{}@\q{}}, have a larger numeric value than numbers, e.g., \ttt{\q{}2\q{}}.} 
-For a full description with the exceptions to our generalization, view an ASCII table, which provides the numerical equivalents of all standard American keyboard characters. 
+For a full description with the modifications to our generalization, view an ASCII table, which provides the numerical equivalents of all standard American keyboard characters. 
 
 \myexample{Java returns the distance between the first non-equal characters in a string using \ttt{compareTo}.} 
-For instance, \ttt{"hello".compareTo("hi")} returns \ttt{-4} because the distance from the first non-equal characters, those being \ttt{\q{}e\q} and \ttt{\q{}\q}, is minus four characters, since \ttt{\q{}i\q{}} is greater than \ttt{\q{}e\q{}}. 
+For instance, \ttt{"hello".compareTo("hi")} returns \ttt{-4} because the distance from the first non-equal characters, those being \ttt{\q{}e\q} and \ttt{\q{i}\q}, is minus four characters, since \ttt{\q{}i\q{}} is greater than \ttt{\q{}e\q{}}. 
 If we compare \ttt{"hello"} against \ttt{"Hello"}, we get \ttt{32}, because according to the ASCII table, \ttt{\q{}h\q{}} corresponds to the integer~$104$, and \ttt{\q{}H\q{}} corresponds to the integer~$72$; their difference is $104 - 72$. 
 Comparing \ttt{"hello"} against \ttt{"hello"} produces zero, indicating that they contain the same characters.
 
@@ -172,7 +172,7 @@ So, for example, in the string \ttt{"hello"}, the character \ttt{\q{}h\q{}} is a
 Knowing this fact is crucial to working with helper methods such as \ttt{charAt}, \ttt{indexOf}, and \ttt{substring}, which we will now discuss.
 
 \myexample{To retrieve the character at a given index, we invoke \ttt{charAt} on the string: \ttt{"hello".charAt(1)} returns \ttt{\q{}e\q{}}.} 
-Attempting to index out of bounds with either a negative number or a number that is equal to or exceeds the length of the string results in a \ttt{StringIndexOutOfBoundsException} exception.
+Attempting to index out of bounds with either a negative number or a number that is equal to or exceeds the length of the string results in a \ttt{StringIndexOutOfBoundsException} exception.\footnote{An \emph{exception}\index{exception} in Java is a type of ``error'' that occurs while a program is running. We put ``error'' in quotes because ``errors,'' at least in Java, are unpredictable and are usually a sign of a severe problem in the program such as running out of system memory.}
 
 \myexample{We can use \ttt{indexOf} to find the index of the first occurrence of some value in a string.} 
 To demonstrate, \ttt{"hello, how are you?".indexOf("are")} returns \ttt{11} because the substring \ttt{"are"} occurs starting at index~$11$ of the provided string. 

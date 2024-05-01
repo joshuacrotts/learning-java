@@ -1181,7 +1181,7 @@ Notice two things: first, we mimic the behavior of the call stack manually.
 Consequently, unless there is a method inside that uses the stack, we never push any activation records. 
 Second, by managing the stack ourselves, we drastically increase the limit to the number of possible ``recursive calls,'' since we push instances of our \ttt{StackFrame} onto the heap. 
 Theoretically, we could continuously push new ``frames'' to our stack so long as we have active and available heap memory. 
-Of course, that is impossible with current hardware limitations, so in due time, with a large-enough call to \ttt{factLoop}, the JVM terminates the program with an \ttt{OutOfMemory} exception. 
+Of course, that is impossible with current hardware limitations, so in due time, with a large-enough call to \ttt{factLoop}, the JVM terminates the program with an \ttt{OutOfMemory} error. 
 
 In the relevant test suite, we do not include tests for extraordinarily large numbers to preserve space, but we encourage the readers to try out such test cases, e.g., $100000000!$. 
 We should state that these tests will not complete in a reasonable amount of time.\footnote{On an AMD Ryzen 5 3600 with 16GB of DDR4 RAM, this test did not complete within a three hour time frame.} 

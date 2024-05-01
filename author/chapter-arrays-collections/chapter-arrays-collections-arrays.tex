@@ -582,9 +582,14 @@ In this problem, we will make use of a two-dimensional array, which might be tho
 Namely, we'll design a method that returns the sum of the elements of a two-dimensional array of integers. 
 Traversing over an~$n$-dimensional array generally involves nested loops. 
 The order in which we traverse over the array can be significant. 
-For example, the following code uses \emph{row-major} ordering, since we iterate over the rows first, and then the columns, meaning that we visit the elements in the order $A_{0,0}, A_{0,1}, A_{0,2}, ..., A_{1,0}, A_{1,1}, A_{1,2}, A_{2,0}, A_{2,1}, A_{2,2}$. 
-Conversely, \emph{column-major} ordering would visit the elements in the order $A_{0,0}, A_{1,0}, A_{2,0}, ..., A_{0,1}, A_{1,1}, A_{2,1}, A_{0,2}, A_{1,2}, A_{2,2}$.
-
+For example, the following code uses \emph{row-major}\index{row-major} ordering, since we iterate over the rows first, and then the columns, meaning that we visit the elements (of a $3\times{3}$ array) in the order
+\[
+  A_{0,0}, A_{0,1}, A_{0,2}, A_{1,0}, A_{1,1}, A_{1,2}, A_{2,0}, A_{2,1}, A_{2,2}
+\] 
+Conversely, \emph{column-major}\index{column-major} ordering would visit the elements in the order
+\[
+  A_{0,0}, A_{1,0}, A_{2,0}, A_{0,1}, A_{1,1}, A_{2,1}, A_{0,2}, A_{1,2}, A_{2,2}
+\]
 Multi-dimensional arrays are nothing more than arrays of arrays. 
 As an example, we can declare a $3 \times 4$ two-dimensional array of integers (with three rows and four columns) as follows:
 
@@ -611,7 +616,7 @@ class SumOf2DArrayTester {
 
 We need to know both the number of rows and the number of columns to traverse over a two-dimensional array. 
 To retrieve the number of rows, we refer to the array's length via \texttt{$A$.length}. 
-To get the number of columns, again, because we know that~$A$ is an array of one-dimensional arrays, we use \ttt{$A[0]$.length}, or in general, \ttt{$A[i]$.length} for any~$i$ such that $0 \leq i< $ \ttt{$A$.length}.\footnote{This generalization applies because arrays in Java cannot be \emph{ragged}: where different rows/columns have differing sizes.}
+To get the number of columns, again, because we know that~$A$ is an array of one-dimensional arrays, we use \ttt{$A[0]$.length}, or in general, \ttt{$A[i]$.length} for any~$i$ such that $0 \leq i< $ \ttt{$A$.length}.\footnote{This generalization applies because arrays in Java cannot be \emph{ragged}: where different rows/columns have differing sizes.} To access the element at row~$i$ and column~$j$, we use \ttt{$A[i][j]$}. 
 
 \begin{lstlisting}[language=MyJava]
 class SumOf2DArray {
@@ -632,8 +637,6 @@ class SumOf2DArray {
   }
 }
 \end{lstlisting}
-
-Note that, to access the element at row~$i$ and column~$j$, we use \ttt{$A[i][j]$}. 
 
 \myexample{Let's solve a slightly harder problem using two-dimensional arrays.} 
 Suppose that we want to design a method that returns the number of possible moves that a rook can take to go from the top-left of a (not-necessarily rectangular) board to the bottom-right, assuming that it cannot move left or up. 
@@ -691,7 +694,7 @@ For example, the position $(n - 1, m - 1)$ has a value of two, since it can move
 The position $(n - 2, m - 1)$ has a value of three, since it can move right, down, or down and then right. 
 We continue this process until we reach the top-left corner, which contains the value of the number of possible paths from $(0, 0)$ to $(n, m)$.\footnote{Should we want to choose an arbitrary starting point, we can retrieve that index rather than $(0, 0)$ in the resulting two-dimensional array.} 
 We can design a method that computes this value using a two-dimensional array. 
-Composing the solution using this style is called \emph{dynamic programming}, which comes up often when attempting to optimize problems that have naive and outrageously recursive solutions.
+Composing the solution using this style is called \emph{dynamic programming}\index{dynamic programming}, which comes up often when attempting to optimize problems that have naive and outrageously recursive solutions.
 
 To prevent our code from going out of bounds, we need to add one to the bounds of our input array. 
 That is, if we want to compute the number of possible paths from $(0, 0)$ to $(n, m)$, we need to create an array of size $(n + 1) \times (m + 1)$, because the current value of the array at $(n, m)$ depends on the values of the array at $(n + 1, m)$ and $(n, m + 1)$.\footnote{When writing dynamic programming algorithms, it is commonplace to call the array \ttt{dp} out of convention.} 
@@ -699,7 +702,7 @@ That is, if we want to compute the number of possible paths from $(0, 0)$ to $(n
 Dynamic programming problems are often solved using two-dimensional arrays using the following three-step process: 
 
 \begin{enumerate}
-  \item For a problem size of~$n$ and~$m$, initialize a two-dimensional array of size $(n + 1) \times (m + 1)$.
+  \item For a problem size of~$n$ and~$m$, we first initialize a two-dimensional array of size~$(n + 1) \times (m + 1)$.
   \item Populate the array with the necessary base cases.
   \item Iterate over the array, filling in the values using a recurrence relation.
 \end{enumerate}

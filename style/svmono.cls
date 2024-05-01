@@ -229,14 +229,36 @@ passing it to article class \MessageBreak
 
 % various sizes and settings for monographs
 
-\setlength{\textwidth}{117mm}
-\setlength{\textheight}{12pt}\multiply\textheight by 45\relax
-% \setlength{\textheight}{191mm}
-\setlength{\topmargin}{0cm}
-\setlength\oddsidemargin   {63\p@}
-\setlength\evensidemargin  {63\p@}
-\setlength\marginparwidth{90\p@}
-\setlength\headsep   {12\p@}
+%% SECOND LARGEST (T5)
+
+\setlength{\paperwidth}{168mm}%
+\setlength{\paperheight}{240mm}%
+\setlength{\textwidth}{125mm}%
+\setlength{\textheight}{576pt}%
+\setlength{\topmargin}{-12.02mm}%
+\setlength{\oddsidemargin}{-21.5pt}%
+\setlength{\evensidemargin}{-0.99pt}%
+
+%% DEFAULT
+% \setlength{\textwidth}{117mm}
+% \setlength{\textheight}{12pt}\multiply\textheight by 45\relax
+% % \setlength{\textheight}{191mm}
+% \setlength{\topmargin}{0cm}
+% \setlength\oddsidemargin   {63\p@}
+% \setlength\evensidemargin  {63\p@}
+% \setlength\marginparwidth{90\p@}
+% \setlength\headsep   {12\p@}
+
+
+%% LARGEST (T4)
+% \setlength{\paperwidth}{178mm}
+% \setlength{\paperheight}{254mm}
+% \setlength{\textwidth}{142mm}
+% \setlength{\textheight}{211mm}
+% \setlength\topmargin{-14.5mm}
+% \setlength\oddsidemargin{-7.5mm}
+% \setlength\evensidemargin{-7.5mm}
+% \setlength{\headsep}{17.5pt}
 
 \newdimen\svparindent
 \setlength{\svparindent}{12\p@}
