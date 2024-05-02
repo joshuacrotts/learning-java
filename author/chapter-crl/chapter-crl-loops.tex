@@ -1271,6 +1271,11 @@ Therefore, we either copy over the last~$c$ characters from~$s$ into~$s'$ if we 
 For example, if $s=\ttt{"hello"}$, and $f=\ttt{"low"}$, we reach the end of~$s$ prior to finishing the substring~$f$, meaning that we only copy over those final characters of~$s$ and do not append~$r$. 
 Conversely, if $f=\ttt{"lo"}$ in that instance, we instead substitute the suffix \ttt{"lo"} with~$r$. 
 Finally, when we encounter a non-matching character, we terminate the current replacement strategy and simply append the last~$c$ characters of~$s$ onto~$s'$ and move the index forward.
+A small intricacy that we have not discussed is \ttt{StringBuilder}\index{\ttt{StringBuilder}}.
+As previously mentioned, strings are immutable, and concatenating two strings produces another integer.
+Combining repeated concatenation operations together with a loop or recursion is highly inefficient.
+To remedy the problem, Java provides the \ttt{StringBuilder} class to make repeated string append operations much faster and less of a memory hog.\footnote{Java's library also has the \ttt{StringBuffer}\index{\ttt{StringBuffer}} class to achieve the same effect, but it is suboptimal when writing single-threaded programs (i.e., programs that are concurrent\index{concurrency}).}
+In essence, the \ttt{StringBuilder} class allocates a buffer to store the characters of a string, and any ``append'' operations are stored in the buffer, rather than having to reallocate an entirely new string of the previous size plus the number of characters in the string-to-conjoin.
 
 \begin{lstlisting}[language=MyJava]
 import java.lang.StringBuilder;
