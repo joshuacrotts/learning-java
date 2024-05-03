@@ -583,12 +583,82 @@ class Point {
 }
 \end{lstlisting}
 
+\myexample{Suppose that we're writing a program that keeps track of orders for a local pizzeria.}'
+Let's design the \ttt{PizzaOrder} class, which stores a \ttt{Map<String, Integer>} as an instance variable.
+The map associates toppings (as strings) to their respective quantities on the pizza order. 
+Toppings can be \ttt{"Pepperoni"}, \ttt{"Onion"}, \ttt{"Pineapple"}, or \ttt{"Anchovie"}.
+The \ttt{PizzaOrder} constructor instantiates the map to be a \ttt{LinkedHashMap} to ensure that the order of the toppings is respected.
+As parameters to the constructor, it receives two arrays: \ttt{String[] toppings} and \ttt{int[] toppingCount}, where each entry is added to the map.
+To make the constructor simpler, we will assume that \ttt{toppings} and \ttt{toppingCount} share the same length.
+We'll also design the \ttt{Set<String> getToppings()} method to return the toppings in the order that they were added.
+Finally, we'll design a method, \ttt{Optional<Integer> getToppingCount(String s)} to retrieve the number/quantity of a given topping.\footnote{The \ttt{getToppingCount} method uses \ttt{Optional.ofNullable} that, when given a \ttt{null} argument, returns the empty \ttt{Optional} and otherwise wraps the value in a non-empty \ttt{Optional}.}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+import java.util.Optional;
+
+class PizzaOrderTester {
+
+  @Test
+  void testPizzaOrder() {
+    PizzaOrder p1 = new PizzaOrder();
+    PizzaOrder p2 = new PizzaOrder(new String[]{"Pepperoni", "Anchovie"},
+                                   new int[]{3, 2});
+    assertAll(
+      () -> assertEquals(Set.of(), p1.getToppings()),
+      () -> assertEquals(Set.of("Pepperoni", "Anchovie"), p2.getToppings())
+      () -> assertEquals(Optional.of(3), p2.getToppingCount("Pepperoni")),
+      () -> assertEquals(Optional.empty(), p2.getToppingCount("Pineapple")));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+class PizzaOrder {
+
+  private final Map<String, Integer> TOPPINGS;
+
+  PizzaOrder(String[] toppings, int[] count) {
+    this.TOPPINGS = new LinkedHashMap<>();
+    for (int i = 0; i < toppings.length; i++) {
+      TOPPINGS.put(toppings[i], count[i]);
+    }
+  }
+
+  /**
+   * Returns the toppings as a set.
+   * @return new LinkedHashSet containing toppings.
+   */
+  Set<String> getToppings() {
+    Set<String> set = new LinkedHashSet<>();
+    this.TOPPINGS.keySet().forEach(k -> set.add(k));
+    return set;
+  }
+
+  /**
+   * Returns the number of a certain topping there are in this pizza order.
+   * @param topping - one of the four toppings.
+   * @return Optional<Integer> containing value, or empty optional.
+   */
+  Optional<Integer> getToppingCount(String topping) {
+    return Optional.ofNullable(this.TOPPINGS.get(topping));
+  }
+}
+\end{lstlisting}
+
 \myexample{Let's amplify the complexity a bit by designing a ``21'' card game, which is a card game where the players try to get a card value total of~$21$ without going over.} 
 We should think about the design process of this game, i.e., what classes we need to design. 
 It makes sense to start with a \ttt{Card} class, which stores its suit and its numeric value. 
 A suit is one of four possibilities, each of which use a different symbol, meaning that we should create another class called \ttt{Suit}. 
 In \ttt{Suit}, we instantiate four static instances of \ttt{Suit}, each of which represents one of the four valid suits. 
-Its constructor is privatized because we, as the programmers, define the four possible suits. 
+Its constructor is privatized because we, as the programmers, define the four possible suits.\footnote{Instantiating objects in this manner bears resemblance to a \emph{design pattern}\index{design pattern} called \emph{singleton}\index{singleton}.} 
 Consequently, it should not be possible for the user to define their own custom suit, at least for this particular game. 
 The notion of \ttt{Suit} being an instance variable of \ttt{Card}, and only existing as a means to support the \ttt{Card} class is called \emph{object composition}\index{object composition}. 
 Lastly, we will provide a method that returns an \ttt{Iterator<Suit>} over the four suit possibilities to make our lives easier when designing the \ttt{Deck} class. 

@@ -335,15 +335,6 @@ Notice that we have a \ttt{default} method, which is one that an implementing cl
   \item Design the \ttt{CommaFormat} method, which implements \ttt{INumberFormat}, and returns a string where the number contains commas where appropriate. For example, \ttt{format(4412)} should return \ttt{"4,412"}.
 \end{enumerate}
 
-\myexercise{2}{chapter-classes}{An earlier exercise asked you to design the \ttt{PizzaOrder} and \ttt{GroupOrder} classes. This exercise relies on the completion of that exercise, and introduces readers to the visitor design pattern, which we explore in greater detail in~\Cref{chapter-modern}.}
-\begin{enumerate}[label=(\alph*)]
-  \item Design the \ttt{ITopping} interface, which represents a topping. Then, design four classes: \ttt{Pepperoni}, \ttt{Onion}, \ttt{Pineapple}, and \ttt{Anchovie}, all of which implement \ttt{ITopping}.
-  \item Now, let's design a class that allows us to do multiple actions with toppings. Design the generic \ttt{IToppingVisitor} class, which has four methods: \ttt{T visitPepperoni(Pepperoni p)}, \ttt{T visitOnion(Onion o)}, \ttt{T visitPineapple(Pineapple p)}, and \ttt{T visitAnchovie(Anchovie a)}.
-  \item Design the \ttt{ToppingPriceVisitor} class, which implements the interface \ttt{IToppingVisitor}, whose type parameter is a \ttt{Double}. The idea is that the \ttt{ToppingPriceVisitor} class serves as a way of associating a property with toppings without having to modify/amend the class definitions. Override the four methods to return \ttt{3.50}, \ttt{2.50}, \ttt{5.75}, and \ttt{4.00} respectively.
-  \item Modify the \ttt{PizzaOrder} class to have its map instance variable associate \ttt{ITopping} objects to \ttt{Integer}, rather than \ttt{String} to \ttt{Integer}.
-  \item Finally, inside \ttt{GroupOrder}, design the \ttt{double cost(IToppingVisitor v)} method, which receives an instance of the \ttt{ToppingPriceVisitor} and returns the price of each \ttt{PizzaOrder}, giving their toppings.
-\end{enumerate}
-
 \myexercise{3}{chapter-classes}{A \emph{lazy list} is one that, in theory, produces infinite results! Consider the \ttt{ILazyList} interface below:}
 \begin{lstlisting}[language=MyJava]
 interface ILazyList<T> {

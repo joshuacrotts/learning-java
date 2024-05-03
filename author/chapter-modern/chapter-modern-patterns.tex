@@ -468,30 +468,33 @@ interface IExpressionVisitor {
 }
 \end{lstlisting}
 
-Next, we need to modify the \ttt{AstNode} class to include an abstract \ttt{visit} method that receives a \ttt{Visitor} object, and calls the appropriate \ttt{visit} method using polymorphic dispatch. 
+Next, we need to modify the \ttt{AstNode} class to include a \ttt{visit} method that receives a \ttt{Visitor} object, and calls the appropriate \ttt{visit} method using polymorphic dispatch. 
+We briefly touched on this topic in one of the~\Cref{chapter-classes} examples.
 
 \begin{lstlisting}[language=MyJava]
 class AstNode {
   // ... other methods and variables not shown.
 
-  public abstract String visit(IExpressionVisitor visitor);
-}
-\end{lstlisting}
-
-Now, we update each subclass to override the \ttt{visit} method and call the appropriate \ttt{visit} method. 
-Fortunately, this is trivial, since all we must do is add the method signature and call \ttt{visit} with \ttt{this} as the argument to represent that the visitor is visiting the current node. 
-Because making this alteration is consistently redundant, we will only show the implementation of the \ttt{NumNode} class, but the remaining classes are identical with respect to this method.\footnote{Remember that we said that we could not alter/update these classes (or rather that the visitor pattern guarantees this invariant), but we rely on the assumption that they support the visitor pattern, which serves as the only internal modification.}
-
-\begin{lstlisting}[language=MyJava]
-class NumNode extends AstNode {
-  // ... other methods and variables not shown.
-
-  @Override
-  public String visit(IExpressionVisitor visitor) {
-    return visitor.visit(this);
+  String visit(IExpressionVisitor visitor) {
+   return visitor.visit(this);
   }
 }
 \end{lstlisting}
+
+% Now, we update each subclass to override the \ttt{visit} method and call the appropriate \ttt{visit} method. 
+% Fortunately, this is trivial, since all we must do is add the method signature and call \ttt{visit} with \ttt{this} as the argument to represent that the visitor is visiting the current node. 
+% Because making this alteration is consistently redundant, we will only show the implementation of the \ttt{NumNode} class, but the remaining classes are identical with respect to this method.\footnote{Remember that we said that we could not alter/update these classes (or rather that the visitor pattern guarantees this invariant), but we rely on the assumption that they support the visitor pattern, which serves as the only internal modification.}
+
+% \begin{lstlisting}[language=MyJava]
+% class NumNode extends AstNode {
+%   // ... other methods and variables not shown.
+
+%   @Override
+%   public String visit(IExpressionVisitor visitor) {
+%     return visitor.visit(this);
+%   }
+% }
+% \end{lstlisting}
 
 From here, we need to design a variant of the interface that implements the expression printing behavior. 
 Thus, we will write the \ttt{ExpressionPrinterVisitor} class, which implements the \ttt{IExpressionVisitor} interface. 
