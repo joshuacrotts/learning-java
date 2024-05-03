@@ -1279,14 +1279,14 @@ Because we now understand how to combine \ttt{get} and \ttt{put} to insert and i
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class FirstUniqueLetterTester {
+class FirstUniqueDigitTester {
 
   @Test
-  void testFirstUniqueLetter() {
+  void testFirstUniqueDigit() {
     assertAll(
-      () -> assertEquals("3", firstUniqueLetter("1211312121")),
-      () -> assertEquals("2", firstUniqueLetter("0099828776")),
-      () -> assertEquals("", firstUniqueLetter("11223344")));
+      () -> assertEquals("3", firstUniqueDigit("1211312121")),
+      () -> assertEquals("2", firstUniqueDigit("0099828776")),
+      () -> assertEquals("", firstUniqueDigit("11223344")));
   }
 }
 \end{lstlisting}
@@ -1296,7 +1296,7 @@ class FirstUniqueLetterTester {
 import java.util.HashMap;
 import java.util.Map;
 
-class FirstUniqueLetter {
+class FirstUniqueDigit {
 
   /**
    * Returns the first unique digit in a string, as a string. 
@@ -1304,7 +1304,7 @@ class FirstUniqueLetter {
    * @param s - string.
    * @return first unique digit as a string.
    */
-  static String firstUniqueLetter(String s) {
+  static String firstUniqueDigit(String s) {
     Map<Character, Integer> M = new LinkedHashMap<>();
     // Count the frequency of each digit
     for (int i = 0; i < s.length(); i++) {
@@ -1325,18 +1325,20 @@ class FirstUniqueLetter {
 }
 \end{lstlisting}
 
-\myexample{One final example that we will consider is the \ttt{nthMostUniqueChar} method that, when given a string~$s$ and an integer~$n$, returns the~$n^\text{th}$ most unique character in the string, or \ttt{null} if there is no such character.} 
+\myexample{One final example that we will consider is the \ttt{nthMostFrequentChar} method that, when given a string~$s$ and an integer~$n$, returns the~$n^\text{th}$ most frequent character in the string, or \ttt{null} if there is no such character.} 
 If there are multiple characters that share the same position, we return the first one in terms of lexicographical ordering.
 
 For example, consider the string \ttt{"abbabdcaadaababcdcc"} and~$n=3$. 
-The most unique characters are \ttt{\q{}a\q{}, \q{}b\q{}, \q{}c\q{}}, so the third most unique character is \ttt{\q{}c\q{}}.
+The most frequent characters are \ttt{\q{}a\q{}, \q{}b\q{}, \q{}c\q{}}, in that order.
+So, the third most frequent character is \ttt{\q{}c\q{}}.
 
 Another example is the string \ttt{"aabbcc"} and~$n=2$. 
-The most unique characters are \ttt{\q{}a\q{}, \q{}b\q{}, \q{}c\q{}}, but all three have the same frequency of two, meaning they are all equally unique. 
+The most frequent characters are \ttt{\q{}a\q{}, \q{}b\q{}, \q{}c\q{}}, in that order, but all three characters share a frequency of two, meaning they are all equally frequent. 
 In this case, we return the empty string.
 
 A third example is the string \ttt{"aaaabccccc"} and~$n=2$. 
-The most unique characters are \ttt{\q{}c\q{}, \q{}a\q{}, \q{}b\q{}}, so the second most unique character is \ttt{\q{}a\q{}}.
+The most frequent characters are \ttt{\q{}c\q{}, \q{}a\q{}, \q{}b\q{}}, in that order.
+So, the second most frequent character is \ttt{\q{}a\q{}}.
 
 First, we will count the frequency of each character, then use a \ttt{PriorityQueue} to store the characters in order of their frequency from greatest to least. 
 We will then remove the first~$n-1$ characters from the priority queue, and return the first character of the remaining queue. 
@@ -1357,15 +1359,15 @@ To retrieve the key and value from an \ttt{Map.Entry} object, we use the \ttt{ge
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class NthMostUniqueCharTester {
+class NthMostFrequentCharTester {
 
   @Test
-  void testNthMostUniqueChar() {
+  void testNthMostFrequentChar() {
     assertAll(
-      () -> assertEquals("a", nthMostUniqueChar("abacab", 1)),
-      () -> assertEquals("d", nthMostUniqueChar("aaaadddcccccbbee", 3)),
-      () -> assertEquals("q", nthMostUniqueChar("ppqrrss", 2)),
-      () -> assertEquals(null, nthMostUniqueChar("aabbccdd", 2)));
+      () -> assertEquals("a", nthMostFrequentChar("abacab", 1)),
+      () -> assertEquals("d", nthMostFrequentChar("aaaadddcccccbbee", 3)),
+      () -> assertEquals("q", nthMostFrequentChar("ppqrrss", 2)),
+      () -> assertEquals(null, nthMostFrequentChar("aabbccdd", 2)));
   }
 }
 \end{lstlisting}
@@ -1377,7 +1379,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-class NthMostUniqueChar {
+class NthMostFrequentChar {
 
   /**
    * Given a string, returns the nth most 
@@ -1387,7 +1389,7 @@ class NthMostUniqueChar {
    * @return the nth most frequent character as 
    *         a String or null if nonexistent.
    */
-  static String nthMostUniqueChar(String s, int n) {
+  static String nthMostFrequentChar(String s, int n) {
     // Step 1: compute the frequencies.
     Map<Character, Integer> M = new HashMap<>();
     s.chars().forEach(c -> M.put(c, M.getOrDefault(c, 0))); 
@@ -2040,6 +2042,106 @@ class RemoveVowelsStream {
             .mapToObj(c -> String.valueOf(c))
             .filter(c -> !isVowel(c))
             .reduce("", (acc, c) -> acc + c);
+  }
+}
+\end{lstlisting}
+
+\myexample{While the stream API is convenient and helps us to write complicated code quickly, it is not always a performant solution.}
+Consider the following problem: we are given a \ttt{Set<Integer>}, and we want to return a \ttt{Map<Integer, Integer>} where each integer in the given set is mapped to its ``rank.'' 
+A value's ``rank'' is denoted by how many elements are larger than (or equal to) it in the list.
+For example, the rank map of $\{44, 41, 23, 94, 10, 0\}$ is
+
+\begin{align*}
+  {<0 : 6>, <10 : 5>, <23 : 4>, <41 : 3>, <44 : 2>, <94 : 1>}
+\end{align*}
+
+Because there are~$6$ elements greater than or equal to~$0$, and so forth.
+The na\"ive algorithm is to traverse over the elements of the set, and create a map where the key is the element and its value is the result of a filter.
+While concise, the code traverses over each element for every element, making this a quadratic-time algorithm.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+class RankMapTester {
+
+  @Test
+  void testRankMap() {
+    Map<Integer, Integer> M1 = new TreeMap<>();
+    M1.put(0, 6);
+    M1.put(10, 5);
+    M1.put(23, 4);
+    M1.put(41, 3);
+    M1.put(44, 2);
+    M1.put(94, 1);
+    assertAll(
+      () -> assertEquals(Map.of(), rankMap(Set.of())),
+      () -> assertEquals(M2, rankMap(Set.of(44, 41, 23, 94, 10, 0))));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
+
+class RankMap {
+
+  /**
+   * Creates a rank map for a given set of numbers. A rank map
+   * is an association of a number to how many numbers are >=
+   * the number. This method uses the stream approach.
+   * @param S - set of integers.
+   * @return rank map.
+   */
+  static Map<Integer, Integer> rankMap(Set<Integer> S) {
+    Map<Integer, Integer> M = new TreeMap<>();
+    S.forEach(n -> M.put(n, (int) S.stream().filter(m -> m >= n).count()));
+    return M;
+  }
+}
+\end{lstlisting}
+
+Let's design an improved version of \ttt{rankMap}, where we sort the elements of the set, then insert them into a map based on position.
+There is a fixed cost associated with sorting, but it is ultimately faster than the stream and filter approach.
+The lesson here is not to discourage readers from the stream API; in fact, we claim the opposite.
+Streams are an amazing addition to Java, but programmers should always consider the performance implications of stream methods, as they would any other method.
+
+\begin{lstlisting}[language=MyJava]
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+class RankMap {
+
+  /**
+   * Creates a rank map for a given set of numbers. A rank map
+   * is an association of a number to how many numbers are >=
+   * the number. This method is faster than the stream approach.
+   * @param S - set of integers.
+   * @return rank map.
+   */
+  static Map<Integer, Integer> fasterRankMap(Set<Integer> S) {
+    // Step 1: create a list and sort the elements.
+    List<Integer> ls = new ArrayList<>();
+    S.forEach(x -> ls.add(x));
+    Collections.sort(ls);
+
+    // Step 2: traverse over the list and add the elements to a map.
+    Map<Integer, Integer> M = new LinkedHashMap<>();
+    for (int i = 0; i < ls.size(); i++) {
+      M.put(ls.get(i), ls.size() - i);
+    }
+    return M;
   }
 }
 \end{lstlisting}

@@ -231,23 +231,23 @@ passing it to article class \MessageBreak
 
 %% SECOND LARGEST (T5)
 
-\setlength{\paperwidth}{168mm}%
-\setlength{\paperheight}{240mm}%
-\setlength{\textwidth}{125mm}%
-\setlength{\textheight}{576pt}%
-\setlength{\topmargin}{-12.02mm}%
-\setlength{\oddsidemargin}{-21.5pt}%
-\setlength{\evensidemargin}{-0.99pt}%
+% \setlength{\paperwidth}{168mm}%
+% \setlength{\paperheight}{240mm}%
+% \setlength{\textwidth}{125mm}%
+% \setlength{\textheight}{576pt}%
+% \setlength{\topmargin}{-12.02mm}%
+% \setlength{\oddsidemargin}{-21.5pt}%
+% \setlength{\evensidemargin}{-0.99pt}%
 
 %% DEFAULT
-% \setlength{\textwidth}{117mm}
-% \setlength{\textheight}{12pt}\multiply\textheight by 45\relax
-% % \setlength{\textheight}{191mm}
-% \setlength{\topmargin}{0cm}
-% \setlength\oddsidemargin   {63\p@}
-% \setlength\evensidemargin  {63\p@}
-% \setlength\marginparwidth{90\p@}
-% \setlength\headsep   {12\p@}
+\setlength{\textwidth}{117mm}
+\setlength{\textheight}{12pt}\multiply\textheight by 45\relax
+% \setlength{\textheight}{191mm}
+\setlength{\topmargin}{0cm}
+\setlength\oddsidemargin   {63\p@}
+\setlength\evensidemargin  {63\p@}
+\setlength\marginparwidth{90\p@}
+\setlength\headsep   {12\p@}
 
 
 %% LARGEST (T4)

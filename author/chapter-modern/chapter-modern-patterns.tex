@@ -469,14 +469,13 @@ interface IExpressionVisitor {
 \end{lstlisting}
 
 Next, we need to modify the \ttt{AstNode} class to include the abstract \ttt{visit} method, which receives a \ttt{Visitor} object, and calls the appropriate \ttt{visit} method using polymorphic dispatch. 
+By labeling \ttt{visit} as \ttt{abstract}, we require all (non-abstract) subclasses of \ttt{AstNode} to provide an overridden implementation of \ttt{visit}.
 
 \begin{lstlisting}[language=MyJava]
 class AstNode {
   // ... other methods and variables not shown.
 
-  String visit(IExpressionVisitor visitor) {
-   return visitor.visit(this);
-  }
+  abstract String visit(IExpressionVisitor visitor);
 }
 \end{lstlisting}
 
@@ -489,7 +488,7 @@ class NumNode extends AstNode {
   // ... other methods and variables not shown.
 
   @Override
-  public String visit(IExpressionVisitor visitor) {
+  String visit(IExpressionVisitor visitor) {
     return visitor.visit(this);
   }
 }

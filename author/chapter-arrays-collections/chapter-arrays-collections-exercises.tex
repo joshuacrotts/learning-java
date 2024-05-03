@@ -211,6 +211,27 @@ Where~$n$ is the number of data points,~$x_i$ and~$y_i$ are the~$i^\text{th}$ da
 
 Design the \ttt{double correlationCoefficient(double[] xs, double[] ys)} method that, when given two arrays of doubles~$\emph{xs}$ and~$\emph{ys}$, returns the correlation coefficient between the two arrays. If the two arrays are not of the same length, return \ttt{null}.
 
+\myexercise{1}{chapter-arrays-collections}{This exercise has three parts.}
+\begin{enumerate}[label=(\alph*)]
+    \item Design the \emph{standard recursive} \ttt{cycleOperations} method, which receives a \ttt{List<Integer>} and returns the result of circularly applying \ttt{+}, \ttt{-}, then \ttt{*} to the elements of the list.
+
+    \begin{verbatim}
+cycleOperations({}) 
+    => 0
+cycleOperations({1, -4, 9, -16, 25, -36}) 
+    => ((((((0 + 1) - -4) * 9) + -16) - 25) * -36) 
+    => -144
+cycleOperations({10, 5, -2, 1, -2}) 
+    => (((((0 + 10) - 5) * -2) + 1) * -2) 
+    => 18
+    \end{verbatim}  
+
+    \item Design the \texttt{cycleOperationsTR} and \texttt{cycleOperationsTRHelper} methods. The former acts as the driver to the latter; the latter solves the same problem that \texttt{cycleOperations} does, but it instead uses tail recursion. Remember to include the relevant access modifiers!
+    
+    \item Design the \texttt{cycleOperationsLoop} method, which solves the problem using either a \texttt{while} or \texttt{for} loop.
+\end{enumerate}
+If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
+
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{List<Integer> sumEvenMultOdd(int[] A)} method that, when given an array of integers $A$, returns a \ttt{List<Integer>} whose first element is the sum of all elements at even indices of $A$, and whose second element is the product of all elements at odd indices of $A$. If you encounter a zero at an odd index, do not continue to multiply values (i.e., don't keep multiplying subsequent values and return the multiplied value before you encountered the zero, since the product will forever be zero from that point onward).}
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{Set<List<Integer{>}{>} twoSum(int[] A, int t)} method that, when given an array of integers $A$ and a target $t$, returns all possible pairs of numbers in $A$ that sum to $t$. For example, if $A=\{2, 2, 4, 10, 6, -2\}$ and $t=4$, we return a set containing two two-element lists: $\{2, 2\}$ and $\{6, -2\}$. Do not add a pair that already exists in the set or a pair that, by reversing the pair, we get a pair in the existing set. E.g., $\{-2, 6\}$ should not be added to the set. 

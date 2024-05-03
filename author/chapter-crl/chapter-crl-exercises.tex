@@ -168,13 +168,13 @@ static boolean isNumeric(String n) {
 
 \myexercise{1}{chapter-crl}{Design the \ttt{String stateOfMatter(double t, char u)} method that receives a water temperature as a \ttt{double} and a unit as a \ttt{char}, i.e., either \ttt{\q{C}\q{}} or \ttt{\q{F}\q{}} for Celsius and Fahrenheit respectively. Return a string representing whether the water is a liquid, solid, or gas at sea level.}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{String sortThreeStrings(String a, String b, String c)} method that receives three strings and sorts them lexicographically. Return the sorted set of strings as a string itself, separated by commas. For example, if the input is \ttt{Charlie}, \ttt{Able}, \ttt{Baker}, you should return \ttt{Able,Baker,Charlie}.}
+\myexercise{1}{chapter-crl}{Design the \ttt{String sortStrings(String a, String b, String c)} method that receives three strings and sorts them lexicographically. Return the sorted set of strings as a string itself, separated by commas. For example, if the input is \ttt{Charlie}, \ttt{Able}, \ttt{Baker}, you should return \ttt{Able,Baker,Charlie}.}
 
 \myexercise{1}{chapter-crl}{Design the \ttt{int trickSum(int x, int y, int z)} method that sums the three integer inputs. If one of those values is $17$, however, it and any numbers to its right should not be included in the sum. For example, \ttt{trickSum(13, 17, 3)} resolves to \ttt{13} because, when $y=\ttt{17}$, we add neither $y$ nor $z$ to the resulting sum.}
 
 \myexercise{1}{chapter-crl}{A year with $366$ days is called a leap year. Leap years are necessary to keep the calendar synchronized with the sun because the earth revolves around the sun once every $365.25$ days. Actually, that figure is not entirely precise, and for all dates after $1582$ the Gregorian correction applies. Usually years that are divisible by 4 are leap years, for example $1996$. However, years that are divisible by $100$ (for example, $1900$) are not leap years, but years that are divisible by $400$ are leap years (for example, $2000$). Design the \ttt{boolean isLeapYear(int y)} method that receives a year (as an integer) $y$ and computes whether $y$ is a leap year. Use a single \ttt{if} statement and Boolean operators.}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{double computeDiscount(double c, int age, boolean isStudent)} met\-hod that computes a discount for some item cost $c$ based on their age $\mathit{age}$ and student status according to the following criteria:}
+\myexercise{1}{chapter-crl}{Design the \ttt{double getDiscount(double c, int age, boolean isStudent)} met\-hod that computes a discount for some item cost $c$ based on their age $\mathit{age}$ and student status according to the following criteria:}
 \begin{itemize}
     \item If $\mathit{age} < 18$, apply a $20\%$ discount.
     \item If $18 \leq \mathit{age} \leq 25$ and they are a student, apply a $25\%$ discount. If they are not a student, do not apply a discount.
@@ -183,7 +183,7 @@ static boolean isNumeric(String n) {
 \end{itemize}
 Your method should return the total cost of the item after applying the discount.
 
-\myexercise{1}{chapter-crl}{Design the \ttt{double computeTaxCost(double itemCost, String state)} method that computes the tax for some item based on the state in which it is purchased. The method should return the total cost of the item, which includes the taxed amount. The tax rates are as follows:}
+\myexercise{1}{chapter-crl}{Design the \ttt{double getTaxCost(double itemCost, String state)} method that computes the tax for some item based on the state in which it is purchased. The method should return the total cost of the item, which includes the taxed amount. The tax rates are as follows:}
 \begin{itemize}
     \item \ttt{"CA"}: $9.25\%$
     \item \ttt{"NY"}: $4.0\%$
@@ -203,7 +203,9 @@ Your method should return the total cost of the item after applying the discount
     \item The gross pay is subject to the tax \emph{percentage} passed to the method. 
 \end{itemize}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{double computeBonusPay(double baseSalary, int yearsOfService, boolean achievedTarget, double salesAmount, double targetSales)} method that calculates the amount of bonus pay (note: \textbf{only} the bonus pay) given to an employee under the following conditions:}
+Overtime pay is defined as the pay an employee receives after working~$40$ hours.
+
+\myexercise{1}{chapter-crl}{Design the \ttt{double getBonusPay(double baseSalary, int yearsOfService, boolean achievedTarget, double salesAmount, double targetSales)} method that calculates the amount of bonus pay (note: \textbf{only} the bonus pay) given to an employee under the following conditions:}
 \begin{itemize}
     \item A base bonus rate of $10\%$ of the base salary is given to employees who have achieved their sales target.
     \item Employees with more than $5$ years of service receive an additional $5\%$ bonus of their base salary.
@@ -275,9 +277,8 @@ If you write tests for one of these methods, you should be able to propagate it 
     Design the standard recursive \ttt{isFactorion} method, which receives an integer~$n$ and returns whether or not it is a factorion. 
     \item Design the \ttt{isFactorionTR} tail recursive method, which receives two integers and returns the greatest common divisor between the two. Euclid's algorithm is the basis for this approach and is a tail recursive algorithm by design.
     \item Design the \ttt{isFactorionLoop} method that solves the problem using a loop.
-
 \end{enumerate}
-If you write tests for one of these methods, you should be able to propagate it through the others, so write plenty!
+If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
 
 
 \myexercise{1}{chapter-crl}{This question has three parts.}

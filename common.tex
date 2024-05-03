@@ -98,12 +98,15 @@
 
 
 \newcommand{\myexercise}[3]
-{\noindent\textbf{Exercise {~\ref{#2}}.\theexcounter.} (\repeatstar{#1}) \\
+{\vspace*{10pt}\noindent\textbf{Exercise {~\ref{#2}}.\theexcounter.} (\repeatstar{#1}) \\
 {#3} \stepcounter{excounter}}
 
-\newcommand{\myexample}[1]
-{\noindent\textbf{\emph{Example {\thechapter}.{\theexamplecounter}.}} {#1}
-\stepcounter{examplecounter}}
+\newcommand{\myexample}[1]{
+  \vspace*{10pt}% Add vertical space, but not at the top of a page
+  \noindent\textbf{\emph{Example {\thechapter}.{\theexamplecounter}.}} {#1}
+  \stepcounter{examplecounter}
+}
+
 
 
 \newenvironment{copyrightpage}{\thispagestyle{empty}\bgroup\parindent\z@%
