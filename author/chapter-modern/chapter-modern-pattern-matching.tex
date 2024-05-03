@@ -51,7 +51,7 @@ class PatternMatching {
       case Rectangle r -> 2 * r.getWidth() + 2 * r.getHeight();
       case Circle c    -> 2 * Math.PI * c.getRadius();
       case Triangle t  -> 3 * t.getSideLength();
-      default -> throw new IllegalArgumentException("perimeter: bad shape " + s);
+      default -> throw new IllegalArgumentException("perimeter: bad shape "+s);
     };
   }
 }

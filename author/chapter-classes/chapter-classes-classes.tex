@@ -951,6 +951,209 @@ class TwentyOne {
 
 Designing interactive games is a great exercise in object-oriented programming, as well as the culmination of other discussed topics.
 
+\myexample{Suppose that we are asked to design a simple library management system for a local library.}
+That is, the system wants to be able to check out books, determine if they are in the system, and how much stock remains.
+Let's think about the components of such a system.
+At a minimum, we need an \ttt{Author} and a \ttt{Book} class.
+Authors contain only a name out of conciseness.
+Books contain a title, author, release date, edition number, and page count.
+Because books contain authors, we again use object composition. 
+Both classes, namely \ttt{Author} and \ttt{Book} are straightforward to design. Both classes also override the \ttt{equals}, \ttt{hashCode}, and \ttt{toString} methods for use in a hashable data structure and equality comparison.
+
+\begin{lstlisting}[language=MyJava]
+class LibraryTester {
+
+  private static final Author A1 = new Author("Michael Spivak");
+  private static final Author A2 = new Author("Joshua Crotts");
+  private static final Author A3 = new Author("Douglas Hofstader");
+  private static final Author A4 = new Author("William Van Orman Quine");
+  
+  private static final Book B1 
+    = new Book("Calculus", A1, 4, 680);
+  private static final Book B2 
+    = new Book("Principles of Computer Science", A2, 1, 754);
+  private static final Book B3 
+    = new Book("Godel, Escher, Bach", A3, 2, 824);
+  private static final Book B4 
+    = new Book("Methods of Logic", A4, 4, 344);
+
+  void testBook() {
+
+    assertAll(
+      () -> assertEquals("Calculus", b1.getTitle()),
+      () -> assertEquals(new Author("Joshua Crotts"), b2.getAuthor()),
+      () -> assertEquals(2, b3.getEditionNumber()),
+      () -> assertEquals(344, b4.getPageCount()));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Author {
+
+  private final String NAME;
+
+  Author(String name) { this.NAME = name; }
+
+  @Override 
+  public boolean equals(Object o) {
+    if (!(o instanceof Author)) {
+      return false;
+    } else {
+      Author othAuthor = (Author) o;
+      return this.NAME.equals(othAuthor.getName());
+    }
+  }
+
+  @Override
+  public int hashCode() {
+    return this.NAME.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return this.NAME;
+  }
+
+  String getName() {
+    return this.NAME;
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Objects;
+
+class Book {
+
+  private final String TITLE;
+  private final Author AUTHOR;
+  private final int EDITION;
+  private final int NUM_PAGES;
+
+  Book(String title, Author author, int edition, int numPages) {
+    this.TITLE = title;
+    this.AUTHOR = author;
+    this.EDITION = edition;
+    this.NUM_PAGES = numPages;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof Book)) {
+      return false;
+    } else {
+      Book othBook = (Book) o;
+      return this.NAME.equals(othBook.NAME)
+          && this.AUTHOR.equals(othBook.AUTHOR)
+          && this.EDITION == (othBook.EDITION)
+          && this.NUM_PAGES == (othBook.NUM_PAGES);
+    }
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.NAME, this.AUTHOR, 
+                            this.EDITION, this.NUM_PAGES);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s [%s]. Edition: %d. Page Count: %d",
+                         this.NAME, this.AUTHOR, 
+                         this.EDITION, this.NUM_PAGES);
+  }
+
+  // Getters and setters omitted.
+}
+\end{lstlisting}
+
+With these two classes complete, let's begin to think about the \ttt{Library} class. 
+Let's say that it stores an alphabetized \ttt{Map<Book, Integer>} of book instances to the number of copies that are not checked out. 
+We want to be able to add books, check books out, and determine if the book is in the library.
+So, let's design the \ttt{void addBook(Book b, int qty)}, \ttt{Book checkout(String title)}, \ttt{int getQuantity(String t)}, and \ttt{boolean containsBook(String t)} methods.
+The tests will reuse the \ttt{Author} and \ttt{Book} declarations from the previous test.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class LibraryTester {
+  // ... previous test and declarations omitted.
+
+  @Test
+  void testLibrary() {
+    Library l1 = new Library();
+    l1.addBook(B1, 10);
+    l1.addBook(B2, 1);
+    l1.addBook(B3, 3);
+    l1.addBook(B4, 5);
+    assertAll (
+      () -> assertEquals(1, l1.getQuantity("Principles of Computer Science")),
+      () -> assertTrue(l1.containsBook("Methods of Logic")),
+      () -> assertFalse(l1.containsBook("Frankenstein")),
+      () -> assertEquals(B2, l1.checkout("Principles of Computer Science")),
+      () -> assertNull(l1.checkout("Principles of Computer Science")),
+      () -> assertEquals(0, l1.getQuantity("Principles of Computer Science")));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.Map;
+import java.util.TreeMap;
+
+class Library {
+
+  private final Map<Book, Integer> BOOKS;
+
+  Library() {
+    this.BOOKS = new TreeMap<>();
+  }
+
+  /**
+   * Inserts a Book/quantity association to the map. If the book already
+   * exists, we add qty to its frequency.
+   * @param b - Book to add to map.
+   * @param qty - quantity of provided book.
+   */
+  void addBook(Book b, int qty) {
+    this.BOOKS.put(b, this.BOOKS.getOrDefault(b, 0) + qty);
+  }
+
+  /**
+   *
+   * @param t - 
+   * @return Book instance if it exists, or null otherwise.
+   */
+  Book checkout(String t) {
+    for (Book b : this.BOOKS.keySet()) {
+      if (b.getTitle().equals(t)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /** 
+   *
+   * @param t - 
+   * @return 
+   */
+  boolean containsBook(String t) {
+    for (Book b : this.BOOKS.keySet()) {
+      if (b.getTitle().equals(t)) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+\end{lstlisting}
+
 \myexample{Let's design the \ttt{Rational} class, which stores a rational number as a numerator and denominator.}
 We will create methods for adding, subtracting, multiplying, and dividing rational numbers. 
 Testing is paramount to designing a correct implementation, as is the case with all projects, but is of particular significance here. 
