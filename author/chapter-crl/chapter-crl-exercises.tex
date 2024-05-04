@@ -347,7 +347,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 \myexercise{2}{chapter-crl}{This question has three parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the standard recursive \ttt{chickenCounter} method, which receives a string $s$ and returns the number of times the substring \ttt{"chicken"} appears in $s$. You must account for overlapping instances of \ttt{"chicken"}. For example, calling the method with \ttt{"abcchickechickenn"} returns $2$ because, after removing the substring \ttt{"chicken"} from the original string, we are left with \ttt{"abcchicken"}, which itself contains another instance of \ttt{"chicken"}.
+    \item Design the standard recursive \ttt{chickenCounter} method, which receives a string~$s$ and returns the number of times the substring \ttt{"chicken"} appears in $s$. You must account for overlapping instances of \ttt{"chicken"}. For example, calling the method with \ttt{"abcchickechickenn"} returns $2$ because, after removing the substring \ttt{"chicken"} from the original string, we are left with \ttt{"abcchicken"}, which itself contains another instance of \ttt{"chicken"}.
 
     \item Then, design the \ttt{chickenCounterTR} method that uses tail recursion and accumulators to solve the problem. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
 

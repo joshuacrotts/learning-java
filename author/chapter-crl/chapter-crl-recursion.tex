@@ -476,6 +476,181 @@ class DivByThree {
 }
 \end{lstlisting}
 
+\myexample{Exponentiation is an incredibly common mathematical operation that, like factorial, may be represented as a recurrence relation.}
+That is, $n^b$ where $n > 0$ and $b \geq 0$ is defined as $n \cdot n^{b-1}$ for~$b > 0$, and~$1$ when~$b=0$.
+The simple algorithm is to naturally recurse on~$b$ until it is zero. 
+Because we know that $b$ is a natural number, we can design a substantially faster algorithm.
+Recall the rules of exponents, namely that $n^{2b} = (n^b)^2$. 
+Using this equivalence, when the exponent is even, we square the result and divide the given exponent in half.
+If it is odd, we recurse with one less than the exponent.
+
+The standard recursive \ttt{pow} method receives two arguments: $n$ and $b$, and recurses over~$b$ until it is zero.
+On the other hand, the tail recursive counterpart accumulates the result as a parameter.
+In either method, we must handle a case analysis on the parity of~$b$, i.e., determine whether~$b$ is even or odd.
+Both method implementations utilize the same test cases.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class PowTester {
+
+  @Test
+  void testPow() {
+    assertAll(
+      () -> assertEquals(1, pow(42, 0)),
+      () -> assertEquals(81, pow(9, 2)),
+      () -> assertEquals(16777216, pow(4, 12)));
+  }
+
+  @Test
+  void testPowTR() {
+    assertAll(
+      () -> assertEquals(1, powTR(42, 0)),
+      () -> assertEquals(81, powTR(9, 2)),
+      () -> assertEquals(16777216, powTR(4, 12)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Pow {
+
+  /**
+   * Calculates the result of raising a base number to an exponent.
+   * The method uses standard recursion over ints, so make sure that
+   * neither parameter are very large!
+   * @param n - the base number.
+   * @param b - the exponent.
+   * @return the result of n raised to the power of b.
+   */
+  static int pow(int n, int b) {
+    if (b == 0) {
+      return 1;
+    } else if (b % 2 == 0) {
+      return n * n * pow(n, b / 2);
+    } else {
+      return n * pow(n, b - 1);
+    }
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Pow {
+
+  /**
+   * Calculates the result of raising a base number to an exponent.
+   * The method uses tail recursion over ints, so make sure that
+   * neither parameter are very large!
+   * @param n - the base number.
+   * @param b - the exponent.
+   * @return the result of n raised to the power of b.
+   */
+  static int powTR(int n, int b) {
+    return powTR(n, b, 1);
+  }
+
+  /**
+   * Tail recursive helper method for powTR.
+   * @param n - the base number.
+   * @param b - the exponent.
+   * @param acc - the intermediary result of n^b.
+   * @return acc.
+   */
+  private static int powTRHelper(int n, int b, int acc) {
+    if (b == 0) { 
+      return acc; 
+    } else if (b % 2 == 0) {
+      return powTRHelper(n, b / 2, n * n * acc);
+    } else {
+      return powTRHelper(n, b - 1, n * acc);
+    }
+  }
+}
+\end{lstlisting}
+
+\myexample{Let's design a method to count the number of digits in a positive integer.}
+It's important to realize that we can write an algorithm to compute such a value using only mathematical operations, i.e., exponents and logarithms.
+We will employ a recursive algorithm to further demonstrate the power of recursion.
+Let's first design the standard recursive algorithm and then write the tail recursive variant.
+The standard recursive algorithm has a base case, namely when its input is less than~$10$. If so, we know the number has only one digit and can return accordingly.
+We recurse on the number after removing a digit.
+Digits are removed by dividing the input by ten.
+The tail recursive algorithm delegates the return value to an accumulator.
+By designing the tests for one of the algorithms, we inadvertedly write tests for the other!
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class CountDigitTester {
+
+  @Test
+  void testCountDigit() {
+    assertAll(
+      () -> assertEquals(1, countDigits(0)),
+      () -> assertEquals(3, countDigits(123)),
+      () -> assertEquals(4, countDigits(5192)));
+  }
+
+  @Test
+  void testCountDigitTR() {
+    assertAll(
+      () -> assertEquals(1, countDigitsTR(0)),
+      () -> assertEquals(3, countDigitsTR(123)),
+      () -> assertEquals(4, countDigitsTR(5192)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class CountDigit {
+
+  /**
+   * Counts the number of digits in a positive integer.
+   * @param n - positive integer.
+   * @return number of digits.
+   */
+  static int countDigits(int n) {
+    if (n < 10) {
+      return 1;
+    } else {
+      return 1 + countDigits(n / 10);
+    }
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class CountDigit {
+
+  /**
+   * Counts the number of digits in a positive integer
+   * using tail recursion.
+   * @param n - positive integer.
+   * @return number of digits.
+   */
+  static int countDigitsTR(int n) {
+    return countDigitsTRHelper(n, 1);
+  }
+
+  /**
+   * Helper method for computing the number of digits.
+   * @param n - positive integer.
+   * @param acc - accumulator for # of digits.
+   * @return number of digits.
+   */
+  private static int countDigitsTRHelper(int n, int acc) {
+    if (n < 10) {
+      return acc;
+    } else {
+      return countDigitsTRHelper(n / 10, acc + 1);
+    }
+  }
+}
+\end{lstlisting}
+
 So, we have explored both standard and tail recursive methods, and how a programming language might optimize tail recursive calls. 
 The thing is, tail recursion has a direct correspondence to loops, i.e., \ttt{while}. 
 In fact, some programming languages convert all tail recursive functions into their iterative counterparts, alleviating the need for a stack whatsoever.

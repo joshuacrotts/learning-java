@@ -82,7 +82,7 @@ All three traversal types are recursive by design.
 \end{itemize}
 
 Let's design the \ttt{List<T> inorderTraversal(Tree<T> t)} method, which returns a list of the elements in the tree after an inorder traversal. 
-An interesting property of this traversal is that it always visits the elements in sorted order (according to the natural ordering or the comparator). 
+An interesting (and mathematically-provable) property of this traversal is that it always visits the elements in sorted order (according to the natural ordering or the comparator). 
 To make testing this method easier, we will take advantage of the fact that we can pass a list of values to the \ttt{BinarySearchTree} constructor, which "bulk adds" them to the tree.
 
 %\enlargethispage{-2\baselineskip}
