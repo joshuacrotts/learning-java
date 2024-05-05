@@ -206,10 +206,10 @@ The \ttt{Double.parseDouble} and \ttt{Boolean.parseBoolean} methods behave simil
 Passing an invalid string, i.e., one that does not represent the respective datatype, results in Java throwing a \ttt{NumberFormatException} exception.
 
 \begin{verbnobox}[\small]
-String s1 = String.valueOf(1234);
-String s2 = String.valueOf(Math.PI);
-int n1 = Integer.parseInt(s1);
-double s2 = Double.parseDouble(s2);
+String s1 = String.valueOf(1234);    // "1234"
+String s2 = String.valueOf(Math.PI); // "3.141592653589793"
+int n1 = Integer.parseInt(s1);       // 1234
+double n2 = Double.parseDouble(s2);  // 3.141593
 \end{verbnobox}
 
 % \subsection{Quick Check Questions}
