@@ -23,7 +23,7 @@ Thus, we say that $f(n) = \mathcal{O}(g(n))$.\footnote{There is a bit more to th
 
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}[scale=0.7]
+  \begin{tikzpicture}[scale=0.6]
       % Axes
       \draw[->] (-1,0) -- (6,0) node[right] {$n$};
       \draw[->] (0,-1) -- (0,6) node[above] {$y$};
@@ -56,7 +56,7 @@ Examples for Omega and Theta are harder to come by without a formalized definiti
 
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}[scale=0.8]
+  \begin{tikzpicture}[scale=0.6]
     % Axes
     \draw[->] (-1,0) -- (6,0) node[right] {$n$};
     \draw[->] (0,-1) -- (0,6) node[above] {$y$};
@@ -81,7 +81,7 @@ Examples for Omega and Theta are harder to come by without a formalized definiti
 
 \begin{figure}[H]
   \centering
-\begin{tikzpicture}[scale=0.8]
+\begin{tikzpicture}[scale=0.6]
   % Axes
   \draw[->] (-1,0) -- (6,0) node[right] {$n$};
   \draw[->] (0,-1) -- (0,6) node[above] {$y$};
@@ -90,10 +90,10 @@ Examples for Omega and Theta are harder to come by without a formalized definiti
   \clip (-1,-1) rectangle (5,6);
   % Function g(n)
   \draw[domain=0:5, smooth, thick, blue] plot (\x, {0.5*(0.8*\x^3 + 0.5*cos(deg(5*\x)) + sin(deg(4*\x))});
-  \node[blue] at (1,3) {$c_1\cdot{}g(n)$};
+  \node[blue] at (1,4) {$c_1\cdot{}g(n)$};
 
   \draw[domain=0:5, smooth, thick, green] plot (\x, {0.03*(1.2*\x^3 + 0.5*cos(deg(5*\x)) + sin(deg(4*\x))});
-  \node[green] at (4,1) {$c_0\cdot{}g(n)$};
+  \node[green] at (4.1,1) {$c_0\cdot{}g(n)$};
   
   % Function f(n)
   \draw[domain=0:5, smooth, thick, red] plot (\x, {0.09*\x^3 + 0.3*sin(deg(4*\x))});

@@ -977,8 +977,8 @@ class LibraryTester {
   private static final Book B4 
     = new Book("Methods of Logic", A4, 4, 344);
 
+  @Test
   void testBook() {
-
     assertAll(
       () -> assertEquals("Calculus", b1.getTitle()),
       () -> assertEquals(new Author("Joshua Crotts"), b2.getAuthor()),
@@ -1071,8 +1071,8 @@ class Book {
 With these two classes complete, let's begin to think about the \ttt{Library} class. 
 Let's say that it stores an alphabetized \ttt{Map<Book, Integer>} of book instances to the number of copies that are not checked out. 
 We want to be able to add books, check books out, and determine if the book is in the library.
-So, let's design the \ttt{void addBook(Book b, int qty)}, \ttt{Book checkout(String title)}, \ttt{int getQuantity(String t)}, and \ttt{boolean containsBook(String t)} methods.
-The tests will reuse the \ttt{Author} and \ttt{Book} declarations from the previous test.
+So, let's design the \ttt{void addBook(Book b, int qty)}, \ttt{Book checkout(String title)}, \ttt{int getQuantity(String title)}, and \ttt{boolean containsBook(String title)} methods.
+The tests will reuse the \ttt{Author} and \ttt{Book} declarations from the previous test suite.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -1125,25 +1125,30 @@ class Library {
   }
 
   /**
-   *
-   * @param t - 
+   * "Checks out" a book to someone. By checking out, we mean
+   * that it searches for the book with the given title, and
+   * returns its instance while decrementing its book counter.
+   * If the associated counter is zero, we return null.
+   * @param t - title to search.
    * @return Book instance if it exists, or null otherwise.
    */
   Book checkout(String t) {
     for (Book b : this.BOOKS.keySet()) {
-      if (b.getTitle().equals(t)) {
-        return true;
+      if (b.getTitle().equals(t) && this.BOOKS.get(b) > 0) {
+        this.BOOKS.put(b, this.BOOKS.get(b) - 1);
+        return b;
       }
     }
-    return false;
+    return null;
   }
 
   /** 
-   *
-   * @param t - 
-   * @return 
+   * Searches through the books to determine if a book
+   * with the given title exists.
+   * @param t - title of book to search for.
+   * @return true if a book with title t exists, false otherwise.
    */
-  boolean containsBook(String t) {
+  boolean containsBook(String title) {
     for (Book b : this.BOOKS.keySet()) {
       if (b.getTitle().equals(t)) {
         return true;

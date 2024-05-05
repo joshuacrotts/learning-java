@@ -150,7 +150,7 @@ class InPlaceBubbleSort<V extends Comparable<V>>
   \tikzset{matrix style/.style={
       matrix of nodes,
       nodes={draw, minimum size=8mm, anchor=center},
-      column sep=-\pgflinewidth, row sep=0.5cm,
+      column sep=-\pgflinewidth, row sep=0.1cm,
       nodes in empty cells,
       row 1/.style={nodes={draw=none, minimum size=5mm}},
       column 1/.style={nodes={draw=none, minimum size=5mm}}
@@ -196,6 +196,7 @@ class InPlaceBubbleSort<V extends Comparable<V>>
 \label{fig:bubble-sort}
 \end{figure}
 
+\newpage
 \subsection{Selection Sort}
 The \emph{selection sort}\index{selection sort} is the next sorting algorithm that we will describe. 
 Selection sort works by first searching for the smallest element in the list, then swapping it with the first element. 
@@ -242,6 +243,7 @@ interface ISelectionSort<V extends Comparable<V>> {
 }
 \end{lstlisting}
 
+\newpage
 \subsubsection*{Functional Selection Sort}
 \begin{lstlisting}[language=MyJava]
 import java.util.*;
@@ -276,6 +278,7 @@ class FunctionalSelectionSort<V extends Comparable<V>>
 }
 \end{lstlisting}
 
+\newpage
 \subsubsection*{In-place Selection Sort}
 \begin{lstlisting}[language=MyJava]
 import java.util.*;
@@ -310,7 +313,8 @@ class InPlaceSelectionSort<V extends Comparable<V>>
 }
 \end{lstlisting}  
 
-\begin{figure}[tp]
+\newpage
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}[>=Stealth]
   \matrix (sort) [matrix of nodes, nodes={draw, minimum size=7mm, anchor=center}, column sep=-\pgflinewidth, row sep=0.6cm]{
@@ -374,6 +378,7 @@ class InPlaceSelectionSort<V extends Comparable<V>>
 \label{fig:selection-sort}
 \end{figure}
 
+\newpage
 \subsection{Insertion Sort}
 The insertion sort is the last of the three poorly-performing sorting algorithms that w will discuss. 
 Insertion sort, in general, works by taking an element from the unsorted list and inserting it into the correct position in a sorted list. 
@@ -417,6 +422,7 @@ interface IInsertionSort<V extends Comparable<V>> {
 }
 \end{lstlisting}
 
+\newpage
 \subsubsection*{Functional Insertion Sort}
 
 The functional insertion sort is a recursive sorting algorithm; it sorts the list by recursively sorting its tail (i.e., the list without the first element). Once the tail is sorted, the algorithm inserts the first element into the sorted tail.
@@ -496,7 +502,7 @@ class InPlaceInsertionSort<V extends Comparable<V>>
 \begin{figure}[ht!]
   \centering
   \begin{tikzpicture}[>=Stealth]
-    \matrix (sort) [matrix of nodes, nodes={draw, minimum size=7mm, anchor=center}, column sep=-\pgflinewidth, row sep=0.6cm]{
+    \matrix (sort) [matrix of nodes, nodes={draw, minimum size=7mm, anchor=center}, column sep=-\pgflinewidth, row sep=0.3cm]{
       $i=1$ & 5 & 2 & 1 & 13 & 98 & 12 & 7 & 6 & 97 \\
       $i=2$ & 2 & 5 & 1 & 13 & 98 & 12 & 7 & 6 & 97 \\
       $i=3$ & 1 & 2 & 5 & 13 & 98 & 12 & 7 & 6 & 97 \\
@@ -510,26 +516,26 @@ class InPlaceInsertionSort<V extends Comparable<V>>
     };
   
     % Arrows for first swap (5 and 2)
-    \draw[->] (sort-1-3.north) |- ++(0,0.5) -| (sort-1-2.north west);
+    \draw[->] (sort-1-3.north) |- ++(0,0.2) -| (sort-1-2.north west);
   
     % Arrows for second swap (2 and 1)
-    \draw[->] (sort-2-4.north) |- ++(0,0.5) -| (sort-2-2.north west);
+    \draw[->] (sort-2-4.north) |- ++(0,0.2) -| (sort-2-2.north west);
   
     % Do not swap 13.
   
     % Do not swap 98.
   
     % Arrow for third swap (12 down before 13).
-    \draw[->] (sort-5-7.north) |- ++(0,0.5) -| (sort-5-5.north west);
+    \draw[->] (sort-5-7.north) |- ++(0,0.2) -| (sort-5-5.north west);
   
     % Arrow for fourth swap (7 down before 12).
-    \draw[->] (sort-6-8.north) |- ++(0,0.5) -| (sort-6-5.north west);
+    \draw[->] (sort-6-8.north) |- ++(0,0.2) -| (sort-6-5.north west);
   
     % Arrow for the fifth swap (6 down before 7).
-  \draw[->] (sort-7-9.north) |- ++(0,0.5) -| (sort-7-5.north west);
+  \draw[->] (sort-7-9.north) |- ++(0,0.2) -| (sort-7-5.north west);
   
     % Arrow for the sixth swap (97 down before 98)
-  \draw[->] (sort-8-10.north) |- ++(0,0.5) -| (sort-8-9.north west);
+  \draw[->] (sort-8-10.north) |- ++(0,0.2) -| (sort-8-9.north west);
   
       % Red underbars for sorted sublists
   \draw[red,thick] (sort-1-2.south west) -- (sort-1-2.south east);
@@ -549,6 +555,7 @@ class InPlaceInsertionSort<V extends Comparable<V>>
 \label{fig:insertion-sort}
 \end{figure}
 
+\newpage
 \subsection{Merge Sort}
 
 The \emph{merge sort}\index{merge sort} is one of the first explicitly divide-and-conquer algorithms that programmers encounter. 
@@ -557,6 +564,77 @@ The base case is when the list is either empty or a singleton, since we certainl
 After dividing comes the ``conquering,'' which consists of taking two now-sorted lists and combining their elements to create yet another sorted list. 
 Recall that, at the base case, we know the singletons are sorted by definition. 
 Because of this \emph{invariant}\index{invariant}, we know that merging the contents of two sorted lists is not an issue: we compare each element one-by-one, putting the smaller of the two before the subsequent value.
+
+In~\Cref{fig:mergesortill}, we sort the list $[5, 2, 1, 13, 98, 12, 7, 6, 97]$ by decomposing the list into two smaller lists: $[5, 2, 1, 13, 98]$, and $[12, 7, 6, 97]$. 
+We recursively decompose these two further until we end with the base case, at which we proceed to merge the now-sorted sublists back into one overall sorted list.
+
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+    \tikzset{every tree node/.style={align=center, anchor=south}, level distance=1.5cm, sibling distance = 0.07cm}
+    \scalebox{.90}{
+    \Tree 
+    [.{\texttt{[5, 2, 13, 98, 12, 7, 6, 97]} (1$\to$8)}
+        %LEFT
+      [.{\texttt{[5, 2, 13, 98]} (1$\to$4)}
+        [.{\texttt{[5, 2]} (1$\to$2)}
+            [.{\texttt{[5]} (1)} ]
+            [.{\texttt{[2]} (2)} ]
+        ]
+        [.{\texttt{[13, 98]} (3$\to$4)}
+          [.{\texttt{[13]} (4)} ]
+          [.{\texttt{[98]} (5)} ]
+        ]
+      ]
+      %RIGHT
+      [.{\texttt{[12, 7, 6, 97]}  (5$\to$8)}
+        [.{\texttt{[12, 7]} (5$\to$6)}
+          [.{\texttt{[12]} (5)} ]
+          [.{\texttt{[7]} (6)} ]
+        ]
+        [.{\texttt{[6, 97]} (7$\to$8)}
+          [.{\texttt{[6]} (7)} ]
+          [.{\texttt{[97]} (8)} ]
+        ]
+      ]
+    ];
+   }
+    \end{tikzpicture}
+    %REVERSED TREE
+    \begin{tikzpicture} [grow'=up]
+    \tikzset{every tree node/.style={align=center, anchor=south}, level distance=1.5cm, sibling distance = 0.07cm}
+   \scalebox{.90}{
+    \Tree 
+    [.{\texttt{[2, 5, 6, 7, 12, 13, 97, 98]} (1$\to$8)}
+        %LEFT
+      [.{\texttt{[2, 5, 13, 98]} (1$\to$4)}
+          [.{\texttt{[2, 5]} (1$\to$2)}
+            [.{\texttt{[5]} (1)} ]
+            [.{\texttt{[2]} (2)} ]
+          ]
+          [.{\texttt{[13, 98]} (3$\to$4)}
+            [.{\texttt{[13]} (3)} ]
+            [.{\texttt{[98]} (4)} ]
+          ]
+      ]
+      %RIGHT
+      [.{\texttt{[6, 7, 12, 97]} (5$\to$8)}
+          [.{\texttt{[7, 12]} (5$\to$6)}
+            [.{\texttt{[12]} (5)} ]
+            [.{\texttt{[7]} (6)}  ]
+          ]
+          [.{\texttt{[6, 97]} (7$\to$8)}
+            [.{\texttt{[6]} (7)} ]
+            [.{\texttt{[97]} (8)} ]
+          ]
+      ]
+    ];
+   }
+    \end{tikzpicture}
+  \end{center}
+  \caption{Merge Sort Illustration}
+  \label{fig:mergesortill}
+\end{figure}
 
 \myexample{Consider merging the lists $l_1 = [9, 11, 14]$, and $l_2 = [2, 20]$.} 
 We create a new list~$l_3$ whose size is the sum of the sizes of~$l_1$ and~$l_2$. 
@@ -608,6 +686,7 @@ interface IMergeSort<V extends Comparable<V>> {
 import java.lang.Comparable;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.List;
   
 class FunctionalMergeSort<V extends Comparable<V>> 
                           implements IMergeSort<V> {
@@ -687,8 +766,7 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   }
 
   /**
-   * Recursively sorts the list by splitting it in half and merging 
-   * the two halves.
+   * Recursively sorts the list by splitting it in half and merging the halves.
    * @param ls - the list to sort.
    * @param low - the lower bound of the sublist. 
    * @param high - the upper bound of the sublist.
@@ -712,13 +790,10 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   private void merge(AbstractList<V> ls, int low, int mid, int high) {
     AbstractList<V> ls1 = new ArrayList<>();
     AbstractList<V> ls2 = new ArrayList<>();
-
     for (int i = low; i <= mid; i++) { ls1.add(ls.get(i)); }
     for (int j = mid + 1; j <= high; j++) { ls2.add(ls.get(j)); }
-
     int mergeIdx = low;
     int i, j = 0;
-        
     // Merge the elements into the existing list.
     while (i < ls1.size() && j < ls2.size()) {
       if (ls1.get(i).compareTo(ls2.get(j)) < 0) { 
@@ -727,7 +802,6 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
         ls.set(mergeIdx++, ls2.get(j++)); 
       }
     }
-
     // Copy the rest of the elements over.
     while (i < ls1.size()) { ls.set(mergeIdx++, ls1.get(i++)); }
     while (j < ls2.size()) { ls.set(mergeIdx++, ls2.get(j++)); }
@@ -735,6 +809,7 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
 }
 \end{lstlisting}
 
+\newpage
 \subsection{Quick Sort}
 At last, we arrive at the \emph{quick sort} algorithm. 
 Quick sort works by choosing a \emph{pivot}, which is some value in the list. 
@@ -784,9 +859,10 @@ interface IQuickSort<V extends Comparable<V>> {
 }
 \end{lstlisting}
 
+\newpage
 \subsubsection*{Functional Quick Sort}
 The functional implementation of quick sort is beautiful and elegant. 
-We choose a pivot~$p$ at random, then create three sublists $l_<$, $l_>$, $l_=$, where~$l_<$ stores all elements less than~$p$, where~$l_>$ stores all elements greater than~$p$, and~$l_=$ stores all elements equal to the pivot. 
+We choose a pivot~$p \in L$ at random, then create three sublists $l_<$, $l_>$, $l_=$, where~$l_<$ stores all elements less than~$p$, where~$l_>$ stores all elements greater than~$p$, and~$l_=$ stores all elements equal to~$p$. 
 Each sublist, excluding~$l_=$, is recursively sorted, followed by concatenating the three sublists in order. 
 
 %%%%%%%%%%%%% FUNCTIONAL QUICK SORT %%%%%%%%%%%%% 
@@ -835,6 +911,7 @@ class FunctionalQuickSort<V extends Comparable<V>>
 \end{lstlisting}
 
 %%%%%%%%%%%%% IN PLACE QUICK SORT %%%%%%%%%%%%% 
+\newpage
 \subsubsection*{In-place Quick Sort}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
@@ -887,6 +964,7 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 }
 \end{lstlisting}
 
+\newpage
 \subsection{Priority Queue Sort}
 As a bonus, let's briefly discuss the priority queue sort, which leverages the power of, you guessed it: a priority queue.
 Recall from Chapter~\ref{chapter-arrays-collections} that priority queues sort elements based on their priority, which itself is defined as either the natural ordering of the elements or a custom comparator. 

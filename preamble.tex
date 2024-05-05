@@ -67,7 +67,8 @@
   breaklines=true,
   breakatwhitespace=true,
   showstringspaces=false,
-  escapeinside={(*;}{;*)}
+  escapeinside={(*;}{;*)},
+  frame=lines
   % literate={~}{{\fontfamily{ptm}\selectfont \textasciitilde}}{1}{\ \ \ \ }{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
 }
 
@@ -102,19 +103,19 @@
 }
 
 
-\lstdefinelanguage{MyJava}{
-  basewidth=0.5em,
-  columns=fullflexible,
-  commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
-  keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
-  language=Java,
-  morekeywords={NULL},
-  basicstyle=\footnotesize\ttfamily,
-  breaklines=true,
-  showstringspaces=false,
-  escapeinside={(*;}{;*)}
-  % literate={~}{{\fontfamily{ptm}\selectfont \textasciitilde}}{1}{\ \ \ \ }{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
-}
+% \lstdefinelanguage{MyJava}{
+%   basewidth=0.5em,
+%   columns=fullflexible,
+%   commentstyle=\color[rgb]{0.133,0.545,0.133}\transparent{0.8}\itshape,
+%   keywordstyle=\color[rgb]{0.0,0.0,1.0}\bfseries,
+%   language=Java,
+%   morekeywords={NULL},
+%   basicstyle=\footnotesize\ttfamily,
+%   breaklines=true,
+%   showstringspaces=false,
+%   escapeinside={(*;}{;*)}
+%   % literate={~}{{\fontfamily{ptm}\selectfont \textasciitilde}}{1}{\ \ \ \ }{'}{\textquotesingle}{1}{`}{\textasciitilde}{1}
+% }
 
 \newtcolorbox[auto counter,number within=chapter]{clo}[2][]{
   enhanced,
