@@ -758,3 +758,147 @@ class RookPath {
   }
 }
 \end{lstlisting}
+
+\myexample{Let's solve another foundational dynamic programming problem, only this time we utilize only a one-dimensional array.}
+Imagine that we're working at a lumber store that saws wood logs for manufacturing purposes. 
+We sell and saw wood logs by the meter.
+Different lengths of a log cost different amounts, and we want to maximize the profits made when sawing the logs. 
+For example, consider the following table:
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|c|c|c|}
+  Length (meters) & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8\\
+  \hline
+  Cost (USD) & 0 & 1 & 4 & 6 & 7 & 12 & 18 & 25 & 30\\
+\end{tabular}
+\end{center}
+
+Suppose our wood log is~$4$ meters long. 
+There are, therefore, $2^(4-1)=2^3=8$ ways to saw the log:
+$1|1|1|1$, $1|1|2$, $1|2|1$, $1|3$, $2|1|1$, $2|2$, $3|1$, and $4|0$. 
+If we compute the prices of these sawings, we get $1+1+1+1=4$, $1+4+1=6$, $1+1+4=6$, $1+6=7$, $4+1+1=6$, $4+4=8$, $6+1=7$, and $7=7$. 
+So, to maximize our profit, we want to saw the log into two pieces, each of which are~$2$ meters long.
+
+The question is, how do we determine the maximum profit algorithmically? 
+Decomposing the problem shows us that we first saw the log into size~$i$ meters, then try to maximize the profit made from sawing the rest of the log, which has size~$n - i$ meters. 
+The relationship is recursive, and we can design a method to simulate it.
+Namely, we try all possible sawings of size~$i$ using a loop, then recursively decompose the problem.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class LogSawTester {
+
+  @Test
+  void testLogSaw() {
+    assertAll(
+      () -> assertEquals(0, logSaw(new int[]{0}));
+      () -> assertEquals(8, logSaw(new int[]{0,1,4,6,7,12,18,25,30})));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class LogSaw {
+  
+  /**
+   * Performs a traditional recursive sawing of the given log.
+   * Warning: this algorithm is outrageously slow!
+   * @param P - array of saw prices from 0 to n.
+   * @param n - length of log to saw in meters.
+   * @return maximum profit of sawing log of length n.
+   */
+  static int logSaw(int[] P, int n) {
+    if (n == 0) {
+      return 0;
+    } else {
+      int r = 0;
+      for (int i = 1; i <= n; i++) {
+        r = Math.max(r, P[i] + logSaw(P, n - i));
+      }
+      return r;
+    }
+  }
+}
+\end{lstlisting}
+
+While the recursive algorithm works, it is horribly inefficient; we saw the log at \emph{all} possible intervals, meaning there are several repeated computations. 
+Similar to Fibonacci, \ttt{logSaw} is an exponential-time algorithm! 
+We can certainly do better.
+
+Like we said, we're repeatedly sawing at places whose maximal price has already been determined.
+So, let's design another recursive method that passes along an array~$L$ of stored (maximal) sawings.
+After trying all sawings from~$1$ to~$n$, we store the maximum saw price for length~$n$ in $L$ at index~$n$.
+When recursing, if there is a non-zero element at index~$n$, we know that its value was computed earlier and can return it accordingly.
+
+This variant is leaps and bounds better than the original algorithm, taking its runtime from exponential down to quadratic in the length of the given log. 
+We consider the algorithm to be ``top-down memoized,'' because the solution recurses from~$n$ down to~$1$, and it stores partial solutions in an array (i.e., memoizing). 
+
+\begin{lstlisting}[language=MyJava]
+class LogSaw {
+  // ... previous method not shown.
+
+  /**
+   * Performs a top-down sawing of the given log.
+   * @param P - array of saw prices from 0 to n.
+   * @param n - length of log to saw in meters.
+   * @return maximum profit of sawing log of length n.
+   */
+  static int logSawTopDown(int[] P, int n) {
+    int[] R = new int[P.length];
+    return logSawTopDownHelper(P, R, n);
+  }
+
+  /**
+   * Helper method for top-down log saw algorithm.
+   * @param P - array of saw prices from 0 to n.
+   * @param R - intermittient saw prices; memoized.
+   * @param n - length of log in meters.
+   * @return maximum profit for log of size n.
+   */
+   private static int logSawHelper(int[] P, int[] R, int n) {
+    if (R[n] > 0) {
+      return R[n];
+    } else if (n == 0) {
+      return n;
+    } else {
+      int pr = 0;
+      for (int i = 1; i <= n; i++) {
+        pr = Math.max(pr, P[i] + logSawHelper(P, R, n - i));
+      }
+      R[n] = pr;
+      return pr;
+    }
+  }
+}
+\end{lstlisting}
+
+Though, we still have to worry about recursive depth for sufficiently large values of~$n$. 
+Let's take the algorithm one step further and convert it into a ``bottom-up'' iterative algorithm.
+In essence, rather than making recursive calls, we use two loops and compose the solution to larger problems (i.e., larger values of~$n$) by saving (intermittient) solutions to smaller problems (i.e., smaller values of~$n$).
+The tests for the top-down and bottom-up methods are the same as the standard recursive version.
+
+\begin{lstlisting}[language=MyJava]
+class LogSaw {
+  // ... previous method not shown.
+
+  /**
+   * Performs a bottom-up sawing of the given log.
+   * @param P - array of saw prices from 0 to n.
+   * @param n - length of log to saw in meters.
+   * @return maximum profit of sawing log of length n.
+   */
+  static int logSawBottomUp(int[] P, int n) {
+    int[] r = new int[p.length];
+    for (int i = 1; i <= n; i++) {
+      int pr = 0;
+      for (int j = 1; j <= i; j++) {
+        pr = Math.max(pr, P[j] + R[i - j]);
+      }
+      R[i] = pr;
+    }
+    return R[n];
+  }
+}
+\end{lstlisting}

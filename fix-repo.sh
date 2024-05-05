@@ -9,5 +9,5 @@ cd .. \
 && cd .. \
 && cd teaching-java \
 && rm -rf *.git \
-&& cp -r ../new-java/teaching-java/.git . \
+&& sudo cp -r ../new-java/teaching-java/.git . \
 && rm -rf ../new-java/

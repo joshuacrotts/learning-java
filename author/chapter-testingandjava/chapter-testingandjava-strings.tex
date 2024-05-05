@@ -119,7 +119,7 @@ class NewStringTests {
 }
 \end{lstlisting}
 
-\myexample{One final point to make about string equality is that string concatenation is not subject to the same optimization as string literals.} 
+\myexample{One final point to make about string equality is that string concatenation is not \emph{always} subject to the same optimization as string literals.} 
 Consider the following code snippet, which creates two string literals $s_1$ and $s_2$. Then, we concatenate~$s_1$ and~$s_2$ into a string $s_3$, and separately concatenate the string literals themselves into the string~$s_4$. 
 What we observe is that~$s_3$ and~$s_4$ do not point to the same reference, even though they contain the same characters.
 
@@ -136,7 +136,22 @@ class NewStringTests {
 }
 \end{lstlisting}
 
-\myexample{What if we want to compare strings based on their character content rather than by reference?} 
+On the other hand, consider the following code, where we create two strings~$s_1$ and~$s_2$ to both reference the concatenation of the string literals \ttt{"x"} and \ttt{"y"}. 
+Comparing~$s_1$ and~$s_2$ for object equality confusingly produces \ttt{true}.
+At compile-time, Java optimizes (and evaluates) the string literal concatenations, which leads to it being pooled to reference the same (string) object in memory.
+
+\begin{lstlisting}[language=MyJava]
+class NewStringTests {
+
+  public static void main(String[] args) {
+    String s1 = "x" + "y";
+    String s2 = "x" + "y";
+    System.out.println(s1 == s2); // true
+  }
+}
+\end{lstlisting}
+
+\myexample{What if we want to compare strings based on their character content, rather than by memory reference?} 
 The \ttt{String} class provides a handy \ttt{equals} method that we invoke on instances of strings. 
 Two strings~$s_1$ and~$s_2$ are equal if they are \emph{lexicographically equal}. 
 In essence, this is a long and scary word to represent the concept of ``containing the same characters.'' 

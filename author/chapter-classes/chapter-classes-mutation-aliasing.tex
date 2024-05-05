@@ -652,8 +652,8 @@ class DoublyLinkedList<T> {
     }
   }
 
-  private Node<T> head;
-  private Node<T> tail;
+  private Node<T> first;
+  private Node<T> last;
 
   DoublyLinkedList() {
     this.last = this.first = null;
@@ -731,9 +731,9 @@ class DoublyLinkedList<T> {
   // ... previous code not shown.
 
   /**
-  * Adds a new node to the end of the list.
-  * @param data - The data to be stored in the new node.
-  */
+   * Adds a new node to the end of the list.
+   * @param data - The data to be stored in the new node.
+   */
   void add(T data) {
     Node<T> newNode = new Node<>(data);
 
@@ -811,10 +811,10 @@ class DoublyLinkedList<T> {
 Finally we arrive at element removal, which is not as cut-and-dry. We want to pass the element-to-remove (compared via \ttt{equals}), but we need to adjust the pointers accordingly. In particular, there are four cases to consider:
 
 \begin{enumerate}[label=(\alph*)]
-  \item If the element-to-remove $e$ is the first of the list, then its successor is now the first. Its previous pointer is adjusted to now point to \ttt{null}.
-  \item If the element-to-remove $e$ is the last of the list, then its predecessor is now the last. Its next pointer is adjusted to now point to \ttt{null}.
-  \item If the element to remove $e$ is neither the first nor the last, we retrieve its previous node $p$, its next node $n$, and assign $p_\emph{next} = n$, and $n_\emph{prev} = p$. This, in effect, ``delinks'' $e$ from the list, and is eventually consumed/reclaimed by the garbage collector.
-  \item If the element-to-remove $e$ is not in the list, do nothing.
+  \item If the element-to-remove~$e$ is the first of the list, then its successor is now the first. Its previous pointer is adjusted to now point to \ttt{null}.
+  \item If the element-to-remove~$e$ is the last of the list, then its predecessor is now the last. Its next pointer is adjusted to now point to \ttt{null}.
+  \item If the element to remove~$e$ is neither the first nor the last, we retrieve its previous node~$p$, its next node~$n$, and assign $p_\emph{next} = n$, and $n_\emph{prev} = p$. This, in effect, ``delinks''~$e$ from the list, and is eventually consumed/reclaimed by the garbage collector.
+  \item If the element-to-remove~$e$ is not in the list, do nothing.
 \end{enumerate}
 
 \begin{lstlisting}[language=MyJava]
