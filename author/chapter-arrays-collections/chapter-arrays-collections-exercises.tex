@@ -494,7 +494,7 @@ Design the \ttt{List<String> query(String[][] db, String cmd)} method that, when
 A Command is "SELECT <count> WHERE <predicate>"
 \end{verbatim}
 
-The \ttt{SELECT} command receives a \ttt{$<$count$>$}, which is a number between $1$ and $n$, or the asterisk to indicate everyone in the database. The \ttt{WHERE} clause receives a ``Predicate''.
+The \ttt{SELECT} command receives a \ttt{$<$count$>$}, which is a number between~$1$ and~$n$, or the asterisk to indicate everyone in the database. The \ttt{WHERE} clause receives a ``Predicate''.
 
 \begin{verbatim}
 A Predicate is "<header> <comparator> <value>"
@@ -512,6 +512,48 @@ Parsing a \ttt{LIKE} command is more complicated. There are four possible types 
 \end{verbatim}
 
 The first matches an exact string, namely \ttt{S}. The second matches any string that ends with \ttt{S}. The third matches any string that begins with \ttt{S}. The fourth matches any string that contains \ttt{S}. 
+
+\myexercise{3}{chapter-arrays-collections}{Minesweeper is a simple strategy game where the objective is to uncover all spaces on a board without running into mines.}
+If you are not familiar with the mechanics, we encourage you to find a version online and play it for a bit to understand its gameplay.
+In this exercise you will implement the minesweeper game as a series of methods.
+
+\begin{enumerate}[label=(\alph*)]
+    \item First, design the static \ttt{boolean isValidMove(char[][] board, int mx, int my)} method that receives a board and a move position, and determines whether the move is valid. A move is valid if it is located within the bounds of the board.
+    \item Design the static \ttt{List<int[]> getValidNeighbors(char[][] board, int mx, int my)} method that receives a board and a move position, and returns a list of all the immediate neighbors to the cell $(\emph{mx}, \emph{my})$. 
+    Each element of the list is a two-element integer array containing the$~x$ and~$y$ coordinates of the neighbor.
+    Consider the diagram below, where $(0, 0)$ is the move position, and the surrounding cells are its neighbors, represents as offsets.
+    Note that \ttt{getValidNeighbors} should only return neighbors that are \emph{in bounds}. 
+    Hint: use \ttt{isValidMove}.
+
+\begin{center}
+    \begin{tikzpicture}
+        \matrix[matrix of nodes, nodes={draw, minimum size=1.5cm, anchor=center}, column sep=-\pgflinewidth, row sep=-\pgflinewidth] (m) {
+            \text{(-1, 1)} & \text{(0, 1)} & \text{(1, 1)} \\
+            \text{(-1, 0)} & \text{(0, 0)} & \text{(1, 0)} \\
+            \text{(-1, -1)} & \text{(0, -1)} & \text{(1, -1)} \\
+        };
+    \end{tikzpicture}
+\end{center}
+
+    \item Design the static \ttt{List<int[]> getNonMineNeighbors(char[][] board, int mx, int my)} method that receives a board and a move position, and returns a list of all the neighbors that are not mines. You \emph{must} use \ttt{getValidNeighbors} in your definition.
+
+    \item Design the static \ttt{List<int[]> getMineNeighbors(char[][] board, int mx, int my)} method that receives a board and a move position, and returns a list of all the neighbors that are mines. You \emph{must} use \ttt{getValidNeighbors} in your definition.
+
+    \item Design the static \ttt{int countAdjacentMines(char[][] board, int mx, int my)} method that receives a board and a move position, and returns the number of mines that are adjacent to the given position. This method should be one line long and contain a call to \ttt{getMineNeigbors}.
+
+    \item With the helper methods complete, we now need a method that searches through a position and reveals all non-mine adjacent positions. In general, this is a \emph{traversal} algorithm called \emph{depth-first search}. The idea is to recursively extend out the path until we hit a mine, at which point we unwind the recursive calls to extend another path.
+
+    Design the static \ttt{void extPath(char[][] board, int mx, int my)} method that receives a board and a move position, and extends the path from the given position using the following rules:
+
+    \begin{enumerate}[label=(\roman*)]
+        \item If the given move position is invalid, then return.
+        \item If the character at \ttt{board[mx][my]} is not a dash, \ttt{\q{}-\q{}}, then return.
+        \item Otherwise, determine the number of adjacent mines to the move position. If the number of adjacent mines is non-zero, assign to \ttt{board[mx][my]} the number of mines at that move position.
+        \item If the number of adjacent mines \emph{is} zero, then we can extend out the path to all non-mine neighbors. First, assign to \ttt{board[mx][my]} the character literal \ttt{\q{}X\q{}}, then loop over all non-mine neighbors to the move position. In the loop body, call \ttt{extendPath} on each neighbor.
+    \end{enumerate}
+
+    \item Finally, design the static \ttt{char[][] play(char[][] board, int mx, int my)} method that receives a board and a move position, and attempts to play the given move position on the board. If, at that position on the board, there is a mine, return \ttt{null}. Otherwise, call \ttt{extPath} on the board and position, then return \ttt{board}. In essence, \ttt{play} receives one game state and transitions it to the next state.
+\end{enumerate}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{int sumOdd(List<Integer> l)} that, when given a  list of integers, filters out even numbers and then calculates the sum of the remaining odd numbers. You must use the Stream API.}
 

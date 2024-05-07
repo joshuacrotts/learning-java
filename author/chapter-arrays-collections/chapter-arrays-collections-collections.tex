@@ -727,9 +727,9 @@ Consequently, when comparing an arbitrary value~$t_1$ against~$t_2$, to say that
 
 Let's perform a case analysis on the input strings. 
 If both provided strings are non-empty, we retrieve their first character. 
-If both start with \ttt{'p'}, then their ordering depends on a standard lexicographical comparison of the rest of the strings. 
-If the first character of~$s_1$ is \ttt{'p'}, however, we return~$-1$ to designate that~$s_1$ has a higher priority than~$s_2$. 
-Conversely, if~$s_2$ starts with \ttt{'p'}, then we return~$1$ to designate the opposite. 
+If both start with \ttt{\q{}p\q{}}, then their ordering depends on a standard lexicographical comparison of the rest of the strings. 
+If the first character of~$s_1$ is \ttt{\q{}p\q{}}, however, we return~$-1$ to designate that~$s_1$ has a higher priority than~$s_2$. 
+Conversely, if~$s_2$ starts with \ttt{\q{}p\q{}}, then we return~$1$ to designate the opposite. 
 If neither start with~$p$, then again we perform a lexicographical comparison on the entire strings. 
 Algorithm~\ref{alg:pseudocodepriority} displays the pseudocode for the comparator, but as we will see, we can translate this, verbatim, into Java syntax. 
 The last line of \ttt{priorityByP} instantiates a new \ttt{PriorityQueue}\index{\ttt{PriorityQueue}} whose constructor receives the \ttt{Comparator}\index{\ttt{Comparator}} that we just designed. 
@@ -826,9 +826,9 @@ hello
 shrub
 \end{verbnobox}
 
-With the provided comparator, \ttt{park} has the highest priority because it starts with \ttt{'p'} and has a substring that comes before the rest of those strings starting with \ttt{'p'}. 
+With the provided comparator, \ttt{park} has the highest priority because it starts with \ttt{\q{}p\q{}} and has a substring that comes before the rest of those strings starting with \ttt{\q{}p\q{}}. 
 The strings \ttt{pecking}, \ttt{peek}, and \ttt{pool} come next for similar reasons. 
-Finally, none of the strings \ttt{barks}, \ttt{hello}, and \ttt{shrub} start with \ttt{'p'}, so we compare based on the strings themselves. 
+Finally, none of the strings \ttt{barks}, \ttt{hello}, and \ttt{shrub} start with \ttt{\q{}p\q{}}, so we compare based on the strings themselves. 
 The underlying implementation of \emph{how} the priority queue works and enforces ordering is beyond the scope of this textbook. 
 Such details are reserved for a textbook or course on advanced data structures, which follows the course designed for the audience of this text.
 
