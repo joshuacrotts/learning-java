@@ -476,6 +476,117 @@ class DivByThree {
 }
 \end{lstlisting}
 
+\myexample{Let's design a recursive method to remove sequences of duplicate characters.}
+For example, consider \ttt{"aaabbcdddc"}.
+Removing sequential characters from this string produces \ttt{"abcdc"}.
+Let's think about the base case and recursive step for the algorithm.
+One base case we can derive is when the string contains at most one character, meaning we return that string.
+On the other hand, the string must contain at least two characters that may be identical. 
+At first, we may think to check whether the first and second characters and, if so, recurse without the second character and prepend the first. 
+Sadly, this only removes every other duplicate character.
+We need to keep track of what character we are removing from the string in a sequence.
+If we are removing \ttt{\q{}a\q{}} from the above example, we want to concatenate \ttt{\q{}a\q{}} onto the front of the recursive call, then recurse on the rest of the string, but pass \ttt{\q{}a\q{}} as a parameter.
+Until we reach a non-\ttt{\q{}a\q{}} character, we simply recurse on the rest of the string without concatenating a character.
+Below is a recursive call trace, explaining how the example string is interpreted.
+Notice that the initial call to \ttt{rscHelper} contains the null character literal, i.e., \ttt{'\textbackslash{}0'}. 
+If readers prefer, they can instead make use of one-character strings instead of characters and pass \ttt{null} (or even the empty string).
+The tail recursive counterpart moves the concatenation operations into a parameter, as we have seen before.
+
+\begin{verbnobox}[\small]
+removeSequentialChars("aaabbcdddc")              =>
+rscHelper("aaabbcdddc", '\0')                    =>
+'a' + rscHelper("aabbcdddc", 'a')                =>
+'a' + rscHelper("abbcdddc", 'a')                 =>
+'a' + rscHelper("bbcdddc", 'a')                  =>
+'a' + 'b' + rscHelper("bcdddc", 'b')             =>
+'a' + 'b' + rscHelper("cdddc", 'b')              =>
+'a' + 'b' + 'c' + rscHelper("dddc", 'c')         =>
+'a' + 'b' + 'c' + 'd' + rscHelper("ddc", 'd')    =>
+'a' + 'b' + 'c' + 'd' + rscHelper("dc", 'd')     =>
+'a' + 'b' + 'c' + 'd' + rscHelper("c", 'd')      =>
+'a' + 'b' + 'c' + 'd' + 'c' + rscHelper("", 'c') =>
+'a' + 'b' + 'c' + 'd' + 'c' + ""                 =>
+"abcdc"
+\end{verbnobox}
+
+\begin{lstlisting}[language=MyJava]
+class RemoveSequentialCharsTester {
+
+  @Test
+  void testRemoveSequentialChars() {
+    assertAll(
+      () -> assertEquals("abcdc", remSeqChars("aaaabbcdddc")),
+      () -> assertEquals("abcde", remSeqChars("abcde")),
+      () -> assertEquals("aaaaa", remSeqChars("")),
+      () -> assertEquals("a", remSeqChars("a")),
+      () -> assertEquals("", remSeqChars("")));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class RemoveSequentialChars {
+
+  /**
+   *
+   * @param s - 
+   * @return 
+   */
+  static String remSeqChars(String s) {
+    return remSeqCharsHelper(s, '\0');
+  }
+
+  /**
+   * 
+   * @param s - 
+   * @param c - 
+   * @return 
+   */
+  private static String remSeqCharsHelper(String s, char c) {
+    if (s.isEmpty()) {
+      return "";
+    } else if (s.charAt(0) != c) {
+      return s.charAt(0) + remSeqCharsHelper(s.substring(1), s.charAt(0));
+    } else {
+      return remSeqCharsHelper(s.substring(1), c);
+    }
+  }
+}
+\end{lslisting}
+
+\begin{lstlisting}[language=MyJava]
+class RemoveSequentialChars {
+  // ... previous method not shown.
+
+  /**
+   *
+   * @param s - 
+   * @return 
+   */
+  static String remSeqCharsTR(String s) {
+    return remSeqCharsTRHelper(s, '\0', "");
+  }
+
+  /**
+   * 
+   * @param s - 
+   * @param c -
+   * @param acc -  
+   * @return 
+   */
+  private static String remSeqCharsHelper(String s, char c, String acc) {
+    if (s.isEmpty()) {
+      return acc;
+    } else if (s.charAt(0) != c) {
+      return remSeqCharsHelper(s.substring(1), s.charAt(0), acc + s.charAt(0));
+    } else {
+      return remSeqCharsHelper(s.substring(1), c, acc);
+    }
+  }
+}
+\end{lslisting}
+
+
 \myexample{Exponentiation is an incredibly common mathematical operation that, like factorial, may be represented as a recurrence relation.}
 That is, $n^b$ where $n > 0$ and $b \geq 0$ is defined as $n \cdot n^{b-1}$ for~$b > 0$, and~$1$ when~$b=0$.
 The simple algorithm is to naturally recurse on~$b$ until it is zero. 

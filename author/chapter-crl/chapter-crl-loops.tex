@@ -16,7 +16,7 @@ Many programming languages offer \emph{iteration} statements, which allow us to 
 Suppose we have a standard recursive \emph{fact} method. 
 
 \begin{clrr}[]{Standard Recursive Factorial}
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int fact(int n) {
   if (isZero(n)) { 
     return 1; 
@@ -26,7 +26,7 @@ static int fact(int n) {
 }
 \end{lstlisting}
 \tcblower
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int factTR(int n, 
                   int acc) {
   if (isZero(n)) { 
@@ -118,7 +118,7 @@ Let's compare these two implementations side-by-side, color-coding their similar
 Base cases are \textcolor{red}{red}, accumulated variables/steps are \textcolor{darkyellow}{yellow}, and return values are \textcolor{darkgreen}{green}. 
 
 \begin{clrr}[]{Tail Recursive versus Iterative Factorial}
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int fact(int n, int acc) {
   if (*;\textcolor{red}{(n == 0)};*) {
     return (*;\textcolor{darkgreen}{acc};*);
@@ -131,7 +131,7 @@ static int fact(int n, int acc) {
 (*;\phantom{};*)
 \end{lstlisting}
 \tcblower
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int fact(int n) {
   // acc stores the current
   // factorial value as n 
@@ -1043,7 +1043,7 @@ To avoid any confusion in the conversion process, we will use our translation pi
 Skipping a few steps up to $TR_\emph{C}$:
 
 \begin{clrr}[]{Initial Translation of Fibonacci \emph{$TR$} To $I$}
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int fibHelper(int n, 
                      int a, 
                      int b) {
@@ -1059,7 +1059,7 @@ static int fibHelper(int n,
 }
 \end{lstlisting}
 \tcblower
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int fib(int n) {
   // Holds the previous' prev.
   int a = 0;
