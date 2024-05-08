@@ -97,6 +97,13 @@ class AddTester {
 \begin{lstlisting}[language=MyJava]
 class Add {
 
+  /**
+   * Adds two natural numbers. Uses recursion and the addOne, 
+   * subOne, and isZero methods.
+   * @param m - the first number.
+   * @param n - the second number.
+   * @return the sum.
+   */
   static int add(int m, int n) {
     if (isZero(n)) { 
       return m;
@@ -178,7 +185,7 @@ Now let's design the \ttt{factorial} method in Java, again with tests taking imm
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class FactTester {
+class FactorialTester {
   
   @Test
   void testFact() {
@@ -193,6 +200,11 @@ class FactTester {
 \begin{lstlisting}[language=MyJava]
 class Factorial {
 
+  /**
+   * Computes the factorial of a number.
+   * @param n - the number to compute the factorial of.
+   * @return factorial result.
+   */
   static int fact(int n) {
     if (isZero(n)) {
       return 1;
@@ -284,8 +296,14 @@ Up next, we can copy the logic of the previous standard recursive algorithm with
 The goal is to construct, or generate, the factorial of some~$n$ as an argument to the method.
 
 \begin{lstlisting}[language=MyJava]
-class FactorialTailRecursive {
+class Factorial {
 
+  /**
+   * Tail recursive method for computing the factorial of a number.
+   * @param n - the number to compute the factorial of.
+   * @param acc - the accumulator for the result.
+   * @return the factorial of the number.
+   */
   static int factTR(int n, int acc) {
     if (isZero(n)) {
       return acc;
@@ -388,12 +406,23 @@ To do so, we affix the \ttt{private} keyword in front of \ttt{static}.
 Private methods are unreachable/not callable from outside the class in which it is declared.
 
 \begin{lstlisting}[language=MyJava]
-class FactorialTailRecursive {
+class Factorial {
   
+  /**
+   * Tail recursive (driver) method for computing the factorial of a number.
+   * @param n - the number to compute the factorial of.
+   * @return the factorial.
+   */
   static int factTR(int n) {
     return factHelper(n, 1);
   }
 
+  /**
+   * Helper method to compute the factorial of a number using tail recursion.
+   * @param n - the number to compute the factorial of.
+   * @param acc - the accumulator for the result.
+   * @return the factorial of the number.
+   */
   private static int factHelper(int n, int acc) {
     if (isZero(n)) {
       return acc;
@@ -414,7 +443,6 @@ Suppose that we want to design a method that removes all characters whose positi
 For example, given the string \ttt{"ABCDEFGHI"}, we want to return \ttt{"ABDEGH"}, since \ttt{"C"}, \ttt{"F"}, and \ttt{"I"} are located at positions (note the use of position and not index) are divisible by three. 
 Tests are, of course, warranted and necessary.
 
-%\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -443,6 +471,11 @@ Because the \ttt{substring} method of one argument is exclusive, if the provided
 \begin{lstlisting}[language=MyJava]
 class DivByThree {
 
+  /**
+   * Removes characters at positions divisible by three.
+   * @param s - the given string.
+   * @return the resulting string.
+   */
   static String removeDiv3Chars(String s) {
     if (s.length() < 3) {
       return s;
@@ -462,10 +495,23 @@ Our base case concatenates~$s$ onto the end of the accumulator.
 \begin{lstlisting}[language=MyJava]
 class DivByThree {
 
+  /**
+   * Tail recursive (driver) method to remove characters at 
+   * positions divisible by three.
+   * @param s - the given string.
+   * @return the resulting string.
+   */
   static String removeDiv3CharsTR(String s) {
     return removeDiv3CharsHelper(s, "");
   }
 
+  /**
+   * Helper method to remove characters at positions 
+   * divisible by three using tail recursion.
+   * @param s - the given string.
+   * @param acc - the accumulator for the result.
+   * @return the resulting string.
+   */
   private static String removeDiv3CharsHelper(String s, String acc) {
     if (s.length() < 3) {
       return acc + s;
@@ -479,6 +525,7 @@ class DivByThree {
 \myexample{Let's design a recursive method to remove sequences of duplicate characters.}
 For example, consider \ttt{"aaabbcdddc"}.
 Removing sequential characters from this string produces \ttt{"abcdc"}.
+
 Let's think about the base case and recursive step for the algorithm.
 One base case we can derive is when the string contains at most one character, meaning we return that string.
 On the other hand, the string must contain at least two characters that may be identical. 
@@ -487,27 +534,10 @@ Sadly, this only removes every other duplicate character.
 We need to keep track of what character we are removing from the string in a sequence.
 If we are removing \ttt{\q{}a\q{}} from the above example, we want to concatenate \ttt{\q{}a\q{}} onto the front of the recursive call, then recurse on the rest of the string, but pass \ttt{\q{}a\q{}} as a parameter.
 Until we reach a non-\ttt{\q{}a\q{}} character, we simply recurse on the rest of the string without concatenating a character.
-Below is a recursive call trace, explaining how the example string is interpreted.
-Notice that the initial call to \ttt{rscHelper} contains the null character literal, i.e., \ttt{'\textbackslash{}0'}. 
+
+Notice that the initial call to the helper method, namely \ttt{remSeqCharsHelper}, contains the null character literal, i.e., \ttt{\q{}\textbackslash{}0\q{}}. 
 If readers prefer, they can instead make use of one-character strings instead of characters and pass \ttt{null} (or even the empty string).
 The tail recursive counterpart moves the concatenation operations into a parameter, as we have seen before.
-
-\begin{verbnobox}[\small]
-removeSequentialChars("aaabbcdddc")              =>
-rscHelper("aaabbcdddc", '\0')                    =>
-'a' + rscHelper("aabbcdddc", 'a')                =>
-'a' + rscHelper("abbcdddc", 'a')                 =>
-'a' + rscHelper("bbcdddc", 'a')                  =>
-'a' + 'b' + rscHelper("bcdddc", 'b')             =>
-'a' + 'b' + rscHelper("cdddc", 'b')              =>
-'a' + 'b' + 'c' + rscHelper("dddc", 'c')         =>
-'a' + 'b' + 'c' + 'd' + rscHelper("ddc", 'd')    =>
-'a' + 'b' + 'c' + 'd' + rscHelper("dc", 'd')     =>
-'a' + 'b' + 'c' + 'd' + rscHelper("c", 'd')      =>
-'a' + 'b' + 'c' + 'd' + 'c' + rscHelper("", 'c') =>
-'a' + 'b' + 'c' + 'd' + 'c' + ""                 =>
-"abcdc"
-\end{verbnobox}
 
 \begin{lstlisting}[language=MyJava]
 class RemoveSequentialCharsTester {
@@ -528,19 +558,19 @@ class RemoveSequentialCharsTester {
 class RemoveSequentialChars {
 
   /**
-   *
-   * @param s - 
-   * @return 
+   * Removes sequential characters from a string.
+   * @param s - the given string.
+   * @return the resulting string.
    */
   static String remSeqChars(String s) {
     return remSeqCharsHelper(s, '\0');
   }
 
   /**
-   * 
-   * @param s - 
-   * @param c - 
-   * @return 
+   * Helper method to remove sequential characters from a string.
+   * @param s - the given string.
+   * @param c - the character to remove from the string.
+   * @return the resulting string.
    */
   private static String remSeqCharsHelper(String s, char c) {
     if (s.isEmpty()) {
@@ -552,27 +582,26 @@ class RemoveSequentialChars {
     }
   }
 }
-\end{lslisting}
+\end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
 class RemoveSequentialChars {
-  // ... previous method not shown.
 
   /**
-   *
-   * @param s - 
-   * @return 
+   * Tail recursive (driver) method to remove sequential characters from a string.
+   * @param s - the given string.
+   * @return the resulting string.
    */
   static String remSeqCharsTR(String s) {
     return remSeqCharsTRHelper(s, '\0', "");
   }
 
   /**
-   * 
-   * @param s - 
-   * @param c -
-   * @param acc -  
-   * @return 
+   * Tail recursive helper method for remSeqCharsTR.
+   * @param s - the given string.
+   * @param c - the character to remove from the string.
+   * @param acc - the accumulator for the result.
+   * @return the resulting string.
    */
   private static String remSeqCharsHelper(String s, char c, String acc) {
     if (s.isEmpty()) {
@@ -584,8 +613,7 @@ class RemoveSequentialChars {
     }
   }
 }
-\end{lslisting}
-
+\end{lstlisting}
 
 \myexample{Exponentiation is an incredibly common mathematical operation that, like factorial, may be represented as a recurrence relation.}
 That is, $n^b$ where $n > 0$ and $b \geq 0$ is defined as $n \cdot n^{b-1}$ for~$b > 0$, and~$1$ when~$b=0$.
@@ -595,10 +623,10 @@ Recall the rules of exponents, namely that $n^{2b} = (n^b)^2$.
 Using this equivalence, when the exponent is even, we square the result and divide the given exponent in half.
 If it is odd, we recurse with one less than the exponent.
 
-The standard recursive \ttt{pow} method receives two arguments: $n$ and $b$, and recurses over~$b$ until it is zero.
+The standard recursive \ttt{pow} method receives two arguments:~$n$ and~$b$, and recurses over~$b$ until it is zero.
 On the other hand, the tail recursive counterpart accumulates the result as a parameter.
 In either method, we must handle a case analysis on the parity of~$b$, i.e., determine whether~$b$ is even or odd.
-Both method implementations utilize the same test cases.
+Both method implementations utilize the same test cases, and we will show both testing suites.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -652,7 +680,7 @@ class Pow {
 
   /**
    * Calculates the result of raising a base number to an exponent.
-   * The method uses tail recursion over ints, so make sure that
+   * The helper method uses tail recursion over ints, so make sure that
    * neither parameter are very large!
    * @param n - the base number.
    * @param b - the exponent.

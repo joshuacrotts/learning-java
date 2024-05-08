@@ -954,6 +954,136 @@ This means that any \ttt{for} loop is representable with a \ttt{while} and vice-
 Depending on the circumstance, however, one might be preferable over the other. 
 We reiterate that \ttt{for} loops should be used when we know how many iterations there are for a certain task, whereas \ttt{while} loops are for indeterminate termination conditions. 
 
+\myexample{Let's design the \ttt{generateAcronym} method, which returns the acronym of a given string.}
+For our purposes, an acronym is the first letter of each word in a string, where words are strings separated by a single space. 
+No other kinds of strings will be present in the input, e.g., strings with multiple spaces between words, nor leading/trailing spaces.
+
+The idea behind the recursive algorithm is to keep track of when we are at the beginning of a word.
+We can do this by checking if the current character is a space, and if so, we know that the next character is the beginning of a word, meaning we should add it to the acronym.
+The base case is when we reach the end of the string, at which point we return the empty string.
+Our standard recursive method needs a helper method to keep track of whether we are at the beginning of a word.
+The acronym itself is constructed via a series of concatenating recursive calls.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class GenerateAcronymTester {
+
+  @Test
+  void testGenerateAcronym() {
+    assertAll(
+      () -> assertEquals("gafia, generateAcronym("get away from it all")),
+      () -> assertEquals("NESW", generateAcronym("Never Eat Soggy Waffles")),
+      () -> assertEquals("abc", generateAcronym("a b c")),
+      () -> assertEquals("LOL", generateAcronym("laugh out loud")),
+      () -> assertEquals("W", generateAcronym("Word")));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class GenerateAcronym {
+
+  /**
+   * Generates the acronym of a given string.
+   * @param s - string to generate acronym from.
+   * @return acronym of s.
+   */
+  static String generateAcronym(String s) {
+    return generateAcronymHelper(s, true);
+  }
+
+  /**
+   * Recursively generates the acronym of a given string.
+   * @param s - string to generate acronym from.
+   * @param isStart - true if at the beginning of a word.
+   * @return acronym of s.
+   */
+  private static String generateAcronymHelper(String s, boolean isStart) {
+    if (s.isEmpty()) { 
+      return ""; 
+    } else if (isStart) { 
+      return s.charAt(0) + generateAcronymHelper(s.substring(1), false); 
+    } else if (s.charAt(0) == ' ') { 
+      return generateAcronymHelper(s.substring(1), true); 
+    } else { 
+      return generateAcronymHelper(s.substring(1), false); 
+    }
+  }
+}
+\end{lstlisting}
+
+As is usual with tail recursive methods, we need to keep track of the state of the algorithm via an accumulator.
+So, the tail recursive method has an additional parameter,~$\emph{acc}$, which is the acronym we are building.
+
+\begin{lstlisting}[language=MyJava]
+class GenerateAcronym {
+
+  /**
+   * Generates the acronym of a given string.
+   * @param s - string to generate acronym from.
+   * @return acronym of s.
+   */
+  static String generateAcronymTr(String s) {
+    return generateAcronymTrHelper(s, true, "");
+  }
+
+  /**
+   * Tail-recursively generates the acronym of a given string.
+   * @param s - string to generate acronym from.
+   * @param isStart - true if at the beginning of a word.
+   * @param acc - accumulator for acronym.
+   * @return acronym of s.
+   */
+  private static String generateAcronymTrHelper(String s, boolean isStart, 
+                                                String acc) {
+    if (s.isEmpty()) { 
+      return acc; 
+    } else if (isStart) { 
+      return generateAcronymTrHelper(s.substring(1), false, acc + s.charAt(0)); 
+    } else if (s.charAt(0) == ' ') { 
+      return generateAcronymTrHelper(s.substring(1), true, acc); 
+    } else { 
+      return generateAcronymTrHelper(s.substring(1), false, acc); 
+    }
+  }
+}
+\end{lstlisting}
+
+If we follow the translation pipeline, we observe that, yet again, the iterative algorithm is a straightforward conversion of the tail recursive method. 
+We can make the iterative method more efficient by using a \ttt{StringBuilder} to accumulate the acronym, rather than concatenating strings.
+We could similarly reduce the number of lines in the method by using a \ttt{for} loop and not invoke \ttt{substring} in every branch of the conditional, but we will keep the code as is for relation to the tail recursive method and the translation pipeline.
+
+\begin{lstlisting}[language=MyJava]
+class GenerateAcronym {
+
+  /**
+   * Generates the acronym of a given string.
+   * @param s - string to generate acronym from.
+   * @return acronym of s.
+   */
+  static String generateAcronym(String s) {
+    String acc = "";
+    boolean isStart = true;
+    while (!(s.isEmpty())) {
+      if (isStart) { 
+        acc = acc + s.charAt(0);
+        isStart = false; 
+        s = s.substring(1);
+      } else if (s.charAt(0) == ' ') { 
+        isStart = true; 
+        s = s.substring(1);
+      } else {
+        isStart = false;
+        s = s.substring(1);
+      }
+    }
+    return acc;
+  }
+}
+\end{lstlisting}
+
 \myexample{We will write one more example of first writing a recursive algorithm, then its tail recursive version, then its iterative counterpart.} 
 Suppose we want to write a method to determine the~$n^\text{th}$ Fibonacci number. 
 The \emph{Fibonacci sequence} is defined recursively as follows:
