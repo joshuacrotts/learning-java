@@ -552,6 +552,10 @@ In this exercise you will implement the minesweeper game as a series of methods.
         \item If the number of adjacent mines \emph{is} zero, then we can extend out the path to all non-mine neighbors. First, assign to \ttt{board[mx][my]} the character literal \ttt{\q{}X\q{}}, then loop over all non-mine neighbors to the move position. In the loop body, call \ttt{extendPath} on each neighbor.
     \end{enumerate}
 
+    \item Minesweeper board generation is an algorithmic problem in and of itself, and as such our implementation will be simple.
+    Design the static \ttt{char[][] makeBoard(int N, int M, int B)} method that receives a board size of~$N$ rows,~$M$ columns, and~$B$ mines to place.
+    To randomly place mines, create a \ttt{List<int[]>} of all the possible cells on the board, shuffle the list, retrieve the first~$B$ cells, and assign the character literal \ttt{\q{}B\q{}} to them. Assign the character literal \ttt{\q{}-\q{}} to all other cells.
+
     \item Finally, design the static \ttt{char[][] play(char[][] board, int mx, int my)} method that receives a board and a move position, and attempts to play the given move position on the board. If, at that position on the board, there is a mine, return \ttt{null}. Otherwise, call \ttt{extPath} on the board and position, then return \ttt{board}. In essence, \ttt{play} receives one game state and transitions it to the next state.
 \end{enumerate}
 
