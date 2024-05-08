@@ -33,6 +33,24 @@ The instance variables, accessors, and mutators (where applicable) should be nam
     \item Override the \ttt{toString} method to print out the list of employees in the \ttt{Job}. To make this easy, you can simply invoke the \ttt{toString} method from the \ttt{List} implementation.
 \end{enumerate}
 
+\myexercise{2}{chapter-classes}{In this exercise you will design a simple music system, similar to Spotify.}
+\begin{enumerate}[label=(\alph*)]
+  \item Design the \ttt{Song} class, which stores its \ttt{title}, \ttt{artist}, \ttt{genre}, and \ttt{length}. The first three fields are strings and the last is an integer. Create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}.
+  \item Design the \ttt{Playlist} class, which stores the title of the playlist and a set of the songs in the list. In this class, create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}. Finally, design the \ttt{boolean addSong(Song s)} that attempts to add~$s$ to the set of songs. If it already exists, return false. Otherwise, add the song to the set and return true.
+  \item Design the \ttt{User} class, which stores their name and a list of playlists. Its constructor should receive the name and assign it to the respective instance variable. Instantiate the list to a new \ttt{ArrayList}. 
+  \begin{enumerate}[label=(\roman*)]
+    \item Design the \ttt{boolean createPlaylist(String t, Song... S)} method, which receives a playlist title~$t$ and a variadic number of songs~$S$, attempts to create a playlist with the title$~t$. If it already exists, return false and do nothing else. Otherwise, declare a new \ttt{Playlist} to their list and add to it the given songs.
+    \item Design the \ttt{Playlist getPlaylist(String t)} method that, when given a playlist title~$t$, returns the \ttt{Playlist} instance with that title. If such a playlist does not exist, return \tt~{null}.
+  \end{enumerate}
+  \item Design the \ttt{MusicSystem} class, which stores a list of users and a set of all the songs in the system. In the constructor, instantiate these to an \ttt{ArrayList} and \ttt{HashSet} respectively.
+  \begin{enumerate}[label=(\roman*)]
+    \item Design the \ttt{void addUser(User u)} method that receives a user~$u$ and adds them to the list of users.
+    \item Design the \ttt{boolean addSong(User u, String t, Song s)} method that, when given a user~$u$, a playlist title~$t$, and a song~$s$, adds $s$ to $u$'s playlist with the title~$t$. If~$u$ does not exist or~$t$ is not a title in a playlist authored by~$u$, return false.
+    \item Design the \ttt{Map<User, Song> getLongestSong()} method that returns the longest (length) song out of all the songs that a user has in their playlists. If the user has no playlists nor any songs in the playlists, do not add that user to the map.
+  \end{enumerate}
+  \item 
+\end{enumerate}
+
 \myexercise{2}{chapter-classes}{In this exercise you will design a \emph{linear congruential generator}: a pseudorandom number generation algorithm. In particular, the C programming language standard library defines two functions: \ttt{rand} and \ttt{srand}. The latter sets the \emph{seed} for the generator, and \ttt{rand} returns a random integer between $[0, 2^{15})$. The formula for this generator is a recurrence relation:}
 \begin{align*}
     \emph{next} &= |r_n \cdot 1103515245 + 12345|\\
@@ -49,13 +67,20 @@ The instance variables, accessors, and mutators (where applicable) should be nam
 \myexercise{3}{chapter-classes}{This question has six parts.}
 
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers~$m$~and~$n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers. Copy the integers from the passed array into an instance variable array.
-    \item Design the \ttt{void set(int i, int j, int val)} method, which sets the value at row $i$ and column $j$ to \ttt{val}.
-    \item Design the \ttt{void add(Matrix m)} method, which adds the values of the passed matrix to the current matrix. If the dimensions of the passed matrix do not match the dimensions of the current matrix, do nothing.
-    \item Design the \ttt{void multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply~$m$ with this matrix, do nothing.
+    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers~$m$~and~$n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers. Copy the integers from the passed array into an instance variable array. Do \emph{not} simply assign the provided array to the instance variable!
+    \item Design the \ttt{void set(int i, int j, int val)} method, which sets the value at row~$i$ and column~$j$ to \ttt{val}.
+    \item Design the \ttt{boolean add(Matrix m)} method, which adds the values of the passed matrix to the current matrix. If the dimensions of the passed matrix do not match the dimensions of the current matrix, return false and do not add the matrix.
+    \item Design the \ttt{boolean multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply~$m$ with this matrix, return false and do not multiply the matrix.
     \item Design the \ttt{void transpose()} method, which transposes the matrix. That is, the rows become the columns and the columns become the rows. You may need to alter the dimensions of the matrix.
     \item Design the \ttt{void rotate()} method, rotates the matrix~$90$ degrees clockwise. To rotate a matrix, compute the transposition and then reverse the rows. You may need to alter the dimensions of the matrix.
-    \item Override the \ttt{String toString()} method to print out the matrix in a boxed format.
+    \item Override the \ttt{String toString()} method to return a stringified version of the matrix. As an example, \ttt{[[1, 2, 3], [4, 5, 6]]} represents the following matrix:
+
+    \[
+    \begin{bmatrix}
+      1&2&3\\
+      4&5&6
+    \end{bmatrix}
+    \]
 \end{enumerate}
 
 \myexercise{2}{chapter-classes}{This exercise has five parts.}
@@ -73,7 +98,7 @@ The instance variables, accessors, and mutators (where applicable) should be nam
 
 \myexercise{2}{chapter-classes}{This exercise has three parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{GameRunner} class, which stores a list of objects \ttt{ArrayList<GameObject>} as an instance variable. Its constructor should receive an integer representing a random number generator seed. It should first instantiate \ttt{rand} to a new \ttt{Random} object with this seed, and then populate the list with twenty random \ttt{GameObject} instances at random \textbf{integer} positions with random \textbf{integer} sizes. These random positions should be between $[-10, 10]$ for both coordinates and the random sizes should be between $[1, 10]$ for both dimensions.
+    \item Design the \ttt{GameRunner} class, which stores a list of objects \ttt{List<GameObject>} as an instance variable. Its constructor should receive an integer representing a random number generator seed. It should first instantiate \ttt{rand} to a new \ttt{Random} object with this seed, and then populate the list with twenty random \ttt{GameObject} instances at random \textbf{integer} positions with random \textbf{integer} sizes. These random positions should be between $[-10, 10]$ for both coordinates and the random sizes should be between $[1, 10]$ for both dimensions.
 
     \item Design the \ttt{void moveObjects()} method, which moves each object by three positive $x$ units and four negative $y$ units.
 
@@ -289,7 +314,7 @@ The \emph{Kotlin} programming language supports customized \emph{ranges}. That i
 \end{itemize}
 
 \noindent The \ttt{Document} interface is defined as follows:
-\begin{verbnobox}[\small]
+\begin{verbnobox}[\small\mbox{}]
 interface Document {
 
   /**
@@ -334,7 +359,7 @@ Notice that we have a \ttt{default} method, which is one that an implementing cl
   \item Now, let's design a class that allows us to do multiple actions with toppings. Design the generic \ttt{IToppingVisitor} class, which has four methods: \ttt{T visit(Pepperoni p)}, \ttt{T visit(Onion o)}, \ttt{T visit(Pineapple p)}, and \ttt{T visit(Anchovie a)}.
   \item Design the \ttt{ToppingPriceVisitor} class, which implements the interface \ttt{IToppingVisitor}, whose type parameter is a \ttt{Double}. The idea is that the \ttt{ToppingPriceVisitor} class serves as a way of associating a property with toppings without having to modify/amend the class definitions. Override the four methods to return \ttt{3.50}, \ttt{2.50}, \ttt{5.75}, and \ttt{4.00} respectively.
   \item Modify the \ttt{PizzaOrder} class to have its map instance variable associate \ttt{ITopping} objects to \ttt{Integer}, rather than \ttt{String} to \ttt{Integer}.
-  \item Amend the \ttt{ITopping} interface to now supply the \ttt{<T> T visit(IToppingVisitor<T> v)} method. Its subtypes should override \ttt{visit} by defining it as a call to \ttt{v.visit(this)}, where \ttt{v} is the visitor object parameter.
+  \item Amend the \ttt{ITopping} interface to now supply the \ttt{<T> T visit(IToppingVis\-itor<T> v)} method. Its subtypes should override \ttt{visit} by defining it as a call to \ttt{v.visit(this)}, where \ttt{v} is the visitor object parameter.
   \item Finally, design the \ttt{PizzaOrderPriceComparator} class, which implements \ttt{Comparator<PizzaOrder>}, and compares pizzas based on the price of its toppings. Pizzas with a higher cost are prioritized over pizzas with a lower cost.
 \end{enumerate}
 
@@ -507,11 +532,11 @@ What's awesome about this exercise is that it allows us to define the elements o
 
 \myexercise{2}{chapter-classes}{Design the \ttt{static <T> List<T> predOrEq(List<T> ls, Predicate<T> p, BiFunction<T, T, Boolean>, T x)} method that, when given a list of values $\mathit{ls}$, a predicate $p$, a function $f$, and a value $x$ that returns the list of values in $\mathit{ls}$ that either satisfy $p$ or are equal according to $f$. For the purposes of this question, $f$ is a method of two arguments of type $T$ that determines whether or not they are ``equal'' according to some criteria.}
 
-\myexercise{1}{chapter-classes}{Design the \ttt{static <T> boolean andMap(List<T> ls, Predicate<T> pred)} method that returns whether or not all elements of the input list satisfy the given predicate. Use the stream API to solve this problem, but do \emph{not} use the \ttt{allMatch} method, as that method solves the problem we want \emph{you} to solve!}
+\myexercise{1}{chapter-classes}{Design the \ttt{static <T> boolean andMap(List<T> l, Predicate<T> p)} method that returns whether or not all elements of the input list satisfy the given predicate. Use the stream API to solve this problem, but do \emph{not} use the \ttt{allMatch} method, as that method solves the problem we want \emph{you} to solve!}
 
 \myexercise{2}{chapter-classes}{Design the \ttt{static <T, U> U foldr(List<T> ls, BiFunction<T, U, U> f, U u)} method that receives a list of values $ls$, a function $f$, and an initial value $u$. The method should return the result of folding the list from the right with the given function and initial value. By ``folding,'' we mean that we apply $f$ to the last element of the list and the initial value, then apply $f$ to the second-to-last element and the result of the previous application, and so forth. To think of this in terms of infix notation over some list, consider the list $[a, b, c, d]$. Folding it over the function $\circ$ and initial value $u$ is $a \circ (b \circ (c \circ (d \circ u)))$. Do \emph{not} use the \ttt{reduce} method, as that method solves the problem we want \emph{you} to solve!}
 
-\myexercise{1}{chapter-classes}{Design the \ttt{static <T, U> List<U> buildList(int n, Function<T, U> f)} method that receives an integer $n$ and a function $f$ and returns a list of $n$ elements, where the $i^\text{th}$ element is $f(i)$. For example, if we invoke \ttt{buildList(5, x -> x * x)}, we should receive the list $[1, 4, 9, 16, 25]$.}
+\myexercise{1}{chapter-classes}{Design the \ttt{static <T, U> List<U> buildList(int n, Function<T, U> func)} method that receives an integer $n$ and a function $f$ and returns a list of $n$ elements, where the $i^\text{th}$ element is $f(i)$. For example, if we invoke \ttt{buildList(5, x -> x * x)}, we should receive the list $[1, 4, 9, 16, 25]$.}
 
 \myexercise{1}{chapter-classes}{This exercise involves the doubly-linked list we wrote in the chapter.}
 Design the \ttt{int size()} method, which returns the number of elements in the list. You can do this either recursively or with a loop. For better practice, try (and thoroughly test) both implementations.
@@ -728,8 +753,8 @@ Predicates can only be unified with variables if the variable does not have an e
     \item Implement the \ttt{Comparable<BigNat>} interface, and override the \ttt{public int compareTo(BigNat b)} method to return the sign of the result of comparing the given \ttt{BigNat} (which we will call $b$) to \ttt{this} \ttt{BigNat} (which we will call $a$). Namely, if $a < b$, return $-1$, if $a > b$, return $1$, otherwise return $0$.
     \item Design the \ttt{void add(BigNat bn)} method, which adds a \ttt{BigNat} to \ttt{this} \ttt{BigNat}. The method should not return anything. Note: this problem is harder than it may look at first glance!
     \item Design the \ttt{void sub(BigNat bn)} method, which subtracts a \ttt{BigNat} from \ttt{this} \ttt{BigNat}. If the subtrahend (the right-hand side of the subtraction) is greater than the minuend, the result is zero. Over the natural numbers, this is called the \emph{monus} operator.
-    \item Design the \ttt{void mul(BigNat bn)} method, which multiplies a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. Note: remember how we implement multiplication recursively? You shouldn't use recursion for this problem, but what \emph{is} multiplication? Think about the performance implications of this approach.
-    \item Design the \ttt{void div(BigNat bn)} method, which divides a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. If the divisor is greater than the dividend, assign the dividend to be zero. If the divisor is zero, do nothing at all. Otherwise, perform integer division. Note: we can implement division recursively. You shouldn't use recursion for this problem, but what \emph{is} division? Think about the performance implications of this approach.
+    \item Design the \ttt{void mul(BigNat bn)} method, which multiplies a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. Note: remember how we implement multiplication recursively? You shouldn't use recursion for this problem, but what \emph{is} multiplication? Multiplication is defined as repeated addition. Think about the performance implications of this approach.
+    \item Design the \ttt{void div(BigNat bn)} method, which divides a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. If the divisor is greater than the dividend, assign the dividend to be zero. If the divisor is zero, do nothing at all. Otherwise, perform integer division. Note: we can implement division recursively. You shouldn't use recursion for this problem, but what \emph{is} division? Division is defined, for all intents and purposes over the natural numbers, as repeated subtraction. Think about the performance implications of this approach.
 \end{enumerate}
 
 \myexercise{3}{chapter-classes}{Quine's method of truth resolution~\cite{methodsoflogic} is a method of automatically reasoning about the truth of a propositional logic statement (recall the exercise from Chapter~\ref{chapter-crl}). The method is as follows:}
