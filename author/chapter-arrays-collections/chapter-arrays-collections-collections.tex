@@ -475,6 +475,104 @@ class RequiredVariadicParameters {
 }
 \end{lstlisting}
 
+\myexample{Let's design the \ttt{List<Character> explode(String s)} method, which receives a \ttt{String} and returns a list of its characters.}
+We can solve the problem using recursion and iteration, so we shall develop all three versions.
+The recursive versions are, in this instance, more verbose than the iterative counterpart: the base case is when the string is empty, and in the recursive step, we add the first character of the string to a list and call the method with the remaining characters.
+The iterative version uses a loop over the characters and adds each to the list.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+
+class ExplodeTester {
+  
+  @Test
+  void testExplode() {
+    assertAll(
+      () -> assertEquals(List.of(),
+                         explode("")),
+      () -> assertEquals(List.of('H', 'e', 'l', 'l', 'o'),
+                         explode("Hello")));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+
+class Explode {
+
+  /**
+   * Explodes a string into a list of its characters.
+   * @param s - string to explode.
+   * @return list of characters in the string.
+   */
+  static List<Character> explode(String s) {
+    if (s.isEmpty()) { 
+      return new ArrayList<>();
+    } else {
+      List<Character> ls = new ArrayList<>();
+      ls.add(s.charAt(0));
+      ls.addAll(explode(s.substring(1)));
+      return ls;
+    }
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class Explode {
+  
+  /**
+   * Explodes a string into a list of its characters
+   * using tail recursion.
+   * @param s - string to explode.
+   * @return list of chars in string.
+   */
+  static List<Character> explodeTR(String s) {
+    List<Character> ls = new ArrayList<>();
+    explodeTR(s, ls);
+    return ls;
+  }
+
+  /**
+   * Tail recursive helper method for explodeTr.
+   * @param s - string to explode.
+   * @param ls - list to store characters.
+   * @return list of chars in the string.
+   */
+  private static List<Character> explodeTRHelper(String s, List<Character> ls) {
+    if (s.isEmpty()) { 
+      return ls; 
+    } else {
+      ls.add(s.charAt(0));
+      return explodeTRHelper(s.substring(1), ls);
+    }
+  }
+}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+
+class Explode {
+
+  /**
+   * Explodes a string into a list of its characters.
+   * @param s - string to explode.
+   * @return list of characters in the string.
+   */
+  static List<Character> explode(String s) {
+    List<Character> ls = new ArrayList<>();
+    for (int i = 0; i < s.length(); i++) {
+      ls.add(s.charAt(i));
+    }
+    return ls;
+  }
+}
+\end{lstlisting}
+
 \subsubsection*{\ttt{LinkedList} Class}
 \emph{Linked lists}\index{linked list} remove us from the shackles of array-based data structures in that, as their name implies, they are a series of \emph{nodes}\index{node}, or elements, linked together in a chain of sorts. 
 These nodes need not be adjacent in memory (like the elements of arrays), but rather reference each other to find what comes next in the chain/list. 

@@ -1159,6 +1159,39 @@ class Library {
 }
 \end{lstlisting}
 
+% \myexample{Let's create two classes for representing pieces of chocolate and chocolate boxes.}
+% We will first design the \ttt{Chocolate} class, which stores its ``kind'' and its weight in ounces.
+% Given that our example will not deal with comparing pieces of chocolate for equality (nor will we store them in a hashable data structure), we will not override the \ttt{equals} and \ttt{hashCode} methods.
+
+% \begin{lstlisting}[language=MyJava]
+% class Chocolate {
+
+%   private final String KIND;
+%   private final int WEIGHT_OZ;
+
+%   Chocolate(String kind, int weightOz) {
+%     this.KIND = kind;
+%     this.WEIGHT_OZ = weightOz;
+%   }
+
+%   // Accessors omitted.
+% }
+% \end{lstlisting}
+
+% The \ttt{ChocolateBox} class stores a two-dimensional array of \ttt{Candy} instances.
+% Its constructor receives the number of rows and columns of the underlying box, and instantiates the array to that size.
+% The \ttt{ChocolateBox} class contains six (instance) methods that we will incrementally define.
+
+
+% The \ttt{numberOfChocolates} method returns the number of \ttt{Chocolate} objects in the box that are non-\ttt{null}.
+
+% \begin{lstlisting}[language=MyJava]
+% class ChocolateBoxTester {
+
+%   ChocolateBox b1 = new ChocolateBox()
+% }
+% \end{lstlisting}
+
 \myexample{Let's design the \ttt{Rational} class, which stores a rational number as a numerator and denominator.}
 We will create methods for adding, subtracting, multiplying, and dividing rational numbers. 
 Testing is paramount to designing a correct implementation, as is the case with all projects, but is of particular significance here. 

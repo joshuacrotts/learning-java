@@ -88,6 +88,10 @@ static int foo() {
 \end{lstlisting}
 \end{clrr}
 
+Another piece of syntax that is worth an explanation is the use of operators such as \ttt{+=}, \ttt{*=}, and so forth. 
+These operators introduce a form of variable reassignment, and while \ttt{y = y + 5} is sufficient to express ``assign to \ttt{y} the sum of \ttt{y} and~$5$,'' the augmented assignment operator shortens the statement to \ttt{y += 5}. 
+Any simple binary operator, e.g., \ttt{+}, \ttt{-}, \ttt{*}, \ttt{/}, \ttt{\%}, may take advantage of the augmented assignment operator, and our code will frequently use them in place of superfluous operations.
+
 \myexample{Suppose we want to translate a \ttt{String} grade into its grade-point average equivalent, treating pluses and minuses as fractional grade increment or decrements.} 
 Our grading schema has no grade higher than a~$4.0$, and all failing grades (i.e., F+, F, F-) result in a~$0.0$ grade-point average. 
 After writing the tests, we can use a series of \ttt{if} and \ttt{else if} statements as a case analysis on the letter grade. 
