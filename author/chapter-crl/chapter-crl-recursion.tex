@@ -447,17 +447,17 @@ Tests are, of course, warranted and necessary.
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class DivByThreeTests {
+class RemoveDivThreeCharsTester {
 
   @Test
-  void testRemoveDiv3Char() {
+  void testRemoveDivThreeChars() {
     assertAll(
-      () -> assertEquals("ABDEGH", removeDiv3Chars("ABCDEFGHI")),
-      () -> assertEquals("CCC", removeDiv3Chars("CC")),
-      () -> assertEquals("AB", removeDiv3Chars("AB")),
-      () -> assertEquals("A", removeDiv3Chars("A")),
-      () -> assertEquals("", removeDiv3Chars("")),
-      () -> assertEquals("ABCD", removeDiv3Chars("ABD")));
+      () -> assertEquals("ABDEGH", removeDivThreeChars("ABCDEFGHI")),
+      () -> assertEquals("CCC", removeDivThreeChars("CC")),
+      () -> assertEquals("AB", removeDivThreeChars("AB")),
+      () -> assertEquals("A", removeDivThreeChars("A")),
+      () -> assertEquals("", removeDivThreeChars("")),
+      () -> assertEquals("ABCD", removeDivThreeChars("ABD")));
   }
 }
 \end{lstlisting}
@@ -469,18 +469,18 @@ In the \ttt{else} case, we are guaranteed that the input string has at least thr
 Because the \ttt{substring} method of one argument is exclusive, if the provided index is the end of the string, the empty string is returned.
 
 \begin{lstlisting}[language=MyJava]
-class DivByThree {
+class RemoveDivThreeChars {
 
   /**
    * Removes characters at positions divisible by three.
    * @param s - the given string.
    * @return the resulting string.
    */
-  static String removeDiv3Chars(String s) {
+  static String removeDivThreeChars(String s) {
     if (s.length() < 3) {
       return s;
     } else {
-      return s.substring(0, 2) + removeDiv3Chars(s.substring(3));
+      return s.substring(0, 2) + removeDivThreeChars(s.substring(3));
     }
   }
 }
@@ -493,7 +493,7 @@ Our base case concatenates~$s$ onto the end of the accumulator.
 
 %\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
-class DivByThree {
+class RemoveDivThreeChars {
 
   /**
    * Tail recursive (driver) method to remove characters at 
@@ -501,8 +501,8 @@ class DivByThree {
    * @param s - the given string.
    * @return the resulting string.
    */
-  static String removeDiv3CharsTR(String s) {
-    return removeDiv3CharsHelper(s, "");
+  static String removeDivThreeCharsTR(String s) {
+    return removeDivThreeCharsTRHelper(s, "");
   }
 
   /**
@@ -512,11 +512,11 @@ class DivByThree {
    * @param acc - the accumulator for the result.
    * @return the resulting string.
    */
-  private static String removeDiv3CharsHelper(String s, String acc) {
+  private static String removeDivThreeCharsTRHelper(String s, String acc) {
     if (s.length() < 3) {
       return acc + s;
     } else {
-      return removeDiv3CharsHelper(s.substring(3), acc+s.substring(0, 2));
+      return removeDivThreeCharsTRHelper(s.substring(3), acc+s.substring(0, 2));
     }
   }
 }

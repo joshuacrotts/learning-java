@@ -92,6 +92,58 @@ Another piece of syntax that is worth an explanation is the use of operators suc
 These operators introduce a form of variable reassignment, and while \ttt{y = y + 5} is sufficient to express ``assign to \ttt{y} the sum of \ttt{y} and~$5$,'' the augmented assignment operator shortens the statement to \ttt{y += 5}. 
 Any simple binary operator, e.g., \ttt{+}, \ttt{-}, \ttt{*}, \ttt{/}, \ttt{\%}, may take advantage of the augmented assignment operator, and our code will frequently use them in place of superfluous operations.
 
+\myexample{Let's design the \ttt{isPowerOfEight} method, which determines whether a positive integer is a power of eight.}
+For example,~$64$ is a power of eight because~$8^2=64$, but~$37$ is not a power of~$2$ because there does not exist an integer~$x$ such that~$2^x=37$.
+We can use logarithms to our advantage to determine if a number is a power of eight.
+Java provides the \ttt{Math.log} and \ttt{Math.log10} methods to return the base~$e$ logarithm and base~$10$ logarithms respectively.
+It does not, however, provide a method for computing the base~$8$ logarithm, which we need.
+The change-of-base formula is necessary for such a calculation.
+To change from a base~$c$ to a base~$b$, we divide the logarithm base~$c$ of our number-of-interest~$n$ by the logarithm base~$c$ of our base~$b$.
+So, to compute the base eight logarithm of an integer~$n$, we can convert from base~$e$ to base~$8$ using a similar tactic.
+At the end of the chapter, we ask readers to apply the change-of-base method to any arbitrary base.
+So, to determine if an integer~$n$ is a power of eight, we check to see if it is an integer, which is possible via casting. 
+That is, a number~$x$ is an integer if \ttt{(int) x == x} is true, according to Java.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertTrue;
+import static Assertions.assertFalse;
+
+class PowerOfEightTester {
+
+  @Test
+  void testIsPowerOfEight() {
+    assertAll(
+      () -> assertTrue(isPowerOfEight(8))
+      () -> assertTrue(isPowerOfEight(512))
+      () -> assertTrue(isPowerOfEight(262144)),
+      () -> assertFalse(isPowerOfEight(0)),
+      () -> assertFalse(isPowerOfEight(2)),
+      () -> assertFalse(isPowerOfEight(47)),
+      () -> assertFalse(isPowerOfEight(63)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class PowerOfEight {
+
+  /**
+   * Determines whether a number is a power of eight.
+   * @param n - integer of interest.
+   * @return true if 8^x = n for some x >= 0, false otherwise.
+   */
+  static boolean isPowerOfEight(int n) {
+    if (n <= 0) {
+      return false;
+    } else {
+      int cob = Math.log(n) / Math.log(8);
+      return (int) cob == cob;
+    }
+  }
+}
+\end{lstlisting}
+
 \myexample{Suppose we want to translate a \ttt{String} grade into its grade-point average equivalent, treating pluses and minuses as fractional grade increment or decrements.} 
 Our grading schema has no grade higher than a~$4.0$, and all failing grades (i.e., F+, F, F-) result in a~$0.0$ grade-point average. 
 After writing the tests, we can use a series of \ttt{if} and \ttt{else if} statements as a case analysis on the letter grade. 
