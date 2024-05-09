@@ -1159,6 +1159,122 @@ class Library {
 }
 \end{lstlisting}
 
+\myexample{Suppose we have the following class that represents a position on a two-dimensional board of characters:}
+
+\begin{lstlisting}[language=MyJava]
+class BoardPosition {
+
+  private final char CH;
+
+  BoardPosition(char ch;) {
+    this.CH = ch;
+  }
+
+  char getChar() { return this.CH; }
+}
+\end{lstlisting}
+
+Let's now design the \ttt{Board} class to represent a two-dimensional board of \ttt{BoardPosition} instances.
+Each instance thereof contains a \ttt{BoardPosition} that stores a single arbitrary character literal.
+The \ttt{Board} constructor receives integers representing the number of rows and columns of the board.
+It also receives a one-dimensional array of characters, which it uses to populate the board.
+This example helps to demonstrate how to convert a one-dimensional array into a two-dimensional array.
+To convert between the two, we use the formula \ttt{rows * cols + cols}.
+
+Let's also design the \ttt{Map<Integer, List<Character>> getPredecessors()} method, which returns a map of the logical indices that precede each character in the board.
+That is, each key in the map is an index/position into the board, and its value is the list of characters that precede the character at that index on the board.
+For example, if the board contains the characters \ttt{'a', 'e', 'f', 'b', 'd', 'g', 'c'}, then the map should contain the following key-value pairs:
+
+\begin{itemize}
+  \item \ttt{0} $\rightarrow$ \ttt{[]}
+  \item \ttt{1} $\rightarrow$ \ttt{['a']}
+  \item \ttt{2} $\rightarrow$ \ttt{['a']}
+  \item \ttt{3} $\rightarrow$ \ttt{['a', 'e']}
+  \item \ttt{4} $\rightarrow$ \ttt{['a', 'e']}
+  \item \ttt{5} $\rightarrow$ \ttt{['a', 'e', 'f']}
+  \item \ttt{6} $\rightarrow$ \ttt{['a', 'e', 'f']}
+\end{itemize}
+
+We note that, while this example is not particularly useful in practice, it is a good exercise in traversing a two-dimensional array and converting between one-dimensional and two-dimensional arrays.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+import java.util.Map;
+
+class BoardTester {
+
+  private static final char[] BOARD = {'a', 'b', 'c', 'd', 'e', 'f'};
+
+  @Test
+  void testBoard() {
+    assertAll(
+      () -> assertEquals(2, new Board(2, 3, BOARD).getRows()),
+      () -> assertEquals(3, new Board(2, 3, BOARD).getCols())
+      () -> assertEquals('a', new Board(2, 3, BOARD).getBoard()[0][0].getChar()),
+      () -> assertEquals('f', new Board(2, 3, BOARD).getBoard()[1][2].getChar()));
+  }
+
+  @Test
+  void testBoardPredecessors() {
+    Map<Integer, List<Character>> map 
+      = new Board(2, 3, BOARD).getPredecessors();
+    assertAll(
+      () -> assertEquals(List.of(), map.get(0)),
+      () -> assertEquals(List.of('a'), map.get(1)),
+      () -> assertEquals(List.of('a'), map.get(2)),
+      () -> assertEquals(List.of('a', 'd'), map.get(3)),
+      () -> assertEquals(List.of('a', 'd'), map.get(4)),
+      () -> assertEquals(List.of('a', 'd', 'e'), map.get(5)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class Board {
+
+  private final BoardPosition[][] BOARD;
+
+  Board(int rows, int cols, char[] chars) {
+    this.BOARD = new BoardPosition[rows][cols];
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        this.BOARD[i][j] = new BoardPosition(chars[i * cols + j]);
+      }
+    }
+  }
+
+  /**
+   * Returns the predecessors of each character on the board.
+   * A predecessor is a character that comes before the character.
+   * @return map of predecessors.
+   */
+  Map<Integer, List<Character>> getPredecessors() {
+    Map<Integer, List<Character>> map = new HashMap<>();
+    for (int i = 0; i < this.BOARD.length; i++) {
+      for (int j = 0; j < this.BOARD[0].length; j++) {
+        int index = i * this.BOARD[0].length + j;
+        List<Character> list = new ArrayList<>();
+        for (int k = 0; k < index; k++) {
+          int row = k / this.BOARD[0].length;
+          int col = k % this.BOARD[0].length;
+          list.add(this.BOARD[row][col].getChar());
+        }
+        map.put(index, list);
+      }
+    }
+    return map;
+  }
+}
+\end{lstlisting}
+
 % \myexample{Let's create two classes for representing pieces of chocolate and chocolate boxes.}
 % We will first design the \ttt{Chocolate} class, which stores its ``kind'' and its weight in ounces.
 % Given that our example will not deal with comparing pieces of chocolate for equality (nor will we store them in a hashable data structure), we will not override the \ttt{equals} and \ttt{hashCode} methods.

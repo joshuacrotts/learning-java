@@ -479,6 +479,7 @@ class RequiredVariadicParameters {
 We can solve the problem using recursion and iteration, so we shall develop all three versions.
 The recursive versions are, in this instance, more verbose than the iterative counterpart: the base case is when the string is empty, and in the recursive step, we add the first character of the string to a list and call the method with the remaining characters.
 The iterative version uses a loop over the characters and adds each to the list.
+This example proves yet again that, while recursion is beneficial for tasks that inhibit a recursive structure, iteration may express the solution more succinctly.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;

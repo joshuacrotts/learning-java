@@ -211,6 +211,9 @@ Where~$n$ is the number of data points,~$x_i$ and~$y_i$ are the~$i^\text{th}$ da
 
 Design the \ttt{double correlationCoefficient(double[] xs, double[] ys)} method that, when given two arrays of doubles~$\emph{xs}$ and~$\emph{ys}$, returns the correlation coefficient between the two arrays. If the two arrays are not of the same length, return \ttt{null}.
 
+\myexercise{1}{chapter-arrays-collections}{In the chapter, we presented an example of ``exploding'' a string into its constituent characters.} 
+Design the \ttt{List<Integer> explode(int n)} method that, when given an integer~$n$, returns a list of integers that represent the digits of~$n$. For example, \ttt{explode(123)} returns \ttt{[1, 2, 3]}. You \textbf{cannot} convert the integer to a string to solve this problem or use any auxiliary data structures.
+
 \myexercise{1}{chapter-arrays-collections}{This exercise has three parts.}
 \begin{enumerate}[label=(\alph*)]
     \item Design the \emph{standard recursive} \ttt{cycleOperations} method, which receives a \ttt{List<Integer>} and returns the result of circularly applying \ttt{+}, \ttt{-}, then \ttt{*} to the elements of the list.

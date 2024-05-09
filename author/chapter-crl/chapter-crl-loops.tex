@@ -1054,6 +1054,8 @@ class GenerateAcronym {
 If we follow the translation pipeline, we observe that, yet again, the iterative algorithm is a straightforward conversion of the tail recursive method. 
 We can make the iterative method more efficient by using a \ttt{StringBuilder} to accumulate the acronym, rather than concatenating strings.
 We could similarly reduce the number of lines in the method by using a \ttt{for} loop and not invoke \ttt{substring} in every branch of the conditional, but we will keep the code as is for relation to the tail recursive method and the translation pipeline.
+As a word of caution, however, if we choose to update the string~$s$ \emph{before} updating the accumulator, we run into a problem imposed by the rule of update: we lose the first character of the string, which is the character we want to add to the acronym. 
+Thus, we must update the accumulator \emph{before} updating the string.
 
 \begin{lstlisting}[language=MyJava]
 class GenerateAcronym {
