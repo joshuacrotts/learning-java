@@ -127,9 +127,9 @@ Charlie
 
     \item Make the \ttt{Car} class serializable, like we did in the chapter. That is, implement the \ttt{Serializable} interface and override the \ttt{writeObject} and \ttt{readObject} methods respectively. 
 
-    \item Override the \ttt{equals} and \ttt{hashCode} methods. Two \ttt{Car} objects are the same if they share the same VIN. When overriding \ttt{hashCode}, return a hash code that hashes all instance variables.
+    \item Override the \ttt{public boolean equals(Object o)} and \ttt{public int hashCode()} methods. Two \ttt{Car} objects are the same if they share the same VIN. When overriding \ttt{hashCode}, return a hash code that hashes all instance variables.
     
-    \item Finally, override the \ttt{toString} method, which returns a string similar to the following (with a tab character before each line):
+    \item Finally, override the \ttt{public String toString()} method, which returns a string similar to the following (with a tab character before each line):
 \begin{verbnobox}[\small]
     Make: Honda
     Model: Accord

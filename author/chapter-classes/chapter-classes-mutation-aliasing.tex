@@ -631,7 +631,7 @@ We need to design a class that encapsulates the value of the node, and holds ref
 Some programmers may consider designing a separate \ttt{.java} file for this class, but remember the encapsulation methodology: nobody outside of this class should even be aware that nodes exist in the first place. 
 So, we can create a private and static \ttt{Node<T>} class, which is local to the definition of \ttt{DoublyLinkedList}. 
 A privatized class can only ever be static, because it is nonsense to say that a private class definition belongs to an arbitrary instance of the class in which it resides.\footnote{Such a claim would imply that every instance of the \ttt{DoublyLinkedList} class would carry the data for instantiating nodes, which is wasteful.} 
-We also override the \ttt{toString} to output a stringified representation of underlying node data.
+We also override the \ttt{toString} method to output a stringified representation of underlying node data.
 
 \begin{lstlisting}[language=MyJava]
 class DoublyLinkedList<T> {

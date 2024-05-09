@@ -30,7 +30,7 @@ The instance variables, accessors, and mutators (where applicable) should be nam
     \item Design the \ttt{void removeEmployee(Employee e)} method, which removes an employee from the \ttt{Job}.
     \item Design the \ttt{Optional<Double> computeAverageSalary()} method, which returns the average salary of all employees in the \ttt{Job}. If there are no employees, return an empty \ttt{Optional}.
     \item Design the \ttt{Optional<Employee> highestPaid()} method, which returns the employee whose salary is the highest of all employees in the \ttt{Job}. If there are no employees, return an empty \ttt{Optional}.
-    \item Override the \ttt{toString} method to print out the list of employees in the \ttt{Job}. To make this easy, you can simply invoke the \ttt{toString} method from the \ttt{List} implementation.
+    \item Override the \ttt{public String toString()} method to print out the list of employees in the \ttt{Job}. To make this easy, you can simply invoke the \ttt{toString} method from the \ttt{List} implementation.
 \end{enumerate}
 
 \myexercise{2}{chapter-classes}{In this exercise you will design a simple music system, similar to Spotify.}
@@ -116,7 +116,7 @@ The instance variables, accessors, and mutators (where applicable) should be nam
     \item Design the \ttt{boolean multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply~$m$ with this matrix, return false and do not multiply the matrix.
     \item Design the \ttt{void transpose()} method, which transposes the matrix. That is, the rows become the columns and the columns become the rows. You may need to alter the dimensions of the matrix.
     \item Design the \ttt{void rotate()} method, rotates the matrix~$90$ degrees clockwise. To rotate a matrix, compute the transposition and then reverse the rows. You may need to alter the dimensions of the matrix.
-    \item Override the \ttt{String toString()} method to return a stringified version of the matrix. As an example, \ttt{[[1, 2, 3], [4, 5, 6]]} represents the following matrix:
+    \item Override the \ttt{public String toString()} method to return a stringified version of the matrix. As an example, \ttt{[[1, 2, 3], [4, 5, 6]]} represents the following matrix:
 
     \[
     \begin{bmatrix}
@@ -136,7 +136,7 @@ The instance variables, accessors, and mutators (where applicable) should be nam
 
     \item Design the \ttt{double move(double dx, double dy)} method that moves the object about the Cartesian (two-dimensional) plane. The distance should be a delta represented as two \ttt{double} numbers \ttt{dx} and \ttt{dy} that directly manipulate the object position. For instance, if \ttt{dx} is~$3.0$ and \ttt{dy} is~$-2.0$ and the object is currently at \ttt{<2.0, -9.0>}, invoking \ttt{move(3.0, -2.0)} updates the object to be at \ttt{<5.0, -11.0>}.
 
-    \item Override the \ttt{String toString()} method to call the \ttt{toString} methods of the two instance variables, conjoined by a semicolon.
+    \item Override the \ttt{public String toString()} method to call the \ttt{toString} methods of the two instance variables, conjoined by a semicolon.
 \end{enumerate}
 
 \myexercise{2}{chapter-classes}{This exercise has three parts.}
@@ -172,13 +172,13 @@ The method returns whether or not the AI drew a card. If they did not draw a car
 \item After designing the \ttt{AI} class and adding one to your game, create an \ttt{ArrayList<AI>} simulating multiple computer players in the game.
 \end{enumerate}
 
-\myexercise{1}{chapter-classes}{Add the \ttt{void set(T e, int idx)} method to the \ttt{MiniArrayList} class, which sets the element at $\emph{idx}$ to the given $e$ element.}
+\myexercise{1}{chapter-classes}{Design the \ttt{void set(T e, int idx)} method within the \ttt{MiniArrayList} class, which sets the element at $\emph{idx}$ to the given~$e$ element.}
 
-\myexercise{1}{chapter-classes}{Add the \ttt{void isEmpty()} method to the \ttt{MiniArrayList} class, which returns whether or not the list is empty.}
+\myexercise{1}{chapter-classes}{Design the \ttt{void isEmpty()} method within the \ttt{MiniArrayList} class, which returns whether or not the list is empty.}
 
-\myexercise{2}{chapter-classes}{Add the \ttt{void clear()} method to the \ttt{MiniArrayList} class, which ``removes'' all elements from the list. This should not change the capacity of the list. Note that there's a reason why ``removes'' is in quotes. We rank this exercise as a two-star not because of its length, but because it is a little tricky.}
+\myexercise{2}{chapter-classes}{Design the \ttt{void clear()} method within the \ttt{MiniArrayList} class, which ``removes'' all elements from the list. This should not change the capacity of the list. Note that there's a reason why ``removes'' is in quotes. We rank this exercise as a two-star not because of its length, but because it is a little tricky.}
 
-\myexercise{2}{chapter-classes}{Override the \ttt{equals} method (from \ttt{Object}) in the \ttt{MiniArrayList} class to compare two lists by their elements. Return \ttt{true} if all elements in the two lists are \ttt{equals} to one another, and \ttt{false} otherwise.}
+\myexercise{2}{chapter-classes}{Override the \ttt{public boolean equals(Object o)} method in the \ttt{MiniArrayList} class to compare two lists by their elements. Return \ttt{true} if all elements in the two lists are \ttt{equals} to one another, and \ttt{false} otherwise.}
 
 \myexercise{2}{chapter-classes}{Using the \ttt{StackFrame} class, design an implementation of the tail recursive factorial method. Recall how to do this from Chapter~\ref{chapter-crl}: instead of pushing an activation record to the call stack, we can simply update the bindings in the existing frame.}
 
@@ -197,9 +197,9 @@ Unlike many stack implementations, however, we will use an array-backed stack. T
 
     \item Fourth, design the \ttt{T pop()} method, which returns \textit{and} removes the top-most element. Be sure that your \ttt{add} method still works after designing \ttt{pop}.
 
-    \item Fifth, design the \ttt{int size} method, which returns the number of logical elements in the stack.
+    \item Fifth, design the \ttt{int size()} method, which returns the number of logical elements in the stack.
 
-    \item Finally, override the \ttt{toString} method to return a string containing the elements of the stack from top-to-bottom, separated by commas and a space. For example, if the stack contains, from bottom-to-top, \ttt{10}, \ttt{20}, \ttt{30}, \ttt{40}, and \ttt{50}, the \ttt{toString} method returns \ttt{"50, 40, 30, 20, 10"}.
+    \item Finally, override the \ttt{public String toString()} method to return a string containing the elements of the stack from top-to-bottom, separated by commas and a space. For example, if the stack contains, from bottom-to-top, \ttt{10}, \ttt{20}, \ttt{30}, \ttt{40}, and \ttt{50}, the \ttt{toString} method returns \ttt{"50, 40, 30, 20, 10"}.
 \end{enumerate}
 
 \myexercise{3}{chapter-classes}{This exercise has seven parts.}
@@ -307,9 +307,9 @@ In this exercise you will design a class that operates over complex numbers.
     \item Design the \ttt{ComplexNumber} class, whose constructor receives two \ttt{double} values: $a$ and $b$. Store these as instance variables.
     \item Design the empty constructor that initializes $a$ and $b$ to $0$ and $0$ respectively. 
     \item Implement the respective accessor and mutator methods for the real and imaginary components.
-    \item Override the \ttt{toString} method to return a string representation of the complex number of the form \ttt{"a + bi"} or \ttt{"a - bi"} when $b$ is either positive or negative. 
-    \item Override the \ttt{equals} method to compare two complex numbers. Of course, this entails comparing the real component and the imaginary component.
-    \item Override the \ttt{hashCode} method to return a hashcode that encodes the \ttt{a} and \ttt{b} components respectively.
+    \item Override the \ttt{public String toString()} method to return a string representation of the complex number of the form \ttt{"a + bi"} or \ttt{"a - bi"} when $b$ is either positive or negative. 
+    \item Override the \ttt{public boolean equals(Object o)} method to compare two complex numbers. Of course, this entails comparing the real component and the imaginary component.
+    \item Override the \ttt{public int hashCode()} method to return a hashcode that encodes the \ttt{a} and \ttt{b} components respectively.
     \item Design the \ttt{double magnitude()} method, which returns the magnitude of \ttt{this} complex number. The magnitude of a complex number is the square root of the sum of its components.
     \item Design the \ttt{double argument()} method, which returns the argument, or angle, of \ttt{this} complex number in radians. The argument of a complex number is computed as $\tan^{-1}{\frac{b}{a}}$.
     \item Design the \ttt{ComplexNumber conjugate()} method, which returns the conjugate of \ttt{this} complex number. The conjugate of a complex number flips the parity of the imaginary component. That is, if we have a complex number $a + bi$, its conjugate is $a - bi$.
