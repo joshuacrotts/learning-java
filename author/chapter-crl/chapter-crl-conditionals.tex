@@ -150,12 +150,12 @@ We use the not-equal-to operator \ttt{!=} to circumvent having to apply a negati
 The bodies of these cases, however, are unfamiliar; here we introduce the \emph{ternary operator}\index{ternary operator}\index{conditional expression}\index{ternary expression}. 
 Because \ttt{if} is a statement, there is no way to inline a conditional into an expression. 
 Ternary operators are the remedy to this problem. 
-We read ${r = p\;?\;c\;:\;a}$ as follows: ``if $p$ is true, assign $c$ to $r$, otherwise assign $a$ to $r$.'' 
+We read ${r = p\;?\;c\;:\;a}$ as follows: ``if~$p$ is true, assign~$c$ to~$r$, otherwise assign~$a$ to~$r$.'' 
 Inlining conditional expressions in this fashion reduces code clutter, but should be used sparingly. We could write all \ttt{if} statements as ternary operations, but doing so possibly obfuscates the logic of our code.
 
-Aside from the `\ttt{if}'/`\ttt{else if}'/`\ttt{else}' trio, plus the ternary operator, Java has the \ttt{switch}/\ttt{case} statements, which serve to help simplify repetitive case analysis problems. 
+Aside from the `\ttt{if}'/`\ttt{else if}'/`\ttt{else}' trio and the ternary operator, Java has \ttt{switch}/\ttt{case} statements, which serve to help simplify repetitive case analysis problems. 
 A \ttt{switch} statement receives an expression~$e$ that resolves to some value~$v$. 
-Inside the \ttt{switch} block exists \ttt{case} statements, corresponding to outcomes of $e$'s evaluation. 
+Inside the \ttt{switch} block exists \ttt{case} statements, corresponding to outcomes of~$e$'s evaluation. 
 For instance, if we wanted to design a method that determines the number of days there are in a given (non-leap year) month, we might be inclined to use several \ttt{if} statements. Instead, let's see the answer to this problem using \ttt{switch} and \ttt{case} statements.
 
 \begin{lstlisting}[language=MyJava]

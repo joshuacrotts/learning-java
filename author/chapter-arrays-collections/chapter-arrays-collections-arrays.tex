@@ -142,28 +142,28 @@ class SumOfDoubleArray {
 Why might someone want to use the enhanced \ttt{for} loop over a standard \ttt{for}? 
 When we only want to access the elements themselves and not care about their position, the enhanced counterpart is favored; not having to concern ourselves with indices completely removes the possibility of accessing an out-of-bounds index. 
 
-\myexample{Let's design the \ttt{int countOccurrences(int[] A, int n)} method, which receives an integer~$n$ and returns the number of times it appears in an array of integers.}
+\myexample{Let's design the \ttt{int countOccurs(int[] A, int n)} method, which receives an integer~$n$ and returns the number of times it appears in an array of integers.}
 Fortunately this requires exactly one traversal over~$A$ to count the occurrences of~$n$, with no complex cases to consider.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
-class CountOccurrencesTester {
+class CountOccursTester {
 
   @Test
-  void testCountOccurrences() {
+  void testCountOccurs() {
     assertAll(
-      () -> assertEquals(0, countOccurrences(new int[]{}, 5)),
-      () -> assertEquals(3, countOccurrences(new int[]{5, 3, 5, 5}, 5)),
-      () -> assertEquals(1, countOccurrences(new int[]{1, 2, 3, 4, 5}, 5)),
-      () -> assertEquals(0, countOccurrences(new int[]{1, 2, 3, 4, 5}, 6)));
+      () -> assertEquals(0, countOccurs(new int[]{}, 5)),
+      () -> assertEquals(3, countOccurs(new int[]{5, 3, 5, 5}, 5)),
+      () -> assertEquals(1, countOccurs(new int[]{1, 2, 3, 4, 5}, 5)),
+      () -> assertEquals(0, countOccurs(new int[]{1, 2, 3, 4, 5}, 6)));
   }
 }
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-class CountOccurrences {
+class CountOccurs {
 
   /** 
    * Counts the number of occurrences of a value in an int array.
@@ -171,7 +171,7 @@ class CountOccurrences {
    * @param n - value to count.
    * @return number of occurrences of n in A.
    */
-  static int countOccurrences(int[] A, int n) {
+  static int countOccurs(int[] A, int n) {
     int count = 0;
     for (int e : A) {
       if (e == n) { 
