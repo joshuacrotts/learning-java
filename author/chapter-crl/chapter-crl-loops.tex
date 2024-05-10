@@ -41,7 +41,7 @@ static int factTR(int n,
 
 The first step in converting a recursive method into its iterative counterpart is to rewrite it using tail recursion. 
 Notice that, in order to ``tail-recursify'' \texttt{fact}, we had to add an extra parameter that keeps track of the ``current result.''\footnote{Some tail recursive methods need more than one extra parameter---it is a case-by-case basis.} 
-The reason for converting recursive methods into tail recursion is because of their direct relation to iteration.\footnote{A method definition may already be tail recursive depending on the circumstance.} 
+We convert recursive methods into tail recursion because of their direct relation to iteration.\footnote{A method definition may already be tail recursive depending on the circumstance.} 
 Let us look a little deeper into this idea and discover why.
 
 Our iterative version of \texttt{fact} moves all ``accumulator'' variables into the method body. 

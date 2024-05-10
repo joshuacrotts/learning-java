@@ -102,7 +102,7 @@ To change from a base~$c$ to a base~$b$, we divide the logarithm base~$c$ of our
 So, to compute the base eight logarithm of an integer~$n$, we can convert from base~$e$ to base~$8$ using a similar tactic.
 At the end of the chapter, we ask readers to apply the change-of-base method to any arbitrary base.
 So, to determine if an integer~$n$ is a power of eight, we check to see if it is an integer, which is possible via casting. 
-That is, a number~$x$ is an integer if \ttt{(int) x == x} is true, according to Java.
+That is, if~$x$ is a floating-point datatype, e..g, \ttt{double}, then~$x$ represents an integer number if the expression \ttt{(int) x == x} resolves to true.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -114,8 +114,8 @@ class PowerOfEightTester {
   @Test
   void testIsPowerOfEight() {
     assertAll(
-      () -> assertTrue(isPowerOfEight(8))
-      () -> assertTrue(isPowerOfEight(512))
+      () -> assertTrue(isPowerOfEight(8)),
+      () -> assertTrue(isPowerOfEight(512)),
       () -> assertTrue(isPowerOfEight(262144)),
       () -> assertFalse(isPowerOfEight(0)),
       () -> assertFalse(isPowerOfEight(2)),
@@ -137,7 +137,7 @@ class PowerOfEight {
     if (n <= 0) {
       return false;
     } else {
-      int cob = Math.log(n) / Math.log(8);
+      double cob = Math.log(n) / Math.log(8);
       return (int) cob == cob;
     }
   }

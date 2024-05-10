@@ -20,7 +20,7 @@ int[] array = {5, 10, 15, 20, 100, 50};
 
 To retrieve the size of an array, the number of elements it can store, we access the \emph{.length} field of the array, e.g., \ttt{array.length}. 
 For our example array, we see that its size is six. 
-Moreover, \ttt{array[0]} stores \ttt{5}, and \ttt{array[5]} stores \ttt{50}. 
+Moreover, \ttt{array[0]} stores \ttt{5} and \ttt{array[5]} stores \ttt{50}. 
 Accessing a negative index or an index beyond the bounds of the length results in an \ttt{ArrayIndexOutOfBoundsException}. 
 So, accessing \ttt{array[-1]} or \ttt{array[6]}, for instance, crashes the program. 
 A common mistake is to access the index at the length of the array to retrieve the last element, which represents a misunderstanding of array indexing.
@@ -45,7 +45,7 @@ System.out.println(A[i]);
 int[] A = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 \end{verbnobox}
 
-Initializer lists are verbose and require us to explicitly specify each individual constant. 
+Initializer lists are verbose and require us to explicitly specify each constant. 
 A better solution is to initialize the array to a size, and populate its elements using a loop.
 
 \begin{verbnobox}[\small]
@@ -908,7 +908,7 @@ class LogSaw {
 
 While the recursive algorithm works, it is horribly inefficient; we saw the log at \emph{all} possible intervals, meaning there are several repeated computations. 
 Similar to Fibonacci, \ttt{logSaw} is an exponential-time algorithm! 
-We can certainly do better.
+We can do better.
 
 Like we said, we're repeatedly sawing at places whose maximal price has already been determined.
 So, let's design another recursive method that passes along an array~$L$ of stored (maximal) sawings.

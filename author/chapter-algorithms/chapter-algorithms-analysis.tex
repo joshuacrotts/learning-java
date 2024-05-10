@@ -1,13 +1,13 @@
 \section{Analyzing Algorithms}
 
 \emph{Asymptotic analysis}, or in general, the analysis of function growth, relates heavily to the performance of an algorithm. 
-We can represent algorithms as mathematical functions, and describe their relative performance in terms of the input size. 
+We can represent algorithms as mathematical functions and describe their relative performance in terms of the input size. 
 
 \myexample{Consider the linear search algorithm.} 
 We know that, in the best case, the item that we are searching for is the first element in the list. 
 In the average case, it is found in the middle of the list. In the worst case, the element does not exist in the list. 
 Because we have to traverse through~$n$ elements, namely the~$n$ elements of our input list, we say that the linear search grows linearly in proportion to its input size. \emph{Best-case}\index{best case}, \emph{average-case}\index{average case}, and \emph{worst-case}\index{worst case} describe the potential inputs to a function. 
-We can ascribe similar attributes to binary search, the sorting algorithms from the previous chapter, and beyond. 
+We can ascribe similar attributes to binary search, the sorting algorithms from the previous chapter and beyond. 
 Though, we need a notation to denote the growth rate of a function. 
 In computer science, we most often make use of \emph{Big-Oh notation}\index{Big-Oh notation}\index{Big-Oh}, which denotes the upper bound on the growth of a function. 
 That is, a function $f(n) = \mathcal{O}(g(n))$ if, at some point,~$f(n)$ begins to forever grow slower than or equal to~$g(n)$. 
@@ -184,7 +184,7 @@ What is convenient about it, however, is that multiple solutions may work, hence
 
 \myexample{Prove that $3n^2 + 6n = \mathcal{O}(n^2)$.} 
 We need to find a constant~$c > 0$ and a number~$n_0$ such that~$3n^2 + 6n \leq cn^2$ for every~$n \geq n_0$. 
-Let's move~$3n^2$ to the right-hand side of the inequality, and divide both sides by~$n^2$.
+Let's move~$3n^2$ to the right-hand side of the inequality and divide both sides by~$n^2$.
 
 \begin{align*}
   3n^2 + 6n &\leq cn^2\\
@@ -336,7 +336,7 @@ Second, we could tighten the bound of insertion sort because it is~$\mathcal{O}(
 
 \myexample{Consider the statement, ``The worst-case running time of selection sort is $\mathcal{O}(n^2)$ and the worst-case running time of merge sort is $\mathcal{O}(n\lg{n})$; therefore, merge sort is asymptotically faster in the worst-case.''} 
 Is this statement correct? 
-Unfortuntately, it is not, and we can fix it by changing only the asymptotic functions. 
+Unfortuntately, it is not, and we can fix the statement by changing only the asymptotic functions. 
 It is incorrect because Big-Oh only describes the upper-bound of a function. 
 We cannot conclude that merge sort is asymptotically faster in the worst-case because we do not know the lower-bound of either algorithm. 
 To correct the statement, we ascribe a tight-bound on the growth of the functions via $\Theta(n^2)$ and $\Theta(n\lg{n})$ respectively. 

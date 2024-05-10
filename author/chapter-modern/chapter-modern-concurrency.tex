@@ -511,7 +511,7 @@ Java, in fact, does have a data structure in the Collections API that supports m
 Though, should we not want to use \ttt{Vector}, since some Java programmers consider it ``deprecated,'' we can invoke the static \ttt{synchronizedList} method on \ttt{Collections} to return a synchronized/thread-safe version of the input list. 
 There are also other data structures in the Collections API that are thread-safe, such as \ttt{ConcurrentHashMap} and \ttt{ConcurrentLinkedQueue}, as well as methods to convert a non-thread-safe data structure into one that is thread-safe, e.g., \ttt{synchronizedMap} and \ttt{synchronizedSet}.
 
-\myexample{In the event that we want to block concurrent access to a variable, we need to enforce a few more precautions than simply marking methods that access the variable as \ttt{synchronized}.} 
+\myexample{If the event that we want to block concurrent access to a variable, we need to enforce a few more precautions than simply marking methods that access the variable as \ttt{synchronized}.} 
 Moreover, should we want to not deal with locks but still require atomic operations over access to an integer, we can use, for example, \ttt{AtomicInteger}. 
 Let's revisit the \ttt{counter} example from earlier, but this time we will use an \ttt{AtomicInteger} to ensure that the increment operation is atomic.
 

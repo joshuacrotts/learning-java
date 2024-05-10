@@ -217,7 +217,7 @@ What makes an \ttt{ArrayList} so convenient is the abstraction and encapsulation
 Underneath lies a primitive array that is resized whenever necessary, similar to our resizing method. 
 Thankfully, us as the programmers need not to worry about its implementation, but understanding it is key to grasping just what makes an improvement over our previous design of creating static methods that receive and return lists. 
 First, like we said, our methods-based implementation of dynamic lists is restricted to one datatype, namely \ttt{int}, and also uses~$-1$ as a ``sentinel.'' 
-Conversely, \ttt{ArrayList} stores a number that references the next-available spot, meaning we do not need to waste time traversing the list for each and every instance of adding or modifying elements. 
+Conversely, \ttt{ArrayList} stores a number that references the next-available spot, meaning we do not need to waste time traversing the list for every instance of adding or modifying elements. 
 The \ttt{ArrayList} class also does not use an arbitrary sentinel value that cannot be used as an element.
 
 \begin{figure}[tp]
@@ -289,7 +289,7 @@ Suppose that, from the previous example, we invoke $\ttt{ls1.remove}(2)$, which 
 The slot where~$654$ previously existed cannot be vacant, so the \ttt{ArrayList} class compensates by shifting all elements to the right of the removed element one index to the left.
 
 \myexample{Consider a situation in which we have an \ttt{ArrayList} that contains $1,000,000$ arbitrary integers.} 
-If we continuously remove elements from its front, each and every value is shifted down by one index. 
+If we continuously remove elements from its front, each value is shifted down by one index. 
 Propagating the act of shifting through all one million elements results in a hefty operational cost of $999,999 + 999,998 + \cdots + 3 + 2 + 1$ shifts. 
 So, removing~$n$ elements from the front of an \ttt{ArrayList} is representable as an equation of time~$T$:
 
@@ -382,7 +382,7 @@ The answer is a resounding no; we must take advantage of the luxury that is Java
 The classes \ttt{Integer}, \ttt{Double}, as well as \ttt{Short}, \ttt{Byte}, \ttt{Long}, \ttt{Character}, and \ttt{Boolean} are classes that encapsulate, or box, a corresponding primitive value. 
 Parameterized types only work with class types; not primitives. 
 So, for instance, if we want to work with an \ttt{ArrayList} of \ttt{int} elements, we are required to use the \ttt{Integer} wrapper class in our type declaration. 
-We can certainly declare an \ttt{Integer} using the following overly-verbose syntax:
+We can declare an \ttt{Integer} using the following overly-verbose syntax:
 
 \begin{verbnobox}[\small]
 Integer x = new Integer(42);
@@ -799,7 +799,7 @@ Reading and modifying elements are slower operations than their array counterpar
 Recall that, with an \texttt{ArrayList}, because elements sequentially located in memory, we know the location of any arbitrary index in the array list as a multiplicative offset of the starting index and the ``byte-size'' of each element. 
 Accordingly, each node is located at an unpredictable place in memory, meaning we lose the constant access time granted by array lists.
 Adding and removing elements are ``faster'' in the sense that, as we stated, linked lists do not copy and resize buffers. 
-Because of this, we need to iterate/traverse through the linked list each and every time we want to reference a provided index. 
+Because of this, we need to iterate/traverse through the linked list every time we want to reference a provided index. 
 The same goes for inserting elements into the list. 
 Adding or removing elements from the front or rear of the list, on the other hand, are instant (constant time) operations, since we keep track of the first element of the list (and we can, similarly, keep track of the last!). 
 Linked lists are also the backbone of many other data structures, as we will soon see.
@@ -1029,7 +1029,7 @@ class PriorityQueueByP {
 We now must describe how we want to compare~\ttt{s1} and~\ttt{s2} to achieve our goal.
 Strangely enough, if we want to say that~\ttt{s1} has a higher priority than~\ttt{s2}, we must return a negative value, similar to the natural ordering of strings (this idea extends to any type we wish to compare, however). 
 Fortunately, this is not as strange once we understand \emph{why} the negative value is required. 
-A value of~$-1$ comes prior to~$1$ when placing numbers in ascending order. 
+A value of~$-1$ comes before~$1$ when placing numbers in ascending order. 
 Consequently, when comparing an arbitrary value~$t_1$ against~$t_2$, to say that~$t_1$ comes before~$t_2$, we return a negative integer. Conversely, to say that~$t_1$ comes after~$t_2$, we return a positive number.
 
 Let's perform a case analysis on the input strings. 
@@ -1912,7 +1912,7 @@ The rules are that Gilmore removes the maximum value from a given list of number
 Kushagra then puts their number into another list, followed by Gilmore's number (okay, this isn't exactly a competitive game).
 We want to see what the resulting list would be for a given input.
 Let's design the \ttt{List<Integer> maximalMoves(List<Integer> ls)} method that, when given a list of numbers, and playing the game as aforementioned, returns the moves made by the players.
-The naive approach is to traverse the list and remove the maximum element for each and every value. 
+The naive approach is to traverse the list and remove the maximum element for every value. 
 Unfortunately, this algorithm is terribly slow, being quadratic in the number of required iterations.
 A more performant method is to add each item to a maximal priority queue (i.e., a priority queue whose comparator sorts items from greatest to least), withdraw two items at a time, and add them to the resulting list in the opposite order.
 To create a comparator that uses ``greatest'' as the ``highest'' priority metric, we can use the \ttt{Collections.reverseOrder} method, which returns a comparator that sorts items in reverse order.
