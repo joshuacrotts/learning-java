@@ -226,10 +226,10 @@ class WordLengths {
 \end{lstlisting}
 
 \myexample{Let's design a method that returns the largest integer in an array of integers}. Its algorithm appears straightforward, but can be a little tricky to correctly design because of how we determine the ``largest integer.'' 
-Some programmers may choose to declare a value \ttt{largest} and assign it, say,~$-1$, and then if we encounter a larger value, overwrite the existing value. 
+Some programmers may choose to declare a value \ttt{largest} and assign it, say,~$-1$, and then if we find a larger value, overwrite the existing value. 
 Such an algorithm works well when the provided array contains only positive integers, but what if our array contains only negative numbers less than~$-1$? 
 In that scenario, our algorithm would return~$-1$, which is not the largest integer in the array. 
-To avoid this issue, we can initialize \ttt{largest} to the first element of the array, and then iterate over the remaining elements, updating \ttt{largest} if we encounter a larger value.
+To avoid this issue, we can initialize \ttt{largest} to the first element of the array, and then iterate over the remaining elements, updating \ttt{largest} when we find a larger value.
 To simplify the implementation, we assume a precondition that the given array is non-empty.
 
 \begin{lstlisting}[language=MyJava]
@@ -721,10 +721,119 @@ class SumOf2DArray {
 }
 \end{lstlisting}
 
+\myexample{Let's design the \ttt{int[][] removeAllZeroRows(int[][] A)} method that removes all rows from a two-dimensional array of integers that contain a~$0$.}
+Remember that arrays are immutable, so we instead return a new array with the appropriate alterations.
+For example, suppose our array~$A$ contains the following values:
+
+\[
+\begin{bmatrix}
+  3&4&5&6\\
+  7&0&8&9\\
+  10&11&21&13\\
+  2&2&2&0\\
+  0&2&2&2
+\end{bmatrix}
+\]
+
+\noindent{}Invoking \ttt{removeAllZeroRows} returns a new array~$A'$:
+
+\[
+\begin{bmatrix}
+  3&4&5&6\\
+  10&11&21&13\\
+\end{bmatrix}
+\]
+
+A problem that we immediately stumble upon is not knowing the resulting array size.
+Before a traversal over the input array~$A$, we cannot predict how many rows will need to be removed.
+Thus, to design the \ttt{removeAllZeroRows} method, we need two helper methods, namely \ttt{boolean containsZero(int[] A)} and \ttt{int countZeroRows(int[][] A)}, which returns whether a row contains a zero and the number of rows that contain at least one~$0$ respectively.
+Both implementations are nothing more than a single traversal over all elements in the array, so we will not design a test suite.
+Moreover, because they are private, a global test suite for either is not appropriate.
+After its implementation is complete, we can work on \ttt{removeAllZeroRows}. 
+The number of columns in the resulting array is fixed.
+The number of rows, however, is not, so we invoke \ttt{countZeroRows} and instantiate the resulting array to the correct size.
+Thereafter we traverse over the array twice: one to determine if it contains a zero and, if not, add every element to the new array.
+We must be careful to correctly access the resulting array; recall that its number of rows is at most equal to~$A$'s row count, so we need a separate variable to index into its rows.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertArrayEquals;
+
+class RemoveAllZeroRowsTester {
+
+  @Test
+  void testRemoveAllZeroRowsTester() {
+    int[][] A1 = {{3, 4, 5, 6}, {7, 0, 8, 9}, {10, 11, 21, 13}, 
+                  {2, 2, 2, 0}, {0, 2, 2, 2}};
+    int[][] R1 = {{3, 4, 5, 6}, 
+                  {10, 11, 21, 13}};
+    int[][] A2 = {{2, 4}, 
+                  {5, 6}};
+    int[][] R2 = {{2, 4}, 
+                  {5, 6}};
+    assertAll(
+      () -> assertArrayEquals(R1, RemoveAllZeroRows.removeAllZeroRows(A1)),
+      () -> assertArrayEquals(R2, RemoveAllZeroRows.removeAllZeroRows(A2)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class RemoveAllZeroRows {
+
+  /**
+   * Removes all rows from a 2D array that contain at least one zero.
+   * @param A - a 2D array of integers.
+   * @return a new 2D array with all zero rows removed.
+   */
+  static int[][] removeAllZeroRows(int[][] A) {
+    int numRows = A.length - countZeroRows(A);
+    int numCols = A[0].length;
+    int[][] res = new int[numRows][numCols];
+    for (int i = 0, rIdx = 0; i < A.length; i++) {
+      if (!containsZero(A[i])) {
+        for (int j = 0; j < A[i].length; j++) {
+          res[rIdx][j] = A[i][j];
+        }
+        rIdx++;
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Checks if an array contains a zero.
+   * @param A - an array of integers.
+   * @return true if the array contains a zero, false otherwise.
+   */
+  private static boolean containsZero(int[] A) {
+    for (int x : A) {
+      if (x == 0) { return true; }
+    }
+    return false;
+  }
+
+  /**
+   * Counts the number of rows in a 2D array that contain at least one zero.
+   * @param A - a 2D array of integers.
+   * @return number of rows that have at least one zero.
+   */
+  private static int countZeroRows(int[][] A) {
+    int count = 0;
+    for (int[] r : A) {
+      if (containsZero(r)) {
+        count++;
+      }
+    }
+    return count;
+  }
+}
+\end{lstlisting}
+
 \myexample{Let's solve a slightly harder problem using two-dimensional arrays.} 
 Suppose that we want to design a method that returns the number of possible moves that a rook can take to go from the top-left of a (not-necessarily rectangular) board to the bottom-right, assuming that it cannot move left or up. 
 The naive solution to this problem is to use a recursive method that changes its position by one in either direction, stopping once we hit the bottom-right of the board. 
-Assuming the rook starts at~$(x, y)$ and the board is~$n \times m$, we can write the following method.
+Assuming the rook starts at~$(x, y)$ and the board is~$n \times m$, we can design the following method:
 
 %\enlargethispage{5\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -780,9 +889,9 @@ We can design a method that computes this value using a two-dimensional array.
 Composing the solution using this style is called \emph{dynamic programming}\index{dynamic programming}, which comes up often when attempting to optimize problems that have naive and outrageously recursive solutions.
 
 To prevent our code from going out of bounds, we need to add one to the bounds of our input array. 
-That is, if we want to compute the number of possible paths from $(0, 0)$ to $(n, m)$, we need to create an array of size $(n + 1) \times (m + 1)$, because the current value of the array at $(n, m)$ depends on the values of the array at $(n + 1, m)$ and $(n, m + 1)$.\footnote{When writing dynamic programming algorithms, it is commonplace to call the array \ttt{dp} out of convention.} 
+That is, if we want to compute the number of possible paths from $(0, 0)$ to $(n, m)$, we need to create an array of size $(n + 1) \times (m + 1)$, because the current value of the array at $(n, m)$ depends on the values of the array at $(n + 1, m)$ and $(n, m + 1)$.\footnote{When writing dynamic programming algorithms, it is commonplace to call the auxiliary data structure \ttt{dp} out of convention.} 
 
-Dynamic programming problems are often solved using two-dimensional arrays using the following three-step process: 
+Dynamic programming\index{dynamic programming} problems are often solved using two-dimensional arrays using the following three-step process: 
 
 \begin{enumerate}
   \item For a problem size of~$n$ and~$m$, we first initialize a two-dimensional array of size~$(n + 1) \times (m + 1)$.
@@ -849,12 +958,15 @@ Different lengths of a log cost different amounts, and we want to maximize the p
 For example, consider the following table:
 
 \begin{center}
-\begin{tabular}{|c||c|c|c|c|c|c|c|c|c|}
-  Length (meters) & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8\\
-  \hline
-  Cost (USD) & 0 & 1 & 4 & 6 & 7 & 12 & 18 & 25 & 30\\
-\end{tabular}
+  \begin{tabular}{|c||*{9}{>{\centering\arraybackslash}p{1cm}|}}
+    \hline
+    Length (meters) & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+    \hline
+    Cost (USD) & 0 & 1 & 4 & 6 & 7 & 12 & 18 & 25 & 30 \\
+    \hline
+  \end{tabular}
 \end{center}
+  
 
 Suppose our wood log is~$4$ meters long. 
 There are, therefore, $2^(4-1)=2^3=8$ ways to saw the log:
@@ -986,3 +1098,135 @@ class LogSaw {
 }
 \end{lstlisting}
 
+\myexample{A bank robber is heisting a local jewelry store, and a priori knows the weight and value of each item in the showcases.\footnote{We, the authors, do not condone robbing your local jewely store.}} 
+The robber can only carry up to a maximum of~$m$ ounces of jewelry and wants to develop an algorithm that calculates the highest attainable profit.
+
+Given an array of jewelry values~$V$ and weights in ounces~$W$, we can find the maximum possible profit by brute forcing every combination of items. 
+That is, at each choice of jewelry, the robber either does or does not steal the item in the showcase. 
+Making two recursive calls that represent these decisions is easily conceivable; 
+the base case is whether or not we are out of items to check, in which case we return zero as the profit. 
+If the item-in-question exceeds the weight of the items currently in the robber's bag, then we must skip over it. 
+For example, if a piece of jewelry~$j$ weighs~$3$ ounces and the robber has a $16\text{oz}$ bag that contains $14\text{oz}$ of jewelry, the robber cannot add~$j$ to their bag.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class MaxJewelProfitTester {
+
+  @Test
+  void testMaxJewelProfit() {
+    int[] V1 = new int[]{1, 2, 4, 2, 5};
+    int[] W1 = new int[]{5, 3, 5, 3, 2};
+    int[] V2 = new int[]{7, 5, 5};
+    int[] W2 = new int[]{4, 2, 2};
+    assertAll(
+      () -> assertEquals(9, maxJewelProfit(V1, W1, 8)),
+      () -> assertEquals(10, maxJewelProfit(V2, W2, 4)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+class MaxJewelProfit {
+
+  /**
+   * Given a list of jewels with values V and weights W, and a 
+   * bag with a maximum weight m, returns the maximum value of 
+   * jewels that can be picked.
+   * @param V - values of the jewels.
+   * @param W - weights of the jewels.
+   * @param m - maximum weight that the bag can hold.
+   * @return the maximum value of jewels that can be picked.
+   */
+  static int maxJewelProfit(int[] V, int[] W, int m) {
+    return maxJewelProfitHelper(V, W, m, 0);
+  }
+
+  /**
+   * Helper method for maxJewelProfit. Uses the brute-force approach 
+   * of trying all possible combinations of picking and not picking each jewel.
+   * @param V - values of the jewels.
+   * @param W - weights of the jewels.
+   * @param m - current weight remaining in the bag.
+   * @param i - current index of the jewel we are considering.
+   * @return the maximum value of jewels that can be picked.
+   */
+  private static int maxJewelProfitHelper(int[] V, int[] W, int m, int i) {
+    if (i >= V.length || m == 0) {
+      return 0;
+    } else {
+      int noPick = maxJewelProfitHelper(V, W, m, i + 1);
+      // If we can fit it, then do so.
+      if (m - W[i] >= 0) {
+        int pick = V[i] + maxJewelProfitHelper(V, W, m - W[i], i + 1);
+        return Math.max(pick, noPick);
+      } else {
+        // If we can't, then just use the result from "no pick."
+        return noPick;
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+Like many algorithm that makes two subsequent recursive calls, this is horribly inefficient, being yet again an exponential time algorithm. 
+Dynamic programmin\index{dynamic programming}g rescues us once more by caching the results to intermediate ``robberies.''
+By intermediate ``robberies,'' we mean that, for every item in the store, the robber either chooses to or not to steal it. 
+When making this decision, the robber determines whether adding the item is advantageous to maximizing the profit by looking at past calculations.
+We will store these intermediate robberies in a two-dimensional array whose rows correspond to items in the store and whose columns correspond to weights of the bag. 
+The idea is to iteratively build a table of maximum profits, and at intermediate steps, figure out if including the item maximizes the profit.
+
+Let's consider an example. Suppose that we have a bag that weighs~$7\text{oz}$, and we know that a bag of~$4\text{oz}$ has a maximum profit of~$\$80$. 
+If we are currently eyeing an item that weighs~$3\text{oz}$ at a value of~$\$10$, then we conclude that~$\$90$ is the maximum possible profit by stealing the~$3\text{oz}$ item. 
+This is because, if we steal the item, our bag now has~$4\text{oz}$ of remaining capacity. 
+We know the maximum possible profit of a~$4\text{oz}$ bag, which is~$\$80$. 
+So, the sum of these two values is~$\$90$. 
+On the other hand, choosing not to take the item means that we copy over whatever value is stored for a $6\text{oz}$ bag. 
+The decision to include or not include is made, similar to the model in the recursive approach, by taking the maximum of the two profits.
+
+Let's initialize the dynamic programming\index{dynamic programming} array~$\emph{dp}$ to be of sizes~$|V|+1$,~$m+1$. 
+The base cases are trivial: if the total bag weight is~$0$, then no profits can be made. 
+Similarly, on the $0^\text{th}$ item, no profits are possible.
+In all other cases, for every item and for every bag weight from~$0$ to~$m$ (corresponding to an entry in the~$\emph{dp}$ table), if an item~$i$ \emph{can} fit in the bag, then we take the maximum of either the profit \emph{without}~$i$ and the profit obtained after adding~$i$.
+The latter amount is calculated by adding the value of~$i$ to the maximum profit achievable with the remaining capacity of the bag, which is determined after subtracting the weight of~$i$ from the bag's current capacity.
+We will note that our code is a bit more verbose than it could be as a consequence of wanting to label and clarify each variable.
+This is already a complex problem, and shoving multiple expressions into one does not make it easier for beginning (or even more advanced readers) readers to understand.
+
+\begin{lstlisting}[language=MyJava]
+class MaxJewelProfit {
+  
+  /**
+   * Computes the maximum jewel profit using dynamic programming.
+   * @param V - values of the jewels.
+   * @param W - weights of the jewels.
+   * @param m - maximum weight that the bag can hold.
+   * @return the maximum value of jewels that can be picked.
+   */
+  static int maxJewelProfitDp(int[] V, int[] W, int m) {
+    int[][] dp = new int[V.length + 1][m + 1];
+    // A jewel with 0 value should not be picked.
+    for (int i = 0; i <= V.length; i++) { dp[i][0] = 0; }
+
+    // A bag with 0 weight can't hold any jewels.
+    for (int i = 0; i <= m; i++) { dp[0][i] = 0; }
+
+    for (int i = 1; i < dp.length; i++) {
+      for (int j = 1; j < dp[i].length; j++) {
+        // If we can fit it, then do so. Remember that j 
+        // represents the remaining weight in the bag.
+        if (j - W[i - 1] >= 0) {
+          int currValue = V[i - 1];
+          int prevMaxProfit = dp[i - 1][j];
+          int remainingWeight = j - W[i - 1];
+          int remainingWeightMaxProfit = dp[i - 1][remainingWeight];
+          dp[i][j] = Math.max(prevMaxProfit, currValue + remainingWeightMaxProfit);
+        } else {
+          dp[i][j] = dp[i - 1][j];
+        }
+      }
+    }
+    return dp[V.length][m];
+  }
+}
+\end{lstlisting}
