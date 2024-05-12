@@ -248,7 +248,7 @@ To declare an \ttt{ArrayList} called~$A$, we write the following, where~$T$ is a
 List<T> A = new ArrayList<>();
 \end{verbnobox}
 
-This initializes a \ttt{List}~$A$, but instantiates it as a new \ttt{ArrayList}.\footnote{The reason behind this \emph{polymorphic} choice will become apparent in subsequent chapters.} 
+This line of code initializes a \ttt{List}~$A$, but instantiates it as a new \ttt{ArrayList}.\footnote{The reason behind this \emph{polymorphic} choice will become apparent in subsequent chapters. Moreover, all examples until our section on \ttt{LinkedList} will initialize lists as \ttt{List}, but instantiate them as \ttt{ArrayList}.} 
 Notice that we do not specify the capacity, like we would an array. 
 Indeed, because lists are dynamic, there is no need to specify a default. 
 Java defaults the starting size of a newly-declared \ttt{ArrayList} to ten elements, although this \emph{can} be changed by passing a size argument between the parentheses.
@@ -570,7 +570,137 @@ class Explode {
 }
 \end{lstlisting}
 
-\myexample{Let's complete one final problem using lists.}
+\myexample{Let's design the \ttt{void filterQuarters(List<String> times)} method that, when given a list of strings representing times in the 24-hour format, e.g., \ttt{"12:30"} or \ttt{"17:55"}, removes all times that are in fifteen-minute intervals.}
+First, we should design a helper method that returns whether a time \emph{is} a fifteen-minute interval.
+That is, its number of minutes is either \ttt{"0"}, \ttt{"15"}, \ttt{"30"}, or \ttt{"45"}.
+Aside from the helper, the method definition itself is nothing special--requiring exactly one traversal over the data.
+Importantly, though, notice that \ttt{filterQuarters} returns \ttt{void} rather than, say, a list of strings.\footnote{Java is a programming language where immutability is not as favored in the wider community due to its relative inefficiency. By ``immutability,'' we mean that many methods that operate over collections, e.g., \ttt{ArrayList}, often update the collection in-place, rather than returning a fresh collection. We fundamentally believe that preserving the original collection is important in cases where its data is needed elsewhere in a program.}
+The method updates the \ttt{times} list itself, which means that any list we pass is updated/changed inside the method.
+In~\Cref{chapter-classes}, we will explore methods like these that cause~\emph{side-effects}\index{side-effect} in relation to user-defined classes.
+For now, testing a \ttt{void} method means that we must instantiate a \ttt{List<String>} above the test, pass it to \ttt{filterQuarters}, and then check to see if the change occurred.
+Normally, we pass the \ttt{filterQuarters} invocation as the second argument to \ttt{assertEquals}, since it traditionally returns the value-to-check.
+In this circumstance, however, we must separately call \ttt{filterQuarters}, then assert whether the list that we pass, after being affected on by \ttt{filterQuarters}, now contains the desired result.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+
+class FilterQuartersTester {
+
+  @Test
+  void testFilterQuarters() {
+    List<String> t1 = List.of("11:37", "12:00", "18:15", 
+                              "19:25", "10:30" "9:45");
+    List<String> t2 = List.of();
+    assertAll(
+      () -> filterQuarters(t1);
+      () -> assertEquals(List.of("11:37", "19:25"), t1);
+      () -> filterQuarters(t2);
+      () -> assertEquals(List.of(), t2));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+
+class FilterQuarters {
+
+  /**
+   * Removes all times from a list of "times." A time
+   * is a string "XX:YY" such that 0 <= XX <= 23, and 
+   * 00 <= YY <= 59; 
+   * This method modifies the list in-place.
+   * @param times - list of times.
+   */
+  static void filterQuarters(List<String> times) {
+    for (int i = 0; i < times.length(); i++) {
+      if (isQuarterHour(times.get(i))) {
+        times.remove(i);
+        i--; // We need to subtract one so we don't go out of bounds!
+      }
+    }
+  }
+
+  /**
+   * Returns whether a time is a "quarter." A quarter
+   * is either 0, 15, 30, or 45 minutes.
+   * @param t - string representing time as XX:YY, where
+   *            0 <= x <= 23, and 0 <= y <= 59.
+   * @return true if quarter; false otherwise.
+   */
+  private static boolean isQuarterHour(String t) {
+    int mins = Integer.parseInt(t.substring(t.length() - 2));
+    return mins == 0 || mins == 15 || mins == 30 || mins == 45;
+  }
+}
+\end{lstlisting}
+
+\myexample{Let's design another method that processes units of time, only instead, we will parse the strings as ``airplane travel information.''}
+A string containing airplane travel information is a four-segment string, separated by semicolons: 
+\ttt{"FLIGHT-ID;NUM-PASSENGERS;START-TIME;END-TIME"}, where \ttt{FLIGHT-ID} is a two-character identifier for the flight, \ttt{NUM-PASSENGERS} is an integer denoting how many passengers are on the flight, \ttt{START-TIME} and \ttt{END-TIME} are units of time denoting the flight's start time and ending-time respectively.
+The difference between these units and those of the previous question is that \ttt{START-TIME} and \ttt{END-TIME} do not have a colon between the hour and minute components.
+An example of airplane travel information is \ttt{U2;265;0900;1215}. 
+
+We will design the \ttt{String getShortestFlight(List<String> L)} method that, when given a list of airplane travel information, returns the flight identifier of the flight whose trip duration is the shortest.
+Trip duration is the difference in a flight's end-time and start-time. 
+There are two possible kinds of differences to consider:
+\begin{itemize}
+  \item When both times are before midnight.
+  \item When the start time is before midnight and the ending time is after midnight.
+\end{itemize}
+In the first case, suppose we have the airplane travel information \ttt{"L4;65;1825;2100"}.
+Its flight is~$2$ hours and~$35$ minutes, or~$155$ minutes.
+To figure this out, we multiply the number of hours of both times by~$60$, add the minutes, then take the difference.
+Using the example, we get
+
+\begin{align*}
+  &= (21\cdot{60} + 0) - (18\cdot{60} + 25)\\
+  &= 1260 - 1105\\
+  &= 155
+\end{align*}
+
+On the other hand, consider a flight that meets the second case criteria such as \ttt{"K16;280;2230;0128"}.
+If we naively apply the same approach to these times, we get a negative time result!
+A negative time duration is nonsensical.
+The solution, only in these circumstances, is to add~$24$ hours to the ending time, which amounts to~$1440$ minutes.
+After this modification, everything remains the same.
+
+We'll design a helper method that computes the time difference, in minutes, when supplied with starting and ending (flight) times.
+Because it is easy to make arithmetic mistakes, we won't privatize the method so we can create tests.
+ 
+% If we naively take the difference of the ending and starting times, we get \ttt{-2102}, which is non-sensical; its true flight duration is~$178$ minutes. 
+% Simiarly, 
+
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class AirplaneTravelInformationTester {
+
+  @Test
+  void testAirplaneTravelInformation() {
+
+  }
+
+  @Test
+  void testTimeDurationDifference() {
+    assertAll(
+      () -> assertEquals(..., timeDifference("1230", "1800")),
+      () -> assertEquals(..., timeDifference("2130", "0147")),
+      () -> assertEquals(..., timeDifference("0000", "1330")),
+      () -> assertEquals(..., timeDifference("1955", "0000")));
+  }
+}
+\end{lstlisting}
+
+%% Round time to nearest quarter.
+
+
+\myexample{Let's complete one final problem using array lists.}
 Given a list of lists of integers that forms a triangle, we want to return the maximum sum of any path from the top to the bottom.\footnote{This problem comes courtesy of \href{https://projecteuler.net/problem=18}{Project Euler}. Thanks!}
 
 While faster solutions exist (as demonstrated later), we will use a brute-force approach that recursively computes the sum of all possible paths from the top to the bottom.
