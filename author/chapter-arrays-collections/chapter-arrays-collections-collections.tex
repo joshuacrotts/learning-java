@@ -570,6 +570,63 @@ class Explode {
 }
 \end{lstlisting}
 
+\myexample{Let's design the \ttt{List<Integer> takeEvens(List<Integer> ls, int n)} method that retrieves the first~$n$ even integers from a list of integers~$\emph{ls}$.}
+If there are less than~$n$ even integers, then all of those are retrieved.
+Note that the given list is \emph{not} modified; we instead return a new list with the desired contents.
+All we must do is keep track of a counter as to how many even numbers we have seen thus far and ensure that we have not gone out of bounds of the list.
+Now, we \emph{could} declare a local variable, say \ttt{countEvens}, to keep track of the number of even values seen. 
+Though, a \ttt{for} loop is not restricted to only one variable declaration, so why not include it in the mix?
+In addition to our index variable~$i$, let's also declare \ttt{countEvens} as zero, and have the loop condition terminate when either~$i$ is at the end of the list or \ttt{countEvens} is equal to~$n$.
+We only increment~\ttt{countEvens} when we encounter an even integer.
+Furthermore, note that we need enough tests to account for all possible inputs, those being when~$n$ is less than the number of evens and when it exceeds or is greater than that count.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.List;
+
+class TakeEvensTester {
+
+  @Test
+  void testTakeEvens() {
+    List<Integer> l1 = List.of(41, 42, 90, 50, 80, 75, 73);
+    List<Integer> l2 = List.of();
+    assertAll(
+      () -> assertEquals(List.of(42, 90, 50), takeEvens(l1, 3));
+      () -> assertEquals(List.of(42), takeEvens(l1, 1));
+      () -> assertEquals(List.of(), takeEvens(l2, 5)),
+      () -> assertEquals(List.of(), takeEvens(l2, 0)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
+
+class TakeEvens {
+
+  /**
+   * Returns a list of a given number of even integers from the list.
+   * If there are less than n even integers, all of them are returned,
+   * and if there are at least n even integers, those n are returned.
+   * @param ls - list of integers.
+   * @param n - number of even integers to potentially retrieve.
+   * @return a list of even integers.
+   */
+  static List<Integer> takeEvens(List<Integer> ls, int n) {
+    List<Integer> res = new ArrayList<>();
+    for (int i = 0, countEvens = 0; i < ls.size() && countEvens < n; i++) {
+      if (ls.get(i) % 2 == 0) {
+        res.add(ls.get(i));
+        countEvens++;
+      }
+    }
+    return res;
+  }
+}
+\end{lstlisting}
+
 \myexample{Let's design the \ttt{void filterQuarters(List<String> times)} method that, when given a list of strings representing times in the 24-hour format, e.g., \ttt{"12:30"} or \ttt{"17:55"}, removes all times that are in fifteen-minute intervals.}
 First, we should design a helper method that returns whether a time \emph{is} a fifteen-minute interval.
 That is, its number of minutes is either \ttt{"0"}, \ttt{"15"}, \ttt{"30"}, or \ttt{"45"}.
@@ -640,7 +697,10 @@ class FilterQuarters {
 
 \myexample{Let's design another method that processes units of time, only instead, we will parse the strings as ``airplane travel information.''}
 A string containing airplane travel information is a four-segment string, separated by semicolons: 
-\ttt{"FLIGHT-ID;NUM-PASSENGERS;START-TIME;END-TIME"}, where \ttt{FLIGHT-ID} is a two-character identifier for the flight, \ttt{NUM-PASSENGERS} is an integer denoting how many passengers are on the flight, \ttt{START-TIME} and \ttt{END-TIME} are units of time denoting the flight's start time and ending-time respectively.
+\[
+\ttt{"FLIGHT-ID;NUM-PASSENGERS;START-TIME;END-TIME"} 
+\]
+where \ttt{FLIGHT-ID} is a two-character identifier for the flight, \ttt{NUM-PASSENGERS} is an integer denoting how many passengers are on the flight, \ttt{START-TIME} and \ttt{END-TIME} are units of time denoting the flight's start time and ending-time respectively.
 The difference between these units and those of the previous question is that \ttt{START-TIME} and \ttt{END-TIME} do not have a colon between the hour and minute components.
 An example of airplane travel information is \ttt{U2;265;0900;1215}. 
 
@@ -655,50 +715,109 @@ In the first case, suppose we have the airplane travel information \ttt{"L4;65;1
 Its flight is~$2$ hours and~$35$ minutes, or~$155$ minutes.
 To figure this out, we multiply the number of hours of both times by~$60$, add the minutes, then take the difference.
 Using the example, we get
-
 \begin{align*}
   &= (21\cdot{60} + 0) - (18\cdot{60} + 25)\\
   &= 1260 - 1105\\
   &= 155
 \end{align*}
-
-On the other hand, consider a flight that meets the second case criteria such as \ttt{"K16;280;2230;0128"}.
-If we naively apply the same approach to these times, we get a negative time result!
+On the other hand, consider a flight that meets the second case criteria: \ttt{"K16;280;2230;0128"}.
+If we naively apply the same approach to these times, we get a negative time result rather than the actual time duration of~$178$ minutes.
 A negative time duration is nonsensical.
 The solution, only in these circumstances, is to add~$24$ hours to the ending time, which amounts to~$1440$ minutes.
 After this modification, everything remains the same.
-
+\begin{align*}
+ &= (24\cdot{60} + 1\cdot{60} + 28) - (22\cdot{60} + 30)\\
+ &= (1440 + 88) - (1320+30)\\
+ &= 1528 - 1350\\
+ &= 178
+\end{align*}
 We'll design a helper method that computes the time difference, in minutes, when supplied with starting and ending (flight) times.
-Because it is easy to make arithmetic mistakes, we won't privatize the method so we can create tests.
- 
-% If we naively take the difference of the ending and starting times, we get \ttt{-2102}, which is non-sensical; its true flight duration is~$178$ minutes. 
-% Simiarly, 
+Because it is easy to make arithmetic mistakes, we won't privatize the method, so we can handle test cases.\footnote{In our code, we have ``magic numbers'' such as \ttt{60}, \ttt{24}, and \ttt{1440}. In larger projects, such numbers should be refactored into named constants, but due to the limited scope of the method, we will not do so.}
 
+To retrieve the start and end times of a flight, we can partition the data into four substrings using \ttt{split} on a string, passing to it the semicolon character.
+The \ttt{split} method returns an array of the substrings between the provided delimiter.
+For example, \ttt{"123.456.789.012".split(".")} returns an array \ttt{["123", "456", "789", "012"]}.
+The start time, therefore, is the third substring, and the end time is the fourth substring.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
+import java.util.List;
+
 class AirplaneTravelInformationTester {
 
   @Test
   void testAirplaneTravelInformation() {
-
-  }
+    List<String> l1 = List.of("Z4;215;1700;1645");
+    List<String> l2 = List.of("P3;240;0930;1130", "L9;500;2245;0223",
+                              "K2;330;1230;1800", "L1;400;1955;2050",
+                              "C1;110;0000;1330");
+    assertAll(
+      () -> assertEquals("Z4", shortestDurationFlight(l1)),
+      () -> assertEquals("L1", shortestDurationFlight(l2)));
+    }
 
   @Test
   void testTimeDurationDifference() {
     assertAll(
-      () -> assertEquals(..., timeDifference("1230", "1800")),
-      () -> assertEquals(..., timeDifference("2130", "0147")),
-      () -> assertEquals(..., timeDifference("0000", "1330")),
-      () -> assertEquals(..., timeDifference("1955", "0000")));
+      () -> assertEquals(330, timeDifference("1230", "1800")),
+      () -> assertEquals(257, timeDifference("2130", "0147")),
+      () -> assertEquals(810, timeDifference("0000", "1330")),
+      () -> assertEquals(245, timeDifference("1955", "0000")));
   }
 }
 \end{lstlisting}
 
-%% Round time to nearest quarter.
+\begin{lstlisting}[language=MyJava]
+import java.util.List;
 
+class AirplaneTravelInformation {
+
+  /**
+   * Given two times in the format "HHMM", return the difference in minutes.
+   * @param t1 - first time.
+   * @param t2 - second time.
+   * @return the difference in minutes between t1 and t2.
+   */
+  static int timeDifference(String t1, String t2) {
+    int hrT1 = Integer.parseInt(t1.substring(0, 2));
+    int minT1 = Integer.parseInt(t1.substring(2));
+    int hrT2 = Integer.parseInt(t2.substring(0, 2));
+    int minT2 = Integer.parseInt(t2.substring(2));
+
+    // Case 1: when t1 <= t2.
+    if (hrT1 < hrT2 || (hrT1 <= hrT2 && minT1 <= minT2)) {
+      return (hrT2 * 60 + minT2) - (hrT1 * 60 + minT1);
+    } else {
+      // Case 2: when t1 > t2.
+      return (1440 + hrT2 * 60 + minT2) - (hrT1 * 60 + minT1);
+    }
+  }
+
+  /**
+   * Given a non-empty list of flights, return the flight id of
+   * the flight with the shortest duration.
+   * A flight is represented by a string with the following format:
+   * "FLIGHT-ID;NUM-PASSENGERS;START-TIME;END-TIME"
+   * @param flights - non-empty list of flights.
+   * @return the flight id of the flight with the shortest duration.
+   */
+  static String shortestDurationFlight(List<String> flights) {
+    int shortestFlight = Integer.MAX_VALUE;
+    String shortestFlightId = null;
+    for (String flightInfo : flights) {
+      String[] flightDetails = flightInfo.split(";");
+      int duration = timeDifference(flightDetails[2], flightDetails[3]);
+      if (duration < shortestFlight) {
+        shortestFlight = duration;
+        shortestFlightId = flightDetails[0];
+      }
+    }
+    return shortestFlightId;
+  }
+}
+\end{lstlisting}
 
 \myexample{Let's complete one final problem using array lists.}
 Given a list of lists of integers that forms a triangle, we want to return the maximum sum of any path from the top to the bottom.\footnote{This problem comes courtesy of \href{https://projecteuler.net/problem=18}{Project Euler}. Thanks!}

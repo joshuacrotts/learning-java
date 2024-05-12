@@ -182,6 +182,46 @@ The method returns whether or not the AI drew a card. If they did not draw a car
 
 \myexercise{2}{chapter-classes}{Using the \ttt{StackFrame} class, design an implementation of the tail recursive factorial method. Recall how to do this from Chapter~\ref{chapter-crl}: instead of pushing an activation record to the call stack, we can simply update the bindings in the existing frame.}
 
+\myexercise{2}{chapter-classes}{This exercise has seven parts.}
+
+In this question you will design the \ttt{Time} class for working with units of time. 
+Programming languages often support operations for handling dates and times to varying degrees of success.
+Java provides a few classes and methods of its own, and you cannot use these in your implementation, as that would defeat the point of the exercise.
+\begin{enumerate}[label=(\alph*)]
+  \item Design the \ttt{Time} class. It should contain three constructors that receive the following parameters:
+  \begin{itemize}
+    \item \ttt{Time(int h, int m, int s)} receives three integers \ttt{h}, \ttt{m}, and \ttt{s} represents times in hours, minutes, and seconds respectively.
+    \item \ttt{Time(int s)} receives a single integer \ttt{s} representing the number of seconds.
+    \item \ttt{Time(String t)} receives a string of the form \ttt{"hh:mm:ss"} with three components: hours, minutes, and seconds. The bounds on the time string are \ttt{00:00:00} and \ttt{23:59:59}.
+  \end{itemize}
+  However you choose to store the units of time is fine, as long as your class supports the remaining operations.
+  \item Design the \ttt{int getNumberOfSeconds()} method, which returns the number of seconds that this \ttt{Time} object represents.
+  \item Design the \ttt{int getNumberOfMinutes()} method, which returns the number of minutes that this \ttt{Time} object represents. If there are an inexact number of minutes, simply return the minutes. As an example, \ttt{new Time("02:30:45").getNumberOfMinutes()} returns \ttt{150} and not \ttt{151}.
+  \item Override the \ttt{public String toString()} method to return a stringified version of the time where the hours, minutes, and seconds are separated by colons. Single-digit units of time must contain a leading zero.
+  \item Override the \ttt{public boolean equals(Object o)} method that returns whether a given \ttt{Time} object represents the same time as \ttt{this} instance.
+  \item Design the \ttt{void addTime(Time t)} method that adds a given \ttt{Time} object to \ttt{this} instance. Take the following invocations as an example.
+  \begin{verbnobox}[\small]
+Time t1 = new Time("02:30:45");
+Time t2 = new Time("11:45:18");
+Time t3 = new Time("00:53:57");
+t1.add(t2);
+t1.toString(); => 14:16:03
+t1.add(t3);
+t1.toString(); => 15:00:00
+  \end{verbnobox}
+  \item Design the \ttt{void increment(String u)} method, which receives a string~$u$ denoting the unit of time to increment. If~$u$ is not one of \ttt{"HOUR"}, \ttt{"MINUTE"}, or \ttt{"SECOND"}, return \ttt{false}, and otherwise return \ttt{true}. Take the following invocations as examples. Remember to account for fringe cases, e.g., incrementing a unit that is about to roll-over to the next.
+\begin{verbnobox}[\small]
+Time t1 = new Time("02:30:45");
+t1.increment("HOUR");
+t1.toString(); => "03:30:45"
+t1.increment("MINUTE");
+t1.toString(); => "03:31:45"
+t1.increment("SECOND");
+t1.toString(); => "03:31:46"
+\end{verbnobox}
+\end{enumerate}
+
+
 \myexercise{2}{chapter-classes}{This exercise has six parts.}
 
 In this question you will implement the \ttt{MiniStack} data structure. This is similar to the \ttt{MiniArrayList} class from the chapter, but, of course, is a stack and not an array list.
