@@ -1141,6 +1141,61 @@ We illustrate this concept in Figure~\ref{fig:stackundo}.
 \label{fig:stackundo}
 \end{figure}
 
+\myexample{As a very basic example of working the \ttt{Stack} data structure, let's design the \ttt{int sumOdds(Stack<Integer> S)} method that, when given a stack of integers~$S$, returns the sum of all odd integer elements.}
+Remember that we cannot access arbitrary elements of the stack.
+So, for now, all we can do is traverse over the stack using a while loop until it has no elements remaining.
+That is, while the stack is non-empty, pop the top-most element, examine if it is odd and, if so, add it to our running total.
+Stacks are powerful and capable data structures, but we present this example as a means of demonstrating some operations that the Java \ttt{Stack} class provides.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+import java.util.Stack;
+
+class StackSumOddsTester {
+
+  @Test
+  void testSumOdds() {
+    Stack<Integer> S1 = new Stack<>();
+    Stack<Integer> S2 = new Stack<>();
+    S2.add(5); S2.add(12); S2.add(13);
+    S2.add(24); S2.add(91); S2.add(108);
+    Stack<Integer> S3 = new Stack<>();
+    S3.add(7); S3.add(5);
+    Stack<Integer> S4 = new Stack<>();
+    S4.add(2); S4.add(100); S4.add(42);
+    assertAll(
+      () -> assertEquals(0, sumOdds(S1));
+      () -> assertEquals(109, sumOdds(S2));
+      () -> assertEquals(13, sumOdds(S3));
+      () -> assertEquals(0, sumOdds(S4)));
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Stack;
+
+class StackSumOdds {
+
+  /**
+   * Sums the odd numbers in a given stack of integers.
+   * @param S - stack of integers.
+   * @return sum of odd integers.
+   */
+  static int sumOdds(Stack<Integer> S) {
+    int sum = 0;
+    while (!S.isEmpty()) {
+      int top = S.pop();
+      sum += top % 2 != 0 ? top : 0;
+    }
+    return sum;
+  }
+}
+\end{lstlisting}
+
+
 \subsubsection*{\ttt{Queue} Interface}
 Imagine you are in line at an amusement park for the most intense roller coaster in the world. 
 Another, perhaps more generic term for a ``line'' is a \emph{queue}\index{queue}.
@@ -1266,9 +1321,7 @@ class PriorityQueueByP {
   static PriorityQueue<String> priorityByP() {
     Comparator<String> c = new Comparator<>(
       @Override
-      public int compare(String s1, String s2) { 
-        // TODO.
-      }
+      public int compare(String s1, String s2) { /* TODO. */ }
     );
   }
 }
