@@ -412,140 +412,6 @@ From here we might ask a similar question: can we translate any standard recursi
 In general, the answer is yes, through a concept called \emph{continuation-passing style}\index{continuation-passing style}. 
 Because of how difficult it is to implement continuations in Java, we will omit any further discussion, but interested readers should delve into functional programming if this equivalence is intriguing~\citep{eopl, tls, schemetlp}.
 
-\section{Iteration Constructs}
-
-Perhaps the related equivalence to tail recursion is too abstract for some to digest. 
-Indeed, we believe the relationship is somewhat far-fetched at first glance, but after enough practice, it becomes clearer. 
-We will now discuss loops from a non-translation perspective. 
-That is, if we assume the translation diagram from before, we are going straight from the problem statement~$P$ to the iterative solution~$I$.
-
-As we stated before, loops are statements in Java, meaning they do not, themselves, resolve to a value. 
-Therefore, any and all lines of code executed inside the body of a loop must be statements rather than expressions.
-
-\myexample{Suppose we want to print the first one hundred prime integers.} 
-Recall the definition of primality: a positive integer~$n$ is prime if it is divisible by only one and itself. 
-Without loops, we would otherwise solve this task using recursion. 
-Although summing prime values is not a too terribly complicated task, it requires a verbose set of methods, should we choose to do it tail recursively. 
-Instead, let's try and use loops to solve the problem. 
-We want to continue looping until we have summed one hundred prime values. 
-Fortunately, there is exactly one correct test case for this method, so writing an elaborate test suite is superfluous.
-
-Declaring an integer counter~$c$ is mandatory. 
-Our loop condition, therefore, executes so long as we have not encountered one hundred prime values. 
-When designing loop conditions, we ask ourselves the question, ``What should be true after the loop?,'' and design the condition around the answer. 
-Our counter~$c$ will be exactly one hundred upon loop completion, so the condition is the negated version of this expression.\footnote{Rather than \ttt{(!(c == 100))}, we can write \ttt{(c != 100)} to achieve the same effect.}
-
-Up next, we need to write a method that determines the primality of an integer. 
-We presented the definition of primality before, and it is also known mathematically that we only need to check up to~$\sqrt{n}$ for primality~\citep{riesel}. 
-Let's design such a method, writing the appropriate tests. 
-The loop condition is to continue so long as a variable,~$i$, is less than or equal to the square root of our input number. 
-The variable~$i$ serves as a counter towards our number; if we find that~$n$ is not divisible by any numbers from two up to~$\sqrt{n}$, then it must be prime.\footnote{We cast the result of \ttt{Math.sqrt} to an integer because it returns a \ttt{double} rather than an \ttt{int} datatype.} 
-Note the edge cases of zero and one, both of which are non-prime.
-
-\begin{lstlisting}[language=MyJava]
-class SumPrimes {
-
-  /**
-   * Computes the sum of the first 100 prime integers.
-   * @return sum of first 100 primes.
-   */
-  static int sum100Primes() {
-    int c = 0;
-    while (c != 100) { /* TODO. */ }
-    return 0;
-  }
-}
-\end{lstlisting}
-
-% %\enlargethispage{\baselineskip}
-\begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
-import static Assertions.assertTrue;
-import static Assertions.assertFalse;
-
-class PrimeTester {
-
-  @Test
-  void testPrime() {
-    assertAll(
-      () -> assertTrue(isPrime(101)),
-      () -> assertTrue(isPrime(3)),
-      () -> assertFalse(isPrime(0)),
-      () -> assertFalse(isPrime(1)),
-      () -> assertFalse(isPrime(2)),
-      () -> assertFalse(isPrime(202)))
-  }
-}
-\end{lstlisting}
-
-
-\begin{lstlisting}[language=MyJava]
-class Prime {
-
-  /**
-   * Determines if a given integer is prime.
-   * @param n - positive integer.
-   * @return true if prime, false otherwise.
-   */
-  static boolean isPrime(int n) {
-    if (n < 2) { 
-      return false;
-    } else {
-      int bound = (int) Math.sqrt(n);
-      int i = 2;
-      while (i <= bound) {
-        if (n % i == 0) {
-          return false;
-        }
-        i++;
-      }
-      return true;
-    }
-  }
-}
-\end{lstlisting}
-
-The primality tests pass, which means we can put \ttt{isPrime} to work inside of \ttt{sum100Primes}. 
-The method logic is straightforward: initialize our counter $c$ to one. 
-We also need a variable to track the last-found prime integer, so we know from where to start the search. 
-We will call this variable~$l$ and initialize it to zero. 
-Finally, a $\mathit{sum}$ variable accumulates the sum of each prime. 
-Inside the loop, we declare another variable~$v$, which serves as the value to check for primality, taking on the value of~$l + 1$ (if it were just~$l$, it would forever check the same value for primality!). 
-Run~$v$ through the \ttt{isPrime} method and, if it is prime, assign to~$l$ the value of~$v$, add~$v$ to the sum, and increment~$c$. 
-Otherwise, increment~$l$ by one.\footnote{We will note that this code is overly verbose for pedagogical purposes.}
-Running the code produces~$24133$: the desired answer.
-
-%\enlargethispage{-4\baselineskip}
-\begin{lstlisting}[language=MyJava]
-class SumPrimes {
-
-  /**
-   * Computes the sum of the first 100 prime integers.
-   * @return sum of first 100 primes.
-   */
-  static int sum100Primes() {
-    // Counter for no. of primes.
-    int c = 0;   
-    // Current "prime value".
-    int l = 0;   
-    // Running sum.
-    int sum = 0; 
-    
-    while (c != 100) {
-      int v = l + 1;
-      if (isPrime(v)) {
-        l = v;
-        sum += v;
-        c++;
-      } else {
-        l++;
-      }
-    }
-    return sum;
-  }
-}
-\end{lstlisting}
-
 \myexample{Let's design the \ttt{isDisarium} method, which returns whether a given positive integer is a \textit{Disarium number}~\Citep{disarium}.}
 A Disarium number is a positive integer such that the sum of its digits, where each digit is raised to the power of its position, is equal to the number itself.
 For example,~$135$ is a Disarium number because $1^1+3^2+5^3 = 1+9+125=135$. 
@@ -614,7 +480,6 @@ The tail recursive variant is similar to the standard recursive variant, but wit
 
 \begin{lstlisting}[language=MyJava]
 class Disarium {
-  // ... previous code not shown.
 
   /**
    * Determines if a given integer is a Disarium number.
@@ -650,7 +515,6 @@ The method uses a counter~$c$ to keep track of the position of the digit we are 
 
 \begin{lstlisting}[language=MyJava]
 class Disarium {
-  // ... previous code not shown.
 
   /**
    * Determines if a given integer is a Disarium number.
@@ -739,7 +603,6 @@ The loop counterpart localizes the accumulator into a variable~$i$ that starts a
 
 \begin{lstlisting}[language=MyJava]
 class DePolignac {
-  // ... previous code not shown.
 
   /**
    * Determines if a given integer is a De Polignac number.
@@ -759,6 +622,141 @@ class DePolignac {
   }
 }
 \end{lstlisting}
+
+\section{Iteration Constructs}
+
+Perhaps the related equivalence to tail recursion is too abstract for some to digest. 
+Indeed, we believe the relationship is somewhat far-fetched at first glance, but after enough practice, it becomes clearer. 
+We will now discuss loops from a non-translation perspective. 
+That is, if we assume the translation diagram from before, we are going straight from the problem statement~$P$ to the iterative solution~$I$.
+
+As we stated before, loops are statements in Java, meaning they do not, themselves, resolve to a value. 
+Therefore, any and all lines of code executed inside the body of a loop must be statements rather than expressions.
+
+\myexample{Suppose we want to print the first one hundred prime integers.} 
+Recall the definition of primality: a positive integer~$n$ is prime if it is divisible by only one and itself. 
+Without loops, we would otherwise solve this task using recursion. 
+Although summing prime values is not a too terribly complicated task, it requires a verbose set of methods, should we choose to do it tail recursively. 
+Instead, let's try and use loops to solve the problem. 
+We want to continue looping until we have summed one hundred prime values. 
+Fortunately, there is exactly one correct test case for this method, so writing an elaborate test suite is superfluous.
+
+Declaring an integer counter~$c$ is mandatory. 
+Our loop condition, therefore, executes so long as we have not encountered one hundred prime values. 
+When designing loop conditions, we ask ourselves the question, ``What should be true after the loop?,'' and design the condition around the answer. 
+Our counter~$c$ will be exactly one hundred upon loop completion, so the condition is the negated version of this expression.\footnote{Rather than \ttt{(!(c == 100))}, we can write \ttt{(c != 100)} to achieve the same effect.}
+
+Up next, we need to write a method that determines the primality of an integer. 
+We presented the definition of primality before, and it is also known mathematically that we only need to check up to~$\sqrt{n}$ for primality~\citep{riesel}. 
+Let's design such a method, writing the appropriate tests. 
+The loop condition is to continue so long as a variable,~$i$, is less than or equal to the square root of our input number. 
+The variable~$i$ serves as a counter towards our number; if we find that~$n$ is not divisible by any numbers from two up to~$\sqrt{n}$, then it must be prime.\footnote{We cast the result of \ttt{Math.sqrt} to an integer because it returns a \ttt{double} rather than an \ttt{int} datatype.} 
+Note the edge cases of zero and one, both of which are non-prime.
+
+\begin{lstlisting}[language=MyJava]
+class SumPrimes {
+
+  /**
+   * Computes the sum of the first 100 prime integers.
+   * @return sum of first 100 primes.
+   */
+  static int sum100Primes() {
+    int c = 0;
+    while (c != 100) { /* TODO. */ }
+    return 0;
+  }
+}
+\end{lstlisting}
+
+% %\enlargethispage{\baselineskip}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertTrue;
+import static Assertions.assertFalse;
+
+class PrimeTester {
+
+  @Test
+  void testPrime() {
+    assertAll(
+      () -> assertTrue(isPrime(101)),
+      () -> assertTrue(isPrime(3)),
+      () -> assertFalse(isPrime(0)),
+      () -> assertFalse(isPrime(1)),
+      () -> assertFalse(isPrime(2)),
+      () -> assertFalse(isPrime(202)));
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=MyJava]
+class Prime {
+
+  /**
+   * Determines if a given integer is prime.
+   * @param n - positive integer.
+   * @return true if prime, false otherwise.
+   */
+  static boolean isPrime(int n) {
+    if (n < 2) { 
+      return false;
+    } else {
+      int bound = (int) Math.sqrt(n);
+      int i = 2;
+      while (i <= bound) {
+        if (n % i == 0) {
+          return false;
+        }
+        i++;
+      }
+      return true;
+    }
+  }
+}
+\end{lstlisting}
+
+The primality tests pass, which means we can put \ttt{isPrime} to work inside of \ttt{sum100Primes}. 
+The method logic is straightforward: initialize our counter $c$ to one. 
+We also need a variable to track the last-found prime integer, so we know from where to start the search. 
+We will call this variable~$l$ and initialize it to zero. 
+Finally, a $\mathit{sum}$ variable accumulates the sum of each prime. 
+Inside the loop, we declare another variable~$v$, which serves as the value to check for primality, taking on the value of~$l + 1$ (if it were just~$l$, it would forever check the same value for primality!). 
+Run~$v$ through the \ttt{isPrime} method and, if it is prime, assign to~$l$ the value of~$v$, add~$v$ to the sum, and increment~$c$. 
+Otherwise, increment~$l$ by one.\footnote{We will note that this code is overly verbose for pedagogical purposes.}
+Running the code produces~$24133$: the desired answer.
+
+%\enlargethispage{-4\baselineskip}
+\begin{lstlisting}[language=MyJava]
+class SumPrimes {
+
+  /**
+   * Computes the sum of the first 100 prime integers.
+   * @return sum of first 100 primes.
+   */
+  static int sum100Primes() {
+    // Counter for no. of primes.
+    int c = 0;   
+    // Current "prime value".
+    int l = 0;   
+    // Running sum.
+    int sum = 0; 
+    
+    while (c != 100) {
+      int v = l + 1;
+      if (isPrime(v)) {
+        l = v;
+        sum += v;
+        c++;
+      } else {
+        l++;
+      }
+    }
+    return sum;
+  }
+}
+\end{lstlisting}
+
 
 \myexample{Suppose that we want to compute the sum of the first~$n$ odd reciprocals.} 
 That is, $\frac{1}{1} + \frac{1}{3} + \frac{1}{5} + \cdots + \frac{1}{(2n-1)}$. 

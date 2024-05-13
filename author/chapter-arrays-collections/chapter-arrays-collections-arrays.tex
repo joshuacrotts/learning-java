@@ -225,7 +225,8 @@ class WordLengths {
 }
 \end{lstlisting}
 
-\myexample{Let's design a method that returns the largest integer in an array of integers}. Its algorithm appears straightforward, but can be a little tricky to correctly design because of how we determine the ``largest integer.'' 
+\myexample{Let's design a method that returns the largest integer in an array of integers.} 
+Its algorithm appears straightforward, but can be a little tricky to correctly design because of how we determine the ``largest integer.'' 
 Some programmers may choose to declare a value \ttt{largest} and assign it, say,~$-1$, and then if we find a larger value, overwrite the existing value. 
 Such an algorithm works well when the provided array contains only positive integers, but what if our array contains only negative numbers less than~$-1$? 
 In that scenario, our algorithm would return~$-1$, which is not the largest integer in the array. 
@@ -567,7 +568,21 @@ The first terminal argument denotes the number of values to expect, so we will u
 To start, let's see a few example runs of our program, containing a mixture of flags.
 
 %\enlargethispage{4\baselineskip}
-\begin{verbnobox}[\small]
+% \begin{verbnobox}[\small]
+% ./ArrayArguments 5 1 2 3 4 5 --sum --max
+% sum: 15.000000
+% max: 5.000000
+
+% ./ArrayArguments 3 100 200 -100 --product --sum --min
+% sum: 200.000000
+% product: -2000000.000000
+% min: -100.000000
+
+% ./ArrayArguments --help
+% usage: ./ArrayArguments <n> <n1> [n...] [--(sum | product | min | max)]
+% \end{verbnobox}
+\begin{small}
+\begin{verbatim}
 ./ArrayArguments 5 1 2 3 4 5 --sum --max
 sum: 15.000000
 max: 5.000000
@@ -579,7 +594,8 @@ min: -100.000000
 
 ./ArrayArguments --help
 usage: ./ArrayArguments <n> <n1> [n...] [--(sum | product | min | max)]
-\end{verbnobox}
+\end{verbatim}
+\end{small}
 
 The ordering of the output is irrelevant, and depends on how we parse the input flags in the main method. 
 To scan for a given flag, let's design a static method to return whether or not the flag exists in the arguments array.
@@ -1032,7 +1048,6 @@ We consider the algorithm to be ``top-down memoized,'' because the solution recu
 
 \begin{lstlisting}[language=MyJava]
 class LogSaw {
-  // ... previous method not shown.
 
   /**
    * Performs a top-down sawing of the given log.
@@ -1076,7 +1091,6 @@ The tests for the top-down and bottom-up methods are the same as the standard re
 
 \begin{lstlisting}[language=MyJava]
 class LogSaw {
-  // ... previous method not shown.
 
   /**
    * Performs a bottom-up sawing of the given log.

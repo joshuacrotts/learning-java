@@ -135,25 +135,21 @@ From there, we use the formula for computing the area of the triangle from those
 \[
 \dfrac{x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3 (y_1 - y_2)}{2}
 \]
-%\enlargethispage{-6\baselineskip}
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 
 class ThreePointArea {
 
   /**
-   * Computes the area of a triangle given three Cartesian points 
-   * via standard input.
+   * Computes the area of a triangle given three Cartesian points via standard input.
    * @return the area of the triangle.
    */
   static double computeThreePointArea() {
     Scanner in = new Scanner(System.in);
-    int x1 = in.nextInt();
-    int y1 = in.nextInt();
-    int x2 = in.nextInt();
-    int y2 = in.nextInt();
-    int x3 = in.nextInt();
-    int y3 = in.nextInt();
+    int x1 = in.nextInt(); int y1 = in.nextInt();
+    int x2 = in.nextInt(); int y2 = in.nextInt();
+    int x3 = in.nextInt(); int y3 = in.nextInt();
     return (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0;
   }
 }
