@@ -12,6 +12,7 @@ Within a \ttt{try} block, we include the code that potentially raises the except
 In the associated \ttt{catch} block, we declare a variable for the exception we aim to catch, such as \ttt{ArithmeticException}, and then manage it within that block.
 Let's write a method that does nothing more than divides the sum of two numbers by the third.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.lang.ArithmeticException;
 
@@ -40,16 +41,18 @@ Another solution might be to return an \ttt{Optional} from the method, but the \
 \myexample{In the preceding example, we catch the \ttt{ArithmeticException} that Java throws.} 
 Though, suppose we have a situation in which \emph{we} want to throw the exception. 
 Because the \ttt{div} problem arises from a bad parameter, we might wish to throw an \ttt{IllegalArgumentException}, which designates exactly what its name suggests. 
-We insert a conditional check to test if the divisor, namely $c$, is zero and, if so, we throw a new \ttt{IllegalArgumentException}. 
+We insert a conditional check to test if the divisor, namely~$c$, is zero and, if so, we throw a new \ttt{IllegalArgumentException}. 
 Because \ttt{IllegalArgumentException} is an unchecked exception, the caller needs not to handle nor necessarily know that it may raise the exception. 
 Should we want to signal that as a hint, the method signature may specify that the method potentially throws an \ttt{IllegalArgumentException}. 
 As the callee that defines the location of an exception invocation, we \emph{only} throw the exception; it is not our responsibility to control the outcome. 
+
 We can unit test a new version of \ttt{div} by determining whether it throws an exception through the \ttt{assertThrows} and \ttt{assertDoesNotThrow} assertion methods. 
 The thing is, though, neither \ttt{assertThrows} nor \ttt{assertDoesNotThrow} are not as simple as they appear on the surface; we need to specify \emph{what} exception the code might throw as a reference to the class definition.\footnote{To reference a class definition as an object, we access \ttt{.class} on the class as if it were a static method.} 
 Additionally, the argument must be passed as an executable argument. 
 Remember though have worked with executable constructs before via lambda/anonymous functions! 
 Simply wrap the code that might raise an exception inside a lambda, and everything works as expected.
 
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertDoesNotThrow;
 import static Assertions.assertThrows;
@@ -62,8 +65,7 @@ class IllegalArgumentExceptionExampleTester {
   void testIllegalArgumentException() {
     assertAll(
       () -> assertDoesNotThrow(div(5, 3, 1)));
-      () -> assertThrows(IllegalArgumentException.class, 
-                         () -> div(5, 3, 0)),
+      () -> assertThrows(IllegalArgumentException.class, () -> div(5, 3, 0)),
   }
 }
 \end{lstlisting}
@@ -111,6 +113,7 @@ class IllegalArgumentExceptionExample {
 }
 \end{lstlisting}
 
+\newpage %ugh
 \myexample{Arrays and strings both produce unchecked exceptions when incorrectly indexed via \ttt{ArrayIndexOutOfBoundsException} and \ttt{StringIndexOutOfBounds\-Exception}} respectively, both of which inherit from the \ttt{IndexOutOfBoundsException} class. 
 We imagine that these have both been received, in great frustration, from the readers a indeterminate number of times. 
 An index out of bounds exception stems from accessing data beyond the permissible bounds of some collection or structure.
@@ -133,14 +136,10 @@ class IndexOutOfBoundsExceptionExampleTester {
       () -> assertDoesNotThrow(() -> ex1.charAt(ex1.length() - 1)),
       () -> assertDoesNotThrow(() -> ex2[0]),
       () -> assertDoesNotThrow(() -> ex2[ex2.length - 1])
-      () -> assertThrows(StringIndexOutOfBoundsException.class, 
-                         () -> ex1.charAt(17)),
-      () -> assertThrows(StringIndexOutOfBoundsException.class, 
-                         () -> ex1.charAt(-1)),
-      () -> assertThrows(ArrayIndexOutOfBoundsException.class,  
-                         () -> ex2[17]),
-      () -> assertThrows(ArrayIndexOutOfBoundsException.class, 
-                         () -> ex2[-1]));
+      () -> assertThrows(StringIndexOutOfBoundsException.class, () -> ex1.charAt(17)),
+      () -> assertThrows(StringIndexOutOfBoundsException.class, () -> ex1.charAt(-1)),
+      () -> assertThrows(ArrayIndexOutOfBoundsException.class, () -> ex2[17]),
+      () -> assertThrows(ArrayIndexOutOfBoundsException.class, () -> ex2[-1]));
   } 
 }
 \end{lstlisting} 

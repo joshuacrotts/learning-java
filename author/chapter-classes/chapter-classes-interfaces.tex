@@ -46,7 +46,7 @@ In this case, the \ttt{IShape} interface is the form that the \ttt{Pentagon} and
 When implementing the methods of an interface in a class, we must mark those methods as \ttt{public} because all interface methods are \ttt{public}, either explicitly or implicitly. 
 In this context, the \ttt{area} and \ttt{perimeter} methods are overridden in the \ttt{Octagon} and \ttt{Pentagon} classes.
 
-%\enlargethispage{-2\baselineskip}
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -101,7 +101,7 @@ class Pentagon implements IShape {
 }
 \end{lstlisting}
 
-%\enlargethispage{-2\baselineskip}
+\enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Octagon implements IShape {
 
@@ -216,6 +216,7 @@ We can follow this by designing classes to implement the \ttt{IAnimal} interface
 When testing these classes, we can instantiate a collection of \ttt{IAnimal} instances, and invoke \ttt{speak} on each of them polymorphically. 
 In doing so, we debut a refresher of the stream API.
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 interface IAnimal {
 
@@ -278,6 +279,7 @@ class Dog implements IAnimal {
 }
 \end{lstlisting}
 
+\newpage %ugh
 \myexample{Suppose we want to design an interface that ``boxes'' an arbitrary value.} 
 We have seen this idea through Java's autoboxing and autounboxing mechanisms of the primitive datatypes via the wrapper classes. 
 Our interface, however, extends the concept to any type. 
@@ -334,6 +336,7 @@ class IBoxTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class IntegerBox implements IBox<Integer> {
   
@@ -349,10 +352,14 @@ class IntegerBox implements IBox<Integer> {
   }
   
   @Override
-  public Integer get() { return this.value; }
+  public Integer get() { 
+    return this.value; 
+  }
   
   @Override
-  public void set(Integer value) { this.value = value; }
+  public void set(Integer value) { 
+    this.value = value; 
+  }
 }
 \end{lstlisting}
 
@@ -395,9 +402,9 @@ class AddOneTester {
   @Test
   void addOneTester() {
     assertAll(
-      () -> assertEquals(0, AddOne.apply(1)),
-      () -> assertEquals(3, AddOne.apply(2)),
-      () -> assertEquals(30001, AddOne.apply(30000)));
+      () -> assertEquals(0, apply(1)),
+      () -> assertEquals(3, apply(2)),
+      () -> assertEquals(30001, apply(30000)));
   }
 }
 \end{lstlisting}
@@ -407,16 +414,19 @@ class AddOne implements Function<Integer, Integer> {
   private AddOne() {}
 
   @Override
-  public static Integer apply(Integer i) { return i + 1; }
+  public static Integer apply(Integer i) { 
+    return i + 1; 
+  }
 }
 \end{lstlisting}
 
 So far, we have not demonstrated the potential of first-class methods in Java with our design. Suppose that~$l$ is a list of \ttt{Integer} values $v_1, v_2, ..., v_n$ and $f : \ttt{Integer} \to \ttt{Integer}$. 
 We want to apply~$f$ to each element of the list~$l$ and produce a new list that is the result of mapping~$f$ over~$l$. 
-That is, we will create a new list $l'=f(v_1), f(v_2), ..., f(v_n)$. 
-By passing a class that implements a functional interface, we can design a single method that receives a list and a function~$f$, rather than having to redundantly design several methods to work over multiple variants of~$f$. 
+That is, we will create a new list $l'=f(v_1), f(v_2), \ldots, f(v_n)$. 
+By passing a class that implements a functional interface as a parameter, we can design a single method that receives a list and a function~$f$, rather than having to redundantly design several methods to work over multiple variants of~$f$. 
 This operation, in the functional programming domain, is called \ttt{map}, which we saw during our discussion on streams in Chapter~\ref{chapter-arrays-collections}.\footnote{Do not confuse this with the concept of a map/dictionary from our data structures/collections discussion.}
 
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -431,9 +441,9 @@ class FunctionMapTester {
     Function<Integer, Integer> addOne = new AddOne();
     assertAll(
       () -> assertEquals(List.of(2, 3, 4, 5, 6), 
-                         FunctionMap.map(l, addOne)),
+                         map(l, addOne)),
       () -> assertEquals(List.of(), 
-                         FunctionMap.map(List.of(), addOne)));
+                         map(List.of(), addOne)));
   }
 }
 \end{lstlisting}
@@ -464,7 +474,7 @@ Let's rewrite the \ttt{addOne} example doing so.
 Concurrently, we will show off the fact that Java autoboxes and unboxes primitives into wrapper class counterparts in the functional interface, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives, which are easier to work with. 
 Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, since Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}
 
-%\enlargethispage{-1\baselineskip}
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -514,7 +524,7 @@ The simplest (atomic) values in our language are numbers, or numeric literals.
 A \ttt{Lit} stores a single integer as an instance variable, and returns this instance variable upon a \ttt{value} invocation, which means \ttt{Lit} should implement the \ttt{IExpr} interface. 
 Testing this class is trivial, so we will only write two tests.
 
-%\enlargethispage{5\baselineskip}
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -611,6 +621,7 @@ On the other hand, a monomial follows a different rule based off its coefficient
 If $n=1$, then this trivially becomes a constant. 
 There is one more edge-case to consider: if the given variable~$v$ does not match the variable of the monomial, then the derivative is zero because the monomial does not depend on the variable~$v$.
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -638,7 +649,6 @@ class DerivativeTester {
   }
 }
 \end{lstlisting}
-
 
 \begin{lstlisting}[language=MyJava]
 import java.util.Objects;
@@ -678,6 +688,7 @@ class ConstantExpression implements Expression {
 }
 \end{lstlisting}
 
+\newpage %ugh
 %\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Objects;
@@ -725,9 +736,7 @@ class MonomialExpression implements Expression {
   public int hashCode() { 
     return Objects.hash(this.VAR, this.COEFFICIENT, this.EXPT); 
   }
-\end{lstlisting}
-%\enlargethispage{4\baselineskip}
-\begin{lstlisting}[language=MyJava]
+
   @Override
   public String toString() { 
     return String.format("%d%s^%d", this.COEFFICIENT, 
@@ -737,6 +746,7 @@ class MonomialExpression implements Expression {
 }
 \end{lstlisting}
 
+\newpage %ugh
 Let's move into compositional expressions, i.e., those that contain expressions as instance variables. 
 Such an example is an additive operator: the derivative of the expression $(f(x) + g(x))' = f'(x)~+~g'(x)$, where~$f'$ is the derivative of~$f$. 
 In summary, the derivative of a sum is the sum of the derivatives of its operands. 
@@ -777,6 +787,7 @@ class DerivativeTester {
 }
 \end{lstlisting}
 
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -819,7 +830,9 @@ class AddExpression implements Expression {
   }
 
   @Override
-  public int hashCode() { this.EXPR_LIST.hashCode(); }
+  public int hashCode() { 
+    this.EXPR_LIST.hashCode(); 
+  }
 
   @Override
   public String toString() { 
@@ -830,6 +843,7 @@ class AddExpression implements Expression {
 }
 \end{lstlisting}
 
+\newpage %ugh
 \myexample{Let's clarify the distinction between the \ttt{Comparable} and \ttt{Comparator} interfaces.}
 Consider an \ttt{Employee} class, which stores an employee's first and last name, as well as their salary. 
 Suppose we want to be able to compare \ttt{Employee} instances. 
@@ -861,6 +875,7 @@ class Employee implements Comparable<Employee> {
 
 Now, if we want to create a list of employees and sort them, we can use the static \ttt{sort} method from the \ttt{Collections} class. 
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -884,7 +899,6 @@ class EmployeeTester {
     loe1.add(new Employee("Peter", "Taylor", 220000));
     loe1.add(new Employee("Jennifer", "Clark", 240000));
     Collections.sort(loe1);
-
     assertEquals("Brown, Clark, Davis, Doe, Jones, Smith, Taylor, Wilson",
                  loe1.stream()
                      .map(e -> e.getLastName())
@@ -911,6 +925,8 @@ Another difference is that \ttt{compare} receives two arguments rather than one,
 That is, \ttt{compareTo} returns a comparison result based on \ttt{this} and its argument. 
 By contrast, \ttt{compare} receives \emph{two} instances of the class of interest, and the returned value should be the result of however we choose to compare those two objects.
 
+We can then pass an instance of this comparator as a second argument to the \ttt{Collections.sort} method:
+
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
 
@@ -923,8 +939,9 @@ class EmployeeFirstNameComparator implements Comparator<Employee> {
 }
 \end{lstlisting}
 
-We can then pass an instance of this comparator as a second argument to the \ttt{Collections.sort} method:
 
+
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

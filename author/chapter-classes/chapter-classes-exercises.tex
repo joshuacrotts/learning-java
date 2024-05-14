@@ -656,6 +656,7 @@ interface IFunction<T, R> {
 }
 \end{lstlisting}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Map;
 import java.util.HashMap;
@@ -695,7 +696,8 @@ class PrimNode extends AstNode {
   \end{enumerate}
   This seems like a lot of work (because it is), but it means you can write really cool programs, including those that use recursion!
   %\enlargethispage{2\baselineskip}
-  \begin{verbnobox}[\small]
+\begin{small}
+\begin{verbatim}
 new ProgramNode(
   new DefNode("!", 
     new FuncNode(
@@ -712,7 +714,8 @@ new ProgramNode(
             new VarNode("n"), 
             new NumNode(1))))))),
   new ApplyNode("!", new NumNode(5)))
-\end{verbnobox}
+\end{verbatim}
+\end{small}
 \end{enumerate}
 
 \myexercise{2}{chapter-classes}{This exercise involves the interpreter we wrote in the chapter, and relies on the addition of \ttt{FuncNode} and \ttt{ApplyNode}.}
@@ -757,18 +760,17 @@ The Scheme programming language and its derivatives support \emph{code quotation
 
 The problem with tail recursion (and recursion in general) in Java is the fact that it does not convert tail calls into iteration, which means the stack quickly overflows with activation records. We can make use of a \emph{trampoline} to force the recursion into iteration through \emph{thunks}. In essence, we have a tail recursive method that returns either a value or makes a tail recursive call, such as the factorial example below.\footnote{We omit the driver method to shorten the code, as the important part lies inside the recursive implementation.} Inside our base case, we invoke the \ttt{done} method with the accumulator value. Otherwise, we invoke the \ttt{call} method containing a lambda expression of no arguments, whose right-hand side is a recursive call to \ttt{factTR}. Functions, or lambda expressions, that receive no arguments are called thunks.
 
-
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import java.lang.BigInteger;
 
 class FactorialTailRecursiveTester {
   
   @Test 
   void testFactTailRecursiveTrampoline() {
     assertAll(
-      () -> assertEquals(BigInteger.valueOf(1), 
-                         factTailCall(BigInteger.valueOf(0), BigInteger.ONE)),
       () -> assertEquals(BigInteger.valueOf(120), 
                          factTailCall(BigInteger.valueOf(5), BigInteger.ONE)),
       () -> assertDoesNotThrow(StackOverflowException.class,
@@ -833,7 +835,7 @@ Predicates can only be unified with variables if the variable does not have an e
     % In particular, place commas between the digits where necessary, e.g., \ttt{"1,000"} and \ttt{"12,345,678"}.
     \item Design the \ttt{BigNat clone()} method that returns a new \ttt{BigNat} instance that contains the same number.
     \item Override the \ttt{public boolean equals(Object obj)} method to compare two \ttt{BigNat} values for equality. Remember that you have to cast the given parameter to an instance of the \ttt{BigNat} class. 
-    \item Implement the \ttt{Comparable<BigNat>} interface, and override the \ttt{public int compareTo(BigNat b)} method to return the sign of the result of comparing the given \ttt{BigNat} (which we will call $b$) to \ttt{this} \ttt{BigNat} (which we will call $a$). Namely, if $a < b$, return $-1$, if $a > b$, return $1$, otherwise return $0$.
+    \item Implement the \ttt{Comparable<BigNat>} interface, and override the method that it provides, namely \ttt{public int compareTo(BigNat b)}, to return the sign of the result of comparing the given \ttt{BigNat} (which we will call $b$) to \ttt{this} \ttt{BigNat} (which we will call $a$). Namely, if $a < b$, return $-1$, if $a > b$, return $1$, otherwise return $0$.
     \item Design the \ttt{void add(BigNat bn)} method, which adds a \ttt{BigNat} to \ttt{this} \ttt{BigNat}. The method should not return anything. Note: this problem is harder than it may look at first glance!
     \item Design the \ttt{void sub(BigNat bn)} method, which subtracts a \ttt{BigNat} from \ttt{this} \ttt{BigNat}. If the subtrahend (the right-hand side of the subtraction) is greater than the minuend, the result is zero. Over the natural numbers, this is called the \emph{monus} operator.
     \item Design the \ttt{void mul(BigNat bn)} method, which multiplies a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. Note: remember how we implement multiplication recursively? You shouldn't use recursion for this problem, but what \emph{is} multiplication? Multiplication is defined as repeated addition. Think about the performance implications of this approach.

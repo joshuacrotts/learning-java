@@ -52,27 +52,31 @@ import java.util.Objects;
 
 class ColorPoint {
 
-  private String color;
+  private final String COLOR;
 
   ColorPoint(int x, int y, String color) {
     super(x, y);
-    this.color = color;
+    this.COLOR = color;
   }
 
   @Override
   public boolean equals(Object o) {
     ColorPoint pt = (ColorPoint) o;
-    return this.color.equals(pt.color) && super.equals(pt);
+    return this.COLOR.equals(pt.COLOR) && super.equals(pt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.color) + super.hashCode();
+    return Objects.hash(this.COLOR) + super.hashCode();
   }
 
   @Override
   public String toString() {
-    return String.format("Color=%s, %s", this.color, super.toString());
+    return String.format("Color=%s, %s", this.COLOR, super.toString());
+  }
+
+  public Color getColor() {
+    return this.COLOR;
   }
 }
 \end{lstlisting}
@@ -80,6 +84,7 @@ class ColorPoint {
 Some readers may question the need for inheritance; after all, could \ttt{Point} not be an interface and have \ttt{ColorPoint} implement said interface? 
 The answer is no, because \ttt{Point} contains fields and private methods, neither of which are possible with an interface.
 
+\newpage %ugh
 \myexample{Suppose we have the \ttt{Alien} class defined as follows, which can move forward by one unit and turn left by 90 degrees in some world that it resides within.\footnote{We base this example off of Karel J. Robot from~\cite{kareljrobot} and~\cite{pattiskarel}.}}
 
 \begin{lstlisting}[language=MyJava]
@@ -114,7 +119,7 @@ class AlienTester {
 }
 \end{lstlisting}
 
-%\enlargethispage{2\baselineskip}
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Alien {
 
@@ -183,20 +188,17 @@ class RightAlienTester {
     assertAll(
       () -> r1.turnRight(),
       () -> assertEquals(RightAlien.Direction.SOUTH, r1.getDir()),
-      () -> r1.turnRight(),
-      () -> assertEquals(RightAlien.Direction.WEST, r1.getDir()),
       () -> r1.turnLeft(),
       () -> assertEquals(RightAlien.Direction.SOUTH, r1.getDir()));
   }
 }
 \end{lstlisting}
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RightAlien extends Alien {
 
-  RightAlien() { 
-    super(); 
-  }
+  RightAlien() { super(); }
 
   /**
    * Turns the Alien right by 90 degrees.
@@ -221,6 +223,7 @@ Should we accidentally prefix the method call with `\ttt{this.}', we would be in
 One could make the argument and say that this is, in fact, a form of recursion, and while this is not incorrect, it is ``nonsensical recursion'' because the outcome is not only undesired, but it also never terminates.
 
 \begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
 class MileMoverAlienTester {
@@ -228,11 +231,12 @@ class MileMoverAlienTester {
   @Test
   void testMileMoverAlien() {
     Alien r1 = new MileMoverAlien();
-    r1.moveForward(),
-    assertEquals(10, r1.getX()),
-    r1.turnLeft(),
-    r1.moveForward(),
-    assertEquals(10, r1.getY());
+    assertAll(
+      () -> r1.moveForward(),
+      () -> assertEquals(10, r1.getX()),
+      () -> r1.turnLeft(),
+      () -> r1.moveForward(),
+      () -> assertEquals(10, r1.getY()));
   }
 }
 \end{lstlisting}
@@ -241,11 +245,15 @@ class MileMoverAlienTester {
 \begin{lstlisting}[language=MyJava]
 class MileMoverAlien extends Alien {
 
-  MileMoverAlien() { super(); }
+  MileMoverAlien() { 
+    super(); 
+  }
 
   @Override
   void moveForward() {
-    for (int i = 0; i < 10; i++) { super.moveForward(); }
+    for (int i = 0; i < 10; i++) { 
+      super.moveForward(); 
+    }
   }
 }
 \end{lstlisting}
@@ -365,6 +373,7 @@ Said \ttt{World} class contains two methods: \ttt{addObject}, and \ttt{countStar
 In Chapter~\ref{chapter-modern}, we revisit reflection and explore its potential in greater detail. 
 Remember that reflection is a runtime mechanism and, consequently, program performance may be penalized in certain situations.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class World {
   
@@ -469,10 +478,12 @@ class Employee {
 \end{lstlisting}
 
 The \ttt{HourlyEmployee} and \ttt{SalaryEmployee} classes, as aforementioned, extend the \ttt{Employee} class, the only difference being that they also receive a hourly rate and yearly salary value respectively. 
+
 To keep the conversation interesting, we refrain from overriding the \ttt{work} method, because there is no significant difference between how a generic \ttt{Employee} works and one of its direct subclasses work. 
 By not overriding the implementation of a method, Java defaults to the existing implementation in a superclass. 
-The \ttt{toString} method, on the other hand, will change to contain the hourly rate or salary, depending on the subclass.
+The \ttt{toString} method, on the other hand, is updated to contain the hourly rate or salary, depending on the subclass.
 
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -551,7 +562,8 @@ class EmployeeTester {
     Developer d2 = new JuniorDeveloper("Kushagra", 61000, "Java", 6, sd1);
     Developer d3 = new JuniorDeveloper("Tim", 57000, "C++", 2, sd1);
     assertAll(
-      () -> assertEquals(Set.of(d1, d2, d3), sd1.getMentees()),
+      () -> assertEquals(Set.of(d1, d2, d3), 
+                         sd1.getMentees()),
       () -> assertEquals("Ron is a senior developer mentoring Calvin, 
                           Kushagra, Tim.", sd1.work()),
       () -> assertEquals("Calvin is a junior developer working in C, 
@@ -588,6 +600,7 @@ interface IPromotable {
 }
 \end{lstlisting}
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Developer extends SalaryEmployee {
 
@@ -603,6 +616,10 @@ class Developer extends SalaryEmployee {
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
+import java.util.ArrayList;
+import java.util.Collectors;
+import java.util.List;
+
 class SeniorDeveloper extends Developer {
 
   private List<JuniorDeveloper> mentees;
@@ -622,19 +639,22 @@ class SeniorDeveloper extends Developer {
                           .map(m -> m.getName())
                           .collect(Collectors.join(", "));
     return String.format("%s is a senior developer mentoring %s.", 
-                         this.getName(), names);
+                         this.getName(), 
+                         names);
   }
 
   @Override
   public String toString() {
-    return String.format("%s, Senior Developer in %s with %d yoe", 
-                              super.toString(), 
-                              super.getLanguage(),
-                              super.getYearsOfExperience());
+    return String.format("%s, 
+                         Senior Developer in %s with %d yoe", 
+                         super.toString(), 
+                         super.getLanguage(),
+                         super.getYearsOfExperience());
   }
 }
 \end{lstlisting}
 
+\enlargethispage{-8\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class JuniorDeveloper extends Developer implements IPromotable {
 
@@ -643,8 +663,8 @@ class JuniorDeveloper extends Developer implements IPromotable {
 
   private SeniorDeveloper mentor;
 
-  Developer(String name, double salary, String language, int yoe, SeniorDeveloper mentor) {
-    super(name, salary, language, yoe);
+  Developer(String name, double salary, String lang, int yoe, SeniorDeveloper mentor) {
+    super(name, salary, lang, yoe);
     this.mentor = mentor;
     this.mentor.addMentee(this);
   }
@@ -682,6 +702,7 @@ class JuniorDeveloper extends Developer implements IPromotable {
 
 The developer series of classes were certainly a lot to write and design. The last class, namely \ttt{Manager}, is an hourly employee who supervises any kind of employee, including other managers. Their ``work'' is that they are ``supervising'' employee names, sorted alphabetically. The only part of this that is more complex than the others is the comparator that we provide to the \ttt{TreeSet}. Because the set stores employee instances, our comparator must receive two employees, but return a comparison based on their name. Let's see what this looks like:
 
+\enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -703,8 +724,10 @@ class EmployeeTester {
 }
 \end{lstlisting}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Collectors;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -714,12 +737,7 @@ class Manager extends HourlyEmployee {
 
   Manager(String name, double hrRate) {
     super(name, hrRate);
-    this.EMPS = new TreeSet(new Comparator<Employee>() {
-      @Override
-      public int compare(Employee e1, Employee e2) {
-        return e1.getName().compareTo(e2.getName());
-      }
-    });
+    this.EMPS = new TreeSet(employeeNameComparator());
   }
 
   void addDirectReport(Employee e) {
@@ -738,6 +756,15 @@ class Manager extends HourlyEmployee {
   @Override
   public String toString() {
     return String.format("%s, Manager", super.toString());
+  }
+
+  private static Comparator<Employee> employeeNameComparator() {
+    return new Comparator<Employee>() {
+      @Override
+      public int compare(Employee e1, Employee e2) {
+        return e1.getName().compareTo(e2.getName());
+      }
+    };
   }
 }
 \end{lstlisting}
@@ -787,6 +814,7 @@ Attack have a type, a base power statistic, and a number representing how many `
 Each time an attack is used, its usage counter is decremented. 
 Once it reaches zero, the attack can no longer be used. Attacks also inhabit exactly one type, which cannot change.
 
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Attack {
 
@@ -1012,10 +1040,11 @@ class Mage extends Mythicritter implements ITransformable {
 }
 \end{lstlisting}
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
+import java.util.Collectors;
 import java.util.Set;
 import java.util.Stream;
-import java.util.Collectors;
 
 class Archmage extends Mage implements ITransformable {
 

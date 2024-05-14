@@ -4,6 +4,7 @@ We consider a class to be abstract if it is not representable by any instance. T
 
 \myexample{Consider, once again, a hierarchy of animals.} There is no such thing as an ``animal'' or something that is solely called an animal. On the other hand, everything that we would categorize as an animal \emph{is} an animal. Therefore it makes sense to say that animals are a generalization of other types of ``sub''-animals. Imagine we want to write an \ttt{Animal} class, where we will say that any animal can speak. The abstract class contains a superfluous constructor as well as an abstract \ttt{speak} method. We define \ttt{speak} as abstract to denote that an animal can speak, but it is nonsensical for \ttt{Animal} to speak. Because it is impossible to instantiate an instance of \ttt{Animal}, it is similarly impossible to reasonably define \ttt{speak}.
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 abstract class Animal {
 
@@ -190,7 +191,7 @@ We need to translate our circles into axis-aligned bounding box, but what does t
 
 The question that we anticipate many readers are thinking of is, why do we even distinguish objects of differing ``types'' if they both implement collision detection in the same fashion? Since we are working in the context of a game, the way we draw these objects is certainly different! Let's, for the sake of emphasizing the distinctions, design a \ttt{IDrawable} interface, which provides one method: \ttt{void draw(Graphics2D g2d)}, which gives us a \ttt{Graphics2D} object. We will not discuss, nor do we really care about the innards of a graphics library aside from the fact that it contains two primitive methods: \ttt{drawOval(int x, int y, int w, int h)} and \ttt{drawRect(int x, int y, int w, int h)}. Therefore our two object subclasses will implement \ttt{IDrawable} and override the method differently.
 
-
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 interface IDrawable {
   
@@ -208,8 +209,7 @@ interface IDrawable {
 
 %\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
-class CircleObject extends AxisAlignedBoundingBoxObject 
-                   implements IDrawable {
+class CircleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
   
   CircleObject(int x, int y, int r) { super(x, y, r * 2, r * 2); }
 
@@ -222,8 +222,7 @@ class CircleObject extends AxisAlignedBoundingBoxObject
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
-class RectangleObject extends AxisAlignedBoundingBoxObject 
-                      implements IDrawable {
+class RectangleObject extends AxisAlignedBoundingBoxObject implements IDrawable {
   
   RectangleObject(int x, int y, int w, int h) { super(x, y, w, h); }
   
@@ -239,6 +238,7 @@ class RectangleObject extends AxisAlignedBoundingBoxObject
 
 First, we need to design a class that represents an ``argument'' to a program. Arguments, as we described in Chapter~\ref{chapter-arrays-collections}, are space-separated string values that we pass to a program executable, which populate the \ttt{String[] args} array in the \ttt{main} method. In particular, however, we want to specify that an argument is not necessarily the values themselves, but are instead the flags, or instructions, passed to the executable. The simplest version of a flag is one that receives exactly one argument, which we will represent via an abstract \ttt{Argument} class. Later on, we want to be able to validate a flag with its given arguments, so the \ttt{Argument} class includes an abstract \ttt{boolean validate} method, that shall be overridden in all subclasses of \ttt{Argument}.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.Map;
@@ -264,10 +264,14 @@ import java.util.Map;
 
 class OptionalArgument extends Argument {
 
-  OptionalArgument(String key) { super(key); }
+  OptionalArgument(String key) { 
+    super(key); 
+  }
 
   @Override
-  boolean validate(Map<String, List<String>> args) { return true; }
+  boolean validate(Map<String, List<String>> args) { 
+    return true; 
+  }
 }
 \end{lstlisting}
 
@@ -305,40 +309,45 @@ import java.util.HashSet;
 
 class ArgumentParser {
 
-  private Map<String, List<String>> parsedArguments;
-  private Set<Argument> arguments;
+  private final Map<String, List<String>> PARSED_ARGS;
+  private final Set<Argument> ARGS;
 
   ArgumentParser(String[] args) {
-    this.arguments = new HashSet<>();
-    this.parsedArguments = new HashMap<>();
+    this.ARGS = new HashSet<>();
+    this.PARSED_ARGS = new HashMap<>();
     String currKey = null;
-    for (String arg : args) {
+    for (String arg : this.ARGS) {
       if (arg.startsWith("--")) {
         currKey = arg.split("--")[1];
-        this.parsedArguments.putIfAbsent(currKey, new ArrayList<>());
+        this.PARSED_ARGS.putIfAbsent(currKey, new ArrayList<>());
       } else if (currKey != null) {
-        this.parsedArguments.get(currKey).add(arg);
+        this.PARSED_ARGS.get(currKey).add(arg);
       }
     }
   }
 
-  void addArgument(Argument arg) { this.arguments.add(arg); }
+  void addArgument(Argument arg) { 
+    this.ARGS.add(arg); 
+  }
 
   List<String> getArguments(String key) {
-    return this.parsedArguments.containsKey(key) ? 
-             this.parsedArguments.get(key) : 
-             null;
+    if (this.PARSED_ARGS.containsKey(key)) {
+      return this.PARSED_ARGS.get(key);
+    } else {
+      return null;
+    }
   }
 }
 \end{lstlisting}
 
 The \ttt{parseArguments} method returns whether or not the supplied arguments are valid according to the arguments populated via \ttt{addArgument}. Using streams, we verify that, after invoking \ttt{validate} on every argument, each separate call returns true, meaning that all arguments are valid and correct. Because it might be useful to return the associated arguments to a flag from a programmer's perspective who uses this parser, we include a \ttt{getArguments} method to return the list of arguments passed to a flag.
 
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 class ArgumentParser {
 
@@ -382,6 +391,7 @@ As a means of motivation, let's write a few programs in this language to show it
         0)))
 
 (*;\phantom{.};*)
+(*;\phantom{.};*)
 \end{lstlisting}
 \end{minipage}%
 \hfill % Fills the horizontal space between the minipages
@@ -406,21 +416,6 @@ Every abstract syntax tree has a list of children node. We will also define a \t
 Our abstract syntax tree class uses two constructors: one that receives a list of abstract syntax tree nodes, and another that is variadic over the \ttt{AstNode} type. We implement two different constructors for convenience purposes during testing.
 
 Each abstract syntax tree should be evaluable as a means of reducing the expression to its simplest form. For example, numbers and booleans, the literals of our language, resolve to themselves. Primitive operations apply the operation to its arguments, then ultimately reduce to a value. Conditionals resolve to either of its branches, and ``let'' bindings resolve to its body. We will cover each case one-by-one as we cover the material. For now, though, the abstract syntax tree node class contains the \ttt{eval} method, which denotes how a node is to be evaluated.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
@@ -447,31 +442,16 @@ abstract class AstNode {
 }
 \end{lstlisting}
 
-From here, the simplest two abstract syntax tree nodes are \ttt{NumNode} and \ttt{BoolNode}, corresponding to numbers and booleans literals respectively. Each of these nodes will have a single value, that being the associated number or boolean. Number and boolean literals resolve to themselves, which means that they return \ttt{this} as the object in their corresponding \ttt{eval} methods.
+From here, the simplest two abstract syntax tree nodes are \ttt{NumNode} and \ttt{BoolNode}, corresponding to numbers and booleans literals respectively.
+Nodes that encapsulate sole values, e.g., numbers and booleans, are examples of literals, and all literals are evaluated/treated the same way.
+As such, let's design the generic and abstract \ttt{LiteralNode<T>} class, which all literal types extend, those for our purposes being \ttt{NumNode} and \ttt{BoolNode}.\footnote{We say, ``for our purposes,'' because the language could also support string or character literals.}
 
-% We must consider what happens when we evaluate a variable in any other programming language. The language looks up the variable identifier in the list of accessible bindings and returns whatever is the corresponding value. This location of bindings is called an environment in the programming languages nomenclature, and generally takes the form of a \ttt{Map} data structure. Therefore we can store an instance of a \ttt{Map} in our \ttt{Environment} class. 
+A \ttt{LiteralNode<T>} stores an immutable object of type \ttt{T}.
+Literal values resolve to themselves and only themselves, which means that they return \ttt{this} as the object in \ttt{LiteralNode}'s \ttt{eval} method.
+The \ttt{LiteralNode} class overrides \ttt{equals}, \ttt{hashCode}, and \ttt{toString} to compare literals, return the hash code of the stored instance variable, and ``stringify'' the instance variable respectively.
+Designing the \ttt{LiteralNode} class in this fashion makes designing the subclasses easier and significantly less redundant, because \ttt{NumNode} and \ttt{BoolNode} need to only provide constructors that invoke the superclass.
 
-% As a final corollary point before jumping into the environment details, we must override \ttt{equals} and \ttt{hashCode} in these three atomic value classes. In theory, we could override them in the other classes as well. For the time being, because our programs always resolve to one of these three types (and because our test cases only operate over the three), we will only override the definitions in these classes.
-
-% The question now is of what type are the keys and values in our map. The keys are string identifiers, and the values are their corresponding abstract syntax trees. Our environment representation/class is extremely simple and almost seems superfluous, but in due time we will add more functionality to justify its existence over a simple \ttt{HashMap} instance. In particular, the \ttt{lookup} method for finding a variable association will remain undefined for now.
-
-% %\enlargethispage{-1\baselineskip}
-% \begin{lstlisting}[language=MyJava]
-% import java.util.HashMap;
-% import java.util.Map;
-
-% final class Environment {
-  
-%   private final Map<String, AstNode> ENV;
-
-%   Environment() { 
-%     this.ENV = new HashMap<>(); 
-%   }
-
-%   AstNode lookup(String id) { /* TODO. */ }
-% }
-% \end{lstlisting}
-
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -491,127 +471,67 @@ class AstTest {
 }
 \end{lstlisting}
 
-% \begin{lstlisting}[language=MyJava]
-% final class VarNode extends AstNode {
-
-%   private final String NAME;
-
-%   VarNode(String name) {
-%     super();
-%     this.NAME = name;
-%   }
-
-%   String getName() {
-%     return this.NAME;
-%   }
-
-%   /**
-%    * Interpret a variable. We look up the variable in the environment and
-%    * return the value associated with it.
-%    * @param env - the environment in which to interpret the variable.
-%    * @return The result of the variable lookup after interpretation.
-%    */
-%   @Override
-%   AstNode eval(Environment env) {
-%     String id = this.NAME;
-%     AstNode res = env.lookup(id);
-%     return res.eval(env);
-%   }
-
-%   @Override
-%   public String toString() { 
-%     return this.NAME; 
-%   }
-% }
-% \end{lstlisting}
-
 \begin{lstlisting}[language=MyJava]
-final class NumNode extends AstNode {
+import java.util.Objects;
 
-  private final double VALUE;
+abstract class LiteralNode<T> extends AstNode {
 
-  NumNode(String value) {
-    super();
-    this.VALUE = Double.parseDouble(value);
-  }
+  private final T VALUE;
 
-  NumNode(double value) { 
-    this(Double.toString(value)); 
-  }
+  LiteralNode(T value) { this.VALUE = value; }
 
   @Override
-  AstNode eval(Environment env) { 
-    return this;
-  }
-
-  double getValue() {
-    return this.VALUE;
-  }
+  AstNode eval(Environment env) { return this; }
 
   @Override
   public boolean equals(Object o) {
-    if (!(o instanceof NumNode)) { return false; }
-    else { return this.VALUE == ((NumNode) o).VALUE; }
+    if (!(o instanceof LiteralNode)) { return false; } 
+    else { return this.VALUE.equals(((LiteralNode<?>) o).VALUE); }
   }
 
   @Override
-  public int hashCode() {
-    return Objects.hash(this.VALUE);
-  }
+  public int hashCode() { return Objects.hashCode(this.VALUE); }
 
   @Override
-  public String toString() { 
-    return Double.toString(this.VALUE); 
-  }
+  public String toString() { return this.VALUE.toString(); }
+
+  T getValue() { return this.VALUE; }
 }
 \end{lstlisting}
 
-%\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
-final class BoolNode extends AstNode {
+final class NumNode extends LiteralNode<Double> {
 
-  private final boolean VALUE;
+  NumNode(double value) { super(value); }
 
-  BoolNode(String value) {
-    super();
-    this.VALUE = Boolean.parseBoolean(value);
-  }
-
-  BoolNode(boolean value) { 
-    this(Boolean.toString(value)); 
-  }
-
-  @Override
-  AstNode eval(Environment env) { 
-    return this; 
-  }
-  
-  boolean getValue() {
-    return this.VALUE;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (!(o instanceof BoolNode)) { return false; }
-    else { return this.VALUE == ((BoolNode) o).VALUE; }
-  }
-  
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.VALUE);
-  }
-
-  @Override
-  public String toString() { 
-    return Boolean.toString(this.VALUE); 
-  }
+  NumNode(String value) { super(Double.parseDouble(value)); }
 }
 \end{lstlisting}
 
-The next logical step is to add operations via \ttt{PrimNode}. A primitive operator is one akin to addition, subtraction, value equality, and so forth. Primitive operators receive any number of arguments, and behavior of which is handled as a case analysis of the \ttt{eval} method. 
+% \newpage
+\begin{lstlisting}[language=MyJava]
+final class BoolNode extends LiteralNode<Boolean> {
 
-Though, evaluating a primitive operation is not as simple as applying the operator to its arguments. Consider the following code segment, where we have the primitive operation \ttt{+} applied to two more primitive operations `\ttt{*}' and `\ttt{-}.' We see that it is impossible to directly apply the plus operation to the two primitives, because addition only works over \ttt{NumNode} values. So, when applying any primitive operation, we must first recursively evaluate its children nodes, i.e., the arguments, and only then apply the operation. The list of arguments is converted into a stream, where we map the \ttt{eval} method over each element. Afterwards, we write the aforementioned case analysis on the operation. For addition, we sum all the values of the children notes. Even though each node is an \ttt{AstNode}, we can safely cast them to \ttt{NumNode} because we know that the operation is semantically valid only over numbers (the same logic applies to the remaining arithmetic operators).
+  BoolNode(boolean value) { super(value); }
 
+  BoolNode(String value) { this(Boolean.parseBoolean(value)); }
+}
+\end{lstlisting}
+
+The next logical step is to add primitive operations via \ttt{PrimNode}. 
+A primitive operator is an operation akin to addition, subtraction, value equality, and so forth. 
+Primitive operators receive any number of arguments, and the behavior of which is handled as a case analysis of the \ttt{eval} method. 
+
+Though, evaluating a primitive operation is not as simple as applying the operator to its arguments. 
+Consider the following code segment, where we have the primitive operation \ttt{+} applied to two more primitive operations `\ttt{*}' and `\ttt{-}.' 
+We see that it is impossible to directly apply the plus operation to the two primitives, because addition only works over \ttt{NumNode} values and not \ttt{AstNode} instances. 
+So, when applying a primitive operation, we must first recursively evaluate its children nodes, i.e., the arguments. 
+The list of arguments is converted into a stream, where we map the \ttt{eval} method over each element. 
+Afterwards, we write the aforementioned case analysis on the operation. 
+For the addition operator, we sum all the values of the children nodes. 
+Even though each node is definitionally an \ttt{AstNode}, we can safely cast them to \ttt{NumNode} because we know that the operation is semantically valid only over numbers (the same logic applies to other such primitive operators).
+
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -626,6 +546,10 @@ class AstTest {
                            new NumNode(25), 
                            new NumNode(17)).eval());
       () -> assertEquals(new NumNode(42),
+                          new PrimNode("-", 
+                           new NumNode(97), 
+                           new NumNode(55)).eval());                         
+      () -> assertEquals(new NumNode(42),
                           new PrimNode("*", 
                            new NumNode(6), 
                            new NumNode(1), 
@@ -636,11 +560,22 @@ class AstTest {
                             new NumNode(5),
                             new NumNode(37)),
                             new NumNode(42)).eval())):
+      () -> assertEquals(new NumNode(42),
+                          new PrimNode("+",
+                           new PrimNode("*",
+                            new NumNode(2), 
+                             new PrimNode("-",
+                              new NumNode(57),
+                              new NumNode(23))),
+                            new PrimNode("-",
+                             new NumNode(4),
+                             new NumNode(30))));           
   }
 }
 \end{lstlisting}
 
-%\enlargethispage{5\baselineskip}
+% \newpage %ugh
+% \enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -660,11 +595,10 @@ final class PrimNode extends AstNode {
    */
   @Override
   AstNode eval(Environment env) {
-    String op = this.OP;
     List<AstNode> operands = this.getChildren().stream()
                                                .map(n -> n.eval(env))
                                                .toList();
-    switch (op) {
+    switch (this.OP) {
       case "+": return this.primPlus(operands, env);
       case "-": return this.primMinus(operands, env);
       case "*": return this.primProduct(operands, env);
@@ -675,7 +609,7 @@ final class PrimNode extends AstNode {
 
   @Override
   public String toString() {
-    return String.format("(%s %s)",this.OP,this.getChildren().toString());
+    return String.format("(%s %s)",this.OP, this.getChildren().toString());
   }
 
   private AstNode primPlus(List<AstNode> args, Environment env) {
@@ -743,8 +677,8 @@ The \emph{scope of a variable} refers to its lifetime.
 Consider the following program in our language. Initially, the program has no variable bindings. 
 After encountering the \ttt{let}, we enter a scope that binds the variable identifier~$x$ to~$5$. 
 The body of this \ttt{let} is, therefore, the \emph{scope} of~$x$. 
-Inside this body, we encounter yet another variable, namely $y$, which binds $y$ to $10$. 
-The body of this \ttt{let} is the scope of $y$. Outside the scope of the body, $y$ is non-existent.
+Inside this body, we encounter yet another variable, namely~$y$, which binds~$y$ to~$10$. 
+The body of this \ttt{let} is the scope of~$y$. Outside the scope of the body,~$y$ is non-existent.
 \begin{verbnobox}[\small]
 (let ([x 5])
   (let ([y 10])
@@ -768,6 +702,7 @@ Environments, accordingly, contain two instance variables: a \ttt{Map<String, As
 
 The \ttt{lookup} method attempts to find a binding for the given variable identifier using the aforementioned approach. The \ttt{extend} method instantiates a new environment, whose parent is the current existing environment. This newly-instantiated environment, importantly, contains a new variable binding. Remember that the environment is a functional data structure, meaning that it is immutable.
 
+% \enlargethispage{-8\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -782,12 +717,12 @@ class EnvironmentTester {
     assertAll(
       () -> assertEquals(new NumNode(5), e2.lookup("x")),
       () -> assertEquals(new NumNode(6), e2.lookup("y")),
-      () -> assertEquals(null, e2.lookup("z")),
-      () -> assertEquals(null, e2.lookup("x")));
+      () -> assertEquals(null, e2.lookup("z")));
   }
 }
 \end{lstlisting}
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.Map;
@@ -797,15 +732,12 @@ final class Environment {
   private final Map<String, AstNode> ENV;
   private final Environment PARENT;
 
-  Environment() { 
-    this.ENV = new HashMap<>(); 
-    this.PARENT = null; 
-  }
-
   Environment(Environment parent) { 
     this.ENV = new HashMap<>(); 
     this.PARENT = parent; 
   }
+
+  Environment() { this(null); }
 
   AstNode lookup(String id) {
     if (this.ENV.containsKey(id)) { return this.ENV.get(id); }
@@ -858,6 +790,7 @@ class AstTest {
 }
 \end{lstlisting}
 
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 final class VarNode extends AstNode {
 
@@ -903,9 +836,10 @@ final class LetNode extends AstNode {
   }
 
   /**
-   * Interpret a let statement. A new environment is introduced 
-   * in which the let body is evaluated.
-   * @param env - The environment in which to interpret the let binding.
+   * Interprets a let statement. The body is evaluated in the extended env.
+   * The extended environment contains the binding introduced by the ID.
+   * The identifier's binding expression "exp" is evaluated in "env".
+   * @param env - The environment to use for the let.
    * @return The result of the let statement.
    */
   @Override
@@ -924,10 +858,7 @@ final class LetNode extends AstNode {
   public String toString() {
     AstNode e = this.getChildren().get(0);
     AstNode b = this.getChildren().get(1);
-    return String.format("(let ([%s %s]) %s)", 
-                          this.ID, 
-                          e.toString(), 
-                          b.toString());
+    return String.format("(let ([%s %s]) %s)", this.ID, e, b);
   }
 }
 \end{lstlisting}
@@ -937,7 +868,7 @@ We will store each test in the \ttt{InterpTester} class, which polymorphically e
 All examples are initialized with an empty environment, because there are no (locally-declared) variable bindings at the start of a program. 
 Unfortunately, we still have to write the programs as a series of compositional abstract syntax trees, but the problems of lexing and parsing raw string input into an abstract syntax tree are reserved for another time (or perhaps a separate course altogether). 
 
-%\enlargethispage{2\baselineskip}
+\enlargethispage{-9\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

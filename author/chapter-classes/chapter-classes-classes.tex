@@ -132,7 +132,6 @@ We should write some tests to ensure that our \ttt{Point} class is working as ex
 We note that this may seem redundant for such a simple class, and the fact that the accessor methods do nothing more than retrieve instance variable values, but it is a good habit for beginning object-oriented programmers.
 
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
 class PointTester {
@@ -166,10 +165,10 @@ class Point {
 \end{lstlisting}
 
 Testing the \ttt{toString} method provides more interesting results, since it requires us to not only override the default implementation of \ttt{toString}, but it also ensures that our constructor correctly initializes the instance variables. 
-Because we will refer to~$p$ across several tester methods, we can declare it as an instance variable of our \ttt{PointTester} class so as to reduce redundant object instantiation.
+%Because we will refer to~$p$ across several tester methods, we can declare it as an instance variable of our \ttt{PointTester} class so as to reduce redundant object instantiation.
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
 class PointTester {
@@ -222,8 +221,7 @@ import static Assertions.assertEquals;
 
 class PointTester {
 
-  private static final double DELTA = 0.01;
-
+  private final double DELTA = 0.01;
   private final Point P1 = new Point(3, 4);
   private final Point P2 = new Point(6, 8);
   private final Point P3 = new Point(0, 0);
@@ -238,6 +236,7 @@ class PointTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Point {
   // ... previous code not shown.
@@ -298,7 +297,6 @@ import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.OptionalDouble;
 
 class PointTester {
@@ -306,11 +304,10 @@ class PointTester {
   @Test
   void testAvgDist() {
     List<Point> lop1 = List.of();
-    List<Point> lop2 = List.of(
-            new Point(4, 0), new Point(0, 4),
-            new Point(-4, 0), new Point(0, -4),
-            new Point(2, 2), new Point(-2, 2),
-            new Point(-2, -2), new Point(2, -2));
+    List<Point> lop2 = List.of(new Point(4, 0), new Point(0, 4),
+                               new Point(-4, 0), new Point(0, -4),
+                               new Point(2, 2), new Point(-2, 2),
+                               new Point(-2, -2), new Point(2, -2));
     assertAll(
       () -> assertEquals(OptionalDouble.empty(), Point.avgDist(lop1)),
       () -> assertEquals(3.414, Point.avgDist(lop2).get(), 0.01));
@@ -348,6 +345,7 @@ Let's also add a parameter that specifies a maximum radius.}
 Because the \ttt{random} method generates a random point, we cannot reasonably write a test that asserts the exact location of the point without prior knowledge of the random seed. 
 Instead, we can write a test that asserts whether the point is within a certain radius of the origin. 
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertTrue;
@@ -396,9 +394,8 @@ Since counting instances is a property of the \ttt{Point} class, rather than an 
 To remain consistent with our recurring theme of encapsulation, \ttt{count} will be declared as \ttt{private}, and we will design a static method \ttt{getCount} to retrieve the number of instances, which is invoked on the class.\footnote{It is also possible to invoke a static method on an instance of the class, but it is considered bad practice and unnecessary.} 
 When testing, we need to be careful to only instantiate instances of \ttt{Point} when we are ready to check the status of \ttt{count}, since the static \ttt{count} variable is updated inside the constructor.
 
-%\enlargethispage{2\baselineskip}
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
 class PointTester {
@@ -413,8 +410,7 @@ class PointTester {
     Point p3 = new Point(0, 0);
     assertEquals(3, Point.getCount());
 
-    // Even though we lose reference to p, 
-    // the static varible still increments!
+    // Even though we lose reference to p, the static varible still increments!
     for (int i = 0; i < 10; i++) {
       Point p = new Point();
     }
@@ -431,9 +427,15 @@ class Point {
   private final int X;
   private final int Y;
 
-  Point(int x, int y) { this.X = x; this.Y = y; count++; }
+  Point(int x, int y) { 
+    this.X = x; 
+    this.Y = y; 
+    count++; 
+  }
 
-  static int getCount() { return count; }
+  static int getCount() { 
+    return count; 
+  }
 }
 \end{lstlisting}
 
@@ -495,13 +497,14 @@ Doing so demonstrates a glaring flaw: the set appears to have added both \ttt{Po
 The reason is incredibly subtle and easy to miss: the \ttt{Object} class invariant states that, if two objects are equal according to \ttt{equals}, then their hash codes must also be equal. 
 The \emph{hash code}\index{hash code} of an object is an integer used for quick access/lookup in hashable data structures such as \ttt{HashSet} and \ttt{HashMap}. 
 Indeed, the problem is that we forgot to override \ttt{hashCode} after overriding the \ttt{equals} method in the \ttt{Point} class. 
-\Citep{effectivejava} states, as a principle, that whenever we override \ttt{equals}, we should accompanyingly override the \ttt{hashCode} implementation. 
+\Citet{effectivejava} states, as a principle, that whenever we override \ttt{equals}, we should accompanyingly override the \ttt{hashCode} implementation. 
 
 Now, you might wonder: ``How can I hash (compute the hash code of) an object?'' 
 Fortunately Java has a method in the \ttt{Objects} class called \ttt{hash}, which receives any number of arguments and runs them through a hashing algorithm, thereby returning the hash of the arguments. 
 When overriding \ttt{hashCode}, we should include all instance variables of the object to designate that all of the properties affect the object's hash code. 
 After fixing the issue, we see that our \ttt{HashSet} now correctly contains only one of the \ttt{Point} objects that we add.
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertTrue;
 
@@ -553,9 +556,8 @@ class PointTester {
                               new Point(2, 3), new Point(4, 3),
                               new Point(1, 1), new Point(-6, -10),
                               new Point(-23, -23), new Point(1, 0));
-    List<Point> lopRes = List.of(new Point(5, 10), new Point(2, 3),
-                                 new Point(4, 3), new Point(-6, -10),
-                                 new Point(1, 0));
+    List<Point> lopRes = List.of(new Point(5, 10), new Point(2, 3), new Point(4, 3),
+                                 new Point(-6, -10), `new Point(1, 0));
     assertAll(
       () -> assertEquals(List.of(), Point.removeLinearPoints(List.of())),
       () -> assertEquals(lopRes, Point.removeLinearPoints(lop)));
@@ -563,6 +565,7 @@ class PointTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -582,7 +585,7 @@ class Point {
 }
 \end{lstlisting}
 
-\myexample{Suppose that we're writing a program that keeps track of orders for a local pizzeria.}'
+\myexample{Suppose that we're writing a program that keeps track of orders for a local pizzeria.}
 Let's design the \ttt{PizzaOrder} class, which stores a \ttt{Map<String, Integer>} as an instance variable.
 The map associates toppings (as strings) to their respective quantities on the pizza order. 
 Toppings can be \ttt{"Pepperoni"}, \ttt{"Onion"}, \ttt{"Pineapple"}, or \ttt{"Anchovie"}.
@@ -595,6 +598,7 @@ Finally, we'll design a method, \ttt{Optional<Integer> getToppingCount(String s)
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+
 import java.util.Optional;
 
 class PizzaOrderTester {
@@ -613,6 +617,7 @@ class PizzaOrderTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -663,6 +668,7 @@ The notion of \ttt{Suit} being an instance variable of \ttt{Card}, and only exis
 Lastly, we will provide a method that returns an \ttt{Iterator<Suit>} over the four suit possibilities to make our lives easier when designing the \ttt{Deck} class. 
 The method should be static, so it is accessible through the class and not an instance.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Suit {
 
@@ -682,7 +688,9 @@ class Suit {
   }
 
   @Override
-  public String toString() { return this.S_VAL; }
+  public String toString() { 
+    return this.S_VAL; 
+  }
 }
 \end{lstlisting}
 
@@ -707,6 +715,7 @@ class CardTester {
 }
 \end{lstlisting}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Card {
 
@@ -720,7 +729,9 @@ class Card {
     return String.format("%d of %s", this.VAL, this.SUIT); 
   }
 
-  int getValue() { return this.VAL; } 
+  int getValue() { 
+    return this.VAL; 
+  } 
 }
 \end{lstlisting}
 
@@ -774,7 +785,7 @@ class DeckTester {
 }
 \end{lstlisting}
 
-%\enlargethispage{6\baselineskip}
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -795,19 +806,25 @@ class Deck {
   * @return the top-most card in the deck, or null if the deck is empty.
   */
   Card drawCard() {
-    return this.CARDS.isEmpty() ? null : this.CARDS.remove(this.CARDS.size() - 1);
+    if (this.CARDS.isEmpty()) {
+      return null;
+    } else {
+      return this.CARDS.remove(this.CARDS.size() - 1);
+    }
   }
 
   /**
    * Determines if the deck is empty.
    * @return true if the deck contains no cards, and false otherwise.
    */
-  boolean isEmpty() { return this.CARDS.isEmpty(); }
+  boolean isEmpty() { 
+    return this.CARDS.isEmpty(); 
+  }
 
   /**
    * Instantiates the deck to contain all 52 cards.
    * Note that the deck contains cards in-order by suit. There are 
-   * no face cards in the deck, i.e., no Jack, Queen, King, nor ace.
+   * no face cards in the deck, i.e., no Jack, Queen, King, nor Ace.
    * All cards have a value between 1 and 10.
    */
   private void populateDeck() {
@@ -825,6 +842,7 @@ class Deck {
 }
 \end{lstlisting}
 
+\newpage % ugh
 Hopefully, the \ttt{populateDeck} method is intuitive and not intimidating. 
 All we do is create fifty two cards, thirteen of which are of the same suit, and add them to the deck.
 We use the \ttt{Math.min} method to ensure that the value of the card is at most ten, since we do not have ``King,'' ``Queen,'' or ``Jack'' cards. 
@@ -887,7 +905,7 @@ We will not write any tests for this class, since it interacts with the user thr
 It should be noted that this version of ``twenty-one'' only has the objective of getting as close as possible to a hand containing cards with a value that sums to twenty one, compared to a more traditional card game where multiple players exist, with a dealer to distribute cards. 
 As exercises, there are many ways to enhance the game, including adding a ``high score'' board to keep track of previous game outcomes, introducing CPU players to automatically poll cards from the deck to beat the main player, or even adding more human players through standard input/output iteractions. 
 
-%\enlargethispage{3\baselineskip}
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 
@@ -919,7 +937,7 @@ class TwentyOne {
 
       // While the player has not "busted", 
       // ask them to draw a card or stand.
-      while (this.PLAYER.getScore() <= this.MAX_SCORE) {
+      while (this.PLAYER.getScore() <= MAX_SCORE) {
         System.out.println(this.PLAYER);
         System.out.println("Do you want to draw? (Y/n)");
         String resp = in.nextLine();
@@ -929,21 +947,16 @@ class TwentyOne {
 
       // Print the final results of the player.
       System.out.println(this.PLAYER);
-      if (this.PLAYER.getScore() > this.MAX_SCORE) {
+      if (this.PLAYER.getScore() > MAX_SCORE) {
         System.out.println("You lose!");
       } else {
-        System.out.println("You did not go over!");
+        System.out.printf("You did not go over %d!", MAX_SCORE);
       }
 
-      // Determine if we're still playing.
       System.out.println("Do you want to continue playing?");
       String resp = in.nextLine();
       continuePlaying = resp.equals("Y");
     }
-  }
-
-  public static void main(String[] args) {
-    new TwentyOne().playGame();
   }
 }
 \end{lstlisting}
@@ -1067,12 +1080,14 @@ class Book {
 }
 \end{lstlisting}
 
+\newpage %ugh
 With these two classes complete, let's begin to think about the \ttt{Library} class. 
 Let's say that it stores an alphabetized \ttt{Map<Book, Integer>} of book instances to the number of copies that are not checked out. 
 We want to be able to add books, check books out, and determine if the book is in the library.
 So, let's design the \ttt{void addBook(Book b, int qty)}, \ttt{Book checkout(String title)}, \ttt{int getQuantity(String title)}, and \ttt{boolean containsBook(String title)} methods.
 The tests will reuse the \ttt{Author} and \ttt{Book} declarations from the previous test suite.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1169,7 +1184,9 @@ class BoardPosition {
     this.CH = ch;
   }
 
-  char getChar() { return this.CH; }
+  char getChar() { 
+    return this.CH; 
+  }
 }
 \end{lstlisting}
 
@@ -1182,16 +1199,16 @@ To convert between the two, we use the formula \ttt{rows * cols + cols}.
 
 Let's also design the \ttt{Map<Integer, List<Character>> getPredecessors()} method, which returns a map of the logical indices that precede each character in the board.
 That is, each key in the map is an index/position into the board, and its value is the list of characters that precede the character at that index on the board.
-For example, if the board contains the characters \ttt{'a', 'e', 'f', 'b', 'd', 'g', 'c'}, then the map should contain the following key-value pairs:
+For example, if the board contains the characters \ttt{\q{}a\q{}, \q{}e\q{}, \q{}f\q{}, \q{}b\q{}, \q{}d\q{}, \q{}g\q{}, \q{}c\q{}}, then the map should contain the following key-value pairs:
 
 \begin{itemize}
   \item \ttt{0} $\rightarrow$ \ttt{[]}
-  \item \ttt{1} $\rightarrow$ \ttt{['a']}
-  \item \ttt{2} $\rightarrow$ \ttt{['a']}
-  \item \ttt{3} $\rightarrow$ \ttt{['a', 'e']}
-  \item \ttt{4} $\rightarrow$ \ttt{['a', 'e']}
-  \item \ttt{5} $\rightarrow$ \ttt{['a', 'e', 'f']}
-  \item \ttt{6} $\rightarrow$ \ttt{['a', 'e', 'f']}
+  \item \ttt{1} $\rightarrow$ \ttt{[\q{}a\q{}]}
+  \item \ttt{2} $\rightarrow$ \ttt{[\q{}a\q{}]}
+  \item \ttt{3} $\rightarrow$ \ttt{[\q{}a\q{}, \q{}e\q{}]}
+  \item \ttt{4} $\rightarrow$ \ttt{[\q{}a\q{}, \q{}e\q{}]}
+  \item \ttt{5} $\rightarrow$ \ttt{[\q{}a\q{}, \q{}e\q{}, \q{}f\q{}]}
+  \item \ttt{6} $\rightarrow$ \ttt{[\q{}a\q{}, \q{}e\q{}, \q{}f\q{}]}
 \end{itemize}
 
 We note that, while this example is not particularly useful in practice, it is a good exercise in traversing a two-dimensional array and converting between one-dimensional and two-dimensional arrays.
@@ -1231,6 +1248,7 @@ class BoardTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1388,19 +1406,19 @@ class RationalTester {
   void testRationalAdd() {
     assertAll (
       () -> assertEquals("14/9", 
-              new Rational(2, 3).add(new Rational(7, 9)).toString()),
+                         new Rational(2, 3).add(new Rational(7, 9)).toString()),
       () -> assertEquals("5/6", 
-              new Rational(1, 2).add(new Rational(1, 3)).toString()),
+                         new Rational(1, 2).add(new Rational(1, 3)).toString()),
       () -> assertEquals("1/3", 
-              new Rational(1, 4).add(new Rational(1, 12)).toString()),
+                         new Rational(1, 4).add(new Rational(1, 12)).toString()),
       () -> assertEquals("1/4", 
-              new Rational(1, 8).add(new Rational(1, 8)).toString()),
+                         new Rational(1, 8).add(new Rational(1, 8)).toString()),
       () -> assertEquals("1/8", 
-              new Rational(1, 16).add(new Rational(1, 16)).toString()),
+                         new Rational(1, 16).add(new Rational(1, 16)).toString()),
       () -> assertEquals("1/16", 
-              new Rational(1, 32).add(new Rational(1, 32)).toString()),
+                         new Rational(1, 32).add(new Rational(1, 32)).toString()),
       () -> assertEquals("2/1", 
-              new Rational(32, 32).add(new Rational(32, 32)).toString()));
+                         new Rational(32, 32).add(new Rational(32, 32)).toString()));
   }
 }
 \end{lstlisting}
@@ -1427,10 +1445,11 @@ Due to its correspondence to addition, we leave \ttt{subtraction} as an exercise
 We can now implement multiplication, which is even simpler than addition; all that is needed is to multiply the numerators and denominators together. 
 We also leave \ttt{division} as an exercise to the reader. 
 We encourage the reader to write methods for comparing rationals for equality, as well as greater than/less than. 
-Plus, we could extend this system to support \ttt{BigInteger} values for the numerator and denominator, which would allow us to represent arbitrarily large rational numbers. 
+
+Plus, we could extend this system to support \ttt{BigInteger} values for the numerator and denominator (rather than \ttt{long} types), which would allow us to represent arbitrarily large rational numbers. 
 This, in turn, would require updating all methods to use \ttt{BigInteger} arithmetic, which is a good exercise in and of itself.
 
-%\enlargethispage{3\baselineskip}
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1441,17 +1460,17 @@ class RationalTester {
   void testRationalMultiply() {
     assertAll (
       () -> assertEquals("14/27", 
-             new Rational(2, 3).multiply(new Rational(7, 9)).toString()),
+              new Rational(2, 3).multiply(new Rational(7, 9)).toString()),
       () -> assertEquals("1/6", 
-             new Rational(1, 2).multiply(new Rational(1, 3)).toString()),
+              new Rational(1, 2).multiply(new Rational(1, 3)).toString()),
       () -> assertEquals("1/48", 
-             new Rational(1, 4).multiply(new Rational(1, 12)).toString()),
+              new Rational(1, 4).multiply(new Rational(1, 12)).toString()),
       () -> assertEquals("1/64", 
-             new Rational(1, 8).multiply(new Rational(1, 8)).toString()),
+              new Rational(1, 8).multiply(new Rational(1, 8)).toString()),
       () -> assertEquals("1/25", 
-             new Rational(1, 5).multiply(new Rational(1, 5)).toString()),
+              new Rational(1, 5).multiply(new Rational(1, 5)).toString()),
       () -> assertEquals("1/1", 
-             new Rational(1, 1).multiply(new Rational(1, 1)).toString()));
+              new Rational(1, 1).multiply(new Rational(1, 1)).toString()));
   }
 }
 \end{lstlisting}
@@ -1535,8 +1554,7 @@ class StackFrameTester {
       () -> assertEquals(new BigInteger("120"), 
                          fact(new BigInteger("5"))),
       () -> assertEquals(new BigInteger("3628800"), 
-                         fact(new BigInteger("100"))),
-    );
+                         fact(new BigInteger("100"))));
   }
 
   @Test
