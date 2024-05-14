@@ -244,7 +244,9 @@ class PrintWriterExample {
       pw.println(false);
       pw.printf("This is a %s string with %c and %d and %f and %b\n", 
                 "formatted", '&', 42, Math.E, true);
-    } catch (IOException ex) { ex.printStackTrace(); }
+    } catch (IOException ex) { 
+      ex.printStackTrace(); 
+    }
   }
 }
 \end{lstlisting}
@@ -273,6 +275,7 @@ Instead, it is a ``flag,'' of sorts, that informs the compiler that the class ca
 The \ttt{ObjectStreamExample} class defines the private and static \ttt{Player} class as described above. 
 Should we open the \ttt{player.out} file, we see that it contains incomprehensible data; the data within is intended to be read only by a program.
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.io.Serializable;
 
@@ -465,6 +468,7 @@ Let's now write a few more meaningful programs.
 Because our input file has only integers, we can use the \ttt{Scanner} class for reading the data and \ttt{PrintWriter} to output those even integers. 
 To make the program a bit more interesting, we will read the input file from the terminal arguments, and output the even integers to a file whose name is the same as the input file, but instead with the \ttt{.out} extension.
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 import java.util.Scanner;
@@ -564,6 +568,8 @@ java ConcatenateFiles file1.txt file2.txt file3.txt output-file.txt
 
 Then the program should output a file \ttt{output-file.txt} that contains the contents of \ttt{file1.txt}, \ttt{file2.txt}, and \ttt{file3.txt}, in that order. 
 
+\newpage %ugh
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 import java.util.Arrays;
@@ -596,39 +602,38 @@ class ConcatenateFiles {
    * @param outFile - name of output file.
    */
   private static void concatenate(String[] files, String outFile) {
-    try (BufferedWriter bw = new BufferedWriter(
-                              new FileWriter(outFile))) {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(outFile))) {
       for (String file : files) {
-        try (BufferedReader br = new BufferedReader(
-                                  new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
           String line = null;
           while ((line = br.readLine()) != null) { 
             bw.write(line + "\n"); 
           }
         }
       }
-    } catch (IOException ex) { ex.printStackTrace(); }
+    } catch (IOException ex) { 
+      ex.printStackTrace(); 
+    }
   }
 
   public static void main(String[] args) {
     if (args.length < 3) {
       System.err.println("usage: java ConcatenateFiles <i-files> <o-file>");
       System.exit(1);
-    }
-
-    String[] inFiles = Arrays.copyOfRange(args, 0, args.length - 1);
-    String outFile = args[args.length - 1];
-
-    if (!sameExtension(inFiles)) {
-      System.err.println("ConcatenateFiles: bad extensions");
-      System.exit(1);
     } else {
-      concatenate(inFiles, outFile);
+      String[] inFiles = Arrays.copyOfRange(args, 0, args.length - 1);
+      String outFile = args[args.length - 1];
+
+      if (!sameExtension(inFiles)) {
+        System.err.println("ConcatenateFiles: bad extensions");
+        System.exit(1);
+      } else {
+        concatenate(inFiles, outFile);
+      }
     }
   }
 }
 \end{lstlisting}
-
 
 
 % \myexample{Our last example is a recreation of the Unix ``ls'' command, which lists all files and directories from a given path. We can make use of the methods provided by the \ttt{File} class in this example. In particular, we want to write a (untestable) program that prints the file permissions, last-modified dates, owners, byte-size, and names of all files and directories in a given directory. Note the similarity to the ``ls'' command when the ``-la'' flag is passed.}
@@ -759,9 +764,10 @@ class TemperatureComputer {
         String[] arr = x.split(";");
         String location = arr[0];
         double temp = Double.parseDouble(arr[1]);
-        Measurement ms = mMap.putIfAbsent(location, 
-                                          new Measurement(temp));
-        if (ms != null) { ms.add(temp); }
+        Measurement ms = mMap.putIfAbsent(location, new Measurement(temp));
+        if (ms != null) { 
+          ms.add(temp); 
+        }
       });
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -894,6 +900,7 @@ class SudokuSolver {
 
 From this we can begin to work on the recursive backtracking algorithm, using the outline we provided earlier. 
 
+\enlargethispage{-8\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.nio.file.*;
@@ -927,15 +934,21 @@ class SudokuSolver {
    *         placement is invalid or leads to a "dead end".
    */ 
   private boolean solve(int r, int c, int[][] sol) {
-    if (r == N) { return true; }
-    else if (c == N) { return solve(r + 1, 0, sol); }
-    else if (this.board[r][c] != 0) { return solve(r, c + 1, sol); }
-    else {
+    if (r == N) { 
+      return true; 
+    } else if (c == N) { 
+      return solve(r + 1, 0, sol); 
+    } else if (this.board[r][c] != 0) { 
+      return solve(r, c + 1, sol); 
+    } else {
       for (int i = 1; i <= N; i++) {
         if (isValid(r, c, i)) {
           this.sol[r][c] = i;
-          if (solve(r, c + 1, sol)) { return true; }
-          this.sol[r][c] = 0;
+          if (solve(r, c + 1, sol)) { 
+            return true; 
+          } else {
+            this.sol[r][c] = 0;
+          }
         }
       }
     }
@@ -948,6 +961,7 @@ Finally, the \ttt{output} method is straightforward.
 We use a \ttt{PrintWriter} to write the solution to a file. 
 If there is no solution (meaning the solution instance variable is set to \ttt{null}), then we throw an \ttt{IllegalStateException}.
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.nio.file.*;

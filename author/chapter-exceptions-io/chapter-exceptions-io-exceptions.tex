@@ -147,12 +147,29 @@ class IndexOutOfBoundsExceptionExampleTester {
 Another uncomfortably common unchecked exception that many Java programmers encounter is the \ttt{NullPointerException}. 
 The \ttt{NullPointerException} most often discovered when referencing an object that has yet to be instantiated, or was accidentally never instantiated at all.
 
-\myexample{Casting an object of type~$\tau_1$ to an incompatible type~$\tau_2$ results in an unchecked \ttt{ClassCastException}. 
-By ``an incompatible type,'' we mean to say that the object is either not an instance of the~$\tau_2$ type, or $\tau_1$ and $tau_2$ are not in a superclass/subclass relationship. 
+\myexample{Casting an object of type~$\tau_1$ to an incompatible type~$\tau_2$ results in an unchecked \ttt{ClassCastException}.}
+By ``an incompatible type,'' we mean to say that the object is either not an instance of the~$\tau_2$ type, or $\tau_1$ and $\tau_2$ are not in a \emph{discernible} superclass/subclass relationship.\footnote{We elaborate on discernibility below.}
 Primitive datatypes are not subject to this exception, as they are not objects.\footnote{No pun intended.} 
-All primitive datatypes, minus booleans, can be casted into one another. E.g., \ttt{int x = (int) `A';} is valid, as is \ttt{char c = (char) 65;}. 
-On the other hand, \ttt{String x = (String) new Integer(5);} is not valid, as \ttt{Integer} is not a subclass of \ttt{String} or vice-versa. 
-We can treat \ttt{List<T>} as an \ttt{AbstractList<T>} by performing a cast, e.g., \ttt{AbstractList<T> x = (AbstractList<T>) ls;}, where \ttt{ls} is defined as being of type \ttt{List<T>}.}
+All primitive datatypes, minus booleans, can be casted into one another. For example, the statement \ttt{int x = (int) \q{}A\q{};} is valid, as is \ttt{char c = (char) 65;}. 
+On the other hand,
+
+\begin{small}
+\begin{verbatim}
+String x = (String) new Integer(5);
+\end{verbatim}
+\end{small} 
+
+is an invalid cast. Importantly, the cast operation (or this kind) results in a compile-time error instead of a runtime exception, because \ttt{Integer} and \ttt{String} share no discernible inheritance relationship, i.e., \ttt{Integer} is not a superclass/subclass of \ttt{String}, nor vice-versa.
+
+We can, however, treat \ttt{List<T>} as an \ttt{AbstractList<T>} by performing a cast, such as
+
+\begin{small}
+\begin{verbatim}
+AbstractList<T> x = (AbstractList<T>) ls;
+\end{verbatim}
+\end{small}
+
+where \ttt{ls} is defined as being of type \ttt{List<T>}, because the \ttt{AbstractList} class implements the \ttt{List} interface.
 
 \myexample{Sometimes, a program can reach a state where continuing is impossible or illogical.} 
 In these circumstances, we can throw an \ttt{IllegalStateException}, designating that the program has reached a point that it should not under normal pretenses. 
@@ -173,7 +190,7 @@ We will discuss checked exceptions in the context of I/O operations in the follo
 We can define our own exceptions in terms of other exceptions. 
 Exceptions are nothing more than class definitions, which may be extended/inherited. 
 
-\myexample{Consider defining the \ttt{BadStringInputException} class, which inherits from \ttt{RuntimeException}}. 
+\myexample{Consider defining the \ttt{BadStringInputException} class, which inherits from \ttt{RuntimeException}.} 
 We might define \ttt{BadStringInputException} as an exception that Java throws when, after reading the user's input, we find that the input is not a ``alpha string,'' i.e., a string that contains only letters. 
 Let's define a constructor that takes a string as an parameter, serving as the exception message.\footnote{We note that, broadly speaking, creating new types of exceptions is rarely beneficial, because Java provides a plethora of exception definitions that cover most use cases.}
 
