@@ -1,6 +1,6 @@
 \section{Type Parameters}
 
-\emph{Generics}\index{generics} as a concept go far back in programming history, generally reknown as type parameterization\index{type parameterization} or \emph{parameteric polymorphism}\emph{parameteric polymorphism}, which we briefly touched on during our discussion of how to instantiate instances of \ttt{ArrayList} from the Collections API. 
+\emph{Generics}\index{generics} as a concept go far back in programming history, generally reknown as type parameterization\index{type parameterization} or \emph{parameteric polymorphism}\index{parameteric polymorphism}, which we briefly touched on during our discussion of how to instantiate instances of \ttt{ArrayList} from the Collections API. 
 Imagine, for a moment, if Java programmers had to, by hand, design different implementation of \ttt{ArrayList} for \ttt{Integer}, \ttt{String}, \ttt{Double}, and so on for every object type. 
 Not only is this impossible (because there are a countably-infinite number of types), it is also extremely cumbersome and redundant, since the only altering parameter is the underlying element type in the data structure. 
 Before Java 5, we could only use ``generics'' via collections of type \ttt{Object}, since it is the root class object type, meaning any element could be stored in any type of collection.
@@ -89,7 +89,9 @@ class GenericSearch {
    */
   static <T> int genericSearch(List<T> t, T k) {
     for (int i = 0; i < t.size(); i++) {
-      if (t.get(i).equals(k)) { return i; }
+      if (t.get(i).equals(k)) { 
+        return i; 
+      }
     }
     return -1;
   }
@@ -105,11 +107,12 @@ We might also wish to use a lower-bound, which restricts the type parameter to a
 For example, if we want to restrict the type parameter to only types that are superclasses of \ttt{Integer}, we can use \ttt{<T super Integer>}.
 
 %\enlargethispage{1\baselineskip}
-\myexample{Let's design the \ttt{max} method, which receives a list~$t$ whose elements are of type \ttt{T}, and returns the maximum element in the list.}
+\myexample{Let's design the \ttt{T max(List<T> ls)} method, which receives a list~$t$ whose elements are of type \ttt{T}, and returns the maximum element in the list.}
 Because determining the max element of a list involves comparison-based checking, we restrict the type parameter to only types that implement \ttt{Comparable}. 
 In the previous section, we discussed that \ttt{Optional} is a container class that either holds a value or is empty.
 An exercise at the end of this section asks you to use \ttt{Optional} in designing a similar method, rather than returning \ttt{null}, as we do here.
 
+\enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -136,7 +139,6 @@ class GenericMaxTester {
 }
 \end{lstlisting}
 
-%\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparable;
 import java.util.List;
@@ -219,6 +221,7 @@ For instance, the following code specifies that the input list must only contain
 Unfortunately, the only classes that are ancestors/superclasses of \ttt{Integer} are \ttt{Number} and \ttt{Object}, which severely limits the capabilities of our list. 
 For the sake of an example, we might return a string containing the ``stringified'' elements, separated by commas, enclosed by brackets.
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

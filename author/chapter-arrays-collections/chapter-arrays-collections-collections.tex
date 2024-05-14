@@ -37,7 +37,7 @@ Designing two methods of the same name that receive different parameter types/qu
 The \ttt{makeList} method returns an array of integers instantiated to the given size, or a base size of ten elements in the method that does not receive a parameter. 
 Inside of the \ttt{makeList} method that does not receive a parameter, we invoke \ttt{makeList(10)} so as to not repeat code logic.
 
-%\enlargethispage{-3\baselineskip}
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -85,12 +85,14 @@ class DIntArrayTester {
     int[] arr1 = makeList(5);
     int[] arr2 = addToList(arr1, 20);
     int[] arr3 = addToList(arr2, 350);
-    assertArrayEquals(new int[]{20, -1, -1, -1, -1}, arr2);
-    assertArrayEquals(new int[]{20, 350, -1, -1, -1}, arr3);
+    assertAll(
+      () -> assertArrayEquals(new int[]{20, -1, -1, -1, -1}, arr2);
+      () -> assertArrayEquals(new int[]{20, 350, -1, -1, -1}, arr3));
   }
 }
 \end{lstlisting}
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -146,6 +148,7 @@ Both methods receive an index~$i$ that must be in-bounds, where in-bounds refers
 The \emph{logical indices}\index{logical index} of a list are the indices in which (real) elements exist. 
 For our purposes, these indices are from zero up until and excluding the first instance of~$-1$. We will also design a helper method to retrieve the index of the first ``free'' slot of a list, i.e., the (index of the) first occurrence of~$-1$.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DIntArray {
 
@@ -518,19 +521,18 @@ class Explode {
 }
 \end{lstlisting}
 
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Explode {
   
   /**
-   * Explodes a string into a list of its characters
-   * using tail recursion.
+   * Explodes a string into a list of its characters using tail recursion.
    * @param s - string to explode.
    * @return list of chars in string.
    */
   static List<Character> explodeTR(String s) {
     List<Character> ls = new ArrayList<>();
-    explodeTR(s, ls);
-    return ls;
+    return explodeTR(s, ls);
   }
 
   /**
@@ -648,8 +650,7 @@ class FilterQuartersTester {
 
   @Test
   void testFilterQuarters() {
-    List<String> t1 = List.of("11:37", "12:00", "18:15", 
-                              "19:25", "10:30" "9:45");
+    List<String> t1 = List.of("11:37", "12:00", "18:15", "19:25", "10:30" "9:45");
     List<String> t2 = List.of();
     assertAll(
       () -> filterQuarters(t1);
@@ -660,15 +661,15 @@ class FilterQuartersTester {
 }
 \end{lstlisting}
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
 class FilterQuarters {
 
   /**
-   * Removes all times from a list of "times." A time
-   * is a string "XX:YY" such that 0 <= XX <= 23, and 
-   * 00 <= YY <= 59; 
+   * Removes all times from a list of "times." A time is a string "XX:YY"
+   * such that 0 <= XX <= 23, and 00 <= YY <= 59; 
    * This method modifies the list in-place.
    * @param times - list of times.
    */
@@ -682,10 +683,9 @@ class FilterQuarters {
   }
 
   /**
-   * Returns whether a time is a "quarter." A quarter
-   * is either 0, 15, 30, or 45 minutes.
+   * Returns whether a time is a "quarter." A quarter is either 0, 15, 30, or 45.
    * @param t - string representing time as XX:YY, where
-   *            0 <= x <= 23, and 0 <= y <= 59.
+   *           00 <= XX <= 23, and 00 <= YY <= 59.
    * @return true if quarter; false otherwise.
    */
   private static boolean isQuarterHour(String t) {
@@ -769,6 +769,7 @@ class AirplaneTravelInformationTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -912,6 +913,7 @@ class MaxPathSumTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MaxPathSum {
 
@@ -986,6 +988,7 @@ Row~$3$ of~$L'$, therefore, becomes
   & [24]
 \end{align*}
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.ArrayList;
 import java.util.List;
@@ -1107,7 +1110,7 @@ A practical example of a stack data structure would be to implement an ``undo'' 
 An ``undo'' event resembles popping an action off this stack. 
 We illustrate this concept in Figure~\ref{fig:stackundo}.
 
-\begin{figure}[ht]
+\begin{figure}[htp!]
 \begin{center}
 \begin{tikzpicture}[
   scale=.8,
@@ -1145,12 +1148,12 @@ We illustrate this concept in Figure~\ref{fig:stackundo}.
 Remember that we cannot access arbitrary elements of the stack.
 So, for now, all we can do is traverse over the stack using a while loop until it has no elements remaining.
 That is, while the stack is non-empty, pop the top-most element, examine if it is odd and, if so, add it to our running total.
-Stacks are powerful and capable data structures, but we present this example as a means of demonstrating some operations that the Java \ttt{Stack} class provides.
+We present the following example to demonstrate some of the methods that Java's \ttt{Stack} class provides.\footnote{By providing a \ttt{List} to the \ttt{Stack} constructor, i.e., \ttt{new Stack<>(List.of(...))}, we do not need to write repeated calls to \ttt{push} on the stack object.}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-
 import java.util.Stack;
 
 class StackSumOddsTester {
@@ -1158,13 +1161,9 @@ class StackSumOddsTester {
   @Test
   void testSumOdds() {
     Stack<Integer> S1 = new Stack<>();
-    Stack<Integer> S2 = new Stack<>();
-    S2.add(5); S2.add(12); S2.add(13);
-    S2.add(24); S2.add(91); S2.add(108);
-    Stack<Integer> S3 = new Stack<>();
-    S3.add(7); S3.add(5);
-    Stack<Integer> S4 = new Stack<>();
-    S4.add(2); S4.add(100); S4.add(42);
+    Stack<Integer> S2 = new Stack<>(List.of(5, 12, 13, 24, 91, 108));
+    Stack<Integer> S3 = new Stack<>(List.of(7, 5));
+    Stack<Integer> S4 = new Stack<>(List.of(2, 100, 42));
     assertAll(
       () -> assertEquals(0, sumOdds(S1));
       () -> assertEquals(109, sumOdds(S2));
@@ -1402,6 +1401,7 @@ class PriorityQueueByP {
 
 Let us add a few elements to a priority queue with our custom comparator to exemplify the idea. To add elements, we use \ttt{.add}, and to remove the element with the highest priority, we invoke \ttt{.poll}.
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -1516,15 +1516,16 @@ class RemoveDuplicatesListTester {
   void testRemoveDuplicatesList() {
     assertAll(
       () -> assertEquals(List.of(), 
-              removeDuplicatesList(List.of())),
+                         removeDuplicatesList(List.of())),
       () -> assertEquals(List.of(1, 2, 3, 4), 
-              removeDuplicatesList(List.of(1, 1, 2, 2, 3, 3, 4, 4))),
+                         removeDuplicatesList(List.of(1, 1, 2, 2, 3, 3, 4, 4))),
       () -> assertEquals(List.of(3, 1, 4), 
-              removeDuplicatesList(List.of(3, 1, 1, 3, 4, 4, 3, 4))));
+                         removeDuplicatesList(List.of(3, 1, 1, 3, 4, 4, 3, 4))));
   }
 }
 \end{lstlisting}
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.ArrayList;
@@ -1584,6 +1585,7 @@ class CommonValuesTester {
 }
 \end{lstlisting}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.LinkedList;
@@ -1598,13 +1600,10 @@ class CommonValuesTester {
    * @param ls2 - second linked list.
    * @return list of (distinct) common values.
    */
-  static List<Integer> commonValues(LinkedList<Integer> ls1, 
-                                    LinkedList<Integer> ls2) {
+  static List<Integer> commonValues(LinkedList<Integer> ls1, LinkedList<Integer> ls2) {
     Set<Integer> set = new TreeSet<>();
     for (int x : ls1) {
-      if (ls2.contains(x)) { 
-        set.add(x); 
-      }
+      if (ls2.contains(x)) { set.add(x); }
     }
     List<Integer> newLs = new LinkedList<>();
     newLs.addAll(set);
@@ -1628,16 +1627,16 @@ class FindDupMissingTester {
   void testFindDupMissing() {
     assertAll(
       () -> assertArrayEquals(new int[]{2, 3}, 
-              findDupMissing(new int[]{1, 3, 3, 4})),
+                              findDupMissing(new int[]{1, 3, 3, 4})),
       () -> assertArrayEquals(new int[]{5, 1}, 
-              findDupMissing(new int[]{8, 1, 4, 1, 3, 2, 6, 7})),
+                              findDupMissing(new int[]{8, 1, 4, 1, 3, 2, 6, 7})),
       () -> assertArrayEquals(new int[]{6, 7}, 
-              findDupMissing(new int[]{3, 2, 7, 7, 4, 5, 1})));
+                              findDupMissing(new int[]{3, 2, 7, 7, 4, 5, 1})));
   }
 }
 \end{lstlisting}
 
-%\enlargethispage{-1\baselineskip}
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Set;
 import java.util.TreeSet;
@@ -1751,7 +1750,7 @@ class ComputeModeTester {
 }
 \end{lstlisting}
 
-%\enlargethispage{5\baselineskip}
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1762,8 +1761,7 @@ import java.util.Set;
 class ComputeMode {
 
   /**
-   * Computes the mode of a list of numbers, which is the most-frequent
-   * value, or values.
+   * Computes the mode of a list of numbers, which is the most-frequent value(s).
    * @param ls - list of numbers.
    * @return set of mode values, if they exist.
    */
@@ -1882,7 +1880,7 @@ Because we care about the insertion order, we should use a \ttt{LinkedHashMap} w
 The idea is to count the frequency of each (digit) character, then traverse over the linked map and find the first key whose (value) frequency is one. 
 Because we now understand how to combine \ttt{get} and \ttt{put} to insert and increment frequency counts, we will instead opt to use \ttt{getOrDefault}, which removes the need for the conditional.\footnote{This problem is similar to one created by \ttt{frew@mclean.com} on \ttt{codingbat.com}. Thanks!}
 
-
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1962,6 +1960,7 @@ Our priority queue comparator receives two such entries~$e$ and~$f$, and perform
 
 We know that~$K$ is \ttt{Character} and~$V$ is \ttt{Integer} representing the characters mapped to their frequencies. 
 To retrieve the key and value from an \ttt{Map.Entry} object, we use the \ttt{getKey()} and \ttt{getValue()} methods respectively. 
+In an effort to keep our code a bit more concise, we will design a private and static helper method to create a \ttt{Comparator} object using the aforementioned criteria.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -1994,16 +1993,28 @@ class NthMostFrequentChar {
    * frequent character in that string.
    * @param s - string to examine.
    * @param n - int n >= 0.
-   * @return the nth most frequent character as 
-   *         a String or null if nonexistent.
+   * @return the nth most frequent character as a String or null if nonexistent.
    */
   static String nthMostFrequentChar(String s, int n) {
     // Step 1: compute the frequencies.
     Map<Character, Integer> M = new HashMap<>();
     s.chars().forEach(c -> M.put(c, M.getOrDefault(c, 0))); 
 
-    // Step 2: build the comparator.
-    Comparator<Entry<Character, Integer>> cmp = new Comparator<>() {
+    // Step 2: populate the priority queue with entry objects. Use the comparator.
+    PriorityQueue<Map.Entry<Character, Integer>> Q = new PriorityQueue<>(getCmp());
+    M.entrySet().forEach(e -> Q.add(e));
+
+    // Step 4: poll n - 1 items from the queue.
+    while (!Q.isEmpty()) {
+      n--;
+      if (n == 0) { return String.valueOf(Q.peek().getKey()); } 
+      else { Q.poll(); }
+    }
+    return null;
+  }
+
+  private static Comparator<Entry<Character, Integer>> getCmp() {
+    return new Comparator<>() {
       @Override
       public int compare(Map.Entry<Character, Integer> e, 
                          Map.Entry<Character, Integer> f) {
@@ -2014,19 +2025,6 @@ class NthMostFrequentChar {
         }
       }
     };
-
-    // Step 3: populate the priority queue with entry objects.
-    PriorityQueue<Map.Entry<Character, Integer>> Q 
-      = new PriorityQueue<>(cmp);
-    M.entrySet().forEach(e -> Q.add(e));
-
-    // Step 4: poll n - 1 items from the queue.
-    while (!Q.isEmpty()) {
-      n--;
-      if (n == 0) { return String.valueOf(Q.peek().getKey()); } 
-      else { Q.poll(); }
-    }
-    return null;
   }
 }
 \end{lstlisting}
@@ -2093,6 +2091,7 @@ We would recommend not altering the data structure while traversing, even if it 
 \myexample{Let's now iterate over the \ttt{LinkedHashSet} using an enhanced \ttt{for} loop.} We can do so by placing the type on the left-hand side of the element declaration. 
 Our test subtracts the elements from left-to-right.
 
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -2106,9 +2105,7 @@ class EnhancedForLoopTester {
     Set<Integer> lhs = new LinkedHashSet<>();
     lhs.add(1); lhs.add(2); lhs.add(3); lhs.add(4);
     int diff = 0;
-    for (Integer e : lhs) { 
-      diff -= e; 
-    }
+    for (Integer e : lhs) { diff -= e; }
     assertEquals(-10, diff);
   }
 }
@@ -2124,10 +2121,11 @@ The solution proposed by Oracle is to instead use the \ttt{ArrayDeque} class, wh
 
 %\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
-import java.util.Stack;
-import java.util.Iterator;
-import java.util.Deque;
 import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
 
 class StackPrinter {
 
@@ -2154,7 +2152,7 @@ Let's see what happens when we create a priority queue whose comparator prioriti
 In other words, any occurrence of \ttt{"Joshua"} should come before all other strings in the priority queue, whereas any occurrence of \ttt{"Jack"} should come after all other strings in the priority queue. 
 Any strings in between are ordered naturally, i.e., via lexicographical ordering.
 
-%\enlargethispage{2\baselineskip}
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.PriorityQueue;
@@ -2223,8 +2221,6 @@ import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Collections;
 
 class MaximalMovesTester {
 
@@ -2235,14 +2231,15 @@ class MaximalMovesTester {
                          maximalMoves(List of())),
       () -> assertEquals(List.of(4, 5, 3, 2, 0, 1), 
                          maximalMoves(List.of(0, 1, 2, 3, 4, 5))),
-      () -> assertEquals(List.of(45, 60, 35, 25, 45, 25, 10, 15, 5), 
-                         maximalMoves(List.of(20, 40, 30, 25, 45, 
-                                              25, 15, 10, 5, 60, 35))));
+      () -> assertEquals(List.of(45, 60, 35, 25, 45, 25, 15, 5), 
+                         maximalMoves(List.of(20, 40, 30, 25, 45, 25, 15, 5, 60, 35))));
   }
 }
 \end{lstlisting}
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
+import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -2250,15 +2247,13 @@ class MaximalMoves {
 
   /**
    * Given a list of numbers, returns the moves made by the players
-   * @param ls - list of numbers.
+   * @param ls - list of numbers with even length.
    * @return list of moves.
    */
   static List<Integer> maximalMoves(List<Integer> ls) {
-    PriorityQueue<Integer> pq = 
-      new PriorityQueue<>(Collections.reverseOrder());
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
     pq.addAll(ls);
     List<Integer> moves = new ArrayList<>();
-    // We will assume that the list has an even number of elements.
     for (int i = 0; i < ls.size() - 1; i += 2) {
       moves.add(pq.poll());
       moves.add(pq.poll());
@@ -2432,7 +2427,7 @@ class BigIntFibStreamTester {
 }
 \end{lstlisting}
 
-%\enlargethispage{-2\baselineskip}
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.BigInteger;
@@ -2604,8 +2599,9 @@ This requires a few techniques that we have learned, but also means we need to u
 \end{enumerate}
 
 We always begin by writing a few tests. 
-The tests we design are simple, whereas the method implementation is the most complex seen thus far.
+Although the tests are simple, the method implementation is the most complex seen thus far.
 
+\enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -2660,7 +2656,7 @@ A value's ``rank'' is denoted by how many elements are larger than (or equal to)
 For example, the rank map of $\{44, 41, 23, 94, 10, 0\}$ is
 
 \begin{align*}
-  {<0 : 6>, <10 : 5>, <23 : 4>, <41 : 3>, <44 : 2>, <94 : 1>}
+  \{\textless{}0 : 6\textgreater{}, \textless{}10 : 5\textgreater{}, \textless{}23 : 4\textgreater{}, \textless{}41 : 3\textgreater{}, \textless{}44 : 2\textgreater{}, \textless{}94 : 1\textgreater{}\}
 \end{align*}
 
 Because there are~$6$ elements greater than or equal to~$0$, and so forth.
@@ -2769,7 +2765,7 @@ We can also check, prior to a retrieval, if the \ttt{Optional} contains a value 
 \ttt{Optional} is generic and works over any class type, like almost all other classes from the collections API. 
 To test the return value of a stream operation that returns an \ttt{Optional}, e.g., \ttt{max}, we instantiate an \ttt{Optional} that wraps the resulting value if it exists, or \ttt{Optional.empty()} otherwise.
 
-%\enlargethispage{1\baselineskip}
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -2788,10 +2784,10 @@ class OptionalTester {
     Optional<Integer> op1 = Optional.of(42);
     Optional<Integer> op2 = Optional.empty();
     assertAll(
-      () -> assertEquals(op1, LS1.stream().max((a,b) -> a-b)),
-      () -> assertEquals(op2, LS2.stream().max((a,b) -> a-b)),
-      () -> assertEquals(42, LS1.stream().max((a,b) -> a-b).orElse(null));
-      () -> assertNull(LS2.stream().max((a,b) -> a-b).orElse(null)));
+      () -> assertEquals(op1, LS1.stream().max((a, b) -> a - b)),
+      () -> assertEquals(op2, LS2.stream().max((a, b) -> a - b)),
+      () -> assertEquals(42, LS1.stream().max((a, b) -> a - b).orElse(null));
+      () -> assertNull(LS2.stream().max((a, b) -> a - b).orElse(null)));
   }
 }
 \end{lstlisting}

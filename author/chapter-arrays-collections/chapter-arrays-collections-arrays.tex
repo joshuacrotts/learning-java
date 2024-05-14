@@ -25,6 +25,7 @@ Accessing a negative index or an index beyond the bounds of the length results i
 So, accessing \ttt{array[-1]} or \ttt{array[6]}, for instance, crashes the program. 
 A common mistake is to access the index at the length of the array to retrieve the last element, which represents a misunderstanding of array indexing.
 
+\enlargethispage{-1\baselineskip}
 To declare an array of type~$T$, called~$A$, that stores~$N$ elements, we write the following:
 
 \begin{verbnobox}[\small]
@@ -88,6 +89,7 @@ s1 => {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
   \label{fig:arrays}
 \end{figure}
 
+\enlargethispage{-4\baselineskip}
 \myexample{Let's design a method that receives an array of \ttt{double} values and returns the sum of those elements.}
 
 \begin{lstlisting}[language=MyJava]
@@ -126,6 +128,8 @@ class SumOfDoubleArray {
 
 Even though our code works and the tests that we wrote pass without question, there is a bit of verbosity with our loop:~$i$'s purpose is solely for accessing an index into the array. 
 In such circumstances, we may prefer using the enhanced \ttt{for} loop\index{enhanced \ttt{for} loop}, which abstracts away the index and provides an iteration construct for accessing elements sequentially.
+Why might someone want to use the enhanced \ttt{for} loop over a standard \ttt{for}? 
+When we only want to access the elements themselves and not care about their position, the enhanced counterpart is favored; not having to concern ourselves with indices completely removes the possibility of accessing an out-of-bounds index. 
 
 %\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -138,9 +142,6 @@ class SumOfDoubleArray {
   }
 }
 \end{lstlisting}
-
-Why might someone want to use the enhanced \ttt{for} loop over a standard \ttt{for}? 
-When we only want to access the elements themselves and not care about their position, the enhanced counterpart is favored; not having to concern ourselves with indices completely removes the possibility of accessing an out-of-bounds index. 
 
 \myexample{Let's design the \ttt{int countOccurs(int[] A, int n)} method, which receives an integer~$n$ and returns the number of times it appears in an array of integers.}
 Fortunately this requires exactly one traversal over~$A$ to count the occurrences of~$n$, with no complex cases to consider.
@@ -174,9 +175,7 @@ class CountOccurs {
   static int countOccurs(int[] A, int n) {
     int count = 0;
     for (int e : A) {
-      if (e == n) { 
-        count++; 
-      }
+      if (e == n) { count++; }
     }
     return count;
   }
@@ -186,8 +185,8 @@ class CountOccurs {
 \myexample{Consider the \ttt{int[] wordLengths(String[] S)} method.}
 Its purpose is, for every index~$i$ of the array~$S$, to store the length of the string at that index in the corresponding index of the returned array.
 For example, if~$S$ contains the strings \ttt{"hello"}, \ttt{"world"}, and \ttt{"!"}, the returned array should contain the values~$5$,~$5$, and~$1$, respectively.
-Solving the problem with either recursion or iteration is possible, but
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -197,12 +196,12 @@ class WordLengthsTester {
   @Test
   void testWordLengths() {
     assertAll(
-      () -> assertEquals(new int[]{5, 5, 1}, wordLengths(new String[]
-                      {"hello", "world", "!"})),
-      () -> assertEquals(new int[]{0, 0, 0}, wordLengths(new String[]
-                      {"", "", ""})),
-      () -> assertEquals(new int[]{1, 2, 3}, wordLengths(new String[]
-                      {"a", "ab", "abc"})));
+      () -> assertEquals(new int[]{5, 5, 1}, 
+                         wordLengths(new String[]{"hello", "world", "!"})),
+      () -> assertEquals(new int[]{0, 0, 0}, 
+                         wordLengths(new String[]{"", "", ""})),
+      () -> assertEquals(new int[]{1, 2, 3}, 
+                         wordLengths(new String[]{"a", "ab", "abc"})));
   }
 }
 \end{lstlisting}
@@ -368,6 +367,7 @@ If it is equal to a question mark string, i.e., \ttt{"?"} then we award no point
 Otherwise, the answer is incorrect, meaning we deduct one point. 
 Because a negative score is non-sensical, our driver method returns the maximum of zero and the score to filter out negative values.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -420,6 +420,7 @@ class McqScoreCalculator {
 
 The tail recursive solution is almost identical to the standard recursive variant. The essential difference is that we accumulate the score as a parameter in between recursive calls instead of summing the points when unwinding the calls. Aside from that, everything else remains the same. Our tests from \ttt{score} are likewise suitable for both the tail recursive and loop methods.
 
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class McqScoreCalculator {
 
@@ -600,6 +601,7 @@ usage: ./ArrayArguments <n> <n1> [n...] [--(sum | product | min | max)]
 The ordering of the output is irrelevant, and depends on how we parse the input flags in the main method. 
 To scan for a given flag, let's design a static method to return whether or not the flag exists in the arguments array.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -629,7 +631,9 @@ class ArrayArguments {
    */
   static boolean isFlagPresent(String[] args, String flag) {
     for (String arg : args) {
-      if (arg.equals(flag)) { return true; }
+      if (arg.equals(flag)) { 
+        return true; 
+      }
     }
     return false;
   }
@@ -642,11 +646,12 @@ Our main method first checks to see if the user entered the ``help'' command and
 Otherwise, we perform a case analysis on the terminal arguments, looking for the presence of the operation flags. 
 For arbitrary reasons, we output the sum, then the product, then the minimum, and finally the maximum, in that order, despite the ordering of the flags. 
 As an exercise, we encourage the readers to modify the program to instead output the values in the order of the presented flags. 
-An important detail that some may miss is that we use a sequence of \ttt{if} statements rather than \ttt{if/else if} statements. 
-This is because we want to allow the user to pass multiple flags, and we would unintentionally restrict them to exactly one flag with \ttt{if/else if} statements. 
-Thus, we must check for the presence of each flag individually.
 
-%\enlargethispage{-2\baselineskip}
+An important detail that some may miss is that we use a sequence of \ttt{if} statements, instead than \ttt{if/else if} statements. 
+This is because we want to allow the user to pass multiple flags; we would unintentionally restrict them to exactly one flag with \ttt{if/else if} statements. 
+Each flag is checked independently from one another, and whether a flag is entered does not affect the state of another.
+
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class ArrayArguments {
 
@@ -690,12 +695,15 @@ Conversely, \emph{column-major}\index{column-major} ordering would visit the ele
   A_{0,0}, A_{1,0}, A_{2,0}, A_{0,1}, A_{1,1}, A_{2,1}, A_{0,2}, A_{1,2}, A_{2,2}
 \]
 Multi-dimensional arrays are nothing more than arrays of arrays. 
-As an example, we can declare a $3 \times 4$ two-dimensional array of integers (with three rows and four columns) as follows:
+As an example, we can declare a $3 \times 4$ two-dimensional array of integers (with three rows and four columns) as follows:\footnote{The spacing/positioning of the rows/elements is irrelevant; we could type the rows side-by-side and we would have the same resulting array.}
 
 \begin{verbnobox}[\small]
-int[][] A = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
+int[][] A = {{1, 2, 3, 4}, 
+             {5, 6, 7, 8}, 
+             {9, 10, 11, 12}};
 \end{verbnobox}
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -751,6 +759,7 @@ For example, suppose our array~$A$ contains the following values:
 \end{bmatrix}
 \]
 
+\enlargethispage{-4\baselineskip}
 \noindent{}Invoking \ttt{removeAllZeroRows} returns a new array~$A'$:
 
 \[
@@ -779,21 +788,29 @@ class RemoveAllZeroRowsTester {
 
   @Test
   void testRemoveAllZeroRowsTester() {
-    int[][] A1 = {{3, 4, 5, 6}, {7, 0, 8, 9}, {10, 11, 21, 13}, 
-                  {2, 2, 2, 0}, {0, 2, 2, 2}};
+    int[][] A1 = {{3, 4, 5, 6}, 
+                  {7, 0, 8, 9}, 
+                  {10, 11, 21, 13}, 
+                  {2, 2, 2, 0}, 
+                  {0, 2, 2, 2}};
     int[][] R1 = {{3, 4, 5, 6}, 
                   {10, 11, 21, 13}};
     int[][] A2 = {{2, 4}, 
                   {5, 6}};
     int[][] R2 = {{2, 4}, 
                   {5, 6}};
+    int[][] A3 = {{0, 10, 30},
+                  {90, 100, 0}};
+    int[][] R3 = {{}};
     assertAll(
-      () -> assertArrayEquals(R1, RemoveAllZeroRows.removeAllZeroRows(A1)),
-      () -> assertArrayEquals(R2, RemoveAllZeroRows.removeAllZeroRows(A2)));
+      () -> assertArrayEquals(R1, removeAllZeroRows(A1)),
+      () -> assertArrayEquals(R2, removeAllZeroRows(A2)),
+      () -> assertArrayEquals(R3, removeAllZeroRows(A3)));
   }
 }
 \end{lstlisting}
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RemoveAllZeroRows {
 
@@ -824,7 +841,9 @@ class RemoveAllZeroRows {
    */
   private static boolean containsZero(int[] A) {
     for (int x : A) {
-      if (x == 0) { return true; }
+      if (x == 0) { 
+        return true; 
+      }
     }
     return false;
   }
@@ -846,6 +865,7 @@ class RemoveAllZeroRows {
 }
 \end{lstlisting}
 
+\enlargethispage{2\baselineskip}
 \myexample{Let's solve a slightly harder problem using two-dimensional arrays.} 
 Suppose that we want to design a method that returns the number of possible moves that a rook can take to go from the top-left of a (not-necessarily rectangular) board to the bottom-right, assuming that it cannot move left or up. 
 The naive solution to this problem is to use a recursive method that changes its position by one in either direction, stopping once we hit the bottom-right of the board. 
@@ -932,7 +952,7 @@ class RookPathTester {
 }
 \end{lstlisting}
 
-%\enlargethispage{6\baselineskip}
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RookPath {
 
@@ -1089,6 +1109,7 @@ Let's take the algorithm one step further and convert it into a ``bottom-up'' it
 In essence, rather than making recursive calls, we use two loops and compose the solution to larger problems (i.e., larger values of~$n$) by saving (intermittient) solutions to smaller problems (i.e., smaller values of~$n$).
 The tests for the top-down and bottom-up methods are the same as the standard recursive version.
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class LogSaw {
 
@@ -1141,6 +1162,7 @@ class MaxJewelProfitTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MaxJewelProfit {
 
@@ -1220,10 +1242,14 @@ class MaxJewelProfit {
   static int maxJewelProfitDp(int[] V, int[] W, int m) {
     int[][] dp = new int[V.length + 1][m + 1];
     // A jewel with 0 value should not be picked.
-    for (int i = 0; i <= V.length; i++) { dp[i][0] = 0; }
+    for (int i = 0; i <= V.length; i++) { 
+      dp[i][0] = 0; 
+    }
 
     // A bag with 0 weight can't hold any jewels.
-    for (int i = 0; i <= m; i++) { dp[0][i] = 0; }
+    for (int i = 0; i <= m; i++) { 
+      dp[0][i] = 0; 
+    }
 
     for (int i = 1; i < dp.length; i++) {
       for (int j = 1; j < dp[i].length; j++) {

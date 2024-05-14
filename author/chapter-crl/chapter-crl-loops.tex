@@ -42,7 +42,7 @@ static int factTR(int n,
 The first step in converting a recursive method into its iterative counterpart is to rewrite it using tail recursion. 
 Notice that, in order to ``tail-recursify'' \texttt{fact}, we had to add an extra parameter that keeps track of the ``current result.''\footnote{Some tail recursive methods need more than one extra parameter---it is a case-by-case basis.} 
 We convert recursive methods into tail recursion because of their direct relation to iteration.\footnote{A method definition may already be tail recursive depending on the circumstance.} 
-Let us look a little deeper into this idea and discover why.
+Let us look a little deeper into this idea and discover why the relation is true.
 
 Our iterative version of \texttt{fact} moves all ``accumulator'' variables into the method body. 
 For instance, \texttt{acc} is now declared locally within the \texttt{fact} method. 
@@ -523,6 +523,7 @@ class Disarium {
    */
   static boolean isDisarium(int n) {
     int c = 1;
+    // s stores the sum of the digits raised to their respective positions.
     int s = 0;
     while (n != 0) {
       s += (int) Math.pow(n % 10, c);
@@ -534,9 +535,148 @@ class Disarium {
 }
 \end{lstlisting}
 
+
+\section{Iteration Constructs}
+
+Perhaps the related equivalence to tail recursion is too abstract for some to digest. 
+Indeed, we believe the relationship is somewhat far-fetched at first glance, but after enough practice, it becomes clearer. 
+We will now discuss loops from a non-translation perspective. 
+That is, if we assume the translation diagram from before, we are going straight from the problem statement~$P$ to the iterative solution~$I$, or at least, we will not design~$I$ from translating a recursive solution~$R$ or a tail recursive solution.
+
+As we stated before, loops are statements in Java, meaning they do not, themselves, resolve to a value. 
+Therefore, any and all lines of code executed inside the body of a loop must be statements rather than expressions.
+
+\myexample{Suppose we want to print the first one hundred prime integers.} 
+Recall the definition of primality: a positive integer~$n$ is prime if it is divisible by only one and itself. 
+Without loops, we would otherwise solve this task using recursion. 
+Although summing prime values is not a too terribly complicated task, it requires a verbose set of methods, should we choose to do it tail recursively. 
+Instead, let's try and use loops to solve the problem. 
+We want to continue looping until we have summed one hundred prime values. 
+Fortunately, there is exactly one correct test case for this method, so writing an elaborate test suite is superfluous.
+
+Declaring an integer counter~$c$ is mandatory. 
+Our loop condition, therefore, executes so long as we have not encountered one hundred prime values. 
+When designing loop conditions, we ask ourselves the question, ``What should be true after the loop?,'' and design the condition around the answer. 
+Our counter~$c$ will be exactly one hundred upon loop completion, so the condition is the negated version of this expression.\footnote{Rather than \ttt{(!(c == 100))}, we can write \ttt{(c != 100)} to achieve the same effect.}
+
+Up next, we need to write a method that determines the primality of an integer. 
+We presented the definition of primality before, and it is also known mathematically that we only need to check up to~$\sqrt{n}$ for primality~\citep{riesel}. 
+Let's design such a method, writing the appropriate tests. 
+The loop condition is to continue so long as a variable,~$i$, is less than or equal to the square root of our input number. 
+The variable~$i$ serves as a counter towards our number; if we find that~$n$ is not divisible by any numbers from two up to~$\sqrt{n}$, then it must be prime.\footnote{We cast the result of \ttt{Math.sqrt} to an integer because it returns a \ttt{double} rather than an \ttt{int} datatype.} 
+Note the edge cases of zero and one, both of which are non-prime.
+
+\begin{lstlisting}[language=MyJava]
+class SumPrimes {
+
+  /**
+   * Computes the sum of the first 100 prime integers.
+   * @return sum of first 100 primes.
+   */
+  static int sum100Primes() {
+    int c = 0;
+    while (c != 100) { 
+      /* TODO. */ 
+    }
+    return 0;
+  }
+}
+\end{lstlisting}
+
+\enlargethispage{-3\baselineskip}
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertTrue;
+import static Assertions.assertFalse;
+
+class PrimeTester {
+
+  @Test
+  void testPrime() {
+    assertAll(
+      () -> assertTrue(isPrime(101)),
+      () -> assertTrue(isPrime(3)),
+      () -> assertFalse(isPrime(0)),
+      () -> assertFalse(isPrime(1)),
+      () -> assertFalse(isPrime(2)),
+      () -> assertFalse(isPrime(202)));
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=MyJava]
+class Prime {
+
+  /**
+   * Determines if a given integer is prime.
+   * @param n - positive integer.
+   * @return true if prime, false otherwise.
+   */
+  static boolean isPrime(int n) {
+    if (n < 2) { 
+      return false;
+    } else {
+      int bound = (int) Math.sqrt(n);
+      int i = 2;
+      while (i <= bound) {
+        if (n % i == 0) { 
+          return false; 
+        } else { 
+          i++; 
+        }
+      }
+      return true;
+    }
+  }
+}
+\end{lstlisting}
+
+The primality tests pass, which means we can put \ttt{isPrime} to work inside of \ttt{sum100Primes}. 
+The method logic is straightforward: initialize our counter~$c$ to one. 
+We also need a variable to track the last-found prime integer, so we know from where to start the search. 
+We will call this variable~$l$ and initialize it to zero. 
+Finally, a $\mathit{sum}$ variable accumulates the sum of each prime. 
+Inside the loop, we declare another variable~$v$, which serves as the value to check for primality, taking on the value of~$l + 1$ (if it were just~$l$, it would forever check the same value for primality!). 
+Run~$v$ through the \ttt{isPrime} method and, if it is prime, assign to~$l$ the value of~$v$, add~$v$ to the sum, and increment~$c$. 
+Otherwise, increment~$l$ by one.\footnote{We will note that this code is overly verbose for pedagogical purposes.}
+Running the code produces~$24133$: the desired answer.
+
+\enlargethispage{-2\baselineskip}
+\begin{lstlisting}[language=MyJava]
+class SumPrimes {
+
+  /**
+   * Computes the sum of the first 100 prime integers.
+   * @return sum of first 100 primes.
+   */
+  static int sum100Primes() {
+    // Counter for no. of primes.
+    int c = 0;   
+    // Current "prime value".
+    int l = 0;   
+    // Running sum.
+    int sum = 0; 
+    
+    while (c != 100) {
+      int v = l + 1;
+      if (isPrime(v)) {
+        l = v;
+        sum += v;
+        c++;
+      } else {
+        l++;
+      }
+    }
+    return sum;
+  }
+}
+\end{lstlisting}
+
 \myexample{Continuing with the theme of number theory, let's design the \ttt{isDePolignac} method, which returns whether a given positive integer is a \textit{De Polignac number}~\Citep{dePolignac}.}
 
 A de Polignac number is an odd positive integer~$n$ that cannot be expressed as the sum of~$2^k$ and~$p$, where~$k$ is a non-negative integer and~$p$ is a prime number.
+We just recently designed a method to check for primality, so we can use it when determining if a number is a de Polignac number.
 
 This algorithm cannot be easily expressed as a standard recursive problem, because while we can decompose the problem, there is no result to accumulate; we are only checking for a condition.
 So, the tail recursive method receives the value~$n$ and a value~$i$ that starts at the nearest power of two less than~$n$.
@@ -544,7 +684,9 @@ We check whether~$n - i$ is prime, and if so, we return false.
 If~$i$ is equal to one, we return true, because we have exhausted all possible powers of two.
 Each recursive call divides the power of two in half.
 Once again, we write tests for the tail recursive variant, but omit those of the iterative algorithm.
+We emphasized the tail recursive method for de Polignac numbers primarily as a means of continued practice with recursion.
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertTrue;
@@ -570,6 +712,7 @@ class DePolignacTester {
 }
 \end{lstlisting}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DePolignac {
   
@@ -613,7 +756,7 @@ class DePolignac {
     if (n % 2 == 0) { return false; }
     else {
       int i = (int) Math.pow(2, (int) (Math.log(n) / Math.log(2)));
-      while (!(i <= 1)) {
+      while (i > 1) {
         if (isPrime(n - i)) { return false; }
         else { i /= 2; }
       }
@@ -622,141 +765,6 @@ class DePolignac {
   }
 }
 \end{lstlisting}
-
-\section{Iteration Constructs}
-
-Perhaps the related equivalence to tail recursion is too abstract for some to digest. 
-Indeed, we believe the relationship is somewhat far-fetched at first glance, but after enough practice, it becomes clearer. 
-We will now discuss loops from a non-translation perspective. 
-That is, if we assume the translation diagram from before, we are going straight from the problem statement~$P$ to the iterative solution~$I$.
-
-As we stated before, loops are statements in Java, meaning they do not, themselves, resolve to a value. 
-Therefore, any and all lines of code executed inside the body of a loop must be statements rather than expressions.
-
-\myexample{Suppose we want to print the first one hundred prime integers.} 
-Recall the definition of primality: a positive integer~$n$ is prime if it is divisible by only one and itself. 
-Without loops, we would otherwise solve this task using recursion. 
-Although summing prime values is not a too terribly complicated task, it requires a verbose set of methods, should we choose to do it tail recursively. 
-Instead, let's try and use loops to solve the problem. 
-We want to continue looping until we have summed one hundred prime values. 
-Fortunately, there is exactly one correct test case for this method, so writing an elaborate test suite is superfluous.
-
-Declaring an integer counter~$c$ is mandatory. 
-Our loop condition, therefore, executes so long as we have not encountered one hundred prime values. 
-When designing loop conditions, we ask ourselves the question, ``What should be true after the loop?,'' and design the condition around the answer. 
-Our counter~$c$ will be exactly one hundred upon loop completion, so the condition is the negated version of this expression.\footnote{Rather than \ttt{(!(c == 100))}, we can write \ttt{(c != 100)} to achieve the same effect.}
-
-Up next, we need to write a method that determines the primality of an integer. 
-We presented the definition of primality before, and it is also known mathematically that we only need to check up to~$\sqrt{n}$ for primality~\citep{riesel}. 
-Let's design such a method, writing the appropriate tests. 
-The loop condition is to continue so long as a variable,~$i$, is less than or equal to the square root of our input number. 
-The variable~$i$ serves as a counter towards our number; if we find that~$n$ is not divisible by any numbers from two up to~$\sqrt{n}$, then it must be prime.\footnote{We cast the result of \ttt{Math.sqrt} to an integer because it returns a \ttt{double} rather than an \ttt{int} datatype.} 
-Note the edge cases of zero and one, both of which are non-prime.
-
-\begin{lstlisting}[language=MyJava]
-class SumPrimes {
-
-  /**
-   * Computes the sum of the first 100 prime integers.
-   * @return sum of first 100 primes.
-   */
-  static int sum100Primes() {
-    int c = 0;
-    while (c != 100) { /* TODO. */ }
-    return 0;
-  }
-}
-\end{lstlisting}
-
-% %\enlargethispage{\baselineskip}
-\begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
-import static Assertions.assertTrue;
-import static Assertions.assertFalse;
-
-class PrimeTester {
-
-  @Test
-  void testPrime() {
-    assertAll(
-      () -> assertTrue(isPrime(101)),
-      () -> assertTrue(isPrime(3)),
-      () -> assertFalse(isPrime(0)),
-      () -> assertFalse(isPrime(1)),
-      () -> assertFalse(isPrime(2)),
-      () -> assertFalse(isPrime(202)));
-  }
-}
-\end{lstlisting}
-
-
-\begin{lstlisting}[language=MyJava]
-class Prime {
-
-  /**
-   * Determines if a given integer is prime.
-   * @param n - positive integer.
-   * @return true if prime, false otherwise.
-   */
-  static boolean isPrime(int n) {
-    if (n < 2) { 
-      return false;
-    } else {
-      int bound = (int) Math.sqrt(n);
-      int i = 2;
-      while (i <= bound) {
-        if (n % i == 0) {
-          return false;
-        }
-        i++;
-      }
-      return true;
-    }
-  }
-}
-\end{lstlisting}
-
-The primality tests pass, which means we can put \ttt{isPrime} to work inside of \ttt{sum100Primes}. 
-The method logic is straightforward: initialize our counter $c$ to one. 
-We also need a variable to track the last-found prime integer, so we know from where to start the search. 
-We will call this variable~$l$ and initialize it to zero. 
-Finally, a $\mathit{sum}$ variable accumulates the sum of each prime. 
-Inside the loop, we declare another variable~$v$, which serves as the value to check for primality, taking on the value of~$l + 1$ (if it were just~$l$, it would forever check the same value for primality!). 
-Run~$v$ through the \ttt{isPrime} method and, if it is prime, assign to~$l$ the value of~$v$, add~$v$ to the sum, and increment~$c$. 
-Otherwise, increment~$l$ by one.\footnote{We will note that this code is overly verbose for pedagogical purposes.}
-Running the code produces~$24133$: the desired answer.
-
-%\enlargethispage{-4\baselineskip}
-\begin{lstlisting}[language=MyJava]
-class SumPrimes {
-
-  /**
-   * Computes the sum of the first 100 prime integers.
-   * @return sum of first 100 primes.
-   */
-  static int sum100Primes() {
-    // Counter for no. of primes.
-    int c = 0;   
-    // Current "prime value".
-    int l = 0;   
-    // Running sum.
-    int sum = 0; 
-    
-    while (c != 100) {
-      int v = l + 1;
-      if (isPrime(v)) {
-        l = v;
-        sum += v;
-        c++;
-      } else {
-        l++;
-      }
-    }
-    return sum;
-  }
-}
-\end{lstlisting}
-
 
 \myexample{Suppose that we want to compute the sum of the first~$n$ odd reciprocals.} 
 That is, $\frac{1}{1} + \frac{1}{3} + \frac{1}{5} + \cdots + \frac{1}{(2n-1)}$. 
@@ -822,6 +830,8 @@ Stepping statements take care of this action for us, reducing the need for such 
 
 \myexample{Suppose we want to design a method that returns the sum of the integers between two integers~$a$ and~$b$, inclusive.} 
 We know a priori how many integers there are between~$a$ and~$b$, assuming~$a \leq b$, so we should use a \ttt{for} loop to solve this problem.
+Namely, we want to iterate from~$i = a$ so long as~$i \leq b$. 
+We use the variable~$i$ out of convention; one could easily use any other unused identifier.
 
 %\enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -841,9 +851,6 @@ class SumIntervalTester {
   }
 }
 \end{lstlisting}
-
-We want to iterate from~$i = a$ so long as~$i \leq b$. 
-We use the variable~$i$ out of convention; one could easily use any other unused identifier.
 
 \begin{lstlisting}[language=MyJava]
 class SumInterval {
@@ -962,6 +969,7 @@ The base case is when we reach the end of the string, at which point we return t
 Our standard recursive method needs a helper method to keep track of whether we are at the beginning of a word.
 The acronym itself is constructed via a series of concatenating recursive calls.
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -989,7 +997,7 @@ class GenerateAcronym {
    * @return acronym of s.
    */
   static String generateAcronym(String s) {
-    return generateAcronymHelper(s, true);
+    return genAcronymHelper(s, true);
   }
 
   /**
@@ -998,16 +1006,11 @@ class GenerateAcronym {
    * @param isStart - true if at the beginning of a word.
    * @return acronym of s.
    */
-  private static String generateAcronymHelper(String s, boolean isStart) {
-    if (s.isEmpty()) { 
-      return ""; 
-    } else if (isStart) { 
-      return s.charAt(0) + generateAcronymHelper(s.substring(1), false); 
-    } else if (s.charAt(0) == ' ') { 
-      return generateAcronymHelper(s.substring(1), true); 
-    } else { 
-      return generateAcronymHelper(s.substring(1), false); 
-    }
+  private static String genAcronymHelper(String s, boolean isStart) {
+    if (s.isEmpty()) { return "";  } 
+    else if (isStart) { return s.charAt(0) + genAcronymHelper(s.substring(1), false); } 
+    else if (s.charAt(0) == ' ') { return genAcronymHelper(s.substring(1), true); } 
+    else { return genAcronymHelper(s.substring(1), false); }
   }
 }
 \end{lstlisting}
@@ -1024,7 +1027,7 @@ class GenerateAcronym {
    * @return acronym of s.
    */
   static String generateAcronymTr(String s) {
-    return generateAcronymTrHelper(s, true, "");
+    return genAcronymTrHelper(s, true, "");
   }
 
   /**
@@ -1034,16 +1037,15 @@ class GenerateAcronym {
    * @param acc - accumulator for acronym.
    * @return acronym of s.
    */
-  private static String generateAcronymTrHelper(String s, boolean isStart, 
-                                                String acc) {
+  private static String genAcronymTrHelper(String s, boolean isStart, String acc) {
     if (s.isEmpty()) { 
       return acc; 
     } else if (isStart) { 
-      return generateAcronymTrHelper(s.substring(1), false, acc + s.charAt(0)); 
+      return genAcronymTrHelper(s.substring(1), false, acc + s.charAt(0)); 
     } else if (s.charAt(0) == ' ') { 
-      return generateAcronymTrHelper(s.substring(1), true, acc); 
+      return genAcronymTrHelper(s.substring(1), true, acc); 
     } else { 
-      return generateAcronymTrHelper(s.substring(1), false, acc); 
+      return genAcronymTrHelper(s.substring(1), false, acc); 
     }
   }
 }
@@ -1084,7 +1086,7 @@ class GenerateAcronym {
 }
 \end{lstlisting}
 
-\myexample{We will write one more example of first writing a recursive algorithm, then its tail recursive version, then its iterative counterpart.} 
+\myexample{We will write one more example of first writing a recursive algorithm, then its tail recursive version, then its iterative counterpart to describe a problem that occurs when translating specific tail recursive algorithms.} 
 Suppose we want to write a method to determine the~$n^\text{th}$ Fibonacci number. 
 The \emph{Fibonacci sequence} is defined recursively as follows:
 
@@ -1097,7 +1099,7 @@ The \emph{Fibonacci sequence} is defined recursively as follows:
 Writing tests for a Fibonacci algorithm is trivial to do and propagates through to the other variants. 
 So, writing tests for the standard recursive algorithm, assuming they are correct, allows us to easily propagate tests for the tail recursive and iterative algorithms.
 
-%\enlargethispage{-3\baselineskip}
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1111,8 +1113,7 @@ class FibonacciTester {
       () -> assertEquals(1, fib(1)),
       () -> assertEquals(1, fib(2)),
       () -> assertEquals(8, fib(5)),
-      () -> assertEquals(55, fib(10)),
-      () -> assertEquals(6765, fib(20)));
+      () -> assertEquals(55, fib(10)));
   }
 }
 \end{lstlisting}
@@ -1138,12 +1139,12 @@ So, storing these values as variables, say,~$a$ and~$b$, is sensible, where~$a$ 
 Thus, when making a tail recursive call, we assign~$b$ as~$a + b$, and~$a$ as~$b$. 
 We cannot forget the driver method!
 
-%\enlargethispage{6\baselineskip}
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Fibonacci {
 
   static int fibTR(int n) {
-    return fibHelper(n, 0, 1);
+    return fibHelp(n, 0, 1);
   }
 
   /**
@@ -1153,20 +1154,20 @@ class Fibonacci {
    * @accumulator b - "previous" fib.
    * @return result.
    */
-  static int fibHelper(int n, int a, int b) {
+  static int fibHelp(int n, int a, int b) {
     if (n == 0) {
       return a;
     } else if (n == 1) {
       return b;
     } else {
-      return fibHelper(n - 1, b, a + b);
+      return fibHelp(n - 1, b, a + b);
     }
   }
 }
 \end{lstlisting}
 
 Our tail recursive implementation has two base cases instead of one due to the two base cases of the mathematical recursive definition. 
-It may be difficult to visualize the initial accumulator values (i.e., the starting values of $a$ and $b$), but just consider the base case(s) of the standard recursive algorithm, and let this/these guide your decision.
+It may be difficult to visualize the initial accumulator values (i.e., the starting values of~$a$ and~$b$), but just consider the base case(s) of the standard recursive algorithm, and let this/these guide your decision.
 
 Finally we arrive at the iterative algorithm. 
 To avoid any confusion in the conversion process, we will use our translation pipeline. 
@@ -1174,17 +1175,13 @@ Skipping a few steps up to $TR_\emph{C}$:
 
 \begin{clrr}[]{Initial Translation of Fibonacci \emph{$TR$} To $I$}
 \begin{lstlisting}[language=MyJavaNF]
-static int fibHelper(int n, 
-                     int a, 
-                     int b) {
+static int fibHelp(int n, int a, int b) {
   if ((*;\textcolor{red}{n == 0};*)) {
     return (*;\textcolor{darkgreen}{a};*);
   } else if ((*;\textcolor{red}{n == 1};*)) {
     return (*;\textcolor{darkgreen}{b};*);
   } else {
-    return fibHelper((*;\textcolor{darkyellow}{n - 1};*), 
-                     (*;\textcolor{darkyellow}{b};*), 
-                     (*;\textcolor{darkyellow}{a + b};*));
+    return fibHelp((*;\textcolor{darkyellow}{n - 1};*), (*;\textcolor{darkyellow}{b};*), (*;\textcolor{darkyellow}{a + b};*));
   }
 }
 \end{lstlisting}
@@ -1292,6 +1289,7 @@ class FindFirstVowelTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class FindFirstVowel {
 
@@ -1327,15 +1325,21 @@ class FindFirstVowel {
 \end{lstlisting}
 
 \myexample{To better illustrate how \ttt{break} and \ttt{continue} work, let's write a method that has no real purpose, but serves to demonstrate the utility of these keywords.} 
-Our method, namely \ttt{countOdds}, counts the number of odd integers generated by a random number generator from 1 to 100. 
-To spice it up, we will not count odd integers less than~$50$, and if we ever generate a number greater than 95, we stop looping and return the count. 
+Our method, namely \ttt{countOdds}, counts the number of odd integers generated by a random number generator from~$1$ to~$100$. 
+
+To spice it up, we will not count odd integers less than~$50$, and if we ever generate a number greater than~$95$, we stop looping and return the count. 
 The idea is to use \ttt{break} when we generate a integer between~$96$ and~$100$, and to use \ttt{continue} to skip over incrementing the counter if we find a number less than~$50$. 
 The \ttt{continue} keyword shifts program control to the top of the loop, skipping over any remaining statements in the body. 
-Because this program relies solely on random chance, writing tests is not helpful. 
-In the code snippet, using an \ttt{else} statement is preferred over the superfluous use of \ttt{continue}, but we demo it to at least portray its existence. 
-The only way to exit the infinite \ttt{while} loop is to either \ttt{break}, \ttt{return}, or stop the program some other way (e.g., through a program crash or forced termination).
 
+Because the \ttt{countOdds} method relies solely on random chance, writing unit tests is not helpful in determining whether the method in question works as intended.\footnote{Some testing frameworks provide methods that allow the programmer to verify the correctness of functions/methods that utilize randomness~\Citep{htdp}. We \emph{could} prove/assert that the method, without the randomness component, is correct, then later on inject a means of generating random numbers.}
+
+In the following code snippet, an \ttt{else} statement is preferred over the superfluous use of \ttt{continue}, but we demo it to, at a minimum, portray its existence. 
+The only way to exit the infinite \ttt{while} loop is to either \ttt{break} out, \ttt{return} from the method, or halt the program via another means (e.g., through a program crash or forced termination).
+
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
+import java.util.Random;
+
 class RandomNumbers {
 
   /**
@@ -1390,23 +1394,31 @@ class FindReplaceTester {
 }
 \end{lstlisting}
 
-Now, we complete the implementation of \ttt{replace}, which reduces into a few cases: while traversing, did we find the start of the search string~$f$, did we find the end of~$f$, and did we encounter a break in~$f$? 
+Subsequently, we complete the implementation of \ttt{replace}, which reduces into a few cases: while traversing, did we find the start of the search string~$f$, did we find the end of~$f$, and did we encounter a break in~$f$? 
 Let's go from the start to the end in our analysis. 
-When traversing over the input string~$s$, if we find the character that starts~$f$ in~$s$, we increment a counter~$c$, and continue counting as long as the characters in the particular substring of~$s$ match the characters in~$f$. 
+
+When traversing over the input string~$s$, if we find the character that starts~$f$ in~$s$, we increment a counter~$c$, and continue counting as long as the characters in the particular substring of~$s$ match the characters in~$f$.
+
 As an example, in the string $s=\ttt{"hello"}$, if $f=\ttt{"ell"}$, once our traversal finds \ttt{"e"}, we increment~$c$ by one to designate that we matched one character of~$f$. 
 We continue this process until we either reach the end of~$f$, the end of~$s$, or we find a non-matching character. 
-In the former instance, we append the replacement string~$r$ onto our newly-constructed string~$s'$, because it indicates that we encountered a full match of~$f$ inside~$s$, meaning it is to be replaced by~$r$. 
+
+In the former instance, we append the replacement string~$r$ onto our newly-constructed string~$s'$, because it indicates that we encountered a full match of~$f$ inside~$s$, meaning it is to be replaced by~$r$.
+
 In the second instance, we reach the end of~$s$, meaning that we are out of characters to match. 
 Therefore, we either copy over the last~$c$ characters from~$s$ into~$s'$ if we have not also reached the end of~$f$, or~$r$ otherwise. 
 For example, if $s=\ttt{"hello"}$, and $f=\ttt{"low"}$, we reach the end of~$s$ prior to finishing the substring~$f$, meaning that we only copy over those final characters of~$s$ and do not append~$r$. 
 Conversely, if $f=\ttt{"lo"}$ in that instance, we instead substitute the suffix \ttt{"lo"} with~$r$. 
+
 Finally, when we encounter a non-matching character, we terminate the current replacement strategy and simply append the last~$c$ characters of~$s$ onto~$s'$ and move the index forward.
+
 A small intricacy that we have not discussed is \ttt{StringBuilder}\index{\ttt{StringBuilder}}.
 As previously mentioned, strings are immutable, and concatenating two strings produces another integer.
 Combining repeated concatenation operations together with a loop or recursion is highly inefficient.
 To remedy the problem, Java provides the \ttt{StringBuilder} class to make repeated string append operations much faster and less of a memory hog.\footnote{Java's library also has the \ttt{StringBuffer}\index{\ttt{StringBuffer}} class to achieve the same effect, but it is suboptimal when writing single-threaded programs (i.e., programs that are concurrent\index{concurrency}).}
-In essence, the \ttt{StringBuilder} class allocates a buffer to store the characters of a string, and any ``append'' operations are stored in the buffer, rather than having to reallocate an entirely new string of the previous size plus the number of characters in the string-to-conjoin.
 
+To summarize, the \ttt{StringBuilder} class allocates a buffer that stores the characters of a string, and any ``append'' operations manipulate the buffer, rather than having to reallocate an entirely new string of the previous size, plus the number of characters in the string-to-conjoin.
+
+\newpage
 \begin{lstlisting}[language=MyJava]
 import java.lang.StringBuilder;
 
@@ -1444,7 +1456,7 @@ class FindReplace {
           pos++;
         }
       }
-      // If we reach the end of the string and are in the middle of searching, we append it.
+      // If we reach the end of the string and are in the middle of searching, we append.
       if (pos > 0 && j >= s.length()) {
         sb.append(repl);
         break;

@@ -1,16 +1,16 @@
-\section{Exercises}
+\section*{Chapter Exercises}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{boolean isStrictlyIncreasing(int x, int y, int z)} that determines if three integers $x$, $y$, and $z$ are strictly increasing. By this, we mean that $x < y < z$.}
+\myexercise{1}{chapter-crl}{Design the \ttt{boolean isStrictlyIncreasing(int x, int y, int z)} that determines if three integers~$x$,~$y$, and~$z$ are strictly increasing. By this, we mean that $x < y < z$.}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{String numStuff(int n)} that determines if an integer $n$ is greater than $100$. If so, return the string of $n$ divided by two. If the number is less than 50, return the string of $n$ divided by five. In any other case, return the string ``N/A.''}
+\myexercise{1}{chapter-crl}{Design the \ttt{String numStuff(int n)} that determines if an integer~$n$ is greater than~$100$. If so, return the string of~$n$ divided by two. If the number is less than~$50$, return the string of~$n$ divided by five. In any other case, return the string \ttt{"N/A"}.}
 
 \myexercise{1}{chapter-crl}{Design the \ttt{boolean canVote(int age)} that, when given an integer variable \emph{age} in years, returns whether or not someone who is that age is able to legally vote in the United States. For reference, someone may legally vote once they turn eighteen years old.}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{int max(int x, int y, int z)} that returns the maximum of three integers $x$, $y$, and $z$. Do not use any built-in (\ttt{Math} library) methods.}
+\myexercise{1}{chapter-crl}{Design the \ttt{int max(int x, int y, int z)} that returns the maximum of three integers~$x$,~$y$, and~$z$. Do not use any built-in (\ttt{Math} library) methods.}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{int computeRoundSum(int x, int y, int z)} method that computes the sum of the rounded values of three integers $x$, $y$, and $z$. By ``rounded values,'' we mean that we round their least significant digit, i.e., the rightmost digit either up or down depending on its value. For instance, 12 rounds down to 10, 59 rounds up to 60, and 1009 rounds up to 1010. If the number is negative, round towards zero when necessary, e.g., $-7$ rounds down to $-10$, $-2$ rounds up to zero.}
+\myexercise{1}{chapter-crl}{Design the \ttt{int computeRoundSum(int x, int y, int z)} method that computes the sum of the rounded values of three integers~$x$,~$y$,and~$z$. By ``rounded values,'' we mean that we round their least significant digit, i.e., the rightmost digit either up or down depending on its value. For instance,~$12$ rounds down to~$10$,~$59$ rounds up to~$60$, and~$1009$ rounds up to~$1010$. If the number is negative, round towards zero when necessary, e.g.,~$-7$ rounds down to~$-10$,~$-2$ rounds up to zero.}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{boolean lessThan20(int x, int y, int z)} method that, when given three integers $x$, $y$, and $z$, returns whether or not one of them is less than twenty away from another. For example, \ttt{lessThan20(19, 2, 412)} returns true because $2$ is less than $20$ away from $19$. Another example is \ttt{lessThan20(999, 888, 777)}, which returns false because none of the numbers have a difference less than twenty.}
+\myexercise{1}{chapter-crl}{Design the \ttt{boolean lessThan20(int x, int y, int z)} method that, when given three integers~$x$,~$y$, and~$z$, returns whether or not one of them is less than twenty away from another. For example, \ttt{lessThan20(19, 2, 412)} returns true because~$2$ is less than~$20$ away from~$19$. Another example is \ttt{lessThan20(999, 888, 777)}, which returns false because none of the numbers have a difference less than twenty.}
 
 \myexercise{1}{chapter-crl}{Design the \ttt{boolean canSleepIn(String d, boolean onVacation)} method, which determines whether or not someone can sleep in. Someone is able to sleep in if it is a weekend or they are on vacation. The input $d$ is passed as a day of the week, e.g., \ttt{"Monday"}, ..., \ttt{"Sunday"}.}
 
@@ -214,7 +214,7 @@ Overtime pay is defined as the pay an employee receives after working~$40$ hours
     \item The total bonus amount is reduced by a flat tax rate of $25\%$.
 \end{itemize}
 
-\myexercise{1}{chapter-testingandjava}{Design the \ttt{String createPalindrome(String s, boolean mirror)} method that receives a string $s$ and a boolean. If the boolean is true, then return a string $ss'$, where $s'$ is the mirror of $s$. If the boolean is false, then return a string $st$, where $t$ contains all but the last character of $s$, and is reversed. You cannot use any helper classes, e.g., \ttt{StringBuilder}/\ttt{StringBuffer} to solve this problem.}
+\myexercise{1}{chapter-crl}{Design the \ttt{String createPalindrome(String s, boolean mirror)} method that receives a string $s$ and a boolean. If the boolean is true, then return a string $ss'$, where $s'$ is the mirror of $s$. If the boolean is false, then return a string $st$, where $t$ contains all but the last character of $s$, and is reversed. You cannot use any helper classes, e.g., \ttt{StringBuilder}/\ttt{StringBuffer} to solve this problem.}
 
 \myexercise{1}{chapter-crl}{This exercise has two parts.}
 \begin{enumerate}[label=(\alph*)]
@@ -244,13 +244,13 @@ If you write tests for one of these methods, you should be able to propagate it 
 \end{enumerate}
 If you write tests for one of these methods, you should be able to propagate it through the other, so write plenty!
 
-\myexercise{2}{chapter-crl}{This question has two parts.}
-\begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{isPrimeTR} tail recursive method, which receives a positive integer and determines if it is prime. Recall that a number is prime if and only if it evenly divides only one and itself. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
-    \item Design the \ttt{isPrimeLoop} method that solves the problem using a loop.
-\end{enumerate}
+% \myexercise{2}{chapter-crl}{This question has two parts.}
+% \begin{enumerate}[label=(\alph*)]
+%     \item Design the \ttt{isPrimeTR} tail recursive method, which receives a positive integer and determines if it is prime. Recall that a number is prime if and only if it evenly divides only one and itself. Hint: you will need to design a \ttt{private static} helper method to solve this problem.
+%     \item Design the \ttt{isPrimeLoop} method that solves the problem using a loop.
+% \end{enumerate}
 
-If you write tests for one of these methods, you should be able to propagate it through the other, so write plenty!
+% If you write tests for one of these methods, you should be able to propagate it through the other, so write plenty!
 
 \myexercise{1}{chapter-crl}{This question has two parts.}
 \begin{enumerate}[label=(\alph*)]
@@ -276,7 +276,6 @@ If you write tests for one of these methods, you should be able to propagate it 
     \item Design the \ttt{isNestedParenthesesLoop} method that solves the problem using a loop.
 \end{enumerate}
 If you write tests for one of these methods, you should be able to propagate it through the other, so write plenty!
-
 
 \myexercise{1}{chapter-crl}{This question has three parts.}
 \begin{enumerate}[label=(\alph*)]

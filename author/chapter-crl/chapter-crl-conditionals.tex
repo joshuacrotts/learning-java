@@ -65,24 +65,24 @@ In the following code listing, we show an example of two sets of conditional sta
 Accordingly, the left-hand listing returns~$20$ and the right-hand listing returns~$10$.
 
 \begin{clrr}[]{}
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int foo() {
   int x = 10;
   int y = 0;
-  if (x == 10) { y=5; } 
-  if (y == 5) { y+=10; }
-  if (x != 10 && y != 5) { y+=5; }
+  if (x == 10) { y = 5; } 
+  if (y == 5) { y += 10; }
+  if (x != 10 && y != 5) { y += 5; }
   return y;
 }
 \end{lstlisting}
 \tcblower
-\begin{lstlisting}[language=MyJava]
+\begin{lstlisting}[language=MyJavaNF]
 static int foo() {
   int x = 10;
   int y = 0;
-  if (x == 10) { y=10; } 
-  else if (y == 5) { y+=10; } 
-  else { y+=5; }
+  if (x == 10) { y = 10; } 
+  else if (y == 5) { y += 10; } 
+  else { y += 5; }
   return y;
 }
 \end{lstlisting}
@@ -234,8 +234,7 @@ class MonthToDaysTester {
 class MonthToDays {
 
   /**
-   * Determines how many days a given month has, 
-   * not accounting for leap years.
+   * Determines how many days a given month has, not accounting for leap years.
    * @param m - capitalized month, e.g., "July".
    * @return the number of days in the month
    */

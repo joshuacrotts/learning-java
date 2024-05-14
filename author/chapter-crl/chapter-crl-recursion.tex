@@ -77,6 +77,7 @@ Traversing through the recursive calls backwards, while building the solution to
 Now that we understand the logic of our problem, let's design the method in Java. 
 First, of course, we want to design our tests.
 
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -181,6 +182,7 @@ Therefore, when unwinding the recursive calls, we get the following trace:
 
 Now let's design the \ttt{factorial} method in Java, again with tests taking immediate precedence over the method definition.
 
+\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -305,11 +307,8 @@ class Factorial {
    * @return the factorial of the number.
    */
   static int factTR(int n, int acc) {
-    if (isZero(n)) {
-      return acc;
-    } else {
-      return factTR(..., ...);
-    }
+    if (isZero(n)) { return acc; } 
+    else { return factTR(n - 1, acc * n); }
   }
 }
 \end{lstlisting}
@@ -336,7 +335,7 @@ For example, if we initialize \ttt{acc} to zero, then we would continuously mult
 The base case simply returns the accumulated value from the method. 
 We do not need to unwind the recursive calls, since there is no extra work to be done after making the recursive calls in the first place. 
 Even still, some may question how this avoids a stack overflow error, because we still push an activation record to the call stack each time we invoke \ttt{factTR}, right? 
-Indeed, this solution does not solve the stack overflow problem, because Java does not employ the necessary optimizations to do so. 
+Indeed, this solution does not solve the stack overflow problem, because Java does not employ the necessary optimizations to do so.
 What might one of those solutions be, in fact? As a hypothesis, because the method is tail recursive, the Java compiler could detect this and, instead of pushing a new activation record to the call stack, overwrite the preexisting record, hence using constant space and only one record. 
 Overriding the existing activation record is permissible, since we do not unwind the stack.
 Recall with standard recursion that we push an activation record to the call stack to remember the context of ``how deep we are'' into the recursion, in addition to what values we must substitute back into the unknowns during the unwinding phase. 
@@ -424,11 +423,8 @@ class Factorial {
    * @return the factorial of the number.
    */
   private static int factHelper(int n, int acc) {
-    if (isZero(n)) {
-      return acc;
-    } else {
-      return factHelper(subOne(n), acc * n);
-    }
+    if (isZero(n)) { return acc; } 
+    else { return factHelper(subOne(n), acc * n); }
   }
 }
 \end{lstlisting}
@@ -534,11 +530,10 @@ Sadly, this only removes every other duplicate character.
 We need to keep track of what character we are removing from the string in a sequence.
 If we are removing \ttt{\q{}a\q{}} from the above example, we want to concatenate \ttt{\q{}a\q{}} onto the front of the recursive call, then recurse on the rest of the string, but pass \ttt{\q{}a\q{}} as a parameter.
 Until we reach a non-\ttt{\q{}a\q{}} character, we simply recurse on the rest of the string without concatenating a character.
-
 Notice that the initial call to the helper method, namely \ttt{remSeqCharsHelper}, contains the null character literal, i.e., \ttt{\q{}\textbackslash{}0\q{}}. 
-If readers prefer, they can instead make use of one-character strings instead of characters and pass \ttt{null} (or even the empty string).
-The tail recursive counterpart moves the concatenation operations into a parameter, as we have seen before.
+% If readers prefer, they can instead make use of one-character strings instead of characters and pass \ttt{null} (or even the empty string).
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RemoveSequentialCharsTester {
 
@@ -711,7 +706,7 @@ class Pow {
 
 \myexample{Let's design a method to count the number of digits in a positive integer.}
 It's important to realize that we can write an algorithm to compute such a value using only mathematical operations, i.e., exponents and logarithms.
-We will employ a recursive algorithm to further demonstrate the power of recursion.
+% We will employ a recursive algorithm to further demonstrate the power of recursion.
 Let's first design the standard recursive algorithm and then write the tail recursive variant.
 The standard recursive algorithm has a base case, namely when its input is less than~$10$. If so, we know the number has only one digit and can return accordingly.
 We recurse on the number after removing a digit.
@@ -719,6 +714,7 @@ Digits are removed by dividing the input by ten.
 The tail recursive algorithm delegates the return value to an accumulator.
 By designing the tests for one of the algorithms, we inadvertedly write tests for the other!
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -793,7 +789,11 @@ class CountDigit {
 So, we have explored both standard and tail recursive methods, and how a programming language might optimize tail recursive calls. 
 The thing is, tail recursion has a direct correspondence to loops, i.e., \ttt{while}. 
 In fact, some programming languages convert all tail recursive functions into their iterative counterparts, alleviating the need for a stack whatsoever.
-Replacing tail recursion, or tail recursive calls, with iteration is known as \emph{tail call optimization}\index{tail call optimization}.\footnote{Java is one of many imperative languages that does not support tail call optimization, meaning that tail calls, unfortunately, continue to blow up the procedure call stack.} 
+Replacing tail recursion, or tail recursive calls, with iteration is known as \emph{tail call optimization}\index{tail call optimization}.
+As we stated, Java is not a language that supports tail call optimization out of respect for maintaining the call stack when debugging.
+Moreover, Java allows the programmer to investigate the call stack explicitly in their program.
+Employing tail call optimization would break existing programs that rely on the ability to walk through stack frames.
+The fact that Java does not perform tail call optimization means that tail calls continue to blow up the call stack.
 In the next section, we will discuss a translation pipeline from tail recursion to loops in greater detail, as well as describe the syntax and semantics of Java iteration structures.
 
 % \begin{enumerate}
