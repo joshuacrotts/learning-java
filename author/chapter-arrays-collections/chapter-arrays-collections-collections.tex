@@ -1,6 +1,6 @@
 \section{Collections}
 \label{section:chapter-arrays-collections-collections}
-In this section we will introduce the \emph{Java Collections API}. In doing so we will discuss three broad classifications of data structures provided by the API:
+In this section we will introduce the \emph{Java Collections framework}. In doing so we will discuss three broad classifications of data structures provided by the API:
 
 \begin{enumerate}
     \item Sequential-based
@@ -1287,7 +1287,7 @@ Figure~\ref{fig:queues} shows some of these handy methods.
   \label{fig:priorityqueues}
 \end{figure}
 
-\emph{Priority queues}\index{priority queues} are the final sequential data structure that we will discuss from the Collections API\@. 
+\emph{Priority queues}\index{priority queues} are the final sequential data structure that we will discuss from the Collections framework\@. 
 Though, placing priority queues in this section feels a bit disingenuous because, while priority queues have an ordering in their underlying data structure, saying that elements correspond to an index is a misnomer. 
 Priority queues, as the name suggests, rank items in the queue by a score called the \emph{priority}\index{priority}. 
 Elements with the highest priority are at the ``front'' of the priority queue. 
@@ -2053,7 +2053,7 @@ All of the Java collections implement \ttt{Iterator}, and we can retrieve the co
 
 Upon retrieving an iterator, we can use a \ttt{while} loop to continuously retrieve elements in the data structure until no more elements remain to be visited. 
 The elements of the iterator are generated on-the-fly; only upon calling \ttt{next} is the value truly read from the data structure itself. 
-Much like the rest of the Collections API, we must pass the parameterized type to the \ttt{Iterator} initialization, so that it knows what type to substitute for \ttt{T}.
+Much like the rest of the Collections framework, we must pass the parameterized type to the \ttt{Iterator} initialization, so that it knows what type to substitute for \ttt{T}.
 
 \myexample{Let's use an iterator to traverse over a \ttt{LinkedHashSet}, whose element ordering is determined by their insertion order, meaning that the iterator should produce them in the order that they were inserted.}
 
@@ -2762,7 +2762,7 @@ An \ttt{Optional} is a container that may or may not contain a value.
 If an \ttt{Optional} does contain a value, we access the value directly via \ttt{.get}. 
 If we do not know whether or not it contains a value, we can use \ttt{.orElse($t$)}, which returns the encapsulated value if it exists, or~$t$ otherwise. 
 We can also check, prior to a retrieval, if the \ttt{Optional} contains a value via the \ttt{.isPresent} method. 
-\ttt{Optional} is generic and works over any class type, like almost all other classes from the collections API. 
+\ttt{Optional} is generic and works over any class type, like almost all other classes from the collections framework. 
 To test the return value of a stream operation that returns an \ttt{Optional}, e.g., \ttt{max}, we instantiate an \ttt{Optional} that wraps the resulting value if it exists, or \ttt{Optional.empty()} otherwise.
 
 \enlargethispage{-1\baselineskip}

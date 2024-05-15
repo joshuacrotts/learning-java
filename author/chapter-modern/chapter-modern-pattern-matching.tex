@@ -36,8 +36,9 @@ We return the result of a \ttt{switch} expression, which matches against the pos
 We create a temporary binding for the identifier \ttt{shape} that is bound to the \ttt{IShape} object passed into the method. 
 This, in effect, casts the \ttt{IShape} to the subtype that is pattern matched, and we can then access the respective non-private methods and fields of the specific subtype rather than being restricted to only members of the \ttt{IShape} interface.
 
+\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
-imoprt java.lang.IllegalArgumentException;
+import java.lang.IllegalArgumentException;
 
 class PatternMatching {
 
@@ -51,7 +52,7 @@ class PatternMatching {
       case Rectangle r -> 2 * r.getWidth() + 2 * r.getHeight();
       case Circle c    -> 2 * Math.PI * c.getRadius();
       case Triangle t  -> 3 * t.getSideLength();
-      default -> throw new IllegalArgumentException("perimeter: bad shape "+s);
+      default -> throw new IllegalArgumentException("perimeter: bad shape " + s);
     };
   }
 }
@@ -106,13 +107,14 @@ class Factorial {
 \end{lstlisting}
 
 Notice that we have to use the wrapper class, since Java permits only special types of pattern matching over the primitive data types, and otherwise works with objects. 
-As an example, we could replace the first case with a match against the literal zero, since Java autounboxes the \ttt{Integer} object to a primitive \ttt{int}, e.g., \ttt{case 0 -> 1;}. 
+We could replace the first case with a match against the literal zero, since Java autounboxes the \ttt{Integer} object to a primitive \ttt{int}, e.g., \ttt{case 0 -> 1;}. 
 Unfortunately, we cannot use guard expressions over primitives.
 
 Pattern matching is not restricted to switch-case expressions. 
 We can also use pattern matching in cases where we check the instance of an object, namely in the \ttt{equals} method. 
 As an example, the traditional \ttt{equals} methods look like the following:
 
+\enlargethispage{-4\baselineskip}
 \begin{verbnobox}[\small]
 @Override
 public boolean equals(Object o) {
@@ -162,6 +164,7 @@ class RectangleTester {
 }
 \end{lstlisting}
 
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class Rectangle implements IShape {
 
@@ -199,6 +202,7 @@ Instead of the interface approach that we took before, we will use records and p
 With this, our interpreter makes use of \ttt{var}: a new keyword for a variable whose type is inferred from the type of the expression on the right-hand side of the assignment operator. 
 Type inferencing allows us to omit the specification of verbose and complex types such as \ttt{BigDecimal}.
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -209,11 +213,9 @@ class EvaluatorTest {
   @Test
   void eval() {
     assertAll(
-      () -> assertEquals(new BigDecimal("42"),
-                         Evaluator.eval(new Number(42))),
-      () -> assertEquals(new BigDecimal("42"),
-                         Evaluator.eval(new Add(new Number(41), 
-                                                new Number(1)))));
+      () -> assertEquals(new BigDecimal("42"), Evaluator.eval(new Number(42))),
+      () -> assertEquals(new BigDecimal("42"), Evaluator.eval(new Add(new Number(41), 
+                                                                      new Number(1)))));
   }
 }
 \end{lstlisting}
@@ -270,6 +272,7 @@ Our language capabilities will be greatly reduced for the time being, however, s
 Therefore, let's restrict the language to supporting numbers, symbols, and s-expressions, i.e., expressions enclosed by parentheses. 
 Below we present some examples of expressible programs this language.
 
+\newpage %ugh
 \begin{verbnobox}[\small]
 7
 (+ 2 40)
@@ -301,7 +304,9 @@ Let's use a Java record to represent a \ttt{Token}, and an enumeration for the t
 We will integrate tokens into the lexer tests, so it makes little sense to write separate tests for tokens and token types.
 
 \begin{lstlisting}[language=MyJava]
-enum TokenType { L_PAREN, R_PAREN, NUMBER, SYMBOL }
+enum TokenType { 
+  L_PAREN, R_PAREN, NUMBER, SYMBOL 
+}
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
@@ -314,6 +319,7 @@ Then, we iterate over these strings and enqueue an instance of \ttt{Token} with 
 For identifying numbers, we determine if an attempt to parse the string as a number results in an exception and, if not, it resolves to a \ttt{NUMBER} token. 
 Otherwise, the only option (assuming we identify parentheses before this case) is some kind of symbol token.
 
+\newpage %god damn it
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -355,6 +361,7 @@ class LexerTester {
 }
 \end{lstlisting}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Collectors;
 import java.util.LinkedList;
@@ -455,6 +462,7 @@ class ParserTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Objects;
 import java.util.Queue;
@@ -477,7 +485,9 @@ class Parser {
           throw new IllegalArgumentException("parse: unexpected token " 
                                             + tokenList.peek().type());
       };
-    } else { return null; }
+    } else { 
+      return null; 
+    }
   }
 
   /**

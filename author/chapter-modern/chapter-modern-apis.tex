@@ -28,10 +28,9 @@ Possible sources of error include a malformed URL, a server that is down, or a s
 On the other hand, if the connection succeeded, we read the response back from the server via some input stream reader. 
 The simplest way is to use a \ttt{BufferedReader} to read the response line-by-line.
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.StringBuilder;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -57,23 +56,17 @@ class ApiConnection {
       URL url = new URL(baseUrl.toString());
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setRequestMethod("GET");
-      if (conn.getResponseCode() != 200) {
-        throw new RuntimeException("response code was not 200.");
-      } else {
+      if (conn.getResponseCode() != 200) { throw new RuntimeException("bad resp code"); } 
+      else {
         // Read the response from the connection line-by-line.
         try (BufferedReader br = new BufferedReader(
-                                   new InputStreamReader(
-                                     conn.getInputStream()))) {
-          StringBuffer response = new StringBuffer();
+                                  new InputStreamReader(conn.getInputStream()))) {
+          StringBuilder response = new StringBuilder();
           String inputLine = null;
-          while ((inputLine = input.readLine()) != null) { 
-            response.append(inputLine); 
-          }
+          while ((inputLine = input.readLine()) != null) { response.append(inputLine); }
         }
       }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    } catch (IOException e) { e.printStackTrace(); }
   }
 }
 \end{lstlisting}
@@ -102,6 +95,8 @@ We have a \ttt{JSONObject} instance, namely~$e$, that encapsulates the parsed JS
 From looking at the response, as we said, the temperature is a key inside the \ttt{"current"} object, which resides within~$e$. 
 We access this object by calling \ttt{.getJSONObject} on the JSONObject, which, itself, is a JSONObject that we can manipulate. 
 Finally, we retrieve the value associated with the \ttt{"temperature"} key, that of which we know to be a \ttt{double}, i.e., a numeric temperature.
+
+\newpage %ugh
 
 \begin{lstlisting}[language=MyJava]
 import java.io.BufferedReader;

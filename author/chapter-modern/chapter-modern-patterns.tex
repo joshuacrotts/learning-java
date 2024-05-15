@@ -42,15 +42,20 @@ class Player {
 Now, we will design two subtypes of \ttt{ICommand}, namely \ttt{MoveCommand} and \ttt{JumpCommand}, that each implement \ttt{execute}, where the only difference is the intended behavior. 
 The \ttt{MoveForward} command receives the \ttt{Player} instance and a direction, whereas \ttt{JumpCommand} only needs to receives a \ttt{Player} instance. 
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class MoveCommand implements ICommand {
 
   private Player player;
 
-  MoveCommand(Player p) { this.player = p; }
+  MoveCommand(Player p) { 
+    this.player = p; 
+  }
 
   @Override
-  public void execute() { this.player.setX(this.player.getX() + 1); }
+  public void execute() { 
+    this.player.setX(this.player.getX() + 1); 
+  }
 }
 \end{lstlisting}
 
@@ -59,10 +64,14 @@ class JumpCommand implements ICommand {
   
   private Player player;
 
-  JumpCommand(Player p) { this.player = p; }
+  JumpCommand(Player p) { 
+    this.player = p; 
+  }
 
   @Override
-  public void execute() { this.player.setY(this.player.getY() + 1); }
+  public void execute() { 
+    this.player.setY(this.player.getY() + 1); 
+  }
 }
 \end{lstlisting}
 
@@ -82,9 +91,13 @@ class InputHandler {
     this.yButton = yButton;
   }
 
-  void pressXButton() { this.xButton.execute(); }
+  void pressXButton() { 
+    this.xButton.execute(); 
+  }
 
-  void pressYButton() { this.yButton.execute(); }
+  void pressYButton() { 
+    this.yButton.execute(); 
+  }
 }
 \end{lstlisting}
 
@@ -100,8 +113,7 @@ class CommandTester {
   @Test
   void testCommand() {
     Player p = new Player();
-    InputHandler handler = new InputHandler(new MoveCommand(p), 
-                                            new JumpCommand(p));
+    InputHandler handler = new InputHandler(new MoveCommand(p), new JumpCommand(p));
     assertAll(
       () -> assertEquals(0, p.getX()),
       () -> assertEquals(0, p.getY()),
@@ -143,6 +155,7 @@ class FractionTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Fraction {
 
@@ -197,6 +210,7 @@ class FractionFactoryTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class FractionFactory {
 
@@ -215,8 +229,11 @@ class FractionFactory {
    * @return a new instance of Fraction, or a shared instance if cached.
    */
   Fraction create(int num, int den) {
-    return den >= 1 && den <= LIMIT ? this.CACHE[den - 1] 
-                                    : new Fraction(num, den);
+    if (den >= 1 && den <= LIMIT) {
+      return this.CACHE[den - 1];
+    } else {
+      return new Fraction(num, den);
+    }
   }
 }
 \end{lstlisting}
@@ -228,13 +245,14 @@ The idea is that we want to read in these records and create a \ttt{Person} obje
 We could store `type' of person as, say, an enum, or a string, but this is not ideal, because the type of the person is already available as a property of the class itself. 
 Instead, let's use the \emph{factory} pattern to create a \ttt{Person} object for each record, and the factory will instantiate the subclass type of person based on the record.
 
-Let's design the \ttt{abstract} \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{String getRole()} method to-be overridden in each subclass. 
+Let's design the abstract \ttt{Person} class, which contains a \ttt{name} field, a \ttt{getName} method, and an \ttt{abstract} \ttt{String getRole()} method to-be overridden in each subclass. 
 We will also design the \ttt{Student}, \ttt{Faculty}, and \ttt{Staff} classes, which extend \ttt{Person} and contain the overridden \ttt{getRole} method that returns the type of person. 
 Instead of directly instantiating \ttt{Person} objects, we take advantage of the factory pattern by writing the \ttt{PersonFactory} class, which contains a \ttt{create} method that receives a \ttt{name} and \ttt{role} as parameters, and returns the relevant subclass of \ttt{Person}.
 
 To read the input file, we will design the \ttt{PersonDatabase} class, which stores a \ttt{Map} of \ttt{Person} objects, where the key is the name of the person and the value is the \ttt{Person} object. 
 The \ttt{PersonDatabase} class contains a \ttt{readFile} method that takes a \ttt{String} argument representing the path to the file, and reads the file line-by-line, creating a \ttt{Person} object for each record and storing it in the \ttt{Map}.
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -281,6 +299,7 @@ class PersonFactory {
 }
 \end{lstlisting}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 abstract class Person {
 
@@ -394,6 +413,7 @@ class UrlTester {
 }
 \end{lstlisting}
 
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Url {
 
@@ -458,6 +478,7 @@ We will use a simplified version of the programming language that we wrote an in
 First, we need to design the visitor interface, which contains a \ttt{visit} method for each type of expression, namely \ttt{NumNode}, \ttt{PrimNode}, \ttt{VarNode}, and \ttt{LetNode}. 
 Each variant of the \ttt{visit} method receives an expression of the corresponding type as a parameter and returns a string.
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 interface IExpressionVisitor {
   
@@ -501,6 +522,7 @@ The new class, namely \ttt{ExpressionPrinterVisitor}, overrides the respective m
 The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{IExpressionVisitor} to \ttt{ExpressionPrinterVisitor}, followed by a call to \ttt{visit} on the root node of the expression tree. 
 The result is a string representation of the expression, which we then verify.
 
+\enlargethispage{-8\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -533,6 +555,7 @@ class ExpressionPrinterVisitorTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.lang.StringBuilder; 
 
@@ -613,6 +636,7 @@ Fruits have a name and a weight in ounces, milk is either skim milk or regular (
 While we are in the realm of modern Java, let's once again use records to our advantage to remove redundant code. 
 Conveniently, this means that we only have to override the \ttt{visit} method in each record type.
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 record Fruit(String name, int oz) implements IGroceryItem {
 
@@ -650,7 +674,6 @@ For the sake of the example, fruits are priced at~$\$0.25$ per ounce, milk is pr
 If the milk is skim, we add~$\$0.50$ to its price.
 
 The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{IGroceryItemVisitor} to \ttt{GroceryListTotalVisitor}, followed by a call to \ttt{visit} on each item in the grocery list. 
-The result is the total price of the grocery list, which we then verify.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -661,21 +684,18 @@ class GroceryListTotalVisitorTester {
   @Test
   void testGroceryListTotalVisitor() {
     IGroceryItemVisitor<Double> vs = new GroceryListTotalVisitor();
-    List<IGroceryItem> groceryList = List.of(
-      new Fruit("apple", 4),
-      new Fruit("banana", 2),
-      new Milk(true, 128),
-      new Cereal("Tony the Tiger", 16));
+    List<IGroceryItem> groceryList = List.of(new Fruit("apple", 4),
+                                             new Fruit("banana", 2),
+                                             new Milk(true, 128),
+                                             new Cereal("Tony the Tiger", 16));
 
     assertAll(
-      () -> assertEquals(0, 
-                         List.of().stream()
-                                  .mapToDouble(item -> item.visit(vs))
-                                  .sum()),
-      () -> assertEquals(5.60, 
-                         groceryList.stream()
-                                    .mapToDouble(item -> item.visit(vs))
-                                    .sum()));
+      () -> assertEquals(0, List.of().stream()
+                                     .mapToDouble(item -> item.visit(vs))
+                                      .sum()),
+      () -> assertEquals(5.60, groceryList.stream()
+                                          .mapToDouble(item -> item.visit(vs))
+                                          .sum()));
   }
 }
 \end{lstlisting}
