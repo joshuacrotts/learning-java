@@ -80,13 +80,16 @@ To execute this test (and only this test) method, click the green arrow immediat
 This will run the tests inside the method.
 At the bottom of the IDE, any failed assertions will be displayed.
 Of course, the second one fails because we have no meaningful implementation of \ttt{fToC} yet. 
+
 Should we want to write multiple test methods for different methods in the source file, we can do so easily. 
-Head back to the \ttt{TempConverter.java} file and write the \ttt{c2f} method, which converts a temperature in degrees Celsius to degrees Fahrenheit. 
-Then, click on the class name, ``Show Context Actions'', and ``Create Test.'' 
-The same dialog box with the selectable methods appears, so be sure to check \ttt{c2f}. 
-Hitting ``OK'' at this point displays an error dialog box sayhing that the test file already exists. 
-This is correct and IntelliJ is making sure that we are okay with updating the contents of that file by introducing a new method stub for testing \ttt{c2f}. 
-Hit ``OK'' and you will see that the \ttt{c2f} method now has a corresponding tester method. 
+\begin{enumerate}[label=(\arabic*)]
+  \item Head back to the \ttt{TempConverter.java} file and write the \ttt{c2f} method, which converts a temperature in degrees Celsius to degrees Fahrenheit. 
+  \item Then, click on the class name, ``Show Context Actions'', and ``Create Test.'' 
+  \item The same dialog box with the selectable methods appears, so be sure to check \ttt{c2f}. 
+  \item Hitting ``OK'' at this point displays an error dialog box sayhing that the test file already exists. This is correct and IntelliJ is making sure that we are okay with updating the contents of that file by introducing a new method stub for testing \ttt{c2f}. 
+  \item Hit ``OK'' and you will see that the \ttt{c2f} method now has a corresponding tester method. 
+\end{enumerate}
+
 Writing assertions in this method is similarly straightforward, and if we do not want to rerun the tests for \ttt{fToC} just yet, we do not have to; clicking on the arrows beside a tester method's signature runs only the assertions inside that particular testing method. 
 Should we want to run all the tests, we do not need to click each arrow, as that would be cumbersome. 
 Instead, at the class declaration, i.e., \ttt{class TempConverterTest}, there is another green arrow; clicking this button runs all declared test methods inside our class definition.
@@ -94,7 +97,7 @@ Instead, at the class declaration, i.e., \ttt{class TempConverterTest}, there is
 One issue that arises when running tests with \ttt{assertEquals} and other variants is that, if an assertion fails, JUnit stops execution at the point of failure and refuses to run subsequent tests.
 This is not very convenient, so to circumvent the issue, we wrap all assertion statements inside a call to \ttt{assertAll}, which acts as a ``dispatch'' of sorts. 
 We provide, to \ttt{assertAll}, a list of assertions to execute, and it executes them one after another, regardless of if one fails. 
-A syntax warning to be aware of is that each assertion must be prefaced with `\ttt{() -> }', without the quotes, and all but the last assertion must have commas. 
+A syntax warning to be aware of is that each assertion must be prefaced with `\ttt{() -> }', without the quotes, and all but the last assertion must have commas.\footnote{The significance of \ttt{() ->} is unimportant for now.} 
 Below is an example.
 
 \begin{lstlisting}[language=MyJava]
