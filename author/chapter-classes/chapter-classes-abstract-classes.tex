@@ -187,7 +187,7 @@ class AxisAlignedBoundingBoxObjectTester {
 }
 \end{lstlisting}
 
-We need to translate our circles into axis-aligned bounding box, but what does that mean? In short, we convert the given radius into the corresponding diameter, and designate this diameter as the width and height of the bounding box. Rectangular objects, on other hand, need no such fancy translation, since a bounding box is a rectangle. Neither subclasses storetheir dimensions as instance variables, due to the fact that the superclass takes care of this for us.
+We need to translate our circles into axis-aligned bounding box, but what does that mean? In short, we convert the given radius into the corresponding diameter, and designate this diameter as the width and height of the bounding box. Rectangular objects, on other hand, need no such fancy translation, since a bounding box is a rectangle. Neither subclasses store their dimensions as instance variables, due to the fact that the superclass takes care of this for us.
 
 The question that we anticipate many readers are thinking of is, why do we even distinguish objects of differing ``types'' if they both implement collision detection in the same fashion? Since we are working in the context of a game, the way we draw these objects is certainly different! Let's, for the sake of emphasizing the distinctions, design a \ttt{IDrawable} interface, which provides one method: \ttt{void draw(Graphics2D g2d)}, which gives us a \ttt{Graphics2D} object. We will not discuss, nor do we really care about the innards of a graphics library aside from the fact that it contains two primitive methods: \ttt{drawOval(int x, int y, int w, int h)} and \ttt{drawRect(int x, int y, int w, int h)}. Therefore our two object subclasses will implement \ttt{IDrawable} and override the method differently.
 
@@ -759,7 +759,7 @@ Using environments, we look up the variable identifier and return its associated
 But, where does the environment come from? 
 Environments are passed as an argument to the \ttt{eval} method, which means that all previously-existing \ttt{eval} methods must be updated to accept an environment as an argument.
 
-Variable nodes, on their own, are simple yet relatively unuseful, and simply cannot exist without a means of introducing them into the environment context. 
+Variable nodes, on their own, are simple yet relatively useless, and simply cannot exist without a means of introducing them into the environment context. 
 This is where the \ttt{LetNode} class comes into play. 
 The \ttt{LetNode} class introduces a new variable binding into the environment. 
 A \ttt{LetNode} has two abstract syntax tree children: an expression and a body. The expression is evaluated and its value is bound to the provided variable identifier in an \emph{extended environment} $e_2$, whose parent is the current environment~$e_1$. The body of the \ttt{LetNode} is evaluated with respect to the extended environment, i.e.,~$e_2$.

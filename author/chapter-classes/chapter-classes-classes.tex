@@ -54,7 +54,7 @@ class Point {
 We now want a way to create an instance of a \ttt{Point}. 
 Instances of objects are made using the \ttt{new} keyword, followed by the class constructor. 
 \emph{Constructors}\index{constructor} are special methods that instantiate an instance of a class. 
-Our \ttt{Point} class constructor will receive parameterss, which we will use to initialize the relevant~$x$ and~$y$ instance variables. 
+Our \ttt{Point} class constructor receive parameters that we will use to initialize the relevant~$x$ and~$y$ instance variables. 
 So, let's design the constructor for our \ttt{Point} class. 
 Constructors, in general, should be \ttt{non-private}, as we need to call them from outside the class definition. 
 On a case-by-case basis, this changes accordingly, as some classes are local to another class definition, and are thereby private.\footnote{There are also design patterns, as exemplified in Chapter~\ref{chapter-modern}, that rely on a class constructor being private to prohibit unnecessary object instantiation.} 
@@ -410,7 +410,7 @@ class PointTester {
     Point p3 = new Point(0, 0);
     assertEquals(3, Point.getCount());
 
-    // Even though we lose reference to p, the static varible still increments!
+    // Even though we lose reference to p, the static variable still increments!
     for (int i = 0; i < 10; i++) {
       Point p = new Point();
     }
@@ -903,7 +903,7 @@ We will also write a \ttt{main} method that runs the game.
 We will not write any tests for this class, since it interacts with the user through the \ttt{Scanner} class.
 
 It should be noted that this version of ``twenty-one'' only has the objective of getting as close as possible to a hand containing cards with a value that sums to twenty one, compared to a more traditional card game where multiple players exist, with a dealer to distribute cards. 
-As exercises, there are many ways to enhance the game, including adding a ``high score'' board to keep track of previous game outcomes, introducing CPU players to automatically poll cards from the deck to beat the main player, or even adding more human players through standard input/output iteractions. 
+As exercises, there are many ways to enhance the game, including adding a ``high score'' board to keep track of previous game outcomes, introducing CPU players to automatically poll cards from the deck to beat the main player, or even adding more human players through standard input/output interactions. 
 
 \enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]

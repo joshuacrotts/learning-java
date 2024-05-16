@@ -377,7 +377,7 @@ We could, for instance, design a class that implements the \ttt{MouseListener} i
 Then, inside a Java Swing graphical component, we might hook the class as a mouse listener and, when the user clicks the mouse, the \ttt{mouseClicked} method is invoked.
 
 \myexample{An amazing insight into the power of interfaces is already present in Java, but deriving it ourselves is useful.} 
-Consider the notion of first-class methods: the concept in which methods and data are equivalent, wherein both can be passed to and returned from methods. In Java, we can pass methods around as arguments, mimicing first-class methods, by designing a \emph{functional interface}.
+Consider the notion of first-class methods: the concept in which methods and data are equivalent, wherein both can be passed to and returned from methods. In Java, we can pass methods around as arguments, mimicking first-class methods, by designing a \emph{functional interface}.
 
 Let's design the generic \ttt{Function<T, V>} interface, which quantifies over two types \ttt{T}, representing the input type, and \ttt{V}, representing the output type. 
 The \ttt{Function<T, V>} interface has a single static method, \ttt{apply}, which receives an argument of type \ttt{T} and returns a value of type \ttt{V}. 
@@ -472,7 +472,7 @@ class FunctionMap {
 When using it, we do not need to design a separate \ttt{AddOne} class to implement the interface; we can instead opt to use method referencing via the \ttt{::} operator. 
 Let's rewrite the \ttt{addOne} example doing so. 
 Concurrently, we will show off the fact that Java autoboxes and unboxes primitives into wrapper class counterparts in the functional interface, meaning that our \ttt{addOne} method does not need to receive and return objects, but rather primitives, which are easier to work with. 
-Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, since Java automatically converts them into \ttt{Function} objects, mimicing the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}
+Moreover, lambda expressions are passable to methods that receive \ttt{Function} arguments, since Java automatically converts them into \ttt{Function} objects, mimicking the autoboxing treatment of primitive datatypes.\footnote{In the tester code snippet below, we could omit the \ttt{FunctionMapTester::} type qualification because the method is defined inside the same class that it is used.}
 
 \enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -503,7 +503,7 @@ class FunctionMapTester {
 
 \myexample{Now that we have interfaces, we can write a very simple expression tree interpreter!} 
 What do we mean by this? 
-Consider the arithmatic expression `$5 + (3 + 4)$'. 
+Consider the arithmetic expression `$5 + (3 + 4)$'. 
 According to the standard order-of-operations, we evaluate the parenthesized sub-expressions first, then reduce outer expressions. 
 So, in our case, we add~$3$ and~$4$ to get~$7$, followed by an addition of~$5$. 
 We can represent this idea as an evaluation tree, where we travel from bottom-up, evaluating sub-expressions as they are encountered. 
@@ -614,7 +614,7 @@ We differentiate expressions with respect to a given variable, e.g.,~$x$, so we 
 
 Using some basic calculus derivative shortcuts/rules, we can easily think of two more types of expressions: numeric constants (e.g., $3$, $0$, $27$) and monomials (e.g., $ax^n$ where $a, n$ are integers). 
 So, let's design the \ttt{ConstantExpression} and \ttt{MonomialExpression} classes, the former of which has a constructor that receives a single integer~$c$, whereas the latter stores the variable~$v$, the coefficient~$a$, and finally the exponent~$n$. 
-To make working with these expressions easier, as well as ensuring testibility, we will override the \ttt{equals}, \ttt{hashCode}, and \ttt{toString} methods.
+To make working with these expressions easier, as well as ensuring testability, we will override the \ttt{equals}, \ttt{hashCode}, and \ttt{toString} methods.
 
 The derivative of a constant~$c$ is always zero, because the slope of a straight line, namely $f(x) = c$ is zero, i.e., non-changing. 
 On the other hand, a monomial follows a different rule based off its coefficient and exponent: the derivative of $ax^n$ is $anx^{n-1}$ for any $n > 1$. 
@@ -938,8 +938,6 @@ class EmployeeFirstNameComparator implements Comparator<Employee> {
   }
 }
 \end{lstlisting}
-
-
 
 \enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]

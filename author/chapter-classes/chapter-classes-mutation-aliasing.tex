@@ -699,7 +699,7 @@ class DoublyLinkedList<T> {
 
 Using the iterator in \ttt{toString} is straightforward: we have a while loop that continues until no more elements are present. We complete two tasks at the same time by having an iterator, which then makes subsequent traversals over the list easier.
 
-Now we can write methods to add, retrieve, and remove elements from the list. To add an elemenet, we need to take the links of \ttt{first} and \ttt{last}, and reassign them accordingly to remain consistent with our doubly-linked list property. If the list is empty, then we just have to assign the new node~$n$ to both the \ttt{first} and \ttt{last} references. Otherwise, we set the ``next'' pointer of \ttt{last} to~$n$, and set the ``previous'' pointer of~$n$ to \ttt{last}. 
+Now we can write methods to add, retrieve, and remove elements from the list. To add an element, we need to take the links of \ttt{first} and \ttt{last}, and reassign them accordingly to remain consistent with our doubly-linked list property. If the list is empty, then we just have to assign the new node~$n$ to both the \ttt{first} and \ttt{last} references. Otherwise, we set the ``next'' pointer of \ttt{last} to~$n$, and set the ``previous'' pointer of~$n$ to \ttt{last}. 
 
 \enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -876,10 +876,10 @@ class DoublyLinkedList<T> {
 
 Associations lists, as their name implies, associate values to other values, like a map. In dynamically-typed languages, e.g., Scheme, association lists accept any type as their key and any type as their value. Therefore, we could have an association list that maps a string to an integer, or an integer to a list of strings, and so on. Should we want to use truly arbitrary types in the list, we can assign \ttt{Object} to both key and value types.
 
-Our association list will support several methods that are related to their functional programming eqiuvalents. 
+Our association list will support several methods that are related to their functional programming equivalents. 
 In particular, we want a \ttt{lookup} method to retrieve the associated value of some element and an \ttt{extend} method to add a new association. 
 Note that the \ttt{extend} method will, rather than modifying the current association list, return a new association list with the new association added. 
-We want to preserve the idea of immutability, which is a common theme in functoinal programming.
+We want to preserve the idea of immutability, which is a common theme in functional programming.
 Association lists, therefore, need to have a ``parent'' reference to keep track of those associations in the list that we extend from.\footnote{In the next section on abstract classes and interpreters, we will revisit this idea in greater detail.} 
 We will also override the \ttt{toString} method to print the associations in a readable format. 
 

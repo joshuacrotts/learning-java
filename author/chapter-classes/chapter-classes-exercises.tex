@@ -6,9 +6,9 @@
 
 \myexercise{1}{chapter-classes}{Design the \ttt{Person} class, which stores a \ttt{String} representing the person's first name, a \ttt{String} representing the person's last name, and an \ttt{int} representing the person's age in years. Its constructor should receive these three values and store them in the instance variables. Be sure to write instance accessor and mutator methods for modifying all three fields. That is, you should write \ttt{getFirstName()}, \ttt{setFirstName(String s)}, and so forth, to access and modify the fields directly.}
 
-\myexercise{1}{chapter-classes}{Design the \ttt{Employee} class, which stores the employee's first and last names as strings, their birthyear as an integer, their yearly salary as a double (we will assume that all employees are paid some value greater than zero), and their employee ID as a string.}
+\myexercise{1}{chapter-classes}{Design the \ttt{Employee} class, which stores the employee's first and last names as strings, their birth year as an integer, their yearly salary as a double (we will assume that all employees are paid some value greater than zero), and their employee ID as a string.}
     
-To make things interesting, assume that an employee's ID is not alterable and must be set in the constructor. The employee ID is constructed using the first five characters of their last name, the first letter of their first name, and the last two digits of their birthyear. For instance, if the employee's name is \ttt{Joshua Crotts} and their birthyear is \ttt{1999}, their employee ID is \ttt{CrottJ99}. Its constructor should receive the name, birthyear, and salary as parameters, but build the employee ID from the name and birthyear.
+To make things interesting, assume that an employee's ID is not alterable and must be set in the constructor. The employee ID is constructed using the first five characters of their last name, the first letter of their first name, and the last two digits of their birth year. For instance, if the employee's name is \ttt{Joshua Crotts} and their birth year is \ttt{1999}, their employee ID is \ttt{CrottJ99}. Its constructor should receive the name, birth year, and salary as parameters, but build the employee ID from the name and birth year.
 
 The instance variables, accessors, and mutators (where applicable) should be named as follows:
 \begin{itemize}
@@ -21,7 +21,7 @@ The instance variables, accessors, and mutators (where applicable) should be nam
 
 \myexercise{1}{chapter-classes}{As part of the \ttt{Employee} class, design the \ttt{void bonus()} method, which updates the salary of an employee. Calling \ttt{bonus} on an employee increases their salary by ten percent.}
 
-\myexercise{2}{chapter-classes}{As part of the \ttt{Employee} class, override the \ttt{equals} and \ttt{toString} methods from the \ttt{Object} class to compare two employees by their employee ID and to print the employee's name, birthyear, salary, and employee ID respectively separated by commas and a space. Do not add a comma and space after the last field.}
+\myexercise{2}{chapter-classes}{As part of the \ttt{Employee} class, override the \ttt{equals} and \ttt{toString} methods from the \ttt{Object} class to compare two employees by their employee ID and to print the employee's name, birth year, salary, and employee ID respectively separated by commas and a space. Do not add a comma and space after the last field.}
 
 \myexercise{2}{chapter-classes}{In this exercise you will design a class for storing employees. This relies on completing the \ttt{Employee} class exercise.}
 \begin{enumerate}[label=(\alph*)]
@@ -349,7 +349,7 @@ In this exercise you will design a class that operates over complex numbers.
     \item Implement the respective accessor and mutator methods for the real and imaginary components.
     \item Override the \ttt{public String toString()} method to return a string representation of the complex number of the form \ttt{"a + bi"} or \ttt{"a - bi"} when $b$ is either positive or negative. 
     \item Override the \ttt{public boolean equals(Object o)} method to compare two complex numbers. Of course, this entails comparing the real component and the imaginary component.
-    \item Override the \ttt{public int hashCode()} method to return a hashcode that encodes the \ttt{a} and \ttt{b} components respectively.
+    \item Override the \ttt{public int hashCode()} method to return a hash code that hashes the \ttt{a} and \ttt{b} components respectively.
     \item Design the \ttt{double magnitude()} method, which returns the magnitude of \ttt{this} complex number. The magnitude of a complex number is the square root of the sum of its components.
     \item Design the \ttt{double argument()} method, which returns the argument, or angle, of \ttt{this} complex number in radians. The argument of a complex number is computed as $\tan^{-1}{\frac{b}{a}}$.
     \item Design the \ttt{ComplexNumber conjugate()} method, which returns the conjugate of \ttt{this} complex number. The conjugate of a complex number flips the parity of the imaginary component. That is, if we have a complex number $a + bi$, its conjugate is $a - bi$.
@@ -633,7 +633,7 @@ Design the \ttt{void insert(int i, T v)} method, which inserts the value $v$ at 
 \myexercise{2}{chapter-classes}{This exercise involves the interpreter we wrote in the chapter.}
 Our interpreter, so far, is very memory inefficient. The reason is not apparent at first glance, but consider every time that we create a \ttt{NumberNode} or, especially, a \ttt{BooleanNode}. There are only two possibilities for a \ttt{BooleanNode}: true and false, which are immutable by design. So, the interpreter should never waste time allocating an instance thereof when it can simply reference an existing one. Such an optimization follows the ``factory'' design pattern, which we will explore in Chapter~\ref{chapter-modern}.
 
-Privatize the \ttt{BooleanNode} constructor, then design the \ttt{static BooleanNode of(boolean b)} method. It receives a boolean value $v$ and returns a reference to a pre-allocated static true or false node. Similarly, also privatize the \ttt{NumberNode} constructor and design the \ttt{static NumberNode of(double v)} method. This method returns a new \ttt{NumberNode} if the given value $v$ is not an integer between $[0, 1000)$. Otherwise, precache those integer values and store them in a private lookup table.
+Privatize the \ttt{BooleanNode} constructor, then design the \ttt{static BooleanNode of(boolean b)} method. It receives a boolean value $v$ and returns a reference to a pre-allocated static true or false node. Similarly, also privatize the \ttt{NumberNode} constructor and design the \ttt{static NumberNode of(double v)} method. This method returns a new \ttt{NumberNode} if the given value $v$ is not an integer between $[0, 1000)$. Otherwise, pre-cache those integer values and store them in a private lookup table.
 
 \myexercise{1}{chapter-classes}{This exercise involves the interpreter we wrote in the chapter.}
 Add the \ttt{"read-number"} and \ttt{"print"} primitive operations to the language. The latter is polymorphic, meaning it can print both numbers and booleans.
@@ -819,7 +819,7 @@ Finally, run the factorial test that we provided earlier in its JUnit suite. It 
 
 \myexercise{3}{chapter-classes}{Recall the unification exercise from Chapter~\ref{chapter-arrays-collections}. We can take the idea of unification a step further, which is the basis for almost all logic programming languages such as Prolog. For instance, take the expression \ttt{p(X, f(Y))}; attempting to unify this with \ttt{p(q(r(x)), f(b(x)))} returns a unification assignment of \ttt{X : q(r(x)), Y : b(x)}. It is possible for a unification to not return any possible assignment. As an example, unifying \ttt{p(a, b)} with \ttt{p(Y, Y)} returns an empty assignment because it is not possible to unify \ttt{a} with \ttt{Y}, then unify \ttt{b} with \ttt{Y}.}
 
-Design three classes: \ttt{Variable}, \ttt{Constant}, and \ttt{Predicate}. Each of these should implement the \ttt{IUnifiable} interface, which supplies one method: \ttt{Assignment unify(IUnifiable u, Assignment as)}. An \ttt{Assignment} is simply a mapping of \ttt{IUnifiable} objects to \ttt{IUnifiable} objects, resembling a map data structure. Variables in this small language will be represented as uppercased letters, whereas constants are lowercase. If two \ttt{IUnifiable} objects cannot be unified, then \ttt{unify} should return \ttt{null}.
+Design three classes: \ttt{Variable}, \ttt{Constant}, and \ttt{Predicate}. Each of these should implement the \ttt{IUnifiable} interface, which supplies one method: \ttt{Assignment unify(IUnifiable u, Assignment as)}. An \ttt{Assignment} is simply a mapping of \ttt{IUnifiable} objects to \ttt{IUnifiable} objects, resembling a map data structure. Variables in this small language will be represented as upper0cased letters, whereas constants are lowercase. If two \ttt{IUnifiable} objects cannot be unified, then \ttt{unify} should return \ttt{null}.
 
 Constants are straightforward: constants can only be unified with other constants if they are equivalent. Constants can only be unified with variables if that variable does not have an existing assignment and, if it does, it must be equal to \ttt{this} constant. Constants cannot be unified with predicates.
 

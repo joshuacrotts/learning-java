@@ -418,7 +418,7 @@ An employee may be promotable if it implements the \ttt{IPromotable} interface.
 First, let's consider the hierarchy and what properties each of these roles have to offer.
 
 An \ttt{Employee} contains a name and a unique identifier. 
-Employees can be either hourly or salaried, meaning they receive an hourly payrate or a yearly salary. 
+Employees can be either hourly or salaried, meaning they receive an hourly pay rate or a yearly salary. 
 Let's categorize these into \ttt{HourlyEmployee} and \ttt{SalaryEmployee}, where both extend the \ttt{Employee} class. 
 Accordingly, the \ttt{HourlyEmployee} class stores an hourly rate, whereas the \ttt{SalaryEmployee} class stores an annual salary amount.
 
@@ -692,7 +692,7 @@ class JuniorDeveloper extends Developer implements IPromotable {
 
   @Override
   public String toString() {
-    return String.format("%s, Junior Developer in %s with %dyoe", 
+    return String.format("%s, Junior Developer in %s with %d yoe", 
                           super.toString(),
                           super.getLanguage(),
                           super.getYearsOfExperience());
