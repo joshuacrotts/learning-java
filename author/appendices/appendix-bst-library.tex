@@ -1,0 +1,148 @@
+% \motto{All's well that ends well}
+\chapter{Binary Search Tree Library}
+\label{appendix-bst-library} % Always give a unique label
+% use \chaptermark{}
+% to alter or adjust the chapter heading in the running head
+
+In this Appendix, we provide the implementation to the binary search tree data structure described in~\Cref{chapter-arrays-collections}.
+To use the class, copy the provided code into your development environment, and import all necessary packages.
+
+\section*{Binary Search Tree Code}
+
+\begin{lstlisting}[language=MyJava]
+import java.util.Comparable;
+
+/**
+ * This interface represents any possible tree data structure that 
+ * supports insertion and search.
+ * @param <T> the type of elements stored in the tree. 
+ *            Whatever type is used must implement Comparable.
+ */
+interface Tree<T extends Comparable<T>> {
+
+  void insert(T data);
+
+  Tree<T> contains(T data);
+}
+\end{lstlisting}
+
+%\enlargethispage{1\baselineskip}
+\newpage %ugh
+\enlargethispage{-2\baselineskip}
+\begin{lstlisting}[language=MyJava]
+import java.util.Comparable;
+import java.util.Comparator;
+
+/**
+ * This class represents a binary search tree.
+ * The tree is ordered according to the natural order of 
+ * the elements or a custom comparator.
+ * The tree does not allow duplicate elements.
+ * @param <T> the type of elements stored in the tree. 
+ *            Whatever type is used must implement Comparable.
+ */
+class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
+
+  /**
+   * Data associated with this node.
+   */
+  private final T DATA;
+
+  /**
+   * Comparator instance used to order the elements.
+   * If no comparator is passed, the natural order of the elements is used.
+   */
+  private final Comparator<T> COMPARATOR;
+
+  /**
+   * Left child of this node, or null if it doesn't exist.
+   */
+  private BinarySearchTree<T> left;
+
+  /**
+   * Right child of this node, or null if it doesn't exist.
+   */
+  private BinarySearchTree<T> right;
+
+  /**
+   * Parent of this node.
+   */
+  private BinarySearchTree<T> parent;
+
+  BinarySearchTree(T data) {
+    this(data, Comparator.naturalOrder());
+  }
+
+  BinarySearchTree(T data, Comparator<T> comparator) {
+    this.DATA = data;
+    this.COMPARATOR = comparator;
+    this.left = this.right = this.parent = null;
+  }
+
+  /**
+   * Inserts a new (non-null, non-duplicate) element into this binary search tree.
+   * - If the element is less than this node, it is inserted into the left subtree.
+   * - If the element is greater than this node, it is inserted into the right subtree.
+   * @param data the element to insert.
+   */
+  @Override
+  public void insert(T data) {
+    if (this.COMPARATOR.compare(data, this.DATA) < 0) {
+      if (this.left == null) {
+        this.left = new BinarySearchTree<>(data, this.COMPARATOR);
+        this.left.parent = this;
+      } else {
+        this.left.insert(data);
+      }
+    } else {
+      if (this.right == null) {
+        this.right = new BinarySearchTree<>(data, this.COMPARATOR);
+        this.right.parent = this;
+      } else {
+        this.right.insert(data);
+      }
+    }
+  }
+
+  @Override
+  public Tree<T> contains(T data) {
+    if (this.COMPARATOR.compare(data, this.DATA) == 0) {
+      return this;
+    } else if (this.COMPARATOR.compare(data, this.DATA) < 0) {
+      return this.left == null ? null : this.left.contains(data);
+    } else {
+      return this.right == null ? null : this.right.contains(data);
+    }
+  }
+
+  @Override
+  public String toString() {
+    return (this.left == null ? "" : this.left + ", ") + this.DATA
+            + (this.right == null ? "" : ", " + this.right);
+  }
+
+  T getData() { 
+    return this.DATA; 
+  }
+
+  BinarySearchTree<T> getLeft() { 
+    return this.left; 
+  }
+
+  BinarySearchTree<T> getRight() {
+    return this.right; 
+  }
+
+  BinarySearchTree<T> getParent() { 
+    return this.parent; 
+  }
+
+  boolean isLeaf() { 
+    return this.left == null && this.right == null; 
+  }
+
+  boolean isRoot() { 
+    return this.parent == null; 
+  }
+}
+\end{lstlisting}
