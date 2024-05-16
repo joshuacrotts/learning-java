@@ -47,7 +47,7 @@ So, after we read the data from our file input stream object \ttt{fis}, inside t
 Expanding upon the \ttt{finally} block a bit more, it is a segment of code that \emph{always} executes, no matter if the preceding code threw an exception.\index{\ttt{finally}} 
 The \ttt{finally} block is useful for releasing resources, e.g., opened input streams, locks, that otherwise may not be released in the event of an exception or program redirection.\footnote{A lock is a construct used in concurrent programs, which we will exemplify in~\Cref{chapter-modern}.} 
 Many programmers often forget to close a resource, and then are left to wonder why a file is either corrupted, overwritten, or some other alternative. 
-To remediate this problem, Java provides the \emph{try-with-resources}\index{try-with-resources} construct, which autocloses the resource.\footnote{Not every resource can be autoclosed; the class of interest must explicitly implement the \ttt{AutoCloseable} interface to be wrapped inside a try-with-resources block.}
+To remediate this problem, Java provides the \emph{try-with-resources}\index{try-with-resources} construct, which auto-closes the resource.\footnote{Not every resource can be auto-closed; the class of interest must explicitly implement the \ttt{AutoCloseable} interface to be wrapped inside a try-with-resources block.}
 
 \myexample{Let's use the try-with-resources block to copy the contents of one file into another.} 
 In essence, we will design a program that opens a file input stream and a file output stream, each to separate files. Upon reading one byte from the first, we write that byte to the second.
@@ -181,7 +181,7 @@ The benefits of buffered I/O are not obvious to us as the programmers who use th
 We can, however, directly compare the execution time of buffered I/O to non-buffered I/O operations. 
 The following code shows two implementations of reading the contents of a very large file and echoing them to another. 
 We have defined two methods: \ttt{buffered} and \ttt{nonbuffered}, which utilize the \ttt{BufferedReader/Writer} and \ttt{FileInput/\-OutputStream} classes respectively. 
-Upon testing, we see that the buffered variant takes around three seconds to finish, whereas the nonbuffered version took over four minutes!
+Upon testing, we see that the buffered variant takes around three seconds to finish, whereas the non-buffered version took over four minutes!
 
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
@@ -789,7 +789,7 @@ In our tests, using a \ttt{TreeMap} amounted to a forty second performance penal
 
 \myexample{Our last example of working with File I/O is a simple Sudoku solver.} 
 \emph{Sudoku} is a game where the objective is to fill each row, column, and sub-grid with exactly one of possible entries, generally from~$1$ to~$9$. 
-There are nine~$3\times{3}$ subgrids that form a square, which results in a~$9\times{9}$ grid.
+There are nine~$3\times{3}$ sub-grids that form a square, which results in a~$9\times{9}$ grid.
 
 The most straightforward way to mechanically solve a Sudoku puzzle is via a backtracking algorithm. 
 That is, we try to place a number in a cell and, if it leads to success, we continue with the solution. 
@@ -855,7 +855,7 @@ This is a three-step process:
 \end{enumerate}
 
 What does it mean for a number to be valid? 
-A number is valid in its placement if it does not already exist in the row, column, or subgrid. 
+A number is valid in its placement if it does not already exist in the row, column, or sub-grid. 
 Let's write another private helper method that, when given a cell at row~$r$ and column~$c$, and a number~$n$, determines whether or not the number is valid.
 
 \begin{lstlisting}[language=MyJava]
@@ -883,7 +883,7 @@ class SudokuSolver {
       }
     }
 
-    // Check the subgrid.
+    // Check the sub-grid.
     int sr = (r / 3) * 3;
     int sc = (c / 3) * 3;
     for (int i = sr; i < sr + 3; i++) {
