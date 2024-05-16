@@ -59,7 +59,7 @@ static int fact(int n) {
 Second, we must describe the syntax of a loop. 
 A \texttt{while} loop is the construct of choice, and it has two components: a condition denoted as a predicate, and a body. 
 The loop checks to see if the given predicate is true and, if so, executes the body of the loop. 
-On the other hand, if the predicate is false, pogram control jumps down to immediately below the loop body. 
+On the other hand, if the predicate is false, program control jumps down to immediately below the loop body. 
 Each pass through the loop, it re-verifies that the predicate has not been falsified. 
 Unlike expressions, however, a \texttt{while} loop itself does not resolve to a value and is therefore a statement. 
 Let's continue by defining the predicate of our loop. 
@@ -954,7 +954,7 @@ class NewtonApproximation {
 To decrease the level of accuracy, we should pass a different value for the~$\mathit{delta}$ argument. 
 Conversely, to see a higher level of precision, a~$\mathit{delta}$ that is closer (but not equal to) to zero is necessary. 
 Our implementation of the square root algorithm is far from optimal, but it exists to demonstrate the unapparent necessity of \ttt{while} loops. 
-Though, it is important to note that, the power of both \ttt{for} and \ttt{while} is largely irrelevant when we concern ourselves only with their semantics; they are equal in expressbility.
+Though, it is important to note that, the power of both \ttt{for} and \ttt{while} is largely irrelevant when we concern ourselves only with their semantics; they are equal in their expressibility.
 This means that any \ttt{for} loop is representable with a \ttt{while} and vice-versa. 
 Depending on the circumstance, however, one might be preferable over the other. 
 We reiterate that \ttt{for} loops should be used when we know how many iterations there are for a certain task, whereas \ttt{while} loops are for indeterminate termination conditions. 
@@ -1266,7 +1266,7 @@ Suppose that we're designing the \ttt{int findFirstVowel(String s)} method, whic
 The \ttt{break} statement allows us to exit the loop body early upon finding a vowel. 
 We will traverse over the string characters using a \ttt{for} loop and terminate if we reach the end of the string, hence the inclusion of the \ttt{i < s.length()} condition. 
 Our implementation must also include a method to determine whether a character is a vowel. 
-We \emph{could} write ten separate clauses for checking if a character is the uppercased or lowercased version of the vowel, or we could eliminate half by simply converting the character to either case, and check only those characters.
+We \emph{could} write ten separate clauses for checking if a character is the uppercase or lowercase version of the vowel, but we can eliminate half of those checks by converting the character to either case, and check only those.
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
