@@ -126,7 +126,7 @@ cond(P, not(bicond(Q, not(R))))
 
 \myexercise{1}{chapter-crl}{Design the \ttt{boolean isInsideRectangle(double rx, double ry, double w, double h, double px, double py)} method that, when given a rectangle centered at $(r_x, r_y)$, width $w$ and height $h$ as well as a point $(p_x, p_y)$, returns whether the point is located strictly inside the rectangle.}
 
-\myexercise{2}{chapter-crl}{Carlo is shipping out orders of candy to local grocery stores. Boxes have a maximum weight defined by a value $w$, and we can (potentially) fit both small and large bars of candy in a box. Design the \ttt{int fitCandy(int s, int l, int w)} method that, when given a number of small bars $s$, large bars $l$, and maximum weight $w$, determines the number of small candy bars he can fit in the box. Large bars weigh five kilograms, and small bars weigh one kilogram. Note that Carlo always tries to fit large candies first before small. Return \ttt{-1} if it is impossible to fill the box with the given criteria. Below are some test examples. Hint: consider this as an analysis of three cases.}
+\myexercise{3}{chapter-crl}{Carlo is shipping out orders of candy to local grocery stores. Boxes have a maximum weight defined by a value $w$, and we can (potentially) fit both small and large bars of candy in a box. Design the \ttt{int fitCandy(int s, int l, int w)} method that, when given a number of small bars $s$, large bars $l$, and maximum weight $w$, determines the number of small candy bars he can fit in the box. Large bars weigh five kilograms, and small bars weigh one kilogram. Note that Carlo always tries to fit large candies first before small. Return \ttt{-1} if it is impossible to fill the box with the given criteria. Below are some test examples. Hint: consider this as an analysis of three cases.}
 
 \begin{verbnobox}[\small]
 fitCandy(4, 1, 9)      => 4
@@ -364,7 +364,7 @@ If you write tests for one of these methods, you should be able to propagate it 
 
 If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
 
-\myexercise{3}{chapter-crl}{This question has five parts. We need to provide some background for the question first. An \emph{encoded string} $S$ is one of the form:}
+\myexercise{2}{chapter-crl}{This question has five parts. We need to provide some background for the question first. An \emph{encoded string} $S$ is one of the form:}
 \begin{align*}
 S &= G^{*}\\
 G &= NL\\

@@ -1227,7 +1227,7 @@ to\z@{\kern0.55\wd0\vrule\@height0.45\ht0\hss}\box0}}}}
  \fi\chapter*{\contentsname \@mkboth{{\contentsname}}{{\contentsname}}}
  \@starttoc{toc}\if@restonecol\twocolumn\fi}
 
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{1}
 
 \def\l@part#1#2{\addpenalty{\@secpenalty}%
    \addvspace{1em \@plus\p@}%

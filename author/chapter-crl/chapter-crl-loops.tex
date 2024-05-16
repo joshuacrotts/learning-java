@@ -695,22 +695,15 @@ class DePolignacTester {
   @Test
   void testDePolignacTr() {
     assertAll(
-      () -> assertTrue(DePolignac.isDePolignacTr(1)),
-      () -> assertTrue(DePolignac.isDePolignacTr(127)),
-      () -> assertTrue(DePolignac.isDePolignacTr(149)),
-      () -> assertTrue(DePolignac.isDePolignacTr(331)),
-      () -> assertTrue(DePolignac.isDePolignacTr(959)),
-      () -> assertFalse(DePolignac.isDePolignacTr(128)),
+      () -> assertTrue(isDePolignacTr(1)),
+      () -> assertTrue(isDePolignacTr(959)),
       () -> assertFalse(DePolignac.isDePolignacTr(7)),
-      () -> assertFalse(DePolignac.isDePolignacTr(903)),
-      () -> assertFalse(DePolignac.isDePolignacTr(909)),
-      () -> assertFalse(DePolignac.isDePolignacTr(911)),
       () -> assertFalse(DePolignac.isDePolignacTr(1001)));
   }
 }
 \end{lstlisting}
 
-\enlargethispage{1\baselineskip}
+% \enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DePolignac {
   
@@ -727,8 +720,7 @@ class DePolignac {
   /**
    * Tail recursive helper method for De Polignac number.
    * @param n positive integer.
-   * @param i power of two to check, should start at the nearest power
-   *            of two less than n.
+   * @param i power of two to check, starts at nearest power of 2 < n.
    * @return true if De Polignac, false otherwise.
    */
   private static boolean isDePolignacTrHelper(int n, int i) {
@@ -751,12 +743,16 @@ class DePolignac {
    * @return true if De Polignac, false otherwise.
    */
   static boolean isDePolignac(int n) {
-    if (n % 2 == 0) { return false; }
-    else {
+    if (n % 2 == 0) { 
+      return false; 
+    } else {
       int i = (int) Math.pow(2, (int) (Math.log(n) / Math.log(2)));
       while (i > 1) {
-        if (isPrime(n - i)) { return false; }
-        else { i /= 2; }
+        if (isPrime(n - i)) { 
+          return false; 
+        } else { 
+          i /= 2; 
+        }
       }
       return true;
     }
@@ -777,7 +773,7 @@ import static Assertions.assertEquals;
 
 class OddReciprocalSumTester {
 
-  private static final double DELTA = 0.001;
+  static final double DELTA = 0.001;
 
   @Test
   void testOddRecipSum() {
@@ -793,6 +789,7 @@ class OddReciprocalSumTester {
 The implementation is similarly simple: we create a counter~$c$ that increments so long as~$c$ is not equal to~$n$, accumulating the~$\emph{sum}$ of~$1$ divided by~$2c-1$.
 
 %\enlargethispage{\baselineskip}
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class OddReciprocalSum {
 
@@ -814,7 +811,7 @@ class OddReciprocalSum {
 \end{lstlisting}
 
 Note the cast of the denominator from an \ttt{int} to a \ttt{double}; what happens if we omit the cast? 
-Our tests would fail, because dividing two integers produces another integer, which is not desired when all of our numbers are less than or equal to one.\footnote{Equivalently, we might multiply~$c$ by~$2.0$, or subtract~$1.0$; all of these coerce\index{type coercion}\index{coerce} the \ttt{int} into a \ttt{double}, thereby allowing correct division.}
+Our tests would fail, because dividing two integers produces another integer, which is not desired when all of our numbers are less than or equal to one.\footnote{Equivalently, we might multiply~$c$ by~$2.0$, or subtract~$1.0$; all of these \emph{coerce}\index{type coercion}\index{coerce} the \ttt{int} into a \ttt{double}, thereby allowing correct division.}
 
 While loops are reserved for when we do not know the point of termination. 
 Thus far, all methods that we have written use predictable termination cases; we increment a counter until hitting an upper-bound. 
@@ -1126,8 +1123,11 @@ In other words, small inputs, e.g., $\emph{Fib}(40)$, will take an absurdly long
 class Fibonacci {
 
   static int fib(int n) {
-    if (n <= 1) { return n; } 
-    else { return fib(n - 1) + fib(n - 2); }
+    if (n <= 1) { 
+      return n; 
+    } else { 
+      return fib(n - 1) + fib(n - 2); 
+    }
   }
 }
 \end{lstlisting}

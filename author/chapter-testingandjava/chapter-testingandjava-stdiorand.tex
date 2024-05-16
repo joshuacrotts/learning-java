@@ -5,7 +5,7 @@ Many programmers are aptly familiar with both of these topics when coming from o
 First, we need to discuss \emph{standard data streams}\index{standard data streams}. Java (and the operating system in general) utilizes three standard data streams: standard input, standard output, and standard error. 
 We can think of these as sources for reading data from and writing data to. 
 The \emph{standard output stream}\index{standard output stream} is often accessed using the \ttt{System.out} class and through its various methods, e.g., \ttt{println}, \ttt{print}, and \ttt{printf}. 
-To output a line of data to standard output, we invoke \ttt{System.out.println} with a string (or some other datatype that is coerced into a string). 
+To output a line of data to standard output, we invoke \ttt{System.out.println} with some data, in this case, a string.
 For relaying messages to the user in a terminal-based application, or even when debugging, outputting information to standard output is a good idea. 
 On the other hand, sometimes a program fails or the programmer wants to output an error message. 
 It is possible to output error messages to standard output, since they are otherwise indistinguishable. 
@@ -245,13 +245,13 @@ class DualRandomTester {
 }
 \end{lstlisting}
 
-Admittedly, the above test is somewhat useless since it only tests the efficacy of Java's \ttt{Random} class, rather than code that we wrote ourselves. 
+Admittedly, the above test is somewhat useless since it only tests the efficacy of Java's \ttt{Random} class, rather than code that we wrote ourselves.\footnote{As a corollary point, the digits of integer literals can be separated via underscores to better visualize their size.} 
 Regardless, it is interesting to observe the behavior of two random number generators to see that, in reality, pseudo-randomness is, as we stated, nothing more than slightly advanced math.
 
 \myexample{Java's \ttt{Math} class provides a \ttt{random} method, which receives no arguments. 
 To do anything significant, we must understand how this method works and what kinds of values it can return. 
 The \ttt{Math.random()} method returns a random \ttt{double} between $[0, 1)$, where the upper-bound is exclusive. 
-So, we could see numbers such as \ttt{0.391283114421}, \ttt{0}, \ttt{0.999999999999}, but never exactly one. 
+So, we could see \ttt{Math.random()} return floating-point numbers such as \ttt{0.391283114421}, \ttt{0}, \ttt{0.999999999999}, but never exactly one. 
 We can use basic multiplicative offsets to convert this range into one that we might want. 
 For example, to generate a random double value between $[0, 10)$, we multiply the output by ten, e.g., \ttt{Math.random() * 10}.}
 

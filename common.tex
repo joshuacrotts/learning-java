@@ -62,13 +62,13 @@
 
 \newcommand{\repeatstar}[1]{%
     \ifnum#1=1
-        {\thinmuskip=0mu\medmuskip=0mu$\star$}%
+        % {\thinmuskip=0mu\medmuskip=0mu$\star$}%
     \else
         \ifnum#1=2
-            {\thinmuskip=0mu\medmuskip=0mu$\star\star$}%
+            % {\thinmuskip=0mu\medmuskip=0mu$\star\star$}%
         \else
             \ifnum#1=3
-                {\thinmuskip=0mu\medmuskip=0mu$\star\star\star$}%
+                ({\thinmuskip=0mu\medmuskip=0mu$\star$})%
             \else
                 \ifnum#1=4
                     {\thinmuskip=0mu\medmuskip=0mu$\star\star\star\star$}%
@@ -87,7 +87,7 @@
 
 
 \newcommand{\myexercise}[3]
-{\vspace*{10pt}\noindent\textbf{Exercise {\thechapter}.\theexcounter.} (\repeatstar{#1}) \\
+{\vspace*{10pt}\noindent\textbf{Exercise {\thechapter}.\theexcounter.} \repeatstar{#1} \\
 {#3} \stepcounter{excounter}}
 
 \newcommand{\myexample}[1]{
