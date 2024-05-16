@@ -77,7 +77,8 @@ Traversing through the recursive calls backwards, while building the solution to
 Now that we understand the logic of our problem, let's design the method in Java. 
 First, of course, we want to design our tests.
 
-\enlargethispage{-5\baselineskip}
+\newpage %ugh
+% \enlargethispage{-8\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -117,7 +118,6 @@ class Add {
 
 Our recursive implementation is nothing more than a restatement of the mathematical definition, which is convenient. 
 Let's trace through a sequence of recursive calls from invoking \ttt{add(3, 4)}.
-
 \begin{align*}
     \text{Is }\ttt{4} \text{ zero?} &\text{ No! }\ttt{return addOne(add(3, 3))}\\
     \text{Is }\ttt{3} \text{ zero?} &\text{ No! }\ttt{return addOne(add(3, 2))}\\
@@ -125,9 +125,7 @@ Let's trace through a sequence of recursive calls from invoking \ttt{add(3, 4)}.
     \text{Is }\ttt{1} \text{ zero?} &\text{ No! }\ttt{return addOne(add(3, 0))}\\
     \text{Is }\ttt{0} \text{ zero?} &\text{ Yes! }\ttt{return 3.}
 \end{align*}
-
 Once we reach the base case, we unwind the recursive calls, substituting our known values for their previously-unknown values.
-
 \begin{align*}
     \text{We now know }\ttt{add(3, 0)} \text{ is }\ttt{3}\text{. So, } &\ttt{return addOne(add(3, 0))} \text{ is } \ttt{return 4}\\
     \text{We now know }\ttt{add(3, 1)} \text{ is }\ttt{4}\text{. So, } &\ttt{return addOne(add(3, 1))} \text{ is } \ttt{return 5}\\
@@ -135,28 +133,22 @@ Once we reach the base case, we unwind the recursive calls, substituting our kno
     \text{We now know }\ttt{add(3, 3)} \text{ is }\ttt{3}\text{. So, } &\ttt{return addOne(add(3, 3))} \text{ is } \ttt{return 7}\\
     \text{We now know }\ttt{add(3, 4)} \text{ is }\ttt{7}\text{. So, } &\text{we are done.} 
 \end{align*}
-
 Recursion, as we stated before, composes the solution to a large problem by first solving smaller ``easier'' problems.
 
 \myexample{Consider the factorial mathematical operation.}
 The factorial of a natural number~$n$ obeys the following definition:
-
 \begin{align*}
     0! &= 1\\
     n! &= n \cdot (n - 1) \cdot (n - 2) \cdot \ldots \cdot 1
 \end{align*}
-
 Factorial is a naturally-recursive mathematical operation. 
 To solve~$n!$, we need to solve $(n-1)!$, which means we need to solve $(n-2)!$, all the way down to our base case of $0!=1$. 
 Rewriting the prior definition to use explicit recursion gets us the following: \
-
 \begin{align*}
     0! &= 1\\
     n! &= n \cdot (n - 1)!
 \end{align*}
-
 Let's trace through a factorial invocation.
-
 \begin{align*}
     5! &= 5 \cdot 4!\\
     4! &= 4 \cdot 3!\\
@@ -164,12 +156,10 @@ Let's trace through a factorial invocation.
     2! &= 2 \cdot 1!\\
     1! &= 1 \cdot 0!
 \end{align*}
-
 So, after the recursive calls, we hit our base case. 
 We still have work to do afterwards, much like how \ttt{add} unwinds its recursion. 
 Rather than \ttt{addOne}, we extend our context to include multiplication for the sake of brevity, and use that as an operation. 
 Therefore, when unwinding the recursive calls, we get the following trace:
-
 \begin{align*}
 0! &= 1\\
 1! &= 1 \cdot 1\\
@@ -179,10 +169,9 @@ Therefore, when unwinding the recursive calls, we get the following trace:
 5! &= 5 \cdot 24\\
    &= 120
 \end{align*}
-
 Now let's design the \ttt{factorial} method in Java, again with tests taking immediate precedence over the method definition.
 
-\enlargethispage{-5\baselineskip}
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -192,9 +181,8 @@ class FactorialTester {
   @Test
   void testFact() {
     assertAll(
-      () -> assertEquals(120, fact(5)),
       () -> assertEquals(1, fact(0)),
-      () -> assertEquals(1, fact(1)),
+      () -> assertEquals(120, fact(5)),
       () -> assertEquals(3628800, fact(10)));
   }
 }
@@ -218,7 +206,6 @@ class Factorial {
 \end{lstlisting}
 
 Once more will we derive a trace, but this time of the \ttt{fact} method when invoked with~$5$.
-
 \begin{align*}
     \text{Is }\ttt{5} \text{ zero?} &\text{ No! }\ttt{return 5 * fact(4)}\\
     \text{Is }\ttt{4} \text{ zero?} &\text{ No! }\ttt{return 4 * fact(3)}\\
@@ -227,9 +214,7 @@ Once more will we derive a trace, but this time of the \ttt{fact} method when in
     \text{Is }\ttt{1} \text{ zero?} &\text{ No! }\ttt{return 1 * fact(0)}\\
     \text{Is }\ttt{0} \text{ zero?} &\text{ Yes! }\ttt{return 1}
 \end{align*}
-
 Upon arriving at the base case, we begin to unwind the recursive calls.
-
 \begin{align*}
     &\text{We now know }\ttt{fact(0)} \text{ is }\ttt{1}\text{. So, } \ttt{return 1 * 1} \text{ is } \ttt{return 1}\\
     &\text{We now know }\ttt{fact(1)} \text{ is }\ttt{2}\text{. So, } \ttt{return 2 * 1} \text{ is } \ttt{return 2}\\
@@ -297,6 +282,7 @@ We know that the method must be called where the call is in tail position, so we
 Up next, we can copy the logic of the previous standard recursive algorithm with the added exception that we do not return one from the base case, but instead return an accumulated result. 
 The goal is to construct, or generate, the factorial of some~$n$ as an argument to the method.
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Factorial {
 
@@ -322,7 +308,6 @@ Let's perform a trace of \ttt{factTR} to see how we build the result in the \ttt
 One extra factor to consider is the initial/starting value of our accumulator argument. 
 The starting value of a tail recursive method depends on the context of the problem, and for factorial, the only reasonable value is one. 
 For example, if we initialize \ttt{acc} to zero, then we would continuously multiply and store zero as the argument to the recursive call and always return zero as the factorial of any number.
-
 \begin{align*}
     \text{Is }\ttt{5} \text{ zero?} &\text{ No! }\ttt{return factTR(4, 5)}\\
     \text{Is }\ttt{4} \text{ zero?} &\text{ No! }\ttt{return factTR(3, 20)}\\
@@ -331,7 +316,6 @@ For example, if we initialize \ttt{acc} to zero, then we would continuously mult
     \text{Is }\ttt{1} \text{ zero?} &\text{ No! }\ttt{return factTR(0, 120)}\\
     \text{Is }\ttt{0} \text{ zero?} &\text{ Yes! }\ttt{return 120}
 \end{align*}
-
 The base case simply returns the accumulated value from the method. 
 We do not need to unwind the recursive calls, since there is no extra work to be done after making the recursive calls in the first place. 
 Even still, some may question how this avoids a stack overflow error, because we still push an activation record to the call stack each time we invoke \ttt{factTR}, right? 
@@ -439,6 +423,7 @@ Suppose that we want to design a method that removes all characters whose positi
 For example, given the string \ttt{"ABCDEFGHI"}, we want to return \ttt{"ABDEGH"}, since \ttt{"C"}, \ttt{"F"}, and \ttt{"I"} are located at positions (note the use of position and not index) are divisible by three. 
 Tests are, of course, warranted and necessary.
 
+\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -487,7 +472,7 @@ Due to the trivial nature of writing tests, we omit them for our tail recursive 
 The algorithm remains largely the same, except for the added accumulator, which builds the resulting string rather than relying on the recursive unwinding to compose the solution. 
 Our base case concatenates~$s$ onto the end of the accumulator.
 
-%\enlargethispage{5\baselineskip}
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RemoveDivThreeChars {
 
@@ -549,6 +534,7 @@ class RemoveSequentialCharsTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RemoveSequentialChars {
 
@@ -739,6 +725,7 @@ class CountDigitTester {
 }
 \end{lstlisting}
 
+\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class CountDigit {
 

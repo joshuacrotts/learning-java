@@ -85,7 +85,7 @@ Running the program and typing in any~$32$-bit integer feeds it into the standar
 Entering any non-integer value crashes the program with an \ttt{InputMismatchException} exception. 
 So, what if we want to read in a \ttt{String} from the scannee; would we use \ttt{nextString}? 
 Unfortunately, this is not correct. 
-We need to instead use \ttt{nextLine}. T
+We need to instead use \ttt{nextLine}.
 The \ttt{nextLine}\index{\ttt{nextLine}} method reads a ``line'' of text, as a string, from the scannee. 
 We define a ``line'' as all characters until the first occurrence of a line break. 
 Invoking \ttt{nextLine} consumes these characters, including the newline, from the input stream, and stores them into a variable, if requested. 
@@ -202,6 +202,7 @@ Well, how do we generate pseudorandom numbers in Java?
 There are a few approaches, and many textbooks opt to use \ttt{Math.random},\index{\ttt{Math.random()}} which we will explain, but our examples will largely constitute the use of the \ttt{Random}\index{\ttt{Random}} class. 
 Testing methods that rely on randomness is difficult, so our following code snippets do not come with testing suites. 
 
+\newpage %ugh
 \myexample{Using \ttt{Random}, let's generate an integer between~$0$ and~$9$, inclusive on both bounds.} 
 To do so, we first need to instantiate a \ttt{Random} object, which we will call \ttt{random}. 
 Then, we should invoke \ttt{nextInt} on the \ttt{random} object with an argument of~$10$. Passing the argument~$n$ to \ttt{nextInt} returns an integer $x \in [0, n-1]$.\footnote{Readers should be aware that this version of \ttt{nextInt} is different from the one provided by the \ttt{Scanner} class and cannot be used interchangeably.}

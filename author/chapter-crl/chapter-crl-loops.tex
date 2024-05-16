@@ -420,6 +420,7 @@ We will design the standard recursive, tail recursive, and loop variants of the 
 As usual, we should write tests for all three variants of the method, which trivially carry over to one another.
 Because all three sets of tests are identical, we will only show those of the standard recursive variant.
 
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertTrue;
@@ -478,6 +479,7 @@ class Disarium {
 
 The tail recursive variant is similar to the standard recursive variant, but with an additional parameter,~$s$, which accumulates the result as a parameter.
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Disarium {
 
@@ -604,7 +606,7 @@ class PrimeTester {
 }
 \end{lstlisting}
 
-
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Prime {
 
@@ -642,7 +644,7 @@ Run~$v$ through the \ttt{isPrime} method and, if it is prime, assign to~$l$ the 
 Otherwise, increment~$l$ by one.\footnote{We will note that this code is overly verbose for pedagogical purposes.}
 Running the code produces~$24133$: the desired answer.
 
-\enlargethispage{-2\baselineskip}
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class SumPrimes {
 
@@ -651,13 +653,9 @@ class SumPrimes {
    * @return sum of first 100 primes.
    */
   static int sum100Primes() {
-    // Counter for no. of primes.
-    int c = 0;   
-    // Current "prime value".
-    int l = 0;   
-    // Running sum.
-    int sum = 0; 
-    
+    int c = 0; // Counter for no. of primes.
+    int l = 0; // Current "prime value".
+    int sum = 0; // Running sum.
     while (c != 100) {
       int v = l + 1;
       if (isPrime(v)) {
@@ -712,7 +710,7 @@ class DePolignacTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-1\baselineskip}
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DePolignac {
   
@@ -834,7 +832,7 @@ We know a priori how many integers there are between~$a$ and~$b$, assuming~$a \l
 Namely, we want to iterate from~$i = a$ so long as~$i \leq b$. 
 We use the variable~$i$ out of convention; one could easily use any other unused identifier.
 
-%\enlargethispage{-7\baselineskip}
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -989,6 +987,7 @@ class GenerateAcronymTester {
 }
 \end{lstlisting}
 
+% \newpage  %ugh
 \begin{lstlisting}[language=MyJava]
 class GenerateAcronym {
 
@@ -997,8 +996,8 @@ class GenerateAcronym {
    * @param s string to generate acronym from.
    * @return acronym of s.
    */
-  static String generateAcronym(String s) {
-    return genAcronymHelper(s, true);
+  static String generateAcronym(String s) { 
+    return genAcronymHelper(s, true); 
   }
 
   /**
@@ -1055,9 +1054,11 @@ class GenerateAcronym {
 If we follow the translation pipeline, we observe that, yet again, the iterative algorithm is a straightforward conversion of the tail recursive method. 
 We can make the iterative method more efficient by using a \ttt{StringBuilder} to accumulate the acronym, rather than concatenating strings.
 We could similarly reduce the number of lines in the method by using a \ttt{for} loop and not invoke \ttt{substring} in every branch of the conditional, but we will keep the code as is for relation to the tail recursive method and the translation pipeline.
+
 As a word of caution, however, if we choose to update the string~$s$ \emph{before} updating the accumulator, we run into a problem imposed by the rule of update: we lose the first character of the string, which is the character we want to add to the acronym. 
 Thus, we must update the accumulator \emph{before} updating the string.
 
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class GenerateAcronym {
 
@@ -1090,17 +1091,15 @@ class GenerateAcronym {
 \myexample{We will write one more example of first writing a recursive algorithm, then its tail recursive version, then its iterative counterpart to describe a problem that occurs when translating specific tail recursive algorithms.} 
 Suppose we want to write a method to determine the~$n^\text{th}$ Fibonacci number. 
 The \emph{Fibonacci sequence} is defined recursively as follows:
-
 \begin{align*}
   \emph{Fib}(0) &= 0\\
   \emph{Fib}(1) &= 1\\
   \emph{Fib}(n) &= \emph{Fib}(n - 1) + \emph{Fib}(n - 2)
 \end{align*}
-
 Writing tests for a Fibonacci algorithm is trivial to do and propagates through to the other variants. 
 So, writing tests for the standard recursive algorithm, assuming they are correct, allows us to easily propagate tests for the tail recursive and iterative algorithms.
 
-\enlargethispage{-3\baselineskip}
+\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1244,6 +1243,7 @@ We still must declare variables~$a$ and~$b$, but instead of decrementing~$n$, we
 
 No significant changes to the implementation are made, aside from a new local variable to count down from~$n$ until it hits one.
 
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 static int fib(int n) {
   int a = 0;
@@ -1263,6 +1263,7 @@ static int fib(int n) {
 
 \myexample{We can use two keywords to alter the control flow of a loop: \ttt{break} and \ttt{continue}.} 
 We saw \ttt{break} when working with the \ttt{switch} keyword and statement, but in the context of loops, its meaning is more significant. 
+
 Suppose that we're designing the \ttt{int findFirstVowel(String s)} method, which returns the first occurrence of a vowel in a string~$s$, and~$-1$ if it has no vowels. 
 The \ttt{break} statement allows us to exit the loop body early upon finding a vowel. 
 We will traverse over the string characters using a \ttt{for} loop and terminate if we reach the end of the string, hence the inclusion of the \ttt{i < s.length()} condition. 
@@ -1290,7 +1291,8 @@ class FindFirstVowelTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-5\baselineskip}
+% \enlargethispage{-1\baselineskip}
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class FindFirstVowel {
 
