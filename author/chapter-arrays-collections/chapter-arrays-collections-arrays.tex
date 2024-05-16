@@ -102,8 +102,7 @@ class SumOfDoubleArrayTester {
   void testSumOfDoubleArray() {
     assertAll(
       () -> assertEquals(0.0, sumOfDoubles(new double[]{})),
-      () -> assertEquals(100.0, sumOfDoubles(new double[]
-                                             {25.0, 50.0, 25.0})));
+      () -> assertEquals(100.0, sumOfDoubles(new double[]{25.0, 50.0, 25.0})));
   }
 }
 \end{lstlisting}
@@ -120,7 +119,9 @@ class SumOfDoubleArray {
    */
   static double sumOfDoubles(double[] arr) {
     double sum = 0;
-    for (int i = 0; i < arr.length; i++) { sum += arr[i]; }
+    for (int i = 0; i < arr.length; i++) { 
+      sum += arr[i]; 
+    }
     return sum;
   }
 }
@@ -131,13 +132,15 @@ In such circumstances, we may prefer using the enhanced \ttt{for} loop\index{enh
 Why might someone want to use the enhanced \ttt{for} loop over a standard \ttt{for}? 
 When we only want to access the elements themselves and not care about their position, the enhanced counterpart is favored; not having to concern ourselves with indices completely removes the possibility of accessing an out-of-bounds index. 
 
-%\enlargethispage{\baselineskip}
+\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class SumOfDoubleArray {
 
   static double sumOfDoubles(double arr) {
     double sum = 0;
-    for (double e : arr) { sum += e; }
+    for (double e : arr) { 
+      sum += e; 
+    }
     return sum;
   }
 }

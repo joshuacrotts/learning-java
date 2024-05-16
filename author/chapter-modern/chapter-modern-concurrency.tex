@@ -806,6 +806,7 @@ class MultithreadedFileSearcher implements IFileSearcher {
       ExecutorService es = Executors.newFixedThreadPool(cores);
       Map<String, Integer> M = new ConcurrentSkipListMap<>();
       files.forEach(f -> es.execute(() -> process(f, word, M)));
+      
       // Block until all tasks are complete.
       es.shutdown();
       try {

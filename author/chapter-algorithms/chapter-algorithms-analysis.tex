@@ -499,7 +499,7 @@ Each time we make a decision, we half the problem size, meaning it becomes a log
 In the end, we reach the base case of~$|S|=1$, which means the algorithm knows which output is correct. Thus,
 
 \begin{align}
-\lg{n} + \lg{(n-1)} + \cdots + \lg{2} &= \lg{n!}\\
+\lg{n} + \lg{(n-1)} + \cdots + \lg{2} + \lg{1} &= \lg{n!}\\
         &= \Omega(n \lg n)
 \end{align}
 Recall the definition of logarithms: $\lg{a} + \lg{b} = \lg{ab}$. 

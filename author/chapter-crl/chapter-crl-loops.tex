@@ -198,7 +198,7 @@ Moreover, we add comments to these variable declarations explaining their purpos
 
 Finally, in~\emph{$TR_\mathbf{Ret}$}, we add the line to return the accumulated local variable(s). $I$ is the output translation.
 
-\subsection{\emph{$TR_\mathbf{H}$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. 
+\paragraph{\emph{$TR_\mathbf{H}$:}} When designing a tail recursive method, there are several values to keep in mind: base cases (i.e., terminating conditions), returned values that are not method calls, and accumulators. 
 Each of these play a crucial role in the transition to~$I$, and quickly yet correctly identifying these as they fit in tail recursive methods, is paramount. 
 Let us re-look at our old factorial friend to see what this entails.
 
@@ -255,7 +255,7 @@ static int fact(int n, int acc) {
 }
 \end{lstlisting}
 
-\subsection{\emph{$TR_\mathbf{IVP}$}:} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. 
+\paragraph{\emph{$TR_\mathbf{IVP}$}:} All accumulator variables in tail recursive methods serve some purpose, one way or another, hence their necessity. 
 The necessity also holds true for local variables defined as accumulator substitutions. 
 Conveniently enough, every variable designated as an accumulator morphs nicely into a local variable when writing the iterative counterpart. 
 Consider, once more, the tail recursive factorial definition. 
@@ -287,7 +287,7 @@ static int fact(int n) {
 
 Writing these imperative variable purposes, akin to accumulator statements, help us organize what variables change and, more importantly, how they change. 
 
-\subsection{\emph{$TR_\mathbf{C}$}:} Up next is where we take our base case condition, highlighted in red, and insert it as the negated condition for our loop. 
+\paragraph{\emph{$TR_\mathbf{C}$}:} Up next is where we take our base case condition, highlighted in red, and insert it as the negated condition for our loop. 
 First, we add the \ttt{while} keyword to our method, then follow this with a set of parentheses, and an exclamation point immediately after the opening parenthesis but before the closing parenthesis. 
 Inside these parentheses, we place the base case condition. 
 To be safe, one should also insert parentheses for the base case, which ensures that the correct expression is negated by the logical `not' operator. 
@@ -303,7 +303,7 @@ static int fact(int n) {
 }
 \end{lstlisting}
 
-\subsection{\emph{$TR_\mathbf{B}$}:} Finally, we get to the fun part of this translation process: the body of our loop. 
+\paragraph{\emph{$TR_\mathbf{B}$}:} Finally, we get to the fun part of this translation process: the body of our loop. 
 We need to make a design choice of what variables to update and how they should be updated. 
 We take the \textcolor{darkyellow}{yellow} highlighted tail recursive arguments, create assignment statements out of them, and insert them into the body of our loop. 
 To this end, we need to follow two principles:
@@ -384,7 +384,7 @@ Therefore, without loss of generality, we can conclude that we should update the
 
 Determining the correct order of update, according to the rules we specify, may take a few tries to get right. The idea is to match the result of previously-verified tail recursive traces.
 
-\subsection{\emph{$TR_\mathbf{Ret}$}:}
+\paragraph{\emph{$TR_\mathbf{Ret}$}:}
 In our final translation stage, we add the necessary return statement(s) that serve to return the accumulated result from our loop. 
 We highlighted these return values in \textcolor{darkgreen}{green} during the highlighting/color-coding stage.
 
@@ -536,7 +536,7 @@ class Disarium {
 \end{lstlisting}
 
 
-\section{Iteration Constructs}
+\subsection{Iteration Constructs}
 
 Perhaps the related equivalence to tail recursion is too abstract for some to digest. 
 Indeed, we believe the relationship is somewhat far-fetched at first glance, but after enough practice, it becomes clearer. 
@@ -712,7 +712,7 @@ class DePolignacTester {
 }
 \end{lstlisting}
 
-\enlargethispage{1\baselineskip}
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DePolignac {
   
@@ -772,6 +772,7 @@ Again, we might choose to this recursively, but let's try and design an iterativ
 Its signature is straightforward: the method receives some integer~$n$, and compute the sum of~$n$ odd reciprocals. 
 Our tests are trivial to write with the employment of a calculator.
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -929,7 +930,7 @@ class NewtonApproximationTester {
 }
 \end{lstlisting}
 
-
+\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class NewtonApproximation {
 

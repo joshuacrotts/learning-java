@@ -1,4 +1,5 @@
-\section*{Chapter Exercises}
+\section*{Exercises}
+\addcontentsline{toc}{section}{Exercises}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{int[] operate(int[] A)} method that, when given an array of integers, returns a new array where the elements are the result of applying the following operation to each element: if the $i^{\text{th}}$ element is odd, multiply it by its index $i$ plus one. Otherwise, divide it by its index $i$ plus one.}
 
@@ -296,7 +297,7 @@ peakFinder({1, 2, 3, 2, 1})                         => {3}
 
 Design the \ttt{boolean earnsExtraCredit(List<Double> D, double g)} method that, when given a list of scores $D$ and a guess $g$, returns whether a student is given extra credit.}
 
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<String> roundTimes(List<String> T)} method that, when given a list of ``times''~$T$, returns a new list where each time is rounded to its nearest quarter hour.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> roundTimes(List<String> T)} method that, when given a list of ``times''~$T$, returns a new list where each time is rounded to its nearest quarter hour.}
 A ``time'' is a string in the~$24$-hour format \ttt{"HHMM"}, where $0 \leq \ttt{HH} \leq 23$, and $0 \leq \ttt{MM} \leq 59$.
 Rounding to the nearest quarter hour means to either a minute of \ttt{00}, \ttt{15}, \ttt{30}, or \ttt{45}.
 For example, \ttt{"1247"} rounds to \ttt{"1245"}, and \ttt{"1330"} stays the same at \ttt{"1330"}. If a time rounds up to the next hour, update the hour.
@@ -311,7 +312,7 @@ wisest({47, 51, 52, 48, 33, 67, 45, 35}) => {33, 67} or {67, 33}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{char missingChar(Set<Character> s)} method that, when given a set of characters whose values range from $a..z$ with one missing, return the character that is missing. }
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Integer> updateTransactions(Map<String, Integer> inv, List<String> transactions)} method that, when given a map of product names to product quantities, as well as a list of transactions, returns a new inventory map of item counts. The given list of transactions contains product names, and when a product goes out of stock, it should be removed from the returned map.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Integer> updateTransactions(Map<String, Integer> inv, L\-ist<String> transactions)} method that, when given a map of product names to product quantities, as well as a list of transactions, returns a new inventory map of item counts. The given list of transactions contains product names, and when a product goes out of stock, it should be removed from the returned map.}
 
 \myexercise{3}{chapter-arrays-collections}{File permissions are denoted in octal notation. That is, consider a file that has three sets of permissions: owner $o$, group $g$, and users $u$ (representing other users). There are three ways to work with a file: reading from it $R$, writing to it $W$, or execution $X$. We might represent this as a bit string of $R_oW_oX_oR_gW_gX_gR_uW_uX_u$. We use a $1$ or $0$ to denote the permissions of a file. For example, $111001000$ denotes that the file owner can read, write, and execute the file, those who are in the same group as the owner can execute the file, and anyone else cannot interact at all with the file. Design the \ttt{Set<String> availableFiles(Map<int[], Integer> F, String u, int g, boolean r, boolean w, boolean x)} method that, when given a map of files to permissions $F$, a username $u$ and the group identifier $g$ for the given user, returns a list of files that satisfy the flags passed to the method. The key for the map of files to permissions is itself a 3-element array, where the first element is the file name, the second element is the username of the file owner, and the third element is the group identifier of the owner, as a string.}
 
@@ -359,9 +360,9 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
                                "agree", "that", "1", "and", "not"}
 \end{verbnobox}
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Set<Integer> symmetricDifference(Set<Integer> s1, Set<Integer> s2)} method that, when given two sets of integers $s_1$ and $s_2$, returns a new set $s_3$ such that all elements of $s_3$ are in either of the sets, but not in their intersection. That is, it is the set of elements that are in either $s_1$ or $s_2$, but not both.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Set<Integer> symmetricDiff(Set<Integer> s1, Set<Integer> s2)} method that, when given two sets of integers $s_1$ and $s_2$, returns a new set $s_3$ such that all elements of $s_3$ are in either of the sets, but not in their intersection. That is, it is the set of elements that are in either $s_1$ or $s_2$, but not both.}
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Set<String>> identifyTrendingTopics(Map<String, \\Set<String>> regionTopics, Set<String> gTrending)} method that, when given a map of regions to topics that are trending in that region, returns a map of topics to regions such that the keys are topics and the values are regions where that topic is trending. A topic is trending in a region if it is not a globally-trending topic and it is trending in at least two regions simultaneously. We provide an example below.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Set<String>> identifyTrendingTopics(Map<String, Set<Str\-ing>> regionTopics, Set<String> gTrending)} method that, when given a map of regions to topics that are trending in that region, returns a map of topics to regions such that the keys are topics and the values are regions where that topic is trending. A topic is trending in a region if it is not a globally-trending topic and it is trending in at least two regions simultaneously. We provide an example below.}
 
 \begin{verbnobox}[\small]
 identifyTrendingTopics([<"North America" : {"Tech", "Comedy", "Sports"}>, 
@@ -378,7 +379,7 @@ identifyTrendingTopics([<"North America" : {"Tech", "Comedy", "Sports"}>,
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> reverse(LinkedList<Integer> l)} method that, when given a linked list of integers $l$, returns a \emph{new} linked list containing the elements of~$l$, but reversed.}
 
-\myexercise{2}{chapter-arrays-collections}{Design the \texttt{HashSet<Integer> moreThanThree(int[] A)} method that, when given an \texttt{int[]}~$A$, returns a new \texttt{HashSet\-<Integer>} of values containing those values from~$A$ that occur strictly more than three times.}
+\myexercise{2}{chapter-arrays-collections}{Design the \texttt{HashSet<Integer> moreThanThree(int[] A)} method, which receives an \texttt{int[]}~$A$ and returns a new \texttt{HashSet\-<Integer>} of values containing those values from~$A$ that occur strictly more than three times.}
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> collectComments(String s)} method that, when given a string representing a (valid) Java program, returns an list containing all comments from the input program string. You cannot use any \ttt{String} helper methods (e.g., \ttt{strip}, \ttt{split}) to solve this problem nor can you use regular expressions.}
 
@@ -527,7 +528,7 @@ If you are not familiar with the mechanics, we encourage you to find a version o
 In this exercise you will implement the minesweeper game as a series of methods.
 
 \begin{enumerate}[label=(\alph*)]
-    \item First, design the static \ttt{boolean isValidMove(char[][] board, int mx, int my)} method that receives a board and a move position, and determines whether the move is valid. A move is valid if it is located within the bounds of the board.
+    \item First, design the static \ttt{boolean isValidMove(char[][] board, int mx, int my)} met\-hod that receives a board and a move position, and determines whether the move is valid. A move is valid if it is located within the bounds of the board.
     \item Design the static \ttt{List<int[]> getValidNeighbors(char[][] board, int mx, int my)} method that receives a board and a move position, and returns a list of all the immediate neighbors to the cell $(\emph{mx}, \emph{my})$. 
     Each element of the list is a two-element integer array containing the$~x$ and~$y$ coordinates of the neighbor.
     Consider the diagram below, where $(0, 0)$ is the move position, and the surrounding cells are its neighbors, represents as offsets.

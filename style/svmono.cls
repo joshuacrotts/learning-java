@@ -2062,7 +2062,7 @@ to\z@{\kern0.55\wd0\vrule\@height0.45\ht0\hss}\box0}}}}
 \theoremheaderfont{\bfseries\itshape}
 \theorembodyfont{\upshape}
 \theoremsymbol{\ensuremath{\square}}
-\newtheorem{proof}{Proof} 
+\newtheorem{proof}{Proof.} 
 \gdef\NoneSymbol{}
 
 \makeatletter

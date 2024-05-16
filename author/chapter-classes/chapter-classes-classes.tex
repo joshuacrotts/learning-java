@@ -844,7 +844,7 @@ class Deck {
 
 \newpage % ugh
 Hopefully, the \ttt{populateDeck} method is intuitive and not intimidating. 
-All we do is create fifty two cards, thirteen of which are of the same suit, and add them to the deck.
+We create fifty-two card instances, split into four equal-sized groups of suits, and add them to the deck.
 We use the \ttt{Math.min} method to ensure that the value of the card is at most ten, since we do not have ``King,'' ``Queen,'' or ``Jack'' cards. 
 We also use the ternary operator to check if the deck is empty before drawing a card. 
 If the deck is empty, we return \ttt{null}.
