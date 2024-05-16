@@ -65,7 +65,7 @@ We want JUnit to recognize that \ttt{fToC} contains testing code, so we prepend 
 In its body, we call \ttt{Assertions\-.assertAll}, which receives a series of methods that are ran in succession. 
 In our case, we want to assert that our \ttt{fToC} method should return \ttt{0} degrees Celsius when given a temperature of \ttt{32} degrees Fahrenheit. 
 The first parameter to \ttt{assertEquals} is the expected value of the test, i.e., what we want (and know) it to produce. 
-The second parameter is the actuaspringerl value of the test, i.e., what our code produces. 
+The second parameter is the actual value of the test, i.e., what our code produces. 
 
 When writing tests, it is important to consider \emph{edge cases}\index{edge case} and all possible branches of a method implementation. 
 Edge cases are inputs that are possibly missed by an implementation, e.g., \ttt{-40}, since it is the same in both Fahrenheit and Celsius, or \ttt{0}. 

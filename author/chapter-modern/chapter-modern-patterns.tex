@@ -692,7 +692,7 @@ class GroceryListTotalVisitorTester {
     assertAll(
       () -> assertEquals(0, List.of().stream()
                                      .mapToDouble(item -> item.visit(vs))
-                                      .sum()),
+                                     .sum()),
       () -> assertEquals(5.60, groceryList.stream()
                                           .mapToDouble(item -> item.visit(vs))
                                           .sum()));

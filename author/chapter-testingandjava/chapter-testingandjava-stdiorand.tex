@@ -101,7 +101,7 @@ Typing in some characters, which may or may not be numbers, followed by a new-li
 Though, what happens if we prompt for an integer, \emph{then} a string? 
 Our program behaves quite strangely. 
 We type the integer, hit ``Return,'' and the program terminates as if it did not prompt for a string. 
-This is because of how both \ttt{nextInt} and \ttt{nextLine} work: \ttt{nextInt} consumes all data up to but excluding an integer from the input stream; ignoring any preceding whitespaces. 
+This is because of how both \ttt{nextInt} and \ttt{nextLine} work: \ttt{nextInt} consumes all data up to but excluding an integer from the input stream; ignoring any preceding whitespace characters. 
 So, after consuming the integer, a new-line character remains in the input stream buffer. 
 Then, \ttt{nextLine} intends to wait until a newline is in the buffer. 
 Because the input stream buffer presently contains a new-line, it consumes everything before the new-line, which comprises the empty string, meaning that both the empty string and the new-line are removed the buffer. 
@@ -194,7 +194,7 @@ class ThreePointArea {
 \section{Randomness}
 So-called ``true'' randomness is difficult to implement from a computability standpoint. 
 Thus, for most intents and purposes (i.e., all of those described in this textbook), it is sufficient to use \emph{pseudorandomess}\index{pseudorandom}\index{pseudorandomness} when generating random values. 
-A \emph{pseudorandom number generator} (PRNG) computes appearingly random values using a deterministic algorithm, which means that the output values from the generator are predictable. 
+A \emph{pseudorandom number generator} (PRNG) computes apparently random values using a deterministic algorithm, which means that the output values from the generator are predictable. 
 Although it might be incredibly difficult to predict pseudorandomly-generated numbers, it is theoretically possible, which makes those numbers insufficient and insecure for cryptographic schemata and algorithms. 
 For designing, perhaps, a word-guessing game that randomly chooses words from a list, it is perfectly reasonable to use a pseudorandom number generator.
 
@@ -204,7 +204,7 @@ Testing methods that rely on randomness is difficult, so our following code snip
 
 \myexample{Using \ttt{Random}, let's generate an integer between~$0$ and~$9$, inclusive on both bounds.} 
 To do so, we first need to instantiate a \ttt{Random} object, which we will call \ttt{random}. 
-Then, we should invoke \ttt{nextInt} on the \ttt{random} object with an argument of~$10$. Passing the argument~$n$ to \ttt{nextInt} returns an integer $x \in [0, n-1]$.\footnote{Readers should be aware that this version of \ttt{nextInt} is different from the one provided by the \ttt{Scanner} class and cannot be used interchangably.}
+Then, we should invoke \ttt{nextInt} on the \ttt{random} object with an argument of~$10$. Passing the argument~$n$ to \ttt{nextInt} returns an integer $x \in [0, n-1]$.\footnote{Readers should be aware that this version of \ttt{nextInt} is different from the one provided by the \ttt{Scanner} class and cannot be used interchangeably.}
 
 \begin{verbnobox}[\small]
 Random random = new Random();

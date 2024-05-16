@@ -1003,10 +1003,9 @@ For example, consider the following table:
   \end{tabular}
 \end{center}
   
-
 Suppose our wood log is~$4$ meters long. 
-There are, therefore, $2^(4-1)=2^3=8$ ways to saw the log:
-$1|1|1|1$, $1|1|2$, $1|2|1$, $1|3$, $2|1|1$, $2|2$, $3|1$, and $4|0$. 
+There are, therefore, $2^{(4-1)}=2^3=8$ ways to saw the log:
+`$1\,|\,1\,|\,1\,|\,1$', `$1\,|\,1\,|\,2$', `$1\,|\,2\,|\,1$', `$1\,|\,3$', `$2\,|\,1\,|\,1$', `$2\,|\,2$', `$3\,|\,1$', and `$4\,|\,0$.' 
 If we compute the prices of these sawings, we get $1+1+1+1=4$, $1+4+1=6$, $1+1+4=6$, $1+6=7$, $4+1+1=6$, $4+4=8$, $6+1=7$, and $7=7$. 
 So, to maximize our profit, we want to saw the log into two pieces, each of which are~$2$ meters long.
 
@@ -1133,7 +1132,7 @@ class LogSaw {
 }
 \end{lstlisting}
 
-\myexample{A bank robber is heisting a local jewelry store, and a priori knows the weight and value of each item in the showcases.\footnote{We, the authors, do not condone robbing your local jewely store.}} 
+\myexample{A bank robber is heisting a local jewelry store, and a priori knows the weight and value of each item in the showcases.\footnote{We, the authors, do not condone robbing your local jewelry store.}} 
 The robber can only carry up to a maximum of~$m$ ounces of jewelry and wants to develop an algorithm that calculates the highest attainable profit.
 
 Given an array of jewelry values~$V$ and weights in ounces~$W$, we can find the maximum possible profit by brute forcing every combination of items. 
@@ -1207,7 +1206,7 @@ class MaxJewelProfit {
 \end{lstlisting}
 
 Like many algorithm that makes two subsequent recursive calls, this is horribly inefficient, being yet again an exponential time algorithm. 
-Dynamic programmin\index{dynamic programming}g rescues us once more by caching the results to intermediate ``robberies.''
+Dynamic programming\index{dynamic programming}g rescues us once more by caching the results to intermediate ``robberies.''
 By intermediate ``robberies,'' we mean that, for every item in the store, the robber either chooses to or not to steal it. 
 When making this decision, the robber determines whether adding the item is advantageous to maximizing the profit by looking at past calculations.
 We will store these intermediate robberies in a two-dimensional array whose rows correspond to items in the store and whose columns correspond to weights of the bag. 
