@@ -451,7 +451,7 @@ class Disarium {
 
   /**
    * Determines if a given integer is a Disarium number.
-   * @param n - positive integer.
+   * @param n positive integer.
    * @return true if Disarium, false otherwise.
    */
   static boolean isDisariumSr(int n) {
@@ -461,8 +461,8 @@ class Disarium {
   /**
    * Recursively computes the sum of the digits of n raised 
    * to their respective positions.
-   * @param n - positive integer.
-   * @param p - position of the digit that is currently being checked.
+   * @param n positive integer.
+   * @param p position of the digit that is currently being checked.
    * @return sum of digits raised to their respective positions.
    */
   private static int isDisariumSrHelper(int n, int p) {
@@ -483,7 +483,7 @@ class Disarium {
 
   /**
    * Determines if a given integer is a Disarium number.
-   * @param n - positive integer.
+   * @param n positive integer.
    * @return true if Disarium, false otherwise.
    */
   static boolean isDisariumTr(int n) {
@@ -493,9 +493,9 @@ class Disarium {
   /**
    * Tail-recursively computes the sum of the digits of n raised to 
    * their respective positions.
-   * @param n - positive integer.
-   * @param p - position of the digit that is currently being checked.
-   * @param s - sum of digits raised to their respective positions.
+   * @param n positive integer.
+   * @param p position of the digit that is currently being checked.
+   * @param s sum of digits raised to their respective positions.
    * @return sum of digits raised to their respective positions.
    */
   private static int isDisariumTrHelper(int n, int p, int s) {
@@ -518,7 +518,7 @@ class Disarium {
 
   /**
    * Determines if a given integer is a Disarium number.
-   * @param n - positive integer.
+   * @param n positive integer.
    * @return true if Disarium, false otherwise.
    */
   static boolean isDisarium(int n) {
@@ -610,7 +610,7 @@ class Prime {
 
   /**
    * Determines if a given integer is prime.
-   * @param n - positive integer.
+   * @param n positive integer.
    * @return true if prime, false otherwise.
    */
   static boolean isPrime(int n) {
@@ -718,7 +718,7 @@ class DePolignac {
   
   /**
    * Determines if a given integer is a De Polignac number.
-   * @param n - positive integer.
+   * @param n positive integer.
    * @return true if De Polignac, false otherwise.
    */
   static boolean isDePolignacTr(int n) {
@@ -728,8 +728,8 @@ class DePolignac {
   
   /**
    * Tail recursive helper method for De Polignac number.
-   * @param n - positive integer.
-   * @param i - power of two to check, should start at the nearest power
+   * @param n positive integer.
+   * @param i power of two to check, should start at the nearest power
    *            of two less than n.
    * @return true if De Polignac, false otherwise.
    */
@@ -749,7 +749,7 @@ class DePolignac {
 
   /**
    * Determines if a given integer is a De Polignac number.
-   * @param n - positive integer.
+   * @param n positive integer.
    * @return true if De Polignac, false otherwise.
    */
   static boolean isDePolignac(int n) {
@@ -799,7 +799,7 @@ class OddReciprocalSum {
 
   /**
    * Computes the sum of the first n odd reciprocals.
-   * @param n - number of reciprocals to compute.
+   * @param n number of reciprocals to compute.
    * @return sum of first n odd reciprocals.
    */
   static double oddRecipSum(int n) {
@@ -857,8 +857,8 @@ class SumInterval {
 
   /**
    * Computes the sum of the integers between a and b inclusive.
-   * @param a - lower-bound inclusive.
-   * @param b - upper-bound inclusive.
+   * @param a lower-bound inclusive.
+   * @param b upper-bound inclusive.
    * @return sum of values.
    */
   static int sum(int a, int b) {
@@ -936,8 +936,8 @@ class NewtonApproximation {
   /**
    * Computes an approximation of the square root of
    * a number using Newton's Approximation algorithm.
-   * @param n - number to square root.
-   * @param delta - approximation range.
+   * @param n number to square root.
+   * @param delta approximation range.
    * @return approximation of sqrt of n.
    */
   static double sqrtApprox(double n, double delta) {
@@ -993,7 +993,7 @@ class GenerateAcronym {
 
   /**
    * Generates the acronym of a given string.
-   * @param s - string to generate acronym from.
+   * @param s string to generate acronym from.
    * @return acronym of s.
    */
   static String generateAcronym(String s) {
@@ -1002,8 +1002,8 @@ class GenerateAcronym {
 
   /**
    * Recursively generates the acronym of a given string.
-   * @param s - string to generate acronym from.
-   * @param isStart - true if at the beginning of a word.
+   * @param s string to generate acronym from.
+   * @param isStart true if at the beginning of a word.
    * @return acronym of s.
    */
   private static String genAcronymHelper(String s, boolean isStart) {
@@ -1023,7 +1023,7 @@ class GenerateAcronym {
 
   /**
    * Generates the acronym of a given string.
-   * @param s - string to generate acronym from.
+   * @param s string to generate acronym from.
    * @return acronym of s.
    */
   static String generateAcronymTr(String s) {
@@ -1032,9 +1032,9 @@ class GenerateAcronym {
 
   /**
    * Tail-recursively generates the acronym of a given string.
-   * @param s - string to generate acronym from.
-   * @param isStart - true if at the beginning of a word.
-   * @param acc - accumulator for acronym.
+   * @param s string to generate acronym from.
+   * @param isStart true if at the beginning of a word.
+   * @param acc accumulator for acronym.
    * @return acronym of s.
    */
   private static String genAcronymTrHelper(String s, boolean isStart, String acc) {
@@ -1062,7 +1062,7 @@ class GenerateAcronym {
 
   /**
    * Generates the acronym of a given string.
-   * @param s - string to generate acronym from.
+   * @param s string to generate acronym from.
    * @return acronym of s.
    */
   static String generateAcronym(String s) {
@@ -1149,7 +1149,7 @@ class Fibonacci {
 
   /**
    * Computes the nth Fibonacci number using tail recursion.
-   * @param n - nth Fibonacci number.
+   * @param n nth Fibonacci number.
    * @accumulator a - "previous' previous" fib.
    * @accumulator b - "previous" fib.
    * @return result.
@@ -1296,7 +1296,7 @@ class FindFirstVowel {
   /**
    * Finds the index of the first vowel in a given string. 
    * If there are no vowels in the string, we return -1.
-   * @param s - input string.
+   * @param s input string.
    * @return index of first vowel occurrence, or -1 if it has no vowels.
    */
   static int findFirstVowel(String s) {
@@ -1314,7 +1314,7 @@ class FindFirstVowel {
    * Determines whether or not the character is a vowel. 
    * We convert it to lowercase, then check it against 
    * those five vowels.
-   * @param ch - character to check.
+   * @param ch character to check.
    * @return true if ch is a vowel, false otherwise.
    */
   static boolean isVowel(char ch) {
@@ -1427,9 +1427,9 @@ class FindReplace {
   /**
    * Searches through a string s for occurrences of "find", 
    * and replaces them with "repl".
-   * @param s - string to search through.
-   * @param find - string to find.
-   * @param repl - string to replace "find" with.
+   * @param s string to search through.
+   * @param find string to find.
+   * @param repl string to replace "find" with.
    * @return new replaced string.
    */
   static String replace(String s, String find, String repl) {

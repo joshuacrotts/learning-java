@@ -22,10 +22,10 @@ Consider the possible base cases: if the list is empty, what do we return?
 As described earlier, we might choose to return~$-1$, but think about what happens when the recursive calls unwind. 
 If we add one to the result of the recursive calls when searching, then if the element is not in the list, the returned value will always be the length of the list minus one. 
 Should we find the desired element, we might return zero, which works as expected. 
-It's only in the cases when we do not find the element that we run into trouble. There are two possible solutions: throw an exception if the element is not present, which diverts program control to the exception handler, or simply do not use a standard recursive linear search.\footnote{Some languages, e.g., Scheme, use \emph{continuations} to represent ``jump-out'' states; allowing the program to forgo unwinding the call stack when returning $-1$. Since Java does not support continuations by default, we cannot take this approach.} 
+It's only in the cases when we do not find the element that we run into trouble. There are two possible solutions: throw an exception if the element is not present, which diverts program control to the exception handler, or simply do not use a standard recursive linear search.\footnote{Some languages, e.g., Scheme, use \emph{continuations} to represent ``jump-out'' states; allowing the program to forgo unwinding the call stack when returning~$-1$. Since Java does not support continuations by default, we cannot take this approach.} 
 We might also think to use \ttt{Optional}, but this is also not a good idea, since we would need to check the result of each recursive call, which detracts from the simplicity of the algorithm.
 
-Another reason why the standard-recursive version is suboptimal is because we have no way of passing the index-to-check; we instead have to create sublists of the original list, which induces a non-insignificant performance penalty.
+Another reason why the standard-recursive version is suboptimal is because we have no way of passing the index-to-check; we instead have to create sub-lists of the original list, which induces a non-insignificant performance penalty.
 
 First, let's create an interface for designing linear search algorithms. 
 Recall when we stated that the data structure of choice should guarantee constant-access times. 

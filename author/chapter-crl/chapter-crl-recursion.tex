@@ -101,8 +101,8 @@ class Add {
   /**
    * Adds two natural numbers. Uses recursion and the addOne, 
    * subOne, and isZero methods.
-   * @param m - the first number.
-   * @param n - the second number.
+   * @param m the first number.
+   * @param n the second number.
    * @return the sum.
    */
   static int add(int m, int n) {
@@ -204,7 +204,7 @@ class Factorial {
 
   /**
    * Computes the factorial of a number.
-   * @param n - the number to compute the factorial of.
+   * @param n the number to compute the factorial of.
    * @return factorial result.
    */
   static int fact(int n) {
@@ -302,8 +302,8 @@ class Factorial {
 
   /**
    * Tail recursive method for computing the factorial of a number.
-   * @param n - the number to compute the factorial of.
-   * @param acc - the accumulator for the result.
+   * @param n the number to compute the factorial of.
+   * @param acc the accumulator for the result.
    * @return the factorial of the number.
    */
   static int factTR(int n, int acc) {
@@ -409,7 +409,7 @@ class Factorial {
   
   /**
    * Tail recursive (driver) method for computing the factorial of a number.
-   * @param n - the number to compute the factorial of.
+   * @param n the number to compute the factorial of.
    * @return the factorial.
    */
   static int factTR(int n) {
@@ -418,8 +418,8 @@ class Factorial {
 
   /**
    * Helper method to compute the factorial of a number using tail recursion.
-   * @param n - the number to compute the factorial of.
-   * @param acc - the accumulator for the result.
+   * @param n the number to compute the factorial of.
+   * @param acc the accumulator for the result.
    * @return the factorial of the number.
    */
   private static int factHelper(int n, int acc) {
@@ -469,7 +469,7 @@ class RemoveDivThreeChars {
 
   /**
    * Removes characters at positions divisible by three.
-   * @param s - the given string.
+   * @param s the given string.
    * @return the resulting string.
    */
   static String removeDivThreeChars(String s) {
@@ -494,7 +494,7 @@ class RemoveDivThreeChars {
   /**
    * Tail recursive (driver) method to remove characters at 
    * positions divisible by three.
-   * @param s - the given string.
+   * @param s the given string.
    * @return the resulting string.
    */
   static String removeDivThreeCharsTR(String s) {
@@ -504,8 +504,8 @@ class RemoveDivThreeChars {
   /**
    * Helper method to remove characters at positions 
    * divisible by three using tail recursion.
-   * @param s - the given string.
-   * @param acc - the accumulator for the result.
+   * @param s the given string.
+   * @param acc the accumulator for the result.
    * @return the resulting string.
    */
   private static String removeDivThreeCharsTRHelper(String s, String acc) {
@@ -554,7 +554,7 @@ class RemoveSequentialChars {
 
   /**
    * Removes sequential characters from a string.
-   * @param s - the given string.
+   * @param s the given string.
    * @return the resulting string.
    */
   static String remSeqChars(String s) {
@@ -563,8 +563,8 @@ class RemoveSequentialChars {
 
   /**
    * Helper method to remove sequential characters from a string.
-   * @param s - the given string.
-   * @param c - the character to remove from the string.
+   * @param s the given string.
+   * @param c the character to remove from the string.
    * @return the resulting string.
    */
   private static String remSeqCharsHelper(String s, char c) {
@@ -584,7 +584,7 @@ class RemoveSequentialChars {
 
   /**
    * Tail recursive (driver) method to remove sequential characters from a string.
-   * @param s - the given string.
+   * @param s the given string.
    * @return the resulting string.
    */
   static String remSeqCharsTR(String s) {
@@ -593,9 +593,9 @@ class RemoveSequentialChars {
 
   /**
    * Tail recursive helper method for remSeqCharsTR.
-   * @param s - the given string.
-   * @param c - the character to remove from the string.
-   * @param acc - the accumulator for the result.
+   * @param s the given string.
+   * @param c the character to remove from the string.
+   * @param acc the accumulator for the result.
    * @return the resulting string.
    */
   private static String remSeqCharsHelper(String s, char c, String acc) {
@@ -654,8 +654,8 @@ class Pow {
    * Calculates the result of raising a base number to an exponent.
    * The method uses standard recursion over ints, so make sure that
    * neither parameter are very large!
-   * @param n - the base number.
-   * @param b - the exponent.
+   * @param n the base number.
+   * @param b the exponent.
    * @return the result of n raised to the power of b.
    */
   static int pow(int n, int b) {
@@ -677,8 +677,8 @@ class Pow {
    * Calculates the result of raising a base number to an exponent.
    * The helper method uses tail recursion over ints, so make sure that
    * neither parameter are very large!
-   * @param n - the base number.
-   * @param b - the exponent.
+   * @param n the base number.
+   * @param b the exponent.
    * @return the result of n raised to the power of b.
    */
   static int powTR(int n, int b) {
@@ -687,9 +687,9 @@ class Pow {
 
   /**
    * Tail recursive helper method for powTR.
-   * @param n - the base number.
-   * @param b - the exponent.
-   * @param acc - the intermediary result of n^b.
+   * @param n the base number.
+   * @param b the exponent.
+   * @param acc the intermediary result of n^b.
    * @return acc.
    */
   private static int powTRHelper(int n, int b, int acc) {
@@ -744,7 +744,7 @@ class CountDigit {
 
   /**
    * Counts the number of digits in a positive integer.
-   * @param n - positive integer.
+   * @param n positive integer.
    * @return number of digits.
    */
   static int countDigits(int n) {
@@ -763,7 +763,7 @@ class CountDigit {
   /**
    * Counts the number of digits in a positive integer
    * using tail recursion.
-   * @param n - positive integer.
+   * @param n positive integer.
    * @return number of digits.
    */
   static int countDigitsTR(int n) {
@@ -772,8 +772,8 @@ class CountDigit {
 
   /**
    * Helper method for computing the number of digits.
-   * @param n - positive integer.
-   * @param acc - accumulator for # of digits.
+   * @param n positive integer.
+   * @param acc accumulator for # of digits.
    * @return number of digits.
    */
   private static int countDigitsTRHelper(int n, int acc) {

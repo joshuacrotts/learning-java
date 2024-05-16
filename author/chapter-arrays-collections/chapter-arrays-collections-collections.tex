@@ -44,7 +44,7 @@ class DIntArray {
   /**
    * Creates a "dynamic array" of the given size. Each free slot
    * is simulated with a value of -1.
-   * @param size - initial size of the list.
+   * @param size initial size of the list.
    * @return integer array with size slots.
    */
   static int[] makeList(int size) {
@@ -99,7 +99,7 @@ class DIntArray {
   /**
    * Doubles the capacity of a list, returning a 
    * new list with the old elements copied over.
-   * @param list - old dynamic list to resize.
+   * @param list old dynamic list to resize.
    * @return a new resized dynamic list.
    */
   private static int[] resize(int[] list) {
@@ -118,8 +118,8 @@ class DIntArray {
   /**
    * Adds a value to the next-available spot in the list.
    * We define next-available as the first -1 we find from the left.
-   * @param list - list to add v into.
-   * @param v - integer to insert.
+   * @param list list to add v into.
+   * @param v integer to insert.
    * @return new list with v added.
    */
   static int[] addToList(int[] list, int v) {
@@ -155,8 +155,8 @@ class DIntArray {
   /**
    * Retrieves a value at a given index from the specified
    * dynamic list.
-   * @param list - dynamic list. 
-   * @param idx - index to retrieve. 
+   * @param list dynamic list. 
+   * @param idx index to retrieve. 
    * @return value at the given index.
    */
   static int getFromList(int[] list, int idx) {
@@ -166,7 +166,7 @@ class DIntArray {
 
   /**
    * Finds the first "free slot" in a given dynamic list.
-   * @param list - dynamic list.
+   * @param list dynamic list.
    * @return index of first occurrence of -1, or -1 if it doesn't exist.
    */
   private static int getFirstFreeSlot(int[] list) {
@@ -184,9 +184,9 @@ class DIntArray {
 
   /**
    * Sets a value in a dynamic list. 
-   * @param list - dynamic list.
-   * @param idx - index to replace.
-   * @param v - value to replace at the index.
+   * @param list dynamic list.
+   * @param idx index to replace.
+   * @param v value to replace at the index.
    * @return new dynamic list with the replaced value, 
    *         or null if the index is incorrect.
    */
@@ -454,7 +454,7 @@ class NumAverage {
 
   /**
    * Computes the average of a sequence of provided integers.
-   * @param nums - variadic integers.
+   * @param nums variadic integers.
    * @return average if there is at least one number or zero otherwise.
    */
   static int numAverage(int ... nums) {
@@ -505,7 +505,7 @@ class Explode {
 
   /**
    * Explodes a string into a list of its characters.
-   * @param s - string to explode.
+   * @param s string to explode.
    * @return list of characters in the string.
    */
   static List<Character> explode(String s) {
@@ -527,7 +527,7 @@ class Explode {
   
   /**
    * Explodes a string into a list of its characters using tail recursion.
-   * @param s - string to explode.
+   * @param s string to explode.
    * @return list of chars in string.
    */
   static List<Character> explodeTR(String s) {
@@ -537,8 +537,8 @@ class Explode {
 
   /**
    * Tail recursive helper method for explodeTr.
-   * @param s - string to explode.
-   * @param ls - list to store characters.
+   * @param s string to explode.
+   * @param ls list to store characters.
    * @return list of chars in the string.
    */
   private static List<Character> explodeTRHelper(String s, List<Character> ls) {
@@ -559,7 +559,7 @@ class Explode {
 
   /**
    * Explodes a string into a list of its characters.
-   * @param s - string to explode.
+   * @param s string to explode.
    * @return list of characters in the string.
    */
   static List<Character> explode(String s) {
@@ -612,8 +612,8 @@ class TakeEvens {
    * Returns a list of a given number of even integers from the list.
    * If there are less than n even integers, all of them are returned,
    * and if there are at least n even integers, those n are returned.
-   * @param ls - list of integers.
-   * @param n - number of even integers to potentially retrieve.
+   * @param ls list of integers.
+   * @param n number of even integers to potentially retrieve.
    * @return a list of even integers.
    */
   static List<Integer> takeEvens(List<Integer> ls, int n) {
@@ -671,7 +671,7 @@ class FilterQuarters {
    * Removes all times from a list of "times." A time is a string "XX:YY"
    * such that 0 <= XX <= 23, and 00 <= YY <= 59; 
    * This method modifies the list in-place.
-   * @param times - list of times.
+   * @param times list of times.
    */
   static void filterQuarters(List<String> times) {
     for (int i = 0; i < times.length(); i++) {
@@ -684,7 +684,7 @@ class FilterQuarters {
 
   /**
    * Returns whether a time is a "quarter." A quarter is either 0, 15, 30, or 45.
-   * @param t - string representing time as XX:YY, where
+   * @param t string representing time as XX:YY, where
    *           00 <= XX <= 23, and 00 <= YY <= 59.
    * @return true if quarter; false otherwise.
    */
@@ -777,8 +777,8 @@ class AirplaneTravelInformation {
 
   /**
    * Given two times in the format "HHMM", return the difference in minutes.
-   * @param t1 - first time.
-   * @param t2 - second time.
+   * @param t1 first time.
+   * @param t2 second time.
    * @return the difference in minutes between t1 and t2.
    */
   static int timeDifference(String t1, String t2) {
@@ -801,7 +801,7 @@ class AirplaneTravelInformation {
    * the flight with the shortest duration.
    * A flight is represented by a string with the following format:
    * "FLIGHT-ID;NUM-PASSENGERS;START-TIME;END-TIME"
-   * @param flights - non-empty list of flights.
+   * @param flights non-empty list of flights.
    * @return the flight id of the flight with the shortest duration.
    */
   static String shortestDurationFlight(List<String> flights) {
@@ -920,7 +920,7 @@ class MaxPathSum {
   /**
    * Computes the maximum sum of any path from the top to the bottom
    * of a triangle.
-   * @param ls - list of lists of integers. 
+   * @param ls list of lists of integers. 
    * @return max sum.
    */
   static int maxPathSum(List<List<Integer>> ls) {
@@ -929,8 +929,8 @@ class MaxPathSum {
 
   /**
    * Returns the two indices that a given index can visit.
-   * @param idx - index of element.
-   * @param level - level of element.
+   * @param idx index of element.
+   * @param level level of element.
    * @return two indices that the given index can visit.
    */
   static int[] getAdjacentPaths(int idx, int level) {
@@ -939,9 +939,9 @@ class MaxPathSum {
 
   /**
    * Computes the maximum sum of any path from the top to the bottom.
-   * @param triangle - list of lists of integers.
-   * @param i - index of element.
-   * @param l - level of element.
+   * @param triangle list of lists of integers.
+   * @param i index of element.
+   * @param l level of element.
    * @return maximum sum of any path from the top to the bottom.
    */
   private static int maxPathSizeHelper(List<List<Integer>> triangle, int i, int l) {
@@ -997,7 +997,7 @@ class MaxPathSum {
 
   /**
    * Dynamic programming solution to the maximum path sum problem.
-   * @param ls - given triangle.
+   * @param ls given triangle.
    * @return the maximum path sum.
    */
   static int maxSumDp(List<List<Integer>> ls) {
@@ -1180,7 +1180,7 @@ class StackSumOdds {
 
   /**
    * Sums the odd numbers in a given stack of integers.
-   * @param S - stack of integers.
+   * @param S stack of integers.
    * @return sum of odd integers.
    */
   static int sumOdds(Stack<Integer> S) {
@@ -1536,7 +1536,7 @@ class RemoveDuplicatesList {
 
   /**
    * Removes duplicates from a list of integers.
-   * @param ls - list of integers.
+   * @param ls list of integers.
    * @return new list without duplicates.
    */
   static List<Integer> removeDuplicatesList(List<Integer> ls) {
@@ -1596,8 +1596,8 @@ class CommonValuesTester {
 
   /**
    * Finds all common values between two linked lists of integers.
-   * @param ls1 - first linked list.
-   * @param ls2 - second linked list.
+   * @param ls1 first linked list.
+   * @param ls2 second linked list.
    * @return list of (distinct) common values.
    */
   static List<Integer> commonValues(LinkedList<Integer> ls1, LinkedList<Integer> ls2) {
@@ -1645,7 +1645,7 @@ class FindDupMissing {
   /**
    * Finds a duplicate number and a missing number from 
    * an array of numbers within a specific interval.
-   * @param A - array of integers where each number is in [1, n],
+   * @param A array of integers where each number is in [1, n],
    *            with one missing and one duplicate.
    * @return two-element array where [0] is the missing number
    *         and [1] is the duplicate number.
@@ -1761,7 +1761,7 @@ class ComputeMode {
 
   /**
    * Computes the mode of a list of numbers, which is the most-frequent value(s).
-   * @param ls - list of numbers.
+   * @param ls list of numbers.
    * @return set of mode values, if they exist.
    */
   static Set<Integer> mode(List<Integer> ls) {
@@ -1851,7 +1851,7 @@ class ShareFirstCharacter {
   /**
    * Returns a map whose keys are the first characters of the strings
    * and whose values are sets of strings that start with that character.
-   * @param ls - list of strings.
+   * @param ls list of strings.
    * @return map of sets of strings.
    */
   static Map<Character, Set<String>> shareFirstChar(List<String> ls) {
@@ -1906,7 +1906,7 @@ class FirstUniqueDigit {
   /**
    * Returns the first unique digit in a string, as a string. 
    * If there is no unique digit, then the empty string is returned.
-   * @param s - string.
+   * @param s string.
    * @return first unique digit as a string.
    */
   static String firstUniqueDigit(String s) {
@@ -1990,8 +1990,8 @@ class NthMostFrequentChar {
   /**
    * Given a string, returns the nth most 
    * frequent character in that string.
-   * @param s - string to examine.
-   * @param n - int n >= 0.
+   * @param s string to examine.
+   * @param n int n >= 0.
    * @return the nth most frequent character as a String or null if nonexistent.
    */
   static String nthMostFrequentChar(String s, int n) {
@@ -2246,7 +2246,7 @@ class MaximalMoves {
 
   /**
    * Given a list of numbers, returns the moves made by the players
-   * @param ls - list of numbers with even length.
+   * @param ls list of numbers with even length.
    * @return list of moves.
    */
   static List<Integer> maximalMoves(List<Integer> ls) {
@@ -2576,7 +2576,7 @@ class SqList {
 
   /**
    * Returns a list of squared integers from a list of integers.
-   * @param ls - list of integers.
+   * @param ls list of integers.
    * @return list of squared integers.
    */
   static List<Integer> sqList(List<Integer> ls) {
@@ -2637,7 +2637,7 @@ class RemoveVowelsStream {
 
   /**
    * Removes all vowels from a given string using streams.
-   * @param s - string to remove vowels from.
+   * @param s string to remove vowels from.
    * @return new string.
    */
   static String removeVowels(String s) {
@@ -2699,7 +2699,7 @@ class RankMap {
    * Creates a rank map for a given set of numbers. A rank map
    * is an association of a number to how many numbers are >=
    * the number. This method uses the stream approach.
-   * @param S - set of integers.
+   * @param S set of integers.
    * @return rank map.
    */
   static Map<Integer, Integer> rankMap(Set<Integer> S) {
@@ -2730,7 +2730,7 @@ class RankMap {
    * Creates a rank map for a given set of numbers. A rank map
    * is an association of a number to how many numbers are >=
    * the number. This method is faster than the stream approach.
-   * @param S - set of integers.
+   * @param S set of integers.
    * @return rank map.
    */
   static Map<Integer, Integer> fasterRankMap(Set<Integer> S) {

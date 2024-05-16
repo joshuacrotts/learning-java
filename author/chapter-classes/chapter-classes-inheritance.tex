@@ -351,7 +351,7 @@ class WorldPosition {
   /**
    * Using streams, returns the number of occurrences 
    * of a given class type.
-   * @param cls - the class to search for.
+   * @param cls the class to search for.
    * @return those instances of a class that exist on the position.
    */
   int count(Class<?> cls) {
@@ -391,9 +391,9 @@ final class World {
   /**
    * Assigns a WorldObject to a given position in the world by adding
    * it to the list of objects.
-   * @param obj - the object to assign.
-   * @param x - the x-coordinate of the position.
-   * @param y - the y-coordinate of the position.
+   * @param obj the object to assign.
+   * @param x the x-coordinate of the position.
+   * @param y the y-coordinate of the position.
    */
   void add(WorldObject obj, int x, int y) {
     this.WORLD[x][y].add(obj);
@@ -401,8 +401,8 @@ final class World {
 
   /**
    * Counts the number of stars on a given position in the world.
-   * @param x - the x-coordinate of the position.
-   * @param y - the y-coordinate of the position.
+   * @param x the x-coordinate of the position.
+   * @param y the y-coordinate of the position.
    * @return the number of stars.
    */
   int countStars(int x, int y) {

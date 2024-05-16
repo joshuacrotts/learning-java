@@ -243,7 +243,7 @@ class Point {
 
   /**
    * Determines the Euclidean distance between two points.
-   * @param p - the other point.
+   * @param p the other point.
    * @return the distance between this point and p.
    */
   double distance(Point p) {
@@ -324,7 +324,7 @@ class Point {
 
   /**
    * Computes the average distance to the origin of a list of points.
-   * @param lop - list of points.
+   * @param lop list of points.
    * @return empty Optional if the list is empty, 
    *         or OptionalDouble otherwise.
    */
@@ -371,7 +371,7 @@ class Point {
 
   /**
    * Generates a random point with a maximum radius.
-   * @param maxRadius - the maximum radius.
+   * @param maxRadius the maximum radius.
    * @return a random point.
    */
   static Point random(double maxRadius) {
@@ -574,7 +574,7 @@ class Point {
 
   /**
    * Returns a list of all points that are not "linear."
-   * @param lop - list of Point objects.
+   * @param lop list of Point objects.
    * @return list where linear points are removed.
    */
   static List<Point> removeLinearPoints(List<Point> lop) {
@@ -648,7 +648,7 @@ class PizzaOrder {
 
   /**
    * Returns the number of a certain topping there are in this pizza order.
-   * @param topping - one of the four toppings.
+   * @param topping one of the four toppings.
    * @return Optional<Integer> containing value, or empty optional.
    */
   Optional<Integer> getToppingCount(String topping) {
@@ -866,7 +866,7 @@ class Player {
 
   /**
    * Adds a card to the player's hand.
-   * @param c - card to add to the player's hand.
+   * @param c card to add to the player's hand.
    */
   void addCard(Card c) { this.HAND.add(c); }
 
@@ -1131,8 +1131,8 @@ class Library {
   /**
    * Inserts a Book/quantity association to the map. If the book already
    * exists, we add qty to its frequency.
-   * @param b - Book to add to map.
-   * @param qty - quantity of provided book.
+   * @param b Book to add to map.
+   * @param qty quantity of provided book.
    */
   void addBook(Book b, int qty) {
     this.BOOKS.put(b, this.BOOKS.getOrDefault(b, 0) + qty);
@@ -1143,7 +1143,7 @@ class Library {
    * that it searches for the book with the given title, and
    * returns its instance while decrementing its book counter.
    * If the associated counter is zero, we return null.
-   * @param t - title to search.
+   * @param t title to search.
    * @return Book instance if it exists, or null otherwise.
    */
   Book checkout(String t) {
@@ -1159,7 +1159,7 @@ class Library {
   /** 
    * Searches through the books to determine if a book
    * with the given title exists.
-   * @param t - title of book to search for.
+   * @param t title of book to search for.
    * @return true if a book with title t exists, false otherwise.
    */
   boolean containsBook(String title) {
@@ -1429,7 +1429,7 @@ class Rational {
 
   /**
    * Adds two rational numbers.
-   * @param r - the other rational number.
+   * @param r the other rational number.
    * @return the (simplified) sum of this and r.
    */
   Rational add(Rational r) {
@@ -1481,7 +1481,7 @@ class Rational {
 
   /**
    * Multiplies two rational numbers.
-   * @param r - the other rational number.
+   * @param r the other rational number.
    * @return the (simplified) product of this and r.
    */
   Rational multiply(Rational r) {

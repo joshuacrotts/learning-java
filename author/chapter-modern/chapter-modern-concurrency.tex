@@ -282,8 +282,8 @@ class BankAccount {
 
   /**
    * Transfers money from one account to another.
-   * @param b2 - other bank account to deposit money into.
-   * @param amt - the amount to withdraw from this account.
+   * @param b2 other bank account to deposit money into.
+   * @param amt the amount to withdraw from this account.
    */
   void transfer(BankAccount b2, int amt) {
     this.withdraw(amt);
@@ -366,8 +366,8 @@ class BankAccount {
 
   /**
    * Transfers money from one account to another.
-   * @param b2 - other bank account to deposit money into.
-   * @param amt - the amount to withdraw from this account.
+   * @param b2 other bank account to deposit money into.
+   * @param amt the amount to withdraw from this account.
    */
   void transfer(BankAccount b2, int amt) {
     synchronized (this) {
@@ -409,8 +409,8 @@ class BankAccount {
 
   /**
    * Transfers money from one account to another.
-   * @param b2 - other bank account to deposit money into.
-   * @param amt - the amount to withdraw from this account.
+   * @param b2 other bank account to deposit money into.
+   * @param amt the amount to withdraw from this account.
    */
   void transfer(BankAccount b2, int amt) {
     BankAccount.lock.lock();
@@ -716,8 +716,8 @@ interface IFileSearcher {
    * files in the given directory. The word is case-insensitive.
    * Different implementations of the method may use different
    * strategies to count the occurrences.
-   * @param word - the word to count.
-   * @param dir - the directory to search.
+   * @param word the word to count.
+   * @param dir the directory to search.
    * @return a map from file names to the number of occurrences.
    */
   Map<String, Integer> countWordInFiles(String word, String dir);
@@ -752,9 +752,9 @@ class StandardFileSearcher implements IFileSearcher {
 
   /**
    * Count the number of occurrences of the word in the given file.
-   * @param file - the file to process.
-   * @param word - the word to count.
-   * @param M - the map to store the count.
+   * @param file the file to process.
+   * @param word the word to count.
+   * @param M the map to store the count.
    */
   static void process(String file, String word, Map<String, Integer> M) {
     try (Stream<String> lines = Files.lines(Path.of(file))) {

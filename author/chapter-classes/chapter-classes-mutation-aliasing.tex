@@ -255,7 +255,7 @@ class MiniArrayList<T> {
 
   /**
    * Adds an element to the end of the list.
-   * @param element - the element to add.
+   * @param element the element to add.
    */
   void add(T element) {
     if (this.size == this.capacity) { 
@@ -267,7 +267,7 @@ class MiniArrayList<T> {
   /**
    * Retrieves an element at a given index. The index should
    * be in-bounds. If not, an ArrayIndexOutOfBoundsException is thrown.
-   * @param index - list index between 0 <= i < L.size()
+   * @param index list index between 0 <= i < L.size()
    * @return item at the given index.
    */
   T get(int index) { 
@@ -344,8 +344,8 @@ class MiniArrayList<T> {
 
   /**
    * Inserts an element at the given index.
-   * @param e - the element to insert.
-   * @param idx - the index to insert at.
+   * @param e the element to insert.
+   * @param idx the index to insert at.
    */
   void insert(T e, int idx) {
     if (this.size == capacity) { 
@@ -357,7 +357,7 @@ class MiniArrayList<T> {
 
   /**
    * Removes the element at the given index.
-   * @param idx - the index to remove.
+   * @param idx the index to remove.
    * @return the element removed.
    */
   T remove(int idx) {
@@ -376,7 +376,7 @@ class MiniArrayList<T> {
    * Shifts all elements to the left of the given index 
    * one position leftwards. Note that this method overwrites 
    * the element at the given index.
-   * @param idx - the index to shift left of.
+   * @param idx the index to shift left of.
    */
   private void shiftLeft(int idx) {
     for (int i = idx; i < this.size - 1; i++) { 
@@ -387,7 +387,7 @@ class MiniArrayList<T> {
   /**
    * Shifts all elements to the right of the given index 
    * one position rightwards.
-   * @param idx - the index to shift right of.
+   * @param idx the index to shift right of.
    */
   private void shiftRight(int idx) {
     for (int i = size - 1; i > idx; i--) { 
@@ -731,7 +731,7 @@ class DoublyLinkedList<T> {
 
   /**
    * Adds a new node to the end of the list.
-   * @param data - The data to be stored in the new node.
+   * @param data The data to be stored in the new node.
    */
   void add(T data) {
     Node<T> newNode = new Node<>(data);
@@ -789,7 +789,7 @@ class DoublyLinkedList<T> {
 
   /**
    * Returns the element at a given index as an Optional.
-   * @param idx - index to retrieve.
+   * @param idx index to retrieve.
    * @return Optional.empty() if the index is out of bounds,
    *         the data at that node's index otherwise.
    */
@@ -849,7 +849,7 @@ class DoublyLinkedList<T> {
 
   /**
    * Removes an element from the linked list, if it exists.
-   * @param data - value to be removed, compared via .equals.
+   * @param data value to be removed, compared via .equals.
    */
   void remove(T data) {
     Node<T> curr = this.first;
@@ -933,7 +933,7 @@ class AssociationList<K, V> {
   
   /**
    * Returns the value associated with a given key.
-   * @param key - the key to lookup.
+   * @param key the key to lookup.
    * @return the value associated with the key, if it exists.
    */
   Optional<V> lookup(K key) {
@@ -947,8 +947,8 @@ class AssociationList<K, V> {
   
   /**
    * Adds a new association to the list.
-   * @param key - the key to associate.
-   * @param value - the value to associate.
+   * @param key the key to associate.
+   * @param value the value to associate.
    * @return a new association list with the new association.
    */
   AssociationList<K, V> extend(K key, V value) {
@@ -1018,7 +1018,7 @@ class HashTable<T> {
    * insert it onto the end of the bucket at that index in the table. 
    * If the value is already in the hash table, we return false and do 
    * not add it into the table.
-   * @param v - value to add.
+   * @param v value to add.
    * @return true if the element (*;$\not\in$;*) hash table; false otherwise.
    */
   boolean add(T v) { /* TODO. */ }
@@ -1027,7 +1027,7 @@ class HashTable<T> {
    * Determines whether an element exists in the hash table. We compute 
    * the hash code of the input parameter, then traverse the bucket at 
    * that index.
-   * @param v - value to search for.
+   * @param v value to search for.
    * @return true if the element (*;$\in$;*) hash table; false otherwise.
    */
   boolean contains(T v) { /* TODO. */ }
@@ -1074,7 +1074,7 @@ class HashTable<T> {
    * insert it onto the end of the bucket at that index in the table. 
    * If the value is already in the hash table, we return false and 
    * do not add it.
-   * @param v - value to add.
+   * @param v value to add.
    * @return true if the element (*;$\not\in$;*) hash table; false otherwise.
    */
   boolean add(T v) {
@@ -1092,7 +1092,7 @@ class HashTable<T> {
   * Determines whether an element exists in the hash table. We compute 
   * the hash code of the input parameter, then traverse the bucket at 
   * that index.
-  * @param v - value to search for.
+  * @param v value to search for.
   * @return true if the element (*;$\in$;*) hash table; false otherwise.
   */
   boolean contains(T v) {

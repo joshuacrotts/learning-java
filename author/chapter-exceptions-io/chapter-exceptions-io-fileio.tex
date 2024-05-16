@@ -405,7 +405,7 @@ class EmployeeScanner {
 
   /**
    * Reads in a list of employee records from a given filename.
-   * @param fileName - name of file.
+   * @param fileName name of file.
    * @return list of Employee instances.
    */
   static List<Employee> readRecords(String fileName) {
@@ -539,7 +539,7 @@ class LineWordCharCounter {
 
   /**
    * Counts the number of lines, words, and characters in a given file.
-   * @param fileName - name of file.
+   * @param fileName name of file.
    * @return array of counts.
    */
   static int[] count(String fileName) {
@@ -578,7 +578,7 @@ class ConcatenateFiles {
  
   /**
    * Determines whether all files have the same extension.
-   * @param files - array of file names.
+   * @param files array of file names.
    * @return true if all files have same extension, false otherwise.
    */
   private static boolean sameExtension(String[] files) {
@@ -598,8 +598,8 @@ class ConcatenateFiles {
 
   /**
    * Concatenates the contents of a list of files into a single file.
-   * @param files - array of file names.
-   * @param outFile - name of output file.
+   * @param files array of file names.
+   * @param outFile name of output file.
    */
   private static void concatenate(String[] files, String outFile) {
     try (BufferedWriter bw = new BufferedWriter(new FileWriter(outFile))) {
@@ -696,7 +696,7 @@ class TemperatureComputer {
   /**
    * Returns a string with the locations and their 
    * minimum, maximum, and average temperatures.
-   * @param filename - input file with locations and 
+   * @param filename input file with locations and 
    *                   temperature separated by ';'.
    * @return String formatted as aforementioned.
    */
@@ -753,7 +753,7 @@ class TemperatureComputer {
   /**
    * Returns a string with the locations and their 
    * minimum, maximum, and average temperatures.
-   * @param filename - input file with locations and 
+   * @param filename input file with locations and 
    *                   temperature separated by ';'.
    * @return String formatted as aforementioned.
    */
@@ -870,9 +870,9 @@ class SudokuSolver {
 
   /**
    * Returns whether or not a number is valid in a given cell.
-   * @param r - row of cell.
-   * @param c - column of cell.
-   * @param n - number to place in cell.
+   * @param r row of cell.
+   * @param c column of cell.
+   * @param n number to place in cell.
    * @return true if number is valid, false otherwise.
    */ 
   private boolean isValid(int r, int c, int n) {
@@ -927,9 +927,9 @@ class SudokuSolver {
 
   /**
    * Recursive backtracking algorithm to solve the puzzle. 
-   * @param r - row of cell.
-   * @param c - column of cell.
-   * @param sol - solution array.
+   * @param r row of cell.
+   * @param c column of cell.
+   * @param sol solution array.
    * @return true if we have a solution, and false if the current
    *         placement is invalid or leads to a "dead end".
    */ 
@@ -975,7 +975,7 @@ class SudokuSolver {
   /**
    * Outputs the solution to a file. The solution is just a 9x9 grid of 
    * numbers, and does not attempt to format the output in any way.
-   * @param filename - name of output file.
+   * @param filename name of output file.
    */
   void output(String filename) {
     try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
@@ -1074,7 +1074,7 @@ class SudokuSolver {
 
 %   /**
 %    *
-%    * @param c - 
+%    * @param c 
 %    */
 %   void add(char c) {
 %     if (Character.isLetter(c)) {
@@ -1095,7 +1095,7 @@ class SudokuSolver {
 
 %   /**
 %    *
-%    * @param c - 
+%    * @param c 
 %    * @return 
 %    */
 %   long get(char c) {
@@ -1106,7 +1106,7 @@ class SudokuSolver {
 
 %   /**
 %    *
-%    * @param n - 
+%    * @param n 
 %    * @return 
 %    */
 %   List<Character> getNthMostFrequent(int n) {
@@ -1132,7 +1132,7 @@ class SudokuSolver {
 
 %   /**
 %    * 
-%    * @param c - 
+%    * @param c 
 %    * @return 
 %    */
 %   Optional<Long> computeIndex(char c) {

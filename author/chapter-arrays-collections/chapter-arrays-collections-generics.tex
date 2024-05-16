@@ -83,8 +83,8 @@ class GenericSearch {
   /**
    * Returns the index of the first occurrence of k in t, 
    * or -1 if it does not exist.
-   * @param t - the list of type T.
-   * @param k - the object of type T to search for.
+   * @param t the list of type T.
+   * @param k the object of type T to search for.
    * @return the index of k or -1.
    */
   static <T> int genericSearch(List<T> t, T k) {
@@ -148,7 +148,7 @@ class GenericMax {
   /**
    * Returns the maximum element in the list according to 
    * the compareTo implementation of the type parameter.
-   * @param t - the list of type T, where T is a type 
+   * @param t the list of type T, where T is a type 
    *            that implements Comparable.
    * @return the maximum element in the list.
    */
@@ -204,7 +204,7 @@ class NumberList {
 
   /**
    * Computes the sum of a list of Number subclasses.
-   * @param ls - list of Number instances.
+   * @param ls list of Number instances.
    * @return sum as a double.
    */
   static double sum(List<? extends Number> ls) {
@@ -249,7 +249,7 @@ class NumberList {
    * Receives a list of objects that are superclasses of Integer
    * and converts them to their string counterparts and puts them
    * in a list representation.
-   * @param ls - list of instances that are superclasses of Integer.
+   * @param ls list of instances that are superclasses of Integer.
    * @return stringified list.
    */
   static String stringify(List<? super Integer> ls) {

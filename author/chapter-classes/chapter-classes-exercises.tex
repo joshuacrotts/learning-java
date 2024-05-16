@@ -789,8 +789,8 @@ class FactorialTailRecursive {
   /**
    * Tail-recursive factorial function. Uses BigInteger to 
    * avoid number overflow and thunks to avoid stack overflow.
-   * @param n - the number to compute the factorial of.
-   * @param ac - the accumulator.
+   * @param n the number to compute the factorial of.
+   * @param ac the accumulator.
    * @return a tail call that is either done or not done.
    */
   static ITailCall<BigInteger> factTailCall(BigInteger n, BigInteger ac) {

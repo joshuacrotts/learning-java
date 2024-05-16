@@ -125,7 +125,7 @@ class InorderTraversal {
   /**
    * Returns a list of the elements in the tree 
    * after an inorder traversal.
-   * @param t - the tree to traverse.
+   * @param t the tree to traverse.
    * @return a list of elements.
    */
   static <T extends Comparable<T>> List<T> inorder(BinarySearchTree<T> t) {
@@ -180,7 +180,7 @@ class FindMax {
 
   /**
    * Finds the maximum value in a tree.
-   * @param t - the tree to search.
+   * @param t the tree to search.
    * @return the maximum value in the tree, or null if the tree is empty.
    */
   static <T extends Comparable<T>> T findMax(BinarySearchTree<T> t) {
@@ -230,7 +230,7 @@ class IsBalanced {
    * Determines whether a tree is balanced. A tree 
    * is balanced if the difference between the heights of its 
    * left and right subtrees differ by at most one.
-   * @param t - the tree to check.
+   * @param t the tree to check.
    * @return true if the tree is balanced, false otherwise.
    */
   static <T extends Comparable<T>> boolean isBalanced(BinarySearchTree<T> t) {
@@ -290,7 +290,7 @@ class InorderSuccessor {
 
   /**
    * Returns the inorder successor of a node in a binary search tree.
-   * @param t - the node to find the successor of.
+   * @param t the node to find the successor of.
    * @return the inorder successor of the node, or null if the node has no successor.
    */
   static <T extends Comparable<T>> T 
@@ -360,9 +360,9 @@ class FindBetween {
 
   /**
    * Returns a set of all elements in the tree that are between min and max.
-   * @param t - the tree to search.
-   * @param min - the minimum value.
-   * @param max - the maximum value.
+   * @param t the tree to search.
+   * @param min the minimum value.
+   * @param max the maximum value.
    * @return a set of elements between min and max.
    */
   static <T extends Comparable<T>> Set<T> 

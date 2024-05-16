@@ -107,7 +107,7 @@ class FunctionalBubbleSort<V extends Comparable<V>> implements IBubbleSort<V> {
   /**
    * Retrieves the largest element in the list. If the list is 
    * empty, null is returned.
-   * @param ls - the list to search.
+   * @param ls the list to search.
    * @return the largest element in the list.
    */
   private V getLargest(AbstractList<V> ls) {
@@ -376,7 +376,7 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
 \subsection{Insertion Sort}
 The insertion sort is the last of the three poorly-performing sorting algorithms that w will discuss. 
 Insertion sort, in general, works by taking an element from the unsorted list and inserting it into the correct position in a sorted list. 
-Figure~\ref{fig:insertion-sort} illustrates the in-place insertion sort algorithm; each iteration of the outer loop is represented by a row in the figure, with the red underbars representing the now-sorted sublist.
+Figure~\ref{fig:insertion-sort} illustrates the in-place insertion sort algorithm; each iteration of the outer loop is represented by a row in the figure, with the red under-bars representing the now-sorted sub-list.
 
 \enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -448,9 +448,9 @@ class FunctionalInsertionSort<V extends Comparable<V>> implements IInsertionSort
 
   /**
    * Inserts an element into a sorted list of values.
-   * @param val - value to insert.
-   * @param sortedRest - a sorted sublist.
-   * @return the sorted sublist with the new value inserted.
+   * @param val value to insert.
+   * @param sortedRest a sorted sub-list.
+   * @return the sorted sub-list with the new value inserted.
    */
   private AbstractList<V> insert(V val, AbstractList<V> sortedRest) {
     if (sortedRest.isEmpty()) {
@@ -535,7 +535,7 @@ class InPlaceInsertionSort<V extends Comparable<V>> implements IInsertionSort<V>
     % Arrow for the sixth swap (97 down before 98)
   \draw[->] (sort-8-10.north) |- ++(0,0.2) -| (sort-8-9.north west);
   
-      % Red underbars for sorted sublists
+      % Red under-bars for sorted sub-lists
   \draw[red,thick] (sort-1-2.south west) -- (sort-1-2.south east);
   \draw[red,thick] (sort-2-2.south west) -- (sort-2-3.south east);
   \draw[red,thick] (sort-3-2.south west) -- (sort-3-4.south east);
@@ -564,7 +564,7 @@ Recall that, at the base case, we know the singletons are sorted by definition.
 Because of this \emph{invariant}\index{invariant}, we know that merging the contents of two sorted lists is not an issue: we compare each element one-by-one, putting the smaller of the two before the subsequent value.
 
 In~\Cref{fig:mergesortill}, we sort the list $[5, 2, 1, 13, 98, 12, 7, 6, 97]$ by decomposing the list into two smaller lists: $[5, 2, 1, 13, 98]$, and $[12, 7, 6, 97]$. 
-We recursively decompose these two further until we end with the base case, at which we proceed to merge the now-sorted sublists back into one overall sorted list.
+We recursively decompose these two further until we end with the base case, at which we proceed to merge the now-sorted sub-lists back into one overall sorted list.
 
 \begin{figure}[H]
   \begin{center}
@@ -700,7 +700,7 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   /**
    * Recursive helper method for merge sort. Splits the list 
    * in half and merges the two halves after recursively sorting them.
-   * @param ls - the list to sort.
+   * @param ls the list to sort.
    * @return the sorted list.
    */
   private AbstractList<V> msHelper(AbstractList<V> ls) {
@@ -724,8 +724,8 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
    * element one-by-one and adds the smaller element to the new list. 
    * If one list is exhausted, the elements of the other list are
    * added to the new list.
-   * @param ls1 - the first sorted list.
-   * @param ls2 - the second sorted list.
+   * @param ls1 the first sorted list.
+   * @param ls2 the second sorted list.
    * @return the merged sorted list.
    */
   private AbstractList<V> merge(AbstractList<V> ls1, AbstractList<V> ls2) {
@@ -763,9 +763,9 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
 
   /**
    * Recursively sorts the list by splitting it in half and merging the halves.
-   * @param ls - the list to sort.
-   * @param low - the lower bound of the sublist. 
-   * @param high - the upper bound of the sublist.
+   * @param ls the list to sort.
+   * @param low the lower bound of the sub-list. 
+   * @param high the upper bound of the sub-list.
    */
   private void msHelper(AbstractList<V> ls, int low, int high) {
     if (low < high) {
@@ -777,11 +777,11 @@ class InPlaceMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   }
 
   /**
-   * Merges two sorted sublists into one sorted list. 
-   * @param ls - the list to sort.
-   * @param low - the lower bound of the sublist.
-   * @param mid - the middle index of the sublist.
-   * @param high - the upper bound of the sublist.
+   * Merges two sorted sub-lists into one sorted list. 
+   * @param ls the list to sort.
+   * @param low the lower bound of the sub-list.
+   * @param mid the middle index of the sub-list.
+   * @param high the upper bound of the sub-list.
    */
   private void merge(AbstractList<V> ls, int low, int mid, int high) {
     AbstractList<V> ls1 = new ArrayList<>();
@@ -858,8 +858,8 @@ interface IQuickSort<V extends Comparable<V>> {
 \newpage
 \subsubsection*{Functional Quick Sort}
 The functional implementation of quick sort is beautiful and elegant. 
-We choose a pivot~$p \in L$ at random, then create three sublists $l_<$, $l_>$, $l_=$, where~$l_<$ stores all elements less than~$p$, where~$l_>$ stores all elements greater than~$p$, and~$l_=$ stores all elements equal to~$p$. 
-Each sublist, excluding~$l_=$, is recursively sorted, followed by concatenating the three sublists in order. 
+We choose a pivot~$p \in L$ at random, then create three sub-lists $l_<$, $l_>$, $l_=$, where~$l_<$ stores all elements less than~$p$, where~$l_>$ stores all elements greater than~$p$, and~$l_=$ stores all elements equal to~$p$. 
+Each sub-list, excluding~$l_=$, is recursively sorted, followed by concatenating the three sub-lists in order. 
 
 %%%%%%%%%%%%% FUNCTIONAL QUICK SORT %%%%%%%%%%%%% 
 \begin{lstlisting}[language=MyJava]
@@ -923,9 +923,9 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
 
   /**
    * Recursive helper method for quicksort.
-   * @param ls - the List to sort.
-   * @param low - the lower bound of the partition.
-   * @param high - the upper bound of the partition.
+   * @param ls the List to sort.
+   * @param low the lower bound of the partition.
+   * @param high the upper bound of the partition.
    */
   private void quicksortHelper(AbstractList<V> ls, int low, int high) {
     if (low < high) {
@@ -939,9 +939,9 @@ class InPlaceQuickSort<V extends Comparable<V>> implements IQuickSort<V> {
    * Creates a quicksort partition, where all elements less than 
    * the pivot are to the left of the pivot, and all elements 
    * greater than the pivot are to its right.
-   * @param ls - the list to partition.
-   * @param low - the lower bound of the partition.
-   * @param high - the upper bound of the partition.
+   * @param ls the list to partition.
+   * @param low the lower bound of the partition.
+   * @param high the upper bound of the partition.
    * @return the index of the pivot.
    */
   private int quicksortPartition(AbstractList<V> ls, int low, int high) {

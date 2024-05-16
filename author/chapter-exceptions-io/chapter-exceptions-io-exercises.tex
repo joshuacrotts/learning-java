@@ -272,9 +272,9 @@ class MazeSolver {
    * the exit. We try all possible paths from the current cell, if
    * they are reachable. If a path ends up being a dead end, we 
    * backtrack and try another path.
-   * @param r - the row of the current cell.
-   * @param c - the column of the current cell.
-   * @param sol - the current solution to the maze.
+   * @param r the row of the current cell.
+   * @param c the column of the current cell.
+   * @param sol the current solution to the maze.
    * @return true if we are at the exit, false otherwise.
    */
   private boolean solveHelper(int r, int c, char[][] sol) { 
