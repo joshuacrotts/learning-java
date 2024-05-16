@@ -111,7 +111,7 @@ For example, if $A = [1, 2, 3, 4, 5, 6, 7]$ and $k=2$, then \ttt{computeFixedWin
 
 For example, if $A = [1, 2, 3, 4, 5, 6, 7]$ and $k=2$, then \ttt{computeSlidingWindows} returns $\{\{1, 2\}, \{2, 3\}, \{3, 4\}, \{4, 5\}, \{5, 6\}, \{6, 7\}\}$. Note the difference between the sliding window and the fixed window.
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{String[][] computeBowlingScores(String[] S, int[][][] scores)} method that ocmputes the bowling score for each player name in $S$. The scores are separated by rows, where the $i^\text{th}$ row corresponds to the $i^\text{th}$ name in $S$. Each row contains ten arrays of 3-element arrays. These triples, as we will call them, correspond to a bowling frame. The first nine frames only use the first two slots of the triple, whereas the last may use all three.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{String[][] computeBowlingScores(String[] S, int[][][] scores)} method that computes the bowling score for each player name in $S$. The scores are separated by rows, where the $i^\text{th}$ row corresponds to the $i^\text{th}$ name in $S$. Each row contains ten arrays of 3-element arrays. These triples, as we will call them, correspond to a bowling frame. The first nine frames only use the first two slots of the triple, whereas the last may use all three.}
 
 To compute the score of a player, there are a few rules. Note that, in bowling, the objective is to knock down all ten pins.
 
@@ -129,7 +129,7 @@ For frame 10:
     \item If the player does not score a strike nor a spare from the first two shots, they earn as many points as pins knocked down.
 \end{itemize}
 
-The resulting array contains $n$ rows to represent $n$ players, where the first element of a row is the player name alpabetized, and the second is their score.
+The resulting array contains $n$ rows to represent $n$ players, where the first element of a row is the player name alphabetized, and the second is their score.
 
 \myexercise{2}{chapter-arrays-collections}{We can represent matrices as two-dimensional arrays. For example, the matrix}
 
@@ -181,7 +181,7 @@ To rotate a matrix, take its transposition, then reverse each row. You may assum
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{int[][] multiply(int[][] A, int[][] B)} method that returns the product of two matrices, where $A$ is $M \times N$ and $B$ is $P \times Q$. Not all matrices can be multiplied, so you should return \ttt{null} if the matrices cannot be multiplied. Two matrices can be multiplied if and only if $N = P$. The product of two matrices $A$ and $B$ is the matrix $C$ where $C_{i, j} = \sum_{k=1}^{N} A_{i, k}\cdot B_{k, j}$} for the indices $i$, $k$, and $j$.
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{boolean canSum(int[] A, int t)} method that, when given an array of integers $A$ and a target $t$, determines whether or not there exists a gruop of numbers in $A$ that sum to $t$. For example, if $A=\{2, 4, 10, 8\}$ and $t=9$, then \ttt{canSum} returns false because there is no possible selection of integers from $A$ that sum to $9$. On the other hand, if $A=\{3, 7, 4, 5, 9\}$ and $t=8$, then we return true because $3+5=8$. If $A=\{2, 4, 2, 11, 5, 4\}$ and $t=9$, then we return true because $1+4+4=9$, but also $4+5=9$ and $5+4=9$.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{boolean canSum(int[] A, int t)} method that, when given an array of integers $A$ and a target $t$, determines whether or not there exists a group of numbers in $A$ that sum to $t$. For example, if $A=\{2, 4, 10, 8\}$ and $t=9$, then \ttt{canSum} returns false because there is no possible selection of integers from $A$ that sum to $9$. On the other hand, if $A=\{3, 7, 4, 5, 9\}$ and $t=8$, then we return true because $3+5=8$. If $A=\{2, 4, 2, 11, 5, 4\}$ and $t=9$, then we return true because $1+4+4=9$, but also $4+5=9$ and $5+4=9$.}
 
 There is a simple recursive algorithm to solve this problem: if you have searched through the entire array, return whether or not the target is zero. Otherwise, make two recursive calls: one for where you choose the current number and a second for where you do not. By ``choose,'' we mean to say that the current number is subtracted from the target value. By ``current number,'' we mean to suggest a method that resembles the tail recursive linear search algorithm. You'll need to design a helper method to solve this problem using this approach.
 
@@ -349,7 +349,7 @@ largeToSmall(M):
     i = M.get(k)
     array[i-1].add(k)
 
-  // Append all linkedhashsets in reverse order.
+  // Append all linked hash sets in reverse order.
   return array[c-1] appended to array[c-2] ... appended to array[0]
 \end{verbnobox}
     

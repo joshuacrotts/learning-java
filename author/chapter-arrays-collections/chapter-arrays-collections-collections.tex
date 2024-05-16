@@ -1459,7 +1459,7 @@ These hash codes are used to decide in which `bucket' within the hash table an o
 It's important, though, to note that hash codes are not used for comparing the equality of the content of objects. 
 Unlike the \ttt{==} operator, which checks if two references point to the same object in memory, the respective \ttt{equals()} method is used to compare the actual content of the objects. 
 When adding an object to a \ttt{HashSet}, if the hash code of the object matches the hash code of any existing object in the corresponding bucket, the \ttt{equals()} method is then used to check for actual content equality to ensure that no duplicate objects (in terms of content) are added to the set. 
-In other words, two objects that are equal in terms of \ttt{equals()} must have the same hashcode, but the converse is not necessarily true. 
+In other words, two objects that are equal in terms of \ttt{equals()} must have the same hash code, but the converse is not necessarily true. 
 Anything more than these details goes beyond the scope of this textbook, but we will provide a small synopsis of hashable data structures.
 
 A hashable data structure is most often designed as a hash table, which is similar to an array, where elements are stored. 
@@ -1468,10 +1468,10 @@ Consider a hash function~$H(v)$, whose range is the set of integers~$[0, n)$, wh
 Running~$v$ (which is an arbitrary argument) through the hash function~$H$ returns an index of the hash table. 
 Evaluating~$H$ is, in optimal conditions, a constant-time algorithm, hence determining value existence in a hash table also runs in constant-time. 
 This begs the question of what happens if there exists an output of~$H$ such that~$H(v') = H(v)$, but $v' \neq v$. 
-In subsequent computer science courses, students learn how to resolve \emph{hash collisions}\index{hash collisions} through techniques such as linear and quadratic probling, as well as chaining.\footnote{In Chapter~\ref{chapter-classes}, we will implement a simple hash table that uses chaining to resolve hash collisions.}
+In subsequent computer science courses, students learn how to resolve \emph{hash collisions}\index{hash collisions} through techniques such as linear and quadratic probing, as well as chaining.\footnote{In Chapter~\ref{chapter-classes}, we will implement a simple hash table that uses chaining to resolve hash collisions.}
 %The previous paragraph briefly discussed this through the `buckets' analogy and \ttt{equals}, but we will ignore such complexities and use hashable data structures at face value.  
 
-Use hashsets when you do not care about element ordering or ``position'' in the set, and want to ensure no duplicates exist.
+Use hash sets when you do not care about element ordering or ``position'' in the set, and want to ensure no duplicates exist.
 \begin{figure}[tp]
   \small
   \begin{tcolorbox}[title=Java Sets]
@@ -1499,7 +1499,7 @@ All methods in a \ttt{Set} are, definitionally, implemented by a \ttt{LinkedHash
 
 \myexample{The canonical usage of a set is to remove duplicates from a list.} 
 Indeed, let's design the \ttt{removeDuplicatesList} method that receives a list of integers and returns a new list without any duplicates. 
-We will add a postcondition requirement that the output order of the integers must match the input order. 
+We will add a post-condition requirement that the output order of the integers must match the input order. 
 To solve this problem, we will create an auxiliary linked hash set data structure, add all elements from the list into the set, then add those values from the set to a new list. 
 When adding a value into a set, if it already exists, it is not re-added.
 
@@ -1615,7 +1615,6 @@ class CommonValuesTester {
 \myexample{We are given an array of numbers from~$1$ to~$n$, where one number is missing and one is duplicated. 
 Let's design the \ttt{findDupMissing} method that returns an array of two elements: the first of which is the missing number and the second of which is the duplicate value. 
 It makes sense to use a \ttt{TreeSet} since, that way, we can store the numbers in order and find out which one is omitted through one traversal, and find the only duplicate.}
-
 
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
@@ -2045,7 +2044,7 @@ static int sum(int[] arr) {
 The problem is that not all data structures, as we have undoubtedly seen, are sequential; sets and maps are two examples of non-sequential data structures, so how do we traverse over those? 
 One option is the enhanced-for loop, but as we will show later, this approach has its drawbacks, even though its syntax is straightforward. 
 Stacks and queues are another example of data structures that are not necessarily sequential. 
-\emph{Iterator} objects are one answer to the traversability problem. 
+\emph{Iterator} objects are one answer to the issue of traversability. 
 Iterators provide a mechanism for traversing over a data structure. 
 Any data structure whose class definition implements \ttt{Iterator} must define at least two methods: \ttt{boolean hasNext} and \ttt{T next}, which determines whether we are at the end of the traversal, and retrieves the next element, respectively. 
 Note that \ttt{T}, for the time being, simply means ``any type,'' and is related to type parameterization.
@@ -2407,7 +2406,7 @@ class BigIntFibStreamTester {
   void testBigIntFibStream() {
     // Get the stream, test ten values, 
     // make sure the lists are the same
-    // length, then test each subarray.
+    // length, then test each sub-array.
     Stream<BigInteger[]> s = StreamExample.fibonacciStream();
     List<BigInteger[]> actualLs = s.limit(10).toList();
     List<BigInteger[]> expectedLs 

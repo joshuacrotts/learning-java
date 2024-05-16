@@ -365,7 +365,7 @@ Our base case occurs when~$i \geq |E|$, in which we return zero.
 Otherwise, we have a case analysis on the~$i^\text{th}$ actual answer: if it equals the~$i^\text{th}$ expected answer, we award three points. 
 If it is equal to a question mark string, i.e., \ttt{"?"} then we award no points. 
 Otherwise, the answer is incorrect, meaning we deduct one point. 
-Because a negative score is non-sensical, our driver method returns the maximum of zero and the score to filter out negative values.
+Because a negative score is nonsensical, our driver method returns the maximum of zero and the score to filter out negative values.
 
 \enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
@@ -487,7 +487,7 @@ Now that we have covered arrays, we know what the \ttt{String[] args} parameter 
 We can compile Java files using the terminal and the \ttt{javac} command. 
 Moreover, when executing a Java file, we may pass to it \emph{terminal arguments}\index{terminal arguments}, which are values that the program might use to configure settings or process at runtime.
 
-\myexample{Suppose we want to write a program, using the \ttt{main} method and terminal arguments, that evaluates an arithmatic operation on a collection of integers values, e.g., $5 + 3 + 17$.}
+\myexample{Suppose we want to write a program, using the \ttt{main} method and terminal arguments, that evaluates an arithmetic operation on a collection of integers values, e.g., $5 + 3 + 17$.}
 Additionally, we might want to let the user pass \emph{flags} to denote these different operations, such as \ttt{--add} for addition, \ttt{--sub} for subtraction, and so on. 
 So the user is not confused, we might also provide a ``help'' option that is displayed either upon request or when incorrect arguments are supplied.
 
@@ -563,7 +563,7 @@ We will also provide a \ttt{--help} flag that displays the program usage informa
 This is a substantial project, but doing so allows us to practice using arrays and integrating more complex terminal arguments. 
 As a measure of simplification, we will assume that the first~$n$ arguments are the numeric values, and the remaining arguments are the operation flags. 
 Let's further assume that the user will not pass an invalid command. 
-Lastly, we shall not consider any non-sensical in a given context, e.g., the minimum/maximum of no input values. 
+Lastly, we shall not consider invalid inputs for a given context, e.g., the minimum/maximum when no input values are provided. 
 The first terminal argument denotes the number of values to expect, so we will use it to initialize our array.
 
 To start, let's see a few example runs of our program, containing a mixture of flags.
@@ -1105,7 +1105,7 @@ class LogSaw {
 
 Though, we still have to worry about recursive depth for sufficiently large values of~$n$. 
 Let's take the algorithm one step further and convert it into a ``bottom-up'' iterative algorithm.
-In essence, rather than making recursive calls, we use two loops and compose the solution to larger problems (i.e., larger values of~$n$) by saving (intermittient) solutions to smaller problems (i.e., smaller values of~$n$).
+In essence, rather than making recursive calls, we use two loops and compose the solution to larger problems (i.e., larger values of~$n$) by saving (intermittent) solutions to smaller problems (i.e., smaller values of~$n$).
 The tests for the top-down and bottom-up methods are the same as the standard recursive version.
 
 \enlargethispage{-1\baselineskip}
