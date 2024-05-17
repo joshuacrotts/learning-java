@@ -468,6 +468,15 @@ alphaAnagramGroups(los)
     
 \end{verbnobox}
 
+\myexercise{2}{chapter-arrays-collections}{A \emph{common letter sequence} is a sequence of characters such that each character is one-letter greater than another.}
+For example, the list \ttt{[\q{}c\q{}, \q{}f\q{}, \q{}h\q{}, \q{}p\q{}, \q{}c\q{}, \q{}m\q{}, \q{}g\q{}]} contains the common letter sequence \ttt{[\q{}f\q{}, \q{}g\q{}, \q{}h\q{}]}.
+
+Design the \ttt{List<Character> findLongestCommonLetterSequence(List<Character> l)} method, which receives a list of characters~$l$ and returns the longest common letter sequence. 
+That is, if there are multiple disjoint common letter sequences, return the one that is the longest.
+For example, \ttt{[\q{}n\q{}, \q{}o\q{}, \q{}f\q{}, \q{}h\q{}, \q{}m\q{}, \q{}g\q{}]} contains two disjoint common letter sequences: \ttt{[\q{}f\q{}, \q{}g\q{}, \q{}h\q{}]} and \ttt{[\q{}m\q{}, \q{}n\q{}, \q{}o\q{}]}
+If there are multiple disjoint longest common letter sequences, return the one whose first letter is the earliest in the alphabet.
+You may assume that every character in~$l$ is lower-cased.
+
 \myexercise{2}{chapter-arrays-collections}{A SLC (simplified lambda calculus) expression takes one of the two forms: $\mathit{varList}$ or $\lambda{\mathit{var}}.\mathit{E}$, where $\mathit{var}$ is a lower-case letter from `$u$' to `$z$', $\mathit{varList}$ is a sequence of variables, and $\mathit{E}$ is either a $\mathit{var}$ or another SLC expression. We provide some examples below.}
 
 \begin{align*}

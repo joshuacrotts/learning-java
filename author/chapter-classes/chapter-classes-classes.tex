@@ -1076,7 +1076,7 @@ class Book {
                          this.EDITION, this.NUM_PAGES);
   }
 
-  // Getters and setters omitted.
+  // Getters omitted.
 }
 \end{lstlisting}
 
@@ -1173,6 +1173,163 @@ class Library {
 }
 \end{lstlisting}
 
+\myexample{Along the lines of the previous example, let's design the \ttt{VideoGame} class, which represents a video game.}
+A \ttt{VideoGame} contains a title and a rating. 
+A rating is one of \ttt{"C"}, \ttt{"E"}, \ttt{"E10+"}, \ttt{"T"}, \ttt{"MA"}, and \ttt{"A"}, corresponding to parental and content warnings.
+Our \ttt{VideoGame} class also overrides the \ttt{equals} and \ttt{hashCode} methods, since we will store instances thereof in hashable data structures later on.
+Though, we have overridden \ttt{equals} and \ttt{hashCode} several times at this point, so our code listings will not include them, but it is extremely important to not forget about them when writing the code yourself.
+
+\begin{lstlisting}[language=MyJava]
+class VideoGame {
+
+  private final String TITLE;
+  private final String RATING;
+
+  VideoGame(String title, String rating) {
+    this.TITLE = title;
+    this.RATING = rating;
+  }
+
+  // Getters omitted.
+}
+\end{lstlisting}
+
+To coexist with \ttt{VideoGame} instances, let's design the \ttt{VideoGameStore} class, which rents out video games to customers.
+It also keeps records about its users, namely what video games are rented to them at any point.
+Each user is uniquely identified via an integer, which is associated to a set of \ttt{VideoGame} instances. The constructor instantiates the stock and rental maps.
+
+We will design two methods, the first being \ttt{boolean rent(int id, String t)}, which rents out the video game with the given title~$t$ to the user with the identifier~$\emph{id}$.
+If the user is not in the ``system,'' they are newly-instantiated and added to the rentals map.
+If the video game is out of stock, not at all available, or already rented out to the passed user, then the method returns \ttt{false}.
+Finally, if we are able to rent the video game to the user, its stock count is decremented by one, and a \emph{new} instance of the \ttt{VideoGame} is added to the user's video game set.
+
+The second method, \ttt{int mostFrequentRating()}, returns the most common rating, as a number, of all video games that are rented out to users.
+For example, if there are~$2$ \ttt{"E"} games,~$18$ \ttt{"E10+"} games,~$6$ \ttt{"T"} games,~$3$ \ttt{"MA"} games, and~$1$ \ttt{"A"} game rented across all users in the system, then \ttt{mostFrequentRating} returns \ttt{2} because \ttt{"E10+"} is the most common rating and is associated with~\ttt{2}.
+
+As an auxiliary method for populating the store stock, we will also create the \ttt{addGame} method to receive a title, rating, and number of copies to add to the store.
+
+\begin{lstlisting}[language=MyJava]
+import static Assertions.assertAll;
+import static Assertions.assertEquals;
+
+class VideoGameStoreTester {
+
+  static VideoGameStore populateStore() {
+    VideoGameStore vgs = new VideoGameStore();
+    vgs.addGame("CuddleTime Bears Adventure", "C", 2);
+    vgs.addGame("Fast Racers 2", "E", 7);
+    vgs.addGame("Knight of the Republic", "E10+", 4);
+    vgs.addGame("Desolation IV", "T", 1);
+    vgs.addGame("Fury Combat", "M", 0);
+    vgs.addGame("Alien Dating Simulator", "A", 5);
+    return vgs;
+  }
+
+  @Test
+  void testVideoGameStoreRent() {
+    VideoGameStore vgs = populateStore();
+    assertAll(
+      () -> assertTrue(vgs.rent(1, "Fast Racers 2"));   // Case 4
+      () -> assertTrue(vgs.rent(1, "Desolation IV"));   // Case 4
+      () -> assertFalse(vgs.rent(1, "Fury Combat"));    // Case 1
+      () -> assertFalse(vgs.rent(1, "Fast Racers 2"));  // Case 3
+      () -> assertFalse(vgs.rent(2, "Desolation IV"))); // Case 2
+  }
+
+  @Test
+  void testVideoGameStoreMostFrequentRating() {
+    VideoGameStore vgs = populateStore();
+    vgs.rent(1, "Fast Racers 2");
+    vgs.rent(1, "Desolation IV");
+    vgs.rent(2, "Fast Racers 2");
+    vgs.rent(2, "Alien Dating Simulator");
+    vgs.rent(3, "Fast Racers 2");
+    vgs.rent(4, "Fast Racers 2");
+    vgs.rent(5, "Fast Racers 2");
+    assertEquals("E", vgs.mostFrequentRating());
+  }
+}
+\end{lstlisting}
+
+\enlargethispage{-4\baselineskip}
+\begin{lstlisting}[language=MyJava]
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+class VideoGameStore {
+
+  private final Map<VideoGame, Integer> STOCK;
+  private final Map<Integer, Set<VideoGame>> RENTALS;
+
+  VideoGameStore() {
+    this.STOCK = new HashMap<>();  
+    this.RENTALS = new HashMap<>();
+  }
+
+  /**
+   * Attempts to rent a video game with title t to a user with the given id.
+   * If the store does not have the video game in stock (whether due to it not
+   * being available or a count of zero) or if the user already has a game
+   * with the given title, the rental fails. Otherwise, the stock is updated and
+   * the rental is added to the user's video game set.
+   * If the user is not in the system, they are added.
+   * @param id identifier of user.
+   * @param t title of video game.
+   * @return true if the rental succeeded, and false otherwise.
+   */
+  boolean rent(int id, String t) {
+    Set<VideoGame> userSet = this.RENTALS.computeIfAbsent(id, k -> new TreeSet<>());
+    // Find the VideoGame instance, if it exists, or null otherwise.
+    VideoGame g = this.STOCK.keySet().stream()
+                                     .filter(vg -> vg.getTitle().equals(t))
+                                     .findFirst()
+                                     .orElse(null);
+
+    // Condition 1: if the store does not contain the VideoGame.
+    if (g == null) {
+      return false;
+    } 
+    // Condition 2: if the store contains no copies.
+    else if (this.STOCK.get(g) == 0) {
+      return false;
+    } 
+    // Condition 3: if the user already has the VideoGame.
+    else if (userSet.stream().anyMatch(g -> g.getTitle().equals(t))) {
+      return false;
+    }
+    // Otherwise, we are good to rent.
+    else {
+      this.STOCK.put(g, this.STOCK.get(g) - 1);
+      userSet.add(new VideoGame(g.getTitle(), g.getRating()));
+      return true;
+    }
+  }
+
+  /**
+   * Returns the rating that occurs most frequently among the video games that
+   * have been rented out to users.
+   * @return the most frequent rating as an integer. If there is a tie, the
+   *         method returns the highest rating.
+   */
+  String mostFrequentRating() {
+    Map<String, Integer> M = new LinkedHashMap<>();
+    M.put("C", 0); M.put("E", 0); M.put("E10+", 0); 
+    M.put("T", 0); M.put("MA", 0); M.put("A", 0);
+    for (Integer i : this.RENTALS.keySet()) {
+      for (VideoGame g : this.RENTALS.get(i)) {
+        M.put(g.getRating(), M.getOrDefault(g.getRating(), 0) + 1);
+      }
+    }
+    return M.entrySet().stream()
+                       .max((e1, e2) -> e1.getValue() - e2.getValue())
+                       .get()
+                       .getKey();
+  }
+}
+\end{lstlisting}
+
 \myexample{Suppose we have the following class that represents a position on a two-dimensional board of characters:}
 
 \begin{lstlisting}[language=MyJava]
@@ -1180,13 +1337,9 @@ class BoardPosition {
 
   private final char CH;
 
-  BoardPosition(char ch;) {
-    this.CH = ch;
-  }
+  BoardPosition(char ch;) { this.CH = ch; }
 
-  char getChar() { 
-    return this.CH; 
-  }
+  // Getter omitted.
 }
 \end{lstlisting}
 
@@ -1351,24 +1504,18 @@ class RationalTester {
   @Test
   void testRationalToString() {
     assertAll(
-      () -> assertEquals("1/2", 
-                         new Rational(1, 2).toString()),
-      () -> assertEquals("3/400", 
-                         new Rational(3, 400).toString()),
-      () -> assertEquals("1/1305", 
-                         new Rational(5, 6525).toString()),
-      () -> assertEquals("3591/46562", 
-                         new Rational(7182, 93124).toString()),
-      () -> assertEquals("7/32", 
-                         new Rational(7, 32).toString()),
-      () -> assertEquals("9388/48122", 
-                         new Rational("4694/24061").toString()),
-      () -> assertEquals("1/1", 
-                         new Rational(1, 1).toString()));
+      () -> assertEquals("1/2", new Rational(1, 2).toString()),
+      () -> assertEquals("3/400", new Rational(3, 400).toString()),
+      () -> assertEquals("1/1305", new Rational(5, 6525).toString()),
+      () -> assertEquals("3591/46562", new Rational(7182, 93124).toString()),
+      () -> assertEquals("7/32", new Rational(7, 32).toString()),
+      () -> assertEquals("9388/48122", new Rational("4694/24061").toString()),
+      () -> assertEquals("1/1", new Rational(1, 1).toString()));
   }
 }
 \end{lstlisting}
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Rational {
   
@@ -1395,7 +1542,7 @@ We multiply~$2$ by~$9$ and~$7$ by~$3$ to get~$18/27$ and~$24/27$.
 Adding across the numerators produces~$42/27$, which then reduces to~$14/9$. 
 Since we wish to preserve the original rational number, we will write a method that returns a new \ttt{Rational} rather than modifying the one we have in-place (this also allows us to omit a step in which we simplify the resulting fraction, since the constructor takes care of this task).
 
-%\enlargethispage{4\baselineskip}
+\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1434,8 +1581,7 @@ class Rational {
    */
   Rational add(Rational r) {
     long commonDenominator = this.DENOMINATOR * r.DENOMINATOR;
-    long newNumerator = this.NUMERATOR * r.DENOMINATOR 
-                        + r.NUMERATOR * this.DENOMINATOR;
+    long newNumerator = this.NUMERATOR * r.DENOMINATOR + r.NUMERATOR * this.DENOMINATOR;
     return new Rational(newNumerator, commonDenominator);
   }
 }
@@ -1449,7 +1595,7 @@ We encourage the reader to write methods for comparing rationals for equality, a
 Plus, we could extend this system to support \ttt{BigInteger} values for the numerator and denominator (rather than \ttt{long} types), which would allow us to represent arbitrarily large rational numbers. 
 This, in turn, would require updating all methods to use \ttt{BigInteger} arithmetic, which is a good exercise in and of itself.
 
-\enlargethispage{-6\baselineskip}
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1475,9 +1621,9 @@ class RationalTester {
 }
 \end{lstlisting}
 
+\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Rational {
-  // ... previous code not shown.
 
   /**
    * Multiplies two rational numbers.
@@ -1485,8 +1631,7 @@ class Rational {
    * @return the (simplified) product of this and r.
    */
   Rational multiply(Rational r) {
-    return new Rational(this.NUMERATOR * r.NUMERATOR, 
-                        this.DENOMINATOR * r.DENOMINATOR);
+    return new Rational(this.NUMERATOR * r.NUMERATOR, this.DENOMINATOR * r.DENOMINATOR);
   }
 }
 \end{lstlisting}
@@ -1549,23 +1694,15 @@ class StackFrameTester {
   @Test
   void testFact() {
     assertAll (
-      () -> assertEquals(new BigInteger("1"), 
-                         fact(new BigInteger("0"))),
-      () -> assertEquals(new BigInteger("120"), 
-                         fact(new BigInteger("5"))),
-      () -> assertEquals(new BigInteger("3628800"), 
-                         fact(new BigInteger("100"))));
+      () -> assertEquals(new BigInteger("1"), fact(new BigInteger("0"))),
+      () -> assertEquals(new BigInteger("3628800"), fact(new BigInteger("10"))));
   }
 
   @Test
   void testFactLoop() {
       assertAll (
-      () -> assertEquals(new BigInteger("1"), 
-                         factLoop(new BigInteger("0"))),
-      () -> assertEquals(new BigInteger("120"), 
-                         factLoop(new BigInteger("5"))),
-      () -> assertEquals(new BigInteger("3628800"), 
-                         factLoop(new BigInteger("100"))));
+      () -> assertEquals(new BigInteger("1"), factLoop(new BigInteger("0"))),
+      () -> assertEquals(new BigInteger("3628800"), factLoop(new BigInteger("10"))));
   }
 }  
 \end{lstlisting}
@@ -1576,6 +1713,11 @@ import java.util.BigInteger;
 
 class StackFrameDriver {
 
+  /**
+   * Computes the factorial of a BigInteger using natural recursion.
+   * @param n instance of BigInteger to compute factorial of.
+   * @return n!
+   */
   static BigInteger fact(BigInteger n) {
     if (n.compareTo(BigInteger.ONE) <= 0) {
       return n.add(BigInteger.ONE);
@@ -1584,11 +1726,18 @@ class StackFrameDriver {
     }
   }
 
+  /**
+   * Computes the factorial of a BigInteger n using the StackFrame approach.
+   * @param n instance of BigInteger to compute factorial of.
+   * @return n!
+   */
   static BigInteger factLoop(BigInteger n) {
     Stack<StackFrame> sf = new Stack<>();
     BigInteger res = n;
     sf.push(new StackFrame().addParam("n", n));
-    while (!sf.isEmpty()) { /* TODO. */ }
+    while (!sf.isEmpty()) { 
+      /* TODO. */ 
+    }
     return res;
   }
 }
@@ -1599,8 +1748,12 @@ Thus, we first pop the existing frame, extract the desired parameters to work wi
 
 \begin{lstlisting}[language=MyJava]
 class StackFrameDriver {
-  // ... previous code not shown.
 
+  /**
+   * Computes the factorial of a BigInteger n using the StackFrame approach.
+   * @param n instance of BigInteger to compute factorial of.
+   * @return n!
+   */
   static BigInteger factLoop(BigInteger n) {
     Stack<StackFrame> sf = new Stack<>();
     BigInteger res = BigInteger.ONE;
@@ -1609,8 +1762,9 @@ class StackFrameDriver {
     while (!sf.isEmpty()) {
       StackFrame f = sf.pop();
       BigInteger pn = (BigInteger) f.get("n");
-      if (pn.compareTo(BigInteger.ONE) <= 0) { continue; }
-      else {
+      if (pn.compareTo(BigInteger.ONE) <= 0) { 
+        continue;
+      } else {
         sf.push(new StackFrame().addParam("n", pn.subtract(BigInteger.ONE)));
         res = res.multiply(pn);
       }
@@ -1621,8 +1775,7 @@ class StackFrameDriver {
 }
 \end{lstlisting}
 
-Notice two things: first, we mimic the behavior of the call stack manually. 
-Consequently, unless there is a method inside that uses the stack, we never push any activation records. 
+Notice two things: first, we manually mimic the behavior of the call stack. 
 Second, by managing the stack ourselves, we drastically increase the limit to the number of possible ``recursive calls,'' since we push instances of our \ttt{StackFrame} onto the heap. 
 Theoretically, we could continuously push new ``frames'' to our stack so long as we have active and available heap memory. 
 Of course, that is impossible with current hardware limitations, so in due time, with a large-enough call to \ttt{factLoop}, the JVM terminates the program with an \ttt{OutOfMemory} error. 

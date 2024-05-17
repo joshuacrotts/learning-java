@@ -18,7 +18,6 @@ Because we want to alter an instance variable, these can no longer be marked as 
 
 %\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
 import static Assertions.assertEquals;
 
 class PointTester {
@@ -35,6 +34,8 @@ class PointTester {
     Point p = new Point(7, 4);
     p.setY(2);
     assertEquals(2, p.getY());
+    p.setY(p.getY() - 4);
+    assertEquals(-2, p.getY());
   }
 }
 \end{lstlisting}
@@ -51,16 +52,20 @@ class Point {
   }
 
   int getX() { return this.x; }
+
   int getY() { return this.y; }
+
   void setX(int x) { this.x = x; }
+
   void setY(int y) { this.y = y; }
 }
 \end{lstlisting}
 
+\newpage %ugh
 What are some consequences to mutating an object? 
-One comes through the notion of \emph{object aliasing}. 
+One such consequence comes through the notion of \emph{object aliasing}. 
 Recall that objects point to references in memory. 
-Therefore, if we instantiate a \ttt{Point}~$p_1$, then initialize another \ttt{Point}~$p_2$ to~$p_1$, then both objects refer to the same \ttt{Point} instance in memory. 
+Therefore, if we instantiate a \ttt{Point}~$p_1$, then initialize another \ttt{Point}~$p_2$ to ~$p_1$, then both objects refer to the same \ttt{Point} instance in memory. 
 If we modify~$p_1$ through a setter method, then~$p_2$ is also affected.
 
 \enlargethispage{-3\baselineskip}
@@ -121,15 +126,19 @@ Because these lists are merely aliases of each other, they will, in fact, contai
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import static Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class PointTester {
 
-  private final Point P1 = new Point(7, 4);
-  private final Point P2 = new Point(3, 2);
-  private final Point P3 = new Point(1, 8);
-
   @Test
   void testPointArrayListAliasing() {
+    Point P1 = new Point(7, 4);
+    Point P2 = new Point(3, 2);
+    Point P3 = new Point(1, 8);
+
     List<Point> list1 = new ArrayList<>(List.of(P1, P2, P3));
     List<Point> list2 = list1;
     list1.add(new Point(5, 6));
@@ -143,6 +152,13 @@ class PointTester {
     // Make sure both lists contain the same elements.
     for (int i = 0; i < list1.size(); i++) {
       assertTrue(list1.get(i) == list2.get(i));
+    }
+
+    // If we want, we can also verify that the content, i.e.,
+    // the coordinates of the points in both are equal.
+    for (int i = 0; i < list1.size(); i++) {
+      assertTrue(list1.get(i).getX() == list2.get(i).getX()
+              && list1.get(i).getY() == list2.get(i).getY());
     }
   }
 }
