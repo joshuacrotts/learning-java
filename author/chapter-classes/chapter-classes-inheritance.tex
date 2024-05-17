@@ -466,14 +466,14 @@ class Employee {
     Employee.empCounter++;
   }
 
-  String work() {
-    return this.name + " is working.";
-  }
-
   @Override
   public String toString() {
     return String.format("Name=%s, ID=%d", this.name, this.id);
   } 
+
+  String work() {
+    return this.name + " is working.";
+  }
 }
 \end{lstlisting}
 
@@ -629,8 +629,13 @@ class SeniorDeveloper extends Developer {
     this.mentees = new ArrayList<>();
   }
 
-  void addMentee(JuniorDeveloper jd) {
-    this.mentees.add(jd);
+  @Override
+  public String toString() {
+    return String.format("%s, 
+                         Senior Developer in %s with %d yoe", 
+                         super.toString(), 
+                         super.getLanguage(),
+                         super.getYearsOfExperience());
   }
 
   @Override
@@ -643,13 +648,8 @@ class SeniorDeveloper extends Developer {
                          names);
   }
 
-  @Override
-  public String toString() {
-    return String.format("%s, 
-                         Senior Developer in %s with %d yoe", 
-                         super.toString(), 
-                         super.getLanguage(),
-                         super.getYearsOfExperience());
+  void addMentee(JuniorDeveloper jd) {
+    this.mentees.add(jd);
   }
 }
 \end{lstlisting}
@@ -682,20 +682,20 @@ class JuniorDeveloper extends Developer implements IPromotable {
   }
 
   @Override
+  public String toString() {
+    return String.format("%s, Junior Developer in %s with %d yoe", 
+                          super.toString(),
+                          super.getLanguage(),
+                          super.getYearsOfExperience());
+  }
+
+  @Override
   String work() {
     return String.format("%s is a junior developer working in %s, 
                           mentored by %s.", 
                          super.getName(),
                          super.getLanguage(),
                          this.mentor.getName());
-  }
-
-  @Override
-  public String toString() {
-    return String.format("%s, Junior Developer in %s with %d yoe", 
-                          super.toString(),
-                          super.getLanguage(),
-                          super.getYearsOfExperience());
   }
 }
 \end{lstlisting}
@@ -716,15 +716,13 @@ class EmployeeTester {
     m1.addDirectReport(new JuniorDeveloper("Adam", 45000, "Python", 0));
     m1.addDirectReport(new SalaryEmployee("Pete", 46000));
     assertAll(
-      () -> assertEquals("Abby manages Adam, Cole, Pete.", 
-                         m1.work()),
-      () -> assertEquals("Abby, ID=1, Hourly=30.00, Manager", 
-                         m1.toString()));
+      () -> assertEquals("Abby manages Adam, Cole, Pete.", m1.work()),
+      () -> assertEquals("Abby, ID=1, Hourly=30.00, Manager", m1.toString()));
   }
 }
 \end{lstlisting}
 
-\enlargethispage{2\baselineskip}
+% \enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Collectors;
 import java.util.Comparator;
@@ -733,15 +731,16 @@ import java.util.TreeSet;
 
 class Manager extends HourlyEmployee {
 
-  private Set<Employee> EMPS;
+  private final Set<Employee> EMPS;
 
   Manager(String name, double hrRate) {
     super(name, hrRate);
     this.EMPS = new TreeSet(employeeNameComparator());
   }
 
-  void addDirectReport(Employee e) {
-    this.DIRECT_REPORTS.add(e);
+  @Override
+  public String toString() {
+    return String.format("%s, Manager", super.toString());
   }
 
   @Override
@@ -753,9 +752,8 @@ class Manager extends HourlyEmployee {
                                   .collect(Collectors.joining(", ")));
   }
 
-  @Override
-  public String toString() {
-    return String.format("%s, Manager", super.toString());
+  void addDirectReport(Employee e) {
+    this.DIRECT_REPORTS.add(e);
   }
 
   private static Comparator<Employee> employeeNameComparator() {

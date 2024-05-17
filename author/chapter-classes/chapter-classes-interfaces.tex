@@ -198,7 +198,7 @@ We would expect that~$s_1$ and~$s_2$ are equivalent, but this is not the case.
 Suppose \ttt{Diamond} contains a method \ttt{diamondCount} that does something irrelevant, but belongs solely to the \ttt{Diamond} class. 
 Because~$s_1$ is of type \ttt{ISuit}, we cannot invoke the \ttt{diamondCount} method, since \ttt{ISuit} knows nothing about said method. 
 On the contrary, $s_2$ can certainly invoke \ttt{diamondCount}, but it is not polymorphic, since it is not of type \ttt{ISuit}. 
-Should we want to invoke \ttt{diamondCount} on the ~$s_1$ object, we need to \emph{downcast}\index{downcast} $s_1$ to type \ttt{Diamond}.
+Should we want to invoke \ttt{diamondCount} on the~$s_1$ object, we need to \emph{downcast}\index{downcast} $s_1$ to type \ttt{Diamond}.
 
 \begin{verbnobox}[\small]
 ISuit s1 = new Diamond();

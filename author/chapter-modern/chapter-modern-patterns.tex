@@ -424,6 +424,12 @@ class Url {
   
   private Url() {}
 
+  @Override
+  public String toString() {
+    return String.format("%s://%s:%d/%s", this._schema,
+                         this._host, this._port, this._path);
+  }
+
   Url schema(String schema) {
     this._schema = schema;
     return this;
@@ -452,12 +458,6 @@ class Url {
     this._path = this._path == null ? "" : this._path;
     this.complete = true;
     return this;
-  }
-
-  @Override
-  public String toString() {
-    return String.format("%s://%s:%d/%s", this._schema,
-                         this._host, this._port, this._path);
   }
 }
 \end{lstlisting}

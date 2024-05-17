@@ -588,6 +588,11 @@ final class PrimNode extends AstNode {
     this.OP = op;
   }
 
+  @Override
+  public String toString() {
+    return String.format("(%s %s)",this.OP, this.getChildren().toString());
+  }
+
   /**
    * Interpret a primitive operation.
    * @param env the environment in which to interpret the operation.
@@ -605,11 +610,6 @@ final class PrimNode extends AstNode {
       case "eq?": return this.primEq(operands, env);
       default: return null;
     }
-  }
-
-  @Override
-  public String toString() {
-    return String.format("(%s %s)",this.OP, this.getChildren().toString());
   }
 
   private AstNode primPlus(List<AstNode> args, Environment env) {
@@ -801,8 +801,9 @@ final class VarNode extends AstNode {
     this.NAME = name;
   }
 
-  String getName() {
-    return this.NAME;
+  @Override
+  public String toString() { 
+    return this.NAME; 
   }
 
   /**
@@ -818,9 +819,8 @@ final class VarNode extends AstNode {
     return res.eval(env);
   }
 
-  @Override
-  public String toString() { 
-    return this.NAME; 
+  String getName() {
+    return this.NAME;
   }
 }
 \end{lstlisting}
@@ -833,6 +833,13 @@ final class LetNode extends AstNode {
   LetNode(String id, AstNode exp, AstNode body) {
     super(exp, body);
     this.ID = id;
+  }
+  
+  @Override
+  public String toString() {
+    AstNode e = this.getChildren().get(0);
+    AstNode b = this.getChildren().get(1);
+    return String.format("(let ([%s %s]) %s)", this.ID, e, b);
   }
 
   /**
@@ -852,13 +859,6 @@ final class LetNode extends AstNode {
     AstNode newExp = exp.eval(env);
     Environment e1 = env.extend(id, newExp);
     return body.eval(e1);
-  }
-
-  @Override
-  public String toString() {
-    AstNode e = this.getChildren().get(0);
-    AstNode b = this.getChildren().get(1);
-    return String.format("(let ([%s %s]) %s)", this.ID, e, b);
   }
 }
 \end{lstlisting}

@@ -147,7 +147,7 @@ class PointTester {
 
 Of course, testing the accessor methods is a little boring, so let's override the \ttt{toString} method to print a stringified representation of the \ttt{Point} class. 
 Every object in Java has a \ttt{toString} method, which returns a string representation of the object. 
-By default, the \ttt{toString} method returns the class name followed by the object's hashcode. 
+By default, the \ttt{toString} method returns the class name followed by the object's hash code. 
 We can override the \ttt{toString} method by declaring a method with the signature \ttt{public String toString()} (note that this is one instance where \ttt{public} cannot be avoided.) 
 We can then return a string representation of the object. 
 In this case, we will return a string of the form \ttt{"(x=$x$, y=$y$)"}, where~$x$ and~$y$ refer to the respecitve instance variables. 
@@ -864,6 +864,12 @@ class Player {
 
   Player() { this.HAND = new ArrayList<Card>(); }
 
+  @Override
+  public String toString() {
+    return String.format("Score: %d\nHand: %s\n", 
+                         this.getScore(), this.HAND.toString());
+  }
+
   /**
    * Adds a card to the player's hand.
    * @param c card to add to the player's hand.
@@ -883,12 +889,6 @@ class Player {
     return this.HAND.stream()
                     .map(c -> c.getValue())
                     .reduce(0, Integer::sum);
-  }
-
-  @Override
-  public String toString() {
-    return String.format("Score: %d\nHand: %s\n", 
-                         this.getScore(), this.HAND.toString());
   }
 }
 \end{lstlisting}
