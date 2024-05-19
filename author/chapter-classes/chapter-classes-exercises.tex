@@ -1,5 +1,4 @@
-\section*{Exercises}
-\addcontentsline{toc}{section}{Exercises}
+\section{Exercises}
 
 \myexercise{1}{chapter-classes}{Design the \ttt{Car} class, which stores a \ttt{String} representing the car's make, a \ttt{String} representing the car's model, and an \ttt{int} representing the car's year. Its constructor should receive these three values and store them in the instance variables. Be sure to write instance accessor and mutator methods for modifying all three fields. That is, you should write \ttt{getMake()}, \ttt{setMake(String s)}, and so forth, to access and modify the fields directly.}
 
@@ -455,6 +454,8 @@ interface ILazyList<T> {
 \end{lstlisting}
 
 When calling \ttt{next} on a lazy list, we update the contents of the lazy list and return the next result. We mark this as a generic interface to allow for any desired return type. For instance, below is a lazy list that produces factorial values:\footnote{We will ignore the intricacies that come with Java's implementation of the \ttt{int} datatype. To make this truly infinite (up to the system's memory limit), we could use \ttt{BigInteger}.}
+
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class FactorialLazyList implements ILazyList<Integer> {
 
@@ -491,12 +492,7 @@ class FactorialLazyListTester {
       () -> assertEquals(2, FS.next()),
       () -> assertEquals(6, FS.next()),
       () -> assertEquals(24, FS.next()),
-      () -> assertEquals(120, FS.next()),
-      () -> assertEquals(720, FS.next()),
-      () -> assertEquals(5040, FS.next()),
-      () -> assertEquals(40320, FS.next()),
-      () -> assertEquals(362880, FS.next()),
-      () -> assertEquals(3628800, FS.next()));
+      () -> assertEquals(120, FS.next()));
   }
 }
 \end{lstlisting}
@@ -518,11 +514,7 @@ class FibonacciLazyListTester {
       () -> assertEquals(1, FS.next()),
       () -> assertEquals(2, FS.next()),
       () -> assertEquals(3, FS.next()),
-      () -> assertEquals(5, FS.next()),
-      () -> assertEquals(8, FS.next()),
-      () -> assertEquals(13, FS.next()),
-      () -> assertEquals(21, FS.next()),
-      () -> assertEquals(34, FS.next()));
+      () -> assertEquals(5, FS.next()));
   }
 }
 \end{lstlisting}
@@ -594,7 +586,8 @@ What's awesome about this exercise is that it allows us to define the elements o
     \item Design the \ttt{boolean addParticle(double x, double y, double w, double h, double dx, double dy, double life)} method that adds a particle to the system with the given parameters. If there are no dead particles available, then simply allocate a \ttt{new Particle} onto the rear of the \ttt{alive} list. If there is a dead particle, use that allocated space instead and assign the parameters to the object using the respective setters. Then, move the particle out of the \ttt{dead} list and onto the rear of the \ttt{alive} list. If it is impossible to add a new particle (because there is no space for more alive particles), return \ttt{false}. Otherwise, return \ttt{true}.
     \item Design the \ttt{void updateSystem()} method that traverses over the alive particles, and invokes their \ttt{update} methods. After invoking a particle's \ttt{update} method, check to see if it is alive or not. If it is not alive, move it out of the \ttt{alive} list and into the \ttt{dead} list. 
   \end{enumerate}
-  \item In the final part of this exercise, you will design two ``types of'' particles.
+  \newpage %ugh
+  \item In the final part of this exercise, you will design two subclass particles.
   \begin{enumerate}[label=(\roman*)]
     \item Design the \ttt{SparkParticle} class, which inherits from \ttt{Particle}. ``Spark particles'' move in a straight line, but their velocity decreases over time due to air resistance until they stop moving.
     \begin{itemize}
@@ -618,7 +611,7 @@ What's awesome about this exercise is that it allows us to define the elements o
 
 \myexercise{1}{chapter-classes}{Design the \ttt{static <T> boolean andMap(List<T> l, Predicate<T> p)} method that returns whether or not all elements of the input list satisfy the given predicate. Use the stream API to solve this problem, but do \emph{not} use the \ttt{allMatch} method, as that method solves the problem we want \emph{you} to solve!}
 
-\myexercise{2}{chapter-classes}{Design the \ttt{static <T, U> U foldr(List<T> ls, BiFunction<T, U, U> f, U u)} method that receives a list of values $ls$, a function $f$, and an initial value $u$. The method should return the result of folding the list from the right with the given function and initial value. By ``folding,'' we mean that we apply $f$ to the last element of the list and the initial value, then apply $f$ to the second-to-last element and the result of the previous application, and so forth. To think of this in terms of infix notation over some list, consider the list $[a, b, c, d]$. Folding it over the function $\circ$ and initial value $u$ is $a \circ (b \circ (c \circ (d \circ u)))$. Do \emph{not} use the \ttt{reduce} method, as that method solves the problem we want \emph{you} to solve!}
+\myexercise{2}{chapter-classes}{Design the \ttt{static <T, U> U foldr(List<T> ls, BiFunction<T, U, U> f, U u)} me\-thod that receives a list of values $ls$, a function $f$, and an initial value $u$. The method should return the result of folding the list from the right with the given function and initial value. By ``folding,'' we mean that we apply $f$ to the last element of the list and the initial value, then apply $f$ to the second-to-last element and the result of the previous application, and so forth. To think of this in terms of infix notation over some list, consider the list $[a, b, c, d]$. Folding it over the function $\circ$ and initial value $u$ is $a \circ (b \circ (c \circ (d \circ u)))$. Do \emph{not} use the \ttt{reduce} method, as that method solves the problem we want \emph{you} to solve!}
 
 \myexercise{1}{chapter-classes}{Design the \ttt{static <T, U> List<U> buildList(int n, Function<T, U> func)} method that receives an integer $n$ and a function $f$ and returns a list of $n$ elements, where the $i^\text{th}$ element is $f(i)$. For example, if we invoke \ttt{buildList(5, x -> x * x)}, we should receive the list $[1, 4, 9, 16, 25]$.}
 
@@ -659,6 +652,7 @@ interface IFunction<T, R> {
 
 \enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -674,9 +668,7 @@ class PrimNode extends AstNode {
   @Override
   AstNode eval(Environment env) { /* TODO. */  }
 
-  private AstNode primPlus(List<AstNode> args, Environment env) { 
-    /* Details omitted. */ 
-  }
+  private AstNode primPlus(List<AstNode> args, Environment env) { /* ... */ }
 }
 \end{lstlisting}
 
@@ -765,7 +757,10 @@ The problem with tail recursion (and recursion in general) in Java is the fact t
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
+import static Assertions.assertDoesNotThrow;
+
 import java.lang.BigInteger;
+import java.lang.StackOverflowError;
 
 class FactorialTailRecursiveTester {
   
@@ -774,14 +769,14 @@ class FactorialTailRecursiveTester {
     assertAll(
       () -> assertEquals(BigInteger.valueOf(120), 
                          factTailCall(BigInteger.valueOf(5), BigInteger.ONE)),
-      () -> assertDoesNotThrow(StackOverflowException.class,
+      () -> assertDoesNotThrow(StackOverflowError.class,
                                () -> factTailCall(BigInteger.valueOf(50000), 
-                                                  BigInteger.ONE)),
-    )
+                                                  BigInteger.ONE)));
   }
 }
 \end{lstlisting}
 
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import java.lang.BigInteger;
 
@@ -795,11 +790,11 @@ class FactorialTailRecursive {
    * @return a tail call that is either done or not done.
    */
   static ITailCall<BigInteger> factTailCall(BigInteger n, BigInteger ac) {
-    if (n.equals(BigInteger.ZERO)) {
-      return TailCallUtils.done(ac);
+    if (n.equals(BigInteger.ZERO)) { 
+      return TailCallUtils.done(ac); 
     } else {
       return TailCallUtils.call(() -> 
-               factTailCall(n.subtract(BigInteger.ONE), ac.multiply(n)));
+                factTailCall(n.subtract(BigInteger.ONE), ac.multiply(n)));
     }
   }
 }

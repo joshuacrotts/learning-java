@@ -1,5 +1,4 @@
-\section*{Exercises}
-\addcontentsline{toc}{section}{Exercises}
+\section{Exercises}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{int[] operate(int[] A)} method that, when given an array of integers, returns a new array where the elements are the result of applying the following operation to each element: if the $i^{\text{th}}$ element is odd, multiply it by its index $i$ plus one. Otherwise, divide it by its index $i$ plus one.}
 
@@ -326,7 +325,7 @@ wisest({47, 51, 52, 48, 33, 67, 45, 35}) => {33, 67} or {67, 33}
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{List<String> tokenize(String s, char d)} method that, when given a string~$s$ and a \ttt{char} delimiter $d$, returns an \ttt{ArrayList} of tokens split at the delimiter. You must do this by hand; you \textbf{cannot} call any \ttt{String} methods (except \ttt{.length} and \ttt{.charAt}).}
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Integer> wordCount(String s)} method that, when given a string $s$, counts the number of words in the list, then stores the resulting frequencies in a \ttt{HashMap<String, Integer>}. Assume that $s$ is not cleaned. That is, you should first remove all punctuation (periods, commas, exclamation points, question marks, semi-colons, dashes, hashes, ampersands, asterisks, and parentheses) from $s$, producing a new string $s'$. Then, split the string based on spaces (remember \ttt{tokenize}?), and produce a map of the words to their respective counts. Do not factor case into your total; i.e., \ttt{"fAcToR"} and \ttt{"factor"} count as the same word. The ordering of the returned map is not significant.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Integer> wordCount(String s)} method that, when given a string $s$, counts the number of words in the list, then stores the resulting frequencies in a \ttt{HashMap<String, Integer>}. Assume that $s$ is not cleaned. That is, you should first remove all punctuation (periods, commas, exclamation points, question marks, semi-colons, dashes, hashes, ampersands, asterisks, and parentheses) from $s$, producing a new string $s'$. Then, split the string based on spaces (remember \ttt{tokenize}?), and produce a map of the words to their respective counts. Do not factor case into your total; e.g., \ttt{"fAcToR"} and \ttt{"factor"} count as the same word. The ordering of the returned map is not significant.}
 
 \begin{verbnobox}[\small]
 String s = "Hello world, the world is healthy, is 
@@ -338,7 +337,7 @@ wordCount(s) => [<"hello" : 1>, <"world" : 3>, <"the" : 2>
                  <"that" : 1>, <"1" : 1>, <"and" : 1>, <"not" : 1>]
 \end{verbnobox}
 
-\myexercise{3}{chapter-arrays-collections}{Design the \ttt{LinkedHashSet<String>largeToSmall(HashMap<String, Integer> M)} method that, when given a \ttt{HashMap<String, Integer>} $M$, returns a \ttt{LinkedHashSet} of \ttt{String} values where the words are inserted into the set in order of decreasing count. Words that have the same count do not need to be inserted in any particular order. E.g., \ttt{"is"} may come before \ttt{"world"}. You cannot sort $M$. Hint: create an array of size $c$ (where $c$ is the highest word count) where each element is a \ttt{LinkedHashSet<String>}. For every element $e$ in $M$, add $e$ to the set at index $M[i]$, where $i$ is the count of $e$ in $M$. Then, append these sets in reverse order according to their index. We provide some pseudocode below.}
+\myexercise{3}{chapter-arrays-collections}{Design the \ttt{LinkedHashSet<String> largeToSmall(Map<String, Integer> M)} method that, when given a \ttt{Map<String, Integer>} $M$, returns a \ttt{LinkedHashSet} of \ttt{String} values where the words are inserted into the set in order of decreasing count. Words that have the same count do not need to be inserted in any particular order. E.g., \ttt{"is"} may come before \ttt{"world"}. You cannot sort $M$. Hint: create an array of size $c$ (where $c$ is the highest word count) where each element is a \ttt{LinkedHashSet<String>}. For every element $e$ in $M$, add $e$ to the set at index $M[i]$, where $i$ is the count of $e$ in $M$. Then, append these sets in reverse order according to their index. We provide some pseudocode below.}
 
 \begin{verbnobox}[\small]
 largeToSmall(M):
@@ -362,14 +361,14 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
                                "agree", "that", "1", "and", "not"}
 \end{verbnobox}
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Set<Integer> symmetricDiff(Set<Integer> s1, Set<Integer> s2)} method that, when given two sets of integers $s_1$ and $s_2$, returns a new set $s_3$ such that all elements of $s_3$ are in either of the sets, but not in their intersection. That is, it is the set of elements that are in either $s_1$ or $s_2$, but not both.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Set<Integer> symmetricDifference(Set<Integer> s1, Set<Integer> s2)} method that, when given two sets of integers $s_1$ and $s_2$, returns a new set $s_3$ such that all elements of $s_3$ are in either of the sets, but not in their intersection. That is, it is the set of elements that are in either $s_1$ or $s_2$, but not both.}
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Set<String>> identifyTrendingTopics(Map<String, Set<Str\-ing>> regionTopics, Set<String> gTrending)} method that, when given a map of regions to topics that are trending in that region, returns a map of topics to regions such that the keys are topics and the values are regions where that topic is trending. A topic is trending in a region if it is not a globally-trending topic and it is trending in at least two regions simultaneously. We provide an example below.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Set<String>> identifyTrending(Map<String, Set<String>> regionTopics, Set<String> gTrending)} method that, when given a map of regions to topics that are trending in that region, returns a map of topics to regions such that the keys are topics and the values are regions where that topic is trending. A topic is trending in a region if it is not a globally-trending topic and it is trending in at least two regions simultaneously. We provide an example below.}
 
 \begin{verbnobox}[\small]
-identifyTrendingTopics([<"North America" : {"Tech", "Comedy", "Sports"}>, 
-                        <"Europe" : {"Comedy", "Music", "Sports"}>, 
-                        <"Asia" : {"Fashion, "Music"}>], {"Tech"})
+identifyTrending([<"North America" : {"Tech", "Comedy", "Sports"}>, 
+                  <"Europe" : {"Comedy", "Music", "Sports"}>, 
+                  <"Asia" : {"Fashion, "Music"}>], {"Tech"})
   => [<"Comedy" : {"North America", "Europe"}>, <"Music" : {"Europe, "Asia"}>]
 \end{verbnobox} 
 
@@ -580,11 +579,9 @@ In this exercise you will implement the minesweeper game as a series of methods.
     \item Finally, design the static \ttt{char[][] play(char[][] board, int mx, int my)} method that receives a board and a move position, and attempts to play the given move position on the board. If, at that position on the board, there is a mine, return \ttt{null}. Otherwise, call \ttt{extPath} on the board and position, then return \ttt{board}. In essence, \ttt{play} receives one game state and transitions it to the next state.
 \end{enumerate}
 
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{int sumOdd(List<Integer> l)} that, when given a  list of integers, filters out even numbers and then calculates the sum of the remaining odd numbers. You must use the Stream API.}
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{int sumEvens(List<Integer> l)} that, when given a  list of integers, filters out odd numbers and then calculates the sum of the remaining even numbers. You must use the Stream API.}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{String conjoin(List<String> los)} method that, when given a list of strings, concatenates all the strings together into a single string, separated by a comma. You must use the Stream API.}
-
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{Map<Integer, Integer> groupLength(List<String> los)} that, when given a list of strings, groups the words by their length and counts how many words are there for each length. This means that the return value should be a \ttt{Map<Integer, Integer>}. There are a couple of ways to do this, and any way that correctly utilizes the Stream API is fine.}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<String> addYRemoveYY(List<String> los)} that, when given a list of strings, returns a list where each string has \ttt{"y"} added at its end, omitting any resulting strings that contain \ttt{"yy"} as a substring anywhere. You must use the Stream API.}
 
@@ -600,18 +597,22 @@ In this exercise you will implement the minesweeper game as a series of methods.
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<String> removeLonger(List<String> los, int n)} method that receives a list of strings, and removes all strings that contain more characters than a given integer~$n$. Return this result as a new list. You must use the Stream API.}
 
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<Double> filterThenSquare(List<Double> lon)} method, which receives a list of doubles, removes all odd values, and squares the remaining values. Return this result as a new list. You must use the Stream API.}
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<Double> filterThenSquare(List<Double> lon)} method, which receives a list of doubles, removes all numbers that are multiples of seven, and squares the remaining values. Return this result as a new list. You must use the Stream API.}
 
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{double filterDoubleAvg(List<Integer> lon)} method that, when given a list of integers, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a \ttt{double} value. You must use the Stream API.}
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{double filterDoubleAvg(List<Integer> lon)} method that, when given a list of integers, removes all non-prime numbers, doubles each remaining value, and computes the average of said values. Return this result as a \ttt{double} value. You must use the Stream API. You may invoke a helper method that determines primality.}
 
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{Optional<Integer> min(List<Integer> lon)} method that, when given a list of integers, returns the minimum value in the list as an \ttt{Optional<Integer>}. If there are no values in the given list, return \ttt{Optional.empty()}. You must use the Stream API.}
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{Optional<Integer> maximum(List<Integer> lon)} method that, when given a list of integers, returns the maximum value in the list as an \ttt{Optional<Integer>}. If there are no values in the given list, return \ttt{Optional.empty()}. You must use the Stream API.}
+
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{int sumCharacters(String s)} method that, when given a string~$s$, returns the sum of the ASCII values of its characters. You must use the Stream API.}
+
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{int filterSumChars(String s)} method that, when given a string~$s$, removes all non-alphanumeric characters, converts all letters to uppercase, and computes the sum of the ASCII values of the letters. Digits should also be added, but use the digit itself and not its ASCII value. You must use the Stream API.}
 
 \myexercise{1}{chapter-arrays-collections}{Design the generic \ttt{<K, V> V lookup(Map<K, V> m)} method that, when given an \ttt{Map<K, V>} $M$ and a value $k$ of type \ttt{K}, returns the corresponding value (of type \ttt{V}) associated with the key $k$ in~$M$. If the key does not exist, return \ttt{null}. You will need to use the \ttt{equals} method.}
 
 \myexercise{1}{chapter-arrays-collections}{Design the generic \ttt{<T> String stringifyList(List<T> l)} method that, when given an list of values $l$, returns a \ttt{String} of comma-separated values where each value is an element of $l$, but converted into a \ttt{String}. You'll need to use the \ttt{toString} method implementation of the generic type \ttt{T}.}
 
-\myexercise{2}{chapter-arrays-collections}{Design the generic \ttt{<T extends Comparable<T>> Optional<T> min(List<T> ls)} method, which receives a list of comparable elements and returns the minimum element in the list. It should return an \ttt{Optional} value of type \ttt{T}, where \ttt{T} is the type of the list. If the list is empty, return an empty \ttt{Optional}. Remember that \ttt{T} must be a type that implements the \ttt{Comparable} interface.}
+\myexercise{2}{chapter-arrays-collections}{Design the generic \ttt{<T extends Comparable<T>> Optional<T> minimum(List<T> ls)} method, which receives a list of comparable elements and returns the minimum element in the list. It should return an \ttt{Optional} value of type \ttt{T}, where \ttt{T} is the type of the list. If the list is empty, return an empty \ttt{Optional}. Remember that \ttt{T} must be a type that implements the \ttt{Comparable} interface.}
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends List<Integer>> boolean areParallelLists(T t, T u)} method that, when given two types of lists $t$ and $u$ that store integer values, determines whether or not they are ``parallel.'' In this context, Two integer lists are parallel if they differ by a single constant factor. For example, where $t=\{5, 10, 15, 20\}$ and $u=\{20, 40, 60, 80\}$, $t$ and $u$ are parallel because every element in $t$ multiplied by four gets us a parallel element in $u$. This factorization is bidirectional, meaning that $t$ could be $\{100, 200, 300, 200\}$ and $u$ could be $\{10, 20, 30, 20\}$. Note that a list of all zeroes is parallel to every other list.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends List<Integer>> boolean areParallelLists(T t, T u)} met\-hod that, when given two types of lists $t$ and $u$ that store integer values, determines whether or not they are ``parallel.'' In this context, Two integer lists are parallel if they differ by a single constant factor. For example, where $t=\{5, 10, 15, 20\}$ and $u=\{20, 40, 60, 80\}$, $t$ and $u$ are parallel because every element in $t$ multiplied by four gets us a parallel element in $u$. This factorization is bidirectional, meaning that $t$ could be $\{100, 200, 300, 200\}$ and $u$ could be $\{10, 20, 30, 20\}$. Note that a list of all zeroes is parallel to every other list.}
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends Set<U>, U extends Comparable<U>> boolean areEqualSets(T t, T u)} m\-ethod that, when given two types of sets $t$ and $u$ that store comparable elements, returns whether they are equal to one another. Two sets are equivalent if they are subsets of each other. You must traverse over the sets; you \textbf{cannot} use the built-in \ttt{equals} method provided by the \ttt{Set} implementations.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{<T extends Set<U>, U extends Comparable<U>> boolean equalSets(T t, T u)} method that, when given two types of sets $t$ and $u$ that store comparable elements, returns whether they are equal to one another. Two sets are equivalent if they are subsets of each other. You must traverse over the sets; you \textbf{cannot} use the built-in \ttt{equals} method provided by the \ttt{Set} implementations.}
