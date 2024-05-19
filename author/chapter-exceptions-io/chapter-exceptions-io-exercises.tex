@@ -40,6 +40,8 @@ THIS_IS_NOT_AN_INTEGER!
 
     then the program does not output a file because it throws an exception.
 
+\myexercise{2}{chapter-exceptions-io}{Design the \ttt{String[] readStrings()} method, which reads an indeterminate number of line-separated strings from standard input. You \emph{cannot} store the strings in a collection---that is, you can only use Java arrays. Remember how to dynamically ``resize'' an array? Return the array of strings that are read from standard input. Your array should not contain ``null slots'' at the end. You may assume that a blank line indicates no further input.}
+
     \myexercise{2}{chapter-exceptions-io}{Design the \ttt{Capitalize} class, which contains one \ttt{static} method: \ttt{void capitalize(String in)}. The \ttt{capitalize} method reads a file of sentences (that are not necessarily line-separated), and outputs the capitalized versions of the sentences to a file of the same name, just with the \ttt{.out} extension (you must remove whatever extension existed previously). 
     
     You may assume that a sentence is a string that is terminated by a period and only a period, which is followed by a single space. If you use a splitting method, e.g., \ttt{.split}, you must remember to reinsert the period in the resulting string. There are many ways to solve this problem!}

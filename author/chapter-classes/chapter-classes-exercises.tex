@@ -6,24 +6,27 @@
 
 \myexercise{1}{chapter-classes}{Design the \ttt{Person} class, which stores a \ttt{String} representing the person's first name, a \ttt{String} representing the person's last name, and an \ttt{int} representing the person's age in years. Its constructor should receive these three values and store them in the instance variables. Be sure to write instance accessor and mutator methods for modifying all three fields. That is, you should write \ttt{getFirstName()}, \ttt{setFirstName(String s)}, and so forth, to access and modify the fields directly.}
 
-\myexercise{1}{chapter-classes}{Design the \ttt{Employee} class, which stores the employee's first and last names as strings, their birth year as an integer, their yearly salary as a double (we will assume that all employees are paid some value greater than zero), and their employee ID as a string.}
+% \myexercise{1}{chapter-classes}{Design the \ttt{Employee} class, which stores the employee's first and last names as strings, their birth year as an integer, their yearly salary as a double (we will assume that all employees are paid some value greater than zero), and their employee ID as a string.}
     
-To make things interesting, assume that an employee's ID is not alterable and must be set in the constructor. The employee ID is constructed using the first five characters of their last name, the first letter of their first name, and the last two digits of their birth year. For instance, if the employee's name is \ttt{Joshua Crotts} and their birth year is \ttt{1999}, their employee ID is \ttt{CrottJ99}. Its constructor should receive the name, birth year, and salary as parameters, but build the employee ID from the name and birth year.
+% To make things interesting, assume that an employee's ID is not alterable and must be set in the constructor. The employee ID is constructed using the first five characters of their last name, the first letter of their first name, and the last two digits of their birth year. For instance, if the employee's name is \ttt{Joshua Crotts} and their birth year is \ttt{1999}, their employee ID is \ttt{CrottJ99}. Its constructor should receive the name, birth year, and salary as parameters, but build the employee ID from the name and birth year.
 
-The instance variables, accessors, and mutators (where applicable) should be named as follows:
-\begin{itemize}
-    \item \ttt{id}, \ttt{getId}.
-    \item \ttt{firstName}, \ttt{getFirstName}.
-    \item \ttt{lastName}, \ttt{getLastName}.
-    \item \ttt{birthYear}, \ttt{getBirthYear}.
-    \item \ttt{salary}, \ttt{getSalary}, \ttt{setSalary}
-\end{itemize}
+% The instance variables, accessors, and mutators (where applicable) should be named as follows:
+% \begin{itemize}
+%     \item \ttt{id}, \ttt{getId}.
+%     \item \ttt{firstName}, \ttt{getFirstName}.
+%     \item \ttt{lastName}, \ttt{getLastName}.
+%     \item \ttt{birthYear}, \ttt{getBirthYear}.
+%     \item \ttt{salary}, \ttt{getSalary}, \ttt{setSalary}
+% \end{itemize}
 
-\myexercise{1}{chapter-classes}{As part of the \ttt{Employee} class, design the \ttt{void bonus()} method, which updates the salary of an employee. Calling \ttt{bonus} on an employee increases their salary by ten percent.}
+% Then, design the following methods:
 
-\myexercise{2}{chapter-classes}{As part of the \ttt{Employee} class, override the \ttt{equals} and \ttt{toString} methods from the \ttt{Object} class to compare two employees by their employee ID and to print the employee's name, birth year, salary, and employee ID respectively separated by commas and a space. Do not add a comma and space after the last field.}
+% \begin{enumerate}[label=(\alph*)]
+%   \item \ttt{void bonus()} method, which updates the salary of an employee. Calling \ttt{bonus} on an employee increases their salary by ten percent.
+%   \item Override the \ttt{public boolean equals(Object o)} and \ttt{public String toString()} methods from the \ttt{Object} class to compare two employees by their employee ID and to print the employee's name, birth year, salary, and employee ID respectively separated by commas and a space. Do not add a comma and space after the last field.
+% \end{enumerate}
 
-\myexercise{2}{chapter-classes}{In this exercise you will design a class for storing employees. This relies on completing the \ttt{Employee} class exercise.}
+\myexercise{2}{chapter-classes}{In this exercise you will design a class for storing employees. This relies on having the \ttt{Employee} class and its subclasses from the chapter available.}
 \begin{enumerate}[label=(\alph*)]
     \item Design the \ttt{Job} class, which stores a list of employees \ttt{List<Employee>} as an instance variable. Whether you choose to instantiate it as an \ttt{ArrayList} or a \ttt{LinkedList} is up to you and makes little difference for this particular question. Its constructor should receive no arguments. The instance variable, along with its accessor and mutator, should be named \ttt{employees}, \ttt{getEmployees}, and \ttt{setEmployees} respectively.
     \item Design the \ttt{void addEmployee(Employee e)} method, which adds an employee to the \ttt{Job}.
@@ -33,6 +36,7 @@ The instance variables, accessors, and mutators (where applicable) should be nam
     \item Override the \ttt{public String toString()} method to print out the list of employees in the \ttt{Job}. To make this easy, you can simply invoke the \ttt{toString} method from the \ttt{List} implementation.
 \end{enumerate}
 
+\newpage %ugh
 \myexercise{2}{chapter-classes}{In this exercise you will design a simple music system, similar to Spotify.}
 \begin{enumerate}[label=(\alph*)]
   \item Design the \ttt{Song} class, which stores its \ttt{title}, \ttt{artist}, \ttt{genre}, and \ttt{length}. The first three fields are strings and the last is an integer. Create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}.
@@ -107,6 +111,7 @@ The instance variables, accessors, and mutators (where applicable) should be nam
     \item Design the \ttt{genInt(int b)} method that returns an integer between $[0, b]$. Note that $0 \leq b < 2^{15}$; you do not need to account for values outside of this range. Do \textbf{not} simply loop until you find a value between that range; instead, use modulus to your advantage.
 \end{enumerate}
 
+\newpage %ugh
 \myexercise{3}{chapter-classes}{This question has six parts.}
 
 \begin{enumerate}[label=(\alph*)]
@@ -130,7 +135,7 @@ The instance variables, accessors, and mutators (where applicable) should be nam
 \begin{enumerate}[label=(\alph*)]
     \item Design the \ttt{GameObject} class, which stores a \ttt{Pair<Double, Double>} denoting its center~$(x, y)$ position and a \ttt{Pair<Double, Double>} denoting its width and height respectively. Its constructor should receive four \ttt{double} values representing~$x$,~$y$, $\emph{width}$, and $\emph{height}$. Be sure to write instance accessor and mutator methods for modifying both fields. That is, you should write \ttt{double getLocationX()}, \ttt{void setLocationX(double d)}, and so forth, to access and modify the \ttt{Pair} values directly. 
 
-    \item Design the \ttt{boolean collidesWith(GameObject obj)} method that returns if \ttt{this} \ttt{GameObject} collides with the parameter \ttt{obj}. You should design this solution as if the game objects are shaped like rectangles (which they are!).
+    \item Design the \ttt{boolean collidesWith(GameObject obj)} method that returns whether \ttt{this} \ttt{GameObject} collides with the parameter \ttt{obj}. You should design this solution as if the game objects are shaped like rectangles (which they are!).
 
     \item Design the \ttt{double distance(GameObject obj)} method that returns the Euclidean distance from the center of \ttt{this} \ttt{GameObject} to the center of the parameter \ttt{obj}. 
 
@@ -139,6 +144,7 @@ The instance variables, accessors, and mutators (where applicable) should be nam
     \item Override the \ttt{public String toString()} method to call the \ttt{toString} methods of the two instance variables, conjoined by a semicolon.
 \end{enumerate}
 
+\newpage %ugh
 \myexercise{2}{chapter-classes}{This exercise has three parts.}
 \begin{enumerate}[label=(\alph*)]
     \item Design the \ttt{GameRunner} class, which stores a list of objects \ttt{List<GameObject>} as an instance variable. Its constructor should receive an integer representing a random number generator seed. It should first instantiate \ttt{rand} to a new \ttt{Random} object with this seed, and then populate the list with twenty random \ttt{GameObject} instances at random \textbf{integer} positions with random \textbf{integer} sizes. These random positions should be between $[-10, 10]$ for both coordinates and the random sizes should be between $[1, 10]$ for both dimensions.
@@ -242,6 +248,7 @@ Unlike many stack implementations, however, we will use an array-backed stack. T
     \item Finally, override the \ttt{public String toString()} method to return a string containing the elements of the stack from top-to-bottom, separated by commas and a space. For example, if the stack contains, from bottom-to-top, \ttt{10}, \ttt{20}, \ttt{30}, \ttt{40}, and \ttt{50}, the \ttt{toString} method returns \ttt{"50, 40, 30, 20, 10"}.
 \end{enumerate}
 
+\newpage %ugh
 \myexercise{3}{chapter-classes}{This exercise has seven parts.}
 
 A \emph{chunked array list} data structure avoids the overhead of copying the underlying array upon running out of free spots. The idea is to break the collection into chunks, namely, as an \ttt{ArrayList} of arrays. Assuming that the underlying collection of chunks is adequately populated, this collection will seldom require a resizing operation. This data structure will not support arbitrary insertions or removals.
@@ -287,6 +294,7 @@ A \emph{deterministic finite state automaton} is an extremely primitive machine 
     \item Finally, design the \ttt{boolean accepts(String v)} method, which receives an input string $v$ and traverses over the automaton to determine if it accepts or rejects the input. We accept $v$ if the last state we end on is marked as a final state.
 \end{enumerate}
 
+\newpage %ugh
 \myexercise{3}{chapter-exceptions-io}{A binary relation $\mathcal{R}$ is a subset of the cartesian product of two sets $A$ and $B$. That is, $\mathcal{R} \subseteq A \times B$ such that $A \times B = \{\langle{x, y}\rangle \mid x \in A \text{ and } y \in B\}$. There are several ways that we can describe binary relations, including reflexive, symmetric, transitive, antisymmetric, asymmetric, irreflexive, and serial.}
 
 Design the generic \ttt{BinaryRelation<T, U>} class to represent a mathematical binary relation. It should store a \ttt{Set<Pair<String, String>{>}}, where the inner pair is the associated tuples of the set. Its constructor should instantiate the set instance variable. 
@@ -312,15 +320,16 @@ Then, design the following methods:
 
     \item \ttt{boolean isSerial()} returns true if the relation is serial. A relation $\mathcal{R}$ is serial if, for all $x \in S$, there exists a $y \in S$ such that $\langle{x, y}\rangle \in \mathcal{R}$.
 
-    \item \ttt{Set<Pair<String, String>{>} reflexiveClosure()} returns a set representing the reflexive closure of a binary relation, which is $\mathcal{R} \cup r(\mathcal{R})$, where $r$ returns a reflexive set over $S$.
+    \item \ttt{Set<Pair<String, String>{>} reflexiveClosure()} returns a set representing the reflexive closure of a binary relation, which is $\mathcal{R} \cup r(\mathcal{R})$, where~$r$ returns a reflexive set over~$S$.
     
-    \item \ttt{Set<Pair<String, String>{>} isSymmetricClosure()} returns a set representing the symmetric closure of a binary relation, which is $\mathcal{R} \cup s(\mathcal{R})$, where $r$ returns a symmetric set over $S$.
+    \item \ttt{Set<Pair<String, String>{>} isSymmetricClosure()} returns a set representing the symmetric closure of a binary relation, which is $\mathcal{R} \cup s(\mathcal{R})$, where~$r$ returns a symmetric set over~$S$.
 
-    \item \ttt{Set<Pair<String, String>{>} transitiveClosure()} returns a set representing the transitive closure of a binary relation, which is $\mathcal{R} \cup t(\mathcal{R})$, where $t$ returns a transitive set over $S$.
+    \item \ttt{Set<Pair<String, String>{>} transitiveClosure()} returns a set representing the transitive closure of a binary relation, which is $\mathcal{R} \cup t(\mathcal{R})$, where~$t$ returns a transitive set over~$S$.
 \end{enumerate}
 
 As an added optimization, we should cache whether the current relation is one of these properties when prompted. If we do not add a pair to the relation, then it makes little sense to recompute whether or not is, say, reflexive. Implement this as an optimization, however you wish, into the class.
 
+\newpage %ugh
 \myexercise{2}{chapter-classes}{This exercise has five parts.}
 Repeated string concatenation is a common performance issue in Java. 
 As we know, Java \ttt{String} objects are immutable, which means that concatenation creates a new \ttt{String} objects. 
@@ -430,7 +439,7 @@ Notice that we have a \ttt{default} method, which is one that an implementing cl
 
 \myexercise{2}{chapter-classes}{This exercise has three parts.}
 \begin{enumerate}[label=(\alph*)]
-  \item Design the \ttt{INumberFormat} interface, which contains one method: \ttt{String format(int n)}. 
+  \item Design the \ttt{INumberFormat} interface, which contains the \ttt{String format(int n)} method. 
   \item Design the \ttt{DollarFormat} method, which implements \ttt{INumberFormat}, and returns a string where the number is prepended with a dollar sign \ttt{"\$"}.
   \item Design the \ttt{CommaFormat} method, which implements \ttt{INumberFormat}, and returns a string where the number contains commas where appropriate. For example, \ttt{format(4412)} should return \ttt{"4,412"}.
 \end{enumerate}
@@ -672,6 +681,7 @@ class PrimNode extends AstNode {
 }
 \end{lstlisting}
 
+\newpage %ugh
 \myexercise{3}{chapter-classes}{This exercise is multi-part and involves the interpreter we wrote in the chapter.}
 \begin{enumerate}[label=(\alph*)]
   \item First, design the \ttt{ProgramNode} class, which allows the user to define a program as a sequence of statements rather than a single expression.
@@ -711,6 +721,7 @@ new ProgramNode(
 \end{small}
 \end{enumerate}
 
+\newpage %ugh
 \myexercise{2}{chapter-classes}{This exercise involves the interpreter we wrote in the chapter, and relies on the addition of \ttt{FuncNode} and \ttt{ApplyNode}.}
 Our current version of the interpreter uses \textit{dynamic scoping}. A dynamically-scoped interpreter is one that uses the value of the closest declaration of a variable. This seems like nonsense without an example, so consider the following code listing.
 \begin{lstlisting}[language=MyScheme, frame=single]
@@ -738,8 +749,10 @@ A ConsList is one of:
  - new ConsList(x, ConsList)
 \end{verbnobox}
 
+\enlargethispage{2\baselineskip}
 Implement the cons data structure into your interpreter. This should involve designing the \ttt{ConsNode} class that conforms to the aforementioned data definition. Moreover, you will need to update \ttt{PrimNode} to account for the \ttt{first} and \ttt{rest} primitive operations, as well as an \ttt{empty?} predicate, which returns whether or not the cons list is empty. Finally, override \ttt{toString} inside \ttt{ConsNode}, which amounts to printing each element, separated by spaces, inside of brackets, e.g., \ttt{[$l_0, l_1, \ldots, l_{n-1}]$}.
 
+\newpage %ugh
 \myexercise{2}{chapter-classes}{This exercise involves the interpreter we wrote in the chapter.}
 Having to manually type out the abstract syntax tree constructors when writing tests is extremely tedious. Design a \emph{lexer} for the language described by the interpreter. That is, the text is broken up into tokens that are then categorized. For example, \ttt{\q{}(\q{}} might become \ttt{OPEN\_PAREN}, \ttt{"lambda"} might become \ttt{SYMBOL}, \ttt{"variable-name"} might become \ttt{SYMBOL}, and \ttt{123.45} might become \ttt{NUMBER}. The output of the lexer is a list of tokens. Part of the trick is to ensure that after reading an open parenthesis, the next token is not grabbed as part of the open parenthesis.
 
@@ -751,9 +764,9 @@ The Scheme programming language and its derivatives support \emph{code quotation
 
 \myexercise{3}{chapter-classes}{In Chapter~\ref{chapter-crl}, we discussed tail recursion and an action performed by some programming languages known as tail-call optimization. We know that we can convert any (tail) recursive algorithm into one that uses a loop, and we described said process in the chapter. There is yet another approach that we can mimic in Java with a bit of trickery and interfaces.}
 
-The problem with tail recursion (and recursion in general) in Java is the fact that it does not convert tail calls into iteration, which means the stack quickly overflows with activation records. We can make use of a \emph{trampoline} to force the recursion into iteration through \emph{thunks}. In essence, we have a tail recursive method that returns either a value or makes a tail recursive call, such as the factorial example below.\footnote{We omit the driver method to shorten the code, as the important part lies inside the recursive implementation.} Inside our base case, we invoke the \ttt{done} method with the accumulator value. Otherwise, we invoke the \ttt{call} method containing a lambda expression of no arguments, whose right-hand side is a recursive call to \ttt{factTR}. Functions, or lambda expressions, that receive no arguments are called thunks.
+The problem with tail recursion (and recursion in general) in Java is the fact that it does not convert tail calls into iteration, which means the stack quickly overflows with activation records. We can make use of a \emph{trampoline} to force the recursion into iteration through \emph{thunks}. In essence, we have a tail recursive method that returns either a value or makes a tail recursive call, such as the factorial example below. Inside our base case, we invoke the \ttt{done} method with the accumulator value. Otherwise, we invoke the \ttt{call} method containing a lambda expression of no arguments, whose right-hand side is a recursive call to \ttt{factTR}. Functions, or lambda expressions, that receive no arguments are called thunks.
 
-\enlargethispage{2\baselineskip}
+\enlargethispage{4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -813,7 +826,84 @@ Second, design the \ttt{TailCallUtils} final class to contain a private construc
 
 Finally, run the factorial test that we provided earlier in its JUnit suite. It should pass and not stack overflow, hence the inclusion of an \ttt{assertDoesNotThrow} call.
 
-\myexercise{3}{chapter-classes}{Recall the unification exercise from Chapter~\ref{chapter-arrays-collections}. We can take the idea of unification a step further, which is the basis for almost all logic programming languages such as Prolog. For instance, take the expression \ttt{p(X, f(Y))}; attempting to unify this with \ttt{p(q(r(x)), f(b(x)))} returns a unification assignment of \ttt{X : q(r(x)), Y : b(x)}. It is possible for a unification to not return any possible assignment. As an example, unifying \ttt{p(a, b)} with \ttt{p(Y, Y)} returns an empty assignment because it is not possible to unify \ttt{a} with \ttt{Y}, then unify \ttt{b} with \ttt{Y}.}
+% \myexercise{3}{chapter-classes}{In this series of problems, you will design several methods that act on very large \emph{natural numbers} resembling the \ttt{BigInteger} class. You \emph{\textbf{cannot}} use any methods from \ttt{BigInteger}, or the \ttt{BigInteger} class itself.} 
+
+% \begin{enumerate}[label=(\alph*)]
+%     \item Design the \ttt{BigNat} class, which has a constructor that receives a string. The \ttt{BigNat} class stores a \ttt{List<Integer>} as an instance variable. You will need to convert the given string into said list. Store the digits in reverse order, i.e., the least-significant digit (the ones digit) of the number is the first element of the list.
+%     \item Design the \ttt{private void trimLeadingZeroes()} method that removes all leading zeroes from the number. That is, \ttt{new BigNat("0032")} should be trimmed to \ttt{"32"}. You may need to call this method in other methods, so do so when you feel it is necessary. Be careful to not trim all the zeroes from a number, e.g., \ttt{new BigNat("00000")} should be \ttt{"0"} and not the empty string.
+%     \item Override the \ttt{public String toString()} method to return a string representation of the \ttt{BigNat} object. 
+%     In particular, place commas between the digits where necessary, e.g., \ttt{"1,000"} and \ttt{"12,345,678"}.
+%     \item Design the \ttt{BigNat copy()} method that returns a new \ttt{BigNat} instance representing the same natural number as \ttt{this} instance instance of \ttt{BigNat}. Do \emph{not} simply copy the reference to the list of digits over to the new \ttt{BigNat} (this violates the aliasing principle that we have repeatedly discussed and can be the cause of relentless debugging).
+%     \item Implement the \ttt{Comparable<BigNat>} interface, and override the method that it provides, namely \ttt{public int compareTo(BigNat b)}, to return the sign of the result of comparing the given \ttt{BigNat} (which we will call $b$) to \ttt{this} \ttt{BigNat} (which we will call $a$). Namely, if $a < b$, return $-1$, if $a > b$, return $1$, otherwise return $0$.
+%     \item Override the \ttt{public boolean equals(Object obj)} method to compare two \ttt{BigNat} values for equality. Remember that you have to cast the given parameter to an instance of the \ttt{BigNat} class. Because you implemented the \ttt{compareTo} method, defining \ttt{BigNat} equality is trivial.
+%     \item Design the \ttt{BigNat add(BigNat bn)} method, which adds a \ttt{BigNat} to \ttt{this} \ttt{BigNat}. Do not modify the digits/value of \ttt{this} or the parameter. Note: this problem is harder than it may look at first glance!
+%     \item Design the \ttt{BigNat sub(BigNat bn)} method, which subtracts a \ttt{BigNat} from \ttt{this} \ttt{BigNat}. If the subtrahend (the right-hand side of the subtraction) is greater than the minuend, the result is zero. Over the natural numbers, this is called the \emph{monus} operator. Do not modify the digits/value of \ttt{this} or the parameter.
+%     \item Design the \ttt{BigNat mul(BigNat bn)} method, which multiplies a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. You cannot use the recursive algorithm. That is, your method must not define multiplication in terms of repeated addition, as that would be astronomically slow. Do not modify the digits/value of \ttt{this} or the parameter.
+% \end{enumerate}
+
+\newpage %ugh
+\myexercise{3}{chapter-classes}{In this series of problems, you will design several methods that act on very large/small \emph{integers} resembling the \ttt{BigInteger} class. You \emph{\textbf{cannot}} use any methods from \ttt{BigInteger}, or the \ttt{BigInteger} class itself.} 
+
+\begin{enumerate}[label=(\alph*)]
+  \item Design the \ttt{BigInt} class, which has a constructor that receives a string. The \ttt{BigInt} class stores a \ttt{List<Integer>} as an instance variable, as well as a boolean for keeping track of whether it is negative. You will need to convert the given string into said list of digits. Store the digits in reverse order, i.e., the least-significant digit (the ones digit) of the number is the first element of the list. Leading zeroes should be omitted from the representation.
+
+  The possible values for the parameter are an optional sign (either positive \textbf{or} negative), followed by one or more digits.
+
+  Below are some example inputs.
+\begin{small}
+\begin{verbatim}
+new BigNat("42")       => [2, 4], isNegative = false
+new BigNat("0420")     => [0, 2, 4], isNegative = false
+new BigNat("-42")      => [2, 4], isNegative = true
+new BigNat(0000420000) => [0, 0, 0, 0, 2, 4], isNegative = false
+new BigNat("+42")      => [2, 4], isNegative = false;
+\end{verbatim}
+\end{small}
+
+  \item Override the \ttt{public boolean equals(Object o)} method to return whether \ttt{this} instance represents the same integer as the parameter. If \ttt{o} is not an instance of \ttt{BigInt}, return \ttt{false}.
+
+\begin{small}
+\begin{verbatim}
+new BigInt("42").equals(new BigInt("42"))      => true
+new BigInt("00042").equals(new BigInt("0042")) => true
+new BigInt("+42").equals(new BigInt("42"))     => true
+new BigInt("42").equals(new BigInt("-42"))     => false
+new BigInt("-42").equals(new BigInt("-42"))    => false
+new BigInt("422").equals(new BigInt("420"))    => false
+\end{verbatim}
+\end{small}
+
+  \item Override the \ttt{public String toString()} method to return a stringified version of the number. Remember to include the negative sign where appropriate. If the number is positive, you do not need to include it.
+
+  \item Implement the \ttt{Comparable<BigInt>} interface and override the method it provides, namely \ttt{public int compareTo(BigInt b2)}. Return the result of comparing \ttt{this} instance with the parameter. That is, if~$a < b$, return~$-1$, if~$a > b$, return~$1$, and otherwise return~$0$, where~$a$ is \ttt{this} and~$b$ is \ttt{b2}.
+
+  \item Design the \ttt{BigInt copy()} method, which returns a (deep)-copy of instance representing the same integer as \ttt{this} instance of \ttt{BigInt}. Do \emph{not} simply copy the reference to the list of digits over to the new \ttt{BigInt} (this violates the aliasing principle that we have repeatedly discussed and can be the cause of relentless debugging).
+
+  \item Design the \ttt{BigInt negate()} method, which returns a copy of \ttt{this} instance of \ttt{BigInt}, but negated. Do \emph{not} modify \ttt{this} instance.
+  
+  \item Design the \ttt{private boolean areDifferentSigns(BigInt b)} method, which returns whether \ttt{this} instance and \ttt{b} have different signs. That is, if one is positive and one is negative, \ttt{areDifferentSigns} returns \ttt{true}, and false otherwise.
+
+  \item Design the \ttt{private BigInt addPositive(BigInt b)} method, which returns a \ttt{BigInt} instance that is the sum of \ttt{this} and \ttt{b} under the assumption that \ttt{this} and \ttt{b} are non-negative. \emph{Be sure you thoroughly test this method!}
+
+  \item Design the \ttt{private BigInt subPositive(BigInt b)} method, which returns a \ttt{BigInt} instance that is the difference of \ttt{this} and \ttt{b} under the assumption that \ttt{this} and \ttt{b} are non-negative, and the minuend (the left-hand operand) is greater than or equal to the subtrahend (the right-hand operand). \emph{Be sure you thoroughly test this method!}
+
+  \item Design the \ttt{private BigInt mulPositive()} method, which returns a \ttt{BigInt} instance that is the product of \ttt{this} and \ttt{b} under the assumption that \ttt{this} and \ttt{b} are non-negative. \emph{Be sure you thoroughly test this method!}
+
+  \item Design the \ttt{BigInt add(BigInt b)} and \ttt{BigInt sub(BigInt b)} method that returns the sum/difference of \ttt{this} and \ttt{b} respectively. Note that these methods should be a case analysis of the signs of the operands. Use the following equivalences to guide your design. Do \emph{not} over-complicate these methods.
+
+  \begin{align*}
+    A + (-B) &= A - B \text{ if } A \geq B. \text{ Otherwise, } -(B - A).\\
+    (-A) + (-B) &= -(A + B).\\
+    A - (-B) &= A + B.\\
+    (-A) - B &= -(A + B).\\
+    (-A) - (-B) &= (-A + B) \text{ if } A \geq B. \text{ Otherwise, } (B - A).\\
+  \end{align*}
+
+  \item Design the \ttt{BigInt mul(BigInt b)} method that returns the product of \ttt{this} and \ttt{b}. The product of two negative integers is a positive integer, and the product of exactly one positive and exactly one negative is a negative integer.
+
+\end{enumerate}
+
+\myexercise{3}{chapter-classes}{Recall the unification exercise from Chapter~\ref{chapter-arrays-collections}. We can take the idea of unification a step further, which is the basis for almost all logic programming languages such as Prolog. For instance, take the expression \ttt{p(X, f(Y))}; attempting to unify this with \ttt{p(q(r(x)), f(b(x)))} returns a unification assignment of \ttt{X : q(r(x)), Y : b(x)}. It is possible for a unification to not return any possible assignment. As an example, unifying \ttt{p(a, b)} with \ttt{p(Y, Y)} returns an empty assignment because it is not possible to unify~\ttt{a} with~\ttt{Y}, then unify~\ttt{b} with~\ttt{Y}.}
 
 Design three classes: \ttt{Variable}, \ttt{Constant}, and \ttt{Predicate}. Each of these should implement the \ttt{IUnifiable} interface, which supplies one method: \ttt{Assignment unify(IUnifiable u, Assignment as)}. An \ttt{Assignment} is simply a mapping of \ttt{IUnifiable} objects to \ttt{IUnifiable} objects, resembling a map data structure. Variables in this small language will be represented as upper0cased letters, whereas constants are lowercase. If two \ttt{IUnifiable} objects cannot be unified, then \ttt{unify} should return \ttt{null}.
 
@@ -821,23 +911,10 @@ Constants are straightforward: constants can only be unified with other constant
 
 Variables can only be unified with constants if the variable does not have an existing assignment and, if it does, it must be equal to the constant passed as an argument. Variables can only be unified with other variables if at least one is bound to a constant; if they are both bound, then they must be equivalent constants. 
 
+\enlargethispage{2\baselineskip}
 Predicates can only be unified with variables if the variable does not have an existing assignment and, if it does, it must be equal to \ttt{this} predicate. Predicates can only be unified with predicates if it is possible to successfully unify all of its arguments. E.g., \ttt{p(a, z(b), c)} unifies with \ttt{p(X, z(Y), Z)} because we return the assignment \ttt{X : a, Y : b, Z : c}. 
 
-\myexercise{3}{chapter-classes}{In this series of problems, you will design several methods that act on very large \emph{natural numbers} resembling the \ttt{BigInteger} class. You \emph{\textbf{cannot}} use any methods from \ttt{BigInteger}, or the \ttt{BigInteger} class itself.} 
-
-\begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{BigNat} class, which has a constructor that receives a string. The \ttt{BigNat} class stores a \ttt{List<Integer>} as an instance variable. You will need to convert the given string into said list. Store the digits in reverse order, i.e., the least-significant digit (the ones digit) of the number is the first element of the list.
-    \item Override the \ttt{public String toString()} method to return a string representation of the \ttt{BigNat} object. 
-    % In particular, place commas between the digits where necessary, e.g., \ttt{"1,000"} and \ttt{"12,345,678"}.
-    \item Design the \ttt{BigNat clone()} method that returns a new \ttt{BigNat} instance that contains the same number.
-    \item Override the \ttt{public boolean equals(Object obj)} method to compare two \ttt{BigNat} values for equality. Remember that you have to cast the given parameter to an instance of the \ttt{BigNat} class. 
-    \item Implement the \ttt{Comparable<BigNat>} interface, and override the method that it provides, namely \ttt{public int compareTo(BigNat b)}, to return the sign of the result of comparing the given \ttt{BigNat} (which we will call $b$) to \ttt{this} \ttt{BigNat} (which we will call $a$). Namely, if $a < b$, return $-1$, if $a > b$, return $1$, otherwise return $0$.
-    \item Design the \ttt{void add(BigNat bn)} method, which adds a \ttt{BigNat} to \ttt{this} \ttt{BigNat}. The method should not return anything. Note: this problem is harder than it may look at first glance!
-    \item Design the \ttt{void sub(BigNat bn)} method, which subtracts a \ttt{BigNat} from \ttt{this} \ttt{BigNat}. If the subtrahend (the right-hand side of the subtraction) is greater than the minuend, the result is zero. Over the natural numbers, this is called the \emph{monus} operator.
-    \item Design the \ttt{void mul(BigNat bn)} method, which multiplies a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. Note: remember how we implement multiplication recursively? You shouldn't use recursion for this problem, but what \emph{is} multiplication? Multiplication is defined as repeated addition. Think about the performance implications of this approach.
-    \item Design the \ttt{void div(BigNat bn)} method, which divides a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. If the divisor is greater than the dividend, assign the dividend to be zero. If the divisor is zero, do nothing at all. Otherwise, perform integer division. Note: we can implement division recursively. You shouldn't use recursion for this problem, but what \emph{is} division? Division is defined, for all intents and purposes over the natural numbers, as repeated subtraction. Think about the performance implications of this approach.
-\end{enumerate}
-
+\newpage %ugh
 \myexercise{3}{chapter-classes}{Quine's method of truth resolution~\cite{methodsoflogic} is a method of automatically reasoning about the truth of a propositional logic statement (recall the exercise from Chapter~\ref{chapter-crl}). The method is as follows:}
 
 \begin{enumerate}
