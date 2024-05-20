@@ -264,14 +264,10 @@ import java.util.Map;
 
 class OptionalArgument extends Argument {
 
-  OptionalArgument(String key) { 
-    super(key); 
-  }
+  OptionalArgument(String key) { super(key); }
 
   @Override
-  boolean validate(Map<String, List<String>> args) { 
-    return true; 
-  }
+  boolean validate(Map<String, List<String>> args) { return true; }
 }
 \end{lstlisting}
 
@@ -290,11 +286,8 @@ class NumberedArgument extends Argument {
 
   @Override
   boolean validate(Map<String, List<String>> args) {
-    if (!args.containsKey(this.getKey())) { 
-      return false; 
-    } else { 
-      return args.get(this.getKey()).size() == this.NUM_REQUIRED_ARGS; 
-    }
+    if (!args.containsKey(this.getKey())) { return false; } 
+    else { return args.get(this.getKey()).size() == this.NUM_REQUIRED_ARGS; }
   }
 }
 \end{lstlisting}
