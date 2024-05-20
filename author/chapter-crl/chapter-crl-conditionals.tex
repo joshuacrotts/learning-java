@@ -97,7 +97,7 @@ For example,~$64$ is a power of eight because~$8^2=64$, but~$37$ is not a power 
 We can use logarithms to our advantage to determine if a number is a power of eight.
 Java provides the \ttt{Math.log} and \ttt{Math.log10} methods to return the base~$e$ logarithm and base~$10$ logarithms respectively.
 It does not, however, provide a method for computing the base~$8$ logarithm, which we need.
-The change-of-base formula is necessary for such a calculation.
+The change-of-base formula is necessary for such a calculation.\footnote{We presented this as an exercise in the previous chapter.}
 To change from a base~$c$ to a base~$b$, we divide the logarithm base~$c$ of our number-of-interest~$n$ by the logarithm base~$c$ of our base~$b$.
 So, to compute the base eight logarithm of an integer~$n$, we can convert from base~$e$ to base~$8$ using a similar tactic.
 At the end of the chapter, we ask readers to apply the change-of-base method to any arbitrary base.
