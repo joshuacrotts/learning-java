@@ -58,6 +58,8 @@ fizzBuzz(15, 18) => {"FizzBuzz", "16", "17", "Fizz"}
 
 \myexercise{2}{chapter-arrays-collections}{Desing the \ttt{int median(int[] A, int[] B)} that, when given two sorted (in increasing order) arrays of integers $A$ and $B$, returns the median value of those two lists. You can use auxiliary data structures to help in solving the problem, but they are not necessary.}
 
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{double sumOfAverages(int[] A)} method that, when given a list of arbitrary integers from~$1$ to~$100$~$A$, returns the average of the averages of the numbers when grouped by their right-most digit.} That is, consider the list \ttt{[91, 34, 87, 22, 67, 41, 10, 12, 13, 44]}. If we group these by their right-most digit, we get \ttt{[[10], [41, 91], [12, 22], [13], [34, 44], [67]]}. The sum of the average of the ``buckets'' is~$211$. You cannot use any auxiliary Java Collections data structures, e.g., maps/lists, to solve this problem; only arrays are permitted. Your algorithm must also run in linear time, i.e., only dependent on the input array size, and use at most two traversals.
+
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{double sumNasty(ArrayList<Integer> vals)} method that returns the average of the numbers in the list with the following caveat: The number $9$ should not be counted towards the average, nor should the following number, should one exist.}
 \begin{verbnobox}[\small]
 sumNasty({8, 7, 11, 9, 12, 10}) => 9.0
@@ -579,12 +581,6 @@ In this exercise you will implement the minesweeper game as a series of methods.
     \item Finally, design the static \ttt{char[][] play(char[][] board, int mx, int my)} method that receives a board and a move position, and attempts to play the given move position on the board. If, at that position on the board, there is a mine, return \ttt{null}. Otherwise, call \ttt{extPath} on the board and position, then return \ttt{board}. In essence, \ttt{play} receives one game state and transitions it to the next state.
 \end{enumerate}
 
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{int sumEvens(List<Integer> l)} that, when given a  list of integers, filters out odd numbers and then calculates the sum of the remaining even numbers. You must use the Stream API.}
-
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{String conjoin(List<String> los)} method that, when given a list of strings, concatenates all the strings together into a single string, separated by a comma. You must use the Stream API.}
-
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<String> addYRemoveYY(List<String> los)} that, when given a list of strings, returns a list where each string has \ttt{"y"} added at its end, omitting any resulting strings that contain \ttt{"yy"} as a substring anywhere. You must use the Stream API.}
-
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<String> dollarAll(List<Integer> lon)} method that, when given a list of numbers, returns a list of those numbers converted to strings, prefixed by a dollar sign. You must use the Stream API.}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<int[]> containsHigh(List<int[]>)} method that, when given a list of two-element arrays representing $x, y$ coordinate pairs, returns whether or not any of the $y$-coordinates are greater than~$450$. Hint: use the \ttt{anyMatch} stream method.}
@@ -604,6 +600,12 @@ In this exercise you will implement the minesweeper game as a series of methods.
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{Optional<Integer> maximum(List<Integer> lon)} method that, when given a list of integers, returns the maximum value in the list as an \ttt{Optional<Integer>}. If there are no values in the given list, return \ttt{Optional.empty()}. You must use the Stream API.}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{int sumCharacters(String s)} method that, when given a string~$s$, returns the sum of the ASCII values of its characters. You must use the Stream API.}
+
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{String conjoin(List<String> los)} method that, when given a list of strings, concatenates all the strings together into a single string, separated by a comma. You must use the Stream API.}
+
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{int sumEvens(List<Integer> l)} that, when given a list of integers, filters out odd numbers and then calculates the sum of the remaining even numbers. You must use the Stream API.}
+
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<String> addYRemoveYY(List<String> los)} that, when given a list of strings, returns a list where each string has \ttt{"y"} added at its end, omitting any resulting strings that contain \ttt{"yy"} as a substring anywhere. You must use the Stream API.}
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{int filterSumChars(String s)} method that, when given a string~$s$, removes all non-alphanumeric characters, converts all letters to uppercase, and computes the sum of the ASCII values of the letters. Digits should also be added, but use the digit itself and not its ASCII value. You must use the Stream API.}
 
