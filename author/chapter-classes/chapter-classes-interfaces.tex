@@ -489,14 +489,10 @@ class FunctionMapTester {
   void testMap() {
     List<Integer> l = List.of(1, 2, 3, 4, 5);
     assertAll(
-      () -> assertEquals(List.of(2, 3, 4, 5, 6), 
-                         map(l, FunctionMapTester::addOne)),
-      () -> assertEquals(List.of(),   
-                         map(List.of(), FunctionMapTester::addOne)),
-      () -> assertEquals(List.of(2, 3, 4, 5, 6), 
-                         map(l, i -> i + 1)),
-      () -> assertEquals(List.of(2, 3, 4, 5, 6), 
-                         map(List.of(), i -> i + 1)));
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, FunctionMapTester::addOne)),
+      () -> assertEquals(List.of(), map(List.of(), FunctionMapTester::addOne)),
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(l, i -> i + 1)),
+      () -> assertEquals(List.of(2, 3, 4, 5, 6), map(List.of(), i -> i + 1)));
   }
 }
 \end{lstlisting}
@@ -540,6 +536,7 @@ class LitTester {
 }
 \end{lstlisting}
 
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class Lit implements IExpr {
 

@@ -55,7 +55,7 @@
 \end{enumerate}
 
 \myexercise{2}{chapter-classes}{In this exercise you will create two classes: \ttt{Chocolate} and \ttt{ChocolateBox} to store a two-dimensional array of chocolate pieces.}
-\begin{enumerate}[label=(\arabic*)]
+\begin{enumerate}[label=(\alph*)]
   \item Design the \ttt{Chocolate} class, which stores a string denoting its kind, and an integer representing its weight in ounces.
 
   \item Design the \ttt{ChocolateBox} class, which stores a \ttt{Chocolate[][]} array as an instance variable. Its constructor should receive the number of rows and columns of the box. 
@@ -63,7 +63,7 @@
     \item Design the \ttt{int numberOfChocolates()} method that returns the number of non-\ttt{null} instances of \ttt{Chocolate} that are in the \ttt{ChocolateBox}.
     \item Design the \ttt{void shuffleChocolate()} method, which randomizes the elements in the box. 
     How you shuffle them is up to you, as long as it is a sufficient shuffle (and not just, for example, a linear shift of all chocolates).
-    \item Design the \ttt{int removeFirst(String kind)} method, which removes the first occurrence, from the top, of the~\ttt{kind} of chocolate. Return what position was removed, assuming positions are numbered from~$1$ to~$n$, ordered from left to right, then top to bottom (similar to a standard calendar). If there are no~\ttt{kind} of chocolates in the box, return~\ttt{-1}.
+    \item Design the \ttt{int removeFirst(String kind)} method, which removes the first occurrence, from the top, of the~\ttt{kind} of chocolate. Removing a \ttt{Chocolate} means to assign the index to be \ttt{null}. Return what position was removed, assuming positions are numbered from~$1$ to~$n$, ordered from left to right, then top to bottom (similar to a standard Gregorian calendar). If there are no~\ttt{kind} of chocolates in the box, return~\ttt{-1}.
     \item Design the \ttt{ChocolateBox allergyBox(String kind)} method, which returns a new \ttt{ChocolateBox} where all \ttt{kind} of chocolates are removed. If there are \ttt{null} spots in between the chocolates of the old box, shift the chocolates over accordingly. Consider the following \ttt{ChocolateBox}:
     % \newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
     \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}} % Centered columns with fixed width
@@ -622,7 +622,7 @@ What's awesome about this exercise is that it allows us to define the elements o
 
 \myexercise{2}{chapter-classes}{Design the \ttt{static <T, U> U foldr(List<T> ls, BiFunction<T, U, U> f, U u)} me\-thod that receives a list of values $ls$, a function $f$, and an initial value $u$. The method should return the result of folding the list from the right with the given function and initial value. By ``folding,'' we mean that we apply $f$ to the last element of the list and the initial value, then apply $f$ to the second-to-last element and the result of the previous application, and so forth. To think of this in terms of infix notation over some list, consider the list $[a, b, c, d]$. Folding it over the function $\circ$ and initial value $u$ is $a \circ (b \circ (c \circ (d \circ u)))$. Do \emph{not} use the \ttt{reduce} method, as that method solves the problem we want \emph{you} to solve!}
 
-\myexercise{1}{chapter-classes}{Design the \ttt{static <T, U> List<U> buildList(int n, Function<T, U> func)} method that receives an integer $n$ and a function $f$ and returns a list of $n$ elements, where the $i^\text{th}$ element is $f(i)$. For example, if we invoke \ttt{buildList(5, x -> x * x)}, we should receive the list $[1, 4, 9, 16, 25]$.}
+\myexercise{1}{chapter-classes}{Design the \ttt{static <T, U> List<U> buildList(int n, Function<T, U> func)} met\-hod that receives an integer~$n$ and a function~$f$ and returns a list of~$n$ elements, where the~$i^\text{th}$ element is~$f(i)$. For example, if we invoke \ttt{buildList(6, x -> x * x)}, we should receive the list $[0, 1, 4, 9, 16, 25]$.}
 
 \myexercise{1}{chapter-classes}{This exercise involves the doubly-linked list we wrote in the chapter.}
 Design the \ttt{int size()} method, which returns the number of elements in the list. You can do this either recursively or with a loop. For better practice, try (and thoroughly test) both implementations.
