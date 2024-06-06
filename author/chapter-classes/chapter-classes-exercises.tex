@@ -39,12 +39,11 @@
 \newpage %ugh
 \myexercise{2}{chapter-classes}{In this exercise you will design a simple music system, similar to Spotify.}
 \begin{enumerate}[label=(\alph*)]
-  \item Design the \ttt{Song} class, which stores its \ttt{title}, \ttt{artist}, \ttt{genre}, and \ttt{length}. The first three fields are strings and the last is an integer. Create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}.
+  \item Design the \ttt{Song} class, which stores its \ttt{title}, \ttt{artist}, \ttt{genre}, and \ttt{length}. The first three fields are strings and the last is an integer. Create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}. You may choose how to override \ttt{toString}.
   \item Design the \ttt{Playlist} class, which stores the title of the playlist and a set of the songs in the list. In this class, create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}. Finally, design the \ttt{boolean addSong(Song s)} that attempts to add~$s$ to the set of songs. If it already exists, return false. Otherwise, add the song to the set and return true.
-  \item Design the \ttt{User} class, which stores their name and a list of playlists. Its constructor should receive the name and assign it to the respective instance variable. Instantiate the list to a new \ttt{ArrayList}. 
+  \item Design the \ttt{User} class, which stores their name and a list of playlists. Its constructor should receive the name and assign it to the respective instance variable. Instantiate the list to a new \ttt{ArrayList}. Create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}.
   \begin{enumerate}[label=(\roman*)]
     \item Design the \ttt{boolean createPlaylist(String t, Song... S)} method, which receives a playlist title~$t$ and a variadic number of songs~$S$, attempts to create a playlist with the title$~t$. If it already exists, return false and do nothing else. Otherwise, declare a new \ttt{Playlist} to their list and add to it the given songs.
-    \item Design the \ttt{Playlist getPlaylist(String t)} method that, when given a playlist title~$t$, returns the \ttt{Playlist} instance with that title. If such a playlist does not exist, return \tt~{null}.
   \end{enumerate}
   \item Design the \ttt{MusicSystem} class, which stores a list of users and a set of all the songs in the system. In the constructor, instantiate these to an \ttt{ArrayList} and \ttt{HashSet} respectively.
   \begin{enumerate}[label=(\roman*)]
@@ -115,13 +114,13 @@
 \myexercise{3}{chapter-classes}{This question has six parts.}
 
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers~$m$~and~$n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers. Copy the integers from the passed array into an instance variable array. Do \emph{not} simply assign the provided array to the instance variable!
-    \item Design the \ttt{void set(int i, int j, int val)} method, which sets the value at row~$i$ and column~$j$ to \ttt{val}.
+    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers~$m$~and~$n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers (you may assume that the number of rows and columns of the passed array are equal to~$m$ and~$n$). Copy the integers from the passed array into an instance variable array. Do \emph{not} simply assign the provided array to the instance variable!
+    \item Design the \ttt{void set(int i, int j, int val)} method, which sets the value at row~$i$ and column~$j$ to \ttt{val}. If the row or column is out of bounds, do nothing.
     \item Design the \ttt{boolean add(Matrix m)} method, which adds the values of the passed matrix to the current matrix. If the dimensions of the passed matrix do not match the dimensions of the current matrix, return false and do not add the matrix.
     \item Design the \ttt{boolean multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply~$m$ with this matrix, return false and do not multiply the matrix.
     \item Design the \ttt{void transpose()} method, which transposes the matrix. That is, the rows become the columns and the columns become the rows. You may need to alter the dimensions of the matrix.
     \item Design the \ttt{void rotate()} method, rotates the matrix~$90$ degrees clockwise. To rotate a matrix, compute the transposition and then reverse the rows. You may need to alter the dimensions of the matrix.
-    \item Override the \ttt{public String toString()} method to return a stringified version of the matrix. As an example, \ttt{[[1, 2, 3], [4, 5, 6]]} represents the following matrix:
+    \item Override the \ttt{public String toString()} method to return a stringified version of the matrix. As an example, \ttt{"[[1, 2, 3], [4, 5, 6]]"} represents the following matrix:
 
     \[
     \begin{bmatrix}
@@ -343,8 +342,8 @@ You cannot use \ttt{StringBuilder} or the older \ttt{StringBuilder} classes in y
     \item Design the \ttt{MiniStringBuilder} class, which stores a \ttt{char[]} as an instance variable. The class should also store a variable to keep track of the number of ``logical characters'' that are in-use by the buffer.
     \item Design two constructors for the \ttt{MiniStringBuilder} class: one that receives no arguments and initializes the default capacity of the underlying \ttt{char[]} array to~$20$, and another that receives a \ttt{String}~$s$ and initializes the \ttt{char[]} array to the characters of~$s$. 
     \item Design the \ttt{void append(String s)} method, which appends the given string~$s$ onto the end of the current string stored in the buffer. The given string should not simply be appended onto the end of the buffer, but rather added to the end of the previous string in the buffer. If the buffer runs out of space, reallocate the array to be twice its current size, similar to how we reallocate the array in the \ttt{MiniArrayList} example class.
-    \item Design the \ttt{void clear()} method, which resets the \ttt{char[]} array to the default size of~$20$.
-    \item Override the \ttt{public String toString()} method, which returns the \ttt{char[]} array as a \ttt{String} object.
+    \item Design the \ttt{void clear()} method, which resets the \ttt{char[]} array to the default size of~$20$ and clears the character buffer.
+    \item Override the \ttt{public String toString()} method, which returns the \ttt{char[]} array as a \ttt{String} object. The resulting string should contain only the logical characters in the buffer, and not the entire array. Output the characters without any additional characters, such as brackets or commas.
 \end{enumerate}
 
 \myexercise{2}{chapter-classes}{This exercise has twelve parts.} 
@@ -437,6 +436,7 @@ Notice that we have a \ttt{default} method, which is one that an implementing cl
 \item Inside the \ttt{PrintingOffice} class, modify it to include the \ttt{static void printDocuments(List<Document> documents)} method, responsible for invoking the \ttt{print} method on each object in the list of \ttt{Document} instances.
 \end{enumerate}
 
+\newpage %ugh
 \myexercise{2}{chapter-classes}{This exercise has three parts.}
 \begin{enumerate}[label=(\alph*)]
   \item Design the \ttt{INumberFormat} interface, which contains the \ttt{String format(int n)} method. 
