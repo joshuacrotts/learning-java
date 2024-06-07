@@ -214,22 +214,20 @@ Design the \ttt{double correlationCoefficient(double[] xs, double[] ys)} method 
 \myexercise{1}{chapter-arrays-collections}{In the chapter, we presented an example of ``exploding'' a string into its constituent characters.} 
 Design the \ttt{List<Integer> explode(int n)} method that, when given an integer~$n$, returns a list of integers that represent the digits of~$n$. For example, \ttt{explode(123)} returns \ttt{[1, 2, 3]}. You \textbf{cannot} convert the integer to a string to solve this problem or use any auxiliary data structures.
 
-\myexercise{1}{chapter-arrays-collections}{This exercise has three parts.}
+\myexercise{1}{chapter-arrays-collections}{This exercise has two parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \emph{standard recursive} \ttt{cycleOperations} method, which receives a \ttt{List<Integer>} and returns the result of circularly applying \ttt{+}, \ttt{-}, then \ttt{*} to the elements of the list.
+    \item Design the \texttt{cycleOperationsTR} and \texttt{cycleOperationsTRHelper} methods to circularly apply \ttt{+}, \ttt{-}, then \ttt{*} to the elements of the list. The former acts as the driver to the latter; the latter solves the same problem that \texttt{cycleOperations} does, but it instead uses tail recursion. Remember to include the relevant access modifiers!
 
-    \begin{verbatim}
-cycleOperations({}) 
+\begin{verbatim}
+cycleOperationsTR({}) 
     => 0
-cycleOperations({1, -4, 9, -16, 25, -36}) 
+cycleOperationsTR({1, -4, 9, -16, 25, -36}) 
     => ((((((0 + 1) - -4) * 9) + -16) - 25) * -36) 
     => -144
-cycleOperations({10, 5, -2, 1, -2}) 
-    => (((((0 + 10) - 5) * -2) + 1) * -2) 
-    => 18
-    \end{verbatim}  
-
-    \item Design the \texttt{cycleOperationsTR} and \texttt{cycleOperationsTRHelper} methods. The former acts as the driver to the latter; the latter solves the same problem that \texttt{cycleOperations} does, but it instead uses tail recursion. Remember to include the relevant access modifiers!
+cycleOperationsTR({10, 5, -2, 1, -2}) 
+    => (((((0 + 10) - 5) * -2) + 1) - -2) 
+    => -7
+\end{verbatim}  
     
     \item Design the \texttt{cycleOperationsLoop} method, which solves the problem using either a \texttt{while} or \texttt{for} loop.
 \end{enumerate}
