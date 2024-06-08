@@ -826,21 +826,6 @@ Second, design the \ttt{TailCallUtils} final class to contain a private construc
 
 Finally, run the factorial test that we provided earlier in its JUnit suite. It should pass and not stack overflow, hence the inclusion of an \ttt{assertDoesNotThrow} call.
 
-% \myexercise{3}{chapter-classes}{In this series of problems, you will design several methods that act on very large \emph{natural numbers} resembling the \ttt{BigInteger} class. You \emph{\textbf{cannot}} use any methods from \ttt{BigInteger}, or the \ttt{BigInteger} class itself.} 
-
-% \begin{enumerate}[label=(\alph*)]
-%     \item Design the \ttt{BigNat} class, which has a constructor that receives a string. The \ttt{BigNat} class stores a \ttt{List<Integer>} as an instance variable. You will need to convert the given string into said list. Store the digits in reverse order, i.e., the least-significant digit (the ones digit) of the number is the first element of the list.
-%     \item Design the \ttt{private void trimLeadingZeroes()} method that removes all leading zeroes from the number. That is, \ttt{new BigNat("0032")} should be trimmed to \ttt{"32"}. You may need to call this method in other methods, so do so when you feel it is necessary. Be careful to not trim all the zeroes from a number, e.g., \ttt{new BigNat("00000")} should be \ttt{"0"} and not the empty string.
-%     \item Override the \ttt{public String toString()} method to return a string representation of the \ttt{BigNat} object. 
-%     In particular, place commas between the digits where necessary, e.g., \ttt{"1,000"} and \ttt{"12,345,678"}.
-%     \item Design the \ttt{BigNat copy()} method that returns a new \ttt{BigNat} instance representing the same natural number as \ttt{this} instance instance of \ttt{BigNat}. Do \emph{not} simply copy the reference to the list of digits over to the new \ttt{BigNat} (this violates the aliasing principle that we have repeatedly discussed and can be the cause of relentless debugging).
-%     \item Implement the \ttt{Comparable<BigNat>} interface, and override the method that it provides, namely \ttt{public int compareTo(BigNat b)}, to return the sign of the result of comparing the given \ttt{BigNat} (which we will call $b$) to \ttt{this} \ttt{BigNat} (which we will call $a$). Namely, if $a < b$, return $-1$, if $a > b$, return $1$, otherwise return $0$.
-%     \item Override the \ttt{public boolean equals(Object obj)} method to compare two \ttt{BigNat} values for equality. Remember that you have to cast the given parameter to an instance of the \ttt{BigNat} class. Because you implemented the \ttt{compareTo} method, defining \ttt{BigNat} equality is trivial.
-%     \item Design the \ttt{BigNat add(BigNat bn)} method, which adds a \ttt{BigNat} to \ttt{this} \ttt{BigNat}. Do not modify the digits/value of \ttt{this} or the parameter. Note: this problem is harder than it may look at first glance!
-%     \item Design the \ttt{BigNat sub(BigNat bn)} method, which subtracts a \ttt{BigNat} from \ttt{this} \ttt{BigNat}. If the subtrahend (the right-hand side of the subtraction) is greater than the minuend, the result is zero. Over the natural numbers, this is called the \emph{monus} operator. Do not modify the digits/value of \ttt{this} or the parameter.
-%     \item Design the \ttt{BigNat mul(BigNat bn)} method, which multiplies a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. You cannot use the recursive algorithm. That is, your method must not define multiplication in terms of repeated addition, as that would be astronomically slow. Do not modify the digits/value of \ttt{this} or the parameter.
-% \end{enumerate}
-
 \newpage %ugh
 \myexercise{3}{chapter-classes}{In this series of problems, you will design several methods that act on very large/small \emph{integers} resembling the \ttt{BigInteger} class. You \emph{\textbf{cannot}} use any methods from \ttt{BigInteger}, or the \ttt{BigInteger} class itself.} 
 
@@ -852,11 +837,11 @@ Finally, run the factorial test that we provided earlier in its JUnit suite. It 
   Below are some example inputs.
 \begin{small}
 \begin{verbatim}
-new BigNat("42")       => [2, 4], isNegative = false
-new BigNat("0420")     => [0, 2, 4], isNegative = false
-new BigNat("-42")      => [2, 4], isNegative = true
-new BigNat(0000420000) => [0, 0, 0, 0, 2, 4], isNegative = false
-new BigNat("+42")      => [2, 4], isNegative = false;
+new BigInt("42")       => [2, 4], isNegative = false
+new BigInt("0420")     => [0, 2, 4], isNegative = false
+new BigInt("-42")      => [2, 4], isNegative = true
+new BigInt(0000420000) => [0, 0, 0, 0, 2, 4], isNegative = false
+new BigInt("+42")      => [2, 4], isNegative = false;
 \end{verbatim}
 \end{small}
 
