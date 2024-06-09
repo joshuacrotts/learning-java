@@ -38,20 +38,30 @@ A = 2(1 + \sqrt{2})s^2
 A = lw + l\sqrt{\left(\dfrac{w}{2}\right)^2 + h^2} + w\sqrt{\left(\dfrac{l}{2}\right)^2 + h^2}
 \]
 
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double logBase(double n, double b)} that, when given a number $n$ and a base $b$, returns $\log_{b}(n)$. You will need to make use of the change-of-base formula, which we provide below ($n$ is the number to compute the logarithm of, $b'$ is the old base, and $b$ is the new base).}
+
+\[
+\log_b(n) = \dfrac{\log_{b'}(n)}{\log_{b'}(b)}
+\]
+
 \myexercise{1}{chapter-testingandjava}{Design the \ttt{double crazyMath(double x)} method, which receives a value of $x$ and computes the value of the following expression:}
 
 \[
-    (1 - e^{-x})^{xe^{-x}} \cdot \dfrac{x\pi\cdot\cos{(4\pi{x})}}{\log_2{|x|}\cdot{\log_4{|x|} \cdot \ln{|x|}}}
+    \sqrt{\left|\left(e^{-x} + {\cos{\frac{2}{x}}}\right) 
+        \cdot 
+    \left({\frac{\sin(\pi{}x - 2\pi) + 17x\pi}
+                {\log_3{\left|x\right|} \cdot \log_7{\left|x\right| \cdot \ln{\left|x\right|}}}}\right)\right|}    
 \]
 
 \noindent Below are some test cases. Hint: when testing this method, you may want to use the \ttt{delta} parameter of \ttt{assertEquals}!
 
 \begin{verbnobox}[\small]
-crazyMath(0)  => -0.0 
-crazyMath(1)  => Infinity
-crazyMath(2)  => 17.429741427952166
-crazyMath(3)  => 6.778069159471912
-crazyMath(10) => 2.4727699557822547
+crazyMath(0)      => NaN 
+crazyMath(1)      => Infinity
+crazyMath(2)      => 21.52368973013284
+crazyMath(3)      => 14.692493055407942
+crazyMath(10)     => 9.574086130947974
+crazyMath(100000) => 86.49768321282015
 \end{verbnobox}
 
 \myexercise{1}{chapter-testingandjava}{The \emph{z-score} is a measure of how far a given data point is away from the mean of a normally-distributed sample. In essence, roughly $68\%$ of data falls between z-scores of $[-1, 1]$, roughly $95\%$ falls between $[-2, 2]$, and $99.7\%$ falls between $[-3, 3]$. This means that extreme outliers have z-scores of either less than $-3$ or greater than $3$.}
@@ -59,13 +69,7 @@ crazyMath(10) => 2.4727699557822547
 Design the \ttt{boolean isExtremeOutlier(double x, double avg, double stddev)} me\-thod that, when given a data point $x$, a mean $\mu$, and a standard deviation $\sigma$, computes the corresponding z-score of $x$ and returns whether it is an ``extreme'' outlier. Use the following formula:
 
 \[
-Z = \dfrac{x - \mu}{\sigma}
-\]
-
-\myexercise{1}{chapter-testingandjava}{Design the \ttt{double logBase(double n, double b)} that, when given a number $n$ and a base $b$, returns $\log_{b}(n)$. You will need to make use of the change-of-base formula, which we provide below ($n$ is the number to compute the logarithm of, $b$ is the old base, and $b'$ is the new base).}
-
-\[
-\log_b(n) = \dfrac{\log_{b'}(n)}{\log_{b'}(b)}
+Z = \dfrac{(x - \mu)}{\sigma}
 \]
 
 \myexercise{1}{chapter-testingandjava}{Design the \ttt{double pdf(double mean, double stddev, double x)} that calculates the probability density of a given value~$x$ in a normal distribution with mean~$\mu$ and standard deviation~$\sigma$. The formula for the probability density function (PDF) of a normal distribution is as follows:}
@@ -74,7 +78,7 @@ Z = \dfrac{x - \mu}{\sigma}
 f(x) = \dfrac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}    
 \]
 
-\myexercise{1}{chapter-testingandjava}{Design the \ttt{double lawOfCosines(double a, double b, double th)} method that, when given two side lengths of a triangle~$a, b$ and the angle between those two sides~$\theta$ in degrees, returns the length of the third side~$c$. The formula, which is the law of cosines, is listed below. Hint: \ttt{Math.cos} receives a value in radians; we can convert a value from degrees to radians using \ttt{Math.toRadians}.}
+\myexercise{1}{chapter-testingandjava}{Design the \ttt{double lawOfCosines(double a, double b, double th)} method that, when given two side lengths of a triangle~$a, b$ and the angle between those two sides~$\theta$ in degrees, returns the length of the third side~$c$. The formula is listed below. Hint: \ttt{Math.cos} receives a value in radians; we convert a value from degrees to radians with \ttt{Math.toRadians}.}
 
 \[
 c = \sqrt{a^2+b^2-2ab\cos{\theta}}    
