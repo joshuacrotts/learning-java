@@ -56,7 +56,7 @@ fizzBuzz(15, 18) => {"FizzBuzz", "16", "17", "Fizz"}
 
 \myexercise{2}{chapter-arrays-collections}{Using only arrays, design the \ttt{int[] findIntersection(int[] A, int[] B)} method that returns an array containing the \emph{intersection} of two arrays. The intersection of two arrays is the set of elements that are common to both arrays. For example, the intersection of $\{7, 4, 8, 0, 2, 1\}$ and $\{8, 6, 4, 9, 26, 4, 0\}$ is $\{7, 8, 0\}$. Do not assume that the arrays are sorted, and you cannot sort them yourself.}
 
-\myexercise{2}{chapter-arrays-collections}{Desing the \ttt{int median(int[] A, int[] B)} that, when given two sorted (in increasing order) arrays of integers $A$ and $B$, returns the median value of those two lists. You can use auxiliary data structures to help in solving the problem, but they are not necessary.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{int median(int[] A, int[] B)} that, when given two sorted (in increasing order) arrays of integers $A$ and $B$, returns the median value of those two lists. You can use auxiliary data structures to help in solving the problem, but they are not necessary.}
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{double sumOfAverages(int[] A)} method that, when given a list of arbitrary integers from~$1$ to~$100$~$A$, returns the average of the averages of the numbers when grouped by their right-most digit.} That is, consider the list \ttt{[91, 34, 87, 22, 67, 41, 10, 12, 13, 44]}. If we group these by their right-most digit, we get \ttt{[[10], [41, 91], [12, 22], [13], [34, 44], [67]]}. The sum of the average of the ``buckets'' is~$211$. You cannot use any auxiliary Java Collections data structures, e.g., maps/lists, to solve this problem; only arrays are permitted. Your algorithm must also run in linear time, i.e., only dependent on the input array size, and use at most two traversals.
 
@@ -75,6 +75,7 @@ countEvenOdds({11, 9, 2, 3, 7, 10, 12, 114}) => {4, 4}
 countEvenOdds({11, 13, 15, 17})              => {0, 4}
 \end{verbnobox}
 
+\newpage %ugh
 \myexercise{2}{chapter-arrays-collections}{This question has two parts.}
 \begin{enumerate}[label=(\alph*)]
     \item Design the \ttt{isAlmostStrictlyIncreasing} tail recursive method that, when given an array of integers, determines if it is strictly increasing. There is a catch to this: we also return true if the array can be made strictly increasing by removing exactly one element from the array. For instance, \ttt{isAlmostStrictlyIncreasing($\{1, 3, 2, 4\}$)} returns true because, by removing \ttt{3}, we get a list that is strictly increasing. Compare this with \ttt{2, 3, 2, 4}, which cannot be made strictly increasing.
@@ -216,22 +217,20 @@ Design the \ttt{double correlationCoefficient(double[] xs, double[] ys)} method 
 \myexercise{1}{chapter-arrays-collections}{In the chapter, we presented an example of ``exploding'' a string into its constituent characters.} 
 Design the \ttt{List<Integer> explode(int n)} method that, when given an integer~$n$, returns a list of integers that represent the digits of~$n$. For example, \ttt{explode(123)} returns \ttt{[1, 2, 3]}. You \textbf{cannot} convert the integer to a string to solve this problem or use any auxiliary data structures.
 
-\myexercise{1}{chapter-arrays-collections}{This exercise has three parts.}
+\myexercise{1}{chapter-arrays-collections}{This exercise has two parts.}
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \emph{standard recursive} \ttt{cycleOperations} method, which receives a \ttt{List<Integer>} and returns the result of circularly applying \ttt{+}, \ttt{-}, then \ttt{*} to the elements of the list.
+    \item Design the \texttt{cycleOperationsTR} and \texttt{cycleOperationsTRHelper} methods to circularly apply \ttt{+}, \ttt{-}, then \ttt{*} to the elements of the list. The former acts as the driver to the latter; the latter solves the same problem that \texttt{cycleOperations} does, but it instead uses tail recursion. Remember to include the relevant access modifiers!
 
-    \begin{verbatim}
-cycleOperations({}) 
+\begin{verbatim}
+cycleOperationsTR({}) 
     => 0
-cycleOperations({1, -4, 9, -16, 25, -36}) 
+cycleOperationsTR({1, -4, 9, -16, 25, -36}) 
     => ((((((0 + 1) - -4) * 9) + -16) - 25) * -36) 
     => -144
-cycleOperations({10, 5, -2, 1, -2}) 
-    => (((((0 + 10) - 5) * -2) + 1) * -2) 
-    => 18
-    \end{verbatim}  
-
-    \item Design the \texttt{cycleOperationsTR} and \texttt{cycleOperationsTRHelper} methods. The former acts as the driver to the latter; the latter solves the same problem that \texttt{cycleOperations} does, but it instead uses tail recursion. Remember to include the relevant access modifiers!
+cycleOperationsTR({10, 5, -2, 1, -2}) 
+    => (((((0 + 10) - 5) * -2) + 1) - -2) 
+    => -7
+\end{verbatim}  
     
     \item Design the \texttt{cycleOperationsLoop} method, which solves the problem using either a \texttt{while} or \texttt{for} loop.
 \end{enumerate}
@@ -583,7 +582,7 @@ In this exercise you will implement the minesweeper game as a series of methods.
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<String> dollarAll(List<Integer> lon)} method that, when given a list of numbers, returns a list of those numbers converted to strings, prefixed by a dollar sign. You must use the Stream API.}
 
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<int[]> containsHigh(List<int[]>)} method that, when given a list of two-element arrays representing $x, y$ coordinate pairs, returns whether or not any of the $y$-coordinates are greater than~$450$. Hint: use the \ttt{anyMatch} stream method.}
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{boolean containsHigh(List<int[]> lop)} method that, when given a list of two-element arrays representing $x, y$ coordinate pairs, returns whether or not any of the $y$-coordinates are greater than~$450$. Hint: use the \ttt{anyMatch} stream method.}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{List<int[]> removeCollisions(List<int[]> lop, int[] p)} method that, when given a list of two-element arrays representing $x, y$ coordinate pairs, returns a list of those arrays that are not equal to~$p$. You must use the Stream API.}
 

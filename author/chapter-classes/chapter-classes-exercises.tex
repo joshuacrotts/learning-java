@@ -39,12 +39,11 @@
 \newpage %ugh
 \myexercise{2}{chapter-classes}{In this exercise you will design a simple music system, similar to Spotify.}
 \begin{enumerate}[label=(\alph*)]
-  \item Design the \ttt{Song} class, which stores its \ttt{title}, \ttt{artist}, \ttt{genre}, and \ttt{length}. The first three fields are strings and the last is an integer. Create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}.
+  \item Design the \ttt{Song} class, which stores its \ttt{title}, \ttt{artist}, \ttt{genre}, and \ttt{length}. The first three fields are strings and the last is an integer. Create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}. You may choose how to override \ttt{toString}.
   \item Design the \ttt{Playlist} class, which stores the title of the playlist and a set of the songs in the list. In this class, create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}. Finally, design the \ttt{boolean addSong(Song s)} that attempts to add~$s$ to the set of songs. If it already exists, return false. Otherwise, add the song to the set and return true.
-  \item Design the \ttt{User} class, which stores their name and a list of playlists. Its constructor should receive the name and assign it to the respective instance variable. Instantiate the list to a new \ttt{ArrayList}. 
+  \item Design the \ttt{User} class, which stores their name and a list of playlists. Its constructor should receive the name and assign it to the respective instance variable. Instantiate the list to a new \ttt{ArrayList}. Create the accessor methods, then override \ttt{equals}, \ttt{hashCode}, and \ttt{toString}.
   \begin{enumerate}[label=(\roman*)]
     \item Design the \ttt{boolean createPlaylist(String t, Song... S)} method, which receives a playlist title~$t$ and a variadic number of songs~$S$, attempts to create a playlist with the title$~t$. If it already exists, return false and do nothing else. Otherwise, declare a new \ttt{Playlist} to their list and add to it the given songs.
-    \item Design the \ttt{Playlist getPlaylist(String t)} method that, when given a playlist title~$t$, returns the \ttt{Playlist} instance with that title. If such a playlist does not exist, return \tt~{null}.
   \end{enumerate}
   \item Design the \ttt{MusicSystem} class, which stores a list of users and a set of all the songs in the system. In the constructor, instantiate these to an \ttt{ArrayList} and \ttt{HashSet} respectively.
   \begin{enumerate}[label=(\roman*)]
@@ -115,13 +114,13 @@
 \myexercise{3}{chapter-classes}{This question has six parts.}
 
 \begin{enumerate}[label=(\alph*)]
-    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers~$m$~and~$n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers. Copy the integers from the passed array into an instance variable array. Do \emph{not} simply assign the provided array to the instance variable!
-    \item Design the \ttt{void set(int i, int j, int val)} method, which sets the value at row~$i$ and column~$j$ to \ttt{val}.
+    \item Design the \ttt{Matrix} class, which stores a two-dimensional array of integers. Its constructor should receive two integers~$m$~and~$n$ representing the number of rows and columns respectively, as well as a two-dimensional array of integers (you may assume that the number of rows and columns of the passed array are equal to~$m$ and~$n$). Copy the integers from the passed array into an instance variable array. Do \emph{not} simply assign the provided array to the instance variable!
+    \item Design the \ttt{void set(int i, int j, int val)} method, which sets the value at row~$i$ and column~$j$ to \ttt{val}. If the row or column is out of bounds, do nothing.
     \item Design the \ttt{boolean add(Matrix m)} method, which adds the values of the passed matrix to the current matrix. If the dimensions of the passed matrix do not match the dimensions of the current matrix, return false and do not add the matrix.
     \item Design the \ttt{boolean multiply(Matrix m)} method, which multiplies the values of the passed matrix to the current matrix. If we cannot multiply~$m$ with this matrix, return false and do not multiply the matrix.
     \item Design the \ttt{void transpose()} method, which transposes the matrix. That is, the rows become the columns and the columns become the rows. You may need to alter the dimensions of the matrix.
     \item Design the \ttt{void rotate()} method, rotates the matrix~$90$ degrees clockwise. To rotate a matrix, compute the transposition and then reverse the rows. You may need to alter the dimensions of the matrix.
-    \item Override the \ttt{public String toString()} method to return a stringified version of the matrix. As an example, \ttt{[[1, 2, 3], [4, 5, 6]]} represents the following matrix:
+    \item Override the \ttt{public String toString()} method to return a stringified version of the matrix. As an example, \ttt{"[[1, 2, 3], [4, 5, 6]]"} represents the following matrix:
 
     \[
     \begin{bmatrix}
@@ -343,8 +342,8 @@ You cannot use \ttt{StringBuilder} or the older \ttt{StringBuilder} classes in y
     \item Design the \ttt{MiniStringBuilder} class, which stores a \ttt{char[]} as an instance variable. The class should also store a variable to keep track of the number of ``logical characters'' that are in-use by the buffer.
     \item Design two constructors for the \ttt{MiniStringBuilder} class: one that receives no arguments and initializes the default capacity of the underlying \ttt{char[]} array to~$20$, and another that receives a \ttt{String}~$s$ and initializes the \ttt{char[]} array to the characters of~$s$. 
     \item Design the \ttt{void append(String s)} method, which appends the given string~$s$ onto the end of the current string stored in the buffer. The given string should not simply be appended onto the end of the buffer, but rather added to the end of the previous string in the buffer. If the buffer runs out of space, reallocate the array to be twice its current size, similar to how we reallocate the array in the \ttt{MiniArrayList} example class.
-    \item Design the \ttt{void clear()} method, which resets the \ttt{char[]} array to the default size of~$20$.
-    \item Override the \ttt{public String toString()} method, which returns the \ttt{char[]} array as a \ttt{String} object.
+    \item Design the \ttt{void clear()} method, which resets the \ttt{char[]} array to the default size of~$20$ and clears the character buffer.
+    \item Override the \ttt{public String toString()} method, which returns the \ttt{char[]} array as a \ttt{String} object. The resulting string should contain only the logical characters in the buffer, and not the entire array. Output the characters without any additional characters, such as brackets or commas.
 \end{enumerate}
 
 \myexercise{2}{chapter-classes}{This exercise has twelve parts.} 
@@ -437,6 +436,7 @@ Notice that we have a \ttt{default} method, which is one that an implementing cl
 \item Inside the \ttt{PrintingOffice} class, modify it to include the \ttt{static void printDocuments(List<Document> documents)} method, responsible for invoking the \ttt{print} method on each object in the list of \ttt{Document} instances.
 \end{enumerate}
 
+\newpage %ugh
 \myexercise{2}{chapter-classes}{This exercise has three parts.}
 \begin{enumerate}[label=(\alph*)]
   \item Design the \ttt{INumberFormat} interface, which contains the \ttt{String format(int n)} method. 
@@ -826,21 +826,6 @@ Second, design the \ttt{TailCallUtils} final class to contain a private construc
 
 Finally, run the factorial test that we provided earlier in its JUnit suite. It should pass and not stack overflow, hence the inclusion of an \ttt{assertDoesNotThrow} call.
 
-% \myexercise{3}{chapter-classes}{In this series of problems, you will design several methods that act on very large \emph{natural numbers} resembling the \ttt{BigInteger} class. You \emph{\textbf{cannot}} use any methods from \ttt{BigInteger}, or the \ttt{BigInteger} class itself.} 
-
-% \begin{enumerate}[label=(\alph*)]
-%     \item Design the \ttt{BigNat} class, which has a constructor that receives a string. The \ttt{BigNat} class stores a \ttt{List<Integer>} as an instance variable. You will need to convert the given string into said list. Store the digits in reverse order, i.e., the least-significant digit (the ones digit) of the number is the first element of the list.
-%     \item Design the \ttt{private void trimLeadingZeroes()} method that removes all leading zeroes from the number. That is, \ttt{new BigNat("0032")} should be trimmed to \ttt{"32"}. You may need to call this method in other methods, so do so when you feel it is necessary. Be careful to not trim all the zeroes from a number, e.g., \ttt{new BigNat("00000")} should be \ttt{"0"} and not the empty string.
-%     \item Override the \ttt{public String toString()} method to return a string representation of the \ttt{BigNat} object. 
-%     In particular, place commas between the digits where necessary, e.g., \ttt{"1,000"} and \ttt{"12,345,678"}.
-%     \item Design the \ttt{BigNat copy()} method that returns a new \ttt{BigNat} instance representing the same natural number as \ttt{this} instance instance of \ttt{BigNat}. Do \emph{not} simply copy the reference to the list of digits over to the new \ttt{BigNat} (this violates the aliasing principle that we have repeatedly discussed and can be the cause of relentless debugging).
-%     \item Implement the \ttt{Comparable<BigNat>} interface, and override the method that it provides, namely \ttt{public int compareTo(BigNat b)}, to return the sign of the result of comparing the given \ttt{BigNat} (which we will call $b$) to \ttt{this} \ttt{BigNat} (which we will call $a$). Namely, if $a < b$, return $-1$, if $a > b$, return $1$, otherwise return $0$.
-%     \item Override the \ttt{public boolean equals(Object obj)} method to compare two \ttt{BigNat} values for equality. Remember that you have to cast the given parameter to an instance of the \ttt{BigNat} class. Because you implemented the \ttt{compareTo} method, defining \ttt{BigNat} equality is trivial.
-%     \item Design the \ttt{BigNat add(BigNat bn)} method, which adds a \ttt{BigNat} to \ttt{this} \ttt{BigNat}. Do not modify the digits/value of \ttt{this} or the parameter. Note: this problem is harder than it may look at first glance!
-%     \item Design the \ttt{BigNat sub(BigNat bn)} method, which subtracts a \ttt{BigNat} from \ttt{this} \ttt{BigNat}. If the subtrahend (the right-hand side of the subtraction) is greater than the minuend, the result is zero. Over the natural numbers, this is called the \emph{monus} operator. Do not modify the digits/value of \ttt{this} or the parameter.
-%     \item Design the \ttt{BigNat mul(BigNat bn)} method, which multiplies a \ttt{BigNat} with \ttt{this} \ttt{BigNat}. You cannot use the recursive algorithm. That is, your method must not define multiplication in terms of repeated addition, as that would be astronomically slow. Do not modify the digits/value of \ttt{this} or the parameter.
-% \end{enumerate}
-
 \newpage %ugh
 \myexercise{3}{chapter-classes}{In this series of problems, you will design several methods that act on very large/small \emph{integers} resembling the \ttt{BigInteger} class. You \emph{\textbf{cannot}} use any methods from \ttt{BigInteger}, or the \ttt{BigInteger} class itself.} 
 
@@ -852,11 +837,11 @@ Finally, run the factorial test that we provided earlier in its JUnit suite. It 
   Below are some example inputs.
 \begin{small}
 \begin{verbatim}
-new BigNat("42")       => [2, 4], isNegative = false
-new BigNat("0420")     => [0, 2, 4], isNegative = false
-new BigNat("-42")      => [2, 4], isNegative = true
-new BigNat(0000420000) => [0, 0, 0, 0, 2, 4], isNegative = false
-new BigNat("+42")      => [2, 4], isNegative = false;
+new BigInt("42")       => [2, 4], isNegative = false
+new BigInt("0420")     => [0, 2, 4], isNegative = false
+new BigInt("-42")      => [2, 4], isNegative = true
+new BigInt(0000420000) => [0, 0, 0, 0, 2, 4], isNegative = false
+new BigInt("+42")      => [2, 4], isNegative = false;
 \end{verbatim}
 \end{small}
 
