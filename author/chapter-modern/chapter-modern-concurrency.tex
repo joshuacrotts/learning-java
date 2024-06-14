@@ -197,7 +197,7 @@ class BankAccountRunner {
       t2.join();
       t3.join();
     } catch (InterruptedException ex) { 
-      throw new RuntimeException(ex);(); 
+      throw new RuntimeException(ex); 
     }
 
     System.out.printf("%d\n", acc.getAmount());
@@ -336,7 +336,7 @@ class BankAccountRunner {
       t1.join();
       t2.join();
     } catch (InterruptedException ex) { 
-      throw new RuntimeException(ex);(); 
+      throw new RuntimeException(ex); 
     }
   }
 
@@ -539,7 +539,7 @@ class AtomicIntegerExample {
       t1.join();
       t2.join();
     } catch (InterruptedException ex) { 
-      throw new RuntimeException(ex);(); 
+      throw new RuntimeException(ex); 
     }
 
     System.out.println(counter);
@@ -1000,7 +1000,7 @@ class Server {
         this.CLIENTS.add(c);
         this.THREAD_POOL.execute(c);
       }
-    } catch (IOException e) { throw new RuntimeException(e);(); }
+    } catch (IOException e) { throw new RuntimeException(e); }
   }
 
   void addTask(Task t) {
@@ -1178,7 +1178,7 @@ class Client {
       this.IN.close();
       this.OUT.close();
     } 
-    catch (IOException e) { throw new RuntimeException(e);(); }
+    catch (IOException e) { throw new RuntimeException(e); }
     finally { return null; }
   }
 }

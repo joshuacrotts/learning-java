@@ -2,12 +2,12 @@ cd .. \
 && rm -rf new-java \
 && mkdir new-java \
 && cd new-java \
-&& git clone git@github.com:joshuacrotts/teaching-java.git \
-&& cd teaching-java \
+&& git clone git@github.com:joshuacrotts/learning-java.git \
+&& cd learning-java \
 && git checkout springer \
 && cd .. \
 && cd .. \
-&& cd teaching-java \
+&& cd learning-java \
 && rm -rf *.git \
-&& sudo cp -r ../new-java/teaching-java/.git . \
+&& sudo cp -r ../new-java/learning-java/.git . \
 && rm -rf ../new-java/
