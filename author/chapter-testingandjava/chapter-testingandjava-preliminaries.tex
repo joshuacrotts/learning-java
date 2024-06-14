@@ -182,8 +182,7 @@ Fortunately, the implementation of our method is just a retelling of the mathema
 class VectorDistance {
 
   /**
-   * Computes the distance between two given vectors:
-   * v_1=(x_1, y_1, z_1) and v_2=(x_2, y_2, z_2).
+   * Computes the distance between two given vectors.
    * @param x1 x component of first vector.
    * @param y1 y component of first vector.
    * @param z1 z component of first vector.
@@ -194,9 +193,7 @@ class VectorDistance {
    */
   static double computeDistance(double x1, double y1, double z1, 
                                 double x2, double y2, double z2) {
-    return Math.sqrt(Math.pow(x1 - x2, 2) 
-                   + Math.pow(y1 - y2, 2)
-                   + Math.pow(z1 - z2, 2));
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
   }
 }
 \end{lstlisting}
@@ -211,7 +208,7 @@ Their respective signatures are straightforward---each set of points is represen
 m &= \dfrac{y_2-y_1}{x_2-x_1}\\
 b &= y_1 - mx_1
 \end{align*}
-\enlargethispage{3\baselineskip}
+% \enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class SlopeIntercept {
 
@@ -334,8 +331,6 @@ class QuarticFormulaSolverTester {
   void testSolveQuartic() {
     assertAll(
       () -> assertEquals(3, solveQuartic(0)),
-      () -> assertEquals(510, solveQuartic(3)),
-      () -> assertEquals(229878, solveQuartic(15)),
       () -> assertEquals(313445.1875, solveQuartic(16.25)));
   }
 }
@@ -345,7 +340,7 @@ We write tests \emph{before} the method implementation because we know, intuitiv
 Fortunately for us, a quartic equation solver is nothing more than returning the result of the expression. 
 We have to use the exponential \ttt{Math.pow} method again (or conjoin several multiplicatives of~$x$), but otherwise, nothing new is utilized.
 
-\enlargethispage{\baselineskip}
+% \enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class QuarticFormulaSolver {
 

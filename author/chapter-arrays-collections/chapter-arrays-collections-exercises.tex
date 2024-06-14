@@ -362,18 +362,18 @@ largeToSmall(wordCount(s)) => {"world", "is", "the", "healthy",
 
 \myexercise{2}{chapter-arrays-collections}{Design the \ttt{Set<Integer> symmetricDifference(Set<Integer> s1, Set<Integer> s2)} method that, when given two sets of integers $s_1$ and $s_2$, returns a new set $s_3$ such that all elements of $s_3$ are in either of the sets, but not in their intersection. That is, it is the set of elements that are in either $s_1$ or $s_2$, but not both.}
 
-\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Set<String>> identifyTrending(Map<String, Set<String>> regionTopics, Set<String> gTrending)} method that, when given a map of regions to topics that are trending in that region, returns a map of topics to regions such that the keys are topics and the values are regions where that topic is trending. A topic is trending in a region if it is not a globally-trending topic and it is trending in at least two regions simultaneously. We provide an example below.}
+\myexercise{2}{chapter-arrays-collections}{Design the \ttt{Map<String, Set<String>> trending(Map<String, Set<String>> regionTopics, Set<String> gTrending)} method that, when given a map of regions to topics that are trending in that region, returns a map of topics to regions such that the keys are topics and the values are regions where that topic is trending. A topic is trending in a region if it is not a globally-trending topic and it is trending in at least two regions simultaneously. We provide an example below.}
 
 \begin{verbnobox}[\small]
-identifyTrending([<"North America" : {"Tech", "Comedy", "Sports"}>, 
-                  <"Europe" : {"Comedy", "Music", "Sports"}>, 
-                  <"Asia" : {"Fashion, "Music"}>], {"Tech"})
+trending([<"North America" : {"Tech", "Comedy", "Sports"}>, 
+          <"Europe" : {"Comedy", "Music", "Sports"}>, 
+          <"Asia" : {"Fashion, "Music"}>], {"Tech"})
   => [<"Comedy" : {"North America", "Europe"}>, <"Music" : {"Europe, "Asia"}>]
 \end{verbnobox} 
 
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> pushLast(LinkedList<Integer> lon, int v)} method that, when given a \ttt{LinkedList<Integer>}~$l$ and an \ttt{int}~$v$, returns a newly-instantiated \ttt{LinkedList<Integer>} with the same elements plus~$v$ added to the end of~$l$.}
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> pushLast(LinkedList<Integer> lon, int v)} me\-thod that, when given a \ttt{LinkedList<Integer>}~$l$ and an \ttt{int}~$v$, returns a newly-instantiated \ttt{LinkedList<Integer>} with the same elements plus~$v$ added to the end of~$l$.}
 
-\myexercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> set(LinkedList<Integer> l, int v, int i)} method that, when given a \ttt{LinkedList<Integer>}~$l$, an \ttt{int}~$v$, and an index~$i$, returns a \emph{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index~$i$ is, instead, the value~$v$. If $i$ is less than zero or exceeds the length of~$l$, return \ttt{null}.}
+\myexercise{1}{chapter-arrays-collections}{Design the \ttt{LinkedList<Integer> set(LinkedList<Integer> l, int v, int i)} me\-thod that, when given a \ttt{LinkedList<Integer>}~$l$, an \ttt{int}~$v$, and an index~$i$, returns a \emph{new} \ttt{LinkedList<Integer>} with the same elements, except that the element at index~$i$ is, instead, the value~$v$. If $i$ is less than zero or exceeds the length of~$l$, return \ttt{null}.}
 
 \myexercise{1}{chapter-arrays-collections}{Design the \ttt{int[] toArray(LinkedList<Integer> l)} method, which receives a linked list of integers~$l$, returns an array containing the values from~$l$.}
 

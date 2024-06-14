@@ -189,7 +189,6 @@ class CountOccurs {
 Its purpose is, for every index~$i$ of the array~$S$, to store the length of the string at that index in the corresponding index of the returned array.
 For example, if~$S$ contains the strings \ttt{"hello"}, \ttt{"world"}, and \ttt{"!"}, the returned array should contain the values~$5$,~$5$, and~$1$, respectively.
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -199,12 +198,9 @@ class WordLengthsTester {
   @Test
   void testWordLengths() {
     assertAll(
-      () -> assertEquals(new int[]{5, 5, 1}, 
-                         wordLengths(new String[]{"hello", "world", "!"})),
-      () -> assertEquals(new int[]{0, 0, 0}, 
-                         wordLengths(new String[]{"", "", ""})),
-      () -> assertEquals(new int[]{1, 2, 3}, 
-                         wordLengths(new String[]{"a", "ab", "abc"})));
+      () -> assertEquals(new int[]{5, 1}, wordLengths(new String[]{"hello", "!"})),
+      () -> assertEquals(new int[]{0, 0, 0}, wordLengths(new String[]{"", "", ""})),
+      () -> assertEquals(new int[]{3}, wordLengths(new String[]{"abc"})));
   }
 }
 \end{lstlisting}
@@ -868,7 +864,6 @@ class RemoveAllZeroRows {
 }
 \end{lstlisting}
 
-\enlargethispage{2\baselineskip}
 \myexample{Let's solve a slightly harder problem using two-dimensional arrays.} 
 Suppose that we want to design a method that returns the number of possible moves that a rook can take to go from the top-left of a (not-necessarily rectangular) board to the bottom-right, assuming that it cannot move left or up. 
 The naive solution to this problem is to use a recursive method that changes its position by one in either direction, stopping once we hit the bottom-right of the board. 
@@ -948,14 +943,12 @@ class RookPathTester {
   void testRookPathDp() {
     assertAll(
       () -> assertEquals(2, rookDp(0, 0, 1, 1)),
-      () -> assertEquals(6, rookDp(0, 0, 2, 2)),
       () -> assertEquals(10, rookDp(0, 0, 2, 3)),
       () -> assertEquals(70, rookDp(0, 0, 4, 4)));
   }
 }
 \end{lstlisting}
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RookPath {
 
@@ -963,7 +956,6 @@ class RookPath {
    * Computes the number of possible paths that a rook 
    * can take to go from the (x, y) position of a board 
    * to the bottom-right, assuming that it cannot move left or up. 
-   * This approach uses dynamic programming.
    * @param x x-coordinate of the rook's starting position.
    * @param y y-coordinate of the rook's starting position.
    * @param n number of rows of the board.
@@ -972,13 +964,10 @@ class RookPath {
    */
   static int rookDp(int x, int y, int n, int m) {
     int[][] dp = new int[n + 1][m + 1];
-
     // Compose the initial bottom-row solutions.
     for (int i = 0; i < n + 1; i++) { dp[i][m] = 1; }
-
     // Compose the initial far-right solutions.
     for (int i = 0; i < m + 1; i++) { dp[n][i] = 1; }
-
     // Now do the dynamic programming algorithm.
     for (int i = n - 1; i >= 0; i--) {
       for (int j = m - 1; j >= 0; j--) {

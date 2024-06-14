@@ -180,7 +180,9 @@ class PointTester {
     assertEquals(3, P.getX());
     assertEquals(4, P.getY());
   }
-
+\end{lstlisting}
+\newpage
+\begin{lstlisting}[language=MyJava]
   @Test
   void testPointToString() {
     assertEquals("(x=3, y=4)", P.toString());
@@ -394,7 +396,6 @@ Since counting instances is a property of the \ttt{Point} class, rather than an 
 To remain consistent with our recurring theme of encapsulation, \ttt{count} will be declared as \ttt{private}, and we will design a static method \ttt{getCount} to retrieve the number of instances, which is invoked on the class.\footnote{It is also possible to invoke a static method on an instance of the class, but it is considered bad practice and unnecessary.} 
 When testing, we need to be careful to only instantiate instances of \ttt{Point} when we are ready to check the status of \ttt{count}, since the static \ttt{count} variable is updated inside the constructor.
 
-\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -549,7 +550,6 @@ import java.util.List;
 
 class PointTester {
   // ... previous code not shown. 
-
   @Test
   void testRemoveLinearPoints() {
     List<Point> lop = List.of(new Point(5, 10), new Point(7, 7),
@@ -557,7 +557,7 @@ class PointTester {
                               new Point(1, 1), new Point(-6, -10),
                               new Point(-23, -23), new Point(1, 0));
     List<Point> lopRes = List.of(new Point(5, 10), new Point(2, 3), new Point(4, 3),
-                                 new Point(-6, -10), `new Point(1, 0));
+                                 new Point(-6, -10), new Point(1, 0));
     assertAll(
       () -> assertEquals(List.of(), Point.removeLinearPoints(List.of())),
       () -> assertEquals(lopRes, Point.removeLinearPoints(lop)));
@@ -571,7 +571,6 @@ import java.util.List;
 
 class Point {
   // ... previous code not shown. 
-
   /**
    * Returns a list of all points that are not "linear."
    * @param lop list of Point objects.
@@ -606,8 +605,7 @@ class PizzaOrderTester {
   @Test
   void testPizzaOrder() {
     PizzaOrder p1 = new PizzaOrder();
-    PizzaOrder p2 = new PizzaOrder(new String[]{"Pepperoni", "Anchovie"},
-                                   new int[]{3, 2});
+    PizzaOrder p2 = new PizzaOrder(new String[]{"Pepperoni","Anchovie"}, new int[]{3,2});
     assertAll(
       () -> assertEquals(Set.of(), p1.getToppings()),
       () -> assertEquals(Set.of("Pepperoni", "Anchovie"), p2.getToppings())
@@ -905,7 +903,6 @@ We will not write any tests for this class, since it interacts with the user thr
 It should be noted that this version of ``twenty-one'' only has the objective of getting as close as possible to a hand containing cards with a value that sums to twenty one, compared to a more traditional card game where multiple players exist, with a dealer to distribute cards. 
 As exercises, there are many ways to enhance the game, including adding a ``high score'' board to keep track of previous game outcomes, introducing CPU players to automatically poll cards from the deck to beat the main player, or even adding more human players through standard input/output interactions. 
 
-\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Scanner;
 
@@ -924,10 +921,8 @@ class TwentyOne {
     Scanner in = new Scanner(System.in);
     boolean continuePlaying = true;
     while (continuePlaying) {
-      // Clear the player's hand.
+      // Clear the player's hand, and shuffle a new deck.
       this.player.clearHand();
-
-      // Create and shuffle the deck.
       Deck d = new Deck();
       d.shuffleDeck();
 
@@ -952,7 +947,6 @@ class TwentyOne {
       } else {
         System.out.printf("You did not go over %d!", MAX_SCORE);
       }
-
       System.out.println("Do you want to continue playing?");
       String resp = in.nextLine();
       continuePlaying = resp.equals("Y");
@@ -1572,9 +1566,8 @@ class RationalTester {
 
 \begin{lstlisting}[language=MyJava]
 class Rational {
-  // Other details not shown.
 
-  /**
+/**
    * Adds two rational numbers.
    * @param r the other rational number.
    * @return the (simplified) sum of this and r.
@@ -1607,10 +1600,6 @@ class RationalTester {
     assertAll (
       () -> assertEquals("14/27", 
               new Rational(2, 3).multiply(new Rational(7, 9)).toString()),
-      () -> assertEquals("1/6", 
-              new Rational(1, 2).multiply(new Rational(1, 3)).toString()),
-      () -> assertEquals("1/48", 
-              new Rational(1, 4).multiply(new Rational(1, 12)).toString()),
       () -> assertEquals("1/64", 
               new Rational(1, 8).multiply(new Rational(1, 8)).toString()),
       () -> assertEquals("1/25", 
@@ -1621,7 +1610,6 @@ class RationalTester {
 }
 \end{lstlisting}
 
-\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Rational {
 
@@ -1735,9 +1723,7 @@ class StackFrameDriver {
     Stack<StackFrame> sf = new Stack<>();
     BigInteger res = n;
     sf.push(new StackFrame().addParam("n", n));
-    while (!sf.isEmpty()) { 
-      /* TODO. */ 
-    }
+    while (!sf.isEmpty()) { /* TODO. */ }
     return res;
   }
 }

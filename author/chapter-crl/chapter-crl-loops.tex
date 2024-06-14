@@ -420,14 +420,14 @@ We will design the standard recursive, tail recursive, and loop variants of the 
 As usual, we should write tests for all three variants of the method, which trivially carry over to one another.
 Because all three sets of tests are identical, we will only show those of the standard recursive variant.
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertTrue;
 import static Assertions.assertFalse;
 
 class DisariumTester {
-
+\end{lstlisting}
+\begin{lstlisting}[language=MyJava]
   @Test
   void testDisariumSr() {
     assertAll(
@@ -467,19 +467,14 @@ class Disarium {
    * @return sum of digits raised to their respective positions.
    */
   private static int isDisariumSrHelper(int n, int p) {
-    if (n == 0) { 
-      return 0;
-    } else { 
-      return Math.pow(n % 10, p) 
-           + isDisariumSrHelper(n / 10, p + 1); 
-    }
+    if (n == 0) { return 0; } 
+    else { return Math.pow(n % 10, p) + isDisariumSrHelper(n / 10, p + 1); }
   }
 }
 \end{lstlisting}
 
 The tail recursive variant is similar to the standard recursive variant, but with an additional parameter,~$s$, which accumulates the result as a parameter.
 
-\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Disarium {
 
@@ -491,6 +486,7 @@ class Disarium {
   static boolean isDisariumTr(int n) {
     return isDisariumTrHelper(n, 1, 0) == n;
   }
+
 
   /**
    * Tail-recursively computes the sum of the digits of n raised to 
@@ -703,7 +699,6 @@ class DePolignacTester {
 }
 \end{lstlisting}
 
-\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class DePolignac {
   
@@ -716,7 +711,8 @@ class DePolignac {
     int nextPower = (int) Math.pow(2, (int) (Math.log(n) / Math.log(2)));
     return isDePolignacTrHelper(n, 1);
   }
-  
+\end{lstlisting}
+\begin{lstlisting}[language=MyJava]
   /**
    * Tail recursive helper method for De Polignac number.
    * @param n positive integer.
@@ -788,8 +784,6 @@ class OddReciprocalSumTester {
 
 The implementation is similarly simple: we create a counter~$c$ that increments so long as~$c$ is not equal to~$n$, accumulating the~$\emph{sum}$ of~$1$ divided by~$2c-1$.
 
-%\enlargethispage{\baselineskip}
-\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class OddReciprocalSum {
 
@@ -829,7 +823,7 @@ We know a priori how many integers there are between~$a$ and~$b$, assuming~$a \l
 Namely, we want to iterate from~$i = a$ so long as~$i \leq b$. 
 We use the variable~$i$ out of convention; one could easily use any other unused identifier.
 
-\enlargethispage{1\baselineskip}
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -925,13 +919,11 @@ class NewtonApproximationTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class NewtonApproximation {
 
   /**
-   * Computes an approximation of the square root of
-   * a number using Newton's Approximation algorithm.
+   * Computes an approximation of the square root of a # via Newton's Approximation.
    * @param n number to square root.
    * @param delta approximation range.
    * @return approximation of sqrt of n.
@@ -978,13 +970,16 @@ class GenerateAcronymTester {
       () -> assertEquals("gafia, generateAcronym("get away from it all")),
       () -> assertEquals("NESW", generateAcronym("Never Eat Soggy Waffles")),
       () -> assertEquals("abc", generateAcronym("a b c")),
-      () -> assertEquals("LOL", generateAcronym("laugh out loud")),
+      () -> assertEquals("abc", generateAcronym("a b c")),
+      () -> assertEquals("FBI", generateAcronym("Federal Bureau of Investigation")),
+      () -> assertEquals("CIA", generateAcronym("Central Intelligence Agency")),
+      () -> assertEquals("HVAC", generateAcronym("Heating Ventilation Air Conditioning")),
       () -> assertEquals("W", generateAcronym("Word")));
   }
 }
 \end{lstlisting}
 
-% \newpage  %ugh
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class GenerateAcronym {
 
@@ -1055,7 +1050,6 @@ We could similarly reduce the number of lines in the method by using a \ttt{for}
 As a word of caution, however, if we choose to update the string~$s$ \emph{before} updating the accumulator, we run into a problem imposed by the rule of update: we lose the first character of the string, which is the character we want to add to the acronym. 
 Thus, we must update the accumulator \emph{before} updating the string.
 
-\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class GenerateAcronym {
 
@@ -1096,7 +1090,7 @@ The \emph{Fibonacci sequence} is defined recursively as follows:
 Writing tests for a Fibonacci algorithm is trivial to do and propagates through to the other variants. 
 So, writing tests for the standard recursive algorithm, assuming they are correct, allows us to easily propagate tests for the tail recursive and iterative algorithms.
 
-\enlargethispage{\baselineskip}
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1123,11 +1117,8 @@ In other words, small inputs, e.g., $\emph{Fib}(40)$, will take an absurdly long
 class Fibonacci {
 
   static int fib(int n) {
-    if (n <= 1) { 
-      return n; 
-    } else { 
-      return fib(n - 1) + fib(n - 2); 
-    }
+    if (n <= 1) { return n; } 
+    else { return fib(n - 1) + fib(n - 2); }
   }
 }
 \end{lstlisting}
@@ -1139,7 +1130,6 @@ So, storing these values as variables, say,~$a$ and~$b$, is sensible, where~$a$ 
 Thus, when making a tail recursive call, we assign~$b$ as~$a + b$, and~$a$ as~$b$. 
 We cannot forget the driver method!
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Fibonacci {
 
@@ -1155,13 +1145,9 @@ class Fibonacci {
    * @return result.
    */
   static int fibHelp(int n, int a, int b) {
-    if (n == 0) {
-      return a;
-    } else if (n == 1) {
-      return b;
-    } else {
-      return fibHelp(n - 1, b, a + b);
-    }
+    if (n == 0) { return a; } 
+    else if (n == 1) { return b; } 
+    else { return fibHelp(n - 1, b, a + b); }
   }
 }
 \end{lstlisting}

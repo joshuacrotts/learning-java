@@ -238,7 +238,6 @@ class RectangleObject extends AxisAlignedBoundingBoxObject implements IDrawable 
 
 First, we need to design a class that represents an ``argument'' to a program. Arguments, as we described in Chapter~\ref{chapter-arrays-collections}, are space-separated string values that we pass to a program executable, which populate the \ttt{String[] args} array in the \ttt{main} method. In particular, however, we want to specify that an argument is not necessarily the values themselves, but are instead the flags, or instructions, passed to the executable. The simplest version of a flag is one that receives exactly one argument, which we will represent via an abstract \ttt{Argument} class. Later on, we want to be able to validate a flag with its given arguments, so the \ttt{Argument} class includes an abstract \ttt{boolean validate} method, that shall be overridden in all subclasses of \ttt{Argument}.
 
-\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.Map;
@@ -257,21 +256,16 @@ abstract class Argument {
 
 From here, let's design two types of arguments: one that is optional and one that receives~$n$ arguments. Namely, an optional argument is one that is always valid, according to \ttt{validate}, because it does not necessarily need to exist. The~$n$-valued argument, on the other hand, requires that the associated passed flag contains exactly~$n$ values. For example, if we say that the \ttt{--input} flag requires exactly~$3$ arguments, then if we do not pass exactly three space-separated non-flag values, it fails to validate.
 
-
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.Map;
 
 class OptionalArgument extends Argument {
 
-  OptionalArgument(String key) { 
-    super(key); 
-  }
+  OptionalArgument(String key) { super(key); }
 
   @Override
-  boolean validate(Map<String, List<String>> args) { 
-    return true; 
-  }
+  boolean validate(Map<String, List<String>> args) { return true; }
 }
 \end{lstlisting}
 
@@ -290,11 +284,8 @@ class NumberedArgument extends Argument {
 
   @Override
   boolean validate(Map<String, List<String>> args) {
-    if (!args.containsKey(this.getKey())) { 
-      return false; 
-    } else { 
-      return args.get(this.getKey()).size() == this.NUM_REQUIRED_ARGS; 
-    }
+    if (!args.containsKey(this.getKey())) { return false; } 
+    else { return args.get(this.getKey()).size() == this.NUM_REQUIRED_ARGS; }
   }
 }
 \end{lstlisting}
@@ -302,10 +293,10 @@ class NumberedArgument extends Argument {
 Now comes the argument parser itself, which receives a string array of argument values, much like \ttt{main}, and extracts out the flags and arguments into a \ttt{Map<String, List<String>{}>} where the key represents the flag and the value is a list of the arguments to said flag. We also store a \ttt{Set<Argument>} to allow the programmer to designate arguments to the parser. The idea is straightforward: while traversing over \ttt{args}, if we encounter a string that begins with a double dash `\ttt{--}', it is qualified as a flag and the following arguments, up to another flag, are marked as arguments to the flag. We add these to the respective map as described before, and continue until we run out of elements in the array.
 
 \begin{lstlisting}[language=MyJava]
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 class ArgumentParser {
 
@@ -326,23 +317,16 @@ class ArgumentParser {
     }
   }
 
-  void addArgument(Argument arg) { 
-    this.ARGS.add(arg); 
-  }
+  void addArgument(Argument arg) { this.ARGS.add(arg); }
 
   List<String> getArguments(String key) {
-    if (this.PARSED_ARGS.containsKey(key)) {
-      return this.PARSED_ARGS.get(key);
-    } else {
-      return null;
-    }
+    return this.PARSED_ARGS.containsKey(key) ? this.PARSED_ARGS.get(key) : null;
   }
 }
 \end{lstlisting}
 
 The \ttt{parseArguments} method returns whether or not the supplied arguments are valid according to the arguments populated via \ttt{addArgument}. Using streams, we verify that, after invoking \ttt{validate} on every argument, each separate call returns true, meaning that all arguments are valid and correct. Because it might be useful to return the associated arguments to a flag from a programmer's perspective who uses this parser, we include a \ttt{getArguments} method to return the list of arguments passed to a flag.
 
-\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.HashSet;
@@ -352,8 +336,7 @@ import java.util.Set;
 class ArgumentParser {
 
   /**
-   * Determines whether or not all of the arguments in the stored
-   * instance variable are "valid".
+   * Determines whether or not all of the arguments in the stored field are "valid."
    * @return true if all arguments are valid, false otherwise.
    */
   boolean parseArguments() {
@@ -364,7 +347,7 @@ class ArgumentParser {
 \end{lstlisting}
 
 \subsubsection*{The ASPL Interpreter}
-\myexample{Inheritance is a truly powerful programming language construct, and we will now attempt to describe its beauty through the design of a mini-project. Said mini-project will encompass writing a small programming language called ASPL, or ``A Simple Programming Language.'' Programming language syntax and semantics, collectively, require a lot of knowledge outside the domain and scope of this text, but we will see that, even with our somewhat limited arsenal of tools, we can construct a fairly powerful programming language. Our language will start off as a recreation of the interpreter from our section on interfaces, but contains modifications to make it more flexible.}
+\myexample{Inheritance is a truly powerful programming language construct, and we will now attempt to describe its beauty through the design of a mini-project. Said mini-project will encompass writing a small programming language called ASPL, or ``A Simple Programming Language.''\footnote{Originally, we called the interpreter APL, or ``A Programming Language.'' We changed its name to include the extra `S' so as to not cause confusion between our implementation and the actual language called APL~\Citep{apl}. If you want to have some ``fun,'' take a slight detour and go explore \emph{that} language!} Programming language syntax and semantics, collectively, require a lot of knowledge outside the domain and scope of this text, but we will see that, even with our somewhat limited arsenal of tools, we can construct a fairly powerful programming language. Our language will start off as a recreation of the interpreter from our section on interfaces, but contains modifications to make it more flexible.}
 
 As a means of motivation, let's write a few programs in this language to show its capabilities. The first listing is a simple program to add two numbers together. The second listing binds two variables, and if their sum is equal to 42, then the result is 100, otherwise it is zero. The third listing declares a variable, followed by a conditional, both cases of which contain another binding of a variable, closing off with a product operation.
 
@@ -417,6 +400,7 @@ Our abstract syntax tree class uses two constructors: one that receives a list o
 
 Each abstract syntax tree should be evaluable as a means of reducing the expression to its simplest form. For example, numbers and booleans, the literals of our language, resolve to themselves. Primitive operations apply the operation to its arguments, then ultimately reduce to a value. Conditionals resolve to either of its branches, and ``let'' bindings resolve to its body. We will cover each case one-by-one as we cover the material. For now, though, the abstract syntax tree node class contains the \ttt{eval} method, which denotes how a node is to be evaluated.
 
+\newpage
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -451,7 +435,6 @@ Literal values resolve to themselves and only themselves, which means that they 
 The \ttt{LiteralNode} class overrides \ttt{equals}, \ttt{hashCode}, and \ttt{toString} to compare literals, return the hash code of the stored instance variable, and ``stringify'' the instance variable respectively.
 Designing the \ttt{LiteralNode} class in this fashion makes designing the subclasses easier and significantly less redundant, because \ttt{NumNode} and \ttt{BoolNode} need to only provide constructors that invoke the superclass.
 
-\enlargethispage{-5\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -471,6 +454,7 @@ class AstTest {
 }
 \end{lstlisting}
 
+\newpage
 \begin{lstlisting}[language=MyJava]
 import java.util.Objects;
 
@@ -642,7 +626,9 @@ Adding the equality comparison operator provides a pathway to designing the cond
 An \ttt{IfNode} contains three children nodes: a predicate, a consequent, and an alternative. 
 The \ttt{eval} method of an \ttt{IfNode} evaluates the predicate, and if it is true, evaluates the consequent, otherwise it evaluates the alternative. 
 The predicate \emph{must} resolve to a boolean, assuming the program is well-formed. 
+Because we only care about well-formed programs, we do not need to check if the predicate is a boolean, and can safely cast it to a \ttt{BoolNode} when evaluating the respective abstract syntax tree node.
 
+\newpage
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

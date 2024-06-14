@@ -633,7 +633,8 @@ class TakeEvens {
 First, we should design a helper method that returns whether a time \emph{is} a fifteen-minute interval.
 That is, its number of minutes is either \ttt{"0"}, \ttt{"15"}, \ttt{"30"}, or \ttt{"45"}.
 Aside from the helper, the method definition itself is nothing special--requiring exactly one traversal over the data.
-Importantly, though, notice that \ttt{filterQuarters} returns \ttt{void} rather than, say, a list of strings.\footnote{Java is a programming language where immutability is not as favored in the wider community due to its relative inefficiency. By ``immutability,'' we mean that many methods that operate over collections, e.g., \ttt{ArrayList}, often update the collection in-place, rather than returning a fresh collection. We fundamentally believe that preserving the original collection is important in cases where its data is needed elsewhere in a program.}
+Importantly, though, notice that \ttt{filterQuarters} returns \ttt{void} rather than, say, a list of strings.
+% \footnote{Java is a programming language where immutability is not as favored in the wider community due to its relative inefficiency. By ``immutability,'' we mean that many methods that operate over collections, e.g., \ttt{ArrayList}, often update the collection in-place, rather than returning a fresh collection. We fundamentally believe that preserving the original collection is important in cases where its data is needed elsewhere in a program.}
 The method updates the \ttt{times} list itself, which means that any list we pass is updated/changed inside the method.
 In~\Cref{chapter-classes}, we will explore methods like these that cause~\emph{side-effects}\index{side-effect} in relation to user-defined classes.
 For now, testing a \ttt{void} method means that we must instantiate a \ttt{List<String>} above the test, pass it to \ttt{filterQuarters}, and then check to see if the change occurred.
@@ -661,7 +662,6 @@ class FilterQuartersTester {
 }
 \end{lstlisting}
 
-\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -669,7 +669,7 @@ class FilterQuarters {
 
   /**
    * Removes all times from a list of "times." A time is a string "XX:YY"
-   * such that 0 <= XX <= 23, and 00 <= YY <= 59; 
+   * such that 0 <=XX<= 23, and 00<=YY<= 59; 
    * This method modifies the list in-place.
    * @param times list of times.
    */
@@ -684,8 +684,7 @@ class FilterQuarters {
 
   /**
    * Returns whether a time is a "quarter." A quarter is either 0, 15, 30, or 45.
-   * @param t string representing time as XX:YY, where
-   *           00 <= XX <= 23, and 00 <= YY <= 59.
+   * @param t string representing time as XX:YY, where 00<=XX<=23, and 00<=YY<= 59.
    * @return true if quarter; false otherwise.
    */
   private static boolean isQuarterHour(String t) {
@@ -739,6 +738,7 @@ The \ttt{split} method returns an array of the substrings between the provided d
 For example, \ttt{"123.456.789.012".split(".")} returns an array \ttt{["123", "456", "789", "012"]}.
 The start time, therefore, is the third substring, and the end time is the fourth substring.
 
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -750,8 +750,10 @@ class AirplaneTravelInformationTester {
   @Test
   void testAirplaneTravelInformation() {
     List<String> l1 = List.of("Z4;215;1700;1645");
-    List<String> l2 = List.of("P3;240;0930;1130", "L9;500;2245;0223",
-                              "K2;330;1230;1800", "L1;400;1955;2050",
+    List<String> l2 = List.of("P3;240;0930;1130", 
+                              "L9;500;2245;0223",
+                              "K2;330;1230;1800", 
+                              "L1;400;1955;2050",
                               "C1;110;0000;1330");
     assertAll(
       () -> assertEquals("Z4", shortestDurationFlight(l1)),
@@ -769,7 +771,7 @@ class AirplaneTravelInformationTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-3\baselineskip}
+% \enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -936,7 +938,9 @@ class MaxPathSum {
   static int[] getAdjacentPaths(int idx, int level) {
     return new int[]{idx, idx + 1};
   }
-
+\end{lstlisting}
+\newpage %UGH
+\begin{lstlisting}[language=MyJava]
   /**
    * Computes the maximum sum of any path from the top to the bottom.
    * @param triangle list of lists of integers.
@@ -1144,13 +1148,12 @@ We illustrate this concept in Figure~\ref{fig:stackundo}.
 \label{fig:stackundo}
 \end{figure}
 
-\myexample{As a very basic example of working the \ttt{Stack} data structure, let's design the \ttt{int sumOdds(Stack<Integer> S)} method that, when given a stack of integers~$S$, returns the sum of all odd integer elements.}
+\myexample{As a very basic example of working with the \ttt{Stack} data structure, let's design the \ttt{int sumOdds(Stack<Integer> S)} method that, when given a stack of integers~$S$, returns the sum of all odd integer elements.}
 Remember that we cannot access arbitrary elements of the stack.
 So, for now, all we can do is traverse over the stack using a while loop until it has no elements remaining.
 That is, while the stack is non-empty, pop the top-most element, examine if it is odd and, if so, add it to our running total.
 We present the following example to demonstrate some of the methods that Java's \ttt{Stack} class provides.\footnote{By providing a \ttt{List} to the \ttt{Stack} constructor, i.e., \ttt{new Stack<>(List.of(...))}, we do not need to write repeated calls to \ttt{push} on the stack object.}
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1162,13 +1165,9 @@ class StackSumOddsTester {
   void testSumOdds() {
     Stack<Integer> S1 = new Stack<>();
     Stack<Integer> S2 = new Stack<>(List.of(5, 12, 13, 24, 91, 108));
-    Stack<Integer> S3 = new Stack<>(List.of(7, 5));
-    Stack<Integer> S4 = new Stack<>(List.of(2, 100, 42));
     assertAll(
-      () -> assertEquals(0, sumOdds(S1));
-      () -> assertEquals(109, sumOdds(S2));
-      () -> assertEquals(13, sumOdds(S3));
-      () -> assertEquals(0, sumOdds(S4)));
+      () -> assertEquals(0, sumOdds(S1)),
+      () -> assertEquals(109, sumOdds(S2)));
   }
 }
 \end{lstlisting}
@@ -1515,17 +1514,12 @@ class RemoveDuplicatesListTester {
   @Test
   void testRemoveDuplicatesList() {
     assertAll(
-      () -> assertEquals(List.of(), 
-                         removeDuplicatesList(List.of())),
-      () -> assertEquals(List.of(1, 2, 3, 4), 
-                         removeDuplicatesList(List.of(1, 1, 2, 2, 3, 3, 4, 4))),
-      () -> assertEquals(List.of(3, 1, 4), 
-                         removeDuplicatesList(List.of(3, 1, 1, 3, 4, 4, 3, 4))));
+      () -> assertEquals(List.of(), removeDuplicatesList(List.of())),
+      () -> assertEquals(List.of(3, 4), removeDuplicatesList(List.of(3, 3, 4, 4, 3, 4))));
   }
 }
 \end{lstlisting}
 
-\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.ArrayList;
@@ -1554,7 +1548,6 @@ Let's design the \ttt{commonValues} method that, when given two linked lists of 
 We should not count values twice, e.g., if \ttt{2} occurs twice in the first list, then the resulting output list should only contain one occurrence of \ttt{2}. 
 Let's take advantage of a tree set to store the common values in order, and then add those values to a new linked list.
 
-%\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -1569,23 +1562,18 @@ class CommonValuesTester {
   @Test
   void testCommonValues() {
     assertAll(
-      () -> assertEquals(List.of(), 
-                         commonValues(List.of(),
-                                      List.of(5, 4, 3, 2, 1))),
-      () -> assertEquals(List.of(), 
-                         commonValues(List.of(10, 20, 30, 40, 50),
-                                      List.of(5, 4, 3, 2, 1))),
-      () -> assertEquals(List.of(1, 3, 4), 
-                         commonValues(List.of(2, 4, 1, 3, 5, 6),
-                                      List.of(1, 4, 3, 10, 20))),
-      () -> assertEquals(List.of(-2, 0, 2), 
-                         commonValues(List.of(2, -2, 0, 0, -2, 2),
-                                      List.of(-2, 2, 0))));
+      () -> assertEquals(List.of(), commonValues(List.of(),
+                                                 List.of(5, 4, 3, 2, 1))),
+      () -> assertEquals(List.of(), commonValues(List.of(10, 20, 30, 40, 50),
+                                                 List.of(5, 4, 3, 2, 1))),
+      () -> assertEquals(List.of(1, 3, 4), commonValues(List.of(2, 4, 1, 3, 5, 6),
+                                                        List.of(1, 4, 3, 10, 20))),
+      () -> assertEquals(List.of(-2, 0, 2), commonValues(List.of(2, -2, 0, 0, -2, 2),
+                                                         List.of(-2, 2, 0))));
   }
 }
 \end{lstlisting}
 
-\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.LinkedList;
@@ -1635,7 +1623,6 @@ class FindDupMissingTester {
 }
 \end{lstlisting}
 
-\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Set;
 import java.util.TreeSet;
@@ -1658,7 +1645,6 @@ class FindDupMissing {
       if (set.contains(x)) { res[1] = x; } 
       else { set.add(x); }
     }
-
     // Now find the missing number.
     int prev = 0;
     for (int x : set) {
@@ -1749,7 +1735,6 @@ class ComputeModeTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2056,7 +2041,7 @@ Much like the rest of the Collections framework, we must pass the parameterized 
 
 \myexample{Let's use an iterator to traverse over a \ttt{LinkedHashSet}, whose element ordering is determined by their insertion order, meaning that the iterator should produce them in the order that they were inserted.}
 
-%\enlargethispage{5\baselineskip}
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -2090,7 +2075,6 @@ We would recommend not altering the data structure while traversing, even if it 
 \myexample{Let's now iterate over the \ttt{LinkedHashSet} using an enhanced \ttt{for} loop.} We can do so by placing the type on the left-hand side of the element declaration. 
 Our test subtracts the elements from left-to-right.
 
-\enlargethispage{\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertEquals;
 
@@ -2151,7 +2135,7 @@ Let's see what happens when we create a priority queue whose comparator prioriti
 In other words, any occurrence of \ttt{"Joshua"} should come before all other strings in the priority queue, whereas any occurrence of \ttt{"Jack"} should come after all other strings in the priority queue. 
 Any strings in between are ordered naturally, i.e., via lexicographical ordering.
 
-\enlargethispage{-6\baselineskip}
+% \enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 import java.util.PriorityQueue;
@@ -2236,7 +2220,6 @@ class MaximalMovesTester {
 }
 \end{lstlisting}
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Collections;
 import java.util.List;
@@ -2261,8 +2244,6 @@ class MaximalMoves {
   }
 }
 \end{lstlisting}
-
-
 
 \section{Streams}
 \emph{Streams} are, in effect, a \emph{lazy} collection of ``things.'' 
@@ -2404,18 +2385,13 @@ class BigIntFibStreamTester {
 
   @Test
   void testBigIntFibStream() {
-    // Get the stream, test ten values, 
-    // make sure the lists are the same
-    // length, then test each sub-array.
+    // Get the stream, test ten values, make sure the lists are the same.
     Stream<BigInteger[]> s = StreamExample.fibonacciStream();
     List<BigInteger[]> actualLs = s.limit(10).toList();
-    List<BigInteger[]> expectedLs 
-      = new ArrayList<>(
-        List.of(new BigInteger[]{new BigInteger("0"), 
-                                 new BigInteger("1")},
-                new BigInteger[]{new BigInteger("1"), 
-                                 new BigInteger("1")},
-                ...));
+    List<BigInteger[]> expectedLs =
+        List.of(new BigInteger[]{new BigInteger("0"), new BigInteger("1")},
+                new BigInteger[]{new BigInteger("1"), new BigInteger("1")},
+                ...);
 
     // Check each array of BigIntegers of the expected and actual.
     assertTrue(expectedLs.size() == actualLs.size());
@@ -2426,7 +2402,6 @@ class BigIntFibStreamTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.BigInteger;
@@ -2438,10 +2413,8 @@ class BigIntFibStream {
    * @return stream containing arrays of the next sequential BigIntegers.
    */
   static Stream<BigInteger[]> fibonacciStream() {
-    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),
-                                         new BigInteger("1")};
-    return Stream.iterate(vals, v -> 
-                          new BigInteger[]{v[1], v[0].add(v[1])});
+    BigInteger[] vals = new BigInteger[]{new BigInteger("0"), new BigInteger("1")};
+    return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])});
   }
 }
 \end{lstlisting}
@@ -2502,19 +2475,15 @@ class BigIntFibStreamTester {
   void testBigIntFibStream() {
     Stream<BigInteger> s = StreamExample.fibonacciStream();
     List<BigInteger> actualLs = s.limit(10).toList();
-    List<BigInteger[]> expectedLs 
-      = new ArrayList<>(
-        List.of(new BigInteger[]{new BigInteger("0"), 
-                                 new BigInteger("1")},
-                new BigInteger[]{new BigInteger("1"), 
-                                 new BigInteger("1")},
-                ...));
+    List<BigInteger[]> expectedLs =
+        List.of(new BigInteger[]{new BigInteger("0"), new BigInteger("1")},
+                new BigInteger[]{new BigInteger("1"), new BigInteger("1")},
+                ...);
     assertEquals(expectedLs, actualLs);
   }
 }
 \end{lstlisting}
 
-%\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Stream;
 import java.util.BigInteger;
@@ -2527,10 +2496,8 @@ class BigIntFibStream {
    *         sequential Fibonacci BigIntegers.
    */
   static Stream<BigInteger> fibonacciStream() {
-    BigInteger[] vals = new BigInteger[]{new BigInteger("0"),
-                                         new BigInteger("1")};
-    return Stream.iterate(vals, 
-                          v -> new BigInteger[]{v[1], v[0].add(v[1])})
+    BigInteger[] vals = new BigInteger[]{new BigInteger("0"), new BigInteger("1")};
+    return Stream.iterate(vals, v -> new BigInteger[]{v[1], v[0].add(v[1])})
                  .map(v -> v[0]);
   }
 }
@@ -2569,6 +2536,7 @@ class SqListTester {
 }
 \end{lstlisting}    
 
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
@@ -2600,7 +2568,7 @@ This requires a few techniques that we have learned, but also means we need to u
 We always begin by writing a few tests. 
 Although the tests are simple, the method implementation is the most complex seen thus far.
 
-\enlargethispage{-7\baselineskip}
+% \enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;

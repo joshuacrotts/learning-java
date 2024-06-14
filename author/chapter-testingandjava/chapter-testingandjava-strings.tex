@@ -85,8 +85,7 @@ Comparing~$s_1$ or~$s_2$ with~$s_3$ outputs false, which is the anticipated resu
 class NewStringTests {
 
   public static void main(String[] args) {
-    String s1 = "Hello";
-    String s2 = "Hello";
+    String s1 = "Hello"; String s2 = "Hello";
     String s3 = "World";
     System.out.println(s1 == s2); // true (?)
     System.out.println(s2 == s3); // false
@@ -103,15 +102,12 @@ The latter implementation receives a \ttt{String}, whose characters are copied i
 If we pass a string literal to the constructor, it copies the characters \emph{from} the literal into the new string. 
 At this point, the only possible object to be equal to~$s_1$ is~$s_1$ itself or another string that points to its value.
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class NewStringTests {
 
   public static void main(String[] args) {
-    String s1 = new String("hello");
-    String s2 = new String("hello");
-    String s3 = new String("world");
-    String s4 = s1;
+    String s1 = new String("hello"); String s2 = new String("hello");
+    String s3 = new String("world"); String s4 = s1;
     System.out.println(s1 == s1); // true
     System.out.println(s1 == s2); // false!
     System.out.println(s2 == s3); // false
@@ -128,10 +124,8 @@ What we observe is that~$s_3$ and~$s_4$ do not point to the same reference, even
 class NewStringTests {
 
   public static void main(String[] args) {
-    String s1 = "Hello";
-    String s2 = "World";
-    String s3 = s1 + s2;
-    String s4 = "Hello" + "World";
+    String s1 = "Hello"; String s2 = "World";
+    String s3 = s1 + s2; String s4 = "Hello" + "World";
     System.out.println(s3 == s4); // false
   }
 }
