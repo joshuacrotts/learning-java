@@ -92,7 +92,7 @@ class FileReaderWriterExamples {
       int c = -1; 
       while ((c = fr.read()) != -1) { System.out.print((char) c); }
     } catch (IOException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex);();
     }
 
     try (FileWriter fw = new FileWriter("file2.out")) {
@@ -102,7 +102,7 @@ class FileReaderWriterExamples {
       fw.write(71);
       fw.write(33);
     } catch (IOException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex);();
     }
   }
 }
@@ -171,7 +171,7 @@ class BufferedReaderWriterExample {
       String line = null;
       while ((line = br.readLine()) != null) { bw.write(line + "\n"); }
     } catch (IOException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex);();
     }
   }
 }
@@ -195,7 +195,7 @@ class PerformanceExamples {
                               new FileWriter("bigfile.out"))) {
       int c = -1;
       while ((c = br.read()) != -1) { bw.write(c); }
-    } catch (IOException ex) { ex.printStackTrace(); }
+    } catch (IOException ex) { throw new RuntimeException(ex);(); }
   }
   
   private static void nonbuffered() {
@@ -203,7 +203,7 @@ class PerformanceExamples {
          FileOutputStream bw = (new FileOutputStream("bigfile.out"))) {
       int c = -1;
       while ((c = br.read()) != -1) { bw.write(c); }
-    } catch (IOException ex) { ex.printStackTrace(); }
+    } catch (IOException ex) { throw new RuntimeException(ex);(); }
   }
 }
 \end{lstlisting}  
@@ -245,7 +245,7 @@ class PrintWriterExample {
       pw.printf("This is a %s string with %c and %d and %f and %b\n", 
                 "formatted", '&', 42, Math.E, true);
     } catch (IOException ex) { 
-      ex.printStackTrace(); 
+      throw new RuntimeException(ex);(); 
     }
   }
 }
@@ -420,7 +420,7 @@ class EmployeeScanner {
         boolean ft = f.nextBoolean();
         records.add(new Employee(eid, fname, lname, s, ft));
       }
-    } catch (IOException ex) { ex.printStackTrace(); }
+    } catch (IOException ex) { throw new RuntimeException(ex);(); }
 
     return records;
   }
@@ -493,7 +493,7 @@ class EvenIntegers {
         }
       }
     } catch (IOException ex) { 
-      ex.printStackTrace(); 
+      throw new RuntimeException(ex);(); 
     }
   }
 }
@@ -552,7 +552,7 @@ class LineWordCharCounter {
         counts[2] += line.length();
       }
     } catch (IOException ex) { 
-      ex.printStackTrace(); 
+      throw new RuntimeException(ex);(); 
     }
     return counts;
   }
@@ -656,7 +656,7 @@ class ReadAllLines {
       List<String> lines = Files.readAllLines(Path.of("test.txt")));
       // Some processing with lines...
     } catch (IOException ex) {
-      ex.printStackTrace();
+      throw new RuntimeException(ex);();
     }
   }
 }

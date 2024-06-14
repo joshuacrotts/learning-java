@@ -287,8 +287,7 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
       V min = ls.get(i);
       int minIdx = 0;
       boolean needToSwap = false;
-      // Find the minimum value. If we get a value less than the current 
-      // minimum, then we need to swap at the end.
+      // Find the minimum value. If we get a value < curr min, swap at end.
       for (int j = i + 1; j < ls.size(); j++) {
         if (ls.get(j).compareTo(min) < 0) {
           min = ls.get(j);
