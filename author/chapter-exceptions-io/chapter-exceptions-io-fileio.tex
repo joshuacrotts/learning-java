@@ -569,7 +569,7 @@ java ConcatenateFiles file1.txt file2.txt file3.txt output-file.txt
 Then the program should output a file \ttt{output-file.txt} that contains the contents of \ttt{file1.txt}, \ttt{file2.txt}, and \ttt{file3.txt}, in that order. 
 
 \newpage %ugh
-\enlargethispage{3\baselineskip}
+% \enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.io.*;
 import java.util.Arrays;
@@ -582,13 +582,12 @@ class ConcatenateFiles {
    * @return true if all files have same extension, false otherwise.
    */
   private static boolean sameExtension(String[] files) {
-    if (files[0].lastIndexOf('.') == -1) { 
-      return false; 
-    } else {
+    if (files[0].lastIndexOf('.') == -1) { return false; } 
+    else {
       String extension = files[0].substring(files[0].lastIndexOf('.'));
       for (String file : files) {
-        if (file.lastIndexOf(".") == -1 || 
-            !file.substring(file.lastIndexOf('.')).equals(extension)) { 
+        if (file.lastIndexOf(".") == -1 
+         || !file.substring(file.lastIndexOf('.')).equals(extension)) { 
           return false; 
         }
       }
@@ -611,9 +610,7 @@ class ConcatenateFiles {
           }
         }
       }
-    } catch (IOException ex) { 
-      ex.printStackTrace(); 
-    }
+    } catch (IOException ex) { throw new RuntimeException(ex); }
   }
 
   public static void main(String[] args) {
@@ -623,7 +620,6 @@ class ConcatenateFiles {
     } else {
       String[] inFiles = Arrays.copyOfRange(args, 0, args.length - 1);
       String outFile = args[args.length - 1];
-
       if (!sameExtension(inFiles)) {
         System.err.println("ConcatenateFiles: bad extensions");
         System.exit(1);

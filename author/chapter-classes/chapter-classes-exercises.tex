@@ -766,12 +766,10 @@ The Scheme programming language and its derivatives support \emph{code quotation
 
 The problem with tail recursion (and recursion in general) in Java is the fact that it does not convert tail calls into iteration, which means the stack quickly overflows with activation records. We can make use of a \emph{trampoline} to force the recursion into iteration through \emph{thunks}. In essence, we have a tail recursive method that returns either a value or makes a tail recursive call, such as the factorial example below. Inside our base case, we invoke the \ttt{done} method with the accumulator value. Otherwise, we invoke the \ttt{call} method containing a lambda expression of no arguments, whose right-hand side is a recursive call to \ttt{factTR}. Functions, or lambda expressions, that receive no arguments are called thunks.
 
-\enlargethispage{4\baselineskip}
+% \enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
-import static Assertions.assertAll;
 import static Assertions.assertEquals;
 import static Assertions.assertDoesNotThrow;
-
 import java.lang.BigInteger;
 import java.lang.StackOverflowError;
 
@@ -779,12 +777,11 @@ class FactorialTailRecursiveTester {
   
   @Test 
   void testFactTailRecursiveTrampoline() {
-    assertAll(
-      () -> assertEquals(BigInteger.valueOf(120), 
-                         factTailCall(BigInteger.valueOf(5), BigInteger.ONE)),
-      () -> assertDoesNotThrow(StackOverflowError.class,
-                               () -> factTailCall(BigInteger.valueOf(50000), 
-                                                  BigInteger.ONE)));
+    assertEquals(BigInteger.valueOf(120), 
+                 factTailCall(BigInteger.valueOf(5), BigInteger.ONE));
+    assertDoesNotThrow(StackOverflowError.class,
+                       factTailCall(BigInteger.valueOf(50000), 
+                                    BigInteger.ONE));
   }
 }
 \end{lstlisting}

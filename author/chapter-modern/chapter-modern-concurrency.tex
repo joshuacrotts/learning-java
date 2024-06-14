@@ -74,10 +74,8 @@ Atomic operations are operations that must be executed in their entirety, withou
 For example, suppose that we have a variable \ttt{counter} that we want to increment. 
 We might write the following code:
 
-\newpage %ugh
 \begin{lstlisting}[language=MyJava]
-import java.lang.Thread;
-import java.lang.Runnable;
+import java.lang.*;
 
 class RaceConditionExample {
 
@@ -86,22 +84,16 @@ class RaceConditionExample {
   public static void main(String[] args) {
     Thread t1 = new Thread(new Incrementer());
     Thread t2 = new Thread(new Incrementer());
-
     t1.start();
     t2.start();
-
     try {
       t1.join();
       t2.join();
-    } catch (InterruptedException ex) { 
-      ex.printStackTrace(); 
-    }
-    
+    } catch (InterruptedException ex) { throw new RuntimeException(ex); }
     System.out.println(counter);
   }
 
   private static class Incrementer implements Runnable {
-
     @Override
     public void run() {
       for (int i = 0; i < 1_000_000; i++) { counter += 1; }
@@ -127,7 +119,6 @@ That is, the following sequence of events can occur:
 Thus, we need a way of synchronizing access to the \ttt{counter} variable. 
 We will discuss synchronization, alongside a more-detailed example, in the next section.
 
-\newpage %ugh
 \subsubsection*{Synchronization}
 
 \myexample{Let's suppose that we're writing a Java class to represent a bank account, which allows users to withdraw and deposit money.} 
@@ -326,6 +317,7 @@ class TransferThread implements Runnable {
 }
 \end{lstlisting}
 
+\newpage
 \begin{lstlisting}[language=MyJava]
 import java.lang.Thread;
 
@@ -354,7 +346,6 @@ class BankAccountRunner {
 }
 \end{lstlisting}
 
-\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 class BankAccount {
 
@@ -392,7 +383,6 @@ As we will discuss in the subsequent example, a \emph{reentrant lock} allows a t
 In particular, we will lock \ttt{transfer}, \ttt{deposit}, and \ttt{withdraw} using the same static lock. 
 We will also use a \ttt{try/finally} block to ensure that the lock is released, even if an exception is thrown.
 
-\enlargethispage{-2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -458,7 +448,6 @@ Certain methods, e.g., \ttt{size} and \ttt{get}, need to be updated to account f
 In the code segment, we omit the comments for the sake of brevity. 
 In all cases, we use \ttt{try/finally} blocks to ensure that, even in the case of exceptions, the lock is released, which is especially important with data structural methods.
 
-\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -476,7 +465,9 @@ class ThreadSafeArrayList<T> {
 
   void add(T element) {
     this.lock.lock();
-    if (this.size == this.capacity) { this.resize(); }
+    if (this.size == this.capacity) { 
+      this.resize(); 
+    }
     this.elements[this.size] = element;
     this.size++;
     this.lock.unlock();
@@ -485,7 +476,9 @@ class ThreadSafeArrayList<T> {
   void insert(T e, int idx) {
     this.lock.lock();
     try {
-      if (this.size == capacity) { this.resize(); }
+      if (this.size == capacity) { 
+        this.resize(); 
+      }
       this.shiftRight(idx);
       this.elements[idx] = e;
       this.size++;
@@ -706,16 +699,16 @@ These occurrences are added to a map that is passed as a parameter.
 
 So, to recap, we read in all \ttt{.txt} files in a directory, then process each file to count the number of occurrences of a word, storing the results in a map.
 
+\newpage
 \begin{lstlisting}[language=MyJava]
 import java.util.Map;
 
 interface IFileSearcher {
 
   /**
-   * Count the number of occurrences of the word in all .txt
-   * files in the given directory. The word is case-insensitive.
-   * Different implementations of the method may use different
-   * strategies to count the occurrences.
+   * Count the number of occurrences of the word in all .txt files in the given
+   * directory. The word is case-insensitive. Different implementations of the method
+   * may use different strategies to count the occurrences.
    * @param word the word to count.
    * @param dir the directory to search.
    * @return a map from file names to the number of occurrences.
@@ -724,7 +717,6 @@ interface IFileSearcher {
 }
 \end{lstlisting}
 
-\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.nio.*;
@@ -780,13 +772,8 @@ The \ttt{process} method does not change between the implementations, so we omit
 \enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.nio.file.*;
+import java.util.*;
 
 class MultithreadedFileSearcher implements IFileSearcher {
   // ... other methods not shown.
@@ -845,11 +832,8 @@ The server \emph{blocks}\index{block} until it receives a connection, similar to
 A blocking server that is implemented in this fashion, as we have done, can only serve one client at a time, since it has to accept the client, set up the output stream, print the data, then close the connection before being able to accept another.
 
 \begin{lstlisting}[language=MyJava]
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
 class TimeEchoServer {
 
@@ -862,21 +846,17 @@ class TimeEchoServer {
       while (true) {
         // Accept the incoming client, block until we receive one.
         Socket client = ss.accept();
-        System.out.printf("Client connected: %s\n", 
-                          client.getInetAddress().toString());
-        PrintWriter pw = new PrintWriter(
-                          new OutputStreamWriter(
-                            client.getOutputStream()), 
-                            true);
-        // Echo the server time to the client.
+        System.out.printf("Client connected: %s\n", client.getInetAddress().toString());
+        PrintWriter pw = new PrintWriter(new OutputStreamWriter(
+                                          client.getOutputStream()), 
+                                          true);
         pw.println("The server time is " + java.time.LocalDateTime.now());
-        // Echo client disconnection, then close.
         System.out.printf("Client disconnected: %s\n", 
                           client.getInetAddress().toString());
         client.close();
       }
     } catch (IOException ex) { 
-      ex.printStackTrace(); 
+      throw new RuntimeException(ex);
     }
   }
 }
@@ -890,16 +870,10 @@ So, our server first reads in a list of countries from most populous to least.
 From there, we establish the same server connection, only this time we use both the input and output streams of the client, so we can read the number that they enter, as well as output to them the corresponding country.
 
 \begin{lstlisting}[language=MyJava]
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.ArrayList;
+import java.io.*;
+import java.net.*;
+import java.nio.file.*;
+import java.util.*;
 
 class CountryPopulationRankServer {
 
@@ -912,23 +886,23 @@ class CountryPopulationRankServer {
   }
 
   void start() {
-    // Set up the thread pool.
     try (ServerSocket ss = new ServerSocket(this.PORT)) {
       while (true) {
         Socket s = ss.accept();
         BufferedReader br = new BufferedReader(
                               new InputStreamReader(s.getInputStream()));
+        
         // Read in the country from the user.
         String line = br.readLine();
         int country = Integer.parseInt(line) - 1;
         PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+
         // Output the nth most populous country.
-        pw.printf("%d country: %s\n", country + 1, 
-                  this.COUNTRIES.get(country));
+        pw.printf("%d country: %s\n", country + 1, this.COUNTRIES.get(country));
         socket.close();
       }
     } catch (IOException ex) { 
-      ex.printStackTrace(); 
+      throw new RuntimeException(ex);
     }
   }
 
@@ -978,7 +952,7 @@ class Server {
           Task task = this.SERVER.TASKS.take();
           this.SERVER.CLIENTS.forEach(c -> c.send(task));
         } catch (InterruptedException e) { 
-          e.printStackTrace(); 
+          throw new RuntimeException(ex);
         }
       }
     }
@@ -986,7 +960,7 @@ class Server {
 }
 \end{lstlisting}
 
-\enlargethispage{-4\baselineskip}
+\newpage
 \begin{lstlisting}[language=MyJava]
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -1081,7 +1055,7 @@ class Client implements Runnable {
         this.SERVER.addTask(parseCmd(line)); 
       }
     } catch (IOException e) { 
-      e.printStackTrace(); 
+      throw new RuntimeException(e);
     }
   }
 }
@@ -1093,7 +1067,7 @@ As an example, \ttt{/login joshua} will set the user's identifier to \ttt{joshua
 We will also allow the user to send messages to all other users via the \ttt{/send} command, which is followed by the message to broadcast. 
 Finally, the \ttt{/quit} command disconnects the user from the server.
 
-\enlargethispage{-4\baselineskip}
+\newpage
 \begin{lstlisting}[language=MyJava]
 class Client {
   // ... other information not shown.

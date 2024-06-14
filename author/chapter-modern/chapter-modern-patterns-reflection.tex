@@ -137,37 +137,28 @@ class Interp1 extends Interp0 {
 }
 \end{verbnobox}
 
-The \ttt{execute} method is generated all the time, but we only care about its contents (i.e., we only populate its body) when we write something that is not a declaration. 
+The \ttt{execute} method is always generated, but we only care about its contents (i.e., we only populate its body) when we write something that is not a declaration. 
 For example, if we write a class definition or a variable, it is nonsensical to place it inside the \ttt{execute} method body, since in the former case it would not compile, and in the latter case it would be local to only that version of \ttt{execute}. 
 So, we need a way of determining whether or not a piece of code \emph{is} a declaration/definition. 
 All declarations in our subset of Java will be restricted to the following grammar:
-\\
 
-\setlength{\grammarparsep}{20pt plus 1pt minus 1pt} % increase separation between rules
-\setlength{\grammarindent}{12em} % increase separation between LHS/RHS 
 \begin{figure}[H]
-  \begin{grammar}
-      <expr> ::= <varDecl> 
-              \alt <methodDecl> 
-              \alt <classDecl>
+\begin{verbatim}
+<expr> ::= <varDecl> | <methodDecl> | <classDecl>
 
-      <varDecl> ::= <type> ` ' <id> `;'
-                \alt <type> `[]' ` ' <id> `;'
+<varDecl> ::= (<type> ' ' <id> ';') | (<type> '[]' ' ' <id> ';')
 
-      <methodDecl> ::= <type> ` ' <id> `(' <params> `)' `{' <body> `}'
+<methodDecl> ::= <type> ' ' <id> '(' <params> ')' '{' <body> '}'
 
-      <classDecl> ::= `class ' <id> `{' <body> `}'
-                  \alt `class ' <id> ` extends ' <id> `{' <body> `}'
-
-  \end{grammar}
-  \caption{ Extended-BNF Grammar for Declarations }
+<classDecl> ::= ('class ' <id> (' extends ' <id>)? '{' <body> '}')
+\end{verbatim}
+\caption{ Extended-BNF Grammar for Declarations }
 \end{figure}
 
 Let's assume that the \ttt{type} rule is any arbitrary sequence of characters representing a type in Java (e.g., \ttt{void}, \ttt{int}, \ttt{Dog}), as is an identifier. 
 Under these assumptions, it is simple to parse a string to determine if it's a declaration. 
-We will further assume that the user is acting in good faith and typing only valid Java code that compiles under said assumptions; responses to inputs such as \ttt{intttt x = 5;} will not be considered in this example.\footnote{We make prolific use of regular expressions in this next section. You are free to gloss over these details or use raw string parsing with substring and equals, but regex makes the parsing process significantly faster.}
+We will further assume that the user is acting in good faith and typing only valid Java code that compiles under said assumptions; responses to inputs such as \ttt{intttt x = 5;} will not be considered.\footnote{We make prolific use of regular expressions in this next section. You are free to gloss over these details or use ``raw string parsing'' with substring and equals.}
 
-\enlargethispage{1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class JavaRepl {
 
@@ -315,7 +306,6 @@ import java.lang.StringBuilder;
 
 class JavaRepl {
   // ... other instance variables not shown.
-
   private final JavaCompiler JAVAC;
   private final StandardJavaFileManager FILE_MANAGER;
   private final DiagnosticCollector<? super JavaFileObject> DS;
@@ -324,8 +314,7 @@ class JavaRepl {
     // ... other instantiations not shown.
     this.JAVAC = ToolProvider.getSystemJavaCompiler();
     this.DS = new DiagnosticCollector<>();
-    this.FILE_MANAGER = 
-      this.JAVAC.getStandardFileManager(this.DS, null, null);
+    this.FILE_MANAGER = this.JAVAC.getStandardFileManager(this.DS, null, null);
   }
 
   /**
@@ -374,6 +363,7 @@ Indeed, we want to load the new class that we just compiled, namely \ttt{Interp$
 This is nothing new, but what we have not seen is the common class loader approach; we store an instance of \ttt{URLClassLoader} that gets instantiated to refer to the temporary directory path, in our constructor. 
 Therefore, when loading a class via \ttt{loadClass}, any changes we made to previous variables remain loaded into memory.
 
+\enlargethispage{-1\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class JavaRepl {
 
