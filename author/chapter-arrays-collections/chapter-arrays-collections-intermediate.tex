@@ -108,7 +108,7 @@ class InorderTraversalTester {
 
 \end{lstlisting}
 
-\enlargethispage{1\baselineskip}
+\newpage
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparable;
 import java.util.List;
@@ -253,7 +253,6 @@ We can do this by keeping track of the parent of $n$, and if $n$ is its parent's
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-
 import java.util.List;
 import learningjava.trees.BinarySearchTree;
 
@@ -272,7 +271,6 @@ class InorderSuccTester {
 }
 \end{lstlisting}
 
-%\enlargethispage{6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparable;
 import learningjava.trees.BinarySearchTree;
@@ -339,7 +337,7 @@ class FindBetweenTester {
 }
 \end{lstlisting}
 
-\enlargethispage{1\baselineskip}
+\newpage
 \begin{lstlisting}[language=MyJava]
 import java.util.Comparable;
 import java.util.HashSet;
@@ -372,6 +370,6 @@ class FindBetween {
 
 Maintaining a balanced binary tree, as we suggested earlier, guarantees fast operations. 
 This invariant is non-trivial to maintain, and there are several \emph{height-balancing} tree data structures that do so. 
-For example, there are \emph{AVL} trees, \emph{red-black} trees, and \emph{splay} trees (the list is by no means exhaustive). 
+For example, there are \emph{AVL} trees, \emph{red-black} trees, and \emph{splay} trees (the list is by no means exhaustive)~\Citep{clrs,weissjava}. 
 Trees are a natural fit for programming language interpreters and design. Moreover, height-balancing trees are the basis for the \ttt{TreeSet} and \ttt{TreeMap} classes, which guarantee quick operation times.
 We end our discussion on trees here, but we will revisit them in a subsequent chapter on advanced object-oriented programming, where their practicality becomes more apparent.

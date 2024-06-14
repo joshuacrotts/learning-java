@@ -171,7 +171,6 @@ Therefore, when unwinding the recursive calls, we get the following trace:
 \end{align*}
 Now let's design the \ttt{factorial} method in Java, again with tests taking immediate precedence over the method definition.
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -180,10 +179,8 @@ class FactorialTester {
   
   @Test
   void testFact() {
-    assertAll(
-      () -> assertEquals(1, fact(0)),
-      () -> assertEquals(120, fact(5)),
-      () -> assertEquals(3628800, fact(10)));
+    assertEquals(1, fact(0));
+    assertEquals(120, fact(5));
   }
 }
 \end{lstlisting}
@@ -282,7 +279,6 @@ We know that the method must be called where the call is in tail position, so we
 Up next, we can copy the logic of the previous standard recursive algorithm with the added exception that we do not return one from the base case, but instead return an accumulated result. 
 The goal is to construct, or generate, the factorial of some~$n$ as an argument to the method.
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class Factorial {
 
@@ -292,6 +288,9 @@ class Factorial {
    * @param acc the accumulator for the result.
    * @return the factorial of the number.
    */
+\end{lstlisting}
+
+\begin{lstlisting}[language=MyJava]
   static int factTR(int n, int acc) {
     if (isZero(n)) { return acc; } 
     else { return factTR(n - 1, acc * n); }
@@ -472,7 +471,6 @@ Due to the trivial nature of writing tests, we omit them for our tail recursive 
 The algorithm remains largely the same, except for the added accumulator, which builds the resulting string rather than relying on the recursive unwinding to compose the solution. 
 Our base case concatenates~$s$ onto the end of the accumulator.
 
-\enlargethispage{2\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RemoveDivThreeChars {
 
@@ -518,7 +516,7 @@ Until we reach a non-\ttt{\q{}a\q{}} character, we simply recurse on the rest of
 Notice that the initial call to the helper method, namely \ttt{remSeqCharsHelper}, contains the null character literal, i.e., \ttt{\q{}\textbackslash{}0\q{}}. 
 % If readers prefer, they can instead make use of one-character strings instead of characters and pass \ttt{null} (or even the empty string).
 
-\enlargethispage{3\baselineskip}
+% \enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RemoveSequentialCharsTester {
 
@@ -534,7 +532,6 @@ class RemoveSequentialCharsTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 class RemoveSequentialChars {
 

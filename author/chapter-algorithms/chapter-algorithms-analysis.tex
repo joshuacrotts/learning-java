@@ -483,7 +483,7 @@ It is known that, in the average case, quicksort is~$\Theta(n\lg{n})$~\Citep{clr
 %% Cite a reference??
 \subsection{Lower Bound for Comparison-Based Sorting Algorithms}
 The performance and time complexity of sorting algorithms largely depend on the underlying implementation. 
-We will now prove that, for any comparison-based sorting algorithm, i.e., a sorting algorithm that answers ``YES'' or ``NO'' to the question, ``Is $a_i < a_j$?'' for any list~$a$ and indices~$i$ and~$j$, it must perform~$\Omega(n \lg n)$ comparisons to sort~$n$ elements~\Citep{clrs}.
+We will now prove that, for any comparison-based sorting algorithm, i.e., a sorting algorithm that answers ``YES'' or ``NO'' to the question, ``Is $a_i < a_j$?'' for any list~$a$ and arbitrary indices~$i$ and~$j$, it must perform~$\Omega(n \lg n)$ comparisons to sort~$n$ randomly-accessible elements~\Citep{clrs}.\footnote{Randomly-accessible means that we can access any element in the list in~$\Theta(1)$ time.}
 
 \begin{proof}
 We need two auxiliary lemmas, or true statements, to prove our theorem.
@@ -495,15 +495,16 @@ We need two auxiliary lemmas, or true statements, to prove our theorem.
 Assume that we have a set~$S$ containing answers to every question (i.e., the ``YES''/``NO'' question we described above) found so far when attempting to sort using comparisons. 
 By definition, this set must be such that~$|S|=n!$ to start. 
 If we answer the first question, we create two groups~$S_1$ and~$S_2$ describing those inputs for which the answer is ``YES'' and those inputs for which the answer is ``NO.'' 
-Each time we make a decision, we half the problem size, meaning it becomes a logarithmic relationship. 
+Each time we make a decision, we half the problem size, meaning it becomes a (base-two) logarithmic relationship. 
 In the end, we reach the base case of~$|S|=1$, which means the algorithm knows which output is correct. Thus,
 
 \begin{align}
 \lg{n} + \lg{(n-1)} + \cdots + \lg{2} + \lg{1} &= \lg{n!}\\
         &= \Omega(n \lg n)
 \end{align}
-Recall the definition of logarithms: $\lg{a} + \lg{b} = \lg{ab}$. 
+
+Recall the definition of additive logarithms: $\lg{a} + \lg{b} = \lg{ab}$. 
 Thus, $\lg{a} + \lg{b} + \lg{c} = \lg{abc}$, and so forth ad infinitum. 
 Therefore we get the equivalence shown in line (\ref{chapter-algorithms}.1). 
-Using Stirling's approximation, we get the equivalence in line (\ref{chapter-algorithms}.2).
+Using Stirling's approximation, we get the equivalence in line (\ref{chapter-algorithms}.2)~\Citep{taocp3}.
 \end{proof}

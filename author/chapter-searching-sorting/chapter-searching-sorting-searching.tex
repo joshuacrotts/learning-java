@@ -302,9 +302,7 @@ import java.util.Comparator;
 import java.util.AbstractList;
 
 interface IBinarySearch {
-
   <V extends Comparable<V>> int binarySearch(AbstractList<V> ls, V v);
-
   <V> int binarySearch(AbstractList<V> ls, V v, Comparator<? super V> c);
 }
 \end{lstlisting}
@@ -314,24 +312,20 @@ All we must do is move the logic of the search into the version that receives a 
 This means that we need to instantiate a \ttt{Comparator} that uses the \ttt{compareTo} method from the elements, which is trivial to do via a lambda expression. 
 We also must change the definition from using \ttt{compareTo}, which comes from \ttt{Comparable} to use \ttt{compare} from the \ttt{c} object.
 
-\enlargethispage{3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
-
 import java.util.AbstractList;
-import java.util.Comparator;
 
 class IBinarySearchTester {
 
   @Test
   void testBinarySearchComparator() {
     IBinarySearch<Integer> search = new TailRecursiveBinarySearch<>();
-    Comparator<Integer> c = (o1, o2) -> o1.compareTo(o2);
     assertAll(
-      () -> assertEquals(0, search.binarySearch(ls, 1, c));
-      () -> assertEquals(4, search.binarySearch(ls, 5, c));
-      () -> assertEquals(-1, search.binarySearch(ls, 11, c)));
+      () -> assertEquals(0, search.binarySearch(ls, 1, (o1, o2) -> o1.compareTo(o2)));
+      () -> assertEquals(4, search.binarySearch(ls, 5, (o1, o2) -> o1.compareTo(o2)));
+      () -> assertEquals(-1, search.binarySearch(ls, 11, (o1, o2) -> o1.compareTo(o2))));
   }
 }
 \end{lstlisting}

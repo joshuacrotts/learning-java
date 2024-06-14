@@ -38,6 +38,7 @@ Its purpose is to return the index of the first occurrence of~$k$ in~$t$, and~$-
 Because all objects have a \ttt{equals} method for object equality, we can take advantage of that when comparing objects in the list against the search parameter. 
 When testing, we will instantiate the type parameter to several different object types to demonstrate.
 
+\newpage %ugh
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -49,17 +50,11 @@ class GenericSearchTester {
 
   @Test 
   void testGenericSearch() {
-    List<Integer> l1 
-      = new ArrayList<>(List.of(1, 2, 3, 4, 5));
-    List<String> l2 
-      = new ArrayList<>(List.of("a", "b", "c", "d", "e"));
-    List<Double> l3 
-      = new ArrayList<>(List.of(1.0, 2.0, 3.0, 4.0, 5.0));
-    List<Character> l4 
-      = new ArrayList<>(List.of('a', 'b', 'c', 'd', 'e'));
-    List<List<Integer>> l5 
-      = new ArrayList<>();
-
+    List<Integer> l1 = new ArrayList<>(List.of(1, 2, 3, 4, 5));
+    List<String> l2 = new ArrayList<>(List.of("a", "b", "c", "d", "e"));
+    List<Double> l3 = new ArrayList<>(List.of(1.0, 2.0, 3.0, 4.0, 5.0));
+    List<Character> l4 = new ArrayList<>(List.of('a', 'b', 'c', 'd', 'e'));
+    List<List<Integer>> l5 = new ArrayList<>();
     assertAll (
       () -> assertEquals(1, genericSearch(l1, 2)),
       () -> assertEquals(-1, genericSearch(l1, 6)),
@@ -74,15 +69,13 @@ class GenericSearchTester {
 }
 \end{lstlisting}
 
-%\enlargethispage{-6\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.util.List;
 
 class GenericSearch {
 
   /**
-   * Returns the index of the first occurrence of k in t, 
-   * or -1 if it does not exist.
+   * Returns the index of the first occurrence of k in t or -1 if it does not exist.
    * @param t the list of type T.
    * @param k the object of type T to search for.
    * @return the index of k or -1.
@@ -112,7 +105,7 @@ Because determining the max element of a list involves comparison-based checking
 In the previous section, we discussed that \ttt{Optional} is a container class that either holds a value or is empty.
 An exercise at the end of this section asks you to use \ttt{Optional} in designing a similar method, rather than returning \ttt{null}, as we do here.
 
-\enlargethispage{-7\baselineskip}
+% \enlargethispage{-7\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -146,10 +139,8 @@ import java.util.List;
 class GenericMax {
   
   /**
-   * Returns the maximum element in the list according to 
-   * the compareTo implementation of the type parameter.
-   * @param t the list of type T, where T is a type 
-   *            that implements Comparable.
+   * Returns the maximum element in the list according compareTo of type T.
+   * @param t the list of type T, where T is a type that implements Comparable.
    * @return the maximum element in the list.
    */
   static <T extends Comparable<T>> T genericMax(List<T> t) {

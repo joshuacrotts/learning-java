@@ -275,7 +275,6 @@ class FunctionalSelectionSort<V extends Comparable<V>> implements ISelectionSort
 \end{lstlisting}
 
 % \newpage
-\enlargethispage{3\baselineskip}
 \subsubsection*{In-place Selection Sort}
 \begin{lstlisting}[language=MyJava]
 import java.util.*;
@@ -288,9 +287,7 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
       V min = ls.get(i);
       int minIdx = 0;
       boolean needToSwap = false;
-
-      // Find the minimum value. If we get a value less than the current 
-      // minimum, then we need to swap at the end.
+      // Find the minimum value. If we get a value < curr min, swap at end.
       for (int j = i + 1; j < ls.size(); j++) {
         if (ls.get(j).compareTo(min) < 0) {
           min = ls.get(j);
@@ -298,16 +295,12 @@ class InPlaceSelectionSort<V extends Comparable<V>> implements ISelectionSort<V>
           needToSwap = true;
         }
       }
-
-      // Swap the minimum value with the current index, if need be.
       if(needToSwap) { Collections.swap(ls, minIdx, i); }
     }
     return ls;
   }
 }
 \end{lstlisting}  
-
-\newpage
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[>=Stealth]
@@ -684,7 +677,6 @@ interface IMergeSort<V extends Comparable<V>> {
 \end{lstlisting}
 
 \newpage %ugh
-\enlargethispage{1\baselineskip}
 \subsubsection*{Functional Merge Sort}
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
@@ -731,13 +723,11 @@ class FunctionalMergeSort<V extends Comparable<V>> implements IMergeSort<V> {
   private AbstractList<V> merge(AbstractList<V> ls1, AbstractList<V> ls2) {
     int i, j = 0;
     AbstractList<V> newLs = new ArrayList<>();
-          
     // Merge the lists, comparing the elements.
     while (i < ls1.size() && j < ls2.size()) {
       if (ls1.get(i).compareTo(ls2.get(j)) < 0) { newLs.add(ls1.get(i++)); } 
       else { newLs.add(ls2.get(j++)); }
     }
-  
     // Finish copying ls1.
     while (i < ls1.size()) { newLs.add(ls1.get(i++)); }
     // Finish copying ls2.
@@ -974,16 +964,22 @@ The \ttt{LinkedList} class is a subclass of \ttt{AbstractSequentialList}.}
 
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
-import java.util.*;
+import java.util.AbstractSequentialList;
+import java.util.List;
 
 interface IPriorityQueueSort<V extends Comparable<V>> {
+
   AbstractSequentialList<V> pqSort(List<V> ls);
 }
 \end{lstlisting}
 
 \begin{lstlisting}[language=MyJava]
 import java.lang.Comparable;
-import java.util.*;
+import java.util.AbstractSequentialList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 class FunctionalPriorityQueueSort<V extends Comparable<V>> 
                                   implements IPriorityQueueSort<V> {

@@ -429,7 +429,9 @@ class Url {
     return String.format("%s://%s:%d/%s", this._schema,
                          this._host, this._port, this._path);
   }
-
+\end{lstlisting}
+\newpage
+\begin{lstlisting}[language=MyJava]
   Url schema(String schema) {
     this._schema = schema;
     return this;
@@ -522,7 +524,7 @@ The new class, namely \ttt{ExpressionPrinterVisitor}, overrides the respective m
 The corresponding tester is nothing different from previous tests; we instantiate an instance of \ttt{IExpressionVisitor} to \ttt{ExpressionPrinterVisitor}, followed by a call to \ttt{visit} on the root node of the expression tree. 
 The result is a string representation of the expression, which we then verify.
 
-\enlargethispage{-8\baselineskip}
+\newpage
 \begin{lstlisting}[language=MyJava]
 import static Assertions.assertAll;
 import static Assertions.assertEquals;
@@ -555,7 +557,6 @@ class ExpressionPrinterVisitorTester {
 }
 \end{lstlisting}
 
-\enlargethispage{-3\baselineskip}
 \begin{lstlisting}[language=MyJava]
 import java.lang.StringBuilder; 
 
@@ -582,7 +583,9 @@ class ExpressionPrinterVisitor implements IExpressionVisitor {
   public String visit(VarNode node) {
     return node.getValue();
   }
-  
+\end{lstlisting}
+\newpage
+\begin{lstlisting}[language=MyJava]
   @Override
   public String visit(LetNode node) {
     StringBuilder sb = new StringBuilder();
@@ -636,7 +639,7 @@ Fruits have a name and a weight in ounces, milk is either skim milk or regular (
 While we are in the realm of modern Java, let's once again use records to our advantage to remove redundant code. 
 Conveniently, this means that we only have to override the \ttt{visit} method in each record type.
 
-\enlargethispage{-3\baselineskip}
+\enlargethispage{-4\baselineskip}
 \begin{lstlisting}[language=MyJava]
 record Fruit(String name, int oz) implements IGroceryItem {
 

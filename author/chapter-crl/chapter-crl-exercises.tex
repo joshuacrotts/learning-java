@@ -14,7 +14,7 @@
 
 \myexercise{1}{chapter-crl}{Design the \ttt{boolean canSleepIn(String d, boolean onVacation)} method, which determines whether or not someone can sleep in. Someone is able to sleep in if it is a weekend or they are on vacation. The input $d$ is passed as a day of the week, e.g., \ttt{"Monday"}, ..., \ttt{"Sunday"}.}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{boolean isEvenlySpaced(int x, int y, int z)} method, which receives three integers $x$, $y$, and $z$, and returns whether they are evenly spaced. Evenly spaced means that the difference between the smallest and medium number is the same as the difference between the medium and largest number.}
+\myexercise{1}{chapter-crl}{Design the \ttt{boolean isEvenlySpaced(int x, int y, int z)} method, which receives three integers~$x$,~$y$, and~$z$, and returns whether they are evenly spaced.} Evenly spaced means that the difference between the smallest and medium number is the same as the difference between the medium and largest number.
 
 \myexercise{1}{chapter-crl}{Design the \ttt{String cutTry(String s)} method, which receives a string $s$ and, if $s$ ends with \ttt{"try"}, it is removed. Otherwise, the original string is returned.}
 
@@ -174,14 +174,13 @@ static boolean isNumeric(String n) {
 
 \myexercise{1}{chapter-crl}{A year with $366$ days is called a leap year. Leap years are necessary to keep the calendar synchronized with the sun because the earth revolves around the sun once every $365.25$ days. Actually, that figure is not entirely precise, and for all dates after $1582$ the Gregorian correction applies. Usually years that are divisible by 4 are leap years, for example $1996$. However, years that are divisible by $100$ (for example, $1900$) are not leap years, but years that are divisible by $400$ are leap years (for example, $2000$). Design the \ttt{boolean isLeapYear(int y)} method that receives a year (as an integer) $y$ and computes whether $y$ is a leap year. Use a single \ttt{if} statement and Boolean operators.}
 
-\myexercise{1}{chapter-crl}{Design the \ttt{double getDiscount(double c, int age, boolean isStudent)} met\-hod that computes a discount for some item cost $c$ based on their age $\mathit{age}$ and student status according to the following criteria:}
+\myexercise{1}{chapter-crl}{Design the \ttt{double getDiscount(double c, int age, boolean isStudent)} met\-hod that computes a discount for some item cost $c$ based on their age $\mathit{age}$ and student status. Your method should return the total cost of the item after applying the discount. Use the following criteria for computing the discount:}
 \begin{itemize}
     \item If $\mathit{age} < 18$, apply a $20\%$ discount.
     \item If $18 \leq \mathit{age} \leq 25$ and they are a student, apply a $25\%$ discount. If they are not a student, do not apply a discount.
     \item If $\mathit{age} \geq 65$ and they are a student, apply a $30\%$ discount. If they are not a student, apply a $15\%$ discount.
     \item All other cases should not have a discount applied.
 \end{itemize}
-Your method should return the total cost of the item after applying the discount.
 
 \myexercise{1}{chapter-crl}{Design the \ttt{double getTaxCost(double itemCost, String state)} method that computes the tax for some item based on the state in which it is purchased. The method should return the total cost of the item, which includes the taxed amount. The tax rates are as follows:}
 \begin{itemize}
@@ -236,6 +235,7 @@ Below are the criteria for scoring the piece:
 
 \myexercise{1}{chapter-crl}{Design the \ttt{String createPalindrome(String s, boolean mirror)} method that receives a string $s$ and a boolean. If the boolean is true, then return a string $ss'$, where $s'$ is the mirror of $s$. If the boolean is false, then return a string $st$, where $t$ contains all but the last character of $s$, and is reversed. You cannot use any helper classes, e.g., \ttt{StringBuilder}/\ttt{StringBuffer} to solve this problem.}
 
+\newpage %ugh
 \myexercise{1}{chapter-crl}{This exercise has two parts.}
 \begin{enumerate}[label=(\alph*)]
     \item Design the recursive \ttt{int countStr(String s)} that counts the number of times the substring \ttt{"str"} appears in a given string $s$.
@@ -318,8 +318,8 @@ If you write tests for one of these methods, you should be able to propagate it 
 \end{enumerate}
 If you write tests for one of these methods, you should be able to propagate it through the rest, so write plenty!
 
+\newpage %ugh
 \myexercise{1}{chapter-crl}{This question has three parts.}
-
 \begin{enumerate}[label=(\alph*)]
     \item The \emph{subfactorial} of a number, namely~$!n$, is the number of permutations of~$n$ objects such that no object appears in its natural spot. For example, take the collection of objects $\{a, b, c\}$. There are $6$ possible permutations (because we choose arrangements for three items, and $3!=6$): $\{a, b, c\}, \{a, c, b\}, \{b, c, a\}, \{c, b, a\}, \{c, a, b\}, \{b, a, c\}$, but only two of these are \emph{derangements}: $\{b, c, a\}$ and $\{c, a, b\}$, because no element is in the same spot as the original collection. Therefore, we say that $!3=2$. We can describe subfactorial as a recursive formula:
 \begin{align*}
